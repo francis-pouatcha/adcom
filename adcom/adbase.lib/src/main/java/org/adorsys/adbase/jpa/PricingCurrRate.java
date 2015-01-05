@@ -1,0 +1,9 @@
+package org.adorsys.adbase.jpa;
+
+import javax.persistence.Entity;
+
+@Entity
+public class PricingCurrRate extends AbstractCurrRate {
+
+	private static final long serialVersionUID = -7649041196331977969L;
+}

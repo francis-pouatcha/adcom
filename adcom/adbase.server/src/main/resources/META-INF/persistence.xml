@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+  <persistence-unit name="forge-default" transaction-type="JTA">
+    <description>Forge Persistence Unit</description>
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <jta-data-source>java:jboss/datasources/ADDS</jta-data-source>
+    <class>org.adorsys.adbase.jpa.ConnectionHistory</class>
+    <class>org.adorsys.adbase.jpa.ConverterCurrRate</class>
+    <class>org.adorsys.adbase.jpa.Country</class>
+    <class>org.adorsys.adbase.jpa.Locality</class>
+    <class>org.adorsys.adbase.jpa.Login</class>
+    <class>org.adorsys.adbase.jpa.OrgContact</class>
+    <class>org.adorsys.adbase.jpa.OrgUnit</class>
+    <class>org.adorsys.adbase.jpa.OuType</class>
+    <class>org.adorsys.adbase.jpa.OuWorkspace</class>
+    <class>org.adorsys.adbase.jpa.OuWsRestriction</class>
+    <class>org.adorsys.adbase.jpa.PermEntry</class>
+    <class>org.adorsys.adbase.jpa.PricingCurrRate</class>
+    <class>org.adorsys.adbase.jpa.RoleEntry</class>
+    <class>org.adorsys.adbase.jpa.SecAbstractTerminal</class>
+    <class>org.adorsys.adbase.jpa.SecTerminal</class>
+    <class>org.adorsys.adbase.jpa.SecTermRegist</class>
+    <class>org.adorsys.adbase.jpa.SecTermCredtl</class>
+    <class>org.adorsys.adbase.jpa.SecTermSession</class>
+    <class>org.adorsys.adbase.jpa.SecUserSession</class>
+    <class>org.adorsys.adbase.jpa.UserWorkspace</class>
+    <class>org.adorsys.adbase.jpa.UserWsRestriction</class>
+    <class>org.adorsys.adbase.jpa.Workspace</class>
+    <class>org.adorsys.adbase.jpa.WorkspaceRestriction</class>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      <property name="hibernate.show_sql" value="true"/>
+      <property name="hibernate.format_sql" value="true"/>
+      <property name="hibernate.transaction.flush_before_completion" value="true"/>
+    </properties>
+  </persistence-unit>
+</persistence>

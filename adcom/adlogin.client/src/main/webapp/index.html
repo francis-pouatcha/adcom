@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html ng-app="AdLogin">
+<head>
+    <meta charset="utf-8" />
+    <title>AngularJS Basic HTTP Authentication Example</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="stylesheet" type="text/css" href="/adres.client/vendors/bootstrap/css/bootstrap.min.css">
+</head>
+<body class="theme-blue">
+
+
+
+
+     <div class="container">
+		<div class="navbar navbar-default" role="navigation" >
+		    <div class="navbar-header" ng-cloak>
+		        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+		            <span class="sr-only">Toggle navigation</span>
+		            <span class="icon-bar"></span>
+		            <span class="icon-bar"></span>
+		            <span class="icon-bar"></span>
+		        </button>
+		        <a   href="#/workspaces" class="pointer-element" ><img ng-src="/adres.client/img/logo.png" class="navbar-brand-logo" /><span ng-cloak ng-bind="appVersion" class="navbar-brand-version" ></span></a>
+		    </div>
+		    <a><span class="navbar-brand col-lg-offset-2" style="text-align:center">{{"workspace_ouWsIdentif"|translate}} : {{"workspace_login"|translate}}</span></a>
+		    <div ng-cloak class="navbar-collapse collapse" style="height: 1px;">
+		        <ul id="main-menu" class="nav navbar-nav navbar-right">
+		            <li ng-show="sessionData.usr" class="dropdown hidden-xs">
+		                <a  href="#" class="dropdown-toggle">
+		                    <i class="fa fa-fw fa-user"></i> <b  ng-cloak ng-bind="sessionData.lgn"></b>
+		                    <i class="fa fa-caret-down"></i>
+		                </a>
+		                <ul ng-cloak  class="dropdown-menu">
+		                    <li><a tabindex="-1" href="" ng-click="logout();"> <i class="fa fa-fw fa-sign-out"></i> {{"workspace_logOut"|translate}}</a></li>
+		                    <li><a tabindex="-1" class="pointer-element" ng-click="changeLanguage('en')"> <i class="fa fa-fw"></i> en</a></li>
+		                    <li><a tabindex="-1" class="pointer-element" ng-click="changeLanguage('fr')"> <i class="fa fa-fw"></i> fr</a></li>
+		                </ul>
+		            </li>
+		            <li    ng-if="sessionData.usr" class=" hidden-xs">
+		                <a ng-cloak href="#/workspaces" class="">
+		                    <i class="fa fa-fw fa-tasks"></i> {{"workspace_ouWsIdentif"|translate}}
+		
+		                </a>
+		            </li>
+		        </ul>
+		
+		    </div>
+		
+		</div>
+
+         <div class="col-xs-offset-2 col-xs-8">
+             <div ng-view></div>
+         </div>
+
+     </div>
+
+    <script src="/adres.client/vendors/jquery/jquery-2.1.1.min.js"></script>
+    <script src="/adres.client/vendors/angular/angular.js"></script>
+    <script src="/adres.client/vendors/angular/angular-sanitize.js"></script>
+    <script src="/adres.client/vendors/angular/angular-route.js"></script>
+    <script src="/adres.client/vendors/angular/angular-cookies.js"></script>
+    <script src="/adres.client/vendors/bower-angular-translate/angular-translate.js"></script>
+    <script src="/adres.client/vendors/bower-angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
+    <script src="/adres.client/vendors/base64/base64.js"></script>
+    <script src="/adres.client/services/SessionData.js"></script>
+    <script src="/adres.client/services/AuthInterceptor.js"></script>
+    <script src="/adres.client/services/ADUtils.js"></script>
+    <script src="scripts/app.js"></script>
+    <script src="modules/workspace/resources.js"></script>
+    <script src="modules/workspace/services.js"></script>
+    <script src="modules/workspace/controllers.js"></script>
+    <script src="modules/login/services.js"></script>
+    <script src="modules/login/controllers.js"></script>
+</body>
+</html>
