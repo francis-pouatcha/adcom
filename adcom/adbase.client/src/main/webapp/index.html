@@ -1,1 +1,64 @@
-<meta http-equiv="refresh" content="0;url=./app.html" />
+<!DOCTYPE html>
+<html ng-app="AdLogin">
+<head>
+    <meta charset="utf-8" />
+    <title>AngularJS Basic HTTP Authentication Example</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="stylesheet" type="text/css" href="/adres.client/vendors/bootstrap/css/bootstrap.min.css">
+    <script src="/adres.client/vendors/jquery/jquery-2.1.1.min.js"></script>
+    <script src="/adres.client/vendors/bootstrap/js/bootstrap.js"></script>
+</head>
+<body class="theme-blue">
+	<nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a href="#/workspaces" class="navbar-brand pointer-element" >
+					<img ng-src="/adres.client/img/logo.png" class="navbar-brand-logo" />
+					<span ng-cloak ng-bind="appVersion" class="navbar-brand-version" />
+				</a>			
+    		</div>
+    		<div>
+    			<ul class="nav navbar-nav">
+    				<li><a><span class="navbar-brand col-lg-offset-2" style="text-align:center">{{"workspace_ouWsIdentif"|translate}} : {{"workspace_login"|translate}}</span></a></li>
+    			</ul>
+    			<ul class="nav navbar-nav navbar-right">
+    				<li class="dropdown" ng-show="sessionData.usr"><a class="dropdown-toggle glyphicon glyphicon-user" data-toggle="dropdown" href=""><b  ng-bind="sessionData.lgn"></b></a>
+    					<ul class="dropdown-menu">
+    						<li><a href="#" ng-click="logout();">{{"workspace_logOut"|translate}}</a></li>
+    						<li><a href="#" ng-click="changeLanguage('en')" class="pointer-element">English</a></li>
+    						<li><a href="#" ng-click="changeLanguage('fr')" class="pointer-element">Francais</a></li>
+    					</ul>
+    				</li>
+    				<li ng-if="sessionData.usr">
+    					<a href="#/workspaces">{{"workspace_ouWsIdentif"|translate}}</a>
+    				</li>
+    			</ul>
+    		</div>		
+		</div>
+	</nav>
+    <div class="container">
+         <div class="col-xs-offset-2 col-xs-8">
+             <div ng-view></div>
+         </div>
+     </div>
+
+    <script src="/adres.client/vendors/angular/angular.js"></script>
+    <script src="/adres.client/vendors/angular/angular-sanitize.js"></script>
+    <script src="/adres.client/vendors/angular/angular-route.js"></script>
+    <script src="/adres.client/vendors/angular/angular-cookies.js"></script>
+    <script src="/adres.client/vendors/bower-angular-translate/angular-translate.js"></script>
+    <script src="/adres.client/vendors/bower-angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
+    <script src="/adres.client/vendors/base64/base64.js"></script>
+    <script src="/adres.client/services/SessionData.js"></script>
+    <script src="/adres.client/services/AuthInterceptor.js"></script>
+    <script src="/adres.client/services/ADUtils.js"></script>
+    <script src="scripts/app.js"></script>
+    <script src="modules/workspace/resources.js"></script>
+    <script src="modules/workspace/services.js"></script>
+    <script src="modules/workspace/controllers.js"></script>
+    <script src="modules/login/services.js"></script>
+    <script src="modules/login/controllers.js"></script>
+</body>
+</html>
