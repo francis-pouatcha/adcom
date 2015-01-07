@@ -198,7 +198,7 @@ public class AdcomLoginModule implements LoginModule {
 			secUserSession.setId(UUID.randomUUID().toString());
 			secUserSession.setLoginName(login.getLoginName());
 			secUserSession.setTermSessionId(secTermSession.getId());
-			secUserSession.setWorkspaceId(auth.getWrk());
+			secUserSession.setWorkspaceId("login");
 			if(existingUserSession!=null && StringUtils.isNotBlank(existingUserSession.getId())){
 				secUserSessionEJB.deleteById(existingUserSession.getId());
 			}

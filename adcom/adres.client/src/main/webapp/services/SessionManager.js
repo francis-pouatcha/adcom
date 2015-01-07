@@ -33,6 +33,7 @@ angular.module('SessionManager',['Base64Factory','ADUtils'])
     	sess.pwd=password;
         $http.get('/adbase.server/rest/session/login')
         .success(function(data, status, headers, config) {
+    		consumeSessData(headers);
         	successCallback(data, status, headers, config);
 		})
         .error(function(data, status, headers, config) {
