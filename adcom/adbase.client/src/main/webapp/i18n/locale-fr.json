@@ -1,10 +1,11 @@
 {"Username":"Nom de Connexion",
-	"Username_is_required":"Nom de connextion requis",
-	"Password":"Mot de Passe",
-	"Password_is_required":"Mot de passe requis",
 	"Login":"Connexion",
-	"workspace_loginName":"Nom Connection",
+	"workspace_loginName":"Nom de Connexion",
 	"workspace_ouWsIdentif":"Espace de Travaille",
-	"workspace_login":"Connextion",
-	"workspace_logOut":"Deconnexion"
+	"workspace_admin":"ADMINISTRATION",
+	"workspace_logOut":"Deconnexion",
+	"logins_loginName":"Nom de Connexion",
+	"logins_email":"Email",
+	"logins_fullName":"Nom",
+	"logins_ouIdentif":"Département"
 }

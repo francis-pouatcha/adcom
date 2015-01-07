@@ -1,18 +1,16 @@
 'use strict';
 
 // declare modules
-angular.module('SessionData');
+angular.module('SessionManager');
 angular.module('AuthInterceptor');
-angular.module('ADUtils');
 
 angular.module('AdLogin', [
     'ngRoute',
     'ngCookies',
-    'SessionData',
+    'SessionManager',
     'AuthInterceptor',
     'ngSanitize',
-    'pascalprecht.translate',
-    'ADUtils'
+    'pascalprecht.translate'
 ])
 .constant('APP_CONFIG',{
 	'appName':'AD Login',
@@ -46,25 +44,41 @@ angular.module('AdLogin', [
     
 }])
 
-.run(['$rootScope', '$location', '$cookieStore', '$http', 'sessionData','$translate','APP_CONFIG','adUtils',
-    function ($rootScope, $location, $cookieStore, $http, sessionData,$translate,APP_CONFIG,adUtils) {
+.run(['$rootScope', '$location', '$cookieStore', '$http', 'sessionManager','$translate','APP_CONFIG',
+    function ($rootScope, $location, $cookieStore, $http, sessionManager,$translate,APP_CONFIG) {
 	    $rootScope.appName = APP_CONFIG.appName ;
 	    $rootScope.appVersion = APP_CONFIG.appVersion ;
-	    $rootScope.sessionData = sessionData;
+	    $rootScope.sessionManager = sessionManager;
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
-            // redirect to login page if not logged in
-        	var tpe = typeof sessionData.usr;
-        	var sess = tpe=='undefined' || (tpe=='object' && sessionData.usr==null);
-        	var loc = $location.path() !== '/login';
-            if (loc && sess) {
-                $location.path('/login');
-            }
+        	var path = $location.path();
+        	var noLoginPath = path != '/login';
+        	var noSess = !sessionManager.hasValues(sessionManager.terminalSession(), sessionManager.userSession());
+        	if(noLoginPath && noSess){
+        		if(path=='/workspaces' || path=='/' || path==''){
+        			var sessParam = $location.search();
+        			if(sessParam && sessionManager.hasValues(sessParam.trm,sessParam.usr)){
+        				sessionManager.wsin(sessParam.trm,sessParam.usr,
+        					function(){
+        		        		workspaceService.loadWorkspaces(
+        		        			function(data, status, headers, config){
+        		        				$location.path('/workspaces');
+        		        			},function(data, status, headers, config){}
+        		        		);
+        					}
+        				);
+        			}
+        		}	
+        	}
+        	noSess = !sessionManager.hasValues(sessionManager.terminalSession(), sessionManager.userSession());
+        	if(noLoginPath && noSess){
+				$location.path('/login');
+        	}
         });
         $rootScope.changeLanguage = function (langKey) {
             $translate.use(langKey);
         };
         $rootScope.logout = function(){
-        	adUtils.logout();
+        	sessionManager.wsout('login');
         };
     }]
 );

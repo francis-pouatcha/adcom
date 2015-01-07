@@ -4,16 +4,13 @@
  */
 
 'use strict';
-angular.module('SessionData');
-angular.module('Base64Factory');
-angular.module('AuthInterceptor',['SessionData','Base64Factory'])
-.factory('authInterceptor',['$q', 'Base64','sessionData', function($q, Base64, sessionData){
+angular.module('SessionManager');
+angular.module('AuthInterceptor',['SessionManager'])
+.factory('authInterceptor',['$q','$injector', function($q,$injector){
 	return {
 		request: function(config){
-			if(!sessionData.opr)sessionData.opr='req';
-        	var auth_json = JSON.stringify(sessionData);	
-            var authdata = Base64.encode(auth_json);
-            config.headers['Authorization'] = 'Basic ' + authdata;
+			var sessionManager = $injector.get('sessionManager');
+            config.headers['Authorization'] = 'Basic ' + sessionManager.encodedSession();
             
             return config || $q.when(config);
 		},

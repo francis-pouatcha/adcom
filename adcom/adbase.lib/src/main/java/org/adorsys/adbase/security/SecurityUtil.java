@@ -21,7 +21,7 @@ public class SecurityUtil {
 	@Inject
 	private LoginRepository loginRepository;
 	
-	private TermWsUserPrincipal getCallerPrincipal(){
+	public TermWsUserPrincipal getCallerPrincipal(){
 		Principal callerPrincipal = sessionContext.getCallerPrincipal();
 		if(callerPrincipal==null || !(callerPrincipal instanceof TermWsUserPrincipal)) return null;
 		return (TermWsUserPrincipal) callerPrincipal;

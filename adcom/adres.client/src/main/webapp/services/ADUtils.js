@@ -7,7 +7,7 @@
 
 angular.module('ADUtils',[])
 
-.factory('adUtils',['$http','$location',function($http,$location){
+.factory('adUtils',['$location',function($location){
     var service = {};
     service.loadApp = function(contextRoot){
 		var absUrl = $location.protocol() + '://' + $location.host();
@@ -17,10 +17,6 @@ angular.module('ADUtils',[])
 		}
 		absUrl +=contextRoot;
 		window.location.href=absUrl;
-    };
-    service.logout = function(){
-        $http.post('/adbase.server/logout');
-        service.loadApp("/adlogin.client");
     };
     return service;
 }]);

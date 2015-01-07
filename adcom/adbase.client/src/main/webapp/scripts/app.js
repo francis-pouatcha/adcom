@@ -1,18 +1,18 @@
 'use strict';
 
 // declare modules
-angular.module('SessionData');
+angular.module('SessionManager');
 angular.module('AuthInterceptor');
-angular.module('ADUtils');
+angular.module('Login');
 
 angular.module('AdBase', [
     'ngRoute',
     'ngCookies',
-    'SessionData',
+    'SessionManager',
     'AuthInterceptor',
     'ngSanitize',
     'pascalprecht.translate',
-    'ADUtils'
+    'Login'
 ])
 .constant('APP_CONFIG',{
 	'appName':'AD Login',
@@ -22,7 +22,7 @@ angular.module('AdBase', [
 .config(['$routeProvider', '$httpProvider','$translateProvider', function ($routeProvider, $httpProvider,$translateProvider) {
 
     $routeProvider
-    .when('/',{templateUrl:'views/logins.html',controller:'LoginController'})
+    .when('/',{templateUrl:'views/logins.html',controller:'loginController'})
     .otherwise({
       redirectTo: '/'
     });
@@ -39,31 +39,40 @@ angular.module('AdBase', [
     
 }])
 
-.run(['$rootScope', '$location', '$cookieStore', 'loginService', 'sessionData','$translate','APP_CONFIG','adUtils',
-    function ($rootScope, $location, $cookieStore, loginService, sessionData,$translate,APP_CONFIG,adUtils) {
+.run(['$rootScope', '$location','loginService', 'sessionManager','$translate','APP_CONFIG',
+    function ($rootScope, $location, loginService, sessionManager,$translate,APP_CONFIG) {
 	    $rootScope.appName = APP_CONFIG.appName ;
 	    $rootScope.appVersion = APP_CONFIG.appVersion ;
-	    $rootScope.sessionData = sessionData;
+	    $rootScope.sessionManager = sessionManager;
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
-        	// redirect to login page if not logged in
-        	var tpe = typeof sessionData.usr;
-        	var noSess = tpe=='undefined' || (tpe=='object' && sessionData.usr==null);
-            if (noSess) {
-                // wsin
-            	sessionData.opr='wsin';
-            	// read cookie store and set data
-            	sessionData.trm=$cookieStore.get(trm);
-            	sessionData.usr=$cookieStore.get(usr);
-            	loginService.loadLogins();
-            	$cookieStore.remove('trm');
-            	$cookieStore.remove('usr');
-            }
+        	var path = $location.path();
+        	var noSess = !sessionManager.hasValues(sessionManager.terminalSession(), sessionManager.userSession());
+        	if(noSess){
+    			var sessParam = $location.search();
+    			if(sessParam && sessionManager.hasValues(sessParam.trm,sessParam.usr)){
+    				sessionManager.wsin(sessParam.trm,sessParam.usr,
+    					function(){
+    						loginService.loadLogins(
+    		        			function(data, status, headers, config){
+    		        				$location.path('/');
+    		        			}
+    		        		);
+    					}
+    				);
+    			}
+        	}
         });
         $rootScope.changeLanguage = function (langKey) {
             $translate.use(langKey);
         };
         $rootScope.logout = function(){
-        	adUtils.logout();
+        	sessionManager.logout();
+        };
+        $rootScope.workspaces = function(){
+        	sessionManager.wsout();
+        };
+        $rootScope.logins = function(){
+        	return loginService.logins;
         };
     }]
 );

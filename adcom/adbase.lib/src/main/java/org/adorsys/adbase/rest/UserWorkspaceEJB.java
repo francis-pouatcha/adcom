@@ -7,11 +7,14 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
 
+import org.adorsys.adbase.holder.UserWorkspaceHolder;
+import org.adorsys.adbase.jpa.Login;
 import org.adorsys.adbase.jpa.OuWorkspace;
 import org.adorsys.adbase.jpa.UserWorkspace;
 import org.adorsys.adbase.jpa.Workspace;
 import org.adorsys.adbase.repo.UserWorkspaceRepository;
 import org.adorsys.adbase.security.SecurityUtil;
+import org.adorsys.adcore.auth.TermWsUserPrincipal;
 import org.apache.commons.lang3.StringUtils;
 
 @Stateless
@@ -28,6 +31,9 @@ public class UserWorkspaceEJB {
 	
 	@Inject
 	private SecurityUtil securityUtil;
+	
+	@Inject
+	private LoginEJB loginEJB;
 
 	public UserWorkspace create(UserWorkspace entity) {
 		return repository.save(attach(entity));
@@ -98,7 +104,36 @@ public class UserWorkspaceEJB {
 		return repository.findByLoginName(loginName, new Date()).getResultList();
 	}
 
-	public String switchWorkspace(String identif) {
+	public UserWorkspaceHolder wsin() {
+		Date now = new Date();
+		TermWsUserPrincipal principal = securityUtil.getCallerPrincipal();
+		String workspaceId = principal.getWorkspaceId();
+		List<UserWorkspace> resultList = repository.findByIdentif(workspaceId, now).maxResults(1).getResultList();
+		if(resultList.isEmpty()) return null;
+		UserWorkspace userWs = resultList.iterator().next();
+		String loginName = securityUtil.getCurrentLoginName();
+		if(!StringUtils.equals(userWs.getLoginName(), loginName)) return null;
+		String ouWsIdentif = userWs.getOuWsIdentif();
+		OuWorkspace ouWorkspace = ouWorkspaceEJB.findByIdentif(ouWsIdentif, now);
+		if(ouWorkspace==null) return null;
+		String wsIdentif = ouWorkspace.getWsIdentif();
+		Workspace workspace = workspaceEJB.findByIdentif(wsIdentif, now);
+		if(workspace==null) return null;
+		
+		UserWorkspaceHolder holder = new UserWorkspaceHolder();
+		holder.setClientApp(workspace.getClientApp());
+		holder.setLoginName(loginName);
+		holder.setOuTypes(workspace.getOuTypes());
+		holder.setRoleIdentif(workspace.getRoleIdentif());
+		holder.setTargetOuIdentif(ouWorkspace.getTargetOuIdentif());
+		Login login = loginEJB.findById(loginName);
+		holder.setUserFullName(login.getFullName());
+		holder.setEmail(login.getEmail());
+		holder.setTerminalName(principal.getTermName());
+		holder.setTimeZone(principal.getTimeZone());
+		return holder;
+	}
+	public String wsout(String identif) {
 		Date now = new Date();
 		List<UserWorkspace> resultList = repository.findByIdentif(identif, now).maxResults(1).getResultList();
 		if(resultList.isEmpty()) return null;

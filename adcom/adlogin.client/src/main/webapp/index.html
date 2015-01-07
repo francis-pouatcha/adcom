@@ -24,14 +24,14 @@
     				<li><a><span class="navbar-brand col-lg-offset-2" style="text-align:center">{{"workspace_ouWsIdentif"|translate}} : {{"workspace_login"|translate}}</span></a></li>
     			</ul>
     			<ul class="nav navbar-nav navbar-right">
-    				<li class="dropdown" ng-show="sessionData.usr"><a class="dropdown-toggle glyphicon glyphicon-user" data-toggle="dropdown" href=""><b  ng-bind="sessionData.lgn"></b></a>
+    				<li class="dropdown" ng-show="sessionManager.userSession()"><a class="dropdown-toggle glyphicon glyphicon-user" data-toggle="dropdown" href=""><b  ng-bind="sessionManager.loginName()"></b></a>
     					<ul class="dropdown-menu">
     						<li><a href="#" ng-click="logout();">{{"workspace_logOut"|translate}}</a></li>
     						<li><a href="#" ng-click="changeLanguage('en')" class="pointer-element">English</a></li>
     						<li><a href="#" ng-click="changeLanguage('fr')" class="pointer-element">Francais</a></li>
     					</ul>
     				</li>
-    				<li ng-if="sessionData.usr">
+    				<li ng-if="sessionManager.userSession()">
     					<a href="#/workspaces">{{"workspace_ouWsIdentif"|translate}}</a>
     				</li>
     			</ul>
@@ -51,14 +51,13 @@
     <script src="/adres.client/vendors/angular-translate/angular-translate.js"></script>
     <script src="/adres.client/vendors/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
     <script src="/adres.client/vendors/base64/base64.js"></script>
-    <script src="/adres.client/services/SessionData.js"></script>
-    <script src="/adres.client/services/AuthInterceptor.js"></script>
     <script src="/adres.client/services/ADUtils.js"></script>
+    <script src="/adres.client/services/SessionManager.js"></script>
+    <script src="/adres.client/services/AuthInterceptor.js"></script>
     <script src="scripts/app.js"></script>
     <script src="modules/workspace/resources.js"></script>
     <script src="modules/workspace/services.js"></script>
     <script src="modules/workspace/controllers.js"></script>
-    <script src="modules/login/services.js"></script>
     <script src="modules/login/controllers.js"></script>
 </body>
 </html>

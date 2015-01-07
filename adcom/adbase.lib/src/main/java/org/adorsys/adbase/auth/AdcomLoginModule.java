@@ -22,7 +22,6 @@ import javax.security.auth.login.LoginException;
 import javax.security.auth.spi.LoginModule;
 import javax.security.jacc.PolicyContext;
 import javax.security.jacc.PolicyContextException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import org.adorsys.adbase.jpa.ConnectionHistory;
@@ -41,7 +40,6 @@ import org.adorsys.adbase.rest.SecUserSessionEJB;
 import org.adorsys.adbase.rest.UserWorkspaceEJB;
 import org.adorsys.adcore.auth.AuthParams;
 import org.adorsys.adcore.auth.OpId;
-import org.adorsys.adcore.auth.SecureSSOCookie;
 import org.adorsys.adcore.auth.TermCdtl;
 import org.adorsys.adcore.auth.TermWsUserPrincipal;
 import org.adorsys.adcore.utils.AccessTimeValidator;
@@ -233,17 +231,15 @@ public class AdcomLoginModule implements LoginModule {
 				return returnWithAttr(request, "WORKSPACE_ERROR",
 						MessagesKeys.USER_SESSION_ACTIVE_ERROR.name());
 			
-			SecureSSOCookie secureSSOCookieFactory = new SecureSSOCookie();
-			Cookie secureSsoCookie = secureSSOCookieFactory.selectSecureCookie(request.getCookies());
-			if(secureSsoCookie==null)
+			String existingUserSessionId = auth.getUsr();
+			if(existingUserSessionId==null)
 				return returnWithAttr(request, "WORKSPACE_ERROR",
-						MessagesKeys.NO_SSO_COOKIE.name());
+						MessagesKeys.NO_USER_SESSION.name());
 			
-			String cookieStr = secureSsoCookie.getValue();
 			// Quit if session id exist. If there is a user session client must logout first.
-			if(existingUserSession==null || !existingUserSession.getId().equals(cookieStr))
+			if(existingUserSession==null || !existingUserSession.getId().equals(existingUserSessionId))
 				return returnWithAttr(request, "WORKSPACE_ERROR",
-						MessagesKeys.MISSING_SESSION_ERROR.name());
+						MessagesKeys.WRONG_USER_SESSION_ERROR.name());
 
 			// create user session
 			SecUserSession secUserSession = new SecUserSession();
@@ -294,9 +290,9 @@ public class AdcomLoginModule implements LoginModule {
 				return returnWithAttr(request, "WSOUT_ERROR",
 						MessagesKeys.WRONG_WORKSPACE_ERROR.name());
 				
-			String ssoCookieStr = UUID.randomUUID().toString();
+			String newUserSessionIdString = UUID.randomUUID().toString();
 			SecUserSession newUserSession = new SecUserSession();
-			newUserSession.setId(ssoCookieStr);
+			newUserSession.setId(newUserSessionIdString);
 			newUserSession.setCreated(new Date());
 			newUserSession.setExpires(DateUtils.addDays(new Date(), 1));
 			newUserSession.setTermSessionId(secTermSession.getId());
@@ -553,7 +549,7 @@ public class AdcomLoginModule implements LoginModule {
 
 		if (StringUtils.isBlank(auth.getTrm())){
 			// This situation can only happen in the case of a login or workspace in.
-			if(!OpId.login.name().equals(opr) && !OpId.wsin.name().equals(opr) && !OpId.refresh.name().equals(opr)){
+			if(!OpId.login.name().equals(opr)){
 				returnWithAttr(request, "TERM_ERROR",
 						MessagesKeys.NO_TERM_SESSION_ERROR.name());
 				return null;
