@@ -1,6 +1,6 @@
-﻿
+
 <div ng-show="error" class="alert alert-danger">{{error}}</div>
-<form name="form" ng-submit="login()" role="form">
+<form name="form" ng-submit="login()" novalidate role="form">
     <div class="form-group">
         <label for="username">{{'Username' | translate}}</label>
         <input type="text" name="username" id="username" class="form-control" ng-model="username" required />
