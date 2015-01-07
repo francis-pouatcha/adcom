@@ -1,0 +1,19 @@
+﻿
+<table  class="table table-bordered  table-striped table-hover">
+    <thead>
+    <tr>
+        <th class="text-center">{{"logins_loginName"|translate}}</th>
+        <th class="text-center">{{"logins_email"|translate}}</th>
+        <th class="text-center">{{"logins_fullName"|translate}}</th>
+        <th class="text-center">{{"logins_ouIdentif"|translate}}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="lgn in logins" >
+        <td>{{lgn.loginName}}</td>
+        <td>{{lgn.email}}</td>
+        <td>{{lgn.fullName}}</td>
+        <td>{{lgn.ouIdentif}}</td>
+    </tr>
+    </tbody>
+</table>

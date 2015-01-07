@@ -10,7 +10,6 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -20,17 +19,13 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-import javax.ws.rs.core.UriBuilder;
 
 import org.adorsys.adbase.jpa.UserWorkspace;
+import org.adorsys.adbase.jpa.UserWorkspace_;
 import org.adorsys.adbase.jpa.UserWorkspaceSearchInput;
 import org.adorsys.adbase.jpa.UserWorkspaceSearchResult;
-import org.adorsys.adbase.jpa.UserWorkspace_;
-import org.adorsys.adcore.vo.StringHolder;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * 
@@ -77,30 +72,6 @@ public class UserWorkspaceEndpoint
    @Produces({ "application/json", "application/xml" })
    public List<UserWorkspace> findUserWorkspaces(){
 	   return ejb.findUserWorkspaces();
-   }
-
-   @POST
-   @Path("/switchWorkspace")
-   @Consumes({ "application/json", "application/xml" })
-   @Produces({ "application/json", "application/xml" })
-   public Response switchWorkspace(StringHolder identifHolder, @Context HttpServletRequest req){
-	   String wsurl = ejb.switchWorkspace(identifHolder.getContent());
-	   if(StringUtils.isBlank(wsurl)){
-	         return Response.status(Status.NOT_FOUND).build();
-//		   throw new IllegalStateException("no workspace found: " + identif);
-	   } else {
-//		   String scheme = req.getScheme();
-//		   String serverName = req.getServerName();
-//		   String newUrl = scheme+"://"+serverName;
-//		   int serverPort = req.getServerPort();
-//		   if(serverPort>0 && serverPort!=80 && serverPort!=443){
-//			   newUrl+=":"+serverPort;
-//		   }
-//		   newUrl += wsurl;
-//		   Response response = Response.temporaryRedirect(UriBuilder.fromUri(newUrl).build()).build();
-		   return Response.ok(new StringHolder(wsurl)).build();
-//		   return wsurl;
-	   }
    }
 
    @GET

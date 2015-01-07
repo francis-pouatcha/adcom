@@ -1,11 +1,12 @@
 {
 	"Username":"User Name",
-	"Username_is_required":"Username is required",
-	"Password":"Password",
-	"Password_is_required":"Password is required",
 	"Login":"Login",
 	"workspace_loginName":"Login Name",
 	"workspace_ouWsIdentif":"Workspace",
-	"workspace_login":"Login",
-	"workspace_logOut":"Logout"
+	"workspace_admin":"ADMINISTRATION",
+	"workspace_logOut":"Logout",
+	"logins_loginName":"Login Name",
+	"logins_email":"Email",
+	"logins_fullName":"Full Name",
+	"logins_ouIdentif":"Organization Unit"	
 }

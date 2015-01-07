@@ -105,13 +105,13 @@ public class AdcomAuthValve extends AdcomAuthBase {
     		noCache(request,response);
     	} else if (OpId.wsin.name().equals(opr)){
     		updatePrincipal(suppliedAuthParams, generatedAuthParams, generatedGenericPrincipal);
-    		clearSsoCookie(request, response);
+//    		clearSsoCookie(request, response);
     		noCache(request,response);
-    	} else if (OpId.wsout.equals(suppliedAuthParams.getOpr())) {
+    	} else if (OpId.wsout.name().equals(opr)) {
     		clearPrincipal(suppliedAuthParams, generatedGenericPrincipal);
-    		setSsoCookie(generatedUserPrincipal, request, response);
+//    		setSsoCookie(generatedUserPrincipal, request, response);
     		noCache(request,response);
-    	} else if (OpId.req.name().equals(suppliedAuthParams.getOpr()) || OpId.refresh.name().equals(suppliedAuthParams.getOpr())) {
+    	} else if (OpId.req.name().equals(opr) || OpId.refresh.name().equals(opr)) {
     		updatePrincipal(suppliedAuthParams, generatedAuthParams, generatedGenericPrincipal);
     		privateCache(request,response);
     	} else {
@@ -153,19 +153,19 @@ public class AdcomAuthValve extends AdcomAuthBase {
 	        response.setHeader("Expires", DATE_ONE);
         }
 	}
-	private void clearSsoCookie(Request request, HttpServletResponse response){
-		SecureSSOCookie secureSSOCookie = new SecureSSOCookie();
-		Cookie secureSsoCookie = secureSSOCookie.selectSecureCookie(request.getCookies());
-		if(secureSsoCookie!=null){
-			secureSsoCookie.setMaxAge(0);
-    		response.addCookie(secureSsoCookie);
-		}
-	}
-	private void setSsoCookie(TermWsUserPrincipal userPrincipal, Request request, HttpServletResponse response){
-		SecureSSOCookie secureSSOCookie = new SecureSSOCookie();
-		Cookie secureSsoCookie = secureSSOCookie.setSecureCookie(userPrincipal.getUserSessionId(), request.getServerName(), 30);
-		response.addCookie(secureSsoCookie);
-	}	
+//	private void clearSsoCookie(Request request, HttpServletResponse response){
+//		SecureSSOCookie secureSSOCookie = new SecureSSOCookie();
+//		Cookie secureSsoCookie = secureSSOCookie.selectSecureCookie(request.getCookies());
+//		if(secureSsoCookie!=null){
+//			secureSsoCookie.setMaxAge(0);
+//    		response.addCookie(secureSsoCookie);
+//		}
+//	}
+//	private void setSsoCookie(TermWsUserPrincipal userPrincipal, Request request, HttpServletResponse response){
+//		SecureSSOCookie secureSSOCookie = new SecureSSOCookie();
+//		Cookie secureSsoCookie = secureSSOCookie.setSecureCookie(userPrincipal.getUserSessionId(), request.getServerName(), 300);
+//		response.addCookie(secureSsoCookie);
+//	}	
 	private void updatePrincipal(AuthParams suppliedAuthParams, AuthParams generatedAuthParams,GenericPrincipal genericPrincipal ){
 		if(!StringUtils.equals(suppliedAuthParams.toIdString(), generatedAuthParams.toIdString())){
 	    	authPrincipals.remove(suppliedAuthParams.toIdString());
@@ -176,6 +176,7 @@ public class AdcomAuthValve extends AdcomAuthBase {
 		}
 	}
 	private void setSessionHeader(TermWsUserPrincipal userPrincipal, HttpServletResponse response){
+		response.addHeader("X-USER-LOGIN", userPrincipal.getLoginName());
 		response.addHeader("X-USER-SESSION", userPrincipal.getUserSessionId());
 		response.addHeader("X-TERM-SESSION", userPrincipal.getTermSessionId());		
 	}

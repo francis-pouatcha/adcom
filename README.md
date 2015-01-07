@@ -86,11 +86,11 @@ $JBOSS_HOME is the base directory of the jboss-eap-6.3.0
 Then start jboss-eap
 
 --> adcom> mvn clean install
---> adcom> cd adlogin.client/target/adlogin.client.war $JBOSS_HOME/standalone/deployments/
---> adcom> cd adbase.server/target/adbase.server.war $JBOSS_HOME/standalone/deployments/
---> adcom> cd adres.client/target/adres.client.war $JBOSS_HOME/standalone/deployments/
---> adcom> cd adterm.server/target/adterm.server.war $JBOSS_HOME/standalone/deployments/
---> adcom> cd adbase.client/target/adbase.client.war $JBOSS_HOME/standalone/deployments/
+--> adcom> cp adlogin.client/target/adlogin.client.war $JBOSS_HOME/standalone/deployments/
+--> adcom> cp adbase.server/target/adbase.server.war $JBOSS_HOME/standalone/deployments/
+--> adcom> cp adres.client/target/adres.client.war $JBOSS_HOME/standalone/deployments/
+--> adcom> cp adterm.server/target/adterm.server.war $JBOSS_HOME/standalone/deployments/
+--> adcom> cp adbase.client/target/adbase.client.war $JBOSS_HOME/standalone/deployments/
 
 This is the data file.
 --> adcom> cp adcom.configuration/jboss-eap-6.3/adbase/data/adbase.xls $JBOSS_HOME/adbase/data/adbase.xls

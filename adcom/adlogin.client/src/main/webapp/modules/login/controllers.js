@@ -3,17 +3,21 @@
 angular.module('AdLogin')
 
 .controller('loginController',
-    ['$scope', '$rootScope', '$location', 'authService','sessionData','workspaceService',
-    function ($scope, $rootScope, $location, authService,sessionData,workspaceService) {
+    ['$scope', '$rootScope', '$location','sessionManager','workspaceService',
+    function ($scope, $rootScope, $location,sessionManager,workspaceService) {
         $scope.login = function () {
-        	authService.login($scope.username, $scope.password, successCallback, erorCallback);
+        	sessionManager.login($scope.username, $scope.password, successCallback, errorCallback);
         };
         function successCallback(data, status, headers, config){
-            $location.path('/workspaces');
+        	$scope.password = '';
+        	workspaceService.loadWorkspaces(function(data, status, headers, config){
+        		$location.path('/workspaces');
+        	},emptyCallback);
         }
-        function erorCallback (data, status, headers, config){
-			authService.clearCredentials();
+        function errorCallback (data, status, headers, config){
 			$scope.password = '';
+        };
+        function emptyCallback (data, status, headers, config){
         };
     }]
 );
