@@ -59,9 +59,6 @@ public class SessionManagerEndpoint {
 	   @Consumes({ "application/json", "application/xml" })
 	   @Produces({ "application/json", "application/xml" })
 	   public Response wsout(StringHolder identifHolder, @Context HttpServletRequest req){
-		   if(StringUtils.equals(identifHolder.getContent(), "login")){
-			   return Response.ok(new StringHolder("/adlogin.client")).build();
-		   }
 		   String content = userWorkspaceEJB.wsout(identifHolder.getContent());
 		   if(StringUtils.isBlank(content)){
 		         return Response.status(Status.NOT_FOUND).build();

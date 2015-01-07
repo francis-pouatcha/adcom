@@ -159,4 +159,12 @@ public class Login extends AbstractIdentifData {
 	protected String makeIdentif() {
 		return loginName;
 	}
+	
+	public String toLoginWorkspace(){
+		return ouIdentif+"_login_"+ouIdentif+"_"+loginName;
+	}
+	
+	public static boolean loginWorkspace(String wsid){
+		return StringUtils.isNotBlank(wsid) && wsid.contains("_login_");
+	}
 }

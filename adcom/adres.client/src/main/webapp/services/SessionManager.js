@@ -33,6 +33,7 @@ angular.module('SessionManager',['Base64Factory','ADUtils'])
     	sess.pwd=password;
         $http.get('/adbase.server/rest/session/login')
         .success(function(data, status, headers, config) {
+        	sess.opr='req';
     		consumeSessData(headers);
         	successCallback(data, status, headers, config);
 		})
@@ -55,7 +56,7 @@ angular.module('SessionManager',['Base64Factory','ADUtils'])
     	sess.usr=usr;
         $http.get('/adbase.server/rest/session/wsin')
         .success(function(data, status, headers, config){
-    		sess.opr='';
+    		sess.opr='req';
     		consumeSessData(headers);
 			successCallback(data, status, headers, config);
 		}).error(function(data, status, headers, config){
@@ -64,7 +65,7 @@ angular.module('SessionManager',['Base64Factory','ADUtils'])
 		});
     };
     
-    auth.wsout = function(){
+    auth.wsout = function(identif){
     	sess.opr='wsout';
     	sess.wrk=identif;
         $http.post('/adbase.server/rest/session/wsout',{"content":identif})

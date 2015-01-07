@@ -1,14 +1,12 @@
 package org.adorsys.adbase.auth;
 
 import java.io.IOException;
-import java.math.BigInteger;
 import java.security.Principal;
 import java.security.acl.Group;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -24,7 +22,6 @@ import javax.security.jacc.PolicyContext;
 import javax.security.jacc.PolicyContextException;
 import javax.servlet.http.HttpServletRequest;
 
-import org.adorsys.adbase.jpa.ConnectionHistory;
 import org.adorsys.adbase.jpa.Login;
 import org.adorsys.adbase.jpa.SecTermCredtl;
 import org.adorsys.adbase.jpa.SecTermSession;
@@ -70,6 +67,7 @@ public class AdcomLoginModule implements LoginModule {
 	private SecUserSessionEJB secUserSessionEJB;
 	private UserWorkspaceEJB userWorkspaceEJB;
 	private ConnectionHistoryEJB connectionHistoryEJB;
+	private LoginModuleTx loginModuleTx;
 
 	private TermWsUserPrincipal newPrincipal;
 
@@ -97,6 +95,8 @@ public class AdcomLoginModule implements LoginModule {
 					.lookup("java:module/UserWorkspaceEJB");
 			connectionHistoryEJB = (ConnectionHistoryEJB) initialContext
 					.lookup("java:module/ConnectionHistoryEJB");
+			loginModuleTx = (LoginModuleTx) initialContext
+					.lookup("java:module/LoginModuleTx");
 		} catch (NamingException e1) {
 			throw new IllegalStateException(e1);
 		}
@@ -179,49 +179,22 @@ public class AdcomLoginModule implements LoginModule {
 			// check password
 			boolean pwdOk = PasswordChecker.checkPassword(password,
 					login.getPwdHashed());
-			String ipAdress = request != null ? request.getRemoteAddr() : null;
+			String ipAddress = request != null ? request.getRemoteAddr() : null;
+			
+			secTermSession.setIpAddress(ipAddress);
+			secTermSession.setLoginName(login.getLoginName());
+			
 			if (!pwdOk) {
-				logWrongPassword(login, ipAdress, termCdtl.getCre(),
-						secTerminal.getTermName(), auth.getWrk(), currentDate);
+				loginModuleTx.logWrongPassword(login, ipAddress, termCdtl.getCre(),
+						secTerminal.getTermName(), secTerminal.getTermId(), login.toLoginWorkspace(), currentDate);
 				return returnWithAttr(request, "LOGIN_ERROR",
 						MessagesKeys.BAD_CREDENTIAL.name());
 			}
 
-			createConnectionHistory(BigInteger.ZERO, currentDate, ipAdress,
-					currentDate, login.getLoginAlias(), login.getOuIdentif(),
-					termCdtl.getCre(), secTerminal.getTermName(), auth.getWrk());
-
 			// create user session
-			SecUserSession secUserSession = new SecUserSession();
-			secUserSession.setCreated(currentDate);
-			secUserSession.setExpires(DateUtils.addDays(currentDate, 1));
-			secUserSession.setId(UUID.randomUUID().toString());
-			secUserSession.setLoginName(login.getLoginName());
-			secUserSession.setTermSessionId(secTermSession.getId());
-			secUserSession.setWorkspaceId("login");
-			if(existingUserSession!=null && StringUtils.isNotBlank(existingUserSession.getId())){
-				secUserSessionEJB.deleteById(existingUserSession.getId());
-			}
-			existingUserSession = secUserSessionEJB.create(secUserSession);
+			newPrincipal = loginModuleTx.login_login(existingUserSession, 
+					secTermSession, secTerminal, termCdtl, currentDate, login.getOuIdentif(), login.toLoginWorkspace());
 
-			// Update terminal data
-			secTermSession.setLoginName(login.getLoginName());
-			secTermSession.setUserSession(existingUserSession.getId());
-			secTermSession = secTermSessionEJB.update(secTermSession);
-			
-			// instantiate principal
-			newPrincipal = new TermWsUserPrincipal();
-			newPrincipal.setAccessTime(secTerminal.getAccessTime());
-			newPrincipal.setLocality(secTerminal.getLocality());
-			newPrincipal.setLoginName(existingUserSession.getLoginName());
-			newPrincipal.setLoginTime(currentDate);
-			newPrincipal.setMacAddress(secTerminal.getMacAddress());
-			newPrincipal.setTermCred(termCdtl.getCre());
-			newPrincipal.setTermName(secTerminal.getTermName());
-			newPrincipal.setTermSessionId(secTermSession.getId());
-			newPrincipal.setTimeZone(secTerminal.getTimeZone());
-			newPrincipal.setUserSessionId(existingUserSession.getId());
-			newPrincipal.setWorkspaceId(existingUserSession.getWorkspaceId());
 			return (true);
 		}
 
@@ -241,35 +214,8 @@ public class AdcomLoginModule implements LoginModule {
 				return returnWithAttr(request, "WORKSPACE_ERROR",
 						MessagesKeys.WRONG_USER_SESSION_ERROR.name());
 
-			// create user session
-			SecUserSession secUserSession = new SecUserSession();
-			secUserSession.setCreated(currentDate);
-			secUserSession.setExpires(DateUtils.addDays(currentDate, 1));
-			secUserSession.setId(UUID.randomUUID().toString());
-			secUserSession.setLoginName(existingUserSession.getLoginName());
-			secUserSession.setTermSessionId(secTermSession.getId());
-			secUserSession.setWorkspaceId(existingUserSession.getWorkspaceId());
-			secUserSessionEJB.deleteById(existingUserSession.getId());
-			existingUserSession = secUserSessionEJB.create(secUserSession);
+			newPrincipal = loginModuleTx.login_wsin(existingUserSession, secTermSession, secTerminal, termCdtl, currentDate);
 
-			// Update terminal data
-			secTermSession.setLoginName(existingUserSession.getLoginName());
-			secTermSession.setUserSession(existingUserSession.getId());
-			secTermSession = secTermSessionEJB.update(secTermSession);
-			
-			// instantiate principal
-			newPrincipal = new TermWsUserPrincipal();
-			newPrincipal.setAccessTime(secTerminal.getAccessTime());
-			newPrincipal.setLocality(secTerminal.getLocality());
-			newPrincipal.setLoginName(existingUserSession.getLoginName());
-			newPrincipal.setLoginTime(currentDate);
-			newPrincipal.setMacAddress(secTerminal.getMacAddress());
-			newPrincipal.setTermCred(termCdtl.getCre());
-			newPrincipal.setTermName(secTerminal.getTermName());
-			newPrincipal.setTermSessionId(secTermSession.getId());
-			newPrincipal.setTimeZone(secTerminal.getTimeZone());
-			newPrincipal.setUserSessionId(existingUserSession.getId());
-			newPrincipal.setWorkspaceId(existingUserSession.getWorkspaceId());
 			return (true);
 		}
 		
@@ -289,36 +235,9 @@ public class AdcomLoginModule implements LoginModule {
 			if(userWorkspace==null)
 				return returnWithAttr(request, "WSOUT_ERROR",
 						MessagesKeys.WRONG_WORKSPACE_ERROR.name());
-				
-			String newUserSessionIdString = UUID.randomUUID().toString();
-			SecUserSession newUserSession = new SecUserSession();
-			newUserSession.setId(newUserSessionIdString);
-			newUserSession.setCreated(new Date());
-			newUserSession.setExpires(DateUtils.addDays(new Date(), 1));
-			newUserSession.setTermSessionId(secTermSession.getId());
-			newUserSession.setLoginName(existingUserSession.getLoginName());
-			newUserSession.setWorkspaceId(auth.getWrk());
-			secUserSessionEJB.deleteById(existingUserSession.getId());
-			existingUserSession = secUserSessionEJB.create(newUserSession);
 			
-			// Update terminal data
-			secTermSession.setLoginName(existingUserSession.getLoginName());
-			secTermSession.setUserSession(existingUserSession.getId());
-			secTermSession = secTermSessionEJB.update(secTermSession);
-			
-			// instantiate principal
-			newPrincipal = new TermWsUserPrincipal();
-			newPrincipal.setAccessTime(secTerminal.getAccessTime());
-			newPrincipal.setLocality(secTerminal.getLocality());
-			newPrincipal.setLoginName(existingUserSession.getLoginName());
-			newPrincipal.setLoginTime(currentDate);
-			newPrincipal.setMacAddress(secTerminal.getMacAddress());
-			newPrincipal.setTermCred(termCdtl.getCre());
-			newPrincipal.setTermName(secTerminal.getTermName());
-			newPrincipal.setTermSessionId(secTermSession.getId());
-			newPrincipal.setTimeZone(secTerminal.getTimeZone());
-			newPrincipal.setUserSessionId(existingUserSession.getId());
-			newPrincipal.setWorkspaceId(existingUserSession.getWorkspaceId());
+			newPrincipal = loginModuleTx.login_wsout(existingUserSession, secTermSession, secTerminal, termCdtl, currentDate, auth.getWrk());
+
 			return (true);
 		}
 
@@ -334,23 +253,8 @@ public class AdcomLoginModule implements LoginModule {
 			secTermSession.setUserSession(null);
 			secTermSession = secTermSessionEJB.update(secTermSession);
 			
-			if(existingPrincipal!=null){
-				newPrincipal = existingPrincipal;
-			} else {
-				// instantiate principal
-				newPrincipal = new TermWsUserPrincipal();
-				newPrincipal.setAccessTime(secTerminal.getAccessTime());
-				newPrincipal.setLocality(secTerminal.getLocality());
-				newPrincipal.setLoginName(existingUserSession.getLoginName());
-				newPrincipal.setLoginTime(currentDate);
-				newPrincipal.setMacAddress(secTerminal.getMacAddress());
-				newPrincipal.setTermCred(termCdtl.getCre());
-				newPrincipal.setTermName(secTerminal.getTermName());
-				newPrincipal.setTermSessionId(secTermSession.getId());
-				newPrincipal.setTimeZone(secTerminal.getTimeZone());
-				newPrincipal.setUserSessionId(existingUserSession.getId());
-				newPrincipal.setWorkspaceId(existingUserSession.getWorkspaceId());
-			}
+			newPrincipal = loginModuleTx.login_logout(existingPrincipal, existingUserSession, secTermSession, secTerminal, termCdtl, currentDate);
+
 			return (true);
 		}
 
@@ -398,6 +302,7 @@ public class AdcomLoginModule implements LoginModule {
 		 */
 		Set<Principal> principals = subject.getPrincipals();
 
+		
 		/*
 		 * The user identity.
 		 */
@@ -450,45 +355,6 @@ public class AdcomLoginModule implements LoginModule {
 		Set<TermWsUserPrincipal> principals2Remove2 = subject.getPrincipals(TermWsUserPrincipal.class);
 		principals.removeAll(principals2Remove2);
 		return true;
-	}
-
-	private ConnectionHistory createConnectionHistory(BigInteger counter,
-			Date firstLoginDate, String ipAdress, Date lastLoginDate,
-			String loginName, String ouId, String termCdtl,
-			String terminalName, String workspaceId) {
-		ConnectionHistory h = new ConnectionHistory();
-		h.setCounter(counter);
-		h.setFirstLoginDate(firstLoginDate);
-		h.setIpAdress(ipAdress);
-		h.setLastLoginDate(lastLoginDate);
-		h.setLoginName(loginName);
-		h.setOuId(ouId);
-		h.setTermCdtl(termCdtl);
-		h.setTerminalName(terminalName);
-		h.setWorkspaceId(workspaceId);
-		return connectionHistoryEJB.create(h);
-	}
-
-	private void logWrongPassword(Login login, String ipAdress,
-			String termCdtl, String terminalName, String workspaceId,
-			Date currentDate) {
-		ConnectionHistory history = connectionHistoryEJB.findByLoginName(login
-				.getLoginName());
-		if (history != null) {
-			if (BigInteger.valueOf(3).compareTo(history.getCounter()) <= 0) {
-				login.setAccountLocked(Boolean.TRUE);
-				login = loginEJB.update(login);
-			} else {
-				createConnectionHistory(history.getCounter()
-						.add(BigInteger.ONE), history.getFirstLoginDate(),
-						ipAdress, currentDate, login.getLoginName(),
-						history.getOuId(), termCdtl, terminalName, workspaceId);
-			}
-		} else {
-			createConnectionHistory(BigInteger.ONE, currentDate, ipAdress,
-					currentDate, login.getLoginName(), login.getOuIdentif(),
-					termCdtl, terminalName, workspaceId);
-		}
 	}
 
 	private boolean returnWithAttr(HttpServletRequest request, String key,

@@ -64,6 +64,14 @@ public class ConnectionHistory extends AbstractMvmtData {
 	@Column
 	@Description("ConnectionHistory_termCdtl_description")
 	private String termCdtl;
+	
+	@Column
+	@Description("ConnectionHistory_terminalId_description")
+	private String terminalId;
+	
+	@Column
+	@Description("ConnectionHistory_opr_description")
+	private String opr;
 
 	public String getLoginName() {
 		return loginName;
@@ -127,6 +135,22 @@ public class ConnectionHistory extends AbstractMvmtData {
 
 	public void setTermCdtl(String termCdtl) {
 		this.termCdtl = termCdtl;
+	}
+
+	public String getTerminalId() {
+		return terminalId;
+	}
+
+	public void setTerminalId(String terminalId) {
+		this.terminalId = terminalId;
+	}
+
+	public String getOpr() {
+		return opr;
+	}
+
+	public void setOpr(String opr) {
+		this.opr = opr;
 	}
 
 	public String getOuId() {

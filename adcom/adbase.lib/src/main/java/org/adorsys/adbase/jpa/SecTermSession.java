@@ -70,6 +70,10 @@ public class SecTermSession extends AbstractMvmtData {
 	@DateFormatPattern(pattern = "dd-MM-yyyy HH:mm")
 	@NotNull
 	private Date expires;
+	
+	@Column
+	@Description("SecTermSession_ipAddress_description")
+	private String ipAddress;
 
 	@PrePersist
 	public void prePersist() {
@@ -139,6 +143,14 @@ public class SecTermSession extends AbstractMvmtData {
 
 	public void setTermKey(String termKey) {
 		this.termKey = termKey;
+	}
+
+	public String getIpAddress() {
+		return ipAddress;
+	}
+
+	public void setIpAddress(String ipAddress) {
+		this.ipAddress = ipAddress;
 	}
 	
 }

@@ -18,16 +18,20 @@ public class SecUserSession extends AbstractMvmtData {
 
 	private static final long serialVersionUID = 2417607506198295117L;
 
-	@Column(unique=true)
+	@Column
 	@Description("SecUserSession_termSessionId_description")
 	@NotNull
 	private String termSessionId;
 	
 	/* The identifier of the login associated with this terminal. */
-	@Column(unique=true)
 	@Description("SecUserSession_loginName_description")
 	@NotNull
 	private String loginName;
+
+	@Column
+	@Description("SecUserSession_ouId_description")
+	@NotNull
+	private String ouId;
 	
 	@Column
 	@Description("SecUserSession_workspaceId_description")
@@ -85,4 +89,13 @@ public class SecUserSession extends AbstractMvmtData {
 	public void setTermSessionId(String termSessionId) {
 		this.termSessionId = termSessionId;
 	}
+
+	public String getOuId() {
+		return ouId;
+	}
+
+	public void setOuId(String ouId) {
+		this.ouId = ouId;
+	}
+	
 }

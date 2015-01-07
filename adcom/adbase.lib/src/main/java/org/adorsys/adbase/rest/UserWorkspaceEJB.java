@@ -108,6 +108,9 @@ public class UserWorkspaceEJB {
 		Date now = new Date();
 		TermWsUserPrincipal principal = securityUtil.getCallerPrincipal();
 		String workspaceId = principal.getWorkspaceId();
+		if(Login.loginWorkspace(workspaceId)){
+			return loginWorkspace(principal);
+		}
 		List<UserWorkspace> resultList = repository.findByIdentif(workspaceId, now).maxResults(1).getResultList();
 		if(resultList.isEmpty()) return null;
 		UserWorkspace userWs = resultList.iterator().next();
@@ -133,7 +136,24 @@ public class UserWorkspaceEJB {
 		holder.setTimeZone(principal.getTimeZone());
 		return holder;
 	}
+	
+	private UserWorkspaceHolder loginWorkspace(TermWsUserPrincipal principal){
+		Login login = loginEJB.findById(principal.getLoginName());
+		UserWorkspaceHolder holder = new UserWorkspaceHolder();
+		holder.setClientApp("/adlogin.client");
+		holder.setLoginName(login.getLoginName());
+		holder.setOuTypes(null);
+		holder.setRoleIdentif("login");
+		holder.setTargetOuIdentif(login.getOuIdentif());
+		holder.setUserFullName(login.getFullName());
+		holder.setEmail(login.getEmail());
+		holder.setTerminalName(principal.getTermName());
+		holder.setTimeZone(principal.getTimeZone());
+		return holder;
+	}
+	
 	public String wsout(String identif) {
+		if(Login.loginWorkspace(identif)) return "/adlogin.client";
 		Date now = new Date();
 		List<UserWorkspace> resultList = repository.findByIdentif(identif, now).maxResults(1).getResultList();
 		if(resultList.isEmpty()) return null;
