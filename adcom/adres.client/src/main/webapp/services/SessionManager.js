@@ -10,6 +10,7 @@ angular.module('ADUtils');
 angular.module('SessionManager',['Base64Factory','ADUtils'])
 .factory('sessionManager',['Base64','adUtils','$http',function(Base64,adUtils,$http){
     var auth = {};
+    var authErrorList = [];
     var sess = {
         	opr:'',
             lgn:'',
@@ -43,9 +44,13 @@ angular.module('SessionManager',['Base64Factory','ADUtils'])
     };
     
     auth.logout = function(){
-        $http.get('/adbase.server/rest/session/logout');
-        clearCredentials();
-		adUtils.loadApp('/adlogin.client/#/login');
+    	sess.opr='logout';
+        $http.get('/adbase.server/rest/session/logout')
+        .success(function(data, status, headers, config){
+            clearCredentials();
+    		adUtils.loadApp('/adlogin.client/#/login');
+        })
+        .error(function(data, status, headers, config){});
     };
             
     auth.wsin = function(trm,usr,successCallback){
@@ -58,6 +63,7 @@ angular.module('SessionManager',['Base64Factory','ADUtils'])
         .success(function(data, status, headers, config){
     		sess.opr='req';
     		consumeSessData(headers);
+    		adUtils.removeSearchOnUrl();
 			successCallback(data, status, headers, config);
 		}).error(function(data, status, headers, config){
 			clearCredentials();
@@ -135,6 +141,25 @@ angular.module('SessionManager',['Base64Factory','ADUtils'])
     	}
     };
     
+    auth.authErrors = function(){
+    	return authErrorList;
+    };
+    auth.pushAuthError = function(error){
+    	if(typeof (error) !== 'undefined' && error){
+    		authErrorList.push(error);
+    	}
+    	return auth;
+    };
+    auth.clearAuthErrors = function(){
+		while(authErrorList.length > 0) {
+			authErrorList.pop();
+		}
+    	return auth;
+    };
+    auth.hasAuthErrors = function(){
+		return authErrorList.length > 0;
+	};
+	
     return auth;
 
     function consumeSessData(headers){

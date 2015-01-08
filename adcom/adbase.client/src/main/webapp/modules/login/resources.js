@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('Login').factory('loginResource',['$http', function($http){
+angular.module('AdBase').factory('loginResource',['$http', function($http){
     var service = {};
     var urlBase = '/adbase.server/rest/logins',
     searchInput = {

@@ -3,7 +3,6 @@
 // declare modules
 angular.module('SessionManager');
 angular.module('AuthInterceptor');
-angular.module('Login');
 
 angular.module('AdBase', [
     'ngRoute',
@@ -11,8 +10,7 @@ angular.module('AdBase', [
     'SessionManager',
     'AuthInterceptor',
     'ngSanitize',
-    'pascalprecht.translate',
-    'Login'
+    'pascalprecht.translate'
 ])
 .constant('APP_CONFIG',{
 	'appName':'AD Login',
@@ -69,10 +67,7 @@ angular.module('AdBase', [
         	sessionManager.logout();
         };
         $rootScope.workspaces = function(){
-        	sessionManager.wsout();
-        };
-        $rootScope.logins = function(){
-        	return loginService.logins;
+        	sessionManager.wsout('_login_');
         };
     }]
 );

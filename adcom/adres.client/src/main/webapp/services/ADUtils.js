@@ -18,5 +18,9 @@ angular.module('ADUtils',[])
 		absUrl +=contextRoot;
 		window.location.href=absUrl;
     };
+    service.removeSearchOnUrl = function(){
+    	$location.url('trm',null);
+    	$location.url('usr',null);
+    };
     return service;
 }]);

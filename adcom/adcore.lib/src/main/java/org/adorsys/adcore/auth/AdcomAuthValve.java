@@ -11,7 +11,6 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.catalina.connector.Request;
@@ -79,6 +78,10 @@ public class AdcomAuthValve extends AdcomAuthBase {
     	
     	GenericPrincipal generatedGenericPrincipal = null;
     	if(authenticated==null){
+    		Object attribute = request.getAttribute("AUTH-ERROR");
+    		if(attribute!=null){
+    			response.addHeader("X-AUTH-ERROR", attribute.toString());
+    		}
 			response.sendError(HttpServletResponse.SC_UNAUTHORIZED,MESSAGES.authenticationFailure());
 			return (false);
     	} else if (authenticated==existingGenericPrincipal){// cached
@@ -107,15 +110,15 @@ public class AdcomAuthValve extends AdcomAuthBase {
     		updatePrincipal(suppliedAuthParams, generatedAuthParams, generatedGenericPrincipal);
 //    		clearSsoCookie(request, response);
     		noCache(request,response);
-    	} else if (OpId.wsout.name().equals(opr)) {
-    		clearPrincipal(suppliedAuthParams, generatedGenericPrincipal);
+//    	} else if (OpId.wsout.name().equals(opr) || OpId.logout.name().equals(opr)) {
+//    		clearPrincipal(suppliedAuthParams, generatedGenericPrincipal);
 //    		setSsoCookie(generatedUserPrincipal, request, response);
-    		noCache(request,response);
-    	} else if (OpId.req.name().equals(opr) || OpId.refresh.name().equals(opr)) {
+    	} else if (OpId.req.name().equals(opr)) {
     		updatePrincipal(suppliedAuthParams, generatedAuthParams, generatedGenericPrincipal);
     		privateCache(request,response);
     	} else {
     		clearPrincipal(suppliedAuthParams, generatedGenericPrincipal);
+    		noCache(request,response);
     	}
 		return (true);
 	}

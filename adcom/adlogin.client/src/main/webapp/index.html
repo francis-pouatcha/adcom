@@ -26,19 +26,26 @@
     			<ul class="nav navbar-nav navbar-right">
     				<li class="dropdown" ng-show="sessionManager.userSession()"><a class="dropdown-toggle glyphicon glyphicon-user" data-toggle="dropdown" href=""><b  ng-bind="sessionManager.loginName()"></b></a>
     					<ul class="dropdown-menu">
-    						<li><a href="#" ng-click="logout();">{{"workspace_logOut"|translate}}</a></li>
+    						<li><a href="#" ng-click="sessionManager.logout();">{{"workspace_logOut"|translate}}</a></li>
     						<li><a href="#" ng-click="changeLanguage('en')" class="pointer-element">English</a></li>
     						<li><a href="#" ng-click="changeLanguage('fr')" class="pointer-element">Francais</a></li>
     					</ul>
     				</li>
     				<li ng-if="sessionManager.userSession()">
-    					<a href="#/workspaces">{{"workspace_ouWsIdentif"|translate}}</a>
+    					<a href="#/workspaces" ng-click="loadWorkspaces();">{{"workspace_ouWsIdentif"|translate}}</a>
     				</li>
     			</ul>
     		</div>		
 		</div>
 	</nav>
     <div class="container">
+         <div class="col-xs-offset-2 col-xs-8" ng-show="sessionManager.hasAuthErrors()">
+             <div class="has-error">
+             	<ul ng-repeat="error in sessionManager.authErrors()">
+             		<li>{{error}}</li>
+             	</ul>
+             </div>
+         </div>
          <div class="col-xs-offset-2 col-xs-8">
              <div ng-view></div>
          </div>

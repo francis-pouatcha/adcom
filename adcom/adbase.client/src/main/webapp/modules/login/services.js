@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('Login')
+angular.module('AdBase')
 .factory('loginService',
     ['loginResource','$cookieStore','sessionManager',
     function (loginResource,$cookieStore,sessionManager) {
@@ -9,7 +9,7 @@ angular.module('Login')
         service.loadLogins = function(successCallback, errorCallback){
         	loginResource.listAll(0,100)
     			.success(function(data, status, headers, config){
-    				service.logins = data;
+    				service.logins = data.resultList;
     				successCallback(data, status, headers, config);
     			}).error(function(data, status, headers, config){
     				if(typeof errorCallback !== 'undefined')

@@ -1,8 +1,9 @@
 ﻿'use strict';
 
-angular.module('Login')
-.controller('loginController',
-    ['$scope',
-     function ($scope) {
+angular.module('AdBase')
+.controller('loginController',['$scope','loginService',function ($scope,loginService) {
+		$scope.logins = function(){
+			return loginService.logins;
+		}; 
     }]
 );

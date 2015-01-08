@@ -9,10 +9,8 @@ angular.module('AdLogin')
         	sessionManager.login($scope.username, $scope.password, successCallback, errorCallback);
         };
         function successCallback(data, status, headers, config){
+        	$location.path('/workspaces');
         	$scope.password = '';
-        	workspaceService.loadWorkspaces(function(data, status, headers, config){
-        		$location.path('/workspaces');
-        	},emptyCallback);
         }
         function errorCallback (data, status, headers, config){
 			$scope.password = '';

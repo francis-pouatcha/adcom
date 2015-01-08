@@ -28,7 +28,6 @@ import org.adorsys.adbase.jpa.SecTermSession;
 import org.adorsys.adbase.jpa.SecTerminal;
 import org.adorsys.adbase.jpa.SecUserSession;
 import org.adorsys.adbase.jpa.UserWorkspace;
-import org.adorsys.adbase.rest.ConnectionHistoryEJB;
 import org.adorsys.adbase.rest.LoginEJB;
 import org.adorsys.adbase.rest.SecTermCredtlEJB;
 import org.adorsys.adbase.rest.SecTermSessionEJB;
@@ -66,10 +65,11 @@ public class AdcomLoginModule implements LoginModule {
 	private SecTerminalEJB secTerminalEJB;
 	private SecUserSessionEJB secUserSessionEJB;
 	private UserWorkspaceEJB userWorkspaceEJB;
-	private ConnectionHistoryEJB connectionHistoryEJB;
 	private LoginModuleTx loginModuleTx;
 
 	private TermWsUserPrincipal newPrincipal;
+	
+	private String opr = null;
 
 	@Override
 	public void initialize(Subject subject, CallbackHandler callbackHandler,
@@ -93,8 +93,6 @@ public class AdcomLoginModule implements LoginModule {
 					.lookup("java:module/SecUserSessionEJB");
 			userWorkspaceEJB = (UserWorkspaceEJB) initialContext
 					.lookup("java:module/UserWorkspaceEJB");
-			connectionHistoryEJB = (ConnectionHistoryEJB) initialContext
-					.lookup("java:module/ConnectionHistoryEJB");
 			loginModuleTx = (LoginModuleTx) initialContext
 					.lookup("java:module/LoginModuleTx");
 		} catch (NamingException e1) {
@@ -124,6 +122,7 @@ public class AdcomLoginModule implements LoginModule {
 		// after successful authentication of terminal, authenticate user.
 		AuthParams auth = BasicAuthUtils.readAuthHeader(request);
 		TermCdtl termCdtl = readTermCredtl();
+		opr = auth.getOpr();
 		
 		SecTermSession secTermSession = readTerminalSession(auth, termCdtl, request);
 		if(secTermSession==null) return false;
@@ -131,7 +130,7 @@ public class AdcomLoginModule implements LoginModule {
 
 		TermWsUserPrincipal existingPrincipal = (TermWsUserPrincipal) request.getUserPrincipal();
 		if(existingPrincipal!=null && !StringUtils.equals(existingPrincipal.getUserSessionId(), secTermSession.getUserSession()))
-			return returnWithAttr(request, "TERM_ERROR",
+			return returnWithAttr(request, "AUTH-ERROR",
 					MessagesKeys.WRONG_USER_SESSION_ERROR.name());
 			
 		// So far terminal valid
@@ -143,36 +142,36 @@ public class AdcomLoginModule implements LoginModule {
 			
 			// quit existing session.
 			if(existingPrincipal!=null && !StringUtils.equals(existingPrincipal.getLoginName(), auth.getLgn()))
-				return returnWithAttr(request, "LOGIN_ERROR",
+				return returnWithAttr(request, "AUTH-ERROR",
 						MessagesKeys.USER_SESSION_ACTIVE_ERROR.name());
 			
 			// Quit if session id exist. If there is a user session client must logout first.
 			if(existingUserSession!=null && !StringUtils.equals(existingUserSession.getLoginName(), auth.getLgn()))
-				return returnWithAttr(request, "LOGIN_ERROR",
-						MessagesKeys.USER_SESSION_ACTIVE_ERROR.name());
+				return returnWithAttr(request, "AUTH-ERROR",
+						MessagesKeys.USER_SESSION_ACTIVE_ERROR.name() + "," + existingUserSession.getLoginName());
 
 			if (StringUtils.isBlank(auth.getLgn()))
-				return returnWithAttr(request, "LOGIN_ERROR",
+				return returnWithAttr(request, "AUTH-ERROR",
 						MessagesKeys.MISSING_LOGIN_NAME_ERROR.name());
 
 			Login login = loginEJB.findByLoginAlias(auth.getLgn());
 			if (login == null)
-				return returnWithAttr(request, "LOGIN_ERROR",
+				return returnWithAttr(request, "AUTH-ERROR",
 						MessagesKeys.NO_LOGIN_WITH_ALIAS_ERROR.name());
 			
 			if (login.getAccountExpir() != null
 					&& currentDate.after(login.getAccountExpir()))
-				return returnWithAttr(request, "LOGIN_ERROR",
+				return returnWithAttr(request, "AUTH-ERROR",
 						MessagesKeys.ACCOUNT_EXPIRATION_ERROR.name());
 			if (login.getCredtlExpir() != null
 					&& currentDate.after(login.getCredtlExpir()))
-				return returnWithAttr(request, "LOGIN_ERROR",
+				return returnWithAttr(request, "AUTH-ERROR",
 						MessagesKeys.CREDENTIAL_EXPIRATION_ERROR.name());
 			if (login.getDisableLogin()!=null && Boolean.TRUE.equals(login.getDisableLogin()))
-				return returnWithAttr(request, "LOGIN_ERROR",
+				return returnWithAttr(request, "AUTH-ERROR",
 						MessagesKeys.DISEABLE_LOGIN_ERROR.name());
 			if (login.getAccountLocked()!=null && Boolean.TRUE.equals(login.getAccountLocked()))
-				return returnWithAttr(request, "LOGIN_ERROR",
+				return returnWithAttr(request, "AUTH-ERROR",
 						MessagesKeys.ACCOUNT_LOCKED_ERROR.name());
 
 			String password = auth.getPwd();
@@ -187,7 +186,7 @@ public class AdcomLoginModule implements LoginModule {
 			if (!pwdOk) {
 				loginModuleTx.logWrongPassword(login, ipAddress, termCdtl.getCre(),
 						secTerminal.getTermName(), secTerminal.getTermId(), login.toLoginWorkspace(), currentDate);
-				return returnWithAttr(request, "LOGIN_ERROR",
+				return returnWithAttr(request, "AUTH-ERROR",
 						MessagesKeys.BAD_CREDENTIAL.name());
 			}
 
@@ -201,17 +200,17 @@ public class AdcomLoginModule implements LoginModule {
 		if (OpId.wsin.name().equals(auth.getOpr())) {
 			// quit existing session.
 			if(existingPrincipal!=null)
-				return returnWithAttr(request, "WORKSPACE_ERROR",
+				return returnWithAttr(request, "AUTH-ERROR",
 						MessagesKeys.USER_SESSION_ACTIVE_ERROR.name());
 			
 			String existingUserSessionId = auth.getUsr();
 			if(existingUserSessionId==null)
-				return returnWithAttr(request, "WORKSPACE_ERROR",
+				return returnWithAttr(request, "AUTH-ERROR",
 						MessagesKeys.NO_USER_SESSION.name());
 			
 			// Quit if session id exist. If there is a user session client must logout first.
 			if(existingUserSession==null || !existingUserSession.getId().equals(existingUserSessionId))
-				return returnWithAttr(request, "WORKSPACE_ERROR",
+				return returnWithAttr(request, "AUTH-ERROR",
 						MessagesKeys.WRONG_USER_SESSION_ERROR.name());
 
 			newPrincipal = loginModuleTx.login_wsin(existingUserSession, secTermSession, secTerminal, termCdtl, currentDate);
@@ -222,19 +221,21 @@ public class AdcomLoginModule implements LoginModule {
 		// ws change cookie
 		if (OpId.wsout.name().equals(auth.getOpr())) {
 			if(existingUserSession==null)
-				return returnWithAttr(request, "WSOUT_ERROR",
+				return returnWithAttr(request, "AUTH-ERROR",
 						MessagesKeys.MISSING_SESSION_ERROR.name());
 			
 			// Quit if session id db
 			if(!StringUtils.equals(existingUserSession.getId(), auth.getUsr()))
-				return returnWithAttr(request, "WSOUT_ERROR",
+				return returnWithAttr(request, "AUTH-ERROR",
 					MessagesKeys.WRONG_USER_SESSION_ERROR.name());
 
 			// Verify that the user has access to that workspace.
-			UserWorkspace userWorkspace = userWorkspaceEJB.findByIdentif(auth.getWrk(), currentDate);
-			if(userWorkspace==null)
-				return returnWithAttr(request, "WSOUT_ERROR",
-						MessagesKeys.WRONG_WORKSPACE_ERROR.name());
+			if(!Login.loginWorkspace(auth.getWrk())){
+				UserWorkspace userWorkspace = userWorkspaceEJB.findByIdentif(auth.getWrk(), currentDate);
+				if(userWorkspace==null)
+					return returnWithAttr(request, "AUTH-ERROR",
+							MessagesKeys.WRONG_WORKSPACE_ERROR.name());
+			}
 			
 			newPrincipal = loginModuleTx.login_wsout(existingUserSession, secTermSession, secTerminal, termCdtl, currentDate, auth.getWrk());
 
@@ -242,17 +243,7 @@ public class AdcomLoginModule implements LoginModule {
 		}
 
 		if (OpId.logout.name().equals(auth.getOpr())) {
-			if(existingUserSession==null)
-				return returnWithAttr(request, "WSOUT_ERROR",
-						MessagesKeys.MISSING_SESSION_ERROR.name());
 
-			secUserSessionEJB.deleteById(existingUserSession.getId());
-			
-			// Update terminal data
-			secTermSession.setLoginName(null);
-			secTermSession.setUserSession(null);
-			secTermSession = secTermSessionEJB.update(secTermSession);
-			
 			newPrincipal = loginModuleTx.login_logout(existingPrincipal, existingUserSession, secTermSession, secTerminal, termCdtl, currentDate);
 
 			return (true);
@@ -260,12 +251,12 @@ public class AdcomLoginModule implements LoginModule {
 
 		if (OpId.req.name().equals(auth.getOpr())) {
 			if(existingUserSession==null)
-				return returnWithAttr(request, "REQ_ERROR",
+				return returnWithAttr(request, "AUTH-ERROR",
 						MessagesKeys.MISSING_SESSION_ERROR.name());
 			
 			// Quit if session id db
 			if(!StringUtils.equals(existingUserSession.getId(), auth.getUsr()))
-				return returnWithAttr(request, "REQ_ERROR",
+				return returnWithAttr(request, "AUTH-ERROR",
 					MessagesKeys.WRONG_USER_SESSION_ERROR.name());
 			
 			if(existingPrincipal!=null){
@@ -294,7 +285,7 @@ public class AdcomLoginModule implements LoginModule {
 	@Override
 	public boolean commit() throws LoginException {
 		if (newPrincipal == null) return false;
-
+		
 		/*
 		 * The set of principals of this subject. We will add the
 		 * SecurityConstants.CALLER_PRINCIPAL_GROUP and the
@@ -308,17 +299,6 @@ public class AdcomLoginModule implements LoginModule {
 		 */
 		if(!principals.contains(newPrincipal))
 			principals.add(newPrincipal);
-
-		// get the CallerPrincipal group
-//		Group callerGroup = findGroup(SecurityConstants.CALLER_PRINCIPAL_GROUP,
-//				principals);
-//		if (callerGroup == null) {
-//			callerGroup = new SimpleGroup(
-//					SecurityConstants.CALLER_PRINCIPAL_GROUP);
-//			principals.add(callerGroup);
-//		}
-		// Add this principal to the group.
-//		callerGroup.addMember(newPrincipal);
 
 		// get the Roles group
 		Group[] roleSets = getRoleSets();
@@ -367,7 +347,7 @@ public class AdcomLoginModule implements LoginModule {
 	private boolean checkTermAccessTime(HttpServletRequest request, String accessTime, String timeZone){
 		if(StringUtils.isBlank(accessTime) || StringUtils.isBlank(timeZone)) return true;
 		if(!AccessTimeValidator.check(accessTime, timeZone))
-			return returnWithAttr(request, "TERM_ERROR",
+			return returnWithAttr(request, "AUTH-ERROR",
 					MessagesKeys.TERM_ACCESS_TIME_ERROR.name());
 		return true;
 	}
@@ -382,7 +362,7 @@ public class AdcomLoginModule implements LoginModule {
 
 	private boolean checkValidity(HttpServletRequest request, Date validFrom, Date validTo, Date currentDate){
 		if((validFrom!=null && currentDate.before(validFrom)) || (validTo!=null && currentDate.after(validTo)))
-			return returnWithAttr(request, "TERM_ERROR",MessagesKeys.TERM_VALIDITY_ERROR.name());
+			return returnWithAttr(request, "AUTH-ERROR",MessagesKeys.TERM_VALIDITY_ERROR.name());
 		return true;
 	}
 	
@@ -408,7 +388,7 @@ public class AdcomLoginModule implements LoginModule {
 		String providedTermCred = termCdtl.getCre();
 		SecTermCredtl secTermCredtl = secTermCredtlEJB.findById(providedTermCred);
 		if (secTermCredtl == null){
-			returnWithAttr(request, "TERM_ERROR",
+			returnWithAttr(request, "AUTH-ERROR",
 					MessagesKeys.TERM_CRED_NOT_FOUND_ERROR.name());
 			return null;
 		}
@@ -416,7 +396,7 @@ public class AdcomLoginModule implements LoginModule {
 		if (StringUtils.isBlank(auth.getTrm())){
 			// This situation can only happen in the case of a login or workspace in.
 			if(!OpId.login.name().equals(opr)){
-				returnWithAttr(request, "TERM_ERROR",
+				returnWithAttr(request, "AUTH-ERROR",
 						MessagesKeys.NO_TERM_SESSION_ERROR.name());
 				return null;
 			}
@@ -429,7 +409,7 @@ public class AdcomLoginModule implements LoginModule {
 		if(StringUtils.isNotBlank(auth.getTrm())){
 			if(!StringUtils.equals(storedTermSessionId,auth.getTrm())){
 				// This can not be.
-				returnWithAttr(request, "TERM_ERROR",
+				returnWithAttr(request, "AUTH-ERROR",
 						MessagesKeys.WRONG_TERM_SESSION_ERROR.name());
 				return null;
 			}
@@ -437,14 +417,14 @@ public class AdcomLoginModule implements LoginModule {
 					.getTrm());
 			if (secTermSession != null) return secTermSession;
 			
-			returnWithAttr(request, "TERM_ERROR",
+			returnWithAttr(request, "AUTH-ERROR",
 				MessagesKeys.NO_TERM_SESSION_ERROR.name());
 			return null;
 		}
 
 		if(StringUtils.isBlank(storedTermSessionId)){
 			if(StringUtils.isBlank(termCdtl.getCert())){
-				returnWithAttr(request, "TERM_ERROR",
+				returnWithAttr(request, "AUTH-ERROR",
 						MessagesKeys.NO_TERM_SESSION_ERROR.name());
 				return null;
 			} 
@@ -466,13 +446,13 @@ public class AdcomLoginModule implements LoginModule {
 		// Identify the terminal
 		secTermSession = secTermSessionEJB.findById(storedTermSessionId);
 		if (secTermSession == null){
-			returnWithAttr(request, "TERM_ERROR",
+			returnWithAttr(request, "AUTH-ERROR",
 					MessagesKeys.TERM_CRED_NOT_FOUND_ERROR.name());
 			return null;
 		}
 		// validate the session if not a ssl session
 		if(StringUtils.isBlank(termCdtl.getCert()) && !StringUtils.equals(auth.getTky(), secTermSession.getTermKey())){
-			returnWithAttr(request, "TERM_ERROR",
+			returnWithAttr(request, "AUTH-ERROR",
 					MessagesKeys.TERM_AUTH_ERROR.name());
 			return null;
 		}
@@ -482,7 +462,7 @@ public class AdcomLoginModule implements LoginModule {
 	private SecTerminal readAndCheckSecTerminal(SecTermSession secTermSession, HttpServletRequest request, Date currentDate){
 		SecTerminal secTerminal = secTerminalEJB.findById(secTermSession.getTermId());
 		if (secTerminal == null){
-			returnWithAttr(request, "TERM_ERROR",
+			returnWithAttr(request, "AUTH-ERROR",
 					MessagesKeys.UNKNOWN_TERM_ERROR.name());
 			return null;
 		}

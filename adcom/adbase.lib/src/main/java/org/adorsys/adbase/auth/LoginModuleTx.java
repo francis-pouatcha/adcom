@@ -183,7 +183,6 @@ public class LoginModuleTx {
 			connectionHistoryEJB.create(connectionHistory);
 		}
 		
-		
 		// Update terminal data
 		secTermSession.setLoginName(null);
 		secTermSession.setUserSession(null);

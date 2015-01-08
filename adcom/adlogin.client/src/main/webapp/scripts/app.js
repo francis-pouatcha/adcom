@@ -29,6 +29,11 @@ angular.module('AdLogin', [
             templateUrl: '/adlogin.client/modules/workspace/views/workspace.html',
             controller: 'workspaceController'
         })
+
+        .when('/', {
+            templateUrl: '/adlogin.client/modules/workspace/views/workspace.html',
+            controller: 'workspaceController'
+        })
         
         .otherwise({ redirectTo: '/workspaces' });
     
@@ -44,8 +49,8 @@ angular.module('AdLogin', [
     
 }])
 
-.run(['$rootScope', '$location', '$cookieStore', '$http', 'sessionManager','$translate','APP_CONFIG',
-    function ($rootScope, $location, $cookieStore, $http, sessionManager,$translate,APP_CONFIG) {
+.run(['$rootScope', '$location', '$cookieStore', '$http', 'sessionManager','$translate','APP_CONFIG','workspaceService',
+    function ($rootScope, $location, $cookieStore, $http, sessionManager,$translate,APP_CONFIG,workspaceService) {
 	    $rootScope.appName = APP_CONFIG.appName ;
 	    $rootScope.appVersion = APP_CONFIG.appVersion ;
 	    $rootScope.sessionManager = sessionManager;
@@ -59,11 +64,15 @@ angular.module('AdLogin', [
         			if(sessParam && sessionManager.hasValues(sessParam.trm,sessParam.usr)){
         				sessionManager.wsin(sessParam.trm,sessParam.usr,
         					function(){
-        		        		workspaceService.loadWorkspaces(
-        		        			function(data, status, headers, config){
-        		        				$location.path('/workspaces');
-        		        			},function(data, status, headers, config){}
-        		        		);
+//        		        		workspaceService.loadWorkspaces(
+//        		        			function(data, status, headers, config){
+////        		        				alert('success' + status);
+////        		            			$location.path('/workspaces');
+//        		        			},
+//        		        			function(data, status, headers, config){
+////        		        				alert('error' + status);
+//        		        			}
+//        		        		);
         					}
         				);
         			}
@@ -77,8 +86,14 @@ angular.module('AdLogin', [
         $rootScope.changeLanguage = function (langKey) {
             $translate.use(langKey);
         };
-        $rootScope.logout = function(){
-        	sessionManager.wsout('login');
-        };
+
+        $rootScope.loadWorkspaces = function(){
+        	if($location.path()!='/workspaces'){
+        		$location.path('/workspaces');
+        	} else {
+        		workspaceService.loadWorkspaces(function(data, status, headers, config){}, function(data, status, headers, config){});
+        	}
+    	};
+        
     }]
 );
