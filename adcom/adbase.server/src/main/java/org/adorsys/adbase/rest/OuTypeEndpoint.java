@@ -10,6 +10,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -26,6 +27,7 @@ import org.adorsys.adbase.jpa.OuType;
 import org.adorsys.adbase.jpa.OuTypeSearchInput;
 import org.adorsys.adbase.jpa.OuTypeSearchResult;
 import org.adorsys.adbase.jpa.OuType_;
+import org.apache.http.protocol.HTTP;
 
 /**
  * 
@@ -144,6 +146,18 @@ public class OuTypeEndpoint
       return ejb.countByLike(searchInput.getEntity(), attributes);
    }
 
+
+   @GET
+   @Path("/findActifsFromNow")
+   @Produces({ "application/json", "application/xml" })
+   public OuTypeSearchResult findActifsFrom(HttpServletRequest httpServReq)
+   {
+      List<OuType> actifsFromNow = ejb.findActifsFromNow();
+      Long size = ejb.countActifsFromNow();
+      return new OuTypeSearchResult(size,
+            detach(actifsFromNow), detach(new OuTypeSearchInput()));
+   }
+   
    @SuppressWarnings("unchecked")
    private SingularAttribute<OuType, ?>[] readSeachAttributes(
          OuTypeSearchInput searchInput)

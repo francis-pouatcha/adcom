@@ -8,5 +8,14 @@
 	"logins_loginName":"Login Name",
 	"logins_email":"Email",
 	"logins_fullName":"Full Name",
-	"logins_ouIdentif":"Organization Unit"	
+	"logins_ouIdentif":"Organization Unit",
+    "IdSize_is_required":"Id size is required",
+    "TypeName_is_required":"Type name is required.",
+    "parentType_is_required":"Parent type is required.",
+    "New":"New",
+    "Create":"Create",
+    "idSize":"Id size",
+    "typeName":"Type name",
+    "paretnType":"Parent type",
+    "Ok":"Ok"
 }

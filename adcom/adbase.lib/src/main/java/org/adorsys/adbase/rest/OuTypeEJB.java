@@ -84,4 +84,20 @@ public class OuTypeEJB
 	   if(resultList.isEmpty()) return null;
 	   return resultList.iterator().next();
    }
+   
+   public List<OuType> findActifsFrom (Date validFrom){
+	   return repository.findActifsFrom(validFrom);
+   }
+
+   public List<OuType> findActifsFromNow (){
+	   return repository.findActifsFrom(new Date());
+   }
+   
+   public Long countActifsFrom(Date validFrom){
+	   return repository.countActifsFrom(validFrom);
+   }
+
+   public Long countActifsFromNow(){
+	   return repository.countActifsFrom(new Date());
+   }
 }

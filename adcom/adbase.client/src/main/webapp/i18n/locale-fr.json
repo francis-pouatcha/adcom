@@ -7,5 +7,14 @@
 	"logins_loginName":"Nom de Connexion",
 	"logins_email":"Email",
 	"logins_fullName":"Nom",
-	"logins_ouIdentif":"Département"
+	"logins_ouIdentif":"Département",
+    "IdSize_is_required":"La taille de l'identifiant est requise",
+    "TypeName_is_required":"Le nom du type d'org est requis.",
+    "parentType_is_required":"Le type parent est requis",
+    "New":"Nouveau",
+    "Create":"Creer",
+    "idSize":"Taile de l'identifiant",
+    "typeName":"Nom du type",
+    "paretnType":"Type du parent",
+    "Ok":"Ok"
 }
