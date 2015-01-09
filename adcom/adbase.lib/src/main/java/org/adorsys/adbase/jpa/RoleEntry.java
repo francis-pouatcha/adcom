@@ -1,12 +1,14 @@
 package org.adorsys.adbase.jpa;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 import org.adorsys.adcore.jpa.AbstractTimedData;
 import org.adorsys.javaext.description.Description;
 import org.apache.commons.lang3.StringUtils;
 
 @Entity
+@Table(name="BaseRoleEntry")
 @Description("RoleEntry_description")
 public class RoleEntry extends AbstractTimedData {
 

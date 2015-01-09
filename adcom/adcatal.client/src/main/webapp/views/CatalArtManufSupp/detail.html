@@ -1,0 +1,66 @@
+<header ng-switch on="$location.path().indexOf('/CatalArtManufSupps/new') > -1">
+    <h3 ng-switch-when="true">Create CatalArtManufSupp</h3>
+    <h3 ng-switch-when="false">View or edit CatalArtManufSupp</h3>
+</header>
+<form id="CatalArtManufSuppForm" name="CatalArtManufSuppForm" class="form-horizontal">
+    <div ng-show="displayError" class="alert alert-error">
+        <strong>Error!</strong> Something broke. Retry, or cancel and start afresh.
+    </div>
+    <div class="control-group" ng-class="{error: CatalArtManufSuppForm.artIdentif.$invalid}">
+        <label for="artIdentif" class="control-label">Art Identif</label>
+        <div id="artIdentifControls" class="controls">
+            <input id="artIdentif" name="artIdentif" type="text" required ng-model="catalArtManufSupp.artIdentif" placeholder="Enter the CatalArtManufSupp Art Identif"></input>
+            <span class="help-inline" ng-show="CatalArtManufSuppForm.artIdentif.$error.required">required</span> 
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: CatalArtManufSuppForm.msIdentif.$invalid}">
+        <label for="msIdentif" class="control-label">Ms Identif</label>
+        <div id="msIdentifControls" class="controls">
+            <input id="msIdentif" name="msIdentif" type="text" required ng-model="catalArtManufSupp.msIdentif" placeholder="Enter the CatalArtManufSupp Ms Identif"></input>
+            <span class="help-inline" ng-show="CatalArtManufSuppForm.msIdentif.$error.required">required</span> 
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: CatalArtManufSuppForm.msType.$invalid}">
+        <label for="msType" class="control-label">Ms Type</label>
+        <div id="msTypeControls" class="controls">
+            <input id="msType" name="msType" type="text" ng-model="catalArtManufSupp.msType" placeholder="Enter the CatalArtManufSupp Ms Type"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: CatalArtManufSuppForm.warrantyMonths.$invalid}">
+        <label for="warrantyMonths" class="control-label">Warranty Months</label>
+        <div id="warrantyMonthsControls" class="controls">
+            <input id="warrantyMonths" name="warrantyMonths" type="text" ng-model="catalArtManufSupp.warrantyMonths" placeholder="Enter the CatalArtManufSupp Warranty Months"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: CatalArtManufSuppForm.returnDays.$invalid}">
+        <label for="returnDays" class="control-label">Return Days</label>
+        <div id="returnDaysControls" class="controls">
+            <input id="returnDays" name="returnDays" type="text" ng-model="catalArtManufSupp.returnDays" placeholder="Enter the CatalArtManufSupp Return Days"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: CatalArtManufSuppForm.pppu.$invalid}">
+        <label for="pppu" class="control-label">Pppu</label>
+        <div id="pppuControls" class="controls">
+            <input id="pppu" name="pppu" type="text" ng-model="catalArtManufSupp.pppu" placeholder="Enter the CatalArtManufSupp Pppu"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: CatalArtManufSuppForm.pppuCurrIso3.$invalid}">
+        <label for="pppuCurrIso3" class="control-label">Pppu Curr Iso 3</label>
+        <div id="pppuCurrIso3Controls" class="controls">
+            <input id="pppuCurrIso3" name="pppuCurrIso3" type="text" ng-model="catalArtManufSupp.pppuCurrIso3" placeholder="Enter the CatalArtManufSupp Pppu Curr Iso 3"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: CatalArtManufSuppForm.vatRate.$invalid}">
+        <label for="vatRate" class="control-label">Vat Rate</label>
+        <div id="vatRateControls" class="controls">
+            <input id="vatRate" name="vatRate" type="text" ng-model="catalArtManufSupp.vatRate" placeholder="Enter the CatalArtManufSupp Vat Rate"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <div class="controls">
+            <button id="saveCatalArtManufSupp" name="saveCatalArtManufSupp" class="btn btn-primary" ng-disabled="isClean() || CatalArtManufSuppForm.$invalid" ng-click="save()"><i class="icon-ok-sign icon-white"></i> Save</button>
+            <button id="cancel" name="cancel" class="btn" ng-click="cancel()"><i class="icon-remove-sign"></i> Cancel</button>
+            <button id="deleteCatalArtManufSupp" name="deleteCatalArtManufSupp" class="btn btn-danger" ng-show="catalArtManufSupp.id" ng-click="remove()"><i class="icon-trash icon-white"></i> Delete</button>
+        </div>
+    <div>
+</form>
