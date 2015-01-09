@@ -1,7 +1,23 @@
 'use strict';
 
-angular.module('adcatalserver',['ngResource'])
-  .config(['$routeProvider', function($routeProvider) {
+angular.module('SessionManager');
+angular.module('AuthInterceptor');
+
+angular.module('AdCatal', [
+      'ngRoute',
+      'ngCookies',
+      'SessionManager',
+      'AuthInterceptor',
+      'ngSanitize',
+      'pascalprecht.translate'
+])
+.constant('APP_CONFIG',{
+	'appName':'AD Catal',
+	'appVersion':'1.0.0-SNAPSHOT'
+
+})
+
+.config(['$routeProvider', '$httpProvider','$translateProvider', function($routeProvider,$httpProvider,$translateProvider) {
     $routeProvider
       .when('/',{templateUrl:'views/landing.html',controller:'LandingPageController'})
       .when('/CatalArtDetailConfigs',{templateUrl:'views/CatalArtDetailConfig/search.html',controller:'SearchCatalArtDetailConfigController'})
@@ -34,15 +50,48 @@ angular.module('adcatalserver',['ngResource'])
       .when('/CatalProductFamilys',{templateUrl:'views/CatalProductFamily/search.html',controller:'SearchCatalProductFamilyController'})
       .when('/CatalProductFamilys/new',{templateUrl:'views/CatalProductFamily/detail.html',controller:'NewCatalProductFamilyController'})
       .when('/CatalProductFamilys/edit/:CatalProductFamilyId',{templateUrl:'views/CatalProductFamily/detail.html',controller:'EditCatalProductFamilyController'})
-      .otherwise({
-        redirectTo: '/'
-      });
-  }])
-  .controller('LandingPageController', function LandingPageController() {
-  })
-  .controller('NavController', function NavController($scope, $location) {
+      .otherwise({ redirectTo: '/' });
+    
+    $httpProvider.defaults.withCredentials = true;
+    $httpProvider.interceptors.push('authInterceptor');
+    
+	$translateProvider.useStaticFilesLoader({
+		prefix: 'i18n/locale-',
+		suffix: '.json'
+	});
+
+	$translateProvider.preferredLanguage('fr');
+    
+}])
+
+.controller('LandingPageController', function LandingPageController() {})
+
+.controller('NavController', function NavController($scope, $location) {
     $scope.matchesRoute = function(route) {
         var path = $location.path();
         return (path === ("/" + route) || path.indexOf("/" + route + "/") == 0);
     };
-  });
+})
+
+.run(['$rootScope', '$location','sessionManager','$translate','APP_CONFIG',function ($rootScope, $location, sessionManager,$translate,APP_CONFIG) {
+    $rootScope.appName = APP_CONFIG.appName ;
+    $rootScope.appVersion = APP_CONFIG.appVersion ;
+    sessionManager.appMenuUrl("/adcatal.client/menu.html");
+    $rootScope.sessionManager = sessionManager;
+    $rootScope.$on('$locationChangeStart', function (event, next, current) {
+    	var noSess = !sessionManager.hasValues(sessionManager.terminalSession(), sessionManager.userSession());
+    	if(noSess){
+			var sessParam = $location.search();
+			if(sessParam && sessionManager.hasValues(sessParam.trm,sessParam.usr)){
+				sessionManager.wsin(sessParam.trm,sessParam.usr,
+					function(){
+						$location.path('/');
+					}
+				);
+			}
+    	}
+    });
+    $rootScope.changeLanguage = function (langKey) {
+        $translate.use(langKey);
+    };
+}]);

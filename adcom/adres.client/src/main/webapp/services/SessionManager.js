@@ -19,6 +19,10 @@ angular.module('SessionManager',['Base64Factory','ADUtils'])
             trm:'',
             usr:''
     };
+    var appMenuTemplUrl;
+    var workspaceLink = "#";
+    var workspaceFct;
+
     
     auth.isSet = function(value){
     	return !(typeof (value) === 'undefined') && value;
@@ -159,7 +163,31 @@ angular.module('SessionManager',['Base64Factory','ADUtils'])
     auth.hasAuthErrors = function(){
 		return authErrorList.length > 0;
 	};
-	
+
+	auth.appMenuUrl = function(value){
+    	if(auth.isSet(value)){
+    		appMenuTemplUrl = value;
+    	}
+    	return appMenuTemplUrl;
+    }
+    auth.workspaceLink = function(value){
+    	if(auth.isSet(value)){
+    		workspaceLink = value;
+    	}
+    	return workspaceLink;
+    }
+    auth.workspaces = function(fkt){
+    	if(auth.isSet(fkt)){
+    		workspaceFct = fkt;
+    	} else {
+        	if(auth.isSet(workspaceFct)){
+        		workspaceFct();
+        	} else {
+        		auth.wsout('_login_');
+        	}
+    	}
+    }
+
     return auth;
 
     function consumeSessData(headers){

@@ -1,6 +1,6 @@
 
 
-angular.module('adcatalserver').controller('EditCatalPkgModeController', function($scope, $routeParams, $location, CatalPkgModeResource ) {
+angular.module('AdCatal').controller('EditCatalPkgModeController', function($scope, $routeParams, $location, CatalPkgModeResource ) {
     var self = this;
     $scope.disabled = false;
     $scope.$location = $location;

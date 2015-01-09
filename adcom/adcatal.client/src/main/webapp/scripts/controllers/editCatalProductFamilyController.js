@@ -1,6 +1,6 @@
 
 
-angular.module('adcatalserver').controller('EditCatalProductFamilyController', function($scope, $routeParams, $location, CatalProductFamilyResource ) {
+angular.module('AdCatal').controller('EditCatalProductFamilyController', function($scope, $routeParams, $location, CatalProductFamilyResource ) {
     var self = this;
     $scope.disabled = false;
     $scope.$location = $location;

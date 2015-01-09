@@ -1,5 +1,5 @@
 
-angular.module('adcatalserver').controller('NewCatalArtManufSuppController', function ($scope, $location, locationParser, CatalArtManufSuppResource ) {
+angular.module('AdCatal').controller('NewCatalArtManufSuppController', function ($scope, $location, locationParser, CatalArtManufSuppResource ) {
     $scope.disabled = false;
     $scope.$location = $location;
     $scope.catalArtManufSupp = $scope.catalArtManufSupp || {};

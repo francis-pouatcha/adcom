@@ -13,7 +13,7 @@ angular.module('AdBase', [
     'pascalprecht.translate'
 ])
 .constant('APP_CONFIG',{
-	'appName':'AD Login',
+	'appName':'AD Base',
 	'appVersion':'1.0.0-SNAPSHOT'
 
 })
@@ -68,12 +68,6 @@ angular.module('AdBase', [
         });
         $rootScope.changeLanguage = function (langKey) {
             $translate.use(langKey);
-        };
-        $rootScope.logout = function(){
-        	sessionManager.logout();
-        };
-        $rootScope.workspaces = function(){
-        	sessionManager.wsout('_login_');
         };
     }]
 );

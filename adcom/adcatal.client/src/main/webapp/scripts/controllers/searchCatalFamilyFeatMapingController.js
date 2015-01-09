@@ -1,6 +1,6 @@
 
 
-angular.module('adcatalserver').controller('SearchCatalFamilyFeatMapingController', function($scope, $http, CatalFamilyFeatMapingResource ) {
+angular.module('AdCatal').controller('SearchCatalFamilyFeatMapingController', function($scope, $http, CatalFamilyFeatMapingResource ) {
 
     $scope.search={};
     $scope.currentPage = 0;

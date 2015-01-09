@@ -53,6 +53,14 @@ angular.module('AdLogin', [
     function ($rootScope, $location, $cookieStore, $http, sessionManager,$translate,APP_CONFIG,workspaceService) {
 	    $rootScope.appName = APP_CONFIG.appName ;
 	    $rootScope.appVersion = APP_CONFIG.appVersion ;
+	    sessionManager.workspaceLink("#/workspaces");// Special handling for the login application.
+	    sessionManager.workspaces(function(){
+        	if($location.path()!='/workspaces'){
+        		$location.path('/workspaces');
+        	} else {
+        		workspaceService.loadWorkspaces(function(data, status, headers, config){}, function(data, status, headers, config){});
+        	}
+    	});
 	    $rootScope.sessionManager = sessionManager;
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
         	var path = $location.path();
@@ -62,19 +70,7 @@ angular.module('AdLogin', [
         		if(path=='/workspaces' || path=='/' || path==''){
         			var sessParam = $location.search();
         			if(sessParam && sessionManager.hasValues(sessParam.trm,sessParam.usr)){
-        				sessionManager.wsin(sessParam.trm,sessParam.usr,
-        					function(){
-//        		        		workspaceService.loadWorkspaces(
-//        		        			function(data, status, headers, config){
-////        		        				alert('success' + status);
-////        		            			$location.path('/workspaces');
-//        		        			},
-//        		        			function(data, status, headers, config){
-////        		        				alert('error' + status);
-//        		        			}
-//        		        		);
-        					}
-        				);
+        				sessionManager.wsin(sessParam.trm,sessParam.usr,function(){});
         			}
         		}	
         	}
@@ -94,6 +90,5 @@ angular.module('AdLogin', [
         		workspaceService.loadWorkspaces(function(data, status, headers, config){}, function(data, status, headers, config){});
         	}
     	};
-        
     }]
 );

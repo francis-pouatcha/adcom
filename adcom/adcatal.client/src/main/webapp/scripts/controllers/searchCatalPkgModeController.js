@@ -1,6 +1,6 @@
 
 
-angular.module('adcatalserver').controller('SearchCatalPkgModeController', function($scope, $http, CatalPkgModeResource ) {
+angular.module('AdCatal').controller('SearchCatalPkgModeController', function($scope, $http, CatalPkgModeResource ) {
 
     $scope.search={};
     $scope.currentPage = 0;

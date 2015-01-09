@@ -1,5 +1,5 @@
 
-angular.module('adcatalserver').controller('NewCatalFamilyFeatMapingController', function ($scope, $location, locationParser, CatalFamilyFeatMapingResource ) {
+angular.module('AdCatal').controller('NewCatalFamilyFeatMapingController', function ($scope, $location, locationParser, CatalFamilyFeatMapingResource ) {
     $scope.disabled = false;
     $scope.$location = $location;
     $scope.catalFamilyFeatMaping = $scope.catalFamilyFeatMaping || {};

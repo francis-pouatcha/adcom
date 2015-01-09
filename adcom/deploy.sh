@@ -1,3 +1,31 @@
+#This script is used to make a full projet deployemnt.
+#Please set the $ADCOM_HOME environment variable in your profile.
+#as follow
+#export $ADCOM_HOME=/path/to/your/adcom
+# Setup ADCOM_HOME
+RESOLVED_ADCOM_HOME=`cd "."; pwd`
+if [ "x$ADCOM_HOME" = "x" ]; then
+    # get the full path (without any relative bits)
+    ADCOM_HOME=$RESOLVED_ADCOM_HOME
+   	echo "             ADCOM_HOME: $ADCOM_HOME"
+else
+ SANITIZED_ADCOM_HOME=`cd "$ADCOM_HOME"; pwd`
+ if [ "$RESOLVED_ADCOM_HOME" != "$SANITIZED_ADCOM_HOME" ]; then
+   echo ""
+   echo "   WARNING:  ADCOM_HOME may be pointing to a different installation - unpredictable results may occur."
+   echo ""
+   echo "             ADCOM_HOME: $ADCOM_HOME"
+   echo ""
+   sleep 2s
+ fi
+fi
+export ADCOM_HOME
+# make sure home points to your home directory
+
+echo 'switching to projet directory'
+cd $ADCOM_HOME
+echo 'cleanning the projet'
+mvn clean install
 
 cp adterm.server/target/adterm.server.war $JBOSS_HOME/standalone/deployments/
 cp adbase.server/target/adbase.server.war $JBOSS_HOME/standalone/deployments/

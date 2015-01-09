@@ -1,5 +1,5 @@
 
-angular.module('adcatalserver').controller('NewCatalArticleController', function ($scope, $location, locationParser, CatalArticleResource ) {
+angular.module('AdCatal').controller('NewCatalArticleController', function ($scope, $location, locationParser, CatalArticleResource ) {
     $scope.disabled = false;
     $scope.$location = $location;
     $scope.catalArticle = $scope.catalArticle || {};

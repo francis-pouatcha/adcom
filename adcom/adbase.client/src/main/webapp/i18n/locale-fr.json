@@ -8,6 +8,7 @@
 	"logins_email":"Email",
 	"logins_fullName":"Nom",
 	"logins_ouIdentif":"Département",
+	"workspace_appMenu":"Menu",
 
     "print":"Imprimer",
     "Login_partner_logOut.title":"Deconnecter",

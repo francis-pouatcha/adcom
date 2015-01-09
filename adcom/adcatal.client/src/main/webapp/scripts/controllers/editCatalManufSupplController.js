@@ -1,6 +1,6 @@
 
 
-angular.module('adcatalserver').controller('EditCatalManufSupplController', function($scope, $routeParams, $location, CatalManufSupplResource ) {
+angular.module('AdCatal').controller('EditCatalManufSupplController', function($scope, $routeParams, $location, CatalManufSupplResource ) {
     var self = this;
     $scope.disabled = false;
     $scope.$location = $location;

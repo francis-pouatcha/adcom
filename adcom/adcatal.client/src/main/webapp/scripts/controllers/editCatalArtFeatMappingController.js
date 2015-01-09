@@ -1,6 +1,6 @@
 
 
-angular.module('adcatalserver').controller('EditCatalArtFeatMappingController', function($scope, $routeParams, $location, CatalArtFeatMappingResource ) {
+angular.module('AdCatal').controller('EditCatalArtFeatMappingController', function($scope, $routeParams, $location, CatalArtFeatMappingResource ) {
     var self = this;
     $scope.disabled = false;
     $scope.$location = $location;
