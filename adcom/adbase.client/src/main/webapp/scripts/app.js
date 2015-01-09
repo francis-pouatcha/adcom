@@ -20,7 +20,13 @@ angular.module('AdBase', [
 .config(['$routeProvider', '$httpProvider','$translateProvider', function ($routeProvider, $httpProvider,$translateProvider) {
 
     $routeProvider
-    .when('/',{templateUrl:'views/logins.html',controller:'loginController'})
+    .when('/',{
+            templateUrl:'views/login/logins.html',
+            controller:'loginController',
+            controllerAs: 'loginCtrl'
+        })
+
+
     .otherwise({
       redirectTo: '/'
     });
