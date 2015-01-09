@@ -22,6 +22,7 @@ angular.module('AdBase', [
     $routeProvider
     .when('/',{templateUrl:'views/logins.html',controller:'loginController'})
     .when('/outypes/new',{templateUrl:'views/outypes/new.html',controller:'newOuTypeController'})
+    .when('/outypes/show/:ouTypeId',{templateUrl:'views/outypes/show.html',controller:'showOuTypeController'})
     .when('/outypes/list',{templateUrl:'views/outypes/list.html',controller:'listOuTypeController'})
     .otherwise({
       redirectTo: '/'

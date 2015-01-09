@@ -1,12 +1,10 @@
 'use strict';
 
 angular.module('AdBase')
-    .controller('newOuTypeController', ['$scope', 'ouTypeResource', '$location'
+    .controller('newOuTypeController', ['$scope', 'ouTypeResource', '$location',
         function ($scope, ouTypeResource,$location) {
             //variables
-            $scope.parents = [];
-            $scope.ouType = {};
-            
+            $scope.isUpdate = false;
             //controllers's methods
             $scope.create = function () {
                 ouTypeResource.create($scope.ouType).success(function(data){
@@ -20,7 +18,8 @@ angular.module('AdBase')
             //others functions
             function loadParentsOrgUnit() {
                 ouTypeResource.findActifsFromNow().success(function (data) {
-                    $scope.parents = data;
+                    $scope.parents = data.resultList;
+                    console.log($scope.parents);
                 }).error(function () {});
             }
             

@@ -26,15 +26,7 @@ angular.module('AdBase').factory('ouTypeResource',['$http', function($http){
     service.findByLike = function(entitySearchInput){
         return $http.post(urlBase+'/findByLike',entitySearchInput);
     };
-
-    service.nextLogin = function(entityId){
-        return $http.get(urlBase+'/nextLogin/'+entityId);
-    };
-
-    service.previousLogin = function(entityId){
-        return $http.get(urlBase+'/previousLogin/'+entityId);
-    };
-
+    
     service.findById = function(entityId){
         return $http.get(urlBase+'/'+entityId);
     };
