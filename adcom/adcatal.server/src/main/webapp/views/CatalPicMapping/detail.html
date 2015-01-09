@@ -1,0 +1,49 @@
+<header ng-switch on="$location.path().indexOf('/CatalPicMappings/new') > -1">
+    <h3 ng-switch-when="true">Create CatalPicMapping</h3>
+    <h3 ng-switch-when="false">View or edit CatalPicMapping</h3>
+</header>
+<form id="CatalPicMappingForm" name="CatalPicMappingForm" class="form-horizontal">
+    <div ng-show="displayError" class="alert alert-error">
+        <strong>Error!</strong> Something broke. Retry, or cancel and start afresh.
+    </div>
+    <div class="control-group" ng-class="{error: CatalPicMappingForm.artIdentif.$invalid}">
+        <label for="artIdentif" class="control-label">Art Identif</label>
+        <div id="artIdentifControls" class="controls">
+            <input id="artIdentif" name="artIdentif" type="text" required ng-model="catalPicMapping.artIdentif" placeholder="Enter the CatalPicMapping Art Identif"></input>
+            <span class="help-inline" ng-show="CatalPicMappingForm.artIdentif.$error.required">required</span> 
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: CatalPicMappingForm.code.$invalid}">
+        <label for="code" class="control-label">Code</label>
+        <div id="codeControls" class="controls">
+            <input id="code" name="code" type="text" required ng-model="catalPicMapping.code" placeholder="Enter the CatalPicMapping Code"></input>
+            <span class="help-inline" ng-show="CatalPicMappingForm.code.$error.required">required</span> 
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: CatalPicMappingForm.codeOrigin.$invalid}">
+        <label for="codeOrigin" class="control-label">Code Origin</label>
+        <div id="codeOriginControls" class="controls">
+            <input id="codeOrigin" name="codeOrigin" type="text" ng-model="catalPicMapping.codeOrigin" placeholder="Enter the CatalPicMapping Code Origin"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: CatalPicMappingForm.addInfo.$invalid}">
+        <label for="addInfo" class="control-label">Add Info</label>
+        <div id="addInfoControls" class="controls">
+            <input id="addInfo" name="addInfo" type="text" ng-model="catalPicMapping.addInfo" placeholder="Enter the CatalPicMapping Add Info"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: CatalPicMappingForm.priority.$invalid}">
+        <label for="priority" class="control-label">Priority</label>
+        <div id="priorityControls" class="controls">
+            <input id="priority" name="priority" type="number" ng-model="catalPicMapping.priority" placeholder="Enter the CatalPicMapping Priority"></input>
+            <span class="help-inline" ng-show="CatalPicMappingForm.priority.$error.number">not a number</span>
+        </div>
+    </div>
+    <div class="control-group">
+        <div class="controls">
+            <button id="saveCatalPicMapping" name="saveCatalPicMapping" class="btn btn-primary" ng-disabled="isClean() || CatalPicMappingForm.$invalid" ng-click="save()"><i class="icon-ok-sign icon-white"></i> Save</button>
+            <button id="cancel" name="cancel" class="btn" ng-click="cancel()"><i class="icon-remove-sign"></i> Cancel</button>
+            <button id="deleteCatalPicMapping" name="deleteCatalPicMapping" class="btn btn-danger" ng-show="catalPicMapping.id" ng-click="remove()"><i class="icon-trash icon-white"></i> Delete</button>
+        </div>
+    <div>
+</form>

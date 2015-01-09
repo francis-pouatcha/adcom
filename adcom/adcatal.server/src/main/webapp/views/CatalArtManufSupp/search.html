@@ -1,0 +1,108 @@
+<div class="form-horizontal">
+    <h3>Create a new CatalArtManufSupp</h3>
+    <div class="control-group">
+        <div class="controls">
+            <a id="Create" name="Create" class="btn btn-primary" href="#/CatalArtManufSupps/new"><i class="icon-plus-sign icon-white"></i> Create</a>
+        </div>
+    </div>
+</div>
+<hr/>
+<div>
+    <h3>Search for CatalArtManufSupps</h3>
+    <form id="CatalArtManufSuppSearch" class="form-horizontal">
+    <div class="control-group">
+        <label for="artIdentif" class="control-label">Art Identif</label>
+        <div class="controls">
+            <input id="artIdentif" name="artIdentif" type="text" ng-model="search.artIdentif" placeholder="Enter the CatalArtManufSupp Art Identif"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="msIdentif" class="control-label">Ms Identif</label>
+        <div class="controls">
+            <input id="msIdentif" name="msIdentif" type="text" ng-model="search.msIdentif" placeholder="Enter the CatalArtManufSupp Ms Identif"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="msType" class="control-label">Ms Type</label>
+        <div class="controls">
+            <input id="msType" name="msType" type="text" ng-model="search.msType" placeholder="Enter the CatalArtManufSupp Ms Type"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="warrantyMonths" class="control-label">Warranty Months</label>
+        <div class="controls">
+            <input id="warrantyMonths" name="warrantyMonths" type="text" ng-model="search.warrantyMonths" placeholder="Enter the CatalArtManufSupp Warranty Months"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="returnDays" class="control-label">Return Days</label>
+        <div class="controls">
+            <input id="returnDays" name="returnDays" type="text" ng-model="search.returnDays" placeholder="Enter the CatalArtManufSupp Return Days"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="pppu" class="control-label">Pppu</label>
+        <div class="controls">
+            <input id="pppu" name="pppu" type="text" ng-model="search.pppu" placeholder="Enter the CatalArtManufSupp Pppu"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="pppuCurrIso3" class="control-label">Pppu Curr Iso 3</label>
+        <div class="controls">
+            <input id="pppuCurrIso3" name="pppuCurrIso3" type="text" ng-model="search.pppuCurrIso3" placeholder="Enter the CatalArtManufSupp Pppu Curr Iso 3"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="vatRate" class="control-label">Vat Rate</label>
+        <div class="controls">
+            <input id="vatRate" name="vatRate" type="text" ng-model="search.vatRate" placeholder="Enter the CatalArtManufSupp Vat Rate"></input>
+        </div>
+    </div>
+        <div class="control-group">
+            <div class="controls">
+                <a id="Search" name="Search" class="btn btn-primary" ng-click="performSearch()"><i class="icon-search icon-white"></i> Search</a>
+            </div>
+        </div>
+    </form>
+</div>
+<div id="search-results">
+    <table class="table table-bordered table-striped clearfix">
+        <thead>
+            <tr>
+                <th>Art Identif</th>
+                <th>Ms Identif</th>
+                <th>Ms Type</th>
+                <th>Warranty Months</th>
+                <th>Return Days</th>
+                <th>Pppu</th>
+                <th>Pppu Curr Iso 3</th>
+                <th>Vat Rate</th>
+            </tr>
+        </thead>
+        <tbody id="search-results-body">
+            <tr ng-repeat="result in searchResults | searchFilter:searchResults | startFrom:currentPage*pageSize | limitTo:pageSize">
+                <td><a href="#/CatalArtManufSupps/edit/{{result.id}}">{{result.artIdentif}}</a></td>
+                <td><a href="#/CatalArtManufSupps/edit/{{result.id}}">{{result.msIdentif}}</a></td>
+                <td><a href="#/CatalArtManufSupps/edit/{{result.id}}">{{result.msType}}</a></td>
+                <td><a href="#/CatalArtManufSupps/edit/{{result.id}}">{{result.warrantyMonths}}</a></td>
+                <td><a href="#/CatalArtManufSupps/edit/{{result.id}}">{{result.returnDays}}</a></td>
+                <td><a href="#/CatalArtManufSupps/edit/{{result.id}}">{{result.pppu}}</a></td>
+                <td><a href="#/CatalArtManufSupps/edit/{{result.id}}">{{result.pppuCurrIso3}}</a></td>
+                <td><a href="#/CatalArtManufSupps/edit/{{result.id}}">{{result.vatRate}}</a></td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="pagination pagination-centered">
+        <ul>
+            <li ng-class="{disabled:currentPage == 0}">
+                <a id="prev" href ng-click="previous()">«</a>
+            </li>
+            <li ng-repeat="n in pageRange" ng-class="{active:currentPage == n}" ng-click="setPage(n)">
+                <a href ng-bind="n + 1">1</a>
+            </li>
+            <li ng-class="{disabled: currentPage == (numberOfPages() - 1)}">
+                <a id="next" href ng-click="next()">»</a>
+            </li>
+        </ul>
+    </div>
+</div>

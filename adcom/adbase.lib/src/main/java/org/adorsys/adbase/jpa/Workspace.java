@@ -2,12 +2,14 @@ package org.adorsys.adbase.jpa;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.adorsys.adcore.jpa.AbstractTimedData;
 import org.adorsys.javaext.description.Description;
 
-@Entity
+@Entity 
+@Table(name="BaseWorkspace")
 @Description("Workspace_description")
 public class Workspace extends AbstractTimedData {
 

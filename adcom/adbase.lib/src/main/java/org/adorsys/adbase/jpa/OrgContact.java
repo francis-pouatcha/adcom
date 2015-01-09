@@ -2,13 +2,15 @@ package org.adorsys.adbase.jpa;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.adorsys.adcore.jpa.AbstractTimedData;
 import org.adorsys.javaext.description.Description;
 
-@Entity
+@Entity 
+@Table(name="BaseOrgContact")
 @Description("OrgContact_description")
 public class OrgContact extends AbstractTimedData {
 

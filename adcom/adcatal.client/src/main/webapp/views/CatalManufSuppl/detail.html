@@ -1,0 +1,88 @@
+<header ng-switch on="$location.path().indexOf('/CatalManufSuppls/new') > -1">
+    <h3 ng-switch-when="true">Create CatalManufSuppl</h3>
+    <h3 ng-switch-when="false">View or edit CatalManufSuppl</h3>
+</header>
+<form id="CatalManufSupplForm" name="CatalManufSupplForm" class="form-horizontal">
+    <div ng-show="displayError" class="alert alert-error">
+        <strong>Error!</strong> Something broke. Retry, or cancel and start afresh.
+    </div>
+    <div class="control-group" ng-class="{error: CatalManufSupplForm.name.$invalid}">
+        <label for="name" class="control-label">Name</label>
+        <div id="nameControls" class="controls">
+            <input id="name" name="name" type="text" ng-model="catalManufSuppl.name" placeholder="Enter the CatalManufSuppl Name"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: CatalManufSupplForm.msCode.$invalid}">
+        <label for="msCode" class="control-label">Ms Code</label>
+        <div id="msCodeControls" class="controls">
+            <input id="msCode" name="msCode" type="text" ng-model="catalManufSuppl.msCode" placeholder="Enter the CatalManufSuppl Ms Code"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: CatalManufSupplForm.mobile.$invalid}">
+        <label for="mobile" class="control-label">Mobile</label>
+        <div id="mobileControls" class="controls">
+            <input id="mobile" name="mobile" type="text" ng-model="catalManufSuppl.mobile" placeholder="Enter the CatalManufSuppl Mobile"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: CatalManufSupplForm.fax.$invalid}">
+        <label for="fax" class="control-label">Fax</label>
+        <div id="faxControls" class="controls">
+            <input id="fax" name="fax" type="text" ng-model="catalManufSuppl.fax" placeholder="Enter the CatalManufSuppl Fax"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: CatalManufSupplForm.email.$invalid}">
+        <label for="email" class="control-label">Email</label>
+        <div id="emailControls" class="controls">
+            <input id="email" name="email" type="text" ng-model="catalManufSuppl.email" placeholder="Enter the CatalManufSuppl Email"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: CatalManufSupplForm.zipCode.$invalid}">
+        <label for="zipCode" class="control-label">Zip Code</label>
+        <div id="zipCodeControls" class="controls">
+            <input id="zipCode" name="zipCode" type="text" ng-model="catalManufSuppl.zipCode" placeholder="Enter the CatalManufSuppl Zip Code"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: CatalManufSupplForm.country.$invalid}">
+        <label for="country" class="control-label">Country</label>
+        <div id="countryControls" class="controls">
+            <input id="country" name="country" type="text" ng-model="catalManufSuppl.country" placeholder="Enter the CatalManufSuppl Country"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: CatalManufSupplForm.internetSite.$invalid}">
+        <label for="internetSite" class="control-label">Internet Site</label>
+        <div id="internetSiteControls" class="controls">
+            <input id="internetSite" name="internetSite" type="text" ng-model="catalManufSuppl.internetSite" placeholder="Enter the CatalManufSuppl Internet Site"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: CatalManufSupplForm.responsable.$invalid}">
+        <label for="responsable" class="control-label">Responsable</label>
+        <div id="responsableControls" class="controls">
+            <input id="responsable" name="responsable" type="text" ng-model="catalManufSuppl.responsable" placeholder="Enter the CatalManufSuppl Responsable"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: CatalManufSupplForm.revenue.$invalid}">
+        <label for="revenue" class="control-label">Revenue</label>
+        <div id="revenueControls" class="controls">
+            <input id="revenue" name="revenue" type="text" ng-model="catalManufSuppl.revenue" placeholder="Enter the CatalManufSuppl Revenue"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: CatalManufSupplForm.taxIdNumber.$invalid}">
+        <label for="taxIdNumber" class="control-label">Tax Id Number</label>
+        <div id="taxIdNumberControls" class="controls">
+            <input id="taxIdNumber" name="taxIdNumber" type="text" ng-model="catalManufSuppl.taxIdNumber" placeholder="Enter the CatalManufSuppl Tax Id Number"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: CatalManufSupplForm.contact.$invalid}">
+        <label for="contact" class="control-label">Contact</label>
+        <div id="contactControls" class="controls">
+            <input id="contact" name="contact" type="text" ng-model="catalManufSuppl.contact" placeholder="Enter the CatalManufSuppl Contact"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <div class="controls">
+            <button id="saveCatalManufSuppl" name="saveCatalManufSuppl" class="btn btn-primary" ng-disabled="isClean() || CatalManufSupplForm.$invalid" ng-click="save()"><i class="icon-ok-sign icon-white"></i> Save</button>
+            <button id="cancel" name="cancel" class="btn" ng-click="cancel()"><i class="icon-remove-sign"></i> Cancel</button>
+            <button id="deleteCatalManufSuppl" name="deleteCatalManufSuppl" class="btn btn-danger" ng-show="catalManufSuppl.id" ng-click="remove()"><i class="icon-trash icon-white"></i> Delete</button>
+        </div>
+    <div>
+</form>

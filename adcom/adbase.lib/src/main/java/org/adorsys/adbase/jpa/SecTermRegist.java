@@ -3,6 +3,7 @@ package org.adorsys.adbase.jpa;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.PrePersist;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.adorsys.adcore.utils.AuthChars;
@@ -10,7 +11,8 @@ import org.adorsys.javaext.description.Description;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 
-@Entity
+@Entity 
+@Table(name="BaseSecTermRegist")
 @Description("SecTermRegist_description")
 public class SecTermRegist extends SecAbstractTerminal {
 	
