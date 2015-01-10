@@ -17,7 +17,8 @@ angular.module('AdCatal', [
 
 })
 
-.config(['$routeProvider', '$httpProvider','$translateProvider', function($routeProvider,$httpProvider,$translateProvider) {
+.config(['$routeProvider', '$httpProvider','$translateProvider','$translatePartialLoader',
+         function($routeProvider,$httpProvider,$translateProvider,$translatePartialLoader) {
     $routeProvider
       .when('/',{templateUrl:'views/landing.html',controller:'LandingPageController'})
       .when('/CatalArtDetailConfigs',{templateUrl:'views/CatalArtDetailConfig/search.html',controller:'SearchCatalArtDetailConfigController'})
@@ -55,10 +56,9 @@ angular.module('AdCatal', [
     $httpProvider.defaults.withCredentials = true;
     $httpProvider.interceptors.push('authInterceptor');
     
-	$translateProvider.useStaticFilesLoader({
-		prefix: 'i18n/locale-',
-		suffix: '.json'
-	});
+    $translateProvider.useLoader('$translatePartialLoader', {
+        urlTemplate: '/i18n/{part}/locale-{lang}.json'
+    });
 
 	$translateProvider.preferredLanguage('fr');
     
@@ -73,7 +73,8 @@ angular.module('AdCatal', [
     };
 })
 
-.run(['$rootScope', '$location','sessionManager','$translate','APP_CONFIG',function ($rootScope, $location, sessionManager,$translate,APP_CONFIG) {
+.run(['$rootScope', '$location','sessionManager','$translate','APP_CONFIG','$translatePartialLoader',
+      function ($rootScope, $location, sessionManager,$translate,APP_CONFIG,$translatePartialLoader) {
     $rootScope.appName = APP_CONFIG.appName ;
     $rootScope.appVersion = APP_CONFIG.appVersion ;
     sessionManager.appMenuUrl("/adcatal.client/menu.html");
@@ -94,4 +95,7 @@ angular.module('AdCatal', [
     $rootScope.changeLanguage = function (langKey) {
         $translate.use(langKey);
     };
+	$translatePartialLoader.addPart('shared');
+	$translatePartialLoader.addPart('main');
+	$translate.refresh();
 }]);

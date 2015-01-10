@@ -1,16 +1,4 @@
 {
-	"Username":"User Name",
-	"Login":"Login",
-	"workspace_loginName":"Login Name",
-	"workspace_ouWsIdentif":"Workspace",
-	"workspace_admin":"ADMINISTRATION",
-	"workspace_logOut":"Logout",
-	"logins_loginName":"Login Name",
-	"logins_email":"Email",
-	"logins_fullName":"Full Name",
-	"logins_ouIdentif":"Organization Unit"	,
-	"workspace_appMenu":"Menu",
-	
     "print": "Print",
     "Entity_leave.title": "leave",
     "Entity_change.title": "Change  ",

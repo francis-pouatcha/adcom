@@ -1,15 +1,4 @@
-{"Username":"Nom de Connexion",
-	"Login":"Connexion",
-	"workspace_loginName":"Nom de Connexion",
-	"workspace_ouWsIdentif":"Espace de Travaille",
-	"workspace_admin":"ADMINISTRATION",
-	"workspace_logOut":"Deconnexion",
-	"logins_loginName":"Nom de Connexion",
-	"logins_email":"Email",
-	"logins_fullName":"Nom",
-	"logins_ouIdentif":"Département",
-	"workspace_appMenu":"Menu",
-
+{
     "print":"Imprimer",
     "Login_partner_logOut.title":"Deconnecter",
     "Entity_change.title":"Changer  ",

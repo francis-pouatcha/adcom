@@ -17,7 +17,8 @@ angular.module('AdLogin', [
 	'appVersion':'1.0.0-SNAPSHOT'
 
 })
-.config(['$routeProvider', '$httpProvider','$translateProvider', function ($routeProvider, $httpProvider,$translateProvider) {
+.config(['$routeProvider', '$httpProvider','$translateProvider','$translatePartialLoaderProvider',
+         function ($routeProvider, $httpProvider,$translateProvider,$translatePartialLoaderProvider) {
 
     $routeProvider
         .when('/login', {
@@ -40,17 +41,16 @@ angular.module('AdLogin', [
     $httpProvider.defaults.withCredentials = true;
     $httpProvider.interceptors.push('authInterceptor');
     
-	$translateProvider.useStaticFilesLoader({
-		prefix: 'i18n/locale-',
-		suffix: '.json'
-	});
+    $translateProvider.useLoader('$translatePartialLoader', {
+        urlTemplate: '/i18n/{part}/locale-{lang}.json'
+    });
 
 	$translateProvider.preferredLanguage('fr');
     
 }])
 
-.run(['$rootScope', '$location', '$cookieStore', '$http', 'sessionManager','$translate','APP_CONFIG','workspaceService',
-    function ($rootScope, $location, $cookieStore, $http, sessionManager,$translate,APP_CONFIG,workspaceService) {
+.run(['$rootScope', '$location','sessionManager','$translate','APP_CONFIG','workspaceService','$translatePartialLoader',
+    function ($rootScope, $location, sessionManager,$translate,APP_CONFIG,workspaceService,$translatePartialLoader) {
 	    $rootScope.appName = APP_CONFIG.appName ;
 	    $rootScope.appVersion = APP_CONFIG.appVersion ;
 	    sessionManager.workspaceLink("#/workspaces");// Special handling for the login application.
@@ -90,5 +90,8 @@ angular.module('AdLogin', [
         		workspaceService.loadWorkspaces(function(data, status, headers, config){}, function(data, status, headers, config){});
         	}
     	};
+    	$translatePartialLoader.addPart('shared');
+    	$translatePartialLoader.addPart('main');
+    	$translate.refresh();
     }]
 );

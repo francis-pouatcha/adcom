@@ -17,7 +17,8 @@ angular.module('AdBase', [
 	'appVersion':'1.0.0-SNAPSHOT'
 
 })
-.config(['$routeProvider', '$httpProvider','$translateProvider', function ($routeProvider, $httpProvider,$translateProvider) {
+.config(['$routeProvider', '$httpProvider','$translateProvider','$translatePartialLoaderProvider',
+         function ($routeProvider, $httpProvider,$translateProvider,$translatePartialLoaderProvider) {
 
     $routeProvider
     .when('/',{
@@ -34,17 +35,16 @@ angular.module('AdBase', [
     $httpProvider.defaults.withCredentials = true;
     $httpProvider.interceptors.push('authInterceptor');
     
-	$translateProvider.useStaticFilesLoader({
-		prefix: 'i18n/locale-',
-		suffix: '.json'
-	});
+    $translateProvider.useLoader('$translatePartialLoader', {
+        urlTemplate: '/i18n/{part}/locale-{lang}.json'
+    });
 
 	$translateProvider.preferredLanguage('fr');
     
 }])
 
-.run(['$rootScope', '$location','loginService', 'sessionManager','$translate','APP_CONFIG',
-    function ($rootScope, $location, loginService, sessionManager,$translate,APP_CONFIG) {
+.run(['$rootScope', '$location','loginService', 'sessionManager','$translate','APP_CONFIG','$translatePartialLoader',
+    function ($rootScope, $location, loginService, sessionManager,$translate,APP_CONFIG,$translatePartialLoader) {
 	    $rootScope.appName = APP_CONFIG.appName ;
 	    $rootScope.appVersion = APP_CONFIG.appVersion ;
 	    $rootScope.sessionManager = sessionManager;
@@ -69,5 +69,8 @@ angular.module('AdBase', [
         $rootScope.changeLanguage = function (langKey) {
             $translate.use(langKey);
         };
+    	$translatePartialLoader.addPart('shared');
+    	$translatePartialLoader.addPart('main');
+    	$translate.refresh();
     }]
 );
