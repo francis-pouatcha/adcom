@@ -1,8 +1,8 @@
 'use strict';
 
 // declare modules
-angular.module('SessionManager');
-angular.module('AuthInterceptor');
+//angular.module('SessionManager');
+//angular.module('AuthInterceptor');
 
 angular.module('AdBase', [
     'ngRoute',
@@ -10,7 +10,8 @@ angular.module('AdBase', [
     'SessionManager',
     'AuthInterceptor',
     'ngSanitize',
-    'pascalprecht.translate'
+    'pascalprecht.translate',
+    'NavBar'
 ])
 .constant('APP_CONFIG',{
 	'appName':'AD Base',
@@ -36,7 +37,7 @@ angular.module('AdBase', [
     $httpProvider.interceptors.push('authInterceptor');
     
     $translateProvider.useLoader('$translatePartialLoader', {
-        urlTemplate: '/i18n/{part}/locale-{lang}.json'
+        urlTemplate: '{part}/locale-{lang}.json'
     });
 
 	$translateProvider.preferredLanguage('fr');
@@ -47,6 +48,7 @@ angular.module('AdBase', [
     function ($rootScope, $location, loginService, sessionManager,$translate,APP_CONFIG,$translatePartialLoader) {
 	    $rootScope.appName = APP_CONFIG.appName ;
 	    $rootScope.appVersion = APP_CONFIG.appVersion ;
+	    sessionManager.appMenuUrl("/adbase.client/menu_resp.html");
 	    $rootScope.sessionManager = sessionManager;
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
         	var path = $location.path();
@@ -66,11 +68,7 @@ angular.module('AdBase', [
     			}
         	}
         });
-        $rootScope.changeLanguage = function (langKey) {
-            $translate.use(langKey);
-        };
-    	$translatePartialLoader.addPart('shared');
-    	$translatePartialLoader.addPart('main');
+        $translatePartialLoader.addPart('/adbase.client/i18n/main');
     	$translate.refresh();
     }]
 );

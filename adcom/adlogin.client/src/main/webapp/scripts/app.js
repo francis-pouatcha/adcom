@@ -1,8 +1,9 @@
 'use strict';
 
 // declare modules
-angular.module('SessionManager');
-angular.module('AuthInterceptor');
+//angular.module('SessionManager');
+//angular.module('AuthInterceptor');
+//angular.module('NavBar');
 
 angular.module('AdLogin', [
     'ngRoute',
@@ -10,7 +11,8 @@ angular.module('AdLogin', [
     'SessionManager',
     'AuthInterceptor',
     'ngSanitize',
-    'pascalprecht.translate'
+    'pascalprecht.translate',
+    'NavBar'
 ])
 .constant('APP_CONFIG',{
 	'appName':'AD Login',
@@ -42,17 +44,18 @@ angular.module('AdLogin', [
     $httpProvider.interceptors.push('authInterceptor');
     
     $translateProvider.useLoader('$translatePartialLoader', {
-        urlTemplate: '/i18n/{part}/locale-{lang}.json'
+        urlTemplate: '{part}/locale-{lang}.json'
     });
 
-	$translateProvider.preferredLanguage('fr');
-    
+	$translateProvider.preferredLanguage('fr');	
 }])
 
 .run(['$rootScope', '$location','sessionManager','$translate','APP_CONFIG','workspaceService','$translatePartialLoader',
     function ($rootScope, $location, sessionManager,$translate,APP_CONFIG,workspaceService,$translatePartialLoader) {
 	    $rootScope.appName = APP_CONFIG.appName ;
 	    $rootScope.appVersion = APP_CONFIG.appVersion ;
+	    $rootScope.sessionManager = sessionManager;
+	    
 	    sessionManager.workspaceLink("#/workspaces");// Special handling for the login application.
 	    sessionManager.workspaces(function(){
         	if($location.path()!='/workspaces'){
@@ -61,7 +64,6 @@ angular.module('AdLogin', [
         		workspaceService.loadWorkspaces(function(data, status, headers, config){}, function(data, status, headers, config){});
         	}
     	});
-	    $rootScope.sessionManager = sessionManager;
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
         	var path = $location.path();
         	var noLoginPath = path != '/login';
@@ -79,19 +81,9 @@ angular.module('AdLogin', [
 				$location.path('/login');
         	}
         });
-        $rootScope.changeLanguage = function (langKey) {
-            $translate.use(langKey);
-        };
 
-        $rootScope.loadWorkspaces = function(){
-        	if($location.path()!='/workspaces'){
-        		$location.path('/workspaces');
-        	} else {
-        		workspaceService.loadWorkspaces(function(data, status, headers, config){}, function(data, status, headers, config){});
-        	}
-    	};
-    	$translatePartialLoader.addPart('shared');
-    	$translatePartialLoader.addPart('main');
+    	$translatePartialLoader.addPart('/adlogin.client/i18n/main');
     	$translate.refresh();
+    	
     }]
 );

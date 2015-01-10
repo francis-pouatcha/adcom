@@ -3,10 +3,5 @@
 	"Username_is_required":"Username is required",
 	"Password":"Password",
 	"Password_is_required":"Password is required",
-	"Login":"Login",
-	"workspace_loginName":"Login Name",
-	"workspace_ouWsIdentif":"Workspace",
-	"workspace_login":"Login",
-	"workspace_logOut":"Logout",
-	"workspace_appMenu":"Menu"
+	"Login":"Login"
 }

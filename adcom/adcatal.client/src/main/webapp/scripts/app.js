@@ -1,7 +1,8 @@
 'use strict';
 
-angular.module('SessionManager');
-angular.module('AuthInterceptor');
+//angular.module('SessionManager');
+//angular.module('AuthInterceptor');
+//angular.module('NavBar');
 
 angular.module('AdCatal', [
       'ngRoute',
@@ -9,7 +10,8 @@ angular.module('AdCatal', [
       'SessionManager',
       'AuthInterceptor',
       'ngSanitize',
-      'pascalprecht.translate'
+      'pascalprecht.translate',
+      'NavBar'
 ])
 .constant('APP_CONFIG',{
 	'appName':'AD Catal',
@@ -17,8 +19,8 @@ angular.module('AdCatal', [
 
 })
 
-.config(['$routeProvider', '$httpProvider','$translateProvider','$translatePartialLoader',
-         function($routeProvider,$httpProvider,$translateProvider,$translatePartialLoader) {
+.config(['$routeProvider', '$httpProvider','$translateProvider','$translatePartialLoaderProvider',
+         function($routeProvider,$httpProvider,$translateProvider,$translatePartialLoaderProvider) {
     $routeProvider
       .when('/',{templateUrl:'views/landing.html',controller:'LandingPageController'})
       .when('/CatalArtDetailConfigs',{templateUrl:'views/CatalArtDetailConfig/search.html',controller:'SearchCatalArtDetailConfigController'})
@@ -57,7 +59,7 @@ angular.module('AdCatal', [
     $httpProvider.interceptors.push('authInterceptor');
     
     $translateProvider.useLoader('$translatePartialLoader', {
-        urlTemplate: '/i18n/{part}/locale-{lang}.json'
+        urlTemplate: '{part}/locale-{lang}.json'
     });
 
 	$translateProvider.preferredLanguage('fr');
@@ -92,10 +94,7 @@ angular.module('AdCatal', [
 			}
     	}
     });
-    $rootScope.changeLanguage = function (langKey) {
-        $translate.use(langKey);
-    };
-	$translatePartialLoader.addPart('shared');
-	$translatePartialLoader.addPart('main');
+
+	$translatePartialLoader.addPart('/adcatal.client/i18n/main');
 	$translate.refresh();
 }]);

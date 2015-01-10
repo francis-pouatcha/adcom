@@ -22,6 +22,17 @@ angular.module('SessionManager',['Base64Factory','ADUtils'])
     var appMenuTemplUrl;
     var workspaceLink = "#";
     var workspaceFct;
+    var userWsHolder = {
+    	loginName:'',
+    	roleIdentif:'',
+    	clientApp:'',
+    	ouTypes:'',
+    	targetOuIdentif:'',
+    	userFullName:'',
+    	email:'',
+    	terminalName:'',
+    	timeZone:''
+    };
 
     
     auth.isSet = function(value){
@@ -66,6 +77,16 @@ angular.module('SessionManager',['Base64Factory','ADUtils'])
         $http.get('/adbase.server/rest/session/wsin')
         .success(function(data, status, headers, config){
     		sess.opr='req';
+    	    userWsHolder.loginName=data.loginName;
+    	    userWsHolder.roleIdentif=data.roleIdentif;
+    	    userWsHolder.clientApp=data.clientApp;
+    	    userWsHolder.ouTypes=data.ouTypes=data;
+    	    userWsHolder.targetOuIdentif=data.targetOuIdentif;
+    	    userWsHolder.userFullName=data.userFullName;
+    	    userWsHolder.email=data.email;
+    	    userWsHolder.terminalName=data.terminalName;
+    	    userWsHolder.timeZone=data.timeZone;
+    		
     		consumeSessData(headers);
     		adUtils.removeSearchOnUrl();
 			successCallback(data, status, headers, config);
@@ -169,13 +190,13 @@ angular.module('SessionManager',['Base64Factory','ADUtils'])
     		appMenuTemplUrl = value;
     	}
     	return appMenuTemplUrl;
-    }
+    };
     auth.workspaceLink = function(value){
     	if(auth.isSet(value)){
     		workspaceLink = value;
     	}
     	return workspaceLink;
-    }
+    };
     auth.workspaces = function(fkt){
     	if(auth.isSet(fkt)){
     		workspaceFct = fkt;
@@ -186,7 +207,10 @@ angular.module('SessionManager',['Base64Factory','ADUtils'])
         		auth.wsout('_login_');
         	}
     	}
-    }
+    };
+    auth.userWsData = function(){
+    	return userWsHolder;
+    }; 
 
     return auth;
 

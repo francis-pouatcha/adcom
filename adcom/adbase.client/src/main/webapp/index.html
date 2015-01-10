@@ -12,7 +12,7 @@
     <script src="/adres.client/vendors/bootstrap/js/bootstrap.js"></script>
 </head>
 <body class="theme-blue">
-	<div ng-include="'/adres.client/templates/navbar.html'"></div>
+	<div ng-include="'/adres.client/views/navbar.html'"></div>
     <div class="container">
         <div class="col-xs-offset-2 col-xs-8" ng-show="sessionManager.hasAuthErrors()">
             <div class="has-error">
@@ -36,6 +36,7 @@
     <script src="/adres.client/services/ADUtils.js"></script>
     <script src="/adres.client/services/SessionManager.js"></script>
     <script src="/adres.client/services/AuthInterceptor.js"></script>
+    <script src="/adres.client/modules/NavBar.js"></script>
     <script src="modules/login/module.js"></script>
     <script src="scripts/app.js"></script>
     <script src="modules/login/resources.js"></script>
