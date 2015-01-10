@@ -1,35 +1,98 @@
 <div class="row">
 	<div class="col-lg-3">
-		<div class="list-group">
-			<a  class="list-group-item active"> Menu </a> <a
-				 class="list-group-item">Users</a> <a
-				 class="list-group-item">Terminals</a> <a
-				class="list-group-item">Workspace</a> 
-            <a class="list-group-item">Organisation Unit</a>
-            <a class="list-group-item" href="#/outypes/list">Organisation Unit Type</a>
-		</div>
+        <ng-include src="'views/menu.html'"  ></ng-include>
 	</div>
 	<div class="col-lg-9">
-        <div class="row">
-            <a href="#/outypes/new"> {{'Create' | translate}} </a>
+
+        <div class="panel panel-default  ng-scope">
+            <div class="panel-heading no-collapse">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <b>{{"Entity_search.title"|translate}}</b>
+                    </div>
+                </div>
+
+            </div>
+            <div class="panel-body">
+                <div class="">
+                    <form role="form" class="">
+                        <div class="row" >
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label class="control-label" for="">Parent Type</label>
+                                    <div class="">
+                                        <input type="text"  ng-model="loginCtrl.searchEntity.fullName" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label class="control-label" >Type Name</label>
+                                    <div class="">
+                                        <input type="text" ng-model="loginCtrl.searchEntity.ouIdentif" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-2">
+                                <div class="form-group">
+                                    <button  ng-click="loginCtrl.handleSearchRequestEvent()" class="btn btn-default " style="margin-top: 23px;" >
+                                        <i class="glyphicon glyphicon-search"></i>
+                                    </button>
+                                    <button  ng-click="loginCtrl.handlePrintRequestEvent()" class="btn btn-default " style="margin-top: 23px;" >
+                                        <i class="glyphicon glyphicon-print"></i>
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
         </div>
-		<table class="table table-bordered  table-striped table-hover">
-			<thead>
-				<tr>
-					<th class="text-center">Identif</th>
-					<th class="text-center">Name</th>
-					<th class="text-center">Parent type</th>
-					<th class="text-center">Parent type name</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-			</tbody>
-		</table>
+
+        <div class="panel panel-default ">
+            <div class="panel-heading no-collapse"><b>Resultat </b></div>
+            <div class="panel-body">
+                <div class="col-lg-12">
+                    <div  class="row">
+                        <a class="btn btn-primary pull-right margBott10" href="#/adbase/login/new" >
+                            <i class="glyphicon-plus"></i> {{"Entity_create.title" | translate}}
+                        </a>
+
+                    </div>
+                    <div class="table-overflow-middle row">
+                        <table class="table table-bordered  table-striped pointer-element" >
+                            <thead>
+                            <tr>
+                                <th class="text-center">Parent type Id</th>
+                                <th class="text-center">Parent type name</th>
+                                <th class="text-center">Type name</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="outype in outypes">
+                                <td>d</td>
+                                <td>d</td>
+                                <td>d</td>
+                                <td>d</td>
+                                <td>d</td>
+                                <td><a href="#/adbase/outypes/show/{{outype.id}}" ><i class="glyphicon glyphicon-eye-open"></i></a></td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
 	</div>
 </div>
+

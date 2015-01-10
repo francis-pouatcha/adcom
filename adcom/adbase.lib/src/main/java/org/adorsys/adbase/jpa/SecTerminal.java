@@ -1,10 +1,12 @@
 package org.adorsys.adbase.jpa;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 import org.adorsys.javaext.description.Description;
 
-@Entity
+@Entity 
+@Table(name="BaseSecTerminal")
 @Description("SecTerminal_description")
 public class SecTerminal extends SecAbstractTerminal {
 

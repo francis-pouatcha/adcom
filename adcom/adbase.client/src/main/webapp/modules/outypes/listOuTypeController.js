@@ -10,4 +10,5 @@ angular.module('AdBase')
             $scope.search = function () {
                 return ouTypeResource.search(organisationUnit);
             };
+            
 }]);

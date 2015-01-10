@@ -2,13 +2,15 @@ package org.adorsys.adbase.jpa;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.adorsys.adcore.jpa.AbstractTimedData;
 import org.adorsys.javaext.description.Description;
 import org.apache.commons.lang3.StringUtils;
 
-@Entity
+@Entity 
+@Table(name="BaseOrgUnit")
 @Description("OrgUnit_description")
 public class OrgUnit extends AbstractTimedData {
 

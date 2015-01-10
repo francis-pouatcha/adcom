@@ -25,7 +25,7 @@
     				<li><a><span class="navbar-brand col-lg-offset-2" style="text-align:center">{{"workspace_ouWsIdentif"|translate}} : {{"workspace_admin"|translate}}</span></a></li>
     			</ul>
     			<ul class="nav navbar-nav navbar-right">
-    				<li class="dropdown" ng-show="sessionManager.userSession()"><a class="dropdown-toggle glyphicon glyphicon-user" data-toggle="dropdown" href=""><b  ng-bind="sessionManager.loginName()"></b></a>
+    				<li class="dropdown" ng-show="sessionManager.userSession()"><a class="dropdown-toggle glyphicon glyphicon-user" data-toggle="dropdown" href=""> <b  ng-bind="sessionManager.loginName()"></b></a>
     					<ul class="dropdown-menu">
     						<li><a href="#" ng-click="sessionManager.logout();">{{"workspace_logOut"|translate}}</a></li>
     						<li><a href="#" ng-click="changeLanguage('en')" class="pointer-element">English</a></li>

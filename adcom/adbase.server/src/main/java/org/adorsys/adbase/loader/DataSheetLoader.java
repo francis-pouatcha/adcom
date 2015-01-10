@@ -21,7 +21,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 @Startup
 public class DataSheetLoader extends AbstractLoader {
 
-	String dataDir = "adbase/data";
+	String dataDir = "adcom/adbase/data";
 	String processedSuffix = ".processed";
 	
 	@SuppressWarnings("rawtypes")
@@ -59,6 +59,11 @@ public class DataSheetLoader extends AbstractLoader {
 	
 	public void registerLoader(String key, AbstractObjectLoader<?> value){
 		loaders.put(key, value);
+	}
+
+	@Override
+	public String getFileName() {
+		return "adbase.tpl.xls";
 	}
 
 }

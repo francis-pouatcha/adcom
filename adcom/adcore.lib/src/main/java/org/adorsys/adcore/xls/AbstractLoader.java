@@ -65,7 +65,7 @@ public abstract class AbstractLoader {
 		OutputStream stream = null;
 		try {
 			if(!tplDir.exists()) tplDir.mkdirs();
-			stream = new FileOutputStream(new File(tplDir,"adbase.tpl.xls"));
+			stream = new FileOutputStream(new File(tplDir,getFileName()));
 			workbook.write(stream);
 		} catch (IOException e) {
 			throw new IllegalStateException(e);
@@ -79,4 +79,6 @@ public abstract class AbstractLoader {
 	public abstract String getProcessedSuffix();
 
 	public abstract String getDir();
+	
+	public abstract String getFileName();
 }

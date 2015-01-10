@@ -5,6 +5,7 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -13,6 +14,7 @@ import org.adorsys.javaext.description.Description;
 import org.adorsys.javaext.format.DateFormatPattern;
 
 @Entity
+@Table(name="BaseConnHist")
 @Description("ConnectionHistory_description")
 public class ConnectionHistory extends AbstractMvmtData {
 

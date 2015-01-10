@@ -6,7 +6,7 @@ angular.module('AdBase').factory('loginResource',['$http', function($http){
     searchInput = {
         entity:{},
         start:0,
-        max:20,
+        max:100,
         fieldNames:[]
     },
     entity = {};
@@ -65,6 +65,10 @@ angular.module('AdBase').factory('loginResource',['$http', function($http){
     };
     service.findManagedLogins = function(searchInput){
         return $http.post(urlBase+'/findManagedLogins',searchInput);
+    };
+
+    function getSearchInput(){
+        return searchInput ;
     };
     
     return service;
