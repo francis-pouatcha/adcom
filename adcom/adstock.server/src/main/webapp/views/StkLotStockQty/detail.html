@@ -1,0 +1,45 @@
+<header ng-switch on="$location.path().indexOf('/StkLotStockQtys/new') > -1">
+    <h3 ng-switch-when="true">Create StkLotStockQty</h3>
+    <h3 ng-switch-when="false">View or edit StkLotStockQty</h3>
+</header>
+<form id="StkLotStockQtyForm" name="StkLotStockQtyForm" class="form-horizontal">
+    <div ng-show="displayError" class="alert alert-error">
+        <strong>Error!</strong> Something broke. Retry, or cancel and start afresh.
+    </div>
+    <div class="control-group" ng-class="{error: StkLotStockQtyForm.lotCode.$invalid}">
+        <label for="lotCode" class="control-label">Lot Code</label>
+        <div id="lotCodeControls" class="controls">
+            <input id="lotCode" name="lotCode" type="text" required ng-model="stkLotStockQty.lotCode" placeholder="Enter the StkLotStockQty Lot Code"></input>
+            <span class="help-inline" ng-show="StkLotStockQtyForm.lotCode.$error.required">required</span> 
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: StkLotStockQtyForm.artPic.$invalid}">
+        <label for="artPic" class="control-label">Art Pic</label>
+        <div id="artPicControls" class="controls">
+            <input id="artPic" name="artPic" type="text" required ng-model="stkLotStockQty.artPic" placeholder="Enter the StkLotStockQty Art Pic"></input>
+            <span class="help-inline" ng-show="StkLotStockQtyForm.artPic.$error.required">required</span> 
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: StkLotStockQtyForm.stockQty.$invalid}">
+        <label for="stockQty" class="control-label">Stock Qty</label>
+        <div id="stockQtyControls" class="controls">
+            <input id="stockQty" name="stockQty" type="text" required ng-model="stkLotStockQty.stockQty" placeholder="Enter the StkLotStockQty Stock Qty"></input>
+            <span class="help-inline" ng-show="StkLotStockQtyForm.stockQty.$error.required">required</span> 
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: StkLotStockQtyForm.qtyDt.$invalid}">
+        <label for="qtyDt" class="control-label">Qty Dt</label>
+        <div id="qtyDtControls" class="controls">
+            <datetime id="qtyDt" name="qtyDt" required ng-model="stkLotStockQty.qtyDt" placeholder="Enter the StkLotStockQty Qty Dt"></datetime>
+            <span class="help-inline" ng-show="StkLotStockQtyForm.qtyDt.$error.required">required</span> 
+            <span class="help-inline" ng-show="StkLotStockQtyForm.qtyDt.$error.dateFormat">does not match format "yyyy-MM-dd hh:mm:ss"</span>
+        </div>
+    </div>
+    <div class="control-group">
+        <div class="controls">
+            <button id="saveStkLotStockQty" name="saveStkLotStockQty" class="btn btn-primary" ng-disabled="isClean() || StkLotStockQtyForm.$invalid" ng-click="save()"><i class="icon-ok-sign icon-white"></i> Save</button>
+            <button id="cancel" name="cancel" class="btn" ng-click="cancel()"><i class="icon-remove-sign"></i> Cancel</button>
+            <button id="deleteStkLotStockQty" name="deleteStkLotStockQty" class="btn btn-danger" ng-show="stkLotStockQty.id" ng-click="remove()"><i class="icon-trash icon-white"></i> Delete</button>
+        </div>
+    <div>
+</form>

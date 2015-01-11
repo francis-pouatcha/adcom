@@ -1,0 +1,160 @@
+<div class="form-horizontal">
+    <h3>Create a new StkArticleLot</h3>
+    <div class="control-group">
+        <div class="controls">
+            <a id="Create" name="Create" class="btn btn-primary" href="#/StkArticleLots/new"><i class="icon-plus-sign icon-white"></i> Create</a>
+        </div>
+    </div>
+</div>
+<hr/>
+<div>
+    <h3>Search for StkArticleLots</h3>
+    <form id="StkArticleLotSearch" class="form-horizontal">
+    <div class="control-group">
+        <label for="lotPic" class="control-label">Lot Pic</label>
+        <div class="controls">
+            <input id="lotPic" name="lotPic" type="text" ng-model="search.lotPic" placeholder="Enter the StkArticleLot Lot Pic"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="artPic" class="control-label">Art Pic</label>
+        <div class="controls">
+            <input id="artPic" name="artPic" type="text" ng-model="search.artPic" placeholder="Enter the StkArticleLot Art Pic"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="supplierPic" class="control-label">Supplier Pic</label>
+        <div class="controls">
+            <input id="supplierPic" name="supplierPic" type="text" ng-model="search.supplierPic" placeholder="Enter the StkArticleLot Supplier Pic"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="sppuHT" class="control-label">Sppu HT</label>
+        <div class="controls">
+            <input id="sppuHT" name="sppuHT" type="text" ng-model="search.sppuHT" placeholder="Enter the StkArticleLot Sppu HT"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="sppuCur" class="control-label">Sppu Cur</label>
+        <div class="controls">
+            <input id="sppuCur" name="sppuCur" type="text" ng-model="search.sppuCur" placeholder="Enter the StkArticleLot Sppu Cur"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="minSppuHT" class="control-label">Min Sppu HT</label>
+        <div class="controls">
+            <input id="minSppuHT" name="minSppuHT" type="text" ng-model="search.minSppuHT" placeholder="Enter the StkArticleLot Min Sppu HT"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="vatSalesPct" class="control-label">Vat Sales Pct</label>
+        <div class="controls">
+            <input id="vatSalesPct" name="vatSalesPct" type="text" ng-model="search.vatSalesPct" placeholder="Enter the StkArticleLot Vat Sales Pct"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="salesWrntyDys" class="control-label">Sales Wrnty Dys</label>
+        <div class="controls">
+            <input id="salesWrntyDys" name="salesWrntyDys" type="text" ng-model="search.salesWrntyDys" placeholder="Enter the StkArticleLot Sales Wrnty Dys"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="salesRtrnDays" class="control-label">Sales Rtrn Days</label>
+        <div class="controls">
+            <input id="salesRtrnDays" name="salesRtrnDays" type="text" ng-model="search.salesRtrnDays" placeholder="Enter the StkArticleLot Sales Rtrn Days"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="pppuHT" class="control-label">Pppu HT</label>
+        <div class="controls">
+            <input id="pppuHT" name="pppuHT" type="text" ng-model="search.pppuHT" placeholder="Enter the StkArticleLot Pppu HT"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="pppuCur" class="control-label">Pppu Cur</label>
+        <div class="controls">
+            <input id="pppuCur" name="pppuCur" type="text" ng-model="search.pppuCur" placeholder="Enter the StkArticleLot Pppu Cur"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="vatPurchPct" class="control-label">Vat Purch Pct</label>
+        <div class="controls">
+            <input id="vatPurchPct" name="vatPurchPct" type="text" ng-model="search.vatPurchPct" placeholder="Enter the StkArticleLot Vat Purch Pct"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="purchWrntyDys" class="control-label">Purch Wrnty Dys</label>
+        <div class="controls">
+            <input id="purchWrntyDys" name="purchWrntyDys" type="text" ng-model="search.purchWrntyDys" placeholder="Enter the StkArticleLot Purch Wrnty Dys"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="purchRtrnDays" class="control-label">Purch Rtrn Days</label>
+        <div class="controls">
+            <input id="purchRtrnDays" name="purchRtrnDays" type="text" ng-model="search.purchRtrnDays" placeholder="Enter the StkArticleLot Purch Rtrn Days"></input>
+        </div>
+    </div>
+        <div class="control-group">
+            <div class="controls">
+                <a id="Search" name="Search" class="btn btn-primary" ng-click="performSearch()"><i class="icon-search icon-white"></i> Search</a>
+            </div>
+        </div>
+    </form>
+</div>
+<div id="search-results">
+    <table class="table table-bordered table-striped clearfix">
+        <thead>
+            <tr>
+                <th>Lot Pic</th>
+                <th>Art Pic</th>
+                <th>Supplier Pic</th>
+                <th>Stkg Dt</th>
+                <th>Expir Dt</th>
+                <th>Sppu HT</th>
+                <th>Sppu Cur</th>
+                <th>Min Sppu HT</th>
+                <th>Vat Sales Pct</th>
+                <th>Sales Wrnty Dys</th>
+                <th>Sales Rtrn Days</th>
+                <th>Pppu HT</th>
+                <th>Pppu Cur</th>
+                <th>Vat Purch Pct</th>
+                <th>Purch Wrnty Dys</th>
+                <th>Purch Rtrn Days</th>
+            </tr>
+        </thead>
+        <tbody id="search-results-body">
+            <tr ng-repeat="result in searchResults | searchFilter:searchResults | startFrom:currentPage*pageSize | limitTo:pageSize">
+                <td><a href="#/StkArticleLots/edit/{{result.id}}">{{result.lotPic}}</a></td>
+                <td><a href="#/StkArticleLots/edit/{{result.id}}">{{result.artPic}}</a></td>
+                <td><a href="#/StkArticleLots/edit/{{result.id}}">{{result.supplierPic}}</a></td>
+                <td><a href="#/StkArticleLots/edit/{{result.id}}">{{result.stkgDt| date:'yyyy-MM-dd HH:mm:ss Z'}}</a></td>
+                <td><a href="#/StkArticleLots/edit/{{result.id}}">{{result.expirDt| date:'yyyy-MM-dd HH:mm:ss Z'}}</a></td>
+                <td><a href="#/StkArticleLots/edit/{{result.id}}">{{result.sppuHT}}</a></td>
+                <td><a href="#/StkArticleLots/edit/{{result.id}}">{{result.sppuCur}}</a></td>
+                <td><a href="#/StkArticleLots/edit/{{result.id}}">{{result.minSppuHT}}</a></td>
+                <td><a href="#/StkArticleLots/edit/{{result.id}}">{{result.vatSalesPct}}</a></td>
+                <td><a href="#/StkArticleLots/edit/{{result.id}}">{{result.salesWrntyDys}}</a></td>
+                <td><a href="#/StkArticleLots/edit/{{result.id}}">{{result.salesRtrnDays}}</a></td>
+                <td><a href="#/StkArticleLots/edit/{{result.id}}">{{result.pppuHT}}</a></td>
+                <td><a href="#/StkArticleLots/edit/{{result.id}}">{{result.pppuCur}}</a></td>
+                <td><a href="#/StkArticleLots/edit/{{result.id}}">{{result.vatPurchPct}}</a></td>
+                <td><a href="#/StkArticleLots/edit/{{result.id}}">{{result.purchWrntyDys}}</a></td>
+                <td><a href="#/StkArticleLots/edit/{{result.id}}">{{result.purchRtrnDays}}</a></td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="pagination pagination-centered">
+        <ul>
+            <li ng-class="{disabled:currentPage == 0}">
+                <a id="prev" href ng-click="previous()">«</a>
+            </li>
+            <li ng-repeat="n in pageRange" ng-class="{active:currentPage == n}" ng-click="setPage(n)">
+                <a href ng-bind="n + 1">1</a>
+            </li>
+            <li ng-class="{disabled: currentPage == (numberOfPages() - 1)}">
+                <a id="next" href ng-click="next()">»</a>
+            </li>
+        </ul>
+    </div>
+</div>
