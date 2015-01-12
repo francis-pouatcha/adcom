@@ -1,0 +1,22 @@
+<div class="col-xs-offset-2 row">
+    <div class="col-lg-9 box">
+            <div class="row">
+                <label >{{'idSize' | translate}}</label>
+                <span id="idSize">{{ouType.idSize}} </span>
+            </div>
+            <div class="row">
+                <label >{{'typeName' | translate }}</label>
+                <span id="typeName">{{ouType.typeName}} </span>
+            </div>
+
+            <div class="row">
+                <label >{{'parentType' | translate }}</label>
+                <span id="parentType" > {{ ouType.parentType }} </span>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn pull-right" ng-click="goToUpdate();">{{ 'Entity_edit.title' | translate }}</button>
+                <button type="button" class="btn btn-primary pull-right" ng-click="goToList();">{{ 'Ok' | translate }}</button>
+            </div>
+    </div>
+</div>

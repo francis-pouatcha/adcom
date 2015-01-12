@@ -10,6 +10,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -26,6 +27,7 @@ import org.adorsys.adbase.jpa.OuType;
 import org.adorsys.adbase.jpa.OuTypeSearchInput;
 import org.adorsys.adbase.jpa.OuTypeSearchResult;
 import org.adorsys.adbase.jpa.OuType_;
+import org.apache.http.protocol.HTTP;
 
 /**
  * 
@@ -59,7 +61,7 @@ public class OuTypeEndpoint
    }
 
    @PUT
-   @Path("/{id:[0-9][0-9]*}")
+   @Path("/{id}")
    @Produces({ "application/json", "application/xml" })
    @Consumes({ "application/json", "application/xml" })
    public OuType update(OuType entity)
@@ -68,7 +70,7 @@ public class OuTypeEndpoint
    }
 
    @GET
-   @Path("/{id:[0-9][0-9]*}")
+   @Path("/{id}")
    @Produces({ "application/json", "application/xml" })
    public Response findById(@PathParam("id") String id)
    {
@@ -144,6 +146,27 @@ public class OuTypeEndpoint
       return ejb.countByLike(searchInput.getEntity(), attributes);
    }
 
+
+   @GET
+   @Path("/findActifsFromNow")
+   @Produces({ "application/json", "application/xml" })
+   public OuTypeSearchResult findActifsFrom(HttpServletRequest httpServReq)
+   {
+      List<OuType> actifsFromNow = ejb.findActifsFromNow();
+      Long size = ejb.countActifsFromNow();
+      return new OuTypeSearchResult(size,
+            detach(actifsFromNow), detach(new OuTypeSearchInput()));
+   }
+   
+   @POST
+   @Path("/search")
+   @Produces({"application/json","application/xml"})
+   public OuTypeSearchResult search(OuTypeSearchInput ouTypeSearchInput){
+	   OuType entity = ouTypeSearchInput.getEntity();
+	   List<OuType> resultList = ejb.searchQuery(entity.getParentType(), entity.getTypeName(), entity.getValidFrom(), ouTypeSearchInput.getStart(),ouTypeSearchInput.getMax());
+	   OuTypeSearchResult searchResult = new OuTypeSearchResult(Long.valueOf(resultList.size()), detach(resultList), ouTypeSearchInput);
+	   return searchResult;
+   }
    @SuppressWarnings("unchecked")
    private SingularAttribute<OuType, ?>[] readSeachAttributes(
          OuTypeSearchInput searchInput)

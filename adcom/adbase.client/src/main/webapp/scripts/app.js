@@ -22,13 +22,15 @@ angular.module('AdBase', [
          function ($routeProvider, $httpProvider,$translateProvider,$translatePartialLoaderProvider) {
 
     $routeProvider
+    .when('/outypes/new',{templateUrl:'views/outypes/new.html',controller:'newOuTypeController'})
+    .when('/outypes/show/:ouTypeId',{templateUrl:'views/outypes/show.html',controller:'showOuTypeController'})
+    .when('/outypes/update/:ouTypeId',{templateUrl:'views/outypes/update.html',controller:'updateOuTypeController'})
+    .when('/outypes/list',{templateUrl:'views/outypes/list.html',controller:'listOuTypeController'})
     .when('/',{
             templateUrl:'views/login/logins.html',
             controller:'loginController',
             controllerAs: 'loginCtrl'
         })
-
-
     .otherwise({
       redirectTo: '/'
     });
