@@ -10,7 +10,7 @@ angular.module('AdStock', [
       'NavBar'
 ])
 .constant('APP_CONFIG',{
-	'appName':'AD Stock',
+	'appName':'Stock',
 	'appVersion':'1.0.0-SNAPSHOT'
 
 })

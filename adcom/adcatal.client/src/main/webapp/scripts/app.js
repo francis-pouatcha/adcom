@@ -14,7 +14,7 @@ angular.module('AdCatal', [
       'NavBar'
 ])
 .constant('APP_CONFIG',{
-	'appName':'AD Catal',
+	'appName':'Product Catalogue',
 	'appVersion':'1.0.0-SNAPSHOT'
 
 })

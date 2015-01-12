@@ -14,7 +14,7 @@ angular.module('AdBase', [
     'NavBar'
 ])
 .constant('APP_CONFIG',{
-	'appName':'AD Base',
+	'appName':'Administration',
 	'appVersion':'1.0.0-SNAPSHOT'
 
 })
