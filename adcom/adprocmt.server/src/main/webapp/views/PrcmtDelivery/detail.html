@@ -1,0 +1,154 @@
+<header ng-switch on="$location.path().indexOf('/PrcmtDeliverys/new') > -1">
+    <h3 ng-switch-when="true">Create PrcmtDelivery</h3>
+    <h3 ng-switch-when="false">View or edit PrcmtDelivery</h3>
+</header>
+<form id="PrcmtDeliveryForm" name="PrcmtDeliveryForm" class="form-horizontal">
+    <div ng-show="displayError" class="alert alert-error">
+        <strong>Error!</strong> Something broke. Retry, or cancel and start afresh.
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDeliveryForm.dlvryNbr.$invalid}">
+        <label for="dlvryNbr" class="control-label">Dlvry Nbr</label>
+        <div id="dlvryNbrControls" class="controls">
+            <input id="dlvryNbr" name="dlvryNbr" type="text" required ng-model="prcmtDelivery.dlvryNbr" placeholder="Enter the PrcmtDelivery Dlvry Nbr"></input>
+            <span class="help-inline" ng-show="PrcmtDeliveryForm.dlvryNbr.$error.required">required</span> 
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDeliveryForm.dlvrySlipNbr.$invalid}">
+        <label for="dlvrySlipNbr" class="control-label">Dlvry Slip Nbr</label>
+        <div id="dlvrySlipNbrControls" class="controls">
+            <input id="dlvrySlipNbr" name="dlvrySlipNbr" type="text" required ng-model="prcmtDelivery.dlvrySlipNbr" placeholder="Enter the PrcmtDelivery Dlvry Slip Nbr"></input>
+            <span class="help-inline" ng-show="PrcmtDeliveryForm.dlvrySlipNbr.$error.required">required</span> 
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDeliveryForm.dtOnDlvrySlip.$invalid}">
+        <label for="dtOnDlvrySlip" class="control-label">Dt On Dlvry Slip</label>
+        <div id="dtOnDlvrySlipControls" class="controls">
+            <datetime id="dtOnDlvrySlip" name="dtOnDlvrySlip" ng-model="prcmtDelivery.dtOnDlvrySlip" placeholder="Enter the PrcmtDelivery Dt On Dlvry Slip"></datetime>
+            <span class="help-inline" ng-show="PrcmtDeliveryForm.dtOnDlvrySlip.$error.dateFormat">does not match format "yyyy-MM-dd hh:mm:ss"</span>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDeliveryForm.orderDt.$invalid}">
+        <label for="orderDt" class="control-label">Order Dt</label>
+        <div id="orderDtControls" class="controls">
+            <datetime id="orderDt" name="orderDt" ng-model="prcmtDelivery.orderDt" placeholder="Enter the PrcmtDelivery Order Dt"></datetime>
+            <span class="help-inline" ng-show="PrcmtDeliveryForm.orderDt.$error.dateFormat">does not match format "yyyy-MM-dd hh:mm:ss"</span>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDeliveryForm.dlvryDt.$invalid}">
+        <label for="dlvryDt" class="control-label">Dlvry Dt</label>
+        <div id="dlvryDtControls" class="controls">
+            <datetime id="dlvryDt" name="dlvryDt" required ng-model="prcmtDelivery.dlvryDt" placeholder="Enter the PrcmtDelivery Dlvry Dt"></datetime>
+            <span class="help-inline" ng-show="PrcmtDeliveryForm.dlvryDt.$error.required">required</span> 
+            <span class="help-inline" ng-show="PrcmtDeliveryForm.dlvryDt.$error.dateFormat">does not match format "yyyy-MM-dd hh:mm:ss"</span>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDeliveryForm.supplier.$invalid}">
+        <label for="supplier" class="control-label">Supplier</label>
+        <div id="supplierControls" class="controls">
+            <input id="supplier" name="supplier" type="text" ng-model="prcmtDelivery.supplier" placeholder="Enter the PrcmtDelivery Supplier"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDeliveryForm.dlvryCur.$invalid}">
+        <label for="dlvryCur" class="control-label">Dlvry Cur</label>
+        <div id="dlvryCurControls" class="controls">
+            <input id="dlvryCur" name="dlvryCur" type="text" ng-model="prcmtDelivery.dlvryCur" placeholder="Enter the PrcmtDelivery Dlvry Cur"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDeliveryForm.grossPPPreTax.$invalid}">
+        <label for="grossPPPreTax" class="control-label">Gross PP Pre Tax</label>
+        <div id="grossPPPreTaxControls" class="controls">
+            <input id="grossPPPreTax" name="grossPPPreTax" type="text" ng-model="prcmtDelivery.grossPPPreTax" placeholder="Enter the PrcmtDelivery Gross PP Pre Tax"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDeliveryForm.rebate.$invalid}">
+        <label for="rebate" class="control-label">Rebate</label>
+        <div id="rebateControls" class="controls">
+            <input id="rebate" name="rebate" type="text" ng-model="prcmtDelivery.rebate" placeholder="Enter the PrcmtDelivery Rebate"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDeliveryForm.netPPPreTax.$invalid}">
+        <label for="netPPPreTax" class="control-label">Net PP Pre Tax</label>
+        <div id="netPPPreTaxControls" class="controls">
+            <input id="netPPPreTax" name="netPPPreTax" type="text" ng-model="prcmtDelivery.netPPPreTax" placeholder="Enter the PrcmtDelivery Net PP Pre Tax"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDeliveryForm.vatAmount.$invalid}">
+        <label for="vatAmount" class="control-label">Vat Amount</label>
+        <div id="vatAmountControls" class="controls">
+            <input id="vatAmount" name="vatAmount" type="text" ng-model="prcmtDelivery.vatAmount" placeholder="Enter the PrcmtDelivery Vat Amount"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDeliveryForm.netPPTaxIncl.$invalid}">
+        <label for="netPPTaxIncl" class="control-label">Net PP Tax Incl</label>
+        <div id="netPPTaxInclControls" class="controls">
+            <input id="netPPTaxIncl" name="netPPTaxIncl" type="text" ng-model="prcmtDelivery.netPPTaxIncl" placeholder="Enter the PrcmtDelivery Net PP Tax Incl"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDeliveryForm.pymtDscntPct.$invalid}">
+        <label for="pymtDscntPct" class="control-label">Pymt Dscnt Pct</label>
+        <div id="pymtDscntPctControls" class="controls">
+            <input id="pymtDscntPct" name="pymtDscntPct" type="text" ng-model="prcmtDelivery.pymtDscntPct" placeholder="Enter the PrcmtDelivery Pymt Dscnt Pct"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDeliveryForm.pymtDscntAmt.$invalid}">
+        <label for="pymtDscntAmt" class="control-label">Pymt Dscnt Amt</label>
+        <div id="pymtDscntAmtControls" class="controls">
+            <input id="pymtDscntAmt" name="pymtDscntAmt" type="text" ng-model="prcmtDelivery.pymtDscntAmt" placeholder="Enter the PrcmtDelivery Pymt Dscnt Amt"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDeliveryForm.netPurchAmt.$invalid}">
+        <label for="netPurchAmt" class="control-label">Net Purch Amt</label>
+        <div id="netPurchAmtControls" class="controls">
+            <input id="netPurchAmt" name="netPurchAmt" type="text" ng-model="prcmtDelivery.netPurchAmt" placeholder="Enter the PrcmtDelivery Net Purch Amt"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDeliveryForm.rdngDscntAmt.$invalid}">
+        <label for="rdngDscntAmt" class="control-label">Rdng Dscnt Amt</label>
+        <div id="rdngDscntAmtControls" class="controls">
+            <input id="rdngDscntAmt" name="rdngDscntAmt" type="text" ng-model="prcmtDelivery.rdngDscntAmt" placeholder="Enter the PrcmtDelivery Rdng Dscnt Amt"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDeliveryForm.netAmtToPay.$invalid}">
+        <label for="netAmtToPay" class="control-label">Net Amt To Pay</label>
+        <div id="netAmtToPayControls" class="controls">
+            <input id="netAmtToPay" name="netAmtToPay" type="text" ng-model="prcmtDelivery.netAmtToPay" placeholder="Enter the PrcmtDelivery Net Amt To Pay"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDeliveryForm.dlvryStatus.$invalid}">
+        <label for="dlvryStatus" class="control-label">Dlvry Status</label>
+        <div id="dlvryStatusControls" class="controls">
+        <select id="dlvryStatus" name="dlvryStatus" ng-model="prcmtDelivery.dlvryStatus" ng-options="d for d in dlvryStatusList" required >
+            <option value="">Choose a Dlvry Status</option>
+        </select>
+        <span class="help-inline" ng-show="PrcmtDeliveryForm.dlvryStatus.$error.required">required</span> 
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDeliveryForm.rcvngOrgUnit.$invalid}">
+        <label for="rcvngOrgUnit" class="control-label">Rcvng Org Unit</label>
+        <div id="rcvngOrgUnitControls" class="controls">
+            <input id="rcvngOrgUnit" name="rcvngOrgUnit" type="text" ng-model="prcmtDelivery.rcvngOrgUnit" placeholder="Enter the PrcmtDelivery Rcvng Org Unit"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDeliveryForm.creatingUsr.$invalid}">
+        <label for="creatingUsr" class="control-label">Creating Usr</label>
+        <div id="creatingUsrControls" class="controls">
+            <input id="creatingUsr" name="creatingUsr" type="text" required ng-model="prcmtDelivery.creatingUsr" placeholder="Enter the PrcmtDelivery Creating Usr"></input>
+            <span class="help-inline" ng-show="PrcmtDeliveryForm.creatingUsr.$error.required">required</span> 
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDeliveryForm.creationDt.$invalid}">
+        <label for="creationDt" class="control-label">Creation Dt</label>
+        <div id="creationDtControls" class="controls">
+            <datetime id="creationDt" name="creationDt" required ng-model="prcmtDelivery.creationDt" placeholder="Enter the PrcmtDelivery Creation Dt"></datetime>
+            <span class="help-inline" ng-show="PrcmtDeliveryForm.creationDt.$error.required">required</span> 
+            <span class="help-inline" ng-show="PrcmtDeliveryForm.creationDt.$error.dateFormat">does not match format "yyyy-MM-dd hh:mm:ss"</span>
+        </div>
+    </div>
+    <div class="control-group">
+        <div class="controls">
+            <button id="savePrcmtDelivery" name="savePrcmtDelivery" class="btn btn-primary" ng-disabled="isClean() || PrcmtDeliveryForm.$invalid" ng-click="save()"><i class="icon-ok-sign icon-white"></i> Save</button>
+            <button id="cancel" name="cancel" class="btn" ng-click="cancel()"><i class="icon-remove-sign"></i> Cancel</button>
+            <button id="deletePrcmtDelivery" name="deletePrcmtDelivery" class="btn btn-danger" ng-show="prcmtDelivery.id" ng-click="remove()"><i class="icon-trash icon-white"></i> Delete</button>
+        </div>
+    <div>
+</form>

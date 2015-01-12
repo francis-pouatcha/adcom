@@ -12,6 +12,7 @@
     <module>adlogin.client</module>
     <module>adcatal.client</module>
     <module>adstock.client</module>
+    <module>adprocmt.client</module>
     <module>adcore.lib</module>
     <module>adbase.lib</module>
     <module>adbase.server</module>
@@ -21,6 +22,7 @@
     <module>adcom.all</module>
     <module>adcom.configuration</module>
     <module>adstock.server</module>
+    <module>adprocmt.server</module>
   </modules>
   <scm>
     <connection>scm:git:https://github.com/francis-pouatcha/adcom.git</connection>

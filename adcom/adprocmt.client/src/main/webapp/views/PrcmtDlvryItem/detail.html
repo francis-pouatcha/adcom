@@ -1,0 +1,197 @@
+<header ng-switch on="$location.path().indexOf('/PrcmtDlvryItems/new') > -1">
+    <h3 ng-switch-when="true">Create PrcmtDlvryItem</h3>
+    <h3 ng-switch-when="false">View or edit PrcmtDlvryItem</h3>
+</header>
+<form id="PrcmtDlvryItemForm" name="PrcmtDlvryItemForm" class="form-horizontal">
+    <div ng-show="displayError" class="alert alert-error">
+        <strong>Error!</strong> Something broke. Retry, or cancel and start afresh.
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDlvryItemForm.dlvryNbr.$invalid}">
+        <label for="dlvryNbr" class="control-label">Dlvry Nbr</label>
+        <div id="dlvryNbrControls" class="controls">
+            <input id="dlvryNbr" name="dlvryNbr" type="text" required ng-model="prcmtDlvryItem.dlvryNbr" placeholder="Enter the PrcmtDlvryItem Dlvry Nbr"></input>
+            <span class="help-inline" ng-show="PrcmtDlvryItemForm.dlvryNbr.$error.required">required</span> 
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDlvryItemForm.poNbr.$invalid}">
+        <label for="poNbr" class="control-label">Po Nbr</label>
+        <div id="poNbrControls" class="controls">
+            <input id="poNbr" name="poNbr" type="text" ng-model="prcmtDlvryItem.poNbr" placeholder="Enter the PrcmtDlvryItem Po Nbr"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDlvryItemForm.lotPic.$invalid}">
+        <label for="lotPic" class="control-label">Lot Pic</label>
+        <div id="lotPicControls" class="controls">
+            <input id="lotPic" name="lotPic" type="text" required ng-model="prcmtDlvryItem.lotPic" placeholder="Enter the PrcmtDlvryItem Lot Pic"></input>
+            <span class="help-inline" ng-show="PrcmtDlvryItemForm.lotPic.$error.required">required</span> 
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDlvryItemForm.artPic.$invalid}">
+        <label for="artPic" class="control-label">Art Pic</label>
+        <div id="artPicControls" class="controls">
+            <input id="artPic" name="artPic" type="text" required ng-model="prcmtDlvryItem.artPic" placeholder="Enter the PrcmtDlvryItem Art Pic"></input>
+            <span class="help-inline" ng-show="PrcmtDlvryItemForm.artPic.$error.required">required</span> 
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDlvryItemForm.supplier.$invalid}">
+        <label for="supplier" class="control-label">Supplier</label>
+        <div id="supplierControls" class="controls">
+            <input id="supplier" name="supplier" type="text" ng-model="prcmtDlvryItem.supplier" placeholder="Enter the PrcmtDlvryItem Supplier"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDlvryItemForm.supplierPic.$invalid}">
+        <label for="supplierPic" class="control-label">Supplier Pic</label>
+        <div id="supplierPicControls" class="controls">
+            <input id="supplierPic" name="supplierPic" type="text" ng-model="prcmtDlvryItem.supplierPic" placeholder="Enter the PrcmtDlvryItem Supplier Pic"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDlvryItemForm.expirDt.$invalid}">
+        <label for="expirDt" class="control-label">Expir Dt</label>
+        <div id="expirDtControls" class="controls">
+            <datetime id="expirDt" name="expirDt" ng-model="prcmtDlvryItem.expirDt" placeholder="Enter the PrcmtDlvryItem Expir Dt"></datetime>
+            <span class="help-inline" ng-show="PrcmtDlvryItemForm.expirDt.$error.dateFormat">does not match format "yyyy-MM-dd hh:mm:ss"</span>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDlvryItemForm.qtyOrdered.$invalid}">
+        <label for="qtyOrdered" class="control-label">Qty Ordered</label>
+        <div id="qtyOrderedControls" class="controls">
+            <input id="qtyOrdered" name="qtyOrdered" type="text" ng-model="prcmtDlvryItem.qtyOrdered" placeholder="Enter the PrcmtDlvryItem Qty Ordered"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDlvryItemForm.qtyDlvrd.$invalid}">
+        <label for="qtyDlvrd" class="control-label">Qty Dlvrd</label>
+        <div id="qtyDlvrdControls" class="controls">
+            <input id="qtyDlvrd" name="qtyDlvrd" type="text" required ng-model="prcmtDlvryItem.qtyDlvrd" placeholder="Enter the PrcmtDlvryItem Qty Dlvrd"></input>
+            <span class="help-inline" ng-show="PrcmtDlvryItemForm.qtyDlvrd.$error.required">required</span> 
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDlvryItemForm.freeQty.$invalid}">
+        <label for="freeQty" class="control-label">Free Qty</label>
+        <div id="freeQtyControls" class="controls">
+            <input id="freeQty" name="freeQty" type="text" ng-model="prcmtDlvryItem.freeQty" placeholder="Enter the PrcmtDlvryItem Free Qty"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDlvryItemForm.stkQtyPreDlvry.$invalid}">
+        <label for="stkQtyPreDlvry" class="control-label">Stk Qty Pre Dlvry</label>
+        <div id="stkQtyPreDlvryControls" class="controls">
+            <input id="stkQtyPreDlvry" name="stkQtyPreDlvry" type="text" ng-model="prcmtDlvryItem.stkQtyPreDlvry" placeholder="Enter the PrcmtDlvryItem Stk Qty Pre Dlvry"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDlvryItemForm.pppuPreTax.$invalid}">
+        <label for="pppuPreTax" class="control-label">Pppu Pre Tax</label>
+        <div id="pppuPreTaxControls" class="controls">
+            <input id="pppuPreTax" name="pppuPreTax" type="text" ng-model="prcmtDlvryItem.pppuPreTax" placeholder="Enter the PrcmtDlvryItem Pppu Pre Tax"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDlvryItemForm.pppuCur.$invalid}">
+        <label for="pppuCur" class="control-label">Pppu Cur</label>
+        <div id="pppuCurControls" class="controls">
+            <input id="pppuCur" name="pppuCur" type="text" ng-model="prcmtDlvryItem.pppuCur" placeholder="Enter the PrcmtDlvryItem Pppu Cur"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDlvryItemForm.grossPPPreTax.$invalid}">
+        <label for="grossPPPreTax" class="control-label">Gross PP Pre Tax</label>
+        <div id="grossPPPreTaxControls" class="controls">
+            <input id="grossPPPreTax" name="grossPPPreTax" type="text" ng-model="prcmtDlvryItem.grossPPPreTax" placeholder="Enter the PrcmtDlvryItem Gross PP Pre Tax"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDlvryItemForm.rebate.$invalid}">
+        <label for="rebate" class="control-label">Rebate</label>
+        <div id="rebateControls" class="controls">
+            <input id="rebate" name="rebate" type="text" ng-model="prcmtDlvryItem.rebate" placeholder="Enter the PrcmtDlvryItem Rebate"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDlvryItemForm.netPPPreTax.$invalid}">
+        <label for="netPPPreTax" class="control-label">Net PP Pre Tax</label>
+        <div id="netPPPreTaxControls" class="controls">
+            <input id="netPPPreTax" name="netPPPreTax" type="text" ng-model="prcmtDlvryItem.netPPPreTax" placeholder="Enter the PrcmtDlvryItem Net PP Pre Tax"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDlvryItemForm.vatPct.$invalid}">
+        <label for="vatPct" class="control-label">Vat Pct</label>
+        <div id="vatPctControls" class="controls">
+            <input id="vatPct" name="vatPct" type="text" ng-model="prcmtDlvryItem.vatPct" placeholder="Enter the PrcmtDlvryItem Vat Pct"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDlvryItemForm.vatAmount.$invalid}">
+        <label for="vatAmount" class="control-label">Vat Amount</label>
+        <div id="vatAmountControls" class="controls">
+            <input id="vatAmount" name="vatAmount" type="text" ng-model="prcmtDlvryItem.vatAmount" placeholder="Enter the PrcmtDlvryItem Vat Amount"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDlvryItemForm.netPPTaxIncl.$invalid}">
+        <label for="netPPTaxIncl" class="control-label">Net PP Tax Incl</label>
+        <div id="netPPTaxInclControls" class="controls">
+            <input id="netPPTaxIncl" name="netPPTaxIncl" type="text" ng-model="prcmtDlvryItem.netPPTaxIncl" placeholder="Enter the PrcmtDlvryItem Net PP Tax Incl"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDlvryItemForm.sppuPreTax.$invalid}">
+        <label for="sppuPreTax" class="control-label">Sppu Pre Tax</label>
+        <div id="sppuPreTaxControls" class="controls">
+            <input id="sppuPreTax" name="sppuPreTax" type="text" ng-model="prcmtDlvryItem.sppuPreTax" placeholder="Enter the PrcmtDlvryItem Sppu Pre Tax"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDlvryItemForm.purchWrntyDys.$invalid}">
+        <label for="purchWrntyDys" class="control-label">Purch Wrnty Dys</label>
+        <div id="purchWrntyDysControls" class="controls">
+            <input id="purchWrntyDys" name="purchWrntyDys" type="text" ng-model="prcmtDlvryItem.purchWrntyDys" placeholder="Enter the PrcmtDlvryItem Purch Wrnty Dys"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDlvryItemForm.purchRtrnDays.$invalid}">
+        <label for="purchRtrnDays" class="control-label">Purch Rtrn Days</label>
+        <div id="purchRtrnDaysControls" class="controls">
+            <input id="purchRtrnDays" name="purchRtrnDays" type="text" ng-model="prcmtDlvryItem.purchRtrnDays" placeholder="Enter the PrcmtDlvryItem Purch Rtrn Days"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDlvryItemForm.sppuCur.$invalid}">
+        <label for="sppuCur" class="control-label">Sppu Cur</label>
+        <div id="sppuCurControls" class="controls">
+            <input id="sppuCur" name="sppuCur" type="text" ng-model="prcmtDlvryItem.sppuCur" placeholder="Enter the PrcmtDlvryItem Sppu Cur"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDlvryItemForm.minSppuHT.$invalid}">
+        <label for="minSppuHT" class="control-label">Min Sppu HT</label>
+        <div id="minSppuHTControls" class="controls">
+            <input id="minSppuHT" name="minSppuHT" type="text" ng-model="prcmtDlvryItem.minSppuHT" placeholder="Enter the PrcmtDlvryItem Min Sppu HT"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDlvryItemForm.vatSalesPct.$invalid}">
+        <label for="vatSalesPct" class="control-label">Vat Sales Pct</label>
+        <div id="vatSalesPctControls" class="controls">
+            <input id="vatSalesPct" name="vatSalesPct" type="text" ng-model="prcmtDlvryItem.vatSalesPct" placeholder="Enter the PrcmtDlvryItem Vat Sales Pct"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDlvryItemForm.salesWrntyDys.$invalid}">
+        <label for="salesWrntyDys" class="control-label">Sales Wrnty Dys</label>
+        <div id="salesWrntyDysControls" class="controls">
+            <input id="salesWrntyDys" name="salesWrntyDys" type="text" ng-model="prcmtDlvryItem.salesWrntyDys" placeholder="Enter the PrcmtDlvryItem Sales Wrnty Dys"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDlvryItemForm.salesRtrnDays.$invalid}">
+        <label for="salesRtrnDays" class="control-label">Sales Rtrn Days</label>
+        <div id="salesRtrnDaysControls" class="controls">
+            <input id="salesRtrnDays" name="salesRtrnDays" type="text" ng-model="prcmtDlvryItem.salesRtrnDays" placeholder="Enter the PrcmtDlvryItem Sales Rtrn Days"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDlvryItemForm.creatingUsr.$invalid}">
+        <label for="creatingUsr" class="control-label">Creating Usr</label>
+        <div id="creatingUsrControls" class="controls">
+            <input id="creatingUsr" name="creatingUsr" type="text" required ng-model="prcmtDlvryItem.creatingUsr" placeholder="Enter the PrcmtDlvryItem Creating Usr"></input>
+            <span class="help-inline" ng-show="PrcmtDlvryItemForm.creatingUsr.$error.required">required</span> 
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: PrcmtDlvryItemForm.creationDt.$invalid}">
+        <label for="creationDt" class="control-label">Creation Dt</label>
+        <div id="creationDtControls" class="controls">
+            <datetime id="creationDt" name="creationDt" ng-model="prcmtDlvryItem.creationDt" placeholder="Enter the PrcmtDlvryItem Creation Dt"></datetime>
+            <span class="help-inline" ng-show="PrcmtDlvryItemForm.creationDt.$error.dateFormat">does not match format "yyyy-MM-dd hh:mm:ss"</span>
+        </div>
+    </div>
+    <div class="control-group">
+        <div class="controls">
+            <button id="savePrcmtDlvryItem" name="savePrcmtDlvryItem" class="btn btn-primary" ng-disabled="isClean() || PrcmtDlvryItemForm.$invalid" ng-click="save()"><i class="icon-ok-sign icon-white"></i> Save</button>
+            <button id="cancel" name="cancel" class="btn" ng-click="cancel()"><i class="icon-remove-sign"></i> Cancel</button>
+            <button id="deletePrcmtDlvryItem" name="deletePrcmtDlvryItem" class="btn btn-danger" ng-show="prcmtDlvryItem.id" ng-click="remove()"><i class="icon-trash icon-white"></i> Delete</button>
+        </div>
+    <div>
+</form>
