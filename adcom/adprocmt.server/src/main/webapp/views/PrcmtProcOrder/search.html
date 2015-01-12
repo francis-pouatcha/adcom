@@ -1,0 +1,200 @@
+<div class="form-horizontal">
+    <h3>Create a new PrcmtProcOrder</h3>
+    <div class="control-group">
+        <div class="controls">
+            <a id="Create" name="Create" class="btn btn-primary" href="#/PrcmtProcOrders/new"><i class="icon-plus-sign icon-white"></i> Create</a>
+        </div>
+    </div>
+</div>
+<hr/>
+<div>
+    <h3>Search for PrcmtProcOrders</h3>
+    <form id="PrcmtProcOrderSearch" class="form-horizontal">
+    <div class="control-group">
+        <label for="poNbr" class="control-label">Po Nbr</label>
+        <div class="controls">
+            <input id="poNbr" name="poNbr" type="text" ng-model="search.poNbr" placeholder="Enter the PrcmtProcOrder Po Nbr"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="supplier" class="control-label">Supplier</label>
+        <div class="controls">
+            <input id="supplier" name="supplier" type="text" ng-model="search.supplier" placeholder="Enter the PrcmtProcOrder Supplier"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="poCur" class="control-label">Po Cur</label>
+        <div class="controls">
+            <input id="poCur" name="poCur" type="text" ng-model="search.poCur" placeholder="Enter the PrcmtProcOrder Po Cur"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="grossPPPreTax" class="control-label">Gross PP Pre Tax</label>
+        <div class="controls">
+            <input id="grossPPPreTax" name="grossPPPreTax" type="text" ng-model="search.grossPPPreTax" placeholder="Enter the PrcmtProcOrder Gross PP Pre Tax"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="rebate" class="control-label">Rebate</label>
+        <div class="controls">
+            <input id="rebate" name="rebate" type="text" ng-model="search.rebate" placeholder="Enter the PrcmtProcOrder Rebate"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="netPPPreTax" class="control-label">Net PP Pre Tax</label>
+        <div class="controls">
+            <input id="netPPPreTax" name="netPPPreTax" type="text" ng-model="search.netPPPreTax" placeholder="Enter the PrcmtProcOrder Net PP Pre Tax"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="vatAmount" class="control-label">Vat Amount</label>
+        <div class="controls">
+            <input id="vatAmount" name="vatAmount" type="text" ng-model="search.vatAmount" placeholder="Enter the PrcmtProcOrder Vat Amount"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="netPPTaxIncl" class="control-label">Net PP Tax Incl</label>
+        <div class="controls">
+            <input id="netPPTaxIncl" name="netPPTaxIncl" type="text" ng-model="search.netPPTaxIncl" placeholder="Enter the PrcmtProcOrder Net PP Tax Incl"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="pymtDscntPct" class="control-label">Pymt Dscnt Pct</label>
+        <div class="controls">
+            <input id="pymtDscntPct" name="pymtDscntPct" type="text" ng-model="search.pymtDscntPct" placeholder="Enter the PrcmtProcOrder Pymt Dscnt Pct"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="pymtDscntAmt" class="control-label">Pymt Dscnt Amt</label>
+        <div class="controls">
+            <input id="pymtDscntAmt" name="pymtDscntAmt" type="text" ng-model="search.pymtDscntAmt" placeholder="Enter the PrcmtProcOrder Pymt Dscnt Amt"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="netPurchAmt" class="control-label">Net Purch Amt</label>
+        <div class="controls">
+            <input id="netPurchAmt" name="netPurchAmt" type="text" ng-model="search.netPurchAmt" placeholder="Enter the PrcmtProcOrder Net Purch Amt"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="rdngDscntAmt" class="control-label">Rdng Dscnt Amt</label>
+        <div class="controls">
+            <input id="rdngDscntAmt" name="rdngDscntAmt" type="text" ng-model="search.rdngDscntAmt" placeholder="Enter the PrcmtProcOrder Rdng Dscnt Amt"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="netAmtToPay" class="control-label">Net Amt To Pay</label>
+        <div class="controls">
+            <input id="netAmtToPay" name="netAmtToPay" type="text" ng-model="search.netAmtToPay" placeholder="Enter the PrcmtProcOrder Net Amt To Pay"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="ordrngOrgUnit" class="control-label">Ordrng Org Unit</label>
+        <div class="controls">
+            <input id="ordrngOrgUnit" name="ordrngOrgUnit" type="text" ng-model="search.ordrngOrgUnit" placeholder="Enter the PrcmtProcOrder Ordrng Org Unit"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="creatingUsr" class="control-label">Creating Usr</label>
+        <div class="controls">
+            <input id="creatingUsr" name="creatingUsr" type="text" ng-model="search.creatingUsr" placeholder="Enter the PrcmtProcOrder Creating Usr"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="poTriggerMode" class="control-label">Po Trigger Mode</label>
+        <div class="controls">
+            <select id="poTriggerMode" name="poTriggerMode" ng-model="search.poTriggerMode" ng-options="p as p for p in poTriggerModeList">
+                <option value="">Choose a Po Trigger Mode</option>
+            </select>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="poType" class="control-label">Po Type</label>
+        <div class="controls">
+            <select id="poType" name="poType" ng-model="search.poType" ng-options="p as p for p in poTypeList">
+                <option value="">Choose a Po Type</option>
+            </select>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="poStatus" class="control-label">Po Status</label>
+        <div class="controls">
+            <select id="poStatus" name="poStatus" ng-model="search.poStatus" ng-options="p as p for p in poStatusList">
+                <option value="">Choose a Po Status</option>
+            </select>
+        </div>
+    </div>
+        <div class="control-group">
+            <div class="controls">
+                <a id="Search" name="Search" class="btn btn-primary" ng-click="performSearch()"><i class="icon-search icon-white"></i> Search</a>
+            </div>
+        </div>
+    </form>
+</div>
+<div id="search-results">
+    <table class="table table-bordered table-striped clearfix">
+        <thead>
+            <tr>
+                <th>Order Dt</th>
+                <th>Po Nbr</th>
+                <th>Supplier</th>
+                <th>Po Cur</th>
+                <th>Gross PP Pre Tax</th>
+                <th>Rebate</th>
+                <th>Net PP Pre Tax</th>
+                <th>Vat Amount</th>
+                <th>Net PP Tax Incl</th>
+                <th>Pymt Dscnt Pct</th>
+                <th>Pymt Dscnt Amt</th>
+                <th>Net Purch Amt</th>
+                <th>Rdng Dscnt Amt</th>
+                <th>Net Amt To Pay</th>
+                <th>Submited Dt</th>
+                <th>Ordrng Org Unit</th>
+                <th>Creating Usr</th>
+                <th>Created Dt</th>
+                <th>Po Trigger Mode</th>
+                <th>Po Type</th>
+                <th>Po Status</th>
+            </tr>
+        </thead>
+        <tbody id="search-results-body">
+            <tr ng-repeat="result in searchResults | searchFilter:searchResults | startFrom:currentPage*pageSize | limitTo:pageSize">
+                <td><a href="#/PrcmtProcOrders/edit/{{result.id}}">{{result.orderDt| date:'yyyy-MM-dd HH:mm:ss Z'}}</a></td>
+                <td><a href="#/PrcmtProcOrders/edit/{{result.id}}">{{result.poNbr}}</a></td>
+                <td><a href="#/PrcmtProcOrders/edit/{{result.id}}">{{result.supplier}}</a></td>
+                <td><a href="#/PrcmtProcOrders/edit/{{result.id}}">{{result.poCur}}</a></td>
+                <td><a href="#/PrcmtProcOrders/edit/{{result.id}}">{{result.grossPPPreTax}}</a></td>
+                <td><a href="#/PrcmtProcOrders/edit/{{result.id}}">{{result.rebate}}</a></td>
+                <td><a href="#/PrcmtProcOrders/edit/{{result.id}}">{{result.netPPPreTax}}</a></td>
+                <td><a href="#/PrcmtProcOrders/edit/{{result.id}}">{{result.vatAmount}}</a></td>
+                <td><a href="#/PrcmtProcOrders/edit/{{result.id}}">{{result.netPPTaxIncl}}</a></td>
+                <td><a href="#/PrcmtProcOrders/edit/{{result.id}}">{{result.pymtDscntPct}}</a></td>
+                <td><a href="#/PrcmtProcOrders/edit/{{result.id}}">{{result.pymtDscntAmt}}</a></td>
+                <td><a href="#/PrcmtProcOrders/edit/{{result.id}}">{{result.netPurchAmt}}</a></td>
+                <td><a href="#/PrcmtProcOrders/edit/{{result.id}}">{{result.rdngDscntAmt}}</a></td>
+                <td><a href="#/PrcmtProcOrders/edit/{{result.id}}">{{result.netAmtToPay}}</a></td>
+                <td><a href="#/PrcmtProcOrders/edit/{{result.id}}">{{result.submitedDt| date:'yyyy-MM-dd HH:mm:ss Z'}}</a></td>
+                <td><a href="#/PrcmtProcOrders/edit/{{result.id}}">{{result.ordrngOrgUnit}}</a></td>
+                <td><a href="#/PrcmtProcOrders/edit/{{result.id}}">{{result.creatingUsr}}</a></td>
+                <td><a href="#/PrcmtProcOrders/edit/{{result.id}}">{{result.createdDt| date:'yyyy-MM-dd HH:mm:ss Z'}}</a></td>
+                <td><a href="#/PrcmtProcOrders/edit/{{result.id}}">{{result.poTriggerMode}}</a></td>
+                <td><a href="#/PrcmtProcOrders/edit/{{result.id}}">{{result.poType}}</a></td>
+                <td><a href="#/PrcmtProcOrders/edit/{{result.id}}">{{result.poStatus}}</a></td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="pagination pagination-centered">
+        <ul>
+            <li ng-class="{disabled:currentPage == 0}">
+                <a id="prev" href ng-click="previous()">«</a>
+            </li>
+            <li ng-repeat="n in pageRange" ng-class="{active:currentPage == n}" ng-click="setPage(n)">
+                <a href ng-bind="n + 1">1</a>
+            </li>
+            <li ng-class="{disabled: currentPage == (numberOfPages() - 1)}">
+                <a id="next" href ng-click="next()">»</a>
+            </li>
+        </ul>
+    </div>
+</div>

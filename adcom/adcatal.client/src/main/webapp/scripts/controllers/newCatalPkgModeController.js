@@ -1,5 +1,5 @@
 
-angular.module('adcatalserver').controller('NewCatalPkgModeController', function ($scope, $location, locationParser, CatalPkgModeResource ) {
+angular.module('AdCatal').controller('NewCatalPkgModeController', function ($scope, $location, locationParser, CatalPkgModeResource ) {
     $scope.disabled = false;
     $scope.$location = $location;
     $scope.catalPkgMode = $scope.catalPkgMode || {};

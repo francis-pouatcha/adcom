@@ -1,8 +1,9 @@
 'use strict';
 
 // declare modules
-angular.module('SessionManager');
-angular.module('AuthInterceptor');
+//angular.module('SessionManager');
+//angular.module('AuthInterceptor');
+//angular.module('NavBar');
 
 angular.module('AdLogin', [
     'ngRoute',
@@ -10,14 +11,16 @@ angular.module('AdLogin', [
     'SessionManager',
     'AuthInterceptor',
     'ngSanitize',
-    'pascalprecht.translate'
+    'pascalprecht.translate',
+    'NavBar'
 ])
 .constant('APP_CONFIG',{
 	'appName':'AD Login',
 	'appVersion':'1.0.0-SNAPSHOT'
 
 })
-.config(['$routeProvider', '$httpProvider','$translateProvider', function ($routeProvider, $httpProvider,$translateProvider) {
+.config(['$routeProvider', '$httpProvider','$translateProvider','$translatePartialLoaderProvider',
+         function ($routeProvider, $httpProvider,$translateProvider,$translatePartialLoaderProvider) {
 
     $routeProvider
         .when('/login', {
@@ -40,20 +43,27 @@ angular.module('AdLogin', [
     $httpProvider.defaults.withCredentials = true;
     $httpProvider.interceptors.push('authInterceptor');
     
-	$translateProvider.useStaticFilesLoader({
-		prefix: 'i18n/locale-',
-		suffix: '.json'
-	});
+    $translateProvider.useLoader('$translatePartialLoader', {
+        urlTemplate: '{part}/locale-{lang}.json'
+    });
 
-	$translateProvider.preferredLanguage('fr');
-    
+	$translateProvider.preferredLanguage('fr');	
 }])
 
-.run(['$rootScope', '$location', '$cookieStore', '$http', 'sessionManager','$translate','APP_CONFIG','workspaceService',
-    function ($rootScope, $location, $cookieStore, $http, sessionManager,$translate,APP_CONFIG,workspaceService) {
+.run(['$rootScope', '$location','sessionManager','$translate','APP_CONFIG','workspaceService','$translatePartialLoader',
+    function ($rootScope, $location, sessionManager,$translate,APP_CONFIG,workspaceService,$translatePartialLoader) {
 	    $rootScope.appName = APP_CONFIG.appName ;
 	    $rootScope.appVersion = APP_CONFIG.appVersion ;
 	    $rootScope.sessionManager = sessionManager;
+	    
+	    sessionManager.workspaceLink("#/workspaces");// Special handling for the login application.
+	    sessionManager.workspaces(function(){
+        	if($location.path()!='/workspaces'){
+        		$location.path('/workspaces');
+        	} else {
+        		workspaceService.loadWorkspaces(function(data, status, headers, config){}, function(data, status, headers, config){});
+        	}
+    	});
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
         	var path = $location.path();
         	var noLoginPath = path != '/login';
@@ -62,19 +72,7 @@ angular.module('AdLogin', [
         		if(path=='/workspaces' || path=='/' || path==''){
         			var sessParam = $location.search();
         			if(sessParam && sessionManager.hasValues(sessParam.trm,sessParam.usr)){
-        				sessionManager.wsin(sessParam.trm,sessParam.usr,
-        					function(){
-//        		        		workspaceService.loadWorkspaces(
-//        		        			function(data, status, headers, config){
-////        		        				alert('success' + status);
-////        		            			$location.path('/workspaces');
-//        		        			},
-//        		        			function(data, status, headers, config){
-////        		        				alert('error' + status);
-//        		        			}
-//        		        		);
-        					}
-        				);
+        				sessionManager.wsin(sessParam.trm,sessParam.usr,function(){});
         			}
         		}	
         	}
@@ -83,17 +81,9 @@ angular.module('AdLogin', [
 				$location.path('/login');
         	}
         });
-        $rootScope.changeLanguage = function (langKey) {
-            $translate.use(langKey);
-        };
 
-        $rootScope.loadWorkspaces = function(){
-        	if($location.path()!='/workspaces'){
-        		$location.path('/workspaces');
-        	} else {
-        		workspaceService.loadWorkspaces(function(data, status, headers, config){}, function(data, status, headers, config){});
-        	}
-    	};
-        
+    	$translatePartialLoader.addPart('/adlogin.client/i18n/main');
+    	$translate.refresh();
+    	
     }]
 );

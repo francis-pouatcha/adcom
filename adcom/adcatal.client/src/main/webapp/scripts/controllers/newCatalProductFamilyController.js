@@ -1,5 +1,5 @@
 
-angular.module('adcatalserver').controller('NewCatalProductFamilyController', function ($scope, $location, locationParser, CatalProductFamilyResource ) {
+angular.module('AdCatal').controller('NewCatalProductFamilyController', function ($scope, $location, locationParser, CatalProductFamilyResource ) {
     $scope.disabled = false;
     $scope.$location = $location;
     $scope.catalProductFamily = $scope.catalProductFamily || {};

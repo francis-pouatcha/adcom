@@ -1,0 +1,48 @@
+<header ng-switch on="$location.path().indexOf('/StkSections/new') > -1">
+    <h3 ng-switch-when="true">Create StkSection</h3>
+    <h3 ng-switch-when="false">View or edit StkSection</h3>
+</header>
+<form id="StkSectionForm" name="StkSectionForm" class="form-horizontal">
+    <div ng-show="displayError" class="alert alert-error">
+        <strong>Error!</strong> Something broke. Retry, or cancel and start afresh.
+    </div>
+    <div class="control-group" ng-class="{error: StkSectionForm.sectionCode.$invalid}">
+        <label for="sectionCode" class="control-label">Section Code</label>
+        <div id="sectionCodeControls" class="controls">
+            <input id="sectionCode" name="sectionCode" type="text" required ng-model="stkSection.sectionCode" placeholder="Enter the StkSection Section Code"></input>
+            <span class="help-inline" ng-show="StkSectionForm.sectionCode.$error.required">required</span> 
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: StkSectionForm.parentCode.$invalid}">
+        <label for="parentCode" class="control-label">Parent Code</label>
+        <div id="parentCodeControls" class="controls">
+            <input id="parentCode" name="parentCode" type="text" ng-model="stkSection.parentCode" placeholder="Enter the StkSection Parent Code"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: StkSectionForm.name.$invalid}">
+        <label for="name" class="control-label">Name</label>
+        <div id="nameControls" class="controls">
+            <input id="name" name="name" type="text" required ng-model="stkSection.name" placeholder="Enter the StkSection Name"></input>
+            <span class="help-inline" ng-show="StkSectionForm.name.$error.required">required</span> 
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: StkSectionForm.position.$invalid}">
+        <label for="position" class="control-label">Position</label>
+        <div id="positionControls" class="controls">
+            <input id="position" name="position" type="text" ng-model="stkSection.position" placeholder="Enter the StkSection Position"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: StkSectionForm.geoCode.$invalid}">
+        <label for="geoCode" class="control-label">Geo Code</label>
+        <div id="geoCodeControls" class="controls">
+            <input id="geoCode" name="geoCode" type="text" ng-model="stkSection.geoCode" placeholder="Enter the StkSection Geo Code"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <div class="controls">
+            <button id="saveStkSection" name="saveStkSection" class="btn btn-primary" ng-disabled="isClean() || StkSectionForm.$invalid" ng-click="save()"><i class="icon-ok-sign icon-white"></i> Save</button>
+            <button id="cancel" name="cancel" class="btn" ng-click="cancel()"><i class="icon-remove-sign"></i> Cancel</button>
+            <button id="deleteStkSection" name="deleteStkSection" class="btn btn-danger" ng-show="stkSection.id" ng-click="remove()"><i class="icon-trash icon-white"></i> Delete</button>
+        </div>
+    <div>
+</form>

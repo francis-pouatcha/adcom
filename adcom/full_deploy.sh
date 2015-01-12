@@ -32,6 +32,8 @@ echo 'remove old deployments'
 cd $JBOSS_HOME/standalone/deployments/ && rm ad*
 cd $JBOSS_HOME/adcom/adbase/data/ && rm ad*
 cd $JBOSS_HOME/adcom/adcatal/data/ && rm ad*
+cd $JBOSS_HOME/adcom/adstock/data/ && rm ad*
+cd $JBOSS_HOME/adcom/adprocmt/data/ && rm ad*
 
 echo 'starting jboss'
 cd $JBOSS_HOME
@@ -45,15 +47,20 @@ mvn clean install
 echo 'deploying new artifacts'
 cp adbase.server/target/adbase.server.war $JBOSS_HOME/standalone/deployments/
 cp adcatal.server/target/adcatal.server.war $JBOSS_HOME/standalone/deployments/
+cp adstock.server/target/adstock.server.war $JBOSS_HOME/standalone/deployments/
+cp adprocmt.server/target/adprocmt.server.war $JBOSS_HOME/standalone/deployments/
 cp adterm.server/target/adterm.server.war $JBOSS_HOME/standalone/deployments/
 cp adres.client/target/adres.client.war $JBOSS_HOME/standalone/deployments/
 cp adbase.client/target/adbase.client.war $JBOSS_HOME/standalone/deployments/
 cp adcatal.client/target/adcatal.client.war $JBOSS_HOME/standalone/deployments/
+cp adstock.client/target/adstock.client.war $JBOSS_HOME/standalone/deployments/
+cp adprocmt.client/target/adprocmt.client.war $JBOSS_HOME/standalone/deployments/
 cp adlogin.client/target/adlogin.client.war $JBOSS_HOME/standalone/deployments/
 
 echo 'copying the .xls file'
 cp adcom.configuration/jboss-eap-6.3/adcom/adbase/data/adbase.xls $JBOSS_HOME/adcom/adbase/data/
 cp adcom.configuration/jboss-eap-6.3/adcom/adcatal/data/adcatal.xls $JBOSS_HOME/adcom/adcatal/data/
+cp adcom.configuration/jboss-eap-6.3/adcom/adstock/data/adstock.xls $JBOSS_HOME/adcom/adstock/data/
 
 echo 'back to adcom home'
 cd $ADCOM_HOME

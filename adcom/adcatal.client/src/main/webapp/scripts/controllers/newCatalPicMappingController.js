@@ -1,5 +1,5 @@
 
-angular.module('adcatalserver').controller('NewCatalPicMappingController', function ($scope, $location, locationParser, CatalPicMappingResource ) {
+angular.module('AdCatal').controller('NewCatalPicMappingController', function ($scope, $location, locationParser, CatalPicMappingResource ) {
     $scope.disabled = false;
     $scope.$location = $location;
     $scope.catalPicMapping = $scope.catalPicMapping || {};

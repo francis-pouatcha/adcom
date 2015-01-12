@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('adcatalserver').filter('searchFilter', function() {
+angular.module('AdCatal').filter('searchFilter', function() {
 
     function matchObjectProperties(expectedObject, actualObject) {
         var flag = true;

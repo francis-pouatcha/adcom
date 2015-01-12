@@ -1,6 +1,6 @@
 
 
-angular.module('adcatalserver').controller('SearchCatalArtEquivalenceController', function($scope, $http, CatalArtEquivalenceResource ) {
+angular.module('AdCatal').controller('SearchCatalArtEquivalenceController', function($scope, $http, CatalArtEquivalenceResource ) {
 
     $scope.search={};
     $scope.currentPage = 0;

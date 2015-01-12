@@ -1,6 +1,6 @@
 
 
-angular.module('adcatalserver').controller('EditCatalArtEquivalenceController', function($scope, $routeParams, $location, CatalArtEquivalenceResource ) {
+angular.module('AdCatal').controller('EditCatalArtEquivalenceController', function($scope, $routeParams, $location, CatalArtEquivalenceResource ) {
     var self = this;
     $scope.disabled = false;
     $scope.$location = $location;

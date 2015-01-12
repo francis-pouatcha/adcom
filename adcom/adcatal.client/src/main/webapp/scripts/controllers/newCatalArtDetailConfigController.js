@@ -1,5 +1,5 @@
 
-angular.module('adcatalserver').controller('NewCatalArtDetailConfigController', function ($scope, $location, locationParser, CatalArtDetailConfigResource ) {
+angular.module('AdCatal').controller('NewCatalArtDetailConfigController', function ($scope, $location, locationParser, CatalArtDetailConfigResource ) {
     $scope.disabled = false;
     $scope.$location = $location;
     $scope.catalArtDetailConfig = $scope.catalArtDetailConfig || {};

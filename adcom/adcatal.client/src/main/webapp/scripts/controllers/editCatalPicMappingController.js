@@ -1,6 +1,6 @@
 
 
-angular.module('adcatalserver').controller('EditCatalPicMappingController', function($scope, $routeParams, $location, CatalPicMappingResource ) {
+angular.module('AdCatal').controller('EditCatalPicMappingController', function($scope, $routeParams, $location, CatalPicMappingResource ) {
     var self = this;
     $scope.disabled = false;
     $scope.$location = $location;

@@ -1,0 +1,117 @@
+<header ng-switch on="$location.path().indexOf('/StkArticleLots/new') > -1">
+    <h3 ng-switch-when="true">Create StkArticleLot</h3>
+    <h3 ng-switch-when="false">View or edit StkArticleLot</h3>
+</header>
+<form id="StkArticleLotForm" name="StkArticleLotForm" class="form-horizontal">
+    <div ng-show="displayError" class="alert alert-error">
+        <strong>Error!</strong> Something broke. Retry, or cancel and start afresh.
+    </div>
+    <div class="control-group" ng-class="{error: StkArticleLotForm.lotPic.$invalid}">
+        <label for="lotPic" class="control-label">Lot Pic</label>
+        <div id="lotPicControls" class="controls">
+            <input id="lotPic" name="lotPic" type="text" required ng-model="stkArticleLot.lotPic" placeholder="Enter the StkArticleLot Lot Pic"></input>
+            <span class="help-inline" ng-show="StkArticleLotForm.lotPic.$error.required">required</span> 
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: StkArticleLotForm.artPic.$invalid}">
+        <label for="artPic" class="control-label">Art Pic</label>
+        <div id="artPicControls" class="controls">
+            <input id="artPic" name="artPic" type="text" required ng-model="stkArticleLot.artPic" placeholder="Enter the StkArticleLot Art Pic"></input>
+            <span class="help-inline" ng-show="StkArticleLotForm.artPic.$error.required">required</span> 
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: StkArticleLotForm.supplierPic.$invalid}">
+        <label for="supplierPic" class="control-label">Supplier Pic</label>
+        <div id="supplierPicControls" class="controls">
+            <input id="supplierPic" name="supplierPic" type="text" ng-model="stkArticleLot.supplierPic" placeholder="Enter the StkArticleLot Supplier Pic"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: StkArticleLotForm.stkgDt.$invalid}">
+        <label for="stkgDt" class="control-label">Stkg Dt</label>
+        <div id="stkgDtControls" class="controls">
+            <datetime id="stkgDt" name="stkgDt" required ng-model="stkArticleLot.stkgDt" placeholder="Enter the StkArticleLot Stkg Dt"></datetime>
+            <span class="help-inline" ng-show="StkArticleLotForm.stkgDt.$error.required">required</span> 
+            <span class="help-inline" ng-show="StkArticleLotForm.stkgDt.$error.dateFormat">does not match format "yyyy-MM-dd hh:mm:ss"</span>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: StkArticleLotForm.expirDt.$invalid}">
+        <label for="expirDt" class="control-label">Expir Dt</label>
+        <div id="expirDtControls" class="controls">
+            <datetime id="expirDt" name="expirDt" ng-model="stkArticleLot.expirDt" placeholder="Enter the StkArticleLot Expir Dt"></datetime>
+            <span class="help-inline" ng-show="StkArticleLotForm.expirDt.$error.dateFormat">does not match format "yyyy-MM-dd hh:mm:ss"</span>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: StkArticleLotForm.sppuHT.$invalid}">
+        <label for="sppuHT" class="control-label">Sppu HT</label>
+        <div id="sppuHTControls" class="controls">
+            <input id="sppuHT" name="sppuHT" type="text" ng-model="stkArticleLot.sppuHT" placeholder="Enter the StkArticleLot Sppu HT"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: StkArticleLotForm.sppuCur.$invalid}">
+        <label for="sppuCur" class="control-label">Sppu Cur</label>
+        <div id="sppuCurControls" class="controls">
+            <input id="sppuCur" name="sppuCur" type="text" ng-model="stkArticleLot.sppuCur" placeholder="Enter the StkArticleLot Sppu Cur"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: StkArticleLotForm.minSppuHT.$invalid}">
+        <label for="minSppuHT" class="control-label">Min Sppu HT</label>
+        <div id="minSppuHTControls" class="controls">
+            <input id="minSppuHT" name="minSppuHT" type="text" ng-model="stkArticleLot.minSppuHT" placeholder="Enter the StkArticleLot Min Sppu HT"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: StkArticleLotForm.vatSalesPct.$invalid}">
+        <label for="vatSalesPct" class="control-label">Vat Sales Pct</label>
+        <div id="vatSalesPctControls" class="controls">
+            <input id="vatSalesPct" name="vatSalesPct" type="text" ng-model="stkArticleLot.vatSalesPct" placeholder="Enter the StkArticleLot Vat Sales Pct"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: StkArticleLotForm.salesWrntyDys.$invalid}">
+        <label for="salesWrntyDys" class="control-label">Sales Wrnty Dys</label>
+        <div id="salesWrntyDysControls" class="controls">
+            <input id="salesWrntyDys" name="salesWrntyDys" type="text" ng-model="stkArticleLot.salesWrntyDys" placeholder="Enter the StkArticleLot Sales Wrnty Dys"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: StkArticleLotForm.salesRtrnDays.$invalid}">
+        <label for="salesRtrnDays" class="control-label">Sales Rtrn Days</label>
+        <div id="salesRtrnDaysControls" class="controls">
+            <input id="salesRtrnDays" name="salesRtrnDays" type="text" ng-model="stkArticleLot.salesRtrnDays" placeholder="Enter the StkArticleLot Sales Rtrn Days"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: StkArticleLotForm.pppuHT.$invalid}">
+        <label for="pppuHT" class="control-label">Pppu HT</label>
+        <div id="pppuHTControls" class="controls">
+            <input id="pppuHT" name="pppuHT" type="text" ng-model="stkArticleLot.pppuHT" placeholder="Enter the StkArticleLot Pppu HT"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: StkArticleLotForm.pppuCur.$invalid}">
+        <label for="pppuCur" class="control-label">Pppu Cur</label>
+        <div id="pppuCurControls" class="controls">
+            <input id="pppuCur" name="pppuCur" type="text" ng-model="stkArticleLot.pppuCur" placeholder="Enter the StkArticleLot Pppu Cur"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: StkArticleLotForm.vatPurchPct.$invalid}">
+        <label for="vatPurchPct" class="control-label">Vat Purch Pct</label>
+        <div id="vatPurchPctControls" class="controls">
+            <input id="vatPurchPct" name="vatPurchPct" type="text" ng-model="stkArticleLot.vatPurchPct" placeholder="Enter the StkArticleLot Vat Purch Pct"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: StkArticleLotForm.purchWrntyDys.$invalid}">
+        <label for="purchWrntyDys" class="control-label">Purch Wrnty Dys</label>
+        <div id="purchWrntyDysControls" class="controls">
+            <input id="purchWrntyDys" name="purchWrntyDys" type="text" ng-model="stkArticleLot.purchWrntyDys" placeholder="Enter the StkArticleLot Purch Wrnty Dys"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: StkArticleLotForm.purchRtrnDays.$invalid}">
+        <label for="purchRtrnDays" class="control-label">Purch Rtrn Days</label>
+        <div id="purchRtrnDaysControls" class="controls">
+            <input id="purchRtrnDays" name="purchRtrnDays" type="text" ng-model="stkArticleLot.purchRtrnDays" placeholder="Enter the StkArticleLot Purch Rtrn Days"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <div class="controls">
+            <button id="saveStkArticleLot" name="saveStkArticleLot" class="btn btn-primary" ng-disabled="isClean() || StkArticleLotForm.$invalid" ng-click="save()"><i class="icon-ok-sign icon-white"></i> Save</button>
+            <button id="cancel" name="cancel" class="btn" ng-click="cancel()"><i class="icon-remove-sign"></i> Cancel</button>
+            <button id="deleteStkArticleLot" name="deleteStkArticleLot" class="btn btn-danger" ng-show="stkArticleLot.id" ng-click="remove()"><i class="icon-trash icon-white"></i> Delete</button>
+        </div>
+    <div>
+</form>
