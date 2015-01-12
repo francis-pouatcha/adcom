@@ -1,0 +1,166 @@
+<div class="form-horizontal">
+    <h3>Create a new InvInvtryItem</h3>
+    <div class="control-group">
+        <div class="controls">
+            <a id="Create" name="Create" class="btn btn-primary" href="#/InvInvtryItems/new"><i class="icon-plus-sign icon-white"></i> Create</a>
+        </div>
+    </div>
+</div>
+<hr/>
+<div>
+    <h3>Search for InvInvtryItems</h3>
+    <form id="InvInvtryItemSearch" class="form-horizontal">
+    <div class="control-group">
+        <label for="invtryNbr" class="control-label">Invtry Nbr</label>
+        <div class="controls">
+            <input id="invtryNbr" name="invtryNbr" type="text" ng-model="search.invtryNbr" placeholder="Enter the InvInvtryItem Invtry Nbr"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="lotPic" class="control-label">Lot Pic</label>
+        <div class="controls">
+            <input id="lotPic" name="lotPic" type="text" ng-model="search.lotPic" placeholder="Enter the InvInvtryItem Lot Pic"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="artPic" class="control-label">Art Pic</label>
+        <div class="controls">
+            <input id="artPic" name="artPic" type="text" ng-model="search.artPic" placeholder="Enter the InvInvtryItem Art Pic"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="section" class="control-label">Section</label>
+        <div class="controls">
+            <input id="section" name="section" type="text" ng-model="search.section" placeholder="Enter the InvInvtryItem Section"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="orgUnit" class="control-label">Org Unit</label>
+        <div class="controls">
+            <input id="orgUnit" name="orgUnit" type="text" ng-model="search.orgUnit" placeholder="Enter the InvInvtryItem Org Unit"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="expectedQty" class="control-label">Expected Qty</label>
+        <div class="controls">
+            <input id="expectedQty" name="expectedQty" type="text" ng-model="search.expectedQty" placeholder="Enter the InvInvtryItem Expected Qty"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="asseccedQty" class="control-label">Assecced Qty</label>
+        <div class="controls">
+            <input id="asseccedQty" name="asseccedQty" type="text" ng-model="search.asseccedQty" placeholder="Enter the InvInvtryItem Assecced Qty"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="gap" class="control-label">Gap</label>
+        <div class="controls">
+            <input id="gap" name="gap" type="text" ng-model="search.gap" placeholder="Enter the InvInvtryItem Gap"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="sppuPT" class="control-label">Sppu PT</label>
+        <div class="controls">
+            <input id="sppuPT" name="sppuPT" type="text" ng-model="search.sppuPT" placeholder="Enter the InvInvtryItem Sppu PT"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="sppuCur" class="control-label">Sppu Cur</label>
+        <div class="controls">
+            <input id="sppuCur" name="sppuCur" type="text" ng-model="search.sppuCur" placeholder="Enter the InvInvtryItem Sppu Cur"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="gapTotalSpPT" class="control-label">Gap Total Sp PT</label>
+        <div class="controls">
+            <input id="gapTotalSpPT" name="gapTotalSpPT" type="text" ng-model="search.gapTotalSpPT" placeholder="Enter the InvInvtryItem Gap Total Sp PT"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="pppuPT" class="control-label">Pppu PT</label>
+        <div class="controls">
+            <input id="pppuPT" name="pppuPT" type="text" ng-model="search.pppuPT" placeholder="Enter the InvInvtryItem Pppu PT"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="pppuCur" class="control-label">Pppu Cur</label>
+        <div class="controls">
+            <input id="pppuCur" name="pppuCur" type="text" ng-model="search.pppuCur" placeholder="Enter the InvInvtryItem Pppu Cur"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="gapTotalPpPT" class="control-label">Gap Total Pp PT</label>
+        <div class="controls">
+            <input id="gapTotalPpPT" name="gapTotalPpPT" type="text" ng-model="search.gapTotalPpPT" placeholder="Enter the InvInvtryItem Gap Total Pp PT"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="acsngUser" class="control-label">Acsng User</label>
+        <div class="controls">
+            <input id="acsngUser" name="acsngUser" type="text" ng-model="search.acsngUser" placeholder="Enter the InvInvtryItem Acsng User"></input>
+        </div>
+    </div>
+        <div class="control-group">
+            <div class="controls">
+                <a id="Search" name="Search" class="btn btn-primary" ng-click="performSearch()"><i class="icon-search icon-white"></i> Search</a>
+            </div>
+        </div>
+    </form>
+</div>
+<div id="search-results">
+    <table class="table table-bordered table-striped clearfix">
+        <thead>
+            <tr>
+                <th>Invtry Nbr</th>
+                <th>Lot Pic</th>
+                <th>Art Pic</th>
+                <th>Section</th>
+                <th>Org Unit</th>
+                <th>Acsng Dt</th>
+                <th>Expected Qty</th>
+                <th>Assecced Qty</th>
+                <th>Gap</th>
+                <th>Sppu PT</th>
+                <th>Sppu Cur</th>
+                <th>Gap Total Sp PT</th>
+                <th>Pppu PT</th>
+                <th>Pppu Cur</th>
+                <th>Gap Total Pp PT</th>
+                <th>Acsng User</th>
+            </tr>
+        </thead>
+        <tbody id="search-results-body">
+            <tr ng-repeat="result in searchResults | searchFilter:searchResults | startFrom:currentPage*pageSize | limitTo:pageSize">
+                <td><a href="#/InvInvtryItems/edit/{{result.id}}">{{result.invtryNbr}}</a></td>
+                <td><a href="#/InvInvtryItems/edit/{{result.id}}">{{result.lotPic}}</a></td>
+                <td><a href="#/InvInvtryItems/edit/{{result.id}}">{{result.artPic}}</a></td>
+                <td><a href="#/InvInvtryItems/edit/{{result.id}}">{{result.section}}</a></td>
+                <td><a href="#/InvInvtryItems/edit/{{result.id}}">{{result.orgUnit}}</a></td>
+                <td><a href="#/InvInvtryItems/edit/{{result.id}}">{{result.acsngDt| date:'yyyy-MM-dd HH:mm:ss Z'}}</a></td>
+                <td><a href="#/InvInvtryItems/edit/{{result.id}}">{{result.expectedQty}}</a></td>
+                <td><a href="#/InvInvtryItems/edit/{{result.id}}">{{result.asseccedQty}}</a></td>
+                <td><a href="#/InvInvtryItems/edit/{{result.id}}">{{result.gap}}</a></td>
+                <td><a href="#/InvInvtryItems/edit/{{result.id}}">{{result.sppuPT}}</a></td>
+                <td><a href="#/InvInvtryItems/edit/{{result.id}}">{{result.sppuCur}}</a></td>
+                <td><a href="#/InvInvtryItems/edit/{{result.id}}">{{result.gapTotalSpPT}}</a></td>
+                <td><a href="#/InvInvtryItems/edit/{{result.id}}">{{result.pppuPT}}</a></td>
+                <td><a href="#/InvInvtryItems/edit/{{result.id}}">{{result.pppuCur}}</a></td>
+                <td><a href="#/InvInvtryItems/edit/{{result.id}}">{{result.gapTotalPpPT}}</a></td>
+                <td><a href="#/InvInvtryItems/edit/{{result.id}}">{{result.acsngUser}}</a></td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="pagination pagination-centered">
+        <ul>
+            <li ng-class="{disabled:currentPage == 0}">
+                <a id="prev" href ng-click="previous()">«</a>
+            </li>
+            <li ng-repeat="n in pageRange" ng-class="{active:currentPage == n}" ng-click="setPage(n)">
+                <a href ng-bind="n + 1">1</a>
+            </li>
+            <li ng-class="{disabled: currentPage == (numberOfPages() - 1)}">
+                <a id="next" href ng-click="next()">»</a>
+            </li>
+        </ul>
+    </div>
+</div>

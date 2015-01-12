@@ -1,0 +1,72 @@
+<header ng-switch on="$location.path().indexOf('/InvInvtrys/new') > -1">
+    <h3 ng-switch-when="true">Create InvInvtry</h3>
+    <h3 ng-switch-when="false">View or edit InvInvtry</h3>
+</header>
+<form id="InvInvtryForm" name="InvInvtryForm" class="form-horizontal">
+    <div ng-show="displayError" class="alert alert-error">
+        <strong>Error!</strong> Something broke. Retry, or cancel and start afresh.
+    </div>
+    <div class="control-group" ng-class="{error: InvInvtryForm.invtryNbr.$invalid}">
+        <label for="invtryNbr" class="control-label">Invtry Nbr</label>
+        <div id="invtryNbrControls" class="controls">
+            <input id="invtryNbr" name="invtryNbr" type="text" required ng-model="invInvtry.invtryNbr" placeholder="Enter the InvInvtry Invtry Nbr"></input>
+            <span class="help-inline" ng-show="InvInvtryForm.invtryNbr.$error.required">required</span> 
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: InvInvtryForm.acsngUser.$invalid}">
+        <label for="acsngUser" class="control-label">Acsng User</label>
+        <div id="acsngUserControls" class="controls">
+            <input id="acsngUser" name="acsngUser" type="text" required ng-model="invInvtry.acsngUser" placeholder="Enter the InvInvtry Acsng User"></input>
+            <span class="help-inline" ng-show="InvInvtryForm.acsngUser.$error.required">required</span> 
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: InvInvtryForm.acsngDt.$invalid}">
+        <label for="acsngDt" class="control-label">Acsng Dt</label>
+        <div id="acsngDtControls" class="controls">
+            <datetime id="acsngDt" name="acsngDt" required ng-model="invInvtry.acsngDt" placeholder="Enter the InvInvtry Acsng Dt"></datetime>
+            <span class="help-inline" ng-show="InvInvtryForm.acsngDt.$error.required">required</span> 
+            <span class="help-inline" ng-show="InvInvtryForm.acsngDt.$error.dateFormat">does not match format "yyyy-MM-dd hh:mm:ss"</span>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: InvInvtryForm.gapSaleAmtHT.$invalid}">
+        <label for="gapSaleAmtHT" class="control-label">Gap Sale Amt HT</label>
+        <div id="gapSaleAmtHTControls" class="controls">
+            <input id="gapSaleAmtHT" name="gapSaleAmtHT" type="text" ng-model="invInvtry.gapSaleAmtHT" placeholder="Enter the InvInvtry Gap Sale Amt HT"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: InvInvtryForm.gapPurchAmtHT.$invalid}">
+        <label for="gapPurchAmtHT" class="control-label">Gap Purch Amt HT</label>
+        <div id="gapPurchAmtHTControls" class="controls">
+            <input id="gapPurchAmtHT" name="gapPurchAmtHT" type="text" ng-model="invInvtry.gapPurchAmtHT" placeholder="Enter the InvInvtry Gap Purch Amt HT"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: InvInvtryForm.invtryStatus.$invalid}">
+        <label for="invtryStatus" class="control-label">Invtry Status</label>
+        <div id="invtryStatusControls" class="controls">
+            <input id="invtryStatus" name="invtryStatus" type="text" required ng-model="invInvtry.invtryStatus" placeholder="Enter the InvInvtry Invtry Status"></input>
+            <span class="help-inline" ng-show="InvInvtryForm.invtryStatus.$error.required">required</span> 
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: InvInvtryForm.descptn.$invalid}">
+        <label for="descptn" class="control-label">Descptn</label>
+        <div id="descptnControls" class="controls">
+            <input id="descptn" name="descptn" type="text" ng-maxlength="256" ng-model="invInvtry.descptn" placeholder="Enter the InvInvtry Descptn"></input>
+            <span class="help-inline" ng-show="InvInvtryForm.descptn.$error.maxlength">maximum length is 256</span>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: InvInvtryForm.invtryDt.$invalid}">
+        <label for="invtryDt" class="control-label">Invtry Dt</label>
+        <div id="invtryDtControls" class="controls">
+            <datetime id="invtryDt" name="invtryDt" required ng-model="invInvtry.invtryDt" placeholder="Enter the InvInvtry Invtry Dt"></datetime>
+            <span class="help-inline" ng-show="InvInvtryForm.invtryDt.$error.required">required</span> 
+            <span class="help-inline" ng-show="InvInvtryForm.invtryDt.$error.dateFormat">does not match format "yyyy-MM-dd hh:mm:ss"</span>
+        </div>
+    </div>
+    <div class="control-group">
+        <div class="controls">
+            <button id="saveInvInvtry" name="saveInvInvtry" class="btn btn-primary" ng-disabled="isClean() || InvInvtryForm.$invalid" ng-click="save()"><i class="icon-ok-sign icon-white"></i> Save</button>
+            <button id="cancel" name="cancel" class="btn" ng-click="cancel()"><i class="icon-remove-sign"></i> Cancel</button>
+            <button id="deleteInvInvtry" name="deleteInvInvtry" class="btn btn-danger" ng-show="invInvtry.id" ng-click="remove()"><i class="icon-trash icon-white"></i> Delete</button>
+        </div>
+    <div>
+</form>

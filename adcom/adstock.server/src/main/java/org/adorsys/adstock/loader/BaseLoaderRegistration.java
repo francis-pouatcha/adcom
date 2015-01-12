@@ -25,18 +25,12 @@ public class BaseLoaderRegistration {
 	private StkArticleLotLoader stkArticleLotLoader;
 	@Inject
 	private StkArtLotSectionLoader stkArtLotSectionLoader;
-	@Inject
-	private StkInvtryItemLoader stkInvtryItemLoader;
-	@Inject
-	private StkInvtryLoader stkInvtryLoader;
 	
 	@PostConstruct
 	public void postConstruct(){
 		dataSheetLoader.registerLoader(StkSectionLoader.class.getSimpleName(), stkSectionLoader);
 		dataSheetLoader.registerLoader(StkArticleLotLoader.class.getSimpleName(), stkArticleLotLoader);
 		dataSheetLoader.registerLoader(StkArtLotSectionLoader.class.getSimpleName(), stkArtLotSectionLoader);
-		dataSheetLoader.registerLoader(StkInvtryItemLoader.class.getSimpleName(), stkInvtryItemLoader);
-		dataSheetLoader.registerLoader(StkInvtryLoader.class.getSimpleName(), stkInvtryLoader);
 		createTemplate();
 	}
 
@@ -52,8 +46,6 @@ public class BaseLoaderRegistration {
 		stkSectionLoader.createTemplate(workbook);
 		stkArticleLotLoader.createTemplate(workbook);
 		stkArtLotSectionLoader.createTemplate(workbook);
-		stkInvtryItemLoader.createTemplate(workbook);
-		stkInvtryLoader.createTemplate(workbook);
 		dataSheetLoader.exportTemplate(workbook);
 	}
 	
