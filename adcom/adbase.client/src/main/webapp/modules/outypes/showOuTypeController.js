@@ -8,6 +8,9 @@ angular.module('AdBase')
                 $location.path("/outypes/list");
             }
             
+            $scope.goToUpdate = function (){
+                $location.path("/outypes/update/"+$scope.ouType.id);
+            }
             function loadOrgUnitType(ouTypeId) {
                 ouTypeResource.findById(ouTypeId).success(function(data){
                     $scope.ouType = data;
@@ -15,7 +18,7 @@ angular.module('AdBase')
             }
             
             function  init(){
-                loadOrgUnitType($routeParams.ouTypeId)
+                loadOrgUnitType($routeParams.ouTypeId);
             };
             init();
 }]);

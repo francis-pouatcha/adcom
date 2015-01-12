@@ -5,7 +5,7 @@
     <div class="col-lg-9">
 
         <div ng-show="error" class="alert alert-danger">{{error}}</div>
-        <form name="form" ng-submit="create()" novalidate role="form">
+        <form name="form" ng-submit="update();" novalidate role="form">
             <div class="form-group">
                 <label for="idSize">{{'idSize' | translate}}</label>
                 <input type="text" name="idSize" id="idSize" class="form-control" ng-model="ouType.idSize" required />
@@ -19,13 +19,14 @@
 
             <div class="form-group">
                 <label for="parentType">{{'parentType' | translate }}</label>
-                <select ng-model="ouType.parentType" required name="parentType" ng-options="parent.id as parent.typeName for parent in parents"></select>
+                <select ng-model="ouType.parentType" name="parentType" ng-options="parent.id as parent.typeName for parent in parents"></select>
                 <br>
                 <span ng-show="form.parentType.$dirty && form.parentType.$error.required" class="help-block">{{'parentType_is_required' | translate }}</span>
             </div>
 
             <div class="form-actions">
-                <button type="submit" ng-disabled="form.$invalid" class="btn btn-danger pull-right">{{ 'Create' | translate }}</button>
+                <button ng-disabled="form.$invalid" ng-click="goToList();" class="btn pull-right">{{ 'Entity_cancel.title' | translate }}</button>
+                <button type="submit" ng-disabled="form.$invalid" class="btn btn-danger pull-right">{{ 'Entity_update.title' | translate }}</button>
             </div>
         </form>
     </div>

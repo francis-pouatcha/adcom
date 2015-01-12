@@ -2,25 +2,24 @@
     <div class="col-lg-3">
         <ng-include src="'views/menu.html'"></ng-include>
     </div>
-    <div class="col-lg-9">
-        <form name="form" ng-submit="create()" novalidate role="form">
-            <div class="form-group">
-                <label for="idSize">{{'idSize' | translate}}</label>
-                <span id="idSize" class="form-control">{{ouType.idSize}} </span>
+    <div class="col-lg-9 box">
+            <div class="row">
+                <label >{{'idSize' | translate}}</label>
+                <span id="idSize">{{ouType.idSize}} </span>
             </div>
-            <div class="form-group">
-                <label for="typeName">{{'typeName' | translate }}</label>
-                <span name="typeName" id="typeName" class="form-control">{{ouType.typeName}} </span>
+            <div class="row">
+                <label >{{'typeName' | translate }}</label>
+                <span id="typeName">{{ouType.typeName}} </span>
             </div>
 
-            <div class="form-group">
-                <label for="parentType">{{'parentType' | translate }}</label>
-                <span id="parentType" class="form-control"> {{ ouType.parentType }} </span>
+            <div class="row">
+                <label >{{'parentType' | translate }}</label>
+                <span id="parentType" > {{ ouType.parentType }} </span>
             </div>
 
             <div class="form-actions">
+                <button type="button" class="btn pull-right" ng-click="goToUpdate();">{{ 'Entity_edit.title' | translate }}</button>
                 <button type="button" class="btn btn-primary pull-right" ng-click="goToList();">{{ 'Ok' | translate }}</button>
             </div>
-        </form>
     </div>
 </div>
