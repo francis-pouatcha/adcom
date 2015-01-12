@@ -61,7 +61,7 @@ public class OuTypeEndpoint
    }
 
    @PUT
-   @Path("/{id:[0-9][0-9]*}")
+   @Path("/{id}")
    @Produces({ "application/json", "application/xml" })
    @Consumes({ "application/json", "application/xml" })
    public OuType update(OuType entity)
@@ -70,7 +70,7 @@ public class OuTypeEndpoint
    }
 
    @GET
-   @Path("/{id:[0-9][0-9]*}")
+   @Path("/{id}")
    @Produces({ "application/json", "application/xml" })
    public Response findById(@PathParam("id") String id)
    {
@@ -158,6 +158,15 @@ public class OuTypeEndpoint
             detach(actifsFromNow), detach(new OuTypeSearchInput()));
    }
    
+   @POST
+   @Path("/search")
+   @Produces({"application/json","application/xml"})
+   public OuTypeSearchResult search(OuTypeSearchInput ouTypeSearchInput){
+	   OuType entity = ouTypeSearchInput.getEntity();
+	   List<OuType> resultList = ejb.searchQuery(entity.getParentType(), entity.getTypeName(), entity.getValidFrom(), ouTypeSearchInput.getStart(),ouTypeSearchInput.getMax());
+	   OuTypeSearchResult searchResult = new OuTypeSearchResult(Long.valueOf(resultList.size()), detach(resultList), ouTypeSearchInput);
+	   return searchResult;
+   }
    @SuppressWarnings("unchecked")
    private SingularAttribute<OuType, ?>[] readSeachAttributes(
          OuTypeSearchInput searchInput)

@@ -21,7 +21,7 @@
                                 <div class="form-group">
                                     <label class="control-label" for="">Parent Type</label>
                                     <div class="">
-                                        <input type="text"  ng-model="loginCtrl.searchEntity.fullName" class="form-control">
+                                        <select ng-model="searchInput.entity.parentType" name="parentType" ng-options="parent.id as parent.typeName for parent in parents"></select>
                                     </div>
                                 </div>
                             </div>
@@ -30,17 +30,17 @@
                                 <div class="form-group">
                                     <label class="control-label" >Type Name</label>
                                     <div class="">
-                                        <input type="text" ng-model="loginCtrl.searchEntity.ouIdentif" class="form-control">
+                                        <input type="text" ng-model="searchInput.entity.typeName" class="form-control">
                                     </div>
                                 </div>
                             </div>
 
                             <div class="col-lg-2">
                                 <div class="form-group">
-                                    <button  ng-click="loginCtrl.handleSearchRequestEvent()" class="btn btn-default " style="margin-top: 23px;" >
+                                    <button  ng-click="doSearch()" class="btn btn-default " style="margin-top: 23px;" >
                                         <i class="glyphicon glyphicon-search"></i>
                                     </button>
-                                    <button  ng-click="loginCtrl.handlePrintRequestEvent()" class="btn btn-default " style="margin-top: 23px;" >
+                                    <button  ng-click="print()" class="btn btn-default " style="margin-top: 23px;" >
                                         <i class="glyphicon glyphicon-print"></i>
                                     </button>
 
@@ -55,11 +55,11 @@
         </div>
 
         <div class="panel panel-default ">
-            <div class="panel-heading no-collapse"><b>Resultat </b></div>
+            <div class="panel-heading no-collapse"><b>Organisation Units </b></div>
             <div class="panel-body">
                 <div class="col-lg-12">
                     <div  class="row">
-                        <a class="btn btn-primary pull-right margBott10" href="#/adbase/login/new" >
+                        <a class="btn btn-primary pull-right margBott10" href="#/outypes/new" >
                             <i class="glyphicon-plus"></i> {{"Entity_create.title" | translate}}
                         </a>
 
@@ -69,19 +69,15 @@
                             <thead>
                             <tr>
                                 <th class="text-center">Parent type Id</th>
-                                <th class="text-center">Parent type name</th>
                                 <th class="text-center">Type name</th>
                                 <th></th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr ng-repeat="outype in outypes">
-                                <td>d</td>
-                                <td>d</td>
-                                <td>d</td>
-                                <td>d</td>
-                                <td>d</td>
-                                <td><a href="#/adbase/outypes/show/{{outype.id}}" ><i class="glyphicon glyphicon-eye-open"></i></a></td>
+                                <td>{{outype.parentType}}</td>
+                                <td>{{outype.typeName}} </td>
+                                <td><a href="#/outypes/show/{{outype.id}}" ><i class="glyphicon glyphicon-eye-open"></i></a></td>
                             </tr>
 
                             </tbody>

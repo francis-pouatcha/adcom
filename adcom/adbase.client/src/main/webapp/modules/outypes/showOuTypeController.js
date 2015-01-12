@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('AdBase')
-    .controller('listOuTypeController', ['$scope', 'ouTypeResource','$location','$routeParams'
+    .controller('showOuTypeController', ['$scope', 'ouTypeResource','$location','$routeParams',
         function ($scope, ouTypeResource,$location,$routeParams) {
             $scope.ouType={};
             $scope.goToList = function (){
@@ -16,6 +16,6 @@ angular.module('AdBase')
             
             function  init(){
                 loadOrgUnitType($routeParams.ouTypeId)
-            }
+            };
             init();
 }]);

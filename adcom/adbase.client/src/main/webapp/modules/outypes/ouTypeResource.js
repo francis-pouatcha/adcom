@@ -50,6 +50,9 @@ angular.module('AdBase').factory('ouTypeResource',['$http', function($http){
     service.findActifsFromNow = function() {
         return $http.get(urlBase+'/findActifsFromNow');
     }
+    service.search = function(searchInput) {
+        return $http.post(urlBase+'/search',searchInput);
+    }
     return service;
     
 }]);

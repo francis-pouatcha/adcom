@@ -33,7 +33,12 @@ public abstract class AbstractTimedData extends AbstractIdentifData {
 	@PrePersist
 	public void prePersist() {
 		if (this.validFrom == null)this.validFrom = new Date();
-		if (StringUtils.isBlank(getId())) setId(getIdentif() + "_" + FormatedValidFrom.format(validFrom));
+		if (StringUtils.isBlank(getId())){
+			//prevent spaces in id.
+			String identif = StringUtils.deleteWhitespace(StringUtils.trimToEmpty(getIdentif()));
+			
+			setId(identif + "_" + FormatedValidFrom.format(validFrom));
+		}
 	}
 
 	public Date getValidFrom() {
