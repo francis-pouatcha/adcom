@@ -10,25 +10,25 @@ Inventory Processes
 Search, Display and Create Inventories
 --------------------------------------
 
-1- Inventories can be searched by their status (closed, ongoing), by date.
-2- The search result is a list of inventories.
-3- Closed inventories can not be modifies.
-4- Ongoing inventories can be opened and processed.
-5- A "new button" allows the creation of a new inventory.
+- Inventories can be searched by their status (closed, ongoing), by date.
+- The search result is a list of inventories.
+- Closed inventories can not be modifies.
+- Ongoing inventories can be opened and processed.
+- A "new button" allows the creation of a new inventory.
 
 Add Inventory Items By Section
 ------------------------------
 
-1- The user clicks on the button "Add by Section"
-	- The application shows a popup for the search and selection of a section.
-	- The user navigates through the list of sections and and select the target section.
-	- The application displays the list of products of the section in a pageable table.
-	- The user selects products to be added to the inventory and click on add.
-	- Or the user clicks on the button addall and all product of the selected section are added 
-	- Finally the application displays the list of inventory items
-3- Enter the real quantity for each line
-4- Save the inventory
-5- Close the inventory
+- The user clicks on the button "Add by Section"
+	-- The application shows a popup for the search and selection of a section.
+	-- The user navigates through the list of sections and and select the target section.
+	-- The application displays the list of products of the section in a pageable table.
+	-- The user selects products to be added to the inventory and click on add.
+	-- Or the user clicks on the button addall and all product of the selected section are added 
+	-- Finally the application displays the list of inventory items
+- Enter the real quantity for each line
+- Save the inventory
+- Close the inventory
 	- The application closes the inventory and modifies the stock values. 
 	- The modification increases or reduces the stock value with the computed gap.
 	
