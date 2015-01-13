@@ -1,0 +1,30 @@
+<div class="col-xs-offset-2 row">
+    <div class="col-lg-9">
+
+        <div ng-show="error" class="alert alert-danger">{{error}}</div>
+        <form name="form" ng-submit="update();" novalidate role="form">
+            <div class="form-group">
+                <label for="idSize">{{'idSize' | translate}}</label>
+                <input type="text" name="idSize" id="idSize" class="form-control" ng-model="ouType.idSize" required />
+                <span ng-show="form.idSize.$dirty && form.idSize.$error.required" class="help-block">{{'IdSize_is_required' | translate }}</span>
+            </div>
+            <div class="form-group">
+                <label for="typeName">{{'typeName' | translate }}</label>
+                <input type="text" name="typeName" id="typeName" class="form-control" ng-model="ouType.typeName" required />
+                <span ng-show="form.typeName.$dirty && form.typeName.$error.required" class="help-block">{{'TypeName_is_required' | translate }}</span>
+            </div>
+
+            <div class="form-group">
+                <label for="parentType">{{'parentType' | translate }}</label>
+                <select ng-model="ouType.parentType" name="parentType" ng-options="parent.id as parent.typeName for parent in parents"></select>
+                <br>
+                <span ng-show="form.parentType.$dirty && form.parentType.$error.required" class="help-block">{{'parentType_is_required' | translate }}</span>
+            </div>
+
+            <div class="form-actions">
+                <button ng-disabled="form.$invalid" ng-click="goToList();" class="btn pull-right">{{ 'Entity_cancel.title' | translate }}</button>
+                <button type="submit" ng-disabled="form.$invalid" class="btn btn-danger pull-right">{{ 'Entity_update.title' | translate }}</button>
+            </div>
+        </form>
+    </div>
+</div>

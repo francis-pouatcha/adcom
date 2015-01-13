@@ -17,6 +17,7 @@ public class OrgUnitEJB
    @Inject
    private OrgUnitRepository repository;
 
+   
    public OrgUnit create(OrgUnit entity)
    {
       return repository.save(attach(entity));
@@ -84,4 +85,5 @@ public class OrgUnitEJB
 	   if(resultList.isEmpty()) return null;
 	   return resultList.iterator().next();
    }
+   
 }

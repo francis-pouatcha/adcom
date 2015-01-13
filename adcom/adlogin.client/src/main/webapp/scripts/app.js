@@ -15,7 +15,7 @@ angular.module('AdLogin', [
     'NavBar'
 ])
 .constant('APP_CONFIG',{
-	'appName':'AD Login',
+	'appName':'Login',
 	'appVersion':'1.0.0-SNAPSHOT'
 
 })

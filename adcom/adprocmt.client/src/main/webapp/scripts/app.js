@@ -10,7 +10,7 @@ angular.module('AdProcmt', [
       'NavBar'
 ])
 .constant('APP_CONFIG',{
-	'appName':'AD Procurement',
+	'appName':'Procurement',
 	'appVersion':'1.0.0-SNAPSHOT'
 
 })
