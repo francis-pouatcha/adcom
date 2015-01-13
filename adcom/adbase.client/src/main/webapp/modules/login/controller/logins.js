@@ -14,7 +14,6 @@
         self.maxSize = 5 ;
         self.logins = [];
         self.searchEntity = {};
-        self.logins = [];
         self.selectedLogin = {} ;
         self.selectedIndex  ;
         self.handleSearchRequestEvent = handleSearchRequestEvent;

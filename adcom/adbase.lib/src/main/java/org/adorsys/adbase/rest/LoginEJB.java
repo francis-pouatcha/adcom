@@ -17,6 +17,8 @@ public class LoginEJB {
 	private LoginRepository repository;
 	
 	public Login create(Login entity) {
+		
+		entity.setIdentif(entity.getLoginName());
 		return repository.save(attach(entity));
 	}
 
@@ -82,4 +84,14 @@ public class LoginEJB {
 		if(resultList.isEmpty()) return null;
 		return resultList.iterator().next();
 	}
+	
+	public List<Login> findPreviousLogin(String loginName){
+		return repository.findPreviousLogin(loginName).maxResults(2).getResultList();
+	}
+	
+	public List<Login> findNextLogin(String loginName){
+		return repository.findNextLogin(loginName).maxResults(2).getResultList();
+	}
+	
+	
 }

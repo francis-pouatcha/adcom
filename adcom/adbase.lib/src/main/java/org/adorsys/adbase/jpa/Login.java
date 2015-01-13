@@ -14,6 +14,7 @@ import org.adorsys.adbase.auth.PasswordChecker;
 import org.adorsys.adcore.jpa.AbstractIdentifData;
 import org.adorsys.javaext.description.Description;
 import org.adorsys.javaext.format.DateFormatPattern;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 
 @Entity 
@@ -28,12 +29,12 @@ public class Login extends AbstractIdentifData {
 	@NotNull
 	private String ouIdentif;
 
-	@Column
+	@Column(unique=true)
 	@Description("Login_loginName_description")
 	@NotNull
 	private String loginName;
 
-	@Column
+	@Column(unique=true)
 	@Description("Login_loginAlias_description")
 	@NotNull
 	private String loginAlias;
@@ -54,11 +55,11 @@ public class Login extends AbstractIdentifData {
 
 	@Column
 	@Description("Login_disableLogin_description")
-	private Boolean disableLogin;
+	private Boolean disableLogin = false;
 
 	@Column
 	@Description("Login_accountLocked_description")
-	private Boolean accountLocked;
+	private Boolean accountLocked = false;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Description("Login_credtlExpir_description")
@@ -72,10 +73,11 @@ public class Login extends AbstractIdentifData {
 
 	@PrePersist
 	public void prePersist() {
-		if (getId() == null)
+		if (StringUtils.isBlank(getId()))
 			setId(loginName);
-	}
-	
+		if(StringUtils.isBlank(loginAlias))
+			loginAlias = loginName;
+	}	
 	public String getOuIdentif() {
 		return this.ouIdentif;
 	}
@@ -169,4 +171,5 @@ public class Login extends AbstractIdentifData {
 	public static boolean loginWorkspace(String wsid){
 		return StringUtils.isNotBlank(wsid) && wsid.contains("_login_");
 	}
+	
 }

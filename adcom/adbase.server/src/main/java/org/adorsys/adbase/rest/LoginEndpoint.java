@@ -59,7 +59,7 @@ public class LoginEndpoint
    }
 
    @PUT
-   @Path("/{id:[0-9][0-9]*}")
+   @Path("/{id}")
    @Produces({ "application/json", "application/xml" })
    @Consumes({ "application/json", "application/xml" })
    public Login update(Login entity)
@@ -68,7 +68,7 @@ public class LoginEndpoint
    }
 
    @GET
-   @Path("/{id:[0-9][0-9]*}")
+   @Path("/{id}")
    @Produces({ "application/json", "application/xml" })
    public Response findById(@PathParam("id") String id)
    {
@@ -91,6 +91,41 @@ public class LoginEndpoint
             detach(resultList), detach(searchInput));
    }
 
+   
+   	@GET
+	@Path("previousLogin/{loginName}")
+	@Produces({ "application/json", "application/xml" })
+	public Response previousLogin(@PathParam("loginName") String loginName)
+	{
+		List<Login> found;
+		try {
+			found = ejb.findPreviousLogin(loginName);
+		} catch (Exception e) {
+			return Response.status(Status.NOT_FOUND).build();
+		}
+		if (found.isEmpty()){
+			return Response.status(Status.NOT_FOUND).build();
+		}
+		return Response.ok(detach(found.iterator().next())).build();
+	}
+   	
+   	@GET
+	@Path("nextLogin/{loginName}")
+	@Produces({ "application/json", "application/xml" })
+	public Response nextLogin(@PathParam("loginName") String loginName)
+	{
+		List<Login> found;
+		try {
+			found = ejb.findNextLogin(loginName);
+		} catch (Exception e) {
+			return Response.status(Status.NOT_FOUND).build();
+		}
+		if (found.isEmpty()){
+			return Response.status(Status.NOT_FOUND).build();
+		}
+		return Response.ok(detach(found.iterator().next())).build();
+	}
+   
    @GET
    @Path("/count")
    public Long count()
