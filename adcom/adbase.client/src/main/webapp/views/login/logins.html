@@ -100,7 +100,10 @@
                         </table>
 
                     </div>
+                    <ul  class="pull-right">
+                        <pagination  total-items="loginCtrl.totalItems" items-per-page="loginCtrl.itemPerPage"  class="pagination-sm" ng-model="loginCtrl.currentPage" ng-change="loginCtrl.paginate()"></pagination>
 
+                    </ul>
                 </div>
 
             </div>

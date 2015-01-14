@@ -22,7 +22,6 @@
         function show(){
 
             var identif = $routeParams.identif ;
-            console.log(identif);
 
             loginService.loadLogin(identif).then(function(result){
 

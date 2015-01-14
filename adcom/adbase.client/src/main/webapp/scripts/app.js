@@ -7,6 +7,7 @@
 angular.module('AdBase', [
     'ngRoute',
     'ngCookies',
+    'ui.bootstrap',
     'SessionManager',
     'AuthInterceptor',
     'ngSanitize',
