@@ -74,5 +74,11 @@
     "OuType_idSize_description.title":"Identifier Size",
     "OuType_identif_description.title":"Identifier",
     "OuType_parentType_description.title":"Parent Type Name",
-    "OuType_typeName_description.title":"Type Name"
+    "OuType_typeName_description.title":"Type Name",
+    "SecTerminal_termName_description":"Name",
+    "SecTerminal_partnerId_description":"PartnerId",
+    "SecTerminal_locality_description":"locality",
+    "SecTerminal_accessTime_description":"Acces Time",
+    "SecTerminal_authUsers_description":"Users",
+    "SecTerminal_authWorkspaces_description":"Workspaces"
 }

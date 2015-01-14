@@ -1,0 +1,38 @@
+<header ng-switch on="$location.path().indexOf('/BpCtgryOfPtnrs/new') > -1">
+    <h3 ng-switch-when="true">Create BpCtgryOfPtnr</h3>
+    <h3 ng-switch-when="false">View or edit BpCtgryOfPtnr</h3>
+</header>
+<form id="BpCtgryOfPtnrForm" name="BpCtgryOfPtnrForm" class="form-horizontal">
+    <div ng-show="displayError" class="alert alert-error">
+        <strong>Error!</strong> Something broke. Retry, or cancel and start afresh.
+    </div>
+    <div class="control-group" ng-class="{error: BpCtgryOfPtnrForm.ptnrNbr.$invalid}">
+        <label for="ptnrNbr" class="control-label">Ptnr Nbr</label>
+        <div id="ptnrNbrControls" class="controls">
+            <input id="ptnrNbr" name="ptnrNbr" type="text" required ng-model="bpCtgryOfPtnr.ptnrNbr" placeholder="Enter the BpCtgryOfPtnr Ptnr Nbr"></input>
+            <span class="help-inline" ng-show="BpCtgryOfPtnrForm.ptnrNbr.$error.required">required</span> 
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: BpCtgryOfPtnrForm.ctgryCode.$invalid}">
+        <label for="ctgryCode" class="control-label">Ctgry Code</label>
+        <div id="ctgryCodeControls" class="controls">
+            <input id="ctgryCode" name="ctgryCode" type="text" required ng-model="bpCtgryOfPtnr.ctgryCode" placeholder="Enter the BpCtgryOfPtnr Ctgry Code"></input>
+            <span class="help-inline" ng-show="BpCtgryOfPtnrForm.ctgryCode.$error.required">required</span> 
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: BpCtgryOfPtnrForm.whenInRole.$invalid}">
+        <label for="whenInRole" class="control-label">When In Role</label>
+        <div id="whenInRoleControls" class="controls">
+        <select id="whenInRole" name="whenInRole" ng-model="bpCtgryOfPtnr.whenInRole" ng-options="w for w in whenInRoleList"  >
+            <option value="">Choose a When In Role</option>
+        </select>
+        </div>
+    </div>
+    <div class="control-group">
+        <div class="controls">
+            <button id="saveBpCtgryOfPtnr" name="saveBpCtgryOfPtnr" class="btn btn-primary" ng-disabled="isClean() || BpCtgryOfPtnrForm.$invalid" ng-click="save()"><i class="icon-ok-sign icon-white"></i> Save</button>
+            <button id="cancel" name="cancel" class="btn" ng-click="cancel()"><i class="icon-remove-sign"></i> Cancel</button>
+            <button id="deleteBpCtgryOfPtnr" name="deleteBpCtgryOfPtnr" class="btn btn-danger" ng-show="bpCtgryOfPtnr.id" ng-click="remove()"><i class="icon-trash icon-white"></i> Delete</button>
+        </div>
+    <div>
+</form>

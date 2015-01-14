@@ -7,12 +7,15 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
 import org.adorsys.adcore.jpa.AbstractIdentifData;
 import org.adorsys.adcore.jpa.AbstractTimedData;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -30,6 +33,7 @@ public abstract class AbstractObjectLoader<T extends AbstractIdentifData> {
 	protected abstract void create(T entity);
 	protected abstract void update(T found);
 
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public void load(HSSFSheet hssfSheet){
 		Iterator<Row> rowIterator = hssfSheet.rowIterator();
 		List<PropertyDesc> fields = null;
@@ -38,22 +42,24 @@ public abstract class AbstractObjectLoader<T extends AbstractIdentifData> {
 			fields = prepare(headerRow);
 		}
 		if(fields==null || fields.isEmpty()) return;
+		CellParser cellParser = new CellParser(hssfSheet.getWorkbook());
 		while(rowIterator.hasNext()){
 			Row row = rowIterator.next();
-			update(row, fields);
+			update(row, fields, cellParser);
 		}
 	}
 	
-	public void update(Row row, List<PropertyDesc> fields) {
+	private void update(Row row, List<PropertyDesc> fields, CellParser cellParser) {
 		T newObject = newObject();
 		for (PropertyDesc propertyDesc : fields) {
-			propertyDesc.setProperty(row, newObject);
+			propertyDesc.setProperty(row, newObject, cellParser);
 		}
 		save(newObject, fields);
 	}
 
 	protected void save(T entity, List<PropertyDesc> fields){
 		String identif = entity.getIdentif();
+		if(StringUtils.isBlank(identif)) return;
 		if(entity instanceof AbstractTimedData){
 			Date validOn = ((AbstractTimedData)entity).getValidFrom();
 			if(validOn==null) validOn = new Date();

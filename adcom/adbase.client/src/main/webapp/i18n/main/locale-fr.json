@@ -76,5 +76,11 @@
     "OuType_idSize_description.title":"Longeur Indentifiant",
     "OuType_identif_description.title":"Identifian",
     "OuType_parentType_description.title":"Intitule du Type Parent",
-    "OuType_typeName_description.title":"Nom du type"
+    "OuType_typeName_description.title":"Nom du type",
+    "SecTerminal_termName_description":"Nom",
+    "SecTerminal_partnerId_description":"Partenaire",
+    "SecTerminal_locality_description":"localite",
+    "SecTerminal_accessTime_description":"Temps d'acces",
+    "SecTerminal_authUsers_description":"Utilisateurs",
+    "SecTerminal_authWorkspaces_description":"Workspace"
 }

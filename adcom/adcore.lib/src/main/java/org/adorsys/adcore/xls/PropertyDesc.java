@@ -23,8 +23,8 @@ public class PropertyDesc {
 		return pos;
 	}
 	
-	public void setProperty(Row row, Object target){
+	public void setProperty(Row row, Object target, CellParser cellParser){
 		Cell cell = row.getCell(pos, Row.RETURN_BLANK_AS_NULL);
-		converter.setProperty(cell, name, target);
+		converter.setProperty(cell, name, target, cellParser);
 	}
 }

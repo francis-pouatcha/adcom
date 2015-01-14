@@ -7,6 +7,7 @@
 angular.module('AdBase', [
     'ngRoute',
     'ngCookies',
+    'ui.bootstrap',
     'SessionManager',
     'AuthInterceptor',
     'ngSanitize',
@@ -80,6 +81,30 @@ angular.module('AdBase', [
             controllerAs: 'orgUnitEditCtlr',
             module: 'AdBase'
     })
+        .when('/secTerm/create',{
+            templateUrl:'views/terminal/create.html',
+            controller:'secTermCreateController',
+            controllerAs: 'secTermCreateCtrl',
+            module: 'AdBase'
+        })
+        .when('/secTerm/show/:identif',{
+            templateUrl:'views/terminal/show.html',
+            controller:'secTermShowController',
+            controllerAs: 'secTermShowCtrl',
+            module: 'AdBase'
+        })
+        .when('/secTerm/edit/:identif',{
+            templateUrl:'views/terminal/edit.html',
+            controller:'secTermEditController',
+            controllerAs: 'secTermEditCtrl',
+            module: 'AdBase'
+        })
+        .when('/secTerm',{
+            templateUrl:'views/terminal/list.html',
+            controller:'secTerminalController',
+            controllerAs: 'secTermCtrl',
+            module: 'AdBase'
+        })
     .otherwise({
       redirectTo: '/'
     });

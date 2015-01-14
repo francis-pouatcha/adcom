@@ -12,8 +12,8 @@ public class StringConverter implements Converter {
 	
 	@Override
 	public void setProperty(Cell propertyCell, String propertyName,
-			Object target) {
-		String val = CellParser.parseString(propertyCell);
+			Object target, CellParser cellParser) {
+		String val = cellParser.parseString(propertyCell);
 		try {
 			PropertyUtils.setProperty(target, propertyName, val);
 		} catch (IllegalAccessException | InvocationTargetException

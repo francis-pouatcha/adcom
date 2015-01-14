@@ -1,0 +1,43 @@
+<header ng-switch on="$location.path().indexOf('/BpPtnrContacts/new') > -1">
+    <h3 ng-switch-when="true">Create BpPtnrContact</h3>
+    <h3 ng-switch-when="false">View or edit BpPtnrContact</h3>
+</header>
+<form id="BpPtnrContactForm" name="BpPtnrContactForm" class="form-horizontal">
+    <div ng-show="displayError" class="alert alert-error">
+        <strong>Error!</strong> Something broke. Retry, or cancel and start afresh.
+    </div>
+    <div class="control-group" ng-class="{error: BpPtnrContactForm.ptnrNbr.$invalid}">
+        <label for="ptnrNbr" class="control-label">Ptnr Nbr</label>
+        <div id="ptnrNbrControls" class="controls">
+            <input id="ptnrNbr" name="ptnrNbr" type="text" required ng-model="bpPtnrContact.ptnrNbr" placeholder="Enter the BpPtnrContact Ptnr Nbr"></input>
+            <span class="help-inline" ng-show="BpPtnrContactForm.ptnrNbr.$error.required">required</span> 
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: BpPtnrContactForm.langIso2.$invalid}">
+        <label for="langIso2" class="control-label">Lang Iso 2</label>
+        <div id="langIso2Controls" class="controls">
+            <input id="langIso2" name="langIso2" type="text" required ng-model="bpPtnrContact.langIso2" placeholder="Enter the BpPtnrContact Lang Iso 2"></input>
+            <span class="help-inline" ng-show="BpPtnrContactForm.langIso2.$error.required">required</span> 
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: BpPtnrContactForm.cntctRole.$invalid}">
+        <label for="cntctRole" class="control-label">Cntct Role</label>
+        <div id="cntctRoleControls" class="controls">
+            <input id="cntctRole" name="cntctRole" type="text" ng-model="bpPtnrContact.cntctRole" placeholder="Enter the BpPtnrContact Cntct Role"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: BpPtnrContactForm.description.$invalid}">
+        <label for="description" class="control-label">Description</label>
+        <div id="descriptionControls" class="controls">
+            <input id="description" name="description" type="text" ng-maxlength="256" ng-model="bpPtnrContact.description" placeholder="Enter the BpPtnrContact Description"></input>
+            <span class="help-inline" ng-show="BpPtnrContactForm.description.$error.maxlength">maximum length is 256</span>
+        </div>
+    </div>
+    <div class="control-group">
+        <div class="controls">
+            <button id="saveBpPtnrContact" name="saveBpPtnrContact" class="btn btn-primary" ng-disabled="isClean() || BpPtnrContactForm.$invalid" ng-click="save()"><i class="icon-ok-sign icon-white"></i> Save</button>
+            <button id="cancel" name="cancel" class="btn" ng-click="cancel()"><i class="icon-remove-sign"></i> Cancel</button>
+            <button id="deleteBpPtnrContact" name="deleteBpPtnrContact" class="btn btn-danger" ng-show="bpPtnrContact.id" ng-click="remove()"><i class="icon-trash icon-white"></i> Delete</button>
+        </div>
+    <div>
+</form>

@@ -3,6 +3,7 @@ package org.adorsys.adbase.jpa;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.adorsys.adcore.jpa.AbstractTimedData;
 import org.adorsys.javaext.description.Description;
@@ -43,6 +44,7 @@ public class SecAbstractTerminal extends AbstractTimedData {
 	private String authUsers;
 
 	@Column
+	@Size(max = 256)
 	@Description("SecTerminal_authWorkspaces_description")
 	private String authWorkspaces;
 

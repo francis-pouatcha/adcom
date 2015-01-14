@@ -10,10 +10,10 @@ public abstract class AbstractObjectConverter<T> implements Converter {
 
 	@Override
 	public void setProperty(Cell propertyCell, String propertyName,
-			Object target) {
+			Object target, CellParser cellParser) {
 		T val = null;
 		if(propertyCell!=null){
-			String valStr = CellParser.parseString(propertyCell);
+			String valStr = cellParser.parseString(propertyCell);
 			if(StringUtils.isNotBlank(valStr)){
 				val = parse(valStr);
 			}

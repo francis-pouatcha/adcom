@@ -1,0 +1,56 @@
+<header ng-switch on="$location.path().indexOf('/BpIndivPtnrNames/new') > -1">
+    <h3 ng-switch-when="true">Create BpIndivPtnrName</h3>
+    <h3 ng-switch-when="false">View or edit BpIndivPtnrName</h3>
+</header>
+<form id="BpIndivPtnrNameForm" name="BpIndivPtnrNameForm" class="form-horizontal">
+    <div ng-show="displayError" class="alert alert-error">
+        <strong>Error!</strong> Something broke. Retry, or cancel and start afresh.
+    </div>
+    <div class="control-group" ng-class="{error: BpIndivPtnrNameForm.ptnrNbr.$invalid}">
+        <label for="ptnrNbr" class="control-label">Ptnr Nbr</label>
+        <div id="ptnrNbrControls" class="controls">
+            <input id="ptnrNbr" name="ptnrNbr" type="text" required ng-model="bpIndivPtnrName.ptnrNbr" placeholder="Enter the BpIndivPtnrName Ptnr Nbr"></input>
+            <span class="help-inline" ng-show="BpIndivPtnrNameForm.ptnrNbr.$error.required">required</span> 
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: BpIndivPtnrNameForm.gender.$invalid}">
+        <label for="gender" class="control-label">Gender</label>
+        <div id="genderControls" class="controls">
+            <input id="gender" name="gender" type="text" ng-model="bpIndivPtnrName.gender" placeholder="Enter the BpIndivPtnrName Gender"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: BpIndivPtnrNameForm.firstName.$invalid}">
+        <label for="firstName" class="control-label">First Name</label>
+        <div id="firstNameControls" class="controls">
+            <input id="firstName" name="firstName" type="text" ng-model="bpIndivPtnrName.firstName" placeholder="Enter the BpIndivPtnrName First Name"></input>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: BpIndivPtnrNameForm.lastName.$invalid}">
+        <label for="lastName" class="control-label">Last Name</label>
+        <div id="lastNameControls" class="controls">
+            <input id="lastName" name="lastName" type="text" required ng-model="bpIndivPtnrName.lastName" placeholder="Enter the BpIndivPtnrName Last Name"></input>
+            <span class="help-inline" ng-show="BpIndivPtnrNameForm.lastName.$error.required">required</span> 
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: BpIndivPtnrNameForm.fullName.$invalid}">
+        <label for="fullName" class="control-label">Full Name</label>
+        <div id="fullNameControls" class="controls">
+            <input id="fullName" name="fullName" type="text" required ng-model="bpIndivPtnrName.fullName" placeholder="Enter the BpIndivPtnrName Full Name"></input>
+            <span class="help-inline" ng-show="BpIndivPtnrNameForm.fullName.$error.required">required</span> 
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: BpIndivPtnrNameForm.brthDt.$invalid}">
+        <label for="brthDt" class="control-label">Brth Dt</label>
+        <div id="brthDtControls" class="controls">
+            <datetime id="brthDt" name="brthDt" ng-model="bpIndivPtnrName.brthDt" placeholder="Enter the BpIndivPtnrName Brth Dt"></datetime>
+            <span class="help-inline" ng-show="BpIndivPtnrNameForm.brthDt.$error.dateFormat">does not match format "yyyy-MM-dd hh:mm:ss"</span>
+        </div>
+    </div>
+    <div class="control-group">
+        <div class="controls">
+            <button id="saveBpIndivPtnrName" name="saveBpIndivPtnrName" class="btn btn-primary" ng-disabled="isClean() || BpIndivPtnrNameForm.$invalid" ng-click="save()"><i class="icon-ok-sign icon-white"></i> Save</button>
+            <button id="cancel" name="cancel" class="btn" ng-click="cancel()"><i class="icon-remove-sign"></i> Cancel</button>
+            <button id="deleteBpIndivPtnrName" name="deleteBpIndivPtnrName" class="btn btn-danger" ng-show="bpIndivPtnrName.id" ng-click="remove()"><i class="icon-trash icon-white"></i> Delete</button>
+        </div>
+    <div>
+</form>
