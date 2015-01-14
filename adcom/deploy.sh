@@ -33,6 +33,7 @@ cp adcatal.server/target/adcatal.server.war $JBOSS_HOME/standalone/deployments/
 cp adstock.server/target/adstock.server.war $JBOSS_HOME/standalone/deployments/
 cp adinvtry.server/target/adinvtry.server.war $JBOSS_HOME/standalone/deployments/
 cp adprocmt.server/target/adprocmt.server.war $JBOSS_HOME/standalone/deployments/
+cp adbnsptnr.server/target/adbnsptnr.server.war $JBOSS_HOME/standalone/deployments/
 cp adres.client/target/adres.client.war $JBOSS_HOME/standalone/deployments/
 cp adbase.client/target/adbase.client.war $JBOSS_HOME/standalone/deployments/
 cp adlogin.client/target/adlogin.client.war $JBOSS_HOME/standalone/deployments/
@@ -40,4 +41,5 @@ cp adcatal.client/target/adcatal.client.war $JBOSS_HOME/standalone/deployments/
 cp adstock.client/target/adstock.client.war $JBOSS_HOME/standalone/deployments/
 cp adinvtry.client/target/adinvtry.client.war $JBOSS_HOME/standalone/deployments/
 cp adprocmt.client/target/adprocmt.client.war $JBOSS_HOME/standalone/deployments/
+cp adbnsptnr.client/target/adbnsptnr.client.war $JBOSS_HOME/standalone/deployments/
 

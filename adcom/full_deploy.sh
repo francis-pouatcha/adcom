@@ -35,6 +35,7 @@ cd $JBOSS_HOME/adcom/adcatal/data/ && rm ad*
 cd $JBOSS_HOME/adcom/adstock/data/ && rm ad*
 cd $JBOSS_HOME/adcom/adprocmt/data/ && rm ad*
 cd $JBOSS_HOME/adcom/adinvtry/data/ && rm ad*
+cd $JBOSS_HOME/adcom/adbnsptnr/data/ && rm ad*
 
 echo 'starting jboss'
 cd $JBOSS_HOME
@@ -51,6 +52,7 @@ cp adcatal.server/target/adcatal.server.war $JBOSS_HOME/standalone/deployments/
 cp adstock.server/target/adstock.server.war $JBOSS_HOME/standalone/deployments/
 cp adprocmt.server/target/adprocmt.server.war $JBOSS_HOME/standalone/deployments/
 cp adinvtry.server/target/adinvtry.server.war $JBOSS_HOME/standalone/deployments/
+cp adbnsptnr.server/target/adbnsptnr.server.war $JBOSS_HOME/standalone/deployments/
 cp adterm.server/target/adterm.server.war $JBOSS_HOME/standalone/deployments/
 cp adres.client/target/adres.client.war $JBOSS_HOME/standalone/deployments/
 cp adbase.client/target/adbase.client.war $JBOSS_HOME/standalone/deployments/
@@ -58,6 +60,7 @@ cp adcatal.client/target/adcatal.client.war $JBOSS_HOME/standalone/deployments/
 cp adstock.client/target/adstock.client.war $JBOSS_HOME/standalone/deployments/
 cp adprocmt.client/target/adprocmt.client.war $JBOSS_HOME/standalone/deployments/
 cp adinvtry.client/target/adinvtry.client.war $JBOSS_HOME/standalone/deployments/
+cp adbnsptnr.client/target/adbnsptnr.client.war $JBOSS_HOME/standalone/deployments/
 cp adlogin.client/target/adlogin.client.war $JBOSS_HOME/standalone/deployments/
 
 echo 'copying the .xls file'
@@ -65,6 +68,7 @@ cp adcom.configuration/jboss-eap-6.3/adcom/adbase/data/adbase.xls $JBOSS_HOME/ad
 cp adcom.configuration/jboss-eap-6.3/adcom/adcatal/data/adcatal.xls $JBOSS_HOME/adcom/adcatal/data/
 cp adcom.configuration/jboss-eap-6.3/adcom/adstock/data/adstock.xls $JBOSS_HOME/adcom/adstock/data/
 cp adcom.configuration/jboss-eap-6.3/adcom/adinvtry/data/adstock.xls $JBOSS_HOME/adcom/adinvtry/data/
+cp adcom.configuration/jboss-eap-6.3/adcom/adbnsptnr/data/adbnsptnr.xls $JBOSS_HOME/adcom/adbnsptnr/data/
 
 echo 'back to adcom home'
 cd $ADCOM_HOME

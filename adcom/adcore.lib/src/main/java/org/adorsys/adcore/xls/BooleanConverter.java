@@ -12,8 +12,8 @@ public class BooleanConverter implements Converter {
 	
 	@Override
 	public void setProperty(Cell propertyCell, String propertyName,
-			Object target) {
-		Boolean val = CellParser.parseBoolean(propertyCell);
+			Object target, CellParser cellParser) {
+		Boolean val = cellParser.parseBoolean(propertyCell);
 		try {
 			PropertyUtils.setProperty(target, propertyName, val);
 		} catch (IllegalAccessException | InvocationTargetException

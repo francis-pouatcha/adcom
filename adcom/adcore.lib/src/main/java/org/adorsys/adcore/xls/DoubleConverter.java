@@ -13,8 +13,8 @@ public class DoubleConverter implements Converter {
 	
 	@Override
 	public void setProperty(Cell propertyCell, String propertyName,
-			Object target) {
-		BigDecimal number = CellParser.parseNumber(propertyCell);
+			Object target, CellParser cellParser) {
+		BigDecimal number = cellParser.parseNumber(propertyCell);
 		try {
 			PropertyUtils.setProperty(target, propertyName, number.doubleValue());
 		} catch (IllegalAccessException | InvocationTargetException

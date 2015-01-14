@@ -1,0 +1,37 @@
+<header ng-switch on="$location.path().indexOf('/BpBnsPtnrs/new') > -1">
+    <h3 ng-switch-when="true">Create BpBnsPtnr</h3>
+    <h3 ng-switch-when="false">View or edit BpBnsPtnr</h3>
+</header>
+<form id="BpBnsPtnrForm" name="BpBnsPtnrForm" class="form-horizontal">
+    <div ng-show="displayError" class="alert alert-error">
+        <strong>Error!</strong> Something broke. Retry, or cancel and start afresh.
+    </div>
+    <div class="control-group" ng-class="{error: BpBnsPtnrForm.ptnrNbr.$invalid}">
+        <label for="ptnrNbr" class="control-label">Ptnr Nbr</label>
+        <div id="ptnrNbrControls" class="controls">
+            <input id="ptnrNbr" name="ptnrNbr" type="text" required ng-model="bpBnsPtnr.ptnrNbr" placeholder="Enter the BpBnsPtnr Ptnr Nbr"></input>
+            <span class="help-inline" ng-show="BpBnsPtnrForm.ptnrNbr.$error.required">required</span> 
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: BpBnsPtnrForm.ptnrType.$invalid}">
+        <label for="ptnrType" class="control-label">Ptnr Type</label>
+        <div id="ptnrTypeControls" class="controls">
+        <select id="ptnrType" name="ptnrType" ng-model="bpBnsPtnr.ptnrType" ng-options="p for p in ptnrTypeList"  >
+            <option value="">Choose a Ptnr Type</option>
+        </select>
+        </div>
+    </div>
+    <div class="control-group" ng-class="{error: BpBnsPtnrForm.ctryOfRsdnc.$invalid}">
+        <label for="ctryOfRsdnc" class="control-label">Ctry Of Rsdnc</label>
+        <div id="ctryOfRsdncControls" class="controls">
+            <input id="ctryOfRsdnc" name="ctryOfRsdnc" type="text" ng-model="bpBnsPtnr.ctryOfRsdnc" placeholder="Enter the BpBnsPtnr Ctry Of Rsdnc"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <div class="controls">
+            <button id="saveBpBnsPtnr" name="saveBpBnsPtnr" class="btn btn-primary" ng-disabled="isClean() || BpBnsPtnrForm.$invalid" ng-click="save()"><i class="icon-ok-sign icon-white"></i> Save</button>
+            <button id="cancel" name="cancel" class="btn" ng-click="cancel()"><i class="icon-remove-sign"></i> Cancel</button>
+            <button id="deleteBpBnsPtnr" name="deleteBpBnsPtnr" class="btn btn-danger" ng-show="bpBnsPtnr.id" ng-click="remove()"><i class="icon-trash icon-white"></i> Delete</button>
+        </div>
+    <div>
+</form>
