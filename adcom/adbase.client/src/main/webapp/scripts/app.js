@@ -7,6 +7,7 @@
 angular.module('AdBase', [
     'ngRoute',
     'ngCookies',
+    'ui.bootstrap',
     'SessionManager',
     'AuthInterceptor',
     'ngSanitize',
@@ -29,7 +30,56 @@ angular.module('AdBase', [
     .when('/',{
             templateUrl:'views/login/logins.html',
             controller:'loginController',
-            controllerAs: 'loginCtrl'
+            controllerAs: 'loginCtrl',
+            module: 'AdBase'
+        })
+    .when('/login/create',{
+            templateUrl:'views/login/create.html',
+            controller:'loginCreateController',
+            controllerAs: 'loginCreateCtrl',
+            module: 'AdBase'
+    })
+    .when('/login/show/:identif',{
+            templateUrl:'views/login/show.html',
+            controller:'loginShowController',
+            controllerAs: 'loginShowCtrl',
+            module: 'AdBase'
+    })
+    .when('/login/edit/:identif',{
+            templateUrl:'views/login/edit.html',
+            controller:'loginEditController',
+            controllerAs: 'loginEditCtrl',
+            module: 'AdBase'
+    })
+        .when('/login/changepass/:identif',{
+            templateUrl:'views/login/change-pwd.html',
+            controller:'loginChangePwdController',
+            controllerAs: 'changePwdCtrl',
+            module: 'AdBase'
+        })
+        .when('/secTerm/create',{
+            templateUrl:'views/terminal/create.html',
+            controller:'secTermCreateController',
+            controllerAs: 'secTermCreateCtrl',
+            module: 'AdBase'
+        })
+        .when('/secTerm/show/:identif',{
+            templateUrl:'views/terminal/show.html',
+            controller:'secTermShowController',
+            controllerAs: 'secTermShowCtrl',
+            module: 'AdBase'
+        })
+        .when('/secTerm/edit/:identif',{
+            templateUrl:'views/terminal/edit.html',
+            controller:'secTermEditController',
+            controllerAs: 'secTermEditCtrl',
+            module: 'AdBase'
+        })
+        .when('/secTerm',{
+            templateUrl:'views/terminal/list.html',
+            controller:'secTerminalController',
+            controllerAs: 'secTermCtrl',
+            module: 'AdBase'
         })
     .otherwise({
       redirectTo: '/'
