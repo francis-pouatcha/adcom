@@ -56,6 +56,30 @@ angular.module('AdBase', [
             controllerAs: 'changePwdCtrl',
             module: 'AdBase'
         })
+    .when('/orgunits',{
+            templateUrl:'views/orgunits/orgunits.html',
+            controller:'orgUnitController',
+            controllerAs: 'orgUnitCtrl',
+            module: 'AdBase'
+    })
+    .when('/orgunits/create',{
+            templateUrl:'views/orgunits/create.html',
+            controller:'orgUnitCreateController',
+            controllerAs: 'orgUnitCreateCtrl',
+            module: 'AdBase'
+    })
+    .when('/orgunits/show/:identif',{
+            templateUrl:'views/orgunits/show.html',
+            controller:'orgUnitShowController',
+            controllerAs: 'orgUnitShowCtrl',
+            module: 'AdBase'
+    })
+    .when('/orgunits/edit/:identif',{
+            templateUrl:'views/orgunits/edit.html',
+            controller:'orgUnitEditController',
+            controllerAs: 'orgUnitEditCtlr',
+            module: 'AdBase'
+    })
     .otherwise({
       redirectTo: '/'
     });

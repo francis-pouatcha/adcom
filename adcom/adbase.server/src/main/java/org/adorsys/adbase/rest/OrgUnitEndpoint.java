@@ -3,12 +3,14 @@ package org.adorsys.adbase.rest;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -22,6 +24,9 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.adorsys.adbase.dto.OrgUnitDto;
+import org.adorsys.adbase.dto.OrgUnitDtoService;
+import org.adorsys.adbase.exception.NotFoundOrNotActifEntityException;
 import org.adorsys.adbase.jpa.OrgUnit;
 import org.adorsys.adbase.jpa.OrgUnitSearchInput;
 import org.adorsys.adbase.jpa.OrgUnitSearchResult;
@@ -39,6 +44,9 @@ public class OrgUnitEndpoint
    @Inject
    private OrgUnitEJB ejb;
 
+   @Inject
+   private OrgUnitDtoService dtoService;
+   
    @POST
    @Consumes({ "application/json", "application/xml" })
    @Produces({ "application/json", "application/xml" })
@@ -59,7 +67,7 @@ public class OrgUnitEndpoint
    }
 
    @PUT
-   @Path("/{id:[0-9][0-9]*}")
+   @Path("/{id}")
    @Produces({ "application/json", "application/xml" })
    @Consumes({ "application/json", "application/xml" })
    public OrgUnit update(OrgUnit entity)
@@ -143,7 +151,53 @@ public class OrgUnitEndpoint
       SingularAttribute<OrgUnit, ?>[] attributes = readSeachAttributes(searchInput);
       return ejb.countByLike(searchInput.getEntity(), attributes);
    }
+   
 
+   @POST
+   @Path("/searchOrgUnits")
+   @Produces({ "application/json", "application/xml" })
+   @Consumes({ "application/json", "application/xml" })
+   public OrgUnitSearchResult searchOrgUnits(OrgUnitSearchInput searchInput) throws NotFoundOrNotActifEntityException{
+	   OrgUnit entity = searchInput.getEntity();
+	   String ctryIso3 = entity.getCtryIso3();
+	   String fullName = entity.getFullName();
+	   String typeIdentif = entity.getTypeIdentif();
+	   Date validFrom = entity.getValidFrom();
+	   int start = searchInput.getStart();
+	   int max = searchInput.getMax();
+	   
+	   Long countOrgUnits = ejb.countOrgUnits(fullName, typeIdentif, ctryIso3, validFrom, start, max);
+	   List<OrgUnit> searchOrgUnits = ejb.searchOrgUnits(fullName, typeIdentif, ctryIso3, validFrom, start, max);
+	   List<OrgUnitDto> convertOrgUnits = dtoService.convertOrgUnits(searchOrgUnits);
+	   OrgUnitSearchResult searchResult = new OrgUnitSearchResult(countOrgUnits, searchOrgUnits, searchInput);
+	   searchResult.setDtos(convertOrgUnits);
+	   return searchResult;
+   }
+
+   @GET
+   @Path("/dtoByidentif/{identif}")
+   @Produces({ "application/json", "application/xml" })
+   public Response findDtoByIdentif(@PathParam("identif") String identif) throws NotFoundOrNotActifEntityException
+   {
+	  OrgUnitDto orgUnitDto = dtoService.convertOrgUnit(identif);
+	  
+      if (orgUnitDto == null)
+         return Response.status(Status.NOT_FOUND).build();
+      return Response.ok(orgUnitDto).build();
+   }
+
+   @GET
+   @Path("/entityByidentif/{identif}")
+   @Produces({ "application/json", "application/xml" })
+   public Response findEntityByIdentif(@PathParam("identif") String identif) throws NotFoundOrNotActifEntityException
+   {
+	   OrgUnit orgUnit = ejb.findByIdentif(identif, new Date());
+	   
+      if (orgUnit == null)
+         return Response.status(Status.NOT_FOUND).build();
+      return Response.ok(orgUnit).build();
+   }
+   
    @SuppressWarnings("unchecked")
    private SingularAttribute<OrgUnit, ?>[] readSeachAttributes(
          OrgUnitSearchInput searchInput)

@@ -85,4 +85,15 @@ public class CountryEJB
 	   if(resultList.isEmpty()) return null;
 	   return resultList.iterator().next();
    }
+
+   public Country findByIso3(String iso3, Date validOn){
+	   List<Country> resultList = repository.findByIso3(iso3, validOn).orderAsc("validFrom").maxResults(1).getResultList();
+	   if(resultList.isEmpty()) return null;
+	   return resultList.iterator().next();
+   }
+   public List<Country> findActicfCountrys(Date validOn){
+	   validOn = validOn == null ? new Date():validOn;
+	   
+	   return repository.findActicfCountrys(validOn);
+   }
 }
