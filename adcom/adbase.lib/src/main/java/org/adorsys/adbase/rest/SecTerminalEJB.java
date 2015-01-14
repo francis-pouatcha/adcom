@@ -8,7 +8,10 @@ import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adbase.jpa.SecTerminal;
+import org.adorsys.adbase.jpa.SecTerminalSearchInput;
+import org.adorsys.adbase.jpa.SecTerminalSearchResult;
 import org.adorsys.adbase.repo.SecTerminalRepository;
+
 
 @Stateless
 public class SecTerminalEJB
@@ -83,5 +86,16 @@ public class SecTerminalEJB
 	   List<SecTerminal> resultList = repository.findByIdentif(identif, validOn).orderAsc("validFrom").maxResults(1).getResultList();
 	   if(resultList.isEmpty()) return null;
 	   return resultList.iterator().next();
+   }
+   public SecTerminalSearchResult  findAllActiveTerminals(SecTerminalSearchInput searchInput){
+	   Date date = new Date();
+	   	   Long count = repository.countActiveSecTerminal(date);
+	   List<SecTerminal> resultList = repository.findActiveSecTerminal(date).firstResult(searchInput.getStart()).maxResults(searchInput.getMax()).getResultList();
+	   SecTerminalSearchResult searchResult = new SecTerminalSearchResult();
+	   searchResult.setCount(count);
+	   searchResult.setResultList(resultList);
+	   searchResult.setSearchInput(searchInput);
+	   return searchResult ;
+	   
    }
 }
