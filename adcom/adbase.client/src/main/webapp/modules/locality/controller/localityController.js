@@ -1,10 +1,10 @@
 ﻿(function () {
     'use strict';
-    angular.module('AdBase').controller('secTerminalController',secTerminalController);
+    angular.module('AdBase').controller('localityController',localityController);
 
-    secTerminalController.$inject = ['$scope', 'secTerminalService'];
+    localityController.$inject = ['$scope', 'localityService'];
 
-    function secTerminalController($scope,secTerminalService){
+    function localityController($scope,localityService){
         var self = this ;
 
         self.searchInput = {};
@@ -12,9 +12,8 @@
         self.itemPerPage=25 ;
         self.currentPage = 1;
         self.maxSize = 5 ;
-        self.secTerminals = [];
+        self.localitys = [];
         self.searchEntity = {};
-        self.selectedLogin = {} ;
         self.selectedIndex  ;
         self.handleSearchRequestEvent = handleSearchRequestEvent;
         self.handlePrintRequestEvent = handlePrintRequestEvent;
@@ -29,19 +28,18 @@
                 start:0,
                 max:self.itemPerPage
             }
-            findAllActiveTerminals(self.searchInput);
+            findAllActive(self.searchInput);
         }
 
-        function findAllActiveTerminals(searchInput){
-            secTerminalService.findAllActiveTerminals(searchInput).then(function(entitySearchResult) {
-                self.secTerminals = entitySearchResult.resultList;
+        function findAllActive(searchInput){
+            localityService.findAllActive(searchInput).then(function(entitySearchResult) {
+                self.localitys = entitySearchResult.resultList;
                 self.totalItems = entitySearchResult.count ;
             });
         }
-
-        function findRequest(searchInput){
-            secTerminalService.find(searchInput).then(function(entitySearchResult) {
-                self.secTerminals = entitySearchResult.resultList;
+        function searchRequest(searchInput){
+            localityService.find(searchInput).then(function(entitySearchResult) {
+                self.localitys = entitySearchResult.resultList;
                 self.totalItems = entitySearchResult.count ;
             });
         }
@@ -57,7 +55,7 @@
 
         function  handleSearchRequestEvent(){
             var searchInput =   processSearchInput();
-            findRequest(self.searchInput);
+            searchRequest(self.searchInput);
         };
 
         function paginate(){

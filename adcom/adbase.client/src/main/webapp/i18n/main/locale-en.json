@@ -81,5 +81,13 @@
     "SecTerminal_locality_description":"locality",
     "SecTerminal_accessTime_description":"Acces Time",
     "SecTerminal_authUsers_description":"Users",
-    "SecTerminal_authWorkspaces_description":"Workspaces"
+    "SecTerminal_authWorkspaces_description":"Workspaces",
+    "Locality_ouIdentif_description":"Organisation",
+    "Locality_langIso2_description":"Langue ",
+    "Locality_ctryISO3_description":"Country",
+    "Locality_region_description":"Region",
+    "Locality_city_description":"City",
+    "Locality_locStr_description":"Locality",
+    "Locality_hoursOfOp_description":"Operation hour",
+    "Locality_timeZone_description":"Time Zone"
 }

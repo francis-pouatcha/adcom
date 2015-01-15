@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('AdBase')
-.factory('secTerminalService',
-    ['secTerminalResource','$cookieStore','sessionManager','$q',
-    function (secTerminalResource,$cookieStore,sessionManager,$q) {
+.factory('localityService',
+    ['localityResource','$cookieStore','sessionManager','$q',
+    function (localityResource,$cookieStore,sessionManager,$q) {
         var service = {};
 
         service.loadAll = function(){
             var deferred = $q.defer();
-        	secTerminalResource.listAll(secTerminalResource.getSearchInput.start,secTerminalResource.getSearchInput.max)
+        	localityResource.listAll(localityResource.getSearchInput.start,localityResource.getSearchInput.max)
     			.success(function(data, status, headers, config){
                     deferred.resolve(data);
     			}).error(function(data, status, headers, config){
@@ -19,7 +19,7 @@ angular.module('AdBase')
 
         service.find = function(searchInput){
             var deferred = $q.defer();
-            secTerminalResource.findByLike(searchInput)
+            localityResource.findByLike(searchInput)
                 .success(function(data, status, headers, config){
                     deferred.resolve(data);
                 }).error(function(data, status, headers, config){
@@ -30,7 +30,7 @@ angular.module('AdBase')
 
         service.create = function(entity){
             var deferred = $q.defer();
-            secTerminalResource.create(entity).success(function(data){
+            localityResource.create(entity).success(function(data){
                 deferred.resolve(data);
             }).error(function(error){
                 deferred.reject("Can not create!")
@@ -40,7 +40,7 @@ angular.module('AdBase')
 
         service.update = function(entity){
             var deferred = $q.defer();
-            secTerminalResource.update(entity).success(function(data){
+            localityResource.update(entity).success(function(data){
                 deferred.resolve(data);
             }).error(function(){
                 deferred.reject("Can not update")
@@ -52,7 +52,7 @@ angular.module('AdBase')
 
             var deferred = $q.defer();
 
-            secTerminalResource.findById(identif).success(function(data){
+            localityResource.findById(identif).success(function(data){
 
                 deferred.resolve(data);
             }).error(function(data){
@@ -65,7 +65,7 @@ angular.module('AdBase')
 
             var deferred = $q.defer();
 
-            secTerminalResource.delete(identif).success(function(data){
+            localityResource.delete(identif).success(function(data){
 
                 deferred.resolve(data);
             }).error(function(data){
@@ -74,11 +74,11 @@ angular.module('AdBase')
             return deferred.promise;
         };
 
-        service.findAllActiveTerminals = function (searchInput){
+        service.findAllActive = function (searchInput){
 
             var deferred = $q.defer();
 
-            secTerminalResource.findAllActiveTerminals(searchInput).success(function(data){
+            localityResource.findAllActive(searchInput).success(function(data){
 
                 deferred.resolve(data);
             }).error(function(data){
