@@ -12,7 +12,8 @@ angular.module('AdBase', [
     'AuthInterceptor',
     'ngSanitize',
     'pascalprecht.translate',
-    'NavBar'
+    'NavBar',
+    'datePicker'
 ])
 .constant('APP_CONFIG',{
 	'appName':'Administration',
