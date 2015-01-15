@@ -38,7 +38,7 @@
                     <th>Time Zone </th>
                     <th> {{"SecTerminal_accessTime_description"|translate}}</th>
                     <th>{{"SecTerminal_authUsers_description"|translate}}</th>
-                    <th>{{"SecTerminal_authWorkspaces_description"|translate}}</th>
+                    <th >{{"SecTerminal_authWorkspaces_description"|translate}}</th>
                     <th ></th>
                 </tr>
                 </thead>
@@ -51,7 +51,7 @@
                         <td>{{secTerminal.timeZone}}</td>
                         <td>{{secTerminal.accessTime}}</td>
                         <td>{{secTerminal.authUsers}}</td>
-                        <td>{{secTerminal.authWorkspaces}}</td>
+                        <td style="max-width: 260px;word-wrap: break-word;" >{{secTerminal.authWorkspaces}}</td>
                         <td><a href="#/secTerm/show/{{secTerminal.id}}" ><i class="glyphicon glyphicon-eye-open"></i></a></td>
                     </tr>
                 </tbody>

@@ -3,6 +3,7 @@ package org.adorsys.adbase.rest;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -26,6 +27,7 @@ import org.adorsys.adbase.jpa.Locality;
 import org.adorsys.adbase.jpa.LocalitySearchInput;
 import org.adorsys.adbase.jpa.LocalitySearchResult;
 import org.adorsys.adbase.jpa.Locality_;
+import org.adorsys.adbase.jpa.SecTerminal;
 
 /**
  * 
@@ -47,19 +49,21 @@ public class LocalityEndpoint
       return detach(ejb.create(entity));
    }
 
-   @DELETE
-   @Path("/{id:[0-9][0-9]*}")
+   @PUT
+   @Path("/{id}")
    public Response deleteById(@PathParam("id") String id)
    {
-      Locality deleted = ejb.deleteById(id);
+      Locality deleted = ejb.findById(id);
+     
       if (deleted == null)
          return Response.status(Status.NOT_FOUND).build();
 
+      deleted.setValidTo(new Date());
+      deleted = update(deleted);
       return Response.ok(detach(deleted)).build();
    }
-
    @PUT
-   @Path("/{id:[0-9][0-9]*}")
+   @Path("/{id}")
    @Produces({ "application/json", "application/xml" })
    @Consumes({ "application/json", "application/xml" })
    public Locality update(Locality entity)
@@ -68,7 +72,7 @@ public class LocalityEndpoint
    }
 
    @GET
-   @Path("/{id:[0-9][0-9]*}")
+   @Path("/{id}")
    @Produces({ "application/json", "application/xml" })
    public Response findById(@PathParam("id") String id)
    {

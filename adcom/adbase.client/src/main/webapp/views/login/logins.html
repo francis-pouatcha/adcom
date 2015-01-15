@@ -95,10 +95,8 @@
                                 <td>{{login.accountLocked}}</td>
                                 <td><a href="#/login/show/{{login.id}}" ><i class="glyphicon glyphicon-eye-open"></i></a></td>
                             </tr>
-
                             </tbody>
                         </table>
-
                     </div>
                     <ul  class="pull-right">
                         <pagination  total-items="loginCtrl.totalItems" items-per-page="loginCtrl.itemPerPage"  class="pagination-sm" ng-model="loginCtrl.currentPage" ng-change="loginCtrl.paginate()"></pagination>

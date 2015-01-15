@@ -105,6 +105,33 @@ angular.module('AdBase', [
             controllerAs: 'secTermCtrl',
             module: 'AdBase'
         })
+
+
+        .when('/locality/create',{
+            templateUrl:'views/locality/create.html',
+            controller:'localityCreateController',
+            controllerAs: 'localityCreateCtrl',
+            module: 'AdBase'
+        })
+        .when('/locality/show/:identif',{
+            templateUrl:'views/locality/show.html',
+            controller:'localityShowController',
+            controllerAs: 'localityShowCtrl',
+            module: 'AdBase'
+        })
+        .when('/locality/edit/:identif',{
+            templateUrl:'views/locality/edit.html',
+            controller:'localityEditController',
+            controllerAs: 'localityEditCtrl',
+            module: 'AdBase'
+        })
+        .when('/locality',{
+            templateUrl:'views/locality/list.html',
+            controller:'localityController',
+            controllerAs: 'localityCtrl',
+            module: 'AdBase'
+        })
+
     .otherwise({
       redirectTo: '/'
     });
