@@ -5,18 +5,24 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adbase.jpa.Country;
 import org.adorsys.adbase.repo.CountryRepository;
+import org.apache.commons.lang3.StringUtils;
 
 @Stateless
 public class CountryEJB
 {
 
+	
    @Inject
    private CountryRepository repository;
 
+   @Inject
+   private EntityManager em;
    public Country create(Country entity)
    {
       return repository.save(attach(entity));
@@ -95,5 +101,106 @@ public class CountryEJB
 	   validOn = validOn == null ? new Date():validOn;
 	   
 	   return repository.findActicfCountrys(validOn);
+   }
+   
+   public List<Country> searchCountrys(String iso3,String name,String dialCode,String langIso2,String currIso2,Date validFrom,int start,int max){
+	   validFrom = validFrom == null ? new Date() : validFrom;
+	   StringBuilder qBuilder = new StringBuilder("SELECT e FROM Country AS e WHERE e.validFrom <= :validFrom AND (e.validTo IS NULL OR e.validTo > :validFrom) ");
+	   boolean isIso3 = false;
+	   boolean isName = false;
+	   boolean isDialCode = false;
+	   boolean isLangIso2 = false;
+	   boolean isCurrIso2 = false;
+	   
+	   if(StringUtils.isNotBlank(iso3)) {
+		   qBuilder.append(" AND UPPER(e.iso3) = UPPER(:iso3)");
+		   isIso3 = true;
+	   }
+	   if(StringUtils.isNotBlank(name)) {
+		   qBuilder.append(" AND LOWER(e.name) LIKE (LOWER(:name))");
+		   isName = true;
+	   }
+	   if(StringUtils.isNotBlank(dialCode)) {
+		   qBuilder.append(" AND UPPER(e.dialCode) = UPPER(:dialCode)");
+		   isDialCode = true;
+	   }
+	   if(StringUtils.isNotBlank(langIso2)) {
+		   qBuilder.append(" AND UPPER(e.langIso2) = UPPER(:langIso2)");
+		   isLangIso2 = true;
+	   }
+	   if(StringUtils.isNotBlank(currIso2)) {
+		   qBuilder.append(" AND UPPER(e.currIso2) = UPPER(:currIso2)");
+		   isCurrIso2 = true;
+	   }
+	   qBuilder.append(" ORDER BY name ASC");
+	   TypedQuery<Country> query = em.createQuery(qBuilder.toString(), Country.class);
+	   query.setParameter("validFrom", validFrom);
+	   if(isIso3) {
+		   query.setParameter("iso3", iso3);
+	   }
+	   if(isName) {
+		   query.setParameter("name", name);
+	   }
+	   if(isDialCode) {
+		   query.setParameter("dialCode", dialCode);
+	   }
+	   if(isLangIso2) {
+		   query.setParameter("langIso2", langIso2);
+	   }
+	   if(isCurrIso2) {
+		   query.setParameter("currIso2", currIso2);
+	   }
+	   List<Country> resultList = query.setFirstResult(start).setMaxResults(max).getResultList();
+	   return resultList;
+   }
+
+   
+   public Long countCountrys(String iso3,String name,String dialCode,String langIso2,String currIso2,Date validFrom,int start,int max){
+	   validFrom = validFrom == null ? new Date() : validFrom;
+	   StringBuilder qBuilder = new StringBuilder("SELECT COUNT(e) FROM Country AS e WHERE e.validFrom <= :validFrom AND (e.validTo IS NULL OR e.validTo > :validFrom) ");
+	   boolean isIso3 = false;
+	   boolean isName = false;
+	   boolean isDialCode = false;
+	   boolean isLangIso2 = false;
+	   boolean isCurrIso2 = false;
+	   
+	   if(StringUtils.isNotBlank(iso3)) {
+		   qBuilder.append(" AND UPPER(e.iso3) = UPPER(:iso3)");
+		   isIso3 = true;
+	   }
+	   if(StringUtils.isNotBlank(name)) {
+		   qBuilder.append(" AND LOWER(e.name) LIKE (LOWER(:name))");
+		   isName = true;
+	   }
+	   if(StringUtils.isNotBlank(dialCode)) {
+		   qBuilder.append(" AND UPPER(e.dialCode) = UPPER(:dialCode)");
+		   isDialCode = true;
+	   }
+	   if(StringUtils.isNotBlank(langIso2)) {
+		   qBuilder.append(" AND UPPER(e.langIso2) = UPPER(:langIso2)");
+		   isLangIso2 = true;
+	   }
+	   if(StringUtils.isNotBlank(currIso2)) {
+		   qBuilder.append(" AND UPPER(e.currIso2) = UPPER(:currIso2)");
+		   isCurrIso2 = true;
+	   }
+	   TypedQuery<Long> query = em.createQuery(qBuilder.toString(), Long.class);
+	   query.setParameter("validFrom", validFrom);
+	   if(isIso3) {
+		   query.setParameter("iso3", iso3);
+	   }
+	   if(isName) {
+		   query.setParameter("name", name);
+	   }
+	   if(isDialCode) {
+		   query.setParameter("dialCode", dialCode);
+	   }
+	   if(isLangIso2) {
+		   query.setParameter("langIso2", langIso2);
+	   }
+	   if(isCurrIso2) {
+		   query.setParameter("currIso2", currIso2);
+	   }
+	   return query.getSingleResult();
    }
 }

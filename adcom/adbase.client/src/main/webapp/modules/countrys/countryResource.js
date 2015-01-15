@@ -58,6 +58,14 @@ angular.module('AdBase').factory('countryResource',['$http', function($http){
     service.findActifsFromNow = function(){
         return $http.get(urlBase+'/findActifsFromNow');
     }
+        
+    service.search = function(searchInput){
+        return $http.post(urlBase+'/searchCountrys',searchInput);
+    }
+    
+    service.findByIdentif = function(identif){
+        return $http.get(urlBase+'/findByIdentif/'+identif);
+    }
     return service;
     
 }]);

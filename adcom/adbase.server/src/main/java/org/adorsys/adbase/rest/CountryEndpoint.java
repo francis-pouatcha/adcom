@@ -50,7 +50,7 @@ public class CountryEndpoint
    }
 
    @DELETE
-   @Path("/{id:[0-9][0-9]*}")
+   @Path("/{id}")
    public Response deleteById(@PathParam("id") String id)
    {
       Country deleted = ejb.deleteById(id);
@@ -61,7 +61,7 @@ public class CountryEndpoint
    }
 
    @PUT
-   @Path("/{id:[0-9][0-9]*}")
+   @Path("/{id}")
    @Produces({ "application/json", "application/xml" })
    @Consumes({ "application/json", "application/xml" })
    public Country update(Country entity)
@@ -70,7 +70,7 @@ public class CountryEndpoint
    }
 
    @GET
-   @Path("/{id:[0-9][0-9]*}")
+   @Path("/{id}")
    @Produces({ "application/json", "application/xml" })
    public Response findById(@PathParam("id") String id)
    {
@@ -153,6 +153,39 @@ public class CountryEndpoint
    {
 	   List<Country> countrys = ejb.findActicfCountrys(new Date());
 	   return Response.ok(countrys).build();
+   }
+
+   @GET
+   @Path("/findByIdentif/{identif}")
+   @Produces({ "application/json", "application/xml" })
+   public Response findByIdIdentif(@PathParam("identif") String identif)
+   {
+      Country found = ejb.findByIdentif(identif, new Date());
+      if (found == null)
+         return Response.status(Status.NOT_FOUND).build();
+      return Response.ok(detach(found)).build();
+   }
+
+   @POST
+   @Path("/searchCountrys")
+   @Produces({ "application/json", "application/xml" })
+   @Consumes({ "application/json", "application/xml" })
+   public CountrySearchResult searchCountrys(CountrySearchInput searchInput)
+   {
+     Country entity = searchInput.getEntity();
+     String name = entity.getName();
+     String iso3 = entity.getIso3();
+     String dialCode = entity.getDialCode();
+     String langsIso2 = entity.getLangsIso2();
+     String currsIso2 = entity.getCurrsIso2();
+     Date from = new Date();
+     int start = searchInput.getStart();
+     int max = searchInput.getMax();
+     
+     List<Country> countrys = ejb.searchCountrys(iso3, name, dialCode, langsIso2, currsIso2, from, start, max);
+     Long count = ejb.countCountrys(iso3, name, dialCode, langsIso2, currsIso2, from, start, max);
+      return new CountrySearchResult(count, detach(countrys),
+            detach(searchInput));
    }
    @SuppressWarnings("unchecked")
    private SingularAttribute<Country, ?>[] readSeachAttributes(
