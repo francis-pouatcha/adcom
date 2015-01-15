@@ -28,6 +28,8 @@ import org.adorsys.adbase.jpa.LocalitySearchInput;
 import org.adorsys.adbase.jpa.LocalitySearchResult;
 import org.adorsys.adbase.jpa.Locality_;
 import org.adorsys.adbase.jpa.SecTerminal;
+import org.adorsys.adbase.jpa.SecTerminalSearchInput;
+import org.adorsys.adbase.jpa.SecTerminalSearchResult;
 
 /**
  * 
@@ -95,6 +97,16 @@ public class LocalityEndpoint
             detach(resultList), detach(searchInput));
    }
 
+   @POST
+   @Path("/findAllActive")
+   @Produces({ "application/json", "application/xml" })
+   @Consumes({ "application/json", "application/xml" })
+   public LocalitySearchResult findAllActiveLocality(LocalitySearchInput searchInput)
+   {
+	   LocalitySearchResult searchResult = ejb.findAllActivelocality(searchInput);
+      return searchResult ;
+   }
+   
    @GET
    @Path("/count")
    public Long count()

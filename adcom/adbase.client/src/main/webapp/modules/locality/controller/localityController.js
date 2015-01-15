@@ -28,10 +28,16 @@
                 start:0,
                 max:self.itemPerPage
             }
-            find(self.searchInput);
+            findAllActive(self.searchInput);
         }
 
-        function find(searchInput){
+        function findAllActive(searchInput){
+            localityService.findAllActive(searchInput).then(function(entitySearchResult) {
+                self.localitys = entitySearchResult.resultList;
+                self.totalItems = entitySearchResult.count ;
+            });
+        }
+        function searchRequest(searchInput){
             localityService.find(searchInput).then(function(entitySearchResult) {
                 self.localitys = entitySearchResult.resultList;
                 self.totalItems = entitySearchResult.count ;
@@ -49,7 +55,7 @@
 
         function  handleSearchRequestEvent(){
             var searchInput =   processSearchInput();
-            find(self.searchInput);
+            searchRequest(self.searchInput);
         };
 
         function paginate(){
