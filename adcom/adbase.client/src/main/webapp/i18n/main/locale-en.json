@@ -63,6 +63,7 @@
     "OrgUnit_typeIdentif_description.title":"Organization Unit Type",
     "Country_currsIso2_description.title":"Currencies",
     "Country_description.title":"Country",
+    "Country_description.plural.title":"Countrys",
     "Country_dialCode_description.title":"Phone Country Code",
     "Country_iso2_description.title":"Code ISO2",
     "Country_iso3_description.title":"Code ISO3",

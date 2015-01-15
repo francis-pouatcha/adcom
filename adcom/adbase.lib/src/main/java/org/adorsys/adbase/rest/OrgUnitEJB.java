@@ -174,9 +174,6 @@ public class OrgUnitEJB
 	   if(isCtryIso3){
 		   query.setParameter("ctryIso3", ctryIso3);
 	   }
-	   
-	   query.setFirstResult(first).setMaxResults(max);
-	   
 	   return query.getSingleResult();
    }
    private Query setParams(Query query,String param,String value,boolean isValue){

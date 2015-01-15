@@ -106,7 +106,6 @@ angular.module('AdBase', [
             module: 'AdBase'
         })
 
-
         .when('/locality/create',{
             templateUrl:'views/locality/create.html',
             controller:'localityCreateController',
@@ -132,6 +131,30 @@ angular.module('AdBase', [
             module: 'AdBase'
         })
 
+    .when('/countrys',{
+            templateUrl:'views/countrys/countrys.html',
+            controller:'countrysController',
+            controllerAs: 'countrysCtrl',
+            module: 'AdBase'
+    })
+    .when('/countrys/create',{
+            templateUrl:'views/countrys/createCountry.html',
+            controller:'countrysCreateController',
+            controllerAs: 'ctryCreateCtrl',
+            module: 'AdBase'
+    })
+    .when('/countrys/show/:identif',{
+            templateUrl:'views/countrys/showCountry.html',
+            controller:'countrysShowController',
+            controllerAs: 'ctryShowCtrl',
+            module: 'AdBase'
+    })
+    .when('/countrys/edit/:identif',{
+            templateUrl:'views/countrys/editCountry.html',
+            controller:'countrysEditController',
+            controllerAs: 'ctryEditCtrl',
+            module: 'AdBase'
+    })
     .otherwise({
       redirectTo: '/'
     });
