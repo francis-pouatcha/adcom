@@ -46,8 +46,8 @@
                     <div class="form-group">
                         <label class="col-lg-4 ">{{ "Locality_locStr_description"| translate}} :</label>
                         <div class="col-lg-8" ng-class="{ 'has-error' : localityForm.locStr.$invalid }" >
-                            <input type="text" ng-model="localityCreateCtrl.locality.locStr" name="locStr" class="form-control" >
-                            <p ng-show="localityForm.ctryISO3.$error.required" class="help-block">ctryISO3 est  requis !</p>
+                            <input type="text" ng-model="localityCreateCtrl.locality.locStr" name="locStr" required class="form-control" >
+                            <p ng-show="localityForm.locStr.$error.required" class="help-block">loalite est  requis !</p>
                         </div>
                     </div>
 
@@ -60,8 +60,8 @@
 
                     <div class="form-group">
                         <label class="col-lg-4 ">{{ "Locality_timeZone_description"| translate}} :</label>
-                        <div class="col-lg-8" ng-class="{ 'has-error' : localityForm.locStr.$invalid }" >
-                            <input type="text" ng-model="localityCreateCtrl.locality.timeZone" name="timeZone" class="form-control" >
+                        <div class="col-lg-8" ng-class="{ 'has-error' : localityForm.timeZone.$invalid }" >
+                            <input type="text" ng-model="localityCreateCtrl.locality.timeZone" name="timeZone" class="form-control" required >
                             <p ng-show="localityForm.timeZone.$error.required" class="help-block">timeZone est  requis !</p>
                         </div>
                     </div>
