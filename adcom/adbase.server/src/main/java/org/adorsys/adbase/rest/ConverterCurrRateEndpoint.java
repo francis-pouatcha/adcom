@@ -104,6 +104,17 @@ public class ConverterCurrRateEndpoint
 	   ConverterCurrRateSearchResult searchResult = ejb.findAllActiveConverterCurrRate(searchInput);
       return searchResult ;
    }
+   
+   @POST
+   @Path("/doFind")
+   @Produces({ "application/json", "application/xml" })
+   @Consumes({ "application/json", "application/xml" })
+   public ConverterCurrRateSearchResult doFind(ConverterCurrRateSearchInput searchInput)
+   {
+	   ConverterCurrRateSearchResult searchResult = ejb.doFind(searchInput);
+      return searchResult ;
+   }
+   
 
    @GET
    @Path("/count")
