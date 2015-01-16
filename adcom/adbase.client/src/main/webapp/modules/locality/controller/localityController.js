@@ -2,9 +2,9 @@
     'use strict';
     angular.module('AdBase').controller('localityController',localityController);
 
-    localityController.$inject = ['$scope', 'localityService'];
+    localityController.$inject = ['$scope', 'localityService','countryService'];
 
-    function localityController($scope,localityService){
+    function localityController($scope,localityService,countryService){
         var self = this ;
 
         self.searchInput = {};
@@ -13,6 +13,7 @@
         self.currentPage = 1;
         self.maxSize = 5 ;
         self.localitys = [];
+        self.countrys = [];
         self.searchEntity = {};
         self.selectedIndex  ;
         self.handleSearchRequestEvent = handleSearchRequestEvent;
@@ -28,6 +29,7 @@
                 start:0,
                 max:self.itemPerPage
             }
+            loadCountry();
             findAllActive(self.searchInput);
         }
 
@@ -64,6 +66,11 @@
             find(self.searchInput);
         };
 
+        function loadCountry(){
+            countryService.findActifsFromNow().then(function(data){
+                self.countrys=data;
+            });
+        }
 
         function handlePrintRequestEvent(){
 

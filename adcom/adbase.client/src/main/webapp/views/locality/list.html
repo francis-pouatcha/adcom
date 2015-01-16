@@ -17,7 +17,9 @@
                             <div class="form-group">
                                 <label class="control-label" for="">{{"Locality_ctryISO3_description"|translate}}</label>
                                 <div class="">
-                                    <input type="text"  ng-model="localityCtrl.searchEntity.ctryISO3" class="form-control">
+                                    <select class="form-control" ng-model="localityCtrl.searchEntity.ctryISO3" name="ctryISO3"
+                                            ng-options="country.iso3 as country.name for country in localityCtrl.countrys">
+                                    </select>
                                 </div>
                             </div>
                         </div>

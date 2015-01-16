@@ -2,13 +2,16 @@
     'use strict';
     angular.module('AdBase').controller('localityCreateController',localityCreateController);
 
-    localityCreateController.$inject = ['$scope', 'localityService','$location'];
+    localityCreateController.$inject = ['$scope', 'localityService','$location','countryService'];
 
-    function localityCreateController($scope,localityService, $location){
+    function localityCreateController($scope,localityService, $location,countryService){
         var self = this ;
         self.locality = {};
+        self.countrys = [];
         self.create = create;
         self.error = "";
+
+        loadCountry();
 
         function create(){
             localityService.create(self.locality).then(function(result){
@@ -17,6 +20,12 @@
                 self.error = error;
             })
         };
+
+        function loadCountry(){
+            countryService.findActifsFromNow().then(function(data){
+                self.countrys=data;
+            });
+        }
     };
 
 
