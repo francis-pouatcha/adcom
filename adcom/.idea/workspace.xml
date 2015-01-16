@@ -23,10 +23,20 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="converterCurrRateShowController.js" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="locale-en.json" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/adbase.client/src/main/webapp/i18n/main/locale-en.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-22.958334" vertical-offset="889" max-vertical-offset="1560">
+              <caret line="96" column="60" selection-start-line="96" selection-start-column="60" selection-end-line="96" selection-end-column="60" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="converterCurrRateShowController.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/adbase.client/src/main/webapp/modules/converterCurrRate/controller/converterCurrRateShowController.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="480">
+            <state vertical-scroll-proportion="0.1764706" vertical-offset="0" max-vertical-offset="680">
               <caret line="8" column="30" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="30" />
               <folding />
             </state>
@@ -66,8 +76,18 @@
       <file leaf-file-name="app.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/adbase.client/src/main/webapp/scripts/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="2236" max-vertical-offset="3495">
-              <caret line="181" column="28" selection-start-line="180" selection-start-column="27" selection-end-line="180" selection-end-column="52" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="2206" max-vertical-offset="3480">
+              <caret line="179" column="52" selection-start-line="179" selection-start-column="27" selection-end-line="179" selection-end-column="52" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="locale-fr.json" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/adbase.client/src/main/webapp/i18n/main/locale-fr.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-22.333334" vertical-offset="934" max-vertical-offset="1605">
+              <caret line="98" column="4" selection-start-line="98" selection-start-column="4" selection-end-line="98" selection-end-column="44" />
               <folding />
             </state>
           </provider>
@@ -89,28 +109,8 @@
       <file leaf-file-name="create.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/adbase.client/src/main/webapp/views/converterCurrRate/create.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-18.125" vertical-offset="165" max-vertical-offset="960">
-              <caret line="40" column="60" selection-start-line="40" selection-start-column="60" selection-end-line="40" selection-end-column="60" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="create.html" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/adbase.client/src/main/webapp/views/locality/create.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.17573872" vertical-offset="607" max-vertical-offset="1305">
-              <caret line="48" column="115" selection-start-line="48" selection-start-column="115" selection-end-line="48" selection-end-column="115" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="createCountry.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/adbase.client/src/main/webapp/views/countrys/createCountry.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-12.791667" vertical-offset="878" max-vertical-offset="1545">
-              <caret line="79" column="58" selection-start-line="79" selection-start-column="49" selection-end-line="79" selection-end-column="58" />
+            <state vertical-scroll-proportion="-13.75" vertical-offset="165" max-vertical-offset="960">
+              <caret line="33" column="55" selection-start-line="33" selection-start-column="55" selection-end-line="33" selection-end-column="55" />
               <folding />
             </state>
           </provider>
@@ -157,6 +157,7 @@
         <option value="$PROJECT_DIR$/adbase.client/src/main/webapp/views/login/logins.html" />
         <option value="$PROJECT_DIR$/adbase.client/src/main/webapp/views/locality/list.html" />
         <option value="$PROJECT_DIR$/adbase.client/src/main/webapp/views/terminal/list.html" />
+        <option value="$PROJECT_DIR$/adbase.client/src/main/webapp/views/locality/create.html" />
         <option value="$PROJECT_DIR$/adbase.client/src/main/webapp/modules/locality/controller/localityCreateController.js" />
         <option value="$PROJECT_DIR$/adbase.client/src/main/webapp/modules/locality/controller/localityEditController.js" />
         <option value="$PROJECT_DIR$/adbase.client/src/main/webapp/modules/locality/controller/localityShowController.js" />
@@ -181,12 +182,11 @@
         <option value="$PROJECT_DIR$/adbase.client/src/main/webapp/i18n/main/locale-fr.json" />
         <option value="$PROJECT_DIR$/adbase.client/src/main/webapp/i18n/main/locale-en.json" />
         <option value="$PROJECT_DIR$/adbase.client/src/main/webapp/views/converterCurrRate/edit.html" />
+        <option value="$PROJECT_DIR$/adbase.client/src/main/webapp/views/converterCurrRate/create.html" />
         <option value="$PROJECT_DIR$/adbase.client/src/main/webapp/modules/converterCurrRate/controller/converterCurrRateController.js" />
         <option value="$PROJECT_DIR$/adbase.client/src/main/webapp/views/converterCurrRate/list.html" />
         <option value="$PROJECT_DIR$/adbase.client/src/main/webapp/views/converterCurrRate/show.html" />
         <option value="$PROJECT_DIR$/adbase.client/src/main/webapp/views/locality/show.html" />
-        <option value="$PROJECT_DIR$/adbase.client/src/main/webapp/views/converterCurrRate/create.html" />
-        <option value="$PROJECT_DIR$/adbase.client/src/main/webapp/views/locality/create.html" />
       </list>
     </option>
   </component>
@@ -508,40 +508,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="locality" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="adcom" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="adcom" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="adbase.client" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="views" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="countrys" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1053,6 +1019,14 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/adbase.client/src/main/webapp/views/locality/create.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-10.333333" vertical-offset="562" max-vertical-offset="1305">
+          <caret line="54" column="53" selection-start-line="54" selection-start-column="53" selection-end-line="54" selection-end-column="83" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/adbase.client/src/main/webapp/modules/locality/controller/localityCreateController.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="435">
@@ -1239,8 +1213,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/adbase.client/src/main/webapp/scripts/app.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2236" max-vertical-offset="3495">
-          <caret line="181" column="28" selection-start-line="180" selection-start-column="27" selection-end-line="180" selection-end-column="52" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="2206" max-vertical-offset="3480">
+          <caret line="179" column="52" selection-start-line="179" selection-start-column="27" selection-end-line="179" selection-end-column="52" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adbase.client/src/main/webapp/views/countrys/createCountry.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.44012442" vertical-offset="902" max-vertical-offset="1545">
+          <caret line="79" column="49" selection-start-line="79" selection-start-column="41" selection-end-line="79" selection-end-column="49" />
           <folding />
         </state>
       </provider>
@@ -1280,6 +1262,14 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/adbase.client/src/main/webapp/views/converterCurrRate/create.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-13.75" vertical-offset="165" max-vertical-offset="960">
+          <caret line="33" column="55" selection-start-line="33" selection-start-column="55" selection-end-line="33" selection-end-column="55" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/adbase.client/src/main/webapp/views/locality/show.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-19.083334" vertical-offset="547" max-vertical-offset="1245">
@@ -1298,32 +1288,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/adbase.client/src/main/webapp/modules/converterCurrRate/controller/converterCurrRateShowController.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="480">
+        <state vertical-scroll-proportion="0.1764706" vertical-offset="0" max-vertical-offset="680">
           <caret line="8" column="30" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/adbase.client/src/main/webapp/views/countrys/createCountry.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-12.791667" vertical-offset="878" max-vertical-offset="1545">
-          <caret line="79" column="58" selection-start-line="79" selection-start-column="49" selection-end-line="79" selection-end-column="58" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/adbase.client/src/main/webapp/views/converterCurrRate/create.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-18.125" vertical-offset="165" max-vertical-offset="960">
-          <caret line="40" column="60" selection-start-line="40" selection-start-column="60" selection-end-line="40" selection-end-column="60" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/adbase.client/src/main/webapp/views/locality/create.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.17573872" vertical-offset="607" max-vertical-offset="1305">
-          <caret line="48" column="115" selection-start-line="48" selection-start-column="115" selection-end-line="48" selection-end-column="115" />
           <folding />
         </state>
       </provider>

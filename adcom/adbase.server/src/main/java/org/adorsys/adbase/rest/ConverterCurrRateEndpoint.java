@@ -51,7 +51,7 @@ public class ConverterCurrRateEndpoint
    }
 
    @PUT
-   @Path("/{id}")
+   @Path("/{id")
    public Response deleteById(@PathParam("id") String id)
    {
       ConverterCurrRate deleted = ejb.deleteById(id);
