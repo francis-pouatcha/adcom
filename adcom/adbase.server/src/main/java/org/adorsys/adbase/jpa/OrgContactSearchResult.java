@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.adorsys.adbase.dto.OrgContactDto;
+
 @XmlRootElement
 public class OrgContactSearchResult
 {
@@ -18,6 +20,10 @@ public class OrgContactSearchResult
     */
    private List<OrgContact> resultList;
 
+   /*
+    * The dtos representations of contacts in the result list.
+    */
+   private List<OrgContactDto> dtos;
    /*
     * The original search input object. For stateless clients.
     */
@@ -35,6 +41,14 @@ public class OrgContactSearchResult
       this.count = count;
       this.resultList = resultList;
       this.searchInput = searchInput;
+   }
+   
+
+   public OrgContactSearchResult(Long count, List<OrgContact> resultList, List<OrgContactDto> dtos,
+         OrgContactSearchInput searchInput)
+   {
+	  this(count, resultList, searchInput);
+      this.dtos = dtos;
    }
 
    public Long getCount()
@@ -67,4 +81,12 @@ public class OrgContactSearchResult
       this.searchInput = searchInput;
    }
 
+   public List<OrgContactDto> getDtos() {
+	   return dtos;
+   }
+
+   public void setDtos(List<OrgContactDto> dtos) {
+	   this.dtos = dtos;
+   }
+   
 }

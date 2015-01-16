@@ -156,6 +156,31 @@ angular.module('AdBase', [
             controllerAs: 'ctryEditCtrl',
             module: 'AdBase'
     })
+
+    .when('/orgcontacts',{
+            templateUrl:'views/orgcontacts/orgcontacts.html',
+            controller:'orgcontactsController',
+            controllerAs: 'orgcontactsCtrl',
+            module: 'AdBase'
+    })
+    .when('/orgcontacts/create',{
+            templateUrl:'views/orgcontacts/createOrgContact.html',
+            controller:'orgcontactsCreateController',
+            controllerAs: 'ocCreateCtrl',
+            module: 'AdBase'
+    })
+    .when('/orgcontacts/show/:identif',{
+            templateUrl:'views/orgcontacts/showOrgContact.html',
+            controller:'orgcontactsShowController',
+            controllerAs: 'ocShowCtrl',
+            module: 'AdBase'
+    })
+    .when('/orgcontacts/edit/:identif',{
+            templateUrl:'views/orgcontacts/editOrgContact.html',
+            controller:'orgcontactsEditController',
+            controllerAs: 'ocEditCtrl',
+            module: 'AdBase'
+    })
     .otherwise({
       redirectTo: '/'
     });

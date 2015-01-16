@@ -89,5 +89,20 @@
     "Locality_city_description":"City",
     "Locality_locStr_description":"Locality",
     "Locality_hoursOfOp_description":"Operation hour",
-    "Locality_timeZone_description":"Time Zone"
+    "Locality_timeZone_description":"Time Zone",
+    "OrgContact_city_description.title":"City",
+    "OrgContact_contactPeople_description.title":"Responsibles",
+    "OrgContact_country_description.title":"Country",
+    "OrgContact_description.title":"Contact",
+    "OrgContact_division_description.title":"Division",
+    "OrgContact_email_description.title":"Email",
+    "OrgContact_fax_description.title":"Fax",
+    "OrgContact_ouIdentif_description.title":"Organization Unit Identifier",
+    "OrgContact_phone_description.title":"Phone",
+    "OrgContact_region_description.title":"Region",
+    "OrgContact_street2_description.title":"Street2",
+    "OrgContact_street_description.title":"Street",
+    "OrgContact_subdivision_description.title":"Subdivision",
+    "OrgContact_zipCode_description.title":"Zip Code",
+    "OrgContact_contactIndex_description.title":"Contact Index"
 }

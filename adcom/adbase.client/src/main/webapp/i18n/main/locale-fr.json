@@ -91,6 +91,20 @@
     "Locality_city_description":"Ville",
     "Locality_locStr_description":"Localite",
     "Locality_hoursOfOp_description":"Heure Operationnelle",
-    "Locality_timeZone_description":"Time Zone"
-
+    "Locality_timeZone_description":"Time Zone",
+    "OrgContact_city_description.title":"Ville",
+    "OrgContact_contactPeople_description.title":"Responsables",
+    "OrgContact_country_description.title":"Pays",
+    "OrgContact_description.title":"Contact",
+    "OrgContact_division_description.title":"Departement",
+    "OrgContact_email_description.title":"Email",
+    "OrgContact_fax_description.title":"Fax",
+    "OrgContact_ouIdentif_description.title":"Identifiant Unit\u00E9 Organisationelle",
+    "OrgContact_phone_description.title":"T\u00E9l\u00E9phone",
+    "OrgContact_region_description.title":"Region",
+    "OrgContact_street2_description.title":"Rue2",
+    "OrgContact_street_description.title":"Rue",
+    "OrgContact_subdivision_description.title":"Arondissement",
+    "OrgContact_zipCode_description.title":"Code Postale",
+    "OrgContact_contactIndex_description.title":"Index contact"
 }

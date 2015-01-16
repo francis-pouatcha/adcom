@@ -3,6 +3,7 @@ package org.adorsys.adbase.rest;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -22,6 +23,9 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.adorsys.adbase.dto.OrgContactDto;
+import org.adorsys.adbase.dto.OrgContactDtoService;
+import org.adorsys.adbase.exception.NotFoundOrNotActifEntityException;
 import org.adorsys.adbase.jpa.OrgContact;
 import org.adorsys.adbase.jpa.OrgContactSearchInput;
 import org.adorsys.adbase.jpa.OrgContactSearchResult;
@@ -39,6 +43,8 @@ public class OrgContactEndpoint
    @Inject
    private OrgContactEJB ejb;
 
+   @Inject
+   private OrgContactDtoService ocDtoService;
    @POST
    @Consumes({ "application/json", "application/xml" })
    @Produces({ "application/json", "application/xml" })
@@ -48,7 +54,7 @@ public class OrgContactEndpoint
    }
 
    @DELETE
-   @Path("/{id:[0-9][0-9]*}")
+   @Path("/{id}")
    public Response deleteById(@PathParam("id") String id)
    {
       OrgContact deleted = ejb.deleteById(id);
@@ -142,6 +148,48 @@ public class OrgContactEndpoint
    {
       SingularAttribute<OrgContact, ?>[] attributes = readSeachAttributes(searchInput);
       return ejb.countByLike(searchInput.getEntity(), attributes);
+   }
+   
+   @GET
+   @Path("/findByIdentif/{identif}/entity")
+   @Produces({"application/json","application/xml"})
+   public OrgContact findByIdentifEntity(@PathParam("identif")String identif) {
+	   
+	   OrgContact orgContact = ejb.findByIdentif(identif, new Date());
+	   return orgContact;
+   }
+
+   @GET
+   @Path("/findByIdentif/{identif}/dto")
+   @Produces({"application/json","application/xml"})
+   public OrgContactDto findByIdentifDto(@PathParam("identif")String identif) throws NotFoundOrNotActifEntityException {
+	   OrgContactDto contactDto = ocDtoService.convert(identif);
+	   
+	   return contactDto;
+   }
+   
+   @POST
+   @Path("/searchOrgContacts")
+   @Consumes({ "application/json", "application/xml" })
+   @Produces({"application/json","application/xml"})
+   public OrgContactSearchResult searchOrgContacts(OrgContactSearchInput searchInput) throws NotFoundOrNotActifEntityException
+   {
+
+	   int start = searchInput.getStart();
+	   int max = searchInput.getMax();
+	   
+	   OrgContact entity = searchInput.getEntity();
+	   String ouIdentif = entity.getOuIdentif();
+	   String email = entity.getEmail();
+	   String phone = entity.getPhone();
+	   String city = entity.getCity();
+	   String ctryIso3 = entity.getCountry();
+	   
+	   Date validFrom = new Date();
+	   List<OrgContact> orgContacts = ejb.searchOrgContacts(ouIdentif, email, phone, city, ctryIso3, validFrom, start, max);
+	   Long count = ejb.countOrgContacts(ouIdentif, email, phone, city, ctryIso3, validFrom, start, max);
+	   List<OrgContactDto> dtos = ocDtoService.convert(orgContacts);
+	   return new OrgContactSearchResult(count, detach(orgContacts),dtos, detach(searchInput));
    }
 
    @SuppressWarnings("unchecked")
