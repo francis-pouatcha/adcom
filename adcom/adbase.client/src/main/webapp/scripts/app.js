@@ -155,6 +155,32 @@ angular.module('AdBase', [
             controllerAs: 'ctryEditCtrl',
             module: 'AdBase'
     })
+
+        .when('/converterCurrRate',{
+            templateUrl:'views/converterCurrRate/list.html',
+            controller:'converterCurrRateController',
+            controllerAs: 'converterCurrRateCtrl',
+            module: 'AdBase'
+        })
+        .when('/converterCurrRate/create',{
+            templateUrl:'views/converterCurrRate/create.html',
+            controller:'converterCurrRateCreateController',
+            controllerAs: 'converterCurrRateCreateCtrl',
+            module: 'AdBase'
+        })
+        .when('/converterCurrRate/show/:identif',{
+            templateUrl:'views/converterCurrRate/show.html',
+            controller:'converterCurrRateShowController',
+            controllerAs: 'converterCurrRateShowCtrl',
+            module: 'AdBase'
+        })
+        .when('/converterCurrRate/edit/:identif',{
+            templateUrl:'views/converterCurrRate/edit.html',
+            controller:'converterCurrRateEditController',
+            controllerAs: 'converterCurrRateEditCtrl',
+            module: 'AdBase'
+        })
+
     .otherwise({
       redirectTo: '/'
     });

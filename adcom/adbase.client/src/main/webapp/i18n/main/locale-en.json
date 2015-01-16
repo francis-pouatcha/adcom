@@ -9,6 +9,7 @@
 	"logins_email":"Email",
 	"logins_fullName":"Full Name",
 	"logins_ouIdentif":"Organization Unit",
+    "logins_accountLocked":"Locked",
     "IdSize_is_required":"Id size is required",
     "TypeName_is_required":"Type name is required.",
     "parentType_is_required":"Parent type is required.",
@@ -89,5 +90,10 @@
     "Locality_city_description":"City",
     "Locality_locStr_description":"Locality",
     "Locality_hoursOfOp_description":"Operation hour",
-    "Locality_timeZone_description":"Time Zone"
+    "Locality_timeZone_description":"Time Zone",
+    "ConverterCurrRate_srcCurrISO3_description":"Source currency",
+    "ConverterCurrRate_destCurrISO3_description":"Destination Currency",
+    "ConverterCurrRate_exRate_description":"Rate",
+    "converterCurrRate_description":"Converter Currency Rate"
+
 }

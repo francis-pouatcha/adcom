@@ -8,6 +8,7 @@
 	"logins_email":"Email",
 	"logins_fullName":"Nom",
 	"logins_ouIdentif":"Département",
+    "logins_accountLocked":"Bloque",
     "IdSize_is_required":"La taille de l'identifiant est requise",
     "TypeName_is_required":"Le nom du type d'org est requis.",
     "parentType_is_required":"Le type parent est requis",
@@ -91,6 +92,11 @@
     "Locality_city_description":"Ville",
     "Locality_locStr_description":"Localite",
     "Locality_hoursOfOp_description":"Heure Operationnelle",
-    "Locality_timeZone_description":"Time Zone"
+    "Locality_timeZone_description":"Time Zone",
+    "ConverterCurrRate_srcCurrISO3_description":"Devise source",
+    "ConverterCurrRate_destCurrISO3_description":"Devise destination",
+    "ConverterCurrRate_exRate_description":"Taux echange",
+    "converterCurrRate_description":"Devise"
+
 
 }
