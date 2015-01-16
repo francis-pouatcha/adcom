@@ -1,16 +1,15 @@
 (function () {
     'use strict';
-    angular.module('AdBase').controller('orgUnitShowController',loginShowController);
+    angular.module('AdBase').controller('orgUnitShowController',orgUnitShowController);
 
-    loginShowController.$inject = ['$scope', 'orgUnitsService','$location','$routeParams'];
+    orgUnitShowController.$inject = ['$scope', 'orgUnitsService','$location','$routeParams'];
 
-    function loginShowController($scope,orgUnitsService, $location,$routeParams){
+    function orgUnitShowController($scope,orgUnitsService, $location,$routeParams){
         var self = this ;
         self.orgUnit = {};
         self.show = show;
-        self.previous = previous;
-        self.next = next;
-
+        self.error;
+        self.remove = remove;
         init();
 
         function init(){
@@ -23,29 +22,14 @@
             orgUnitsService.findDtoByIdentif(identif).then(function(result){
                 self.orgUnit = result
             })
-
         };
-
-        function previous(){
-            self.error = "";
-            loginService.previousLogin(self.login.loginName).then(function(result){
-                self.login = result;
-            },function(error){
+        
+        function remove(id) {
+            orgUnitsService.remove(id).then(function(data){
+                $location.path("/orgunits");
+            },function (error){
                 self.error = error;
             })
-
-        }
-
-
-
-        function next(){
-            self.error = "";
-            loginService.nextLogin(self.login.loginName).then(function(result){
-                self.login = result;
-            },function(error){
-                self.error = error;
-            })
-
         }
     };
 

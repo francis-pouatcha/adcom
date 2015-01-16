@@ -56,6 +56,16 @@ angular.module('AdBase')
             });
             return deferred.promise;
     	};
+        
+        service.remove = function (id) {
+            var deferred = $q.defer();
+            orgUnitsResource.deleteById(id).success(function(data,status,headers,config){
+                deferred.resolve(data);
+            },function (data,status,headers,config){
+                deferred.reject("An error occured during orgunit deletion");
+            });
+            return deferred.promise;
+        }
         return service;
     }]
 );

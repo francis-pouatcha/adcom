@@ -56,7 +56,7 @@ public class OrgUnitEndpoint
    }
 
    @DELETE
-   @Path("/{id:[0-9][0-9]*}")
+   @Path("/{id}")
    public Response deleteById(@PathParam("id") String id)
    {
       OrgUnit deleted = ejb.deleteById(id);

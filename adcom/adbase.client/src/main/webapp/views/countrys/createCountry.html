@@ -70,14 +70,14 @@
                     <div class="form-group">
                         <label class="col-lg-4 ">{{ "Entity_validFrom.title"| translate}} :</label>
                         <div class="col-lg-8" ng-class="{ 'has-error' : countryForm.validFrom.$invalid }" >
-                            <input type="datetime-local" ng-model="ctryCreateCtrl.country.validFrom" name="validFrom" class="form-control" >
+                            <input type="datime" date-time  partial="true" ng-model="ctryCreateCtrl.country.validFrom" name="validFrom" class="form-control" >
                         </div>
                     </div>
                     
                     <div class="form-group">
                         <label class="col-lg-4 ">{{ "Entity_validTo.title"| translate}} :</label>
                         <div class="col-lg-8" ng-class="{ 'has-error' : countryForm.validTo.$invalid }" >
-                            <input type="datetime-local" ng-model="ctryCreateCtrl.country.validTo" name="validTo" class="form-control" >
+                            <input type="datime" date-time  ng-model="ctryCreateCtrl.country.validTo" name="validTo" class="form-control" >
                         </div>
                     </div>
                     <div class="form-group">

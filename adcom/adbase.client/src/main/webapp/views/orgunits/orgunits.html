@@ -18,7 +18,7 @@
                                 <div class="form-group">
                                     <label class=" control-label" for="">{{"OrgUnit_fullName_description.title"|translate}}</label>
                                     <div class="">
-                                        <input class="form-control" type="text" id="" ng-model="orgUnitCtrl.searchInput.fullName" class="form-control">
+                                        <input class="form-control" type="text" id="" ng-model="orgUnitCtrl.searchInput.entity.fullName" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -89,7 +89,7 @@
                                 <td>{{orgunit.countryName}} </td>
                                 <td>{{orgunit.ctrIso3}} </td>
                                 <td><a href="#/orgunits/show/{{orgunit.identif}}" ><i class="glyphicon glyphicon-eye-open"></i></a></td>
-                                <td><a href="#/orgunits/edit/{{orgunit.identif}}" ><i class="glyphicon glyphicon-eye-open"></i></a></td>
+                                <td><a href="#/orgunits/edit/{{orgunit.identif}}" ><i class="glyphicon glyphicon-edit"></i></a></td>
                             </tr>
 
                             </tbody>

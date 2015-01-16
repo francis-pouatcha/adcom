@@ -54,6 +54,16 @@ angular.module('AdBase')
             });
             return deferred.promise;
     	};
+        
+        service.remove = function (id) {
+            var deferred = $q.defer();
+            countryResource.deleteById(id).success(function(data,status,headers,config){
+                deferred.resolve(data);
+            }).error(function(data,status,headers,config){
+               deferred.reject("An error occured while deleting the country");
+            });
+            return deferred.promise;
+        }
         return service;
     }]
 );

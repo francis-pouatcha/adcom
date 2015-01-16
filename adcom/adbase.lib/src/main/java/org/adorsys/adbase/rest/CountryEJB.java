@@ -33,7 +33,8 @@ public class CountryEJB
       Country entity = repository.findBy(id);
       if (entity != null)
       {
-         repository.remove(entity);
+    	  entity.setValidTo(new Date());
+    	  em.merge(entity);
       }
       return entity;
    }
@@ -125,11 +126,11 @@ public class CountryEJB
 		   isDialCode = true;
 	   }
 	   if(StringUtils.isNotBlank(langIso2)) {
-		   qBuilder.append(" AND UPPER(e.langIso2) = UPPER(:langIso2)");
+		   qBuilder.append(" AND UPPER(e.langsIso2) = UPPER(:langsIso2)");
 		   isLangIso2 = true;
 	   }
 	   if(StringUtils.isNotBlank(currIso2)) {
-		   qBuilder.append(" AND UPPER(e.currIso2) = UPPER(:currIso2)");
+		   qBuilder.append(" AND UPPER(e.currsIso2) = UPPER(:currsIso2)");
 		   isCurrIso2 = true;
 	   }
 	   qBuilder.append(" ORDER BY name ASC");
@@ -139,16 +140,16 @@ public class CountryEJB
 		   query.setParameter("iso3", iso3);
 	   }
 	   if(isName) {
-		   query.setParameter("name", name);
+		   query.setParameter("name", "%"+name+"%");
 	   }
 	   if(isDialCode) {
 		   query.setParameter("dialCode", dialCode);
 	   }
 	   if(isLangIso2) {
-		   query.setParameter("langIso2", langIso2);
+		   query.setParameter("langsIso2", langIso2);
 	   }
 	   if(isCurrIso2) {
-		   query.setParameter("currIso2", currIso2);
+		   query.setParameter("currsIso2", currIso2);
 	   }
 	   List<Country> resultList = query.setFirstResult(start).setMaxResults(max).getResultList();
 	   return resultList;
@@ -177,11 +178,11 @@ public class CountryEJB
 		   isDialCode = true;
 	   }
 	   if(StringUtils.isNotBlank(langIso2)) {
-		   qBuilder.append(" AND UPPER(e.langIso2) = UPPER(:langIso2)");
+		   qBuilder.append(" AND UPPER(e.langsIso2) = UPPER(:langsIso2)");
 		   isLangIso2 = true;
 	   }
 	   if(StringUtils.isNotBlank(currIso2)) {
-		   qBuilder.append(" AND UPPER(e.currIso2) = UPPER(:currIso2)");
+		   qBuilder.append(" AND UPPER(e.currsIso2) = UPPER(:currsIso2)");
 		   isCurrIso2 = true;
 	   }
 	   TypedQuery<Long> query = em.createQuery(qBuilder.toString(), Long.class);
@@ -190,16 +191,16 @@ public class CountryEJB
 		   query.setParameter("iso3", iso3);
 	   }
 	   if(isName) {
-		   query.setParameter("name", name);
+		   query.setParameter("name", "%"+name+"%");
 	   }
 	   if(isDialCode) {
 		   query.setParameter("dialCode", dialCode);
 	   }
 	   if(isLangIso2) {
-		   query.setParameter("langIso2", langIso2);
+		   query.setParameter("langsIso2", langIso2);
 	   }
 	   if(isCurrIso2) {
-		   query.setParameter("currIso2", currIso2);
+		   query.setParameter("currsIso2", currIso2);
 	   }
 	   return query.getSingleResult();
    }
