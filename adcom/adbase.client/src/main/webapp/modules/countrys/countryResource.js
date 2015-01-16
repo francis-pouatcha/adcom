@@ -27,14 +27,6 @@ angular.module('AdBase').factory('countryResource',['$http', function($http){
         return $http.post(urlBase+'/findByLike',entitySearchInput);
     };
 
-    service.nextLogin = function(entityId){
-        return $http.get(urlBase+'/nextLogin/'+entityId);
-    };
-
-    service.previousLogin = function(entityId){
-        return $http.get(urlBase+'/previousLogin/'+entityId);
-    };
-
     service.findById = function(entityId){
         return $http.get(urlBase+'/'+entityId);
     };

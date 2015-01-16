@@ -8,6 +8,7 @@
         var self = this ;
         self.country = {};
         self.error ;
+        self.remove = remove;
         init();
 
         function init(){
@@ -22,6 +23,14 @@
                self.error = error; 
             });
         };
+        
+        function remove(id) {
+            countrySerivce.remove(id).then(function(data){
+                $location.path("/countrys");
+            },function(error){
+                self.error = error;
+            })
+        }
     };
 
 

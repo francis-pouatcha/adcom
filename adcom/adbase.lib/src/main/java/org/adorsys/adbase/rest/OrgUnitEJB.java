@@ -44,7 +44,8 @@ public class OrgUnitEJB
       OrgUnit entity = repository.findBy(id);
       if (entity != null)
       {
-         repository.remove(entity);
+    	  entity.setValidTo(new Date());
+    	  em.merge(entity);
       }
       return entity;
    }
@@ -128,7 +129,7 @@ public class OrgUnitEJB
 	   query.setParameter("from", validFrom);
 	   
 	   if(isFullName){
-		   query.setParameter("fullName", fullName);
+		   query.setParameter("fullName", "%"+fullName+"%");
 	   }
 	   if(isTypeIdentif){
 		   query.setParameter("typeIdentif", typeIdentif);
@@ -166,7 +167,7 @@ public class OrgUnitEJB
 	   
 	   query.setParameter("from", validFrom);
 	   if(isFullName){
-		   query.setParameter("fullName", fullName);
+		   query.setParameter("fullName", "%"+fullName+"%");
 	   }
 	   if(isTypeIdentif){
 		   query.setParameter("typeIdentif", typeIdentif);
@@ -175,11 +176,5 @@ public class OrgUnitEJB
 		   query.setParameter("ctryIso3", ctryIso3);
 	   }
 	   return query.getSingleResult();
-   }
-   private Query setParams(Query query,String param,String value,boolean isValue){
-	   if(isValue) {
-		   query.setParameter(param, value);
-	   }
-	   return query;
    }
 }

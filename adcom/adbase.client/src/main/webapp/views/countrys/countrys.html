@@ -18,7 +18,7 @@
                                 <div class="form-group">
                                     <label class=" control-label" for="">{{"Country_iso3_description.title"|translate}}</label>
                                     <div class="">
-                                        <input class="form-control" type="text" id="" ng-model="countrysCtrl.searchInput.iso3" class="form-control">
+                                        <input class="form-control" type="text" id="" ng-model="countrysCtrl.searchInput.entity.iso3" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -27,7 +27,7 @@
                                 <div class="form-group">
                                     <label class=" control-label" for="">{{"Country_name_description.title"|translate}}</label>
                                     <div class="">
-                                        <input class="form-control" type="text" id="" ng-model="countrysCtrl.searchInput.name" class="form-control">
+                                        <input class="form-control" type="text" id="" ng-model="countrysCtrl.searchInput.entity.name" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -36,7 +36,7 @@
                                 <div class="form-group">
                                     <label class=" control-label" for="">{{"Country_dialCode_description.title"|translate}}</label>
                                     <div class="">
-                                        <input class="form-control" type="text" id="" ng-model="countrysCtrl.searchInput.dialCode" class="form-control">
+                                        <input class="form-control" type="text" id="" ng-model="countrysCtrl.searchInput.entity.dialCode" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -45,7 +45,7 @@
                                 <div class="form-group">
                                     <label class=" control-label" for="">{{"Country_langsIso2_description.title"|translate}}</label>
                                     <div class="">
-                                        <input class="form-control" type="text" id="" ng-model="countrysCtrl.searchInput.langsIso2" class="form-control">
+                                        <input class="form-control" type="text" id="" ng-model="countrysCtrl.searchInput.entity.langsIso2" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -54,7 +54,7 @@
                                 <div class="form-group">
                                     <label class=" control-label" for="">{{"Country_currsIso2_description.title"|translate}}</label>
                                     <div class="">
-                                        <input class="form-control" type="text" id="" ng-model="countrysCtrl.searchInput.currsIso2" class="form-control">
+                                        <input class="form-control" type="text" id="" ng-model="countrysCtrl.searchInput.entity.currsIso2" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -113,7 +113,7 @@
                                 <td>{{country.currsIso2}}</td>
                                 <td>{{country.timeZones}}</td>
                                 <td><a href="#/countrys/show/{{country.identif}}" ><i class="glyphicon glyphicon-eye-open"></i></a></td>
-                                <td><a href="#/countrys/edit/{{country.identif}}" ><i class="glyphicon glyphicon-eye-open"></i></a></td>
+                                <td><a href="#/countrys/edit/{{country.identif}}" ><i class="glyphicon glyphicon-edit"></i></a></td>
                             </tr>
 
                             </tbody>
