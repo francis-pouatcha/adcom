@@ -39,8 +39,8 @@
                 self.totalItems = entitySearchResult.count ;
             });
         }
-        function searchRequest(searchInput){
-            localityService.find(searchInput).then(function(entitySearchResult) {
+        function doFind(searchInput){
+            localityService.doFind(searchInput).then(function(entitySearchResult) {
                 self.localitys = entitySearchResult.resultList;
                 self.totalItems = entitySearchResult.count ;
             });
@@ -48,8 +48,17 @@
 
         function processSearchInput(){
             var fileName = [];
-            if(self.searchInput.entity.partnerIds){
-                fileName.push('partnerIds') ;
+            if(self.searchInput.entity.ouIdentif){
+                fileName.push('ouIdentif') ;
+            }
+            if(self.searchInput.entity.ctryISO3){
+                fileName.push('ctryISO3') ;
+            }
+            if(self.searchInput.entity.region){
+                fileName.push('region') ;
+            }
+            if(self.searchInput.entity.locStr){
+                fileName.push('locStr') ;
             }
             self.searchInput.fieldNames = fileName ;
             return self.searchInput ;
@@ -57,13 +66,13 @@
 
         function  handleSearchRequestEvent(){
             var searchInput =   processSearchInput();
-            searchRequest(self.searchInput);
+            doFind(searchInput);
         };
 
         function paginate(){
             self.searchInput.start = ((self.currentPage - 1)  * self.itemPerPage) ;
             self.searchInput.max = self.itemPerPage ;
-            find(self.searchInput);
+            doFind(self.searchInput);
         };
 
         function loadCountry(){
