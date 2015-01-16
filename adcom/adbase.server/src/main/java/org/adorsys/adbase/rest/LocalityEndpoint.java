@@ -103,7 +103,7 @@ public class LocalityEndpoint
    @Consumes({ "application/json", "application/xml" })
    public LocalitySearchResult findAllActiveLocality(LocalitySearchInput searchInput)
    {
-	   LocalitySearchResult searchResult = ejb.findAllActivelocality(searchInput);
+	   LocalitySearchResult searchResult = ejb.findAllActiveLocality(searchInput);
       return searchResult ;
    }
    

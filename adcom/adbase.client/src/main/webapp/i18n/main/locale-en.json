@@ -9,6 +9,7 @@
 	"logins_email":"Email",
 	"logins_fullName":"Full Name",
 	"logins_ouIdentif":"Organization Unit",
+    "logins_accountLocked":"Locked",
     "IdSize_is_required":"Id size is required",
     "TypeName_is_required":"Type name is required.",
     "parentType_is_required":"Parent type is required.",
@@ -104,5 +105,9 @@
     "OrgContact_street_description.title":"Street",
     "OrgContact_subdivision_description.title":"Subdivision",
     "OrgContact_zipCode_description.title":"Zip Code",
-    "OrgContact_contactIndex_description.title":"Contact Index"
+    "OrgContact_contactIndex_description.title":"Contact Index",
+    "ConverterCurrRate_srcCurrISO3_description":"Source currency",
+    "ConverterCurrRate_destCurrISO3_description":"Destination Currency",
+    "ConverterCurrRate_exRate_description":"Rate",
+    "converterCurrRate_description":"Converter Currency Rate"
 }

@@ -87,7 +87,7 @@ public class LocalityEJB
 	   if(resultList.isEmpty()) return null;
 	   return resultList.iterator().next();
    }
-   public LocalitySearchResult  findAllActivelocality(LocalitySearchInput searchInput){
+   public LocalitySearchResult  findAllActiveLocality(LocalitySearchInput searchInput){
 	   Date date = new Date();
 	   	   Long count = repository.countActiveLocality(date);
 	   List<Locality> resultList = repository.findActiveLocality(date).firstResult(searchInput.getStart()).maxResults(searchInput.getMax()).getResultList();

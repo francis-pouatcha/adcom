@@ -8,6 +8,7 @@
 	"logins_email":"Email",
 	"logins_fullName":"Nom",
 	"logins_ouIdentif":"Département",
+    "logins_accountLocked":"Bloque",
     "IdSize_is_required":"La taille de l'identifiant est requise",
     "TypeName_is_required":"Le nom du type d'org est requis.",
     "parentType_is_required":"Le type parent est requis",
@@ -106,5 +107,9 @@
     "OrgContact_street_description.title":"Rue",
     "OrgContact_subdivision_description.title":"Arondissement",
     "OrgContact_zipCode_description.title":"Code Postale",
-    "OrgContact_contactIndex_description.title":"Index contact"
+    "OrgContact_contactIndex_description.title":"Index contact",
+    "ConverterCurrRate_srcCurrISO3_description":"Devise source",
+    "ConverterCurrRate_destCurrISO3_description":"Devise destination",
+    "ConverterCurrRate_exRate_description":"Taux echange",
+    "converterCurrRate_description":"Devise"
 }
