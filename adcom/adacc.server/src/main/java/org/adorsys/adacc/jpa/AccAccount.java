@@ -2,6 +2,7 @@ package org.adorsys.adacc.jpa;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
 import org.adorsys.adcore.jpa.AbstractTimedData;
@@ -22,7 +23,7 @@ public class AccAccount extends AbstractTimedData {
 
 	@Column
 	@Description("AccAccount_accType_description")
-	@Enumerated
+	@Enumerated(EnumType.ORDINAL)
 	private AccType accType;
 
 	@Column

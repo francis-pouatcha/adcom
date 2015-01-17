@@ -8,7 +8,7 @@
   <artifactId>adprocmt.client</artifactId>
   <packaging>war</packaging>
   <name>adprocmt.client</name>
-  <description>Ad Stock Client</description>
+  <description>Ad Procurement Client</description>
 
   <build>
     <finalName>adprocmt.client</finalName>

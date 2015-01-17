@@ -2,7 +2,6 @@ package org.adorsys.adacc.rest;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -33,173 +32,148 @@ import org.adorsys.adacc.jpa.AccAccount_;
 @Stateless
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 @Path("/accaccounts")
-public class AccAccountEndpoint
-{
+public class AccAccountEndpoint {
 
-   @Inject
-   private AccAccountEJB ejb;
+	@Inject
+	private AccAccountEJB ejb;
 
-   @POST
-   @Consumes({ "application/json", "application/xml" })
-   @Produces({ "application/json", "application/xml" })
-   public AccAccount create(AccAccount entity)
-   {
-      return detach(ejb.create(entity));
-   }
+	@POST
+	@Consumes({ "application/json", "application/xml" })
+	@Produces({ "application/json", "application/xml" })
+	public AccAccount create(AccAccount entity) {
+		return detach(ejb.create(entity));
+	}
 
-   @DELETE
-   @Path("/{id:[0-9][0-9]*}")
-   public Response deleteById(@PathParam("id") String id)
-   {
-      AccAccount deleted = ejb.deleteById(id);
-      if (deleted == null)
-         return Response.status(Status.NOT_FOUND).build();
+	@DELETE
+	@Path("/{id:[0-9][0-9]*}")
+	public Response deleteById(@PathParam("id") String id) {
+		AccAccount deleted = ejb.deleteById(id);
+		if (deleted == null)
+			return Response.status(Status.NOT_FOUND).build();
 
-      return Response.ok(detach(deleted)).build();
-   }
+		return Response.ok(detach(deleted)).build();
+	}
 
-   @PUT
-   @Path("/{id:[0-9][0-9]*}")
-   @Produces({ "application/json", "application/xml" })
-   @Consumes({ "application/json", "application/xml" })
-   public AccAccount update(AccAccount entity)
-   {
-      return detach(ejb.update(entity));
-   }
+	@PUT
+	@Path("/{id:[0-9][0-9]*}")
+	@Produces({ "application/json", "application/xml" })
+	@Consumes({ "application/json", "application/xml" })
+	public AccAccount update(AccAccount entity) {
+		return detach(ejb.update(entity));
+	}
 
-   @GET
-   @Path("/{id:[0-9][0-9]*}")
-   @Produces({ "application/json", "application/xml" })
-   public Response findById(@PathParam("id") String id)
-   {
-      AccAccount found = ejb.findById(id);
-      if (found == null)
-         return Response.status(Status.NOT_FOUND).build();
-      return Response.ok(detach(found)).build();
-   }
+	@GET
+	@Path("/{id:[0-9][0-9]*}")
+	@Produces({ "application/json", "application/xml" })
+	public Response findById(@PathParam("id") String id) {
+		AccAccount found = ejb.findById(id);
+		if (found == null)
+			return Response.status(Status.NOT_FOUND).build();
+		return Response.ok(detach(found)).build();
+	}
 
-   @GET
-   @Produces({ "application/json", "application/xml" })
-   public AccAccountSearchResult listAll(@QueryParam("start") int start,
-         @QueryParam("max") int max)
-   {
-      List<AccAccount> resultList = ejb.listAll(start, max);
-      AccAccountSearchInput searchInput = new AccAccountSearchInput();
-      searchInput.setStart(start);
-      searchInput.setMax(max);
-      return new AccAccountSearchResult((long) resultList.size(),
-            detach(resultList), detach(searchInput));
-   }
+	@GET
+	@Produces({ "application/json", "application/xml" })
+	public AccAccountSearchResult listAll(@QueryParam("start") int start,
+			@QueryParam("max") int max) {
+		List<AccAccount> resultList = ejb.listAll(start, max);
+		AccAccountSearchInput searchInput = new AccAccountSearchInput();
+		searchInput.setStart(start);
+		searchInput.setMax(max);
+		return new AccAccountSearchResult((long) resultList.size(),
+				detach(resultList), detach(searchInput));
+	}
 
-   @GET
-   @Path("/count")
-   public Long count()
-   {
-      return ejb.count();
-   }
+	@GET
+	@Path("/count")
+	public Long count() {
+		return ejb.count();
+	}
 
-   @POST
-   @Path("/findBy")
-   @Produces({ "application/json", "application/xml" })
-   @Consumes({ "application/json", "application/xml" })
-   public AccAccountSearchResult findBy(AccAccountSearchInput searchInput)
-   {
-      SingularAttribute<AccAccount, ?>[] attributes = readSeachAttributes(searchInput);
-      Long count = ejb.countBy(searchInput.getEntity(), attributes);
-      List<AccAccount> resultList = ejb.findBy(searchInput.getEntity(),
-            searchInput.getStart(), searchInput.getMax(), attributes);
-      return new AccAccountSearchResult(count, detach(resultList),
-            detach(searchInput));
-   }
+	@POST
+	@Path("/findBy")
+	@Produces({ "application/json", "application/xml" })
+	@Consumes({ "application/json", "application/xml" })
+	public AccAccountSearchResult findBy(AccAccountSearchInput searchInput) {
+		SingularAttribute<AccAccount, ?>[] attributes = readSeachAttributes(searchInput);
+		Long count = ejb.countBy(searchInput.getEntity(), attributes);
+		List<AccAccount> resultList = ejb.findBy(searchInput.getEntity(),
+				searchInput.getStart(), searchInput.getMax(), attributes);
+		return new AccAccountSearchResult(count, detach(resultList),
+				detach(searchInput));
+	}
 
-   @POST
-   @Path("/countBy")
-   @Consumes({ "application/json", "application/xml" })
-   public Long countBy(AccAccountSearchInput searchInput)
-   {
-      SingularAttribute<AccAccount, ?>[] attributes = readSeachAttributes(searchInput);
-      return ejb.countBy(searchInput.getEntity(), attributes);
-   }
+	@POST
+	@Path("/countBy")
+	@Consumes({ "application/json", "application/xml" })
+	public Long countBy(AccAccountSearchInput searchInput) {
+		SingularAttribute<AccAccount, ?>[] attributes = readSeachAttributes(searchInput);
+		return ejb.countBy(searchInput.getEntity(), attributes);
+	}
 
-   @POST
-   @Path("/findByLike")
-   @Produces({ "application/json", "application/xml" })
-   @Consumes({ "application/json", "application/xml" })
-   public AccAccountSearchResult findByLike(AccAccountSearchInput searchInput)
-   {
-      SingularAttribute<AccAccount, ?>[] attributes = readSeachAttributes(searchInput);
-      Long countLike = ejb.countByLike(searchInput.getEntity(), attributes);
-      List<AccAccount> resultList = ejb.findByLike(searchInput.getEntity(),
-            searchInput.getStart(), searchInput.getMax(), attributes);
-      return new AccAccountSearchResult(countLike, detach(resultList),
-            detach(searchInput));
-   }
+	@POST
+	@Path("/findByLike")
+	@Produces({ "application/json", "application/xml" })
+	@Consumes({ "application/json", "application/xml" })
+	public AccAccountSearchResult findByLike(AccAccountSearchInput searchInput) {
+		SingularAttribute<AccAccount, ?>[] attributes = readSeachAttributes(searchInput);
+		Long countLike = ejb.countByLike(searchInput.getEntity(), attributes);
+		List<AccAccount> resultList = ejb.findByLike(searchInput.getEntity(),
+				searchInput.getStart(), searchInput.getMax(), attributes);
+		return new AccAccountSearchResult(countLike, detach(resultList),
+				detach(searchInput));
+	}
 
-   @POST
-   @Path("/countByLike")
-   @Consumes({ "application/json", "application/xml" })
-   public Long countByLike(AccAccountSearchInput searchInput)
-   {
-      SingularAttribute<AccAccount, ?>[] attributes = readSeachAttributes(searchInput);
-      return ejb.countByLike(searchInput.getEntity(), attributes);
-   }
+	@POST
+	@Path("/countByLike")
+	@Consumes({ "application/json", "application/xml" })
+	public Long countByLike(AccAccountSearchInput searchInput) {
+		SingularAttribute<AccAccount, ?>[] attributes = readSeachAttributes(searchInput);
+		return ejb.countByLike(searchInput.getEntity(), attributes);
+	}
 
-   @SuppressWarnings("unchecked")
-   private SingularAttribute<AccAccount, ?>[] readSeachAttributes(
-         AccAccountSearchInput searchInput)
-   {
-      List<String> fieldNames = searchInput.getFieldNames();
-      List<SingularAttribute<AccAccount, ?>> result = new ArrayList<SingularAttribute<AccAccount, ?>>();
-      for (String fieldName : fieldNames)
-      {
-         Field[] fields = AccAccount_.class.getFields();
-         for (Field field : fields)
-         {
-            if (field.getName().equals(fieldName))
-            {
-               try
-               {
-                  result.add((SingularAttribute<AccAccount, ?>) field.get(null));
-               }
-               catch (IllegalArgumentException e)
-               {
-                  throw new IllegalStateException(e);
-               }
-               catch (IllegalAccessException e)
-               {
-                  throw new IllegalStateException(e);
-               }
-            }
-         }
-      }
-      return result.toArray(new SingularAttribute[result.size()]);
-   }
+	@SuppressWarnings("unchecked")
+	private SingularAttribute<AccAccount, ?>[] readSeachAttributes(
+			AccAccountSearchInput searchInput) {
+		List<String> fieldNames = searchInput.getFieldNames();
+		List<SingularAttribute<AccAccount, ?>> result = new ArrayList<SingularAttribute<AccAccount, ?>>();
+		for (String fieldName : fieldNames) {
+			Field[] fields = AccAccount_.class.getFields();
+			for (Field field : fields) {
+				if (field.getName().equals(fieldName)) {
+					try {
+						result.add((SingularAttribute<AccAccount, ?>) field
+								.get(null));
+					} catch (IllegalArgumentException e) {
+						throw new IllegalStateException(e);
+					} catch (IllegalAccessException e) {
+						throw new IllegalStateException(e);
+					}
+				}
+			}
+		}
+		return result.toArray(new SingularAttribute[result.size()]);
+	}
 
-   private static final List<String> emptyList = Collections.emptyList();
+	private AccAccount detach(AccAccount entity) {
+		if (entity == null)
+			return null;
 
-   private AccAccount detach(AccAccount entity)
-   {
-      if (entity == null)
-         return null;
+		return entity;
+	}
 
-      return entity;
-   }
+	private List<AccAccount> detach(List<AccAccount> list) {
+		if (list == null)
+			return list;
+		List<AccAccount> result = new ArrayList<AccAccount>();
+		for (AccAccount entity : list) {
+			result.add(detach(entity));
+		}
+		return result;
+	}
 
-   private List<AccAccount> detach(List<AccAccount> list)
-   {
-      if (list == null)
-         return list;
-      List<AccAccount> result = new ArrayList<AccAccount>();
-      for (AccAccount entity : list)
-      {
-         result.add(detach(entity));
-      }
-      return result;
-   }
-
-   private AccAccountSearchInput detach(AccAccountSearchInput searchInput)
-   {
-      searchInput.setEntity(detach(searchInput.getEntity()));
-      return searchInput;
-   }
+	private AccAccountSearchInput detach(AccAccountSearchInput searchInput) {
+		searchInput.setEntity(detach(searchInput.getEntity()));
+		return searchInput;
+	}
 }

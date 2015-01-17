@@ -1,0 +1,68 @@
+<div class="form-horizontal">
+    <h3>Create a new SlsInvcePtnr</h3>
+    <div class="control-group">
+        <div class="controls">
+            <a id="Create" name="Create" class="btn btn-primary" href="#/SlsInvcePtnrs/new"><i class="icon-plus-sign icon-white"></i> Create</a>
+        </div>
+    </div>
+</div>
+<hr/>
+<div>
+    <h3>Search for SlsInvcePtnrs</h3>
+    <form id="SlsInvcePtnrSearch" class="form-horizontal">
+    <div class="control-group">
+        <label for="invceNbr" class="control-label">Invce Nbr</label>
+        <div class="controls">
+            <input id="invceNbr" name="invceNbr" type="text" ng-model="search.invceNbr" placeholder="Enter the SlsInvcePtnr Invce Nbr"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="ptnrNbr" class="control-label">Ptnr Nbr</label>
+        <div class="controls">
+            <input id="ptnrNbr" name="ptnrNbr" type="text" ng-model="search.ptnrNbr" placeholder="Enter the SlsInvcePtnr Ptnr Nbr"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="roleInInvce" class="control-label">Role In Invce</label>
+        <div class="controls">
+            <input id="roleInInvce" name="roleInInvce" type="text" ng-model="search.roleInInvce" placeholder="Enter the SlsInvcePtnr Role In Invce"></input>
+        </div>
+    </div>
+        <div class="control-group">
+            <div class="controls">
+                <a id="Search" name="Search" class="btn btn-primary" ng-click="performSearch()"><i class="icon-search icon-white"></i> Search</a>
+            </div>
+        </div>
+    </form>
+</div>
+<div id="search-results">
+    <table class="table table-bordered table-striped clearfix">
+        <thead>
+            <tr>
+                <th>Invce Nbr</th>
+                <th>Ptnr Nbr</th>
+                <th>Role In Invce</th>
+            </tr>
+        </thead>
+        <tbody id="search-results-body">
+            <tr ng-repeat="result in searchResults | searchFilter:searchResults | startFrom:currentPage*pageSize | limitTo:pageSize">
+                <td><a href="#/SlsInvcePtnrs/edit/{{result.id}}">{{result.invceNbr}}</a></td>
+                <td><a href="#/SlsInvcePtnrs/edit/{{result.id}}">{{result.ptnrNbr}}</a></td>
+                <td><a href="#/SlsInvcePtnrs/edit/{{result.id}}">{{result.roleInInvce}}</a></td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="pagination pagination-centered">
+        <ul>
+            <li ng-class="{disabled:currentPage == 0}">
+                <a id="prev" href ng-click="previous()">«</a>
+            </li>
+            <li ng-repeat="n in pageRange" ng-class="{active:currentPage == n}" ng-click="setPage(n)">
+                <a href ng-bind="n + 1">1</a>
+            </li>
+            <li ng-class="{disabled: currentPage == (numberOfPages() - 1)}">
+                <a id="next" href ng-click="next()">»</a>
+            </li>
+        </ul>
+    </div>
+</div>

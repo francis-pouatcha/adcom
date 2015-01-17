@@ -2,6 +2,7 @@ package org.adorsys.adbase.jpa;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -28,7 +29,7 @@ public class PermEntry extends AbstractTimedData {
 
 	@Column
 	@Description("PermEntry_action_description")
-	@Enumerated
+	@Enumerated(EnumType.ORDINAL)
 	@NotNull
 	private PermActionEnum action;
 

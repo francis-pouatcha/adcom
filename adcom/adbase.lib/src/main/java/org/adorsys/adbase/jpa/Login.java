@@ -14,7 +14,6 @@ import org.adorsys.adbase.auth.PasswordChecker;
 import org.adorsys.adcore.jpa.AbstractIdentifData;
 import org.adorsys.javaext.description.Description;
 import org.adorsys.javaext.format.DateFormatPattern;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 
 @Entity 

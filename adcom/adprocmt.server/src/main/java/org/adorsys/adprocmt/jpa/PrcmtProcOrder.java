@@ -5,6 +5,7 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -99,19 +100,19 @@ public class PrcmtProcOrder extends AbstractMvmtData {
 
 	@Column
 	@Description("PrcmtProcOrder_poTriggerMode_description")
-	@Enumerated
+	@Enumerated(EnumType.ORDINAL)
 	@NotNull
 	private ProcmtPOTriggerMode poTriggerMode;
 
 	@Column
 	@Description("PrcmtProcOrder_poType_description")
-	@Enumerated
+	@Enumerated(EnumType.ORDINAL)
 	@NotNull
 	private ProcmtPOType poType;
 
 	@Column
 	@Description("PrcmtProcOrder_poStatus_description")
-	@Enumerated
+	@Enumerated(EnumType.ORDINAL)
 	@NotNull
 	private ProcmtPOStatus poStatus;
 

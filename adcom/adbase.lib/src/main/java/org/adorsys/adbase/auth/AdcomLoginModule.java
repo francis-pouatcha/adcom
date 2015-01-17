@@ -68,8 +68,8 @@ public class AdcomLoginModule implements LoginModule {
 	private LoginModuleTx loginModuleTx;
 
 	private TermWsUserPrincipal newPrincipal;
-	
-	private String opr = null;
+//	
+//	private String opr = null;
 
 	@Override
 	public void initialize(Subject subject, CallbackHandler callbackHandler,
@@ -122,7 +122,7 @@ public class AdcomLoginModule implements LoginModule {
 		// after successful authentication of terminal, authenticate user.
 		AuthParams auth = BasicAuthUtils.readAuthHeader(request);
 		TermCdtl termCdtl = readTermCredtl();
-		opr = auth.getOpr();
+//		opr = auth.getOpr();
 		
 		SecTermSession secTermSession = readTerminalSession(auth, termCdtl, request);
 		if(secTermSession==null) return false;

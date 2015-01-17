@@ -10,11 +10,13 @@
     <module>adres.client</module>
     <module>adbase.client</module>
     <module>adlogin.client</module>
+    <module>adacc.client</module>
     <module>adcatal.client</module>
     <module>adstock.client</module>
     <module>adprocmt.client</module>
     <module>adinvtry.client</module>
     <module>adbnsptnr.client</module>
+    <module>adsales.client</module>
     <module>adcore.lib</module>
     <module>adbase.lib</module>
     <module>adbase.server</module>
@@ -27,6 +29,7 @@
     <module>adprocmt.server</module>
     <module>adinvtry.server</module>
     <module>adbnsptnr.server</module>
+    <module>adsales.server</module>
   </modules>
   <scm>
     <connection>scm:git:https://github.com/francis-pouatcha/adcom.git</connection>

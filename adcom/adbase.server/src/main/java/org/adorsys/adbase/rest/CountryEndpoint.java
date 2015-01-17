@@ -175,8 +175,6 @@ public class CountryEndpoint
       return result.toArray(new SingularAttribute[result.size()]);
    }
 
-   private static final List<String> emptyList = Collections.emptyList();
-
    private Country detach(Country entity)
    {
       if (entity == null)

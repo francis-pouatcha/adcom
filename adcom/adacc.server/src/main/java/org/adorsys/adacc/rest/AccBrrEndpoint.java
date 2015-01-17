@@ -2,7 +2,6 @@ package org.adorsys.adacc.rest;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -174,8 +173,6 @@ public class AccBrrEndpoint
       }
       return result.toArray(new SingularAttribute[result.size()]);
    }
-
-   private static final List<String> emptyList = Collections.emptyList();
 
    private AccBrr detach(AccBrr entity)
    {

@@ -5,6 +5,7 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -26,7 +27,7 @@ public class BpPtnrAccntBlnce extends AbstractMvmtData {
 
 	@Column
 	@Description("BpPtnrAccntBlnce_side_description")
-	@Enumerated
+	@Enumerated(EnumType.ORDINAL)
 	private BpAccBalanceSide side;
 
 	@Column

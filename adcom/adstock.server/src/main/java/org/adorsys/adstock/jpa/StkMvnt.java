@@ -5,6 +5,7 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -46,19 +47,19 @@ public class StkMvnt extends AbstractMvmtData {
 
 	@Column
 	@Description("StkMvnt_mvntType_description")
-	@Enumerated
+	@Enumerated(EnumType.ORDINAL)
 	@NotNull
 	private StkMvtType mvntType;
 
 	@Column
 	@Description("StkMvnt_mvntOrigin_description")
-	@Enumerated
+	@Enumerated(EnumType.ORDINAL)
 	@NotNull
 	private StkMvtTerminal mvntOrigin;
 
 	@Column
 	@Description("StkMvnt_mvntDest_description")
-	@Enumerated
+	@Enumerated(EnumType.ORDINAL)
 	@NotNull
 	private StkMvtTerminal mvntDest;
 

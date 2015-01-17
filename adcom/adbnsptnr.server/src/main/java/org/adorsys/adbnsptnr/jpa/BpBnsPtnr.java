@@ -2,6 +2,7 @@ package org.adorsys.adbnsptnr.jpa;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
 
@@ -21,7 +22,7 @@ public class BpBnsPtnr extends AbstractTimedData {
 
 	@Column
 	@Description("BpBnsPtnr_ptnrType_description")
-	@Enumerated
+	@Enumerated(EnumType.ORDINAL)
 	private BpPtnrType ptnrType;
 
 	@Column

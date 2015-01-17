@@ -1,0 +1,164 @@
+<div class="form-horizontal">
+    <h3>Create a new SlsSOItem</h3>
+    <div class="control-group">
+        <div class="controls">
+            <a id="Create" name="Create" class="btn btn-primary" href="#/SlsSOItems/new"><i class="icon-plus-sign icon-white"></i> Create</a>
+        </div>
+    </div>
+</div>
+<hr/>
+<div>
+    <h3>Search for SlsSOItems</h3>
+    <form id="SlsSOItemSearch" class="form-horizontal">
+    <div class="control-group">
+        <label for="soNbr" class="control-label">So Nbr</label>
+        <div class="controls">
+            <input id="soNbr" name="soNbr" type="text" ng-model="search.soNbr" placeholder="Enter the SlsSOItem So Nbr"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="lotPic" class="control-label">Lot Pic</label>
+        <div class="controls">
+            <input id="lotPic" name="lotPic" type="text" ng-model="search.lotPic" placeholder="Enter the SlsSOItem Lot Pic"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="artPic" class="control-label">Art Pic</label>
+        <div class="controls">
+            <input id="artPic" name="artPic" type="text" ng-model="search.artPic" placeholder="Enter the SlsSOItem Art Pic"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="orderedQty" class="control-label">Ordered Qty</label>
+        <div class="controls">
+            <input id="orderedQty" name="orderedQty" type="text" ng-model="search.orderedQty" placeholder="Enter the SlsSOItem Ordered Qty"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="returnedQty" class="control-label">Returned Qty</label>
+        <div class="controls">
+            <input id="returnedQty" name="returnedQty" type="text" ng-model="search.returnedQty" placeholder="Enter the SlsSOItem Returned Qty"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="deliveredQty" class="control-label">Delivered Qty</label>
+        <div class="controls">
+            <input id="deliveredQty" name="deliveredQty" type="text" ng-model="search.deliveredQty" placeholder="Enter the SlsSOItem Delivered Qty"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="sppuPreTax" class="control-label">Sppu Pre Tax</label>
+        <div class="controls">
+            <input id="sppuPreTax" name="sppuPreTax" type="text" ng-model="search.sppuPreTax" placeholder="Enter the SlsSOItem Sppu Pre Tax"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="sppuCur" class="control-label">Sppu Cur</label>
+        <div class="controls">
+            <input id="sppuCur" name="sppuCur" type="text" ng-model="search.sppuCur" placeholder="Enter the SlsSOItem Sppu Cur"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="grossSPPreTax" class="control-label">Gross SP Pre Tax</label>
+        <div class="controls">
+            <input id="grossSPPreTax" name="grossSPPreTax" type="text" ng-model="search.grossSPPreTax" placeholder="Enter the SlsSOItem Gross SP Pre Tax"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="rebate" class="control-label">Rebate</label>
+        <div class="controls">
+            <input id="rebate" name="rebate" type="text" ng-model="search.rebate" placeholder="Enter the SlsSOItem Rebate"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="netSPPreTax" class="control-label">Net SP Pre Tax</label>
+        <div class="controls">
+            <input id="netSPPreTax" name="netSPPreTax" type="text" ng-model="search.netSPPreTax" placeholder="Enter the SlsSOItem Net SP Pre Tax"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="vatPct" class="control-label">Vat Pct</label>
+        <div class="controls">
+            <input id="vatPct" name="vatPct" type="text" ng-model="search.vatPct" placeholder="Enter the SlsSOItem Vat Pct"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="vatAmount" class="control-label">Vat Amount</label>
+        <div class="controls">
+            <input id="vatAmount" name="vatAmount" type="text" ng-model="search.vatAmount" placeholder="Enter the SlsSOItem Vat Amount"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="netSPTaxIncl" class="control-label">Net SP Tax Incl</label>
+        <div class="controls">
+            <input id="netSPTaxIncl" name="netSPTaxIncl" type="text" ng-model="search.netSPTaxIncl" placeholder="Enter the SlsSOItem Net SP Tax Incl"></input>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="objctOrgUnit" class="control-label">Objct Org Unit</label>
+        <div class="controls">
+            <input id="objctOrgUnit" name="objctOrgUnit" type="text" ng-model="search.objctOrgUnit" placeholder="Enter the SlsSOItem Objct Org Unit"></input>
+        </div>
+    </div>
+        <div class="control-group">
+            <div class="controls">
+                <a id="Search" name="Search" class="btn btn-primary" ng-click="performSearch()"><i class="icon-search icon-white"></i> Search</a>
+            </div>
+        </div>
+    </form>
+</div>
+<div id="search-results">
+    <table class="table table-bordered table-striped clearfix">
+        <thead>
+            <tr>
+                <th>So Nbr</th>
+                <th>Lot Pic</th>
+                <th>Art Pic</th>
+                <th>Ordered Qty</th>
+                <th>Returned Qty</th>
+                <th>Delivered Qty</th>
+                <th>Sppu Pre Tax</th>
+                <th>Sppu Cur</th>
+                <th>Gross SP Pre Tax</th>
+                <th>Rebate</th>
+                <th>Net SP Pre Tax</th>
+                <th>Vat Pct</th>
+                <th>Vat Amount</th>
+                <th>Net SP Tax Incl</th>
+                <th>Objct Org Unit</th>
+            </tr>
+        </thead>
+        <tbody id="search-results-body">
+            <tr ng-repeat="result in searchResults | searchFilter:searchResults | startFrom:currentPage*pageSize | limitTo:pageSize">
+                <td><a href="#/SlsSOItems/edit/{{result.id}}">{{result.soNbr}}</a></td>
+                <td><a href="#/SlsSOItems/edit/{{result.id}}">{{result.lotPic}}</a></td>
+                <td><a href="#/SlsSOItems/edit/{{result.id}}">{{result.artPic}}</a></td>
+                <td><a href="#/SlsSOItems/edit/{{result.id}}">{{result.orderedQty}}</a></td>
+                <td><a href="#/SlsSOItems/edit/{{result.id}}">{{result.returnedQty}}</a></td>
+                <td><a href="#/SlsSOItems/edit/{{result.id}}">{{result.deliveredQty}}</a></td>
+                <td><a href="#/SlsSOItems/edit/{{result.id}}">{{result.sppuPreTax}}</a></td>
+                <td><a href="#/SlsSOItems/edit/{{result.id}}">{{result.sppuCur}}</a></td>
+                <td><a href="#/SlsSOItems/edit/{{result.id}}">{{result.grossSPPreTax}}</a></td>
+                <td><a href="#/SlsSOItems/edit/{{result.id}}">{{result.rebate}}</a></td>
+                <td><a href="#/SlsSOItems/edit/{{result.id}}">{{result.netSPPreTax}}</a></td>
+                <td><a href="#/SlsSOItems/edit/{{result.id}}">{{result.vatPct}}</a></td>
+                <td><a href="#/SlsSOItems/edit/{{result.id}}">{{result.vatAmount}}</a></td>
+                <td><a href="#/SlsSOItems/edit/{{result.id}}">{{result.netSPTaxIncl}}</a></td>
+                <td><a href="#/SlsSOItems/edit/{{result.id}}">{{result.objctOrgUnit}}</a></td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="pagination pagination-centered">
+        <ul>
+            <li ng-class="{disabled:currentPage == 0}">
+                <a id="prev" href ng-click="previous()">«</a>
+            </li>
+            <li ng-repeat="n in pageRange" ng-class="{active:currentPage == n}" ng-click="setPage(n)">
+                <a href ng-bind="n + 1">1</a>
+            </li>
+            <li ng-class="{disabled: currentPage == (numberOfPages() - 1)}">
+                <a id="next" href ng-click="next()">»</a>
+            </li>
+        </ul>
+    </div>
+</div>

@@ -17,7 +17,6 @@ import org.adorsys.adcatal.jpa.CatalArtFeatMapping;
 import org.adorsys.adcatal.jpa.CatalArtManufSupp;
 import org.adorsys.adcatal.jpa.CatalArticle;
 import org.adorsys.adcatal.jpa.CatalFamilyFeatMaping;
-import org.adorsys.adcatal.jpa.CatalManufSuppl;
 import org.adorsys.adcatal.jpa.CatalPicMapping;
 import org.adorsys.adcatal.jpa.CatalPkgMode;
 import org.adorsys.adcatal.jpa.CatalProductFamily;
@@ -47,8 +46,6 @@ public class BaseLoaderRegistration {
 	private CatalProductFamilyLoader catalProductFamilyLoader;
 	@Inject
 	private CatalFamilyFeatMapingLoader catalFamilyFeatMapingLoader;
-	@Inject
-	private CatalManufSupplLoader catalManufSupplLoader;
 	
 	@PostConstruct
 	public void postConstruct(){
@@ -61,7 +58,6 @@ public class BaseLoaderRegistration {
 		dataSheetLoader.registerLoader(CatalPkgMode.class.getSimpleName(), catalPkgModeLoader);
 		dataSheetLoader.registerLoader(CatalProductFamily.class.getSimpleName(), catalProductFamilyLoader);
 		dataSheetLoader.registerLoader(CatalFamilyFeatMaping.class.getSimpleName(), catalFamilyFeatMapingLoader);
-		dataSheetLoader.registerLoader(CatalManufSuppl.class.getSimpleName(), catalManufSupplLoader);
 		createTemplate();
 	}
 
@@ -80,7 +76,6 @@ public class BaseLoaderRegistration {
 		catalArticleLoader.createTemplate(workbook);
 		catalArtFeatMappingLoader.createTemplate(workbook);
 		catalPicMappingLoader.createTemplate(workbook);
-		catalManufSupplLoader.createTemplate(workbook);
 		catalArtManufSuppLoader.createTemplate(workbook);
 		catalArtEquivalenceLoader.createTemplate(workbook);
 		catalArtDetailConfigLoader.createTemplate(workbook);

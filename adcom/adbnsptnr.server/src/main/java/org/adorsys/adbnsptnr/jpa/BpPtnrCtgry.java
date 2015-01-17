@@ -2,6 +2,7 @@ package org.adorsys.adbnsptnr.jpa;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
 
@@ -25,7 +26,7 @@ public class BpPtnrCtgry extends AbstractTimedData {
 
 	@Column
 	@Description("BpPtnrCtgry_ptnrRole_description")
-	@Enumerated
+	@Enumerated(EnumType.ORDINAL)
 	private BpPtnrRole ptnrRole;
 
 	public String getCtgryCode() {

@@ -8,44 +8,62 @@ import javax.persistence.Entity;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.adorsys.adcore.jpa.AbstractTimedData;
 import org.adorsys.javaext.description.Description;
 
+/**
+ * Mapping of an insurance contract between business partners.
+ * 
+ * @author francis
+ *
+ */
 @Entity
-@Description("Insurrance_description")
+@Description("BpInsurrance_description")
 public class BpInsurrance extends AbstractTimedData {
 
 	private static final long serialVersionUID = 3928927183324719436L;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Description("Insurrance_beginDate_description")
-	@NotNull(message = "Insurrance_beginDate_NotNull_validation")
-	private Date beginDate;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@Description("Insurrance_endDate_description")
-	private Date endDate;
-
 	@Column
-	@Description("Insurrance_cstmrNbr_description")
+	@Description("BpInsurrance_insuredNbr_description")
 	@NotNull
-	private String cstmrNbr;
+	private String insuredNbr;
 
 	@Column
-	@Description("Insurrance_insurerNbr_description")
+	@Description("BpInsurrance_insurerNbr_description")
 	@NotNull
 	private String insurerNbr;
 
 	@Column
-	@Description("Insurrance_coverRatePct_description")
+	@Description("BpInsurrance_memberNbr_description")
+	@NotNull
+	private String contractNbr;
+
+	@Column
+	@Description("BpInsurrance_coverRatePct_description")
 	@NotNull
 	private BigDecimal coverRatePct;
 
 	@Column
-	@Description("Insurrance_memberNbr_description")
-	private String memberNbr;
+	@Description("BpInsurrance_decutible_description")
+	@NotNull
+	private BigDecimal decutible;
 
+	@Column
+	@Description("BpInsurrance_description_description")
+	@Size(max = 256)
+	private String description;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Description("BpInsurrance_beginDate_description")
+	@NotNull(message = "BpInsurrance_beginDate_NotNull_validation")
+	private Date beginDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Description("BpInsurrance_endDate_description")
+	private Date endDate;
+	
 	public Date getBeginDate() {
 		return this.beginDate;
 	}
@@ -60,14 +78,6 @@ public class BpInsurrance extends AbstractTimedData {
 
 	public void setEndDate(final Date endDate) {
 		this.endDate = endDate;
-	}
-
-	public String getCstmrNbr() {
-		return this.cstmrNbr;
-	}
-
-	public void setCstmrNbr(final String cstmrNbr) {
-		this.cstmrNbr = cstmrNbr;
 	}
 
 	public String getInsurerNbr() {
@@ -86,16 +96,8 @@ public class BpInsurrance extends AbstractTimedData {
 		this.coverRatePct = coverRatePct;
 	}
 
-	public String getMemberNbr() {
-		return this.memberNbr;
-	}
-
-	public void setMemberNbr(final String memberNbr) {
-		this.memberNbr = memberNbr;
-	}
-
 	@Override
 	protected String makeIdentif() {
-		return cstmrNbr + "_" + insurerNbr;
+		return insurerNbr + "_" + insuredNbr + "_" + contractNbr;
 	}
 }
