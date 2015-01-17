@@ -5,10 +5,17 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adbase.jpa.OrgUnit;
+import org.adorsys.adbase.jpa.OuType;
 import org.adorsys.adbase.repo.OrgUnitRepository;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.deltaspike.data.api.QueryResult;
 
 @Stateless
 public class OrgUnitEJB
@@ -17,9 +24,19 @@ public class OrgUnitEJB
    @Inject
    private OrgUnitRepository repository;
 
+   @Inject
+   private OuTypeEJB ouTypeEJB;
+   
+   @Inject
+   private EntityManager em;
    
    public OrgUnit create(OrgUnit entity)
    {
+	   String typeIdentif = entity.getTypeIdentif();
+	   OuType ouType = ouTypeEJB.findByIdentif(typeIdentif, new Date());
+	   Integer idSize = ouType.getIdSize();
+	   String generatedId = RandomStringUtils.randomAlphanumeric(idSize);
+	   entity.setIdentif(generatedId);
       return repository.save(attach(entity));
    }
 
@@ -28,7 +45,8 @@ public class OrgUnitEJB
       OrgUnit entity = repository.findBy(id);
       if (entity != null)
       {
-         repository.remove(entity);
+    	  entity.setValidTo(new Date());
+    	  em.merge(entity);
       }
       return entity;
    }
@@ -86,4 +104,86 @@ public class OrgUnitEJB
 	   return resultList.iterator().next();
    }
    
+   public List<OrgUnit> searchOrgUnits(String fullName,String typeIdentif, String ctryIso3, Date validFrom,int first,int max){
+
+	   validFrom = validFrom==null?new Date():validFrom;
+	   
+	   StringBuilder qBuilder = new StringBuilder("SELECT e FROM OrgUnit AS e WHERE e.validFrom <= :from AND (e.validTo IS NULL OR e.validTo > :from)");
+	   boolean isFullName=false;
+	   boolean isTypeIdentif=false;
+	   boolean isCtryIso3=false;
+	   if(StringUtils.isNotBlank(fullName)){
+		   qBuilder.append(" AND LOWER(e.fullName) LIKE (LOWER(:fullName))");
+		   isFullName=true;
+	   }
+	   if(StringUtils.isNotBlank(typeIdentif)){
+		   qBuilder.append(" AND e.typeIdentif = :typeIdentif");
+		   isTypeIdentif=true;
+	   }
+	   if(StringUtils.isNotBlank(ctryIso3)){
+		   qBuilder.append(" AND UPPER(e.ctryIso3) = UPPER(:ctryIso3)");
+		   isCtryIso3=true;
+	   }
+	   qBuilder.append(" ORDER BY e.validFrom DESC");
+	   TypedQuery<OrgUnit> query = em.createQuery(qBuilder.toString(), OrgUnit.class);
+	   
+	   query.setParameter("from", validFrom);
+	   
+	   if(isFullName){
+		   query.setParameter("fullName", "%"+fullName+"%");
+	   }
+	   if(isTypeIdentif){
+		   query.setParameter("typeIdentif", typeIdentif);
+	   }
+	   if(isCtryIso3){
+		   query.setParameter("ctryIso3", ctryIso3);
+	   }
+	   
+	   query.setFirstResult(first).setMaxResults(max);
+	  
+	   return query.getResultList();
+   }
+   
+   public Long countOrgUnits(String fullName,String typeIdentif, String ctryIso3, Date validFrom,int first,int max){
+	   
+	   validFrom = validFrom==null?new Date():validFrom;
+	   
+	   StringBuilder qBuilder = new StringBuilder("SELECT COUNT(e) FROM OrgUnit AS e WHERE e.validFrom <= :from AND (e.validTo IS NULL OR e.validTo > :from)");
+	   boolean isFullName=false;
+	   boolean isTypeIdentif=false;
+	   boolean isCtryIso3=false;
+	   if(StringUtils.isNotBlank(fullName)){
+		   qBuilder.append(" AND LOWER(e.fullName) LIKE (LOWER(:fullName))");
+		   isFullName=true;
+	   }
+	   if(StringUtils.isNotBlank(typeIdentif)){
+		   qBuilder.append(" AND e.typeIdentif = :typeIdentif");
+		   isTypeIdentif=true;
+	   }
+	   if(StringUtils.isNotBlank(ctryIso3)){
+		   qBuilder.append(" AND UPPER(e.ctryIso3) = UPPER(:ctryIso3)");
+		   isCtryIso3=true;
+	   }
+	   TypedQuery<Long> query = em.createQuery(qBuilder.toString(), Long.class);
+	   
+	   query.setParameter("from", validFrom);
+	   if(isFullName){
+		   query.setParameter("fullName", "%"+fullName+"%");
+	   }
+	   if(isTypeIdentif){
+		   query.setParameter("typeIdentif", typeIdentif);
+	   }
+	   if(isCtryIso3){
+		   query.setParameter("ctryIso3", ctryIso3);
+	   }
+	   return query.getSingleResult();
+   }
+   public List<OrgUnit> findActifs(Date validOn){
+	   List<OrgUnit> actifs = repository.findActifs(validOn);
+	   return actifs;
+   }
+
+   public List<OrgUnit> findActifsFromNow(){
+	   return findActifs(new Date());
+   }
 }

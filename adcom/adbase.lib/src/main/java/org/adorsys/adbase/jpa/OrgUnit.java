@@ -70,7 +70,7 @@ public class OrgUnit extends AbstractTimedData {
 
 	@Override
 	protected String makeIdentif() {
-		if(StringUtils.isBlank(getIdentif()))
+		if(StringUtils.isBlank(identif))
 			throw new IllegalStateException("Identifier must be set explicitely.");
 		return getIdentif();
 	}

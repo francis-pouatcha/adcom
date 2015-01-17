@@ -33,7 +33,7 @@ angular.module('AdBase')
             secTerminalResource.create(entity).success(function(data){
                 deferred.resolve(data);
             }).error(function(error){
-                deferred.reject("Can not create, be sure that the login name is unique!")
+                deferred.reject("Can not create!")
             });
             return deferred.promise;
         };
@@ -56,7 +56,7 @@ angular.module('AdBase')
 
                 deferred.resolve(data);
             }).error(function(data){
-                deferred.reject("user do not exist!")
+                deferred.reject("entity do not exist!")
             });
             return deferred.promise;
         };
@@ -69,7 +69,7 @@ angular.module('AdBase')
 
                 deferred.resolve(data);
             }).error(function(data){
-                deferred.reject("user do not exist!")
+                deferred.reject("entity do not exist!")
             });
             return deferred.promise;
         };
@@ -82,7 +82,7 @@ angular.module('AdBase')
 
                 deferred.resolve(data);
             }).error(function(data){
-                deferred.reject("user do not exist!")
+                deferred.reject("entity do not exist!")
             });
             return deferred.promise;
         };

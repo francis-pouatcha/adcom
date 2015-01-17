@@ -12,7 +12,8 @@ angular.module('AdBase', [
     'AuthInterceptor',
     'ngSanitize',
     'pascalprecht.translate',
-    'NavBar'
+    'NavBar',
+    'datePicker'
 ])
 .constant('APP_CONFIG',{
 	'appName':'Administration',
@@ -57,6 +58,30 @@ angular.module('AdBase', [
             controllerAs: 'changePwdCtrl',
             module: 'AdBase'
         })
+    .when('/orgunits',{
+            templateUrl:'views/orgunits/orgunits.html',
+            controller:'orgUnitController',
+            controllerAs: 'orgUnitCtrl',
+            module: 'AdBase'
+    })
+    .when('/orgunits/create',{
+            templateUrl:'views/orgunits/create.html',
+            controller:'orgUnitCreateController',
+            controllerAs: 'orgUnitCreateCtrl',
+            module: 'AdBase'
+    })
+    .when('/orgunits/show/:identif',{
+            templateUrl:'views/orgunits/show.html',
+            controller:'orgUnitShowController',
+            controllerAs: 'orgUnitShowCtrl',
+            module: 'AdBase'
+    })
+    .when('/orgunits/edit/:identif',{
+            templateUrl:'views/orgunits/edit.html',
+            controller:'orgUnitEditController',
+            controllerAs: 'orgUnitEditCtlr',
+            module: 'AdBase'
+    })
         .when('/secTerm/create',{
             templateUrl:'views/terminal/create.html',
             controller:'secTermCreateController',
@@ -81,6 +106,105 @@ angular.module('AdBase', [
             controllerAs: 'secTermCtrl',
             module: 'AdBase'
         })
+
+        .when('/locality/create',{
+            templateUrl:'views/locality/create.html',
+            controller:'localityCreateController',
+            controllerAs: 'localityCreateCtrl',
+            module: 'AdBase'
+        })
+        .when('/locality/show/:identif',{
+            templateUrl:'views/locality/show.html',
+            controller:'localityShowController',
+            controllerAs: 'localityShowCtrl',
+            module: 'AdBase'
+        })
+        .when('/locality/edit/:identif',{
+            templateUrl:'views/locality/edit.html',
+            controller:'localityEditController',
+            controllerAs: 'localityEditCtrl',
+            module: 'AdBase'
+        })
+        .when('/locality',{
+            templateUrl:'views/locality/list.html',
+            controller:'localityController',
+            controllerAs: 'localityCtrl',
+            module: 'AdBase'
+        })
+
+    .when('/countrys',{
+            templateUrl:'views/countrys/countrys.html',
+            controller:'countrysController',
+            controllerAs: 'countrysCtrl',
+            module: 'AdBase'
+    })
+    .when('/countrys/create',{
+            templateUrl:'views/countrys/createCountry.html',
+            controller:'countrysCreateController',
+            controllerAs: 'ctryCreateCtrl',
+            module: 'AdBase'
+    })
+    .when('/countrys/show/:identif',{
+            templateUrl:'views/countrys/showCountry.html',
+            controller:'countrysShowController',
+            controllerAs: 'ctryShowCtrl',
+            module: 'AdBase'
+    })
+    .when('/countrys/edit/:identif',{
+            templateUrl:'views/countrys/editCountry.html',
+            controller:'countrysEditController',
+            controllerAs: 'ctryEditCtrl',
+            module: 'AdBase'
+    })
+    .when('/orgcontacts',{
+            templateUrl:'views/orgcontacts/orgcontacts.html',
+            controller:'orgcontactsController',
+            controllerAs: 'orgcontactsCtrl',
+            module: 'AdBase'
+    })
+    .when('/orgcontacts/create',{
+            templateUrl:'views/orgcontacts/createOrgContact.html',
+            controller:'orgcontactsCreateController',
+            controllerAs: 'ocCreateCtrl',
+            module: 'AdBase'
+    })
+    .when('/orgcontacts/show/:identif',{
+            templateUrl:'views/orgcontacts/showOrgContact.html',
+            controller:'orgcontactsShowController',
+            controllerAs: 'ocShowCtrl',
+            module: 'AdBase'
+    })
+    .when('/orgcontacts/edit/:identif',{
+            templateUrl:'views/orgcontacts/editOrgContact.html',
+            controller:'orgcontactsEditController',
+            controllerAs: 'ocEditCtrl',
+            module: 'AdBase'
+    })
+        .when('/converterCurrRate',{
+            templateUrl:'views/converterCurrRate/list.html',
+            controller:'converterCurrRateController',
+            controllerAs: 'converterCurrRateCtrl',
+            module: 'AdBase'
+        })
+        .when('/converterCurrRate/create',{
+            templateUrl:'views/converterCurrRate/create.html',
+            controller:'converterCurrRateCreateController',
+            controllerAs: 'converterCurrRateCreateCtrl',
+            module: 'AdBase'
+        })
+        .when('/converterCurrRate/show/:identif',{
+            templateUrl:'views/converterCurrRate/show.html',
+            controller:'converterCurrRateShowController',
+            controllerAs: 'converterCurrRateShowCtrl',
+            module: 'AdBase'
+        })
+        .when('/converterCurrRate/edit/:identif',{
+            templateUrl:'views/converterCurrRate/edit.html',
+            controller:'converterCurrRateEditController',
+            controllerAs: 'converterCurrRateEditCtrl',
+            module: 'AdBase'
+        })
+
     .otherwise({
       redirectTo: '/'
     });

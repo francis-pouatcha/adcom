@@ -56,7 +56,7 @@
                     <div class="form-group">
                         <label class="col-lg-4 ">{{ "Login_credtlExpir_description"| translate}} :</label>
                         <div class="col-lg-8" ng-class="{ 'has-error' : loginForm.credtlExpir.$invalid }" >
-                            <input type="date" ng-model="loginCreateCtrl.login.credtlExpir" name="credtlExpir" class="form-control"  >
+                            <input type="datetime" date-time ng-model="loginCreateCtrl.login.credtlExpir" name="credtlExpir" class="form-control"  >
 
                         </div>
                     </div>
@@ -64,7 +64,7 @@
                     <div class="form-group">
                         <label class="col-lg-4 ">{{ "Login_accountExpir_description"| translate}} :</label>
                         <div class="col-lg-8" ng-class="{ 'has-error' : loginForm.accountExpir.$invalid }" >
-                            <input type="date" ng-model="loginCreateCtrl.login.accountExpir" name="accountExpir" class="form-control" >
+                            <input type="datetime" date-time ng-model="loginCreateCtrl.login.accountExpir" name="accountExpir" class="form-control" >
 
                         </div>
                     </div>

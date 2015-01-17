@@ -20,7 +20,7 @@ public abstract class AbstractIdentifData extends AbstractEntity {
 
 	@Column
 	@NotNull
-	private String identif;
+	protected String identif;
 
 	@PrePersist
 	public void prePersist() {

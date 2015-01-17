@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.adorsys.adbase.dto.OrgUnitDto;
+
 @XmlRootElement
 public class OrgUnitSearchResult
 {
@@ -18,6 +20,7 @@ public class OrgUnitSearchResult
     */
    private List<OrgUnit> resultList;
 
+   private List<OrgUnitDto> dtos;
    /*
     * The original search input object. For stateless clients.
     */
@@ -66,5 +69,14 @@ public class OrgUnitSearchResult
    {
       this.searchInput = searchInput;
    }
+
+   public List<OrgUnitDto> getDtos() {
+	   return dtos;
+   }
+
+   public void setDtos(List<OrgUnitDto> dtos) {
+	   this.dtos = dtos;
+   }
+
 
 }

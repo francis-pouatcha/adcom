@@ -29,11 +29,18 @@
                 start:0,
                 max:self.itemPerPage
             }
-            find(self.searchInput);
+            findAllActiveTerminals(self.searchInput);
         }
 
-        function find(searchInput){
+        function findAllActiveTerminals(searchInput){
             secTerminalService.findAllActiveTerminals(searchInput).then(function(entitySearchResult) {
+                self.secTerminals = entitySearchResult.resultList;
+                self.totalItems = entitySearchResult.count ;
+            });
+        }
+
+        function findRequest(searchInput){
+            secTerminalService.find(searchInput).then(function(entitySearchResult) {
                 self.secTerminals = entitySearchResult.resultList;
                 self.totalItems = entitySearchResult.count ;
             });
@@ -50,7 +57,7 @@
 
         function  handleSearchRequestEvent(){
             var searchInput =   processSearchInput();
-            find(self.searchInput);
+            findRequest(self.searchInput);
         };
 
         function paginate(){

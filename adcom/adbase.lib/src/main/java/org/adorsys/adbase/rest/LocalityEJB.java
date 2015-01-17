@@ -8,6 +8,9 @@ import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adbase.jpa.Locality;
+import org.adorsys.adbase.jpa.LocalitySearchInput;
+import org.adorsys.adbase.jpa.LocalitySearchResult;
+import org.adorsys.adbase.jpa.SecTerminal;
 import org.adorsys.adbase.repo.LocalityRepository;
 
 @Stateless
@@ -83,5 +86,16 @@ public class LocalityEJB
 	   List<Locality> resultList = repository.findByIdentif(identif, validOn).orderAsc("validFrom").maxResults(1).getResultList();
 	   if(resultList.isEmpty()) return null;
 	   return resultList.iterator().next();
+   }
+   public LocalitySearchResult  findAllActiveLocality(LocalitySearchInput searchInput){
+	   Date date = new Date();
+	   	   Long count = repository.countActiveLocality(date);
+	   List<Locality> resultList = repository.findActiveLocality(date).firstResult(searchInput.getStart()).maxResults(searchInput.getMax()).getResultList();
+	   LocalitySearchResult searchResult = new LocalitySearchResult();
+	   searchResult.setCount(count);
+	   searchResult.setResultList(resultList);
+	   searchResult.setSearchInput(searchInput);
+	   return searchResult ;
+	   
    }
 }

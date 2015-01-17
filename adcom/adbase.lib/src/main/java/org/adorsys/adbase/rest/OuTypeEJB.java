@@ -33,7 +33,8 @@ public class OuTypeEJB
       OuType entity = repository.findBy(id);
       if (entity != null)
       {
-         repository.remove(entity);
+    	  entity.setValidTo(new Date());
+    	  em.merge(entity);
       }
       return entity;
    }

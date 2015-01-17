@@ -8,6 +8,8 @@ import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adbase.jpa.ConverterCurrRate;
+import org.adorsys.adbase.jpa.ConverterCurrRateSearchInput;
+import org.adorsys.adbase.jpa.ConverterCurrRateSearchResult;
 import org.adorsys.adbase.repo.ConverterCurrRateRepository;
 
 @Stateless
@@ -84,5 +86,17 @@ public class ConverterCurrRateEJB
 	   List<ConverterCurrRate> resultList = repository.findByIdentif(identif, validOn).orderAsc("validFrom").maxResults(1).getResultList();
 	   if(resultList.isEmpty()) return null;
 	   return resultList.iterator().next();
+   }
+   
+   public ConverterCurrRateSearchResult  findAllActiveConverterCurrRate(ConverterCurrRateSearchInput searchInput){
+	   Date date = new Date();
+	   	   Long count = repository.countActiveConverterCurrRate(date);
+	   List<ConverterCurrRate> resultList = repository.findActiveConverterCurrRate(date).firstResult(searchInput.getStart()).maxResults(searchInput.getMax()).getResultList();
+	   ConverterCurrRateSearchResult searchResult = new ConverterCurrRateSearchResult();
+	   searchResult.setCount(count);
+	   searchResult.setResultList(resultList);
+	   searchResult.setSearchInput(searchInput);
+	   return searchResult ;
+	   
    }
 }

@@ -7,6 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="stylesheet" type="text/css" href="/adres.client/vendors/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/adres.client/vendors/angular-datepicker/datepicker.css">
      <link rel="stylesheet" type="text/css" href="/adres.client/styles/custom.css">
     <script src="/adres.client/vendors/jquery/jquery-2.1.1.min.js"></script>
     <script src="/adres.client/vendors/bootstrap/js/bootstrap.js"></script>
@@ -33,6 +34,7 @@
     <script src="/adres.client/vendors/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
     <script src="/adres.client/vendors/angular-translate-loader-partial/angular-translate-loader-partial.js"></script>
     <script src="/adres.client/vendors/base64/base64.js"></script>
+    <script src="/adres.client/vendors/angular-datepicker/datepicker.js"></script>
     <script src="/adres.client/services/ADUtils.js"></script>
     <script src="/adres.client/services/SessionManager.js"></script>
     <script src="/adres.client/services/AuthInterceptor.js"></script>
@@ -41,14 +43,33 @@
     <script src="/adres.client/modules/NavBar.js"></script>
     <script src="modules/login/module.js"></script>
     <script src="scripts/app.js"></script>
+    <!-- resources and services -->
     <script src="modules/login/resources.js"></script>
     <script src="modules/login/services.js"></script>
+    <script src="modules/outypes/ouTypeResource.js"></script>
+    <script src="modules/outypes/ouTypeService.js"></script>
+    <script src="modules/countrys/countryResource.js"></script>
+    <script src="modules/countrys/countryService.js"></script>
+    <script src="modules/orgunits/resources.js"></script>
+    <script src="modules/orgunits/services.js"></script>
+    <script src="modules/terminal/resources.js" ></script>
+    <script src="modules/terminal/services.js" ></script>
+    <script src="modules/locality/resources.js" ></script>
+    <script src="modules/locality/services.js" ></script>
+    <script src="modules/orgcontacts/orgcontactResource.js" ></script>
+    <script src="modules/orgcontacts/orgcontactService.js" ></script>
+    <script src="modules/converterCurrRate/resources.js" ></script>
+    <script src="modules/converterCurrRate/services.js" ></script>
 
+    <!-- login controllers -->
     <script src="modules/login/controller/logins.js"></script>
     <script src="modules/login/controller/loginsCreateController.js"></script>
     <script src="modules/login/controller/loginShowController.js"></script>
     <script src="modules/login/controller/loginsEditController.js"></script>
     <script src="modules/login/controller/loginsChangePwdController.js"></script>
+    <script src="modules/login/controllers.js"></script>
+    
+    <!-- outypes controllers -->
 
     <script src="modules/outypes/ouTypeResource.js"></script>
     <script src="modules/outypes/ouTypeService.js"></script>
@@ -56,14 +77,42 @@
     <script src="modules/outypes/listOuTypeController.js"></script>
     <script src="modules/outypes/showOuTypeController.js"></script>
     <script src="modules/outypes/updateOuTypeController.js"></script>
+    
+    <!-- orgunits -->
+    <script src="modules/orgunits/controller/orgunits.js"></script>
+    <script src="modules/orgunits/controller/orgunitsCreateController.js"></script>
+    <script src="modules/orgunits/controller/orgunitsEditController.js"></script>
+    <script src="modules/orgunits/controller/orgunitsShowController.js"></script>
 
-    <script src="modules/terminal/resources.js" ></script>
-    <script src="modules/terminal/services.js" ></script>
-    <script src="modules/terminal/resources.js" ></script>
+    <!-- terminal -->
     <script src="modules/terminal/controller/secTerminal.js" ></script>
     <script src="modules/terminal/controller/secTermEditController.js" ></script>
     <script src="modules/terminal/controller/secTermShowController.js" ></script>
     <script src="modules/terminal/controller/secTermCreateController.js" ></script>
 
+    <!-- locality ctrl -->
+    <script src="modules/locality/controller/localityController.js" ></script>
+    <script src="modules/locality/controller/localityEditController.js" ></script>
+    <script src="modules/locality/controller/localityShowController.js" ></script>
+    <script src="modules/locality/controller/localityCreateController.js" ></script>
+    
+    <!-- Country controller -->
+    <script src="modules/countrys/controller/countrys.js"></script>
+    <script src="modules/countrys/controller/countrysCreateController.js"></script>
+    <script src="modules/countrys/controller/countrysEditController.js"></script>
+    <script src="modules/countrys/controller/countrysShowController.js"></script>
+
+    <!-- converterCurrRate controller -->
+    <script src="modules/converterCurrRate/controller/converterCurrRateController.js"></script>
+    <script src="modules/converterCurrRate/controller/converterCurrRateCreateController.js"></script>
+    <script src="modules/converterCurrRate/controller/converterCurrRateEditController.js"></script>
+    <script src="modules/converterCurrRate/controller/converterCurrRateShowController.js"></script>
+    
+    <!-- OrgContact Ctrl-->
+    <script src="modules/orgcontacts/controller/orgcontacts.js"></script>
+    <script src="modules/orgcontacts/controller/orgcontactsCreateController.js"></script>
+    <script src="modules/orgcontacts/controller/orgcontactsEditController.js"></script>
+    <script src="modules/orgcontacts/controller/orgcontactsShowController.js"></script>
+    
 </body>
 </html>
