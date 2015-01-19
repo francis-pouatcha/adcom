@@ -13,4 +13,11 @@ public interface OrgContactRepository extends EntityRepository<OrgContact, Strin
 {
 	@Query("SELECT e FROM OrgContact AS e WHERE e.identif = ?1 AND e.validFrom <= ?2 AND (e.validTo IS NULL OR e.validTo > ?2)")
 	public QueryResult<OrgContact> findByIdentif(String identif, Date validOn);
+
+	@Query("SELECT e FROM OrgContact AS e WHERE e.ouIdentif = ?1 AND e.validFrom <= ?2 AND (e.validTo IS NULL OR e.validTo > ?2)")
+	public QueryResult<OrgContact> findByOrgUnit(String ouIdentif, Date validOn);
+	
+
+	@Query("SELECT COUNT(e) FROM OrgContact AS e WHERE e.ouIdentif = ?1 AND e.validFrom <= ?2 AND (e.validTo IS NULL OR e.validTo > ?2)")
+	public Long countByOrgUnit(String ouIdentif, Date validOn);
 }

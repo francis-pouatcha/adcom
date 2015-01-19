@@ -197,6 +197,13 @@ public class OrgUnitEndpoint
          return Response.status(Status.NOT_FOUND).build();
       return Response.ok(orgUnit).build();
    }
+
+   @GET
+   @Path("/findActifsFromNow")
+   @Produces({ "application/json", "application/xml" })
+   public List<OrgUnit> findActifsFromNow() throws NotFoundOrNotActifEntityException{
+	   return ejb.findActifsFromNow();
+   }
    
    @SuppressWarnings("unchecked")
    private SingularAttribute<OrgUnit, ?>[] readSeachAttributes(

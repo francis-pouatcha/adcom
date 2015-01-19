@@ -66,6 +66,16 @@ angular.module('AdBase')
             });
             return deferred.promise;
         }
+        
+        service.findActifsFromNow = function (id) {
+            var deferred = $q.defer();
+            orgUnitsResource.findActifsFromNow().success(function(data,status,headers,config){
+                deferred.resolve(data);
+            },function (data,status,headers,config){
+                deferred.reject("An error occured during searching entities");
+            });
+            return deferred.promise;
+        }
         return service;
     }]
 );

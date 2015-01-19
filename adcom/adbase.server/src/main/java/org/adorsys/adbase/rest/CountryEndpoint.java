@@ -149,7 +149,7 @@ public class CountryEndpoint
    @GET
    @Path("/findActifsFromNow")
    @Produces({ "application/json", "application/xml" })
-   public Response countByLike(HttpServletRequest request)
+   public Response findActifsFromNow(HttpServletRequest request)
    {
 	   List<Country> countrys = ejb.findActicfCountrys(new Date());
 	   return Response.ok(countrys).build();

@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('AdBase').factory('orgUnitsResource',['$http', function($http){
+angular.module('AdBase').factory('orgcontactResource',['$http', function($http){
     var service = {};
-    var urlBase = '/adbase.server/rest/orgunits',
+    var urlBase = '/adbase.server/rest/orgcontacts',
     searchInput = {
         entity:{},
         start:0,
@@ -27,14 +27,6 @@ angular.module('AdBase').factory('orgUnitsResource',['$http', function($http){
         return $http.post(urlBase+'/findByLike',entitySearchInput);
     };
 
-    service.nextLogin = function(entityId){
-        return $http.get(urlBase+'/nextLogin/'+entityId);
-    };
-
-    service.previousLogin = function(entityId){
-        return $http.get(urlBase+'/previousLogin/'+entityId);
-    };
-
     service.findById = function(entityId){
         return $http.get(urlBase+'/'+entityId);
     };
@@ -55,23 +47,17 @@ angular.module('AdBase').factory('orgUnitsResource',['$http', function($http){
         return entity ;
     };
     
-    service.searchOrgUnits = function(searchInput) {
-        return $http.post(urlBase+'/searchOrgUnits',searchInput);
-    };
-
+    service.search = function(searchInput){
+        return $http.post(urlBase+'/searchOrgContacts',searchInput);
+    }
     
-    service.findDtoByIdentif = function(identif) {
-        return $http.get(urlBase+'/dtoByidentif/'+identif);
-    };
+    service.findByIdentifEntity = function(identif){
+        return $http.get(urlBase+'/findByIdentif/'+identif+'/entity');
+    }
     
-    service.findEntityByIdentif = function(identif) {
-        return $http.get(urlBase+'/entityByidentif/'+identif);
-    };
-    
-    
-    service.findActifsFromNow = function() {
-        return $http.get(urlBase+'/findActifsFromNow/');
-    };
+    service.findByIdentifDto = function(identif){
+        return $http.get(urlBase+'/findByIdentif/'+identif+'/dto');
+    }
     return service;
     
 }]);

@@ -15,6 +15,7 @@ import org.adorsys.adbase.jpa.OuType;
 import org.adorsys.adbase.repo.OrgUnitRepository;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.deltaspike.data.api.QueryResult;
 
 @Stateless
 public class OrgUnitEJB
@@ -176,5 +177,13 @@ public class OrgUnitEJB
 		   query.setParameter("ctryIso3", ctryIso3);
 	   }
 	   return query.getSingleResult();
+   }
+   public List<OrgUnit> findActifs(Date validOn){
+	   List<OrgUnit> actifs = repository.findActifs(validOn);
+	   return actifs;
+   }
+
+   public List<OrgUnit> findActifsFromNow(){
+	   return findActifs(new Date());
    }
 }
