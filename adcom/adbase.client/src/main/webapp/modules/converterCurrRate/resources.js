@@ -19,6 +19,11 @@ angular.module('AdBase').factory('converterCurrRateResource',['$http', function(
         return $http.post(urlBase+'/findAllActive',entitySearchInput);
     };
 
+    service.doFind = function(entitySearchInput){
+        return $http.post(urlBase+'/doFind',entitySearchInput);
+    };
+
+
     service.update = function(entity){
         return $http.put(urlBase+'/'+entity.id,entity);
     };

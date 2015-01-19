@@ -87,6 +87,19 @@ angular.module('AdBase')
             return deferred.promise;
         };
 
+        service.doFind = function (searchInput){
+
+            var deferred = $q.defer();
+
+            converterCurrRateResource.doFind(searchInput).success(function(data){
+
+                deferred.resolve(data);
+            }).error(function(data){
+                deferred.reject("entity do not exist!")
+            });
+            return deferred.promise;
+        };
+
 
         return service;
     }]

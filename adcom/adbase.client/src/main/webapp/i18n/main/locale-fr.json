@@ -111,5 +111,13 @@
     "ConverterCurrRate_srcCurrISO3_description":"Devise source",
     "ConverterCurrRate_destCurrISO3_description":"Devise destination",
     "ConverterCurrRate_exRate_description":"Taux echange",
-    "converterCurrRate_description":"Devise"
+    "converterCurrRate_description":"Devise",
+    "Login_accountExpir_description":"Date Exp Compte",
+    "Login_credtlExpir_description":"Date Exp Credential",
+    "Login_fullName_description":"Nom Complet",
+    "Login_email_description":"Email",
+    "Login_pwdHashed_description":"Mot de Pass",
+    "Login_loginAlias_description":"Login Alias",
+    "Login_loginName_description":"Nom de Connection",
+    "Login_ouIdentif_description":"Organisation"
 }

@@ -38,7 +38,7 @@
             });
         }
         function searchRequest(searchInput){
-            converterCurrRateService.find(searchInput).then(function(entitySearchResult) {
+            converterCurrRateService.doFind(searchInput).then(function(entitySearchResult) {
                 self.converterCurrRates = entitySearchResult.resultList;
                 self.totalItems = entitySearchResult.count ;
             });
@@ -46,8 +46,11 @@
 
         function processSearchInput(){
             var fileName = [];
-            if(self.searchInput.entity.partnerIds){
-                fileName.push('partnerIds') ;
+            if(self.searchInput.entity.srcCurrISO3){
+                fileName.push('srcCurrISO3') ;
+            }
+            if(self.searchInput.entity.destCurrISO3){
+                fileName.push('destCurrISO3') ;
             }
             self.searchInput.fieldNames = fileName ;
             return self.searchInput ;
@@ -55,7 +58,7 @@
 
         function  handleSearchRequestEvent(){
             var searchInput =   processSearchInput();
-            searchRequest(self.searchInput);
+            searchRequest(searchInput);
         };
 
         function paginate(){
