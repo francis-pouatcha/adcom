@@ -2,13 +2,16 @@
     'use strict';
     angular.module('AdBase').controller('loginCreateController',loginCreateController);
 
-    loginCreateController.$inject = ['$scope', 'loginService','$location'];
+    loginCreateController.$inject = ['$scope', 'loginService','$location','orgUnitsService'];
 
-    function loginCreateController($scope,loginService, $location){
+    function loginCreateController($scope,loginService, $location,orgUnitsService){
         var self = this ;
         self.login = {};
         self.create = create;
         self.error = "";
+        self.orgUnits = [];
+
+        loadOrg();
 
         function create(){
 
@@ -20,6 +23,13 @@
             })
 
         };
+
+        function loadOrg(){
+            orgUnitsService.findActifsFromNow().then(function(entitySearchResult){
+                self.orgUnits = entitySearchResult;
+
+            })
+        }
     };
 
 

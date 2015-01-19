@@ -4,11 +4,6 @@
 	"workspace_ouWsIdentif":"Espace de Travaille",
 	"workspace_admin":"ADMINISTRATION",
 	"workspace_logOut":"Deconnexion",
-	"logins_loginName":"Nom de Connexion",
-	"logins_email":"Email",
-	"logins_fullName":"Nom",
-	"logins_ouIdentif":"Département",
-    "logins_accountLocked":"Bloque",
     "IdSize_is_required":"La taille de l'identifiant est requise",
     "TypeName_is_required":"Le nom du type d'org est requis.",
     "parentType_is_required":"Le type parent est requis",
@@ -119,5 +114,7 @@
     "Login_pwdHashed_description":"Mot de Pass",
     "Login_loginAlias_description":"Login Alias",
     "Login_loginName_description":"Nom de Connection",
-    "Login_ouIdentif_description":"Organisation"
+    "Login_ouIdentif_description":"Organisation",
+    "Login_disableLogin_description":"Login Desactiver",
+    "Login_accountLocked_description":"Compte Bloquer"
 }

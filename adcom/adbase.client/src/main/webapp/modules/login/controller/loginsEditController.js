@@ -2,13 +2,14 @@
     'use strict';
     angular.module('AdBase').controller('loginEditController',loginEditController);
 
-    loginEditController.$inject = ['$scope', 'loginService','$location','$routeParams'];
+    loginEditController.$inject = ['$scope', 'loginService','$location','$routeParams','orgUnitsService'];
 
-    function loginEditController($scope,loginService, $location,$routeParams){
+    function loginEditController($scope,loginService, $location,$routeParams,orgUnitsService){
         var self = this ;
         self.login = {};
         self.edit = edit;
         self.error = "";
+        self.orgUnits = [];
 
         function edit(){
 
@@ -25,6 +26,7 @@
 
         function init(){
             load();
+            loadOrg();
         }
 
         function load(){
@@ -40,6 +42,13 @@
             })
 
         };
+
+        function loadOrg(){
+            orgUnitsService.findActifsFromNow().then(function(entitySearchResult){
+                self.orgUnits = entitySearchResult;
+
+            })
+        }
     };
 
 

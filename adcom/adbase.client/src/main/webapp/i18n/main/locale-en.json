@@ -5,11 +5,6 @@
 	"workspace_ouWsIdentif":"Workspace",
 	"workspace_admin":"ADMINISTRATION",
 	"workspace_logOut":"Logout",
-	"logins_loginName":"Login Name",
-	"logins_email":"Email",
-	"logins_fullName":"Full Name",
-	"logins_ouIdentif":"Organization Unit",
-    "logins_accountLocked":"Locked",
     "IdSize_is_required":"Id size is required",
     "TypeName_is_required":"Type name is required.",
     "parentType_is_required":"Parent type is required.",
@@ -19,7 +14,6 @@
     "typeName":"Type name",
     "paretnType":"Parent type",
     "Ok":"Ok",
-	"logins_ouIdentif":"Organization Unit"	,
     "print": "Print",
     "Entity_leave.title": "leave",
     "Entity_change.title": "Change  ",
@@ -117,5 +111,7 @@
     "Login_pwdHashed_description":"Password",
     "Login_loginAlias_description":"Login Alias",
     "Login_loginName_description":"Login Name",
-    "Login_ouIdentif_description":"Organisation Unit"
+    "Login_ouIdentif_description":"Organisation Unit",
+    "Login_disableLogin_description":"Login disabled",
+    "Login_accountLocked_description":"Account locked"
 }
