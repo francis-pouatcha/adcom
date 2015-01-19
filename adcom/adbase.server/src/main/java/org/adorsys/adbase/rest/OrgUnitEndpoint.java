@@ -52,7 +52,7 @@ public class OrgUnitEndpoint
    @Produces({ "application/json", "application/xml" })
    public OrgUnit create(OrgUnit entity)
    {
-      return detach(ejb.create(entity));
+	   return detach(ejb.createCustom(entity));
    }
 
    @DELETE
