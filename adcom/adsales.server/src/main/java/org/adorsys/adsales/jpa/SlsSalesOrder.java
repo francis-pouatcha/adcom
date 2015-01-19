@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
 
 import org.adorsys.adcore.jpa.AbstractIdentifData;
@@ -23,8 +22,7 @@ public class SlsSalesOrder extends AbstractIdentifData {
 
 	@Column
 	@Description("SlsSalesOrder_soStatus_description")
-	@Enumerated
-	private SlsSalesStatus soStatus;
+	private String soStatus;
 
 	@Column
 	@Description("SlsSalesOrder_soCur_description")
@@ -78,11 +76,11 @@ public class SlsSalesOrder extends AbstractIdentifData {
 		this.soNbr = soNbr;
 	}
 
-	public SlsSalesStatus getSoStatus() {
+	public String getSoStatus() {
 		return this.soStatus;
 	}
 
-	public void setSoStatus(final SlsSalesStatus soStatus) {
+	public void setSoStatus(final String soStatus) {
 		this.soStatus = soStatus;
 	}
 

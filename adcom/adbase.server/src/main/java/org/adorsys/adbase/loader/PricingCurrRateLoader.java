@@ -10,28 +10,31 @@ import org.adorsys.adbase.rest.PricingCurrRateEJB;
 import org.adorsys.adcore.xls.AbstractObjectLoader;
 
 @Stateless
-public class PricingCurrRateLoader extends AbstractObjectLoader<PricingCurrRate> {
+public class PricingCurrRateLoader extends
+		AbstractObjectLoader<PricingCurrRate> {
 
 	@Inject
 	private PricingCurrRateEJB ejb;
-	
+
 	@Override
 	protected PricingCurrRate newObject() {
 		return new PricingCurrRate();
 	}
 
-	@Override
-	protected PricingCurrRate findByIdentif(String identif, Date validOn) {
+	public PricingCurrRate findByIdentif(String identif, Date validOn) {
 		return ejb.findByIdentif(identif, validOn);
 	}
 
-	@Override
-	protected void create(PricingCurrRate entity) {
-		ejb.create(entity);
+	public PricingCurrRate create(PricingCurrRate entity) {
+		return ejb.create(entity);
 	}
 
-	@Override
-	protected void update(PricingCurrRate entity) {
-		ejb.update(entity);
+	public PricingCurrRate update(PricingCurrRate found) {
+		return ejb.update(found);
 	}
+
+	public PricingCurrRate deleteById(String id) {
+		return ejb.deleteById(id);
+	}
+
 }

@@ -11,7 +11,7 @@ import org.adorsys.adbase.jpa.Workspace;
 import org.adorsys.adbase.repo.WorkspaceRepository;
 
 @Stateless
-public class WorkspaceEJB
+public class WorkspaceEJB 
 {
 
    @Inject

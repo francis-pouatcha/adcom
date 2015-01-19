@@ -14,24 +14,26 @@ public class SecTerminalLoader extends AbstractObjectLoader<SecTerminal> {
 
 	@Inject
 	private SecTerminalEJB ejb;
-	
+
 	@Override
 	protected SecTerminal newObject() {
 		return new SecTerminal();
 	}
 
-	@Override
-	protected SecTerminal findByIdentif(String identif, Date validOn) {
+	public SecTerminal findByIdentif(String identif, Date validOn) {
 		return ejb.findByIdentif(identif, validOn);
 	}
 
-	@Override
-	protected void create(SecTerminal entity) {
-		ejb.create(entity);
+	public SecTerminal create(SecTerminal entity) {
+		return ejb.create(entity);
 	}
 
-	@Override
-	protected void update(SecTerminal entity) {
-		ejb.update(entity);
+	public SecTerminal update(SecTerminal found) {
+		return ejb.update(found);
 	}
+
+	public SecTerminal deleteById(String id) {
+		return ejb.deleteById(id);
+	}
+
 }

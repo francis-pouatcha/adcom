@@ -10,28 +10,31 @@ import org.adorsys.adcatal.rest.CatalArtFeatMappingEJB;
 import org.adorsys.adcore.xls.AbstractObjectLoader;
 
 @Stateless
-public class CatalArtFeatMappingLoader extends AbstractObjectLoader<CatalArtFeatMapping> {
+public class CatalArtFeatMappingLoader extends
+		AbstractObjectLoader<CatalArtFeatMapping> {
 
 	@Inject
 	private CatalArtFeatMappingEJB ejb;
-	
+
 	@Override
 	protected CatalArtFeatMapping newObject() {
 		return new CatalArtFeatMapping();
 	}
 
-	@Override
-	protected CatalArtFeatMapping findByIdentif(String identif, Date validOn) {
+	public CatalArtFeatMapping findByIdentif(String identif, Date validOn) {
 		return ejb.findByIdentif(identif, validOn);
 	}
 
-	@Override
-	protected void create(CatalArtFeatMapping entity) {
-		ejb.create(entity);
+	public CatalArtFeatMapping create(CatalArtFeatMapping entity) {
+		return ejb.create(entity);
 	}
 
-	@Override
-	protected void update(CatalArtFeatMapping entity) {
-		ejb.update(entity);
+	public CatalArtFeatMapping update(CatalArtFeatMapping found) {
+		return ejb.update(found);
 	}
+
+	public CatalArtFeatMapping deleteById(String id) {
+		return ejb.deleteById(id);
+	}
+
 }

@@ -67,7 +67,7 @@ enum add-enum-constant-description --onConstant CLOSED --title "Cloturé" --text
 
 cd ~~;
 
- @/* Processing Step */;
+@/* Processing Step */;
 @/* Enum type Sales Status */;
 entity --named ProcStep --package ~.jpa;
 description add-class-description --title "Processing Step" --text "Sales Order Processing Step";

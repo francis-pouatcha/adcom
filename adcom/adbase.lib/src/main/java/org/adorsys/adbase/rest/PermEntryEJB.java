@@ -11,7 +11,7 @@ import org.adorsys.adbase.jpa.PermEntry;
 import org.adorsys.adbase.repo.PermEntryRepository;
 
 @Stateless
-public class PermEntryEJB
+public class PermEntryEJB 
 {
 
    @Inject

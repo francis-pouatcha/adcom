@@ -11,7 +11,7 @@ import org.adorsys.adstock.jpa.StkArticleLot;
 import org.adorsys.adstock.repo.StkArticleLotRepository;
 
 @Stateless
-public class StkArticleLotEJB
+public class StkArticleLotEJB 
 {
 
    @Inject

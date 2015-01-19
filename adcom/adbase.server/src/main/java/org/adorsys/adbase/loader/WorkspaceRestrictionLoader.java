@@ -10,28 +10,31 @@ import org.adorsys.adbase.rest.WorkspaceRestrictionEJB;
 import org.adorsys.adcore.xls.AbstractObjectLoader;
 
 @Stateless
-public class WorkspaceRestrictionLoader extends AbstractObjectLoader<WorkspaceRestriction> {
+public class WorkspaceRestrictionLoader extends
+		AbstractObjectLoader<WorkspaceRestriction> {
 
 	@Inject
 	private WorkspaceRestrictionEJB ejb;
-	
+
 	@Override
 	protected WorkspaceRestriction newObject() {
 		return new WorkspaceRestriction();
 	}
 
-	@Override
-	protected WorkspaceRestriction findByIdentif(String identif, Date validOn) {
+	public WorkspaceRestriction findByIdentif(String identif, Date validOn) {
 		return ejb.findByIdentif(identif, validOn);
 	}
 
-	@Override
-	protected void create(WorkspaceRestriction entity) {
-		ejb.create(entity);
+	public WorkspaceRestriction create(WorkspaceRestriction entity) {
+		return ejb.create(entity);
 	}
 
-	@Override
-	protected void update(WorkspaceRestriction entity) {
-		ejb.update(entity);
+	public WorkspaceRestriction update(WorkspaceRestriction found) {
+		return ejb.update(found);
 	}
+
+	public WorkspaceRestriction deleteById(String id) {
+		return ejb.deleteById(id);
+	}
+
 }

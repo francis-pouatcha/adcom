@@ -2,6 +2,7 @@ package org.adorsys.adinvtry.jpa;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**

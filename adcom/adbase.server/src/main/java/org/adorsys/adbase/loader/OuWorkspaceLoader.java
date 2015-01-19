@@ -14,24 +14,26 @@ public class OuWorkspaceLoader extends AbstractObjectLoader<OuWorkspace> {
 
 	@Inject
 	private OuWorkspaceEJB ejb;
-	
+
 	@Override
 	protected OuWorkspace newObject() {
 		return new OuWorkspace();
 	}
 
-	@Override
-	protected OuWorkspace findByIdentif(String identif, Date validOn) {
+	public OuWorkspace findByIdentif(String identif, Date validOn) {
 		return ejb.findByIdentif(identif, validOn);
 	}
 
-	@Override
-	protected void create(OuWorkspace entity) {
-		ejb.create(entity);
+	public OuWorkspace create(OuWorkspace entity) {
+		return ejb.create(entity);
 	}
 
-	@Override
-	protected void update(OuWorkspace entity) {
-		ejb.update(entity);
+	public OuWorkspace update(OuWorkspace found) {
+		return ejb.update(found);
 	}
+
+	public OuWorkspace deleteById(String id) {
+		return ejb.deleteById(id);
+	}
+
 }

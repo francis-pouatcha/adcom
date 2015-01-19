@@ -14,24 +14,26 @@ public class CatalPkgModeLoader extends AbstractObjectLoader<CatalPkgMode> {
 
 	@Inject
 	private CatalPkgModeEJB ejb;
-	
+
 	@Override
 	protected CatalPkgMode newObject() {
 		return new CatalPkgMode();
 	}
 
-	@Override
-	protected CatalPkgMode findByIdentif(String identif, Date validOn) {
+	public CatalPkgMode findByIdentif(String identif, Date validOn) {
 		return ejb.findByIdentif(identif, validOn);
 	}
 
-	@Override
-	protected void create(CatalPkgMode entity) {
-		ejb.create(entity);
+	public CatalPkgMode create(CatalPkgMode entity) {
+		return ejb.create(entity);
 	}
 
-	@Override
-	protected void update(CatalPkgMode entity) {
-		ejb.update(entity);
+	public CatalPkgMode update(CatalPkgMode found) {
+		return ejb.update(found);
 	}
+
+	public CatalPkgMode deleteById(String id) {
+		return ejb.deleteById(id);
+	}
+
 }

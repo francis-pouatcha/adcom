@@ -14,24 +14,26 @@ public class PermEntryLoader extends AbstractObjectLoader<PermEntry> {
 
 	@Inject
 	private PermEntryEJB ejb;
-	
+
 	@Override
 	protected PermEntry newObject() {
 		return new PermEntry();
 	}
 
-	@Override
-	protected PermEntry findByIdentif(String identif, Date validOn) {
+	public PermEntry findByIdentif(String identif, Date validOn) {
 		return ejb.findByIdentif(identif, validOn);
 	}
 
-	@Override
-	protected void create(PermEntry entity) {
-		ejb.create(entity);
+	public PermEntry create(PermEntry entity) {
+		return ejb.create(entity);
 	}
 
-	@Override
-	protected void update(PermEntry entity) {
-		ejb.update(entity);
+	public PermEntry update(PermEntry found) {
+		return ejb.update(found);
 	}
+
+	public PermEntry deleteById(String id) {
+		return ejb.deleteById(id);
+	}
+
 }

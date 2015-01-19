@@ -9,7 +9,7 @@ import org.adorsys.javaext.description.Description;
 
 @MappedSuperclass
 @Description("DynEnum_description")
-public class DynEnum extends AbstractIdentifData {
+public abstract class DynEnum extends AbstractIdentifData {
 
 	private static final long serialVersionUID = 7396951609058069987L;
 
@@ -68,6 +68,10 @@ public class DynEnum extends AbstractIdentifData {
 
 	@Override
 	protected String makeIdentif() {
-		return enumKey;
+		return toIdentif(enumKey,langIso2);
+	}
+	
+	public static String toIdentif(String enumKey, String langIso2){
+		return enumKey + "_" + langIso2;
 	}
 }

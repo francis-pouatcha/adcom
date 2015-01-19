@@ -10,28 +10,31 @@ import org.adorsys.adbase.rest.OuWsRestrictionEJB;
 import org.adorsys.adcore.xls.AbstractObjectLoader;
 
 @Stateless
-public class OuWsRestrictionLoader extends AbstractObjectLoader<OuWsRestriction> {
+public class OuWsRestrictionLoader extends
+		AbstractObjectLoader<OuWsRestriction> {
 
 	@Inject
 	private OuWsRestrictionEJB ejb;
-	
+
 	@Override
 	protected OuWsRestriction newObject() {
 		return new OuWsRestriction();
 	}
 
-	@Override
-	protected OuWsRestriction findByIdentif(String identif, Date validOn) {
+	public OuWsRestriction findByIdentif(String identif, Date validOn) {
 		return ejb.findByIdentif(identif, validOn);
 	}
 
-	@Override
-	protected void create(OuWsRestriction entity) {
-		ejb.create(entity);
+	public OuWsRestriction create(OuWsRestriction entity) {
+		return ejb.create(entity);
 	}
 
-	@Override
-	protected void update(OuWsRestriction entity) {
-		ejb.update(entity);
+	public OuWsRestriction update(OuWsRestriction found) {
+		return ejb.update(found);
 	}
+
+	public OuWsRestriction deleteById(String id) {
+		return ejb.deleteById(id);
+	}
+
 }

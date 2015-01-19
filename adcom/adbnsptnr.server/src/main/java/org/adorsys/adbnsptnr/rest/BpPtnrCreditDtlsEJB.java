@@ -11,7 +11,7 @@ import org.adorsys.adbnsptnr.jpa.BpPtnrCreditDtls;
 import org.adorsys.adbnsptnr.repo.BpPtnrCreditDtlsRepository;
 
 @Stateless
-public class BpPtnrCreditDtlsEJB
+public class BpPtnrCreditDtlsEJB 
 {
 
    @Inject

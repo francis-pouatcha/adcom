@@ -11,7 +11,7 @@ import org.adorsys.adcatal.jpa.CatalArticle;
 import org.adorsys.adcatal.repo.CatalArticleRepository;
 
 @Stateless
-public class CatalArticleEJB
+public class CatalArticleEJB 
 {
 
    @Inject

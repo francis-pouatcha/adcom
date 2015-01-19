@@ -14,24 +14,26 @@ public class BpInsrrncPpseLoader extends AbstractObjectLoader<BpInsrrncPpse> {
 
 	@Inject
 	private BpInsrrncPpseEJB ejb;
-	
+
 	@Override
 	protected BpInsrrncPpse newObject() {
 		return new BpInsrrncPpse();
 	}
 
-	@Override
-	protected BpInsrrncPpse findByIdentif(String identif, Date validOn) {
+	public BpInsrrncPpse findByIdentif(String identif, Date validOn) {
 		return ejb.findByIdentif(identif, validOn);
 	}
 
-	@Override
-	protected void create(BpInsrrncPpse entity) {
-		ejb.create(entity);
+	public BpInsrrncPpse create(BpInsrrncPpse entity) {
+		return ejb.create(entity);
 	}
 
-	@Override
-	protected void update(BpInsrrncPpse entity) {
-		ejb.update(entity);
+	public BpInsrrncPpse update(BpInsrrncPpse found) {
+		return ejb.update(found);
 	}
+
+	public BpInsrrncPpse deleteById(String id) {
+		return ejb.deleteById(id);
+	}
+
 }

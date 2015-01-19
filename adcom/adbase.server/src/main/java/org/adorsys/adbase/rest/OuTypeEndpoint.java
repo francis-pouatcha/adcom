@@ -2,7 +2,6 @@ package org.adorsys.adbase.rest;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -27,7 +26,6 @@ import org.adorsys.adbase.jpa.OuType;
 import org.adorsys.adbase.jpa.OuTypeSearchInput;
 import org.adorsys.adbase.jpa.OuTypeSearchResult;
 import org.adorsys.adbase.jpa.OuType_;
-import org.apache.http.protocol.HTTP;
 
 /**
  * 
@@ -198,7 +196,7 @@ public class OuTypeEndpoint
       return result.toArray(new SingularAttribute[result.size()]);
    }
 
-   private static final List<String> emptyList = Collections.emptyList();
+   
 
    private OuType detach(OuType entity)
    {

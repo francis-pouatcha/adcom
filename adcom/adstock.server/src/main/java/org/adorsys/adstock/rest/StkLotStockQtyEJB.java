@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
+
 import org.adorsys.adstock.jpa.StkLotStockQty;
 import org.adorsys.adstock.repo.StkLotStockQtyRepository;
 

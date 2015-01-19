@@ -2,8 +2,6 @@ package org.adorsys.adbnsptnr.rest;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -22,10 +20,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+
 import org.adorsys.adbnsptnr.jpa.BpInsrrncPpse;
-import org.adorsys.adbnsptnr.jpa.BpInsrrncPpse_;
 import org.adorsys.adbnsptnr.jpa.BpInsrrncPpseSearchInput;
 import org.adorsys.adbnsptnr.jpa.BpInsrrncPpseSearchResult;
+import org.adorsys.adbnsptnr.jpa.BpInsrrncPpse_;
 
 /**
  * 
@@ -175,7 +174,7 @@ public class BpInsrrncPpseEndpoint
       return result.toArray(new SingularAttribute[result.size()]);
    }
 
-   private static final List<String> emptyList = Collections.emptyList();
+   
 
    private BpInsrrncPpse detach(BpInsrrncPpse entity)
    {

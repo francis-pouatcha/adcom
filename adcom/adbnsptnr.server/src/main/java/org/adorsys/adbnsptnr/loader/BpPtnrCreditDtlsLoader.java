@@ -10,28 +10,31 @@ import org.adorsys.adbnsptnr.rest.BpPtnrCreditDtlsEJB;
 import org.adorsys.adcore.xls.AbstractObjectLoader;
 
 @Stateless
-public class BpPtnrCreditDtlsLoader extends AbstractObjectLoader<BpPtnrCreditDtls> {
+public class BpPtnrCreditDtlsLoader extends
+		AbstractObjectLoader<BpPtnrCreditDtls> {
 
 	@Inject
 	private BpPtnrCreditDtlsEJB ejb;
-	
+
 	@Override
 	protected BpPtnrCreditDtls newObject() {
 		return new BpPtnrCreditDtls();
 	}
 
-	@Override
-	protected BpPtnrCreditDtls findByIdentif(String identif, Date validOn) {
+	public BpPtnrCreditDtls findByIdentif(String identif, Date validOn) {
 		return ejb.findByIdentif(identif, validOn);
 	}
 
-	@Override
-	protected void create(BpPtnrCreditDtls entity) {
-		ejb.create(entity);
+	public BpPtnrCreditDtls create(BpPtnrCreditDtls entity) {
+		return ejb.create(entity);
 	}
 
-	@Override
-	protected void update(BpPtnrCreditDtls entity) {
-		ejb.update(entity);
+	public BpPtnrCreditDtls update(BpPtnrCreditDtls found) {
+		return ejb.update(found);
 	}
+
+	public BpPtnrCreditDtls deleteById(String id) {
+		return ejb.deleteById(id);
+	}
+
 }

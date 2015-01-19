@@ -14,24 +14,26 @@ public class RoleEntryLoader extends AbstractObjectLoader<RoleEntry> {
 
 	@Inject
 	private RoleEntryEJB ejb;
-	
+
 	@Override
 	protected RoleEntry newObject() {
 		return new RoleEntry();
 	}
 
-	@Override
-	protected RoleEntry findByIdentif(String identif, Date validOn) {
+	public RoleEntry findByIdentif(String identif, Date validOn) {
 		return ejb.findByIdentif(identif, validOn);
 	}
 
-	@Override
-	protected void create(RoleEntry entity) {
-		ejb.create(entity);
+	public RoleEntry create(RoleEntry entity) {
+		return ejb.create(entity);
 	}
 
-	@Override
-	protected void update(RoleEntry entity) {
-		ejb.update(entity);
+	public RoleEntry update(RoleEntry found) {
+		return ejb.update(found);
 	}
+
+	public RoleEntry deleteById(String id) {
+		return ejb.deleteById(id);
+	}
+
 }

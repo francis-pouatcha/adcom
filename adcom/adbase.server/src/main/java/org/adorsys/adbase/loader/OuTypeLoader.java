@@ -14,24 +14,26 @@ public class OuTypeLoader extends AbstractObjectLoader<OuType> {
 
 	@Inject
 	private OuTypeEJB ejb;
-	
+
 	@Override
 	protected OuType newObject() {
 		return new OuType();
 	}
 
-	@Override
-	protected OuType findByIdentif(String identif, Date validOn) {
+	public OuType findByIdentif(String identif, Date validOn) {
 		return ejb.findByIdentif(identif, validOn);
 	}
 
-	@Override
-	protected void create(OuType entity) {
-		ejb.create(entity);
+	public OuType create(OuType entity) {
+		return ejb.create(entity);
 	}
 
-	@Override
-	protected void update(OuType entity) {
-		ejb.update(entity);
+	public OuType update(OuType found) {
+		return ejb.update(found);
 	}
+
+	public OuType deleteById(String id) {
+		return ejb.deleteById(id);
+	}
+
 }

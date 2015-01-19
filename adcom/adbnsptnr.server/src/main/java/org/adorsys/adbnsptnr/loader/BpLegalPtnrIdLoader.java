@@ -14,24 +14,26 @@ public class BpLegalPtnrIdLoader extends AbstractObjectLoader<BpLegalPtnrId> {
 
 	@Inject
 	private BpLegalPtnrIdEJB ejb;
-	
+
 	@Override
 	protected BpLegalPtnrId newObject() {
 		return new BpLegalPtnrId();
 	}
 
-	@Override
-	protected BpLegalPtnrId findByIdentif(String identif, Date validOn) {
+	public BpLegalPtnrId findByIdentif(String identif, Date validOn) {
 		return ejb.findByIdentif(identif, validOn);
 	}
 
-	@Override
-	protected void create(BpLegalPtnrId entity) {
-		ejb.create(entity);
+	public BpLegalPtnrId create(BpLegalPtnrId entity) {
+		return ejb.create(entity);
 	}
 
-	@Override
-	protected void update(BpLegalPtnrId entity) {
-		ejb.update(entity);
+	public BpLegalPtnrId update(BpLegalPtnrId found) {
+		return ejb.update(found);
 	}
+
+	public BpLegalPtnrId deleteById(String id) {
+		return ejb.deleteById(id);
+	}
+
 }

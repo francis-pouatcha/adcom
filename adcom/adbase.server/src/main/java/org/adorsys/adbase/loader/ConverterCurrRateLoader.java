@@ -20,18 +20,9 @@ public class ConverterCurrRateLoader extends AbstractObjectLoader<ConverterCurrR
 		return new ConverterCurrRate();
 	}
 
-	@Override
-	protected ConverterCurrRate findByIdentif(String identif, Date validOn) {
-		return ejb.findByIdentif(identif, validOn);
-	}
-
-	@Override
-	protected void create(ConverterCurrRate entity) {
-		ejb.create(entity);
-	}
-
-	@Override
-	protected void update(ConverterCurrRate entity) {
-		ejb.update(entity);
-	}
+	public ConverterCurrRate findByIdentif(String identif, Date validOn){return ejb.findByIdentif(identif, validOn);}
+	public ConverterCurrRate create(ConverterCurrRate entity){return ejb.create(entity);}
+	public ConverterCurrRate update(ConverterCurrRate found){return ejb.update(found);}
+	public ConverterCurrRate deleteById(String id){return ejb.deleteById(id);}
+	
 }

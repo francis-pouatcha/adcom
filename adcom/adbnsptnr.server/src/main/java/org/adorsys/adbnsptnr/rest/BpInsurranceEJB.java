@@ -11,7 +11,7 @@ import org.adorsys.adbnsptnr.jpa.BpInsurrance;
 import org.adorsys.adbnsptnr.repo.BpInsurranceRepository;
 
 @Stateless
-public class BpInsurranceEJB
+public class BpInsurranceEJB 
 {
 
    @Inject

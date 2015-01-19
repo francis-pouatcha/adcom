@@ -2,7 +2,6 @@ package org.adorsys.adbase.rest;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -12,7 +11,6 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -27,9 +25,6 @@ import org.adorsys.adbase.jpa.Locality;
 import org.adorsys.adbase.jpa.LocalitySearchInput;
 import org.adorsys.adbase.jpa.LocalitySearchResult;
 import org.adorsys.adbase.jpa.Locality_;
-import org.adorsys.adbase.jpa.SecTerminal;
-import org.adorsys.adbase.jpa.SecTerminalSearchInput;
-import org.adorsys.adbase.jpa.SecTerminalSearchResult;
 
 /**
  * 
@@ -191,7 +186,7 @@ public class LocalityEndpoint
       return result.toArray(new SingularAttribute[result.size()]);
    }
 
-   private static final List<String> emptyList = Collections.emptyList();
+   
 
    private Locality detach(Locality entity)
    {

@@ -11,7 +11,7 @@ import org.adorsys.adbase.jpa.RoleEntry;
 import org.adorsys.adbase.repo.RoleEntryRepository;
 
 @Stateless
-public class RoleEntryEJB
+public class RoleEntryEJB 
 {
 
    @Inject

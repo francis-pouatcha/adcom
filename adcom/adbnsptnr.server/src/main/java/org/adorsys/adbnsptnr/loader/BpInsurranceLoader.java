@@ -14,24 +14,26 @@ public class BpInsurranceLoader extends AbstractObjectLoader<BpInsurrance> {
 
 	@Inject
 	private BpInsurranceEJB ejb;
-	
+
 	@Override
 	protected BpInsurrance newObject() {
 		return new BpInsurrance();
 	}
 
-	@Override
-	protected BpInsurrance findByIdentif(String identif, Date validOn) {
+	public BpInsurrance findByIdentif(String identif, Date validOn) {
 		return ejb.findByIdentif(identif, validOn);
 	}
 
-	@Override
-	protected void create(BpInsurrance entity) {
-		ejb.create(entity);
+	public BpInsurrance create(BpInsurrance entity) {
+		return ejb.create(entity);
 	}
 
-	@Override
-	protected void update(BpInsurrance entity) {
-		ejb.update(entity);
+	public BpInsurrance update(BpInsurrance found) {
+		return ejb.update(found);
 	}
+
+	public BpInsurrance deleteById(String id) {
+		return ejb.deleteById(id);
+	}
+
 }

@@ -14,24 +14,26 @@ public class UserWorkspaceLoader extends AbstractObjectLoader<UserWorkspace> {
 
 	@Inject
 	private UserWorkspaceEJB ejb;
-	
+
 	@Override
 	protected UserWorkspace newObject() {
 		return new UserWorkspace();
 	}
 
-	@Override
-	protected UserWorkspace findByIdentif(String identif, Date validOn) {
+	public UserWorkspace findByIdentif(String identif, Date validOn) {
 		return ejb.findByIdentif(identif, validOn);
 	}
 
-	@Override
-	protected void create(UserWorkspace entity) {
-		ejb.create(entity);
+	public UserWorkspace create(UserWorkspace entity) {
+		return ejb.create(entity);
 	}
 
-	@Override
-	protected void update(UserWorkspace entity) {
-		ejb.update(entity);
+	public UserWorkspace update(UserWorkspace found) {
+		return ejb.update(found);
 	}
+
+	public UserWorkspace deleteById(String id) {
+		return ejb.deleteById(id);
+	}
+
 }

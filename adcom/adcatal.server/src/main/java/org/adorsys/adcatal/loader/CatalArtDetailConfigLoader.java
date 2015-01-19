@@ -10,28 +10,31 @@ import org.adorsys.adcatal.rest.CatalArtDetailConfigEJB;
 import org.adorsys.adcore.xls.AbstractObjectLoader;
 
 @Stateless
-public class CatalArtDetailConfigLoader extends AbstractObjectLoader<CatalArtDetailConfig> {
+public class CatalArtDetailConfigLoader extends
+		AbstractObjectLoader<CatalArtDetailConfig> {
 
 	@Inject
 	private CatalArtDetailConfigEJB ejb;
-	
+
 	@Override
 	protected CatalArtDetailConfig newObject() {
 		return new CatalArtDetailConfig();
 	}
 
-	@Override
-	protected CatalArtDetailConfig findByIdentif(String identif, Date validOn) {
+	public CatalArtDetailConfig findByIdentif(String identif, Date validOn) {
 		return ejb.findByIdentif(identif, validOn);
 	}
 
-	@Override
-	protected void create(CatalArtDetailConfig entity) {
-		ejb.create(entity);
+	public CatalArtDetailConfig create(CatalArtDetailConfig entity) {
+		return ejb.create(entity);
 	}
 
-	@Override
-	protected void update(CatalArtDetailConfig entity) {
-		ejb.update(entity);
+	public CatalArtDetailConfig update(CatalArtDetailConfig found) {
+		return ejb.update(found);
 	}
+
+	public CatalArtDetailConfig deleteById(String id) {
+		return ejb.deleteById(id);
+	}
+
 }

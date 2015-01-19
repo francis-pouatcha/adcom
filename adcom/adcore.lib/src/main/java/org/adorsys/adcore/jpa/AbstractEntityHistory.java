@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 import org.adorsys.javaext.description.Description;
 
 @MappedSuperclass
-public class AbstractEntityHistory extends AbstractEntity {
+public abstract class AbstractEntityHistory extends AbstractEntity {
 
 	private static final long serialVersionUID = -7391189914830675838L;
 

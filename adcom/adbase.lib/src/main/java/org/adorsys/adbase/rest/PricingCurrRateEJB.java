@@ -11,7 +11,7 @@ import org.adorsys.adbase.jpa.PricingCurrRate;
 import org.adorsys.adbase.repo.PricingCurrRateRepository;
 
 @Stateless
-public class PricingCurrRateEJB
+public class PricingCurrRateEJB 
 {
 
    @Inject

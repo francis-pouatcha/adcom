@@ -11,7 +11,7 @@ import org.adorsys.adcatal.jpa.CatalArtManufSupp;
 import org.adorsys.adcatal.repo.CatalArtManufSuppRepository;
 
 @Stateless
-public class CatalArtManufSuppEJB
+public class CatalArtManufSuppEJB 
 {
 
    @Inject

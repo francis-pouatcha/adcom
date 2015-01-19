@@ -11,7 +11,7 @@ import org.adorsys.adbase.jpa.OuWorkspace;
 import org.adorsys.adbase.repo.OuWorkspaceRepository;
 
 @Stateless
-public class OuWorkspaceEJB
+public class OuWorkspaceEJB 
 {
 
    @Inject

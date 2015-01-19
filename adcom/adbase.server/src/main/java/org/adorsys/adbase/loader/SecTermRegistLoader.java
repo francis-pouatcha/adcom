@@ -14,24 +14,26 @@ public class SecTermRegistLoader extends AbstractObjectLoader<SecTermRegist> {
 
 	@Inject
 	private SecTermRegistEJB ejb;
-	
+
 	@Override
 	protected SecTermRegist newObject() {
 		return new SecTermRegist();
 	}
 
-	@Override
-	protected SecTermRegist findByIdentif(String identif, Date validOn) {
+	public SecTermRegist findByIdentif(String identif, Date validOn) {
 		return ejb.findByIdentif(identif, validOn);
 	}
 
-	@Override
-	protected void create(SecTermRegist entity) {
-		ejb.create(entity);
+	public SecTermRegist create(SecTermRegist entity) {
+		return ejb.create(entity);
 	}
 
-	@Override
-	protected void update(SecTermRegist entity) {
-		ejb.update(entity);
+	public SecTermRegist update(SecTermRegist found) {
+		return ejb.update(found);
 	}
+
+	public SecTermRegist deleteById(String id) {
+		return ejb.deleteById(id);
+	}
+
 }

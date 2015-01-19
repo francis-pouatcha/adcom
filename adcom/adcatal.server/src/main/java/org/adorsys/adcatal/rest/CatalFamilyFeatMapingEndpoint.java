@@ -2,8 +2,6 @@ package org.adorsys.adcatal.rest;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -22,10 +20,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+
 import org.adorsys.adcatal.jpa.CatalFamilyFeatMaping;
-import org.adorsys.adcatal.jpa.CatalFamilyFeatMaping_;
 import org.adorsys.adcatal.jpa.CatalFamilyFeatMapingSearchInput;
 import org.adorsys.adcatal.jpa.CatalFamilyFeatMapingSearchResult;
+import org.adorsys.adcatal.jpa.CatalFamilyFeatMaping_;
 
 /**
  * 
@@ -175,7 +174,7 @@ public class CatalFamilyFeatMapingEndpoint
       return result.toArray(new SingularAttribute[result.size()]);
    }
 
-   private static final List<String> emptyList = Collections.emptyList();
+   
 
    private CatalFamilyFeatMaping detach(CatalFamilyFeatMaping entity)
    {

@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
+
 import org.adorsys.adsales.jpa.SlsInvcePtnr;
 import org.adorsys.adsales.repo.SlsInvcePtnrRepository;
 

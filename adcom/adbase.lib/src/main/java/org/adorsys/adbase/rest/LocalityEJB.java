@@ -10,7 +10,6 @@ import javax.persistence.metamodel.SingularAttribute;
 import org.adorsys.adbase.jpa.Locality;
 import org.adorsys.adbase.jpa.LocalitySearchInput;
 import org.adorsys.adbase.jpa.LocalitySearchResult;
-import org.adorsys.adbase.jpa.SecTerminal;
 import org.adorsys.adbase.repo.LocalityRepository;
 
 @Stateless

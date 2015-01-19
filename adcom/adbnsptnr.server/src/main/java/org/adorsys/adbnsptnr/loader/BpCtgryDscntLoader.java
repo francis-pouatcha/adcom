@@ -14,24 +14,26 @@ public class BpCtgryDscntLoader extends AbstractObjectLoader<BpCtgryDscnt> {
 
 	@Inject
 	private BpCtgryDscntEJB ejb;
-	
+
 	@Override
 	protected BpCtgryDscnt newObject() {
 		return new BpCtgryDscnt();
 	}
 
-	@Override
-	protected BpCtgryDscnt findByIdentif(String identif, Date validOn) {
+	public BpCtgryDscnt findByIdentif(String identif, Date validOn) {
 		return ejb.findByIdentif(identif, validOn);
 	}
 
-	@Override
-	protected void create(BpCtgryDscnt entity) {
-		ejb.create(entity);
+	public BpCtgryDscnt create(BpCtgryDscnt entity) {
+		return ejb.create(entity);
 	}
 
-	@Override
-	protected void update(BpCtgryDscnt entity) {
-		ejb.update(entity);
+	public BpCtgryDscnt update(BpCtgryDscnt found) {
+		return ejb.update(found);
 	}
+
+	public BpCtgryDscnt deleteById(String id) {
+		return ejb.deleteById(id);
+	}
+
 }

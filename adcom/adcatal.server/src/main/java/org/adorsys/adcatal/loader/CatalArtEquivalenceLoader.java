@@ -10,28 +10,31 @@ import org.adorsys.adcatal.rest.CatalArtEquivalenceEJB;
 import org.adorsys.adcore.xls.AbstractObjectLoader;
 
 @Stateless
-public class CatalArtEquivalenceLoader extends AbstractObjectLoader<CatalArtEquivalence> {
+public class CatalArtEquivalenceLoader extends
+		AbstractObjectLoader<CatalArtEquivalence> {
 
 	@Inject
 	private CatalArtEquivalenceEJB ejb;
-	
+
 	@Override
 	protected CatalArtEquivalence newObject() {
 		return new CatalArtEquivalence();
 	}
 
-	@Override
-	protected CatalArtEquivalence findByIdentif(String identif, Date validOn) {
+	public CatalArtEquivalence findByIdentif(String identif, Date validOn) {
 		return ejb.findByIdentif(identif, validOn);
 	}
 
-	@Override
-	protected void create(CatalArtEquivalence entity) {
-		ejb.create(entity);
+	public CatalArtEquivalence create(CatalArtEquivalence entity) {
+		return ejb.create(entity);
 	}
 
-	@Override
-	protected void update(CatalArtEquivalence entity) {
-		ejb.update(entity);
+	public CatalArtEquivalence update(CatalArtEquivalence found) {
+		return ejb.update(found);
 	}
+
+	public CatalArtEquivalence deleteById(String id) {
+		return ejb.deleteById(id);
+	}
+
 }

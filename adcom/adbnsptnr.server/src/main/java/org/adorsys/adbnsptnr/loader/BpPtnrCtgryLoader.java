@@ -14,24 +14,26 @@ public class BpPtnrCtgryLoader extends AbstractObjectLoader<BpPtnrCtgry> {
 
 	@Inject
 	private BpPtnrCtgryEJB ejb;
-	
+
 	@Override
 	protected BpPtnrCtgry newObject() {
 		return new BpPtnrCtgry();
 	}
 
-	@Override
-	protected BpPtnrCtgry findByIdentif(String identif, Date validOn) {
+	public BpPtnrCtgry findByIdentif(String identif, Date validOn) {
 		return ejb.findByIdentif(identif, validOn);
 	}
 
-	@Override
-	protected void create(BpPtnrCtgry entity) {
-		ejb.create(entity);
+	public BpPtnrCtgry create(BpPtnrCtgry entity) {
+		return ejb.create(entity);
 	}
 
-	@Override
-	protected void update(BpPtnrCtgry entity) {
-		ejb.update(entity);
+	public BpPtnrCtgry update(BpPtnrCtgry found) {
+		return ejb.update(found);
 	}
+
+	public BpPtnrCtgry deleteById(String id) {
+		return ejb.deleteById(id);
+	}
+
 }

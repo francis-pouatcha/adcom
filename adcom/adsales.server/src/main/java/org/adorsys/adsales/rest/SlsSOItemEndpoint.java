@@ -2,8 +2,6 @@ package org.adorsys.adsales.rest;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -22,10 +20,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+
 import org.adorsys.adsales.jpa.SlsSOItem;
-import org.adorsys.adsales.jpa.SlsSOItem_;
 import org.adorsys.adsales.jpa.SlsSOItemSearchInput;
 import org.adorsys.adsales.jpa.SlsSOItemSearchResult;
+import org.adorsys.adsales.jpa.SlsSOItem_;
 
 /**
  * 
@@ -175,7 +174,7 @@ public class SlsSOItemEndpoint
       return result.toArray(new SingularAttribute[result.size()]);
    }
 
-   private static final List<String> emptyList = Collections.emptyList();
+   
 
    private SlsSOItem detach(SlsSOItem entity)
    {

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html ng-app="AdCshdwr">
+<head>
+    <meta charset="utf-8" />
+    <title>AngularJS Basic HTTP Authentication Example</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="stylesheet" type="text/css" href="/adres.client/vendors/bootstrap/css/bootstrap.min.css">
+     <link rel="stylesheet" type="text/css" href="/adres.client/styles/custom.css">
+    <script src="scripts/vendor/modernizr-2.6.2.min.js"></script>
+    <script src="/adres.client/vendors/jquery/jquery-2.1.1.min.js"></script>
+    <script src="/adres.client/vendors/bootstrap/js/bootstrap.js"></script>
+</head>
+<body class="theme-blue">
+	<div ng-include="'/adres.client/views/navbar.html'"></div>
+    <div class="container">
+        <div class="col-xs-offset-2 col-xs-8" ng-show="sessionManager.hasAuthErrors()">
+            <div class="has-error">
+            	<ul ng-repeat="error in sessionManager.authErrors()">
+            		<li>{{error}}</li>
+            	</ul>
+            </div>
+        </div>
+        <div ng-view></div>
+     	<div id="push"></div>
+    </div>
+
+    <script src="/adres.client/vendors/angular/angular.js"></script>
+    <script src="/adres.client/vendors/angular/angular-sanitize.js"></script>
+    <script src="/adres.client/vendors/angular/angular-route.js"></script>
+    <script src="scripts/vendor/angular-resource.js"></script>
+    <script src="/adres.client/vendors/angular/angular-cookies.js"></script>
+    <script src="/adres.client/vendors/angular-translate/angular-translate.js"></script>
+    <script src="/adres.client/vendors/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
+    <script src="/adres.client/vendors/angular-translate-loader-partial/angular-translate-loader-partial.js"></script>
+    <script src="/adres.client/vendors/base64/base64.js"></script>
+    <script src="/adres.client/services/ADUtils.js"></script>
+    <script src="/adres.client/services/SessionManager.js"></script>
+    <script src="/adres.client/services/AuthInterceptor.js"></script>
+    <script src="/adres.client/modules/NavBar.js"></script>
+    <script src="scripts/app.js"></script>
+    <script src="scripts/directives/datetimepicker.js"></script>
+    <script src="scripts/filters/startFromFilter.js"></script>
+    <script src="scripts/filters/genericSearchFilter.js"></script>
+    <script src="scripts/services/locationParser.js"></script>
+    <script src="scripts/services/CdrCshDrawerFactory.js"></script>
+    <script src="scripts/controllers/newCdrCshDrawerController.js"></script>
+    <script src="scripts/controllers/searchCdrCshDrawerController.js"></script>
+    <script src="scripts/controllers/editCdrCshDrawerController.js"></script>
+    <script src="scripts/services/CdrCstmrVchrFactory.js"></script>
+    <script src="scripts/controllers/newCdrCstmrVchrController.js"></script>
+    <script src="scripts/controllers/searchCdrCstmrVchrController.js"></script>
+    <script src="scripts/controllers/editCdrCstmrVchrController.js"></script>
+    <script src="scripts/services/CdrDrctSalesFactory.js"></script>
+    <script src="scripts/controllers/newCdrDrctSalesController.js"></script>
+    <script src="scripts/controllers/searchCdrDrctSalesController.js"></script>
+    <script src="scripts/controllers/editCdrDrctSalesController.js"></script>
+    <script src="scripts/services/CdrDsArtItemFactory.js"></script>
+    <script src="scripts/controllers/newCdrDsArtItemController.js"></script>
+    <script src="scripts/controllers/searchCdrDsArtItemController.js"></script>
+    <script src="scripts/controllers/editCdrDsArtItemController.js"></script>
+    <script src="scripts/services/CdrDsHstryFactory.js"></script>
+    <script src="scripts/controllers/newCdrDsHstryController.js"></script>
+    <script src="scripts/controllers/searchCdrDsHstryController.js"></script>
+    <script src="scripts/controllers/editCdrDsHstryController.js"></script>
+    <script src="scripts/services/CdrDsPymntItemFactory.js"></script>
+    <script src="scripts/controllers/newCdrDsPymntItemController.js"></script>
+    <script src="scripts/controllers/searchCdrDsPymntItemController.js"></script>
+    <script src="scripts/controllers/editCdrDsPymntItemController.js"></script>
+    <script src="scripts/services/CdrPymntFactory.js"></script>
+    <script src="scripts/controllers/newCdrPymntController.js"></script>
+    <script src="scripts/controllers/searchCdrPymntController.js"></script>
+    <script src="scripts/controllers/editCdrPymntController.js"></script>
+    <script src="scripts/services/CdrPymntItemFactory.js"></script>
+    <script src="scripts/controllers/newCdrPymntItemController.js"></script>
+    <script src="scripts/controllers/searchCdrPymntItemController.js"></script>
+    <script src="scripts/controllers/editCdrPymntItemController.js"></script>
+    <script src="scripts/services/CdrPymntObjectFactory.js"></script>
+    <script src="scripts/controllers/newCdrPymntObjectController.js"></script>
+    <script src="scripts/controllers/searchCdrPymntObjectController.js"></script>
+    <script src="scripts/controllers/editCdrPymntObjectController.js"></script>
+    <script src="scripts/services/CdrPymtHstryFactory.js"></script>
+    <script src="scripts/controllers/newCdrPymtHstryController.js"></script>
+    <script src="scripts/controllers/searchCdrPymtHstryController.js"></script>
+    <script src="scripts/controllers/editCdrPymtHstryController.js"></script>
+    <script src="scripts/services/CdrVchrHstryFactory.js"></script>
+    <script src="scripts/controllers/newCdrVchrHstryController.js"></script>
+    <script src="scripts/controllers/searchCdrVchrHstryController.js"></script>
+    <script src="scripts/controllers/editCdrVchrHstryController.js"></script>
+</body>
+</html>

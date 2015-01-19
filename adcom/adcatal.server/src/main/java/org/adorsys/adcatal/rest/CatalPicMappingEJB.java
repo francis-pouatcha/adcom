@@ -11,7 +11,7 @@ import org.adorsys.adcatal.jpa.CatalPicMapping;
 import org.adorsys.adcatal.repo.CatalPicMappingRepository;
 
 @Stateless
-public class CatalPicMappingEJB
+public class CatalPicMappingEJB 
 {
 
    @Inject

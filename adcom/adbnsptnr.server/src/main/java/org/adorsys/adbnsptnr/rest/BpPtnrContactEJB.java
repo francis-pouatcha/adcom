@@ -11,7 +11,7 @@ import org.adorsys.adbnsptnr.jpa.BpPtnrContact;
 import org.adorsys.adbnsptnr.repo.BpPtnrContactRepository;
 
 @Stateless
-public class BpPtnrContactEJB
+public class BpPtnrContactEJB 
 {
 
    @Inject

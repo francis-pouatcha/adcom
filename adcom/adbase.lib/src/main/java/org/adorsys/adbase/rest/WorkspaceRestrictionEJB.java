@@ -11,7 +11,7 @@ import org.adorsys.adbase.jpa.WorkspaceRestriction;
 import org.adorsys.adbase.repo.WorkspaceRestrictionRepository;
 
 @Stateless
-public class WorkspaceRestrictionEJB
+public class WorkspaceRestrictionEJB 
 {
 
    @Inject

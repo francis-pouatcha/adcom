@@ -2,7 +2,6 @@ package org.adorsys.adbase.rest;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -223,7 +222,7 @@ public class OrgContactEndpoint
       return result.toArray(new SingularAttribute[result.size()]);
    }
 
-   private static final List<String> emptyList = Collections.emptyList();
+   
 
    private OrgContact detach(OrgContact entity)
    {

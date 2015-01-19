@@ -6,7 +6,6 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.metamodel.SingularAttribute;
 
@@ -15,10 +14,9 @@ import org.adorsys.adbase.jpa.OuType;
 import org.adorsys.adbase.repo.OrgUnitRepository;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.deltaspike.data.api.QueryResult;
 
 @Stateless
-public class OrgUnitEJB
+public class OrgUnitEJB 
 {
 
    @Inject

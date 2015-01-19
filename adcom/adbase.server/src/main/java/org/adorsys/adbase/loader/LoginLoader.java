@@ -14,24 +14,26 @@ public class LoginLoader extends AbstractObjectLoader<Login> {
 
 	@Inject
 	private LoginEJB ejb;
-	
+
 	@Override
 	protected Login newObject() {
 		return new Login();
 	}
 
-	@Override
-	protected Login findByIdentif(String identif, Date validOn) {
+	public Login findByIdentif(String identif, Date validOn) {
 		return ejb.findByIdentif(identif, validOn);
 	}
 
-	@Override
-	protected void create(Login entity) {
-		ejb.create(entity);
+	public Login create(Login entity) {
+		return ejb.create(entity);
 	}
 
-	@Override
-	protected void update(Login entity) {
-		ejb.update(entity);
+	public Login update(Login found) {
+		return ejb.update(found);
 	}
+
+	public Login deleteById(String id) {
+		return ejb.deleteById(id);
+	}
+
 }

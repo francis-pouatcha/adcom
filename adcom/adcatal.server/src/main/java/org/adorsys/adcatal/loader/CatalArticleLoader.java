@@ -14,24 +14,26 @@ public class CatalArticleLoader extends AbstractObjectLoader<CatalArticle> {
 
 	@Inject
 	private CatalArticleEJB ejb;
-	
+
 	@Override
 	protected CatalArticle newObject() {
 		return new CatalArticle();
 	}
 
-	@Override
-	protected CatalArticle findByIdentif(String identif, Date validOn) {
+	public CatalArticle findByIdentif(String identif, Date validOn) {
 		return ejb.findByIdentif(identif, validOn);
 	}
 
-	@Override
-	protected void create(CatalArticle entity) {
-		ejb.create(entity);
+	public CatalArticle create(CatalArticle entity) {
+		return ejb.create(entity);
 	}
 
-	@Override
-	protected void update(CatalArticle entity) {
-		ejb.update(entity);
+	public CatalArticle update(CatalArticle found) {
+		return ejb.update(found);
 	}
+
+	public CatalArticle deleteById(String id) {
+		return ejb.deleteById(id);
+	}
+
 }

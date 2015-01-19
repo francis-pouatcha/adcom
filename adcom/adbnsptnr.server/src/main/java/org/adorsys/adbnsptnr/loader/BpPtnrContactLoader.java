@@ -14,24 +14,26 @@ public class BpPtnrContactLoader extends AbstractObjectLoader<BpPtnrContact> {
 
 	@Inject
 	private BpPtnrContactEJB ejb;
-	
+
 	@Override
 	protected BpPtnrContact newObject() {
 		return new BpPtnrContact();
 	}
 
-	@Override
-	protected BpPtnrContact findByIdentif(String identif, Date validOn) {
+	public BpPtnrContact findByIdentif(String identif, Date validOn) {
 		return ejb.findByIdentif(identif, validOn);
 	}
 
-	@Override
-	protected void create(BpPtnrContact entity) {
-		ejb.create(entity);
+	public BpPtnrContact create(BpPtnrContact entity) {
+		return ejb.create(entity);
 	}
 
-	@Override
-	protected void update(BpPtnrContact entity) {
-		ejb.update(entity);
+	public BpPtnrContact update(BpPtnrContact found) {
+		return ejb.update(found);
 	}
+
+	public BpPtnrContact deleteById(String id) {
+		return ejb.deleteById(id);
+	}
+
 }

@@ -14,24 +14,26 @@ public class StkArticleLotLoader extends AbstractObjectLoader<StkArticleLot> {
 
 	@Inject
 	private StkArticleLotEJB ejb;
-	
+
 	@Override
 	protected StkArticleLot newObject() {
 		return new StkArticleLot();
 	}
 
-	@Override
-	protected StkArticleLot findByIdentif(String identif, Date validOn) {
+	public StkArticleLot findByIdentif(String identif, Date validOn) {
 		return ejb.findByIdentif(identif, validOn);
 	}
 
-	@Override
-	protected void create(StkArticleLot entity) {
-		ejb.create(entity);
+	public StkArticleLot create(StkArticleLot entity) {
+		return ejb.create(entity);
 	}
 
-	@Override
-	protected void update(StkArticleLot entity) {
-		ejb.update(entity);
+	public StkArticleLot update(StkArticleLot found) {
+		return ejb.update(found);
 	}
+
+	public StkArticleLot deleteById(String id) {
+		return ejb.deleteById(id);
+	}
+
 }

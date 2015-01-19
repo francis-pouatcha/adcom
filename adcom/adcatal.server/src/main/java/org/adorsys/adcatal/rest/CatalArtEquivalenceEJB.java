@@ -11,7 +11,7 @@ import org.adorsys.adcatal.jpa.CatalArtEquivalence;
 import org.adorsys.adcatal.repo.CatalArtEquivalenceRepository;
 
 @Stateless
-public class CatalArtEquivalenceEJB
+public class CatalArtEquivalenceEJB 
 {
 
    @Inject

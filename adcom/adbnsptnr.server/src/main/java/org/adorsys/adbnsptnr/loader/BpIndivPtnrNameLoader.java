@@ -10,28 +10,31 @@ import org.adorsys.adbnsptnr.rest.BpIndivPtnrNameEJB;
 import org.adorsys.adcore.xls.AbstractObjectLoader;
 
 @Stateless
-public class BpIndivPtnrNameLoader extends AbstractObjectLoader<BpIndivPtnrName> {
+public class BpIndivPtnrNameLoader extends
+		AbstractObjectLoader<BpIndivPtnrName> {
 
 	@Inject
 	private BpIndivPtnrNameEJB ejb;
-	
+
 	@Override
 	protected BpIndivPtnrName newObject() {
 		return new BpIndivPtnrName();
 	}
 
-	@Override
-	protected BpIndivPtnrName findByIdentif(String identif, Date validOn) {
+	public BpIndivPtnrName findByIdentif(String identif, Date validOn) {
 		return ejb.findByIdentif(identif, validOn);
 	}
 
-	@Override
-	protected void create(BpIndivPtnrName entity) {
-		ejb.create(entity);
+	public BpIndivPtnrName create(BpIndivPtnrName entity) {
+		return ejb.create(entity);
 	}
 
-	@Override
-	protected void update(BpIndivPtnrName entity) {
-		ejb.update(entity);
+	public BpIndivPtnrName update(BpIndivPtnrName found) {
+		return ejb.update(found);
 	}
+
+	public BpIndivPtnrName deleteById(String id) {
+		return ejb.deleteById(id);
+	}
+
 }

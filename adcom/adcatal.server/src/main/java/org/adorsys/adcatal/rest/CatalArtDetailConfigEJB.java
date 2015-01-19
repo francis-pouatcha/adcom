@@ -11,7 +11,7 @@ import org.adorsys.adcatal.jpa.CatalArtDetailConfig;
 import org.adorsys.adcatal.repo.CatalArtDetailConfigRepository;
 
 @Stateless
-public class CatalArtDetailConfigEJB
+public class CatalArtDetailConfigEJB 
 {
 
    @Inject

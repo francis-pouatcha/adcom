@@ -14,7 +14,7 @@ import org.adorsys.adbase.repo.OuTypeRepository;
 import org.apache.commons.lang3.StringUtils;
 
 @Stateless
-public class OuTypeEJB
+public class OuTypeEJB 
 {
 
    @Inject

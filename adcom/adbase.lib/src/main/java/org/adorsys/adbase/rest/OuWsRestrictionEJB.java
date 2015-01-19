@@ -11,7 +11,7 @@ import org.adorsys.adbase.jpa.OuWsRestriction;
 import org.adorsys.adbase.repo.OuWsRestrictionRepository;
 
 @Stateless
-public class OuWsRestrictionEJB
+public class OuWsRestrictionEJB 
 {
 
    @Inject

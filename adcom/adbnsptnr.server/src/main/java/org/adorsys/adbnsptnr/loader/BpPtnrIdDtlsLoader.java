@@ -14,24 +14,26 @@ public class BpPtnrIdDtlsLoader extends AbstractObjectLoader<BpPtnrIdDtls> {
 
 	@Inject
 	private BpPtnrIdDtlsEJB ejb;
-	
+
 	@Override
 	protected BpPtnrIdDtls newObject() {
 		return new BpPtnrIdDtls();
 	}
 
-	@Override
-	protected BpPtnrIdDtls findByIdentif(String identif, Date validOn) {
+	public BpPtnrIdDtls findByIdentif(String identif, Date validOn) {
 		return ejb.findByIdentif(identif, validOn);
 	}
 
-	@Override
-	protected void create(BpPtnrIdDtls entity) {
-		ejb.create(entity);
+	public BpPtnrIdDtls create(BpPtnrIdDtls entity) {
+		return ejb.create(entity);
 	}
 
-	@Override
-	protected void update(BpPtnrIdDtls entity) {
-		ejb.update(entity);
+	public BpPtnrIdDtls update(BpPtnrIdDtls found) {
+		return ejb.update(found);
 	}
+
+	public BpPtnrIdDtls deleteById(String id) {
+		return ejb.deleteById(id);
+	}
+
 }

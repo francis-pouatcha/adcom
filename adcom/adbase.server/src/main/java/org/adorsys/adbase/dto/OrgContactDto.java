@@ -5,11 +5,7 @@ package org.adorsys.adbase.dto;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.validation.constraints.Size;
-
 import org.adorsys.adbase.jpa.OrgContact;
-import org.adorsys.javaext.description.Description;
 
 
 /**

@@ -15,7 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.deltaspike.data.api.QueryResult;
 
 @Stateless
-public class OrgContactEJB
+public class OrgContactEJB 
 {
 
    @Inject

@@ -11,7 +11,7 @@ import org.adorsys.adcatal.jpa.CatalArtFeatMapping;
 import org.adorsys.adcatal.repo.CatalArtFeatMappingRepository;
 
 @Stateless
-public class CatalArtFeatMappingEJB
+public class CatalArtFeatMappingEJB 
 {
 
    @Inject

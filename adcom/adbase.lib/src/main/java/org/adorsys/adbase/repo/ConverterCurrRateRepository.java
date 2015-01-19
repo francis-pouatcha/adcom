@@ -3,7 +3,6 @@ package org.adorsys.adbase.repo;
 import java.util.Date;
 
 import org.adorsys.adbase.jpa.ConverterCurrRate;
-import org.adorsys.adbase.jpa.Locality;
 import org.apache.deltaspike.data.api.EntityRepository;
 import org.apache.deltaspike.data.api.Query;
 import org.apache.deltaspike.data.api.QueryResult;

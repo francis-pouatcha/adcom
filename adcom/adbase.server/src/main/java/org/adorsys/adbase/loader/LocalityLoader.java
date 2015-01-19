@@ -14,24 +14,26 @@ public class LocalityLoader extends AbstractObjectLoader<Locality> {
 
 	@Inject
 	private LocalityEJB ejb;
-	
+
 	@Override
 	protected Locality newObject() {
 		return new Locality();
 	}
 
-	@Override
-	protected Locality findByIdentif(String identif, Date validOn) {
+	public Locality findByIdentif(String identif, Date validOn) {
 		return ejb.findByIdentif(identif, validOn);
 	}
 
-	@Override
-	protected void create(Locality entity) {
-		ejb.create(entity);
+	public Locality create(Locality entity) {
+		return ejb.create(entity);
 	}
 
-	@Override
-	protected void update(Locality entity) {
-		ejb.update(entity);
+	public Locality update(Locality found) {
+		return ejb.update(found);
 	}
+
+	public Locality deleteById(String id) {
+		return ejb.deleteById(id);
+	}
+
 }

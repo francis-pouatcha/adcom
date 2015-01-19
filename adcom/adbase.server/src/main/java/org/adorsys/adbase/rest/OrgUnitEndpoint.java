@@ -2,7 +2,6 @@ package org.adorsys.adbase.rest;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -10,7 +9,6 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
-import javax.persistence.EntityNotFoundException;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -236,7 +234,7 @@ public class OrgUnitEndpoint
       return result.toArray(new SingularAttribute[result.size()]);
    }
 
-   private static final List<String> emptyList = Collections.emptyList();
+   
 
    private OrgUnit detach(OrgUnit entity)
    {

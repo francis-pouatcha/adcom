@@ -11,7 +11,7 @@ import org.adorsys.adbase.jpa.UserWsRestriction;
 import org.adorsys.adbase.repo.UserWsRestrictionRepository;
 
 @Stateless
-public class UserWsRestrictionEJB
+public class UserWsRestrictionEJB 
 {
 
    @Inject

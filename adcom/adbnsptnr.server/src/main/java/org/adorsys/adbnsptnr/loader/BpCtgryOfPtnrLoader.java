@@ -14,24 +14,26 @@ public class BpCtgryOfPtnrLoader extends AbstractObjectLoader<BpCtgryOfPtnr> {
 
 	@Inject
 	private BpCtgryOfPtnrEJB ejb;
-	
+
 	@Override
 	protected BpCtgryOfPtnr newObject() {
 		return new BpCtgryOfPtnr();
 	}
 
-	@Override
-	protected BpCtgryOfPtnr findByIdentif(String identif, Date validOn) {
+	public BpCtgryOfPtnr findByIdentif(String identif, Date validOn) {
 		return ejb.findByIdentif(identif, validOn);
 	}
 
-	@Override
-	protected void create(BpCtgryOfPtnr entity) {
-		ejb.create(entity);
+	public BpCtgryOfPtnr create(BpCtgryOfPtnr entity) {
+		return ejb.create(entity);
 	}
 
-	@Override
-	protected void update(BpCtgryOfPtnr entity) {
-		ejb.update(entity);
+	public BpCtgryOfPtnr update(BpCtgryOfPtnr found) {
+		return ejb.update(found);
 	}
+
+	public BpCtgryOfPtnr deleteById(String id) {
+		return ejb.deleteById(id);
+	}
+
 }

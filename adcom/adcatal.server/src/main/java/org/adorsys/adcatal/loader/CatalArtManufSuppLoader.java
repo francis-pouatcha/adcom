@@ -10,28 +10,31 @@ import org.adorsys.adcatal.rest.CatalArtManufSuppEJB;
 import org.adorsys.adcore.xls.AbstractObjectLoader;
 
 @Stateless
-public class CatalArtManufSuppLoader extends AbstractObjectLoader<CatalArtManufSupp> {
+public class CatalArtManufSuppLoader extends
+		AbstractObjectLoader<CatalArtManufSupp> {
 
 	@Inject
 	private CatalArtManufSuppEJB ejb;
-	
+
 	@Override
 	protected CatalArtManufSupp newObject() {
 		return new CatalArtManufSupp();
 	}
 
-	@Override
-	protected CatalArtManufSupp findByIdentif(String identif, Date validOn) {
+	public CatalArtManufSupp findByIdentif(String identif, Date validOn) {
 		return ejb.findByIdentif(identif, validOn);
 	}
 
-	@Override
-	protected void create(CatalArtManufSupp entity) {
-		ejb.create(entity);
+	public CatalArtManufSupp create(CatalArtManufSupp entity) {
+		return ejb.create(entity);
 	}
 
-	@Override
-	protected void update(CatalArtManufSupp entity) {
-		ejb.update(entity);
+	public CatalArtManufSupp update(CatalArtManufSupp found) {
+		return ejb.update(found);
 	}
+
+	public CatalArtManufSupp deleteById(String id) {
+		return ejb.deleteById(id);
+	}
+
 }

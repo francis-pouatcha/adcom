@@ -14,7 +14,7 @@ import org.adorsys.adbase.repo.SecTerminalRepository;
 
 
 @Stateless
-public class SecTerminalEJB
+public class SecTerminalEJB 
 {
 
    @Inject

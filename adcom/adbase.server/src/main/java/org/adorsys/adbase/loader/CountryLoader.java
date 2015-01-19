@@ -20,18 +20,8 @@ public class CountryLoader extends AbstractObjectLoader<Country> {
 		return new Country();
 	}
 
-	@Override
-	protected Country findByIdentif(String identif, Date validOn) {
-		return ejb.findByIdentif(identif, validOn);
-	}
-
-	@Override
-	protected void create(Country entity) {
-		ejb.create(entity);
-	}
-
-	@Override
-	protected void update(Country entity) {
-		ejb.update(entity);
-	}
+	public Country findByIdentif(String identif, Date validOn){return ejb.findByIdentif(identif, validOn);}
+	public Country create(Country entity){return ejb.create(entity);}
+	public Country update(Country found){return ejb.update(found);}
+	public Country deleteById(String id){return ejb.deleteById(id);}
 }

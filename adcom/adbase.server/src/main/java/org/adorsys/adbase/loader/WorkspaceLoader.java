@@ -14,24 +14,26 @@ public class WorkspaceLoader extends AbstractObjectLoader<Workspace> {
 
 	@Inject
 	private WorkspaceEJB ejb;
-	
+
 	@Override
 	protected Workspace newObject() {
 		return new Workspace();
 	}
 
-	@Override
-	protected Workspace findByIdentif(String identif, Date validOn) {
+	public Workspace findByIdentif(String identif, Date validOn) {
 		return ejb.findByIdentif(identif, validOn);
 	}
 
-	@Override
-	protected void create(Workspace entity) {
-		ejb.create(entity);
+	public Workspace create(Workspace entity) {
+		return ejb.create(entity);
 	}
 
-	@Override
-	protected void update(Workspace entity) {
-		ejb.update(entity);
+	public Workspace update(Workspace found) {
+		return ejb.update(found);
 	}
+
+	public Workspace deleteById(String id) {
+		return ejb.deleteById(id);
+	}
+
 }

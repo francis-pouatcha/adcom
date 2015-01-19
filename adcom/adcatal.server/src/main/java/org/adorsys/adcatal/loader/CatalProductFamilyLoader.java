@@ -10,28 +10,31 @@ import org.adorsys.adcatal.rest.CatalProductFamilyEJB;
 import org.adorsys.adcore.xls.AbstractObjectLoader;
 
 @Stateless
-public class CatalProductFamilyLoader extends AbstractObjectLoader<CatalProductFamily> {
+public class CatalProductFamilyLoader extends
+		AbstractObjectLoader<CatalProductFamily> {
 
 	@Inject
 	private CatalProductFamilyEJB ejb;
-	
+
 	@Override
 	protected CatalProductFamily newObject() {
 		return new CatalProductFamily();
 	}
 
-	@Override
-	protected CatalProductFamily findByIdentif(String identif, Date validOn) {
+	public CatalProductFamily findByIdentif(String identif, Date validOn) {
 		return ejb.findByIdentif(identif, validOn);
 	}
 
-	@Override
-	protected void create(CatalProductFamily entity) {
-		ejb.create(entity);
+	public CatalProductFamily create(CatalProductFamily entity) {
+		return ejb.create(entity);
 	}
 
-	@Override
-	protected void update(CatalProductFamily entity) {
-		ejb.update(entity);
+	public CatalProductFamily update(CatalProductFamily found) {
+		return ejb.update(found);
 	}
+
+	public CatalProductFamily deleteById(String id) {
+		return ejb.deleteById(id);
+	}
+
 }

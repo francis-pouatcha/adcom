@@ -14,24 +14,26 @@ public class StkSectionLoader extends AbstractObjectLoader<StkSection> {
 
 	@Inject
 	private StkSectionEJB ejb;
-	
+
 	@Override
 	protected StkSection newObject() {
 		return new StkSection();
 	}
 
-	@Override
-	protected StkSection findByIdentif(String identif, Date validOn) {
+	public StkSection findByIdentif(String identif, Date validOn) {
 		return ejb.findByIdentif(identif, validOn);
 	}
 
-	@Override
-	protected void create(StkSection entity) {
-		ejb.create(entity);
+	public StkSection create(StkSection entity) {
+		return ejb.create(entity);
 	}
 
-	@Override
-	protected void update(StkSection entity) {
-		ejb.update(entity);
+	public StkSection update(StkSection found) {
+		return ejb.update(found);
 	}
+
+	public StkSection deleteById(String id) {
+		return ejb.deleteById(id);
+	}
+
 }

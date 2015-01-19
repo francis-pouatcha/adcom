@@ -11,7 +11,7 @@ import org.adorsys.adbase.jpa.SecTermRegist;
 import org.adorsys.adbase.repo.SecTermRegistRepository;
 
 @Stateless
-public class SecTermRegistEJB
+public class SecTermRegistEJB 
 {
 
    @Inject

@@ -30,8 +30,10 @@ public abstract class AbstractObjectLoader<T extends AbstractIdentifData> {
 		
 	protected abstract T newObject();
 	protected abstract T findByIdentif(String identif, Date validOn);
-	protected abstract void create(T entity);
-	protected abstract void update(T found);
+	protected abstract T create(T entity);
+	protected abstract T update(T found);
+	protected abstract T deleteById(String id);
+
 
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public void load(HSSFSheet hssfSheet){

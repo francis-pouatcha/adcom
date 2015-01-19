@@ -14,24 +14,26 @@ public class OrgUnitLoader extends AbstractObjectLoader<OrgUnit> {
 
 	@Inject
 	private OrgUnitEJB ejb;
-	
+
 	@Override
 	protected OrgUnit newObject() {
 		return new OrgUnit();
 	}
 
-	@Override
-	protected OrgUnit findByIdentif(String identif, Date validOn) {
+	public OrgUnit findByIdentif(String identif, Date validOn) {
 		return ejb.findByIdentif(identif, validOn);
 	}
 
-	@Override
-	protected void create(OrgUnit entity) {
-		ejb.create(entity);
+	public OrgUnit create(OrgUnit entity) {
+		return ejb.create(entity);
 	}
 
-	@Override
-	protected void update(OrgUnit entity) {
-		ejb.update(entity);
+	public OrgUnit update(OrgUnit found) {
+		return ejb.update(found);
 	}
+
+	public OrgUnit deleteById(String id) {
+		return ejb.deleteById(id);
+	}
+
 }

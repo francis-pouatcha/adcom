@@ -11,7 +11,7 @@ import org.adorsys.adcatal.jpa.CatalFamilyFeatMaping;
 import org.adorsys.adcatal.repo.CatalFamilyFeatMapingRepository;
 
 @Stateless
-public class CatalFamilyFeatMapingEJB
+public class CatalFamilyFeatMapingEJB 
 {
 
    @Inject

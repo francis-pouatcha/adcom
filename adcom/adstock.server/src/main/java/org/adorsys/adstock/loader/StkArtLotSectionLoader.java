@@ -10,28 +10,31 @@ import org.adorsys.adstock.jpa.StkArtLotSection;
 import org.adorsys.adstock.rest.StkArtLotSectionEJB;
 
 @Stateless
-public class StkArtLotSectionLoader extends AbstractObjectLoader<StkArtLotSection> {
+public class StkArtLotSectionLoader extends
+		AbstractObjectLoader<StkArtLotSection> {
 
 	@Inject
 	private StkArtLotSectionEJB ejb;
-	
+
 	@Override
 	protected StkArtLotSection newObject() {
 		return new StkArtLotSection();
 	}
 
-	@Override
-	protected StkArtLotSection findByIdentif(String identif, Date validOn) {
+	public StkArtLotSection findByIdentif(String identif, Date validOn) {
 		return ejb.findByIdentif(identif, validOn);
 	}
 
-	@Override
-	protected void create(StkArtLotSection entity) {
-		ejb.create(entity);
+	public StkArtLotSection create(StkArtLotSection entity) {
+		return ejb.create(entity);
 	}
 
-	@Override
-	protected void update(StkArtLotSection entity) {
-		ejb.update(entity);
+	public StkArtLotSection update(StkArtLotSection found) {
+		return ejb.update(found);
 	}
+
+	public StkArtLotSection deleteById(String id) {
+		return ejb.deleteById(id);
+	}
+
 }
