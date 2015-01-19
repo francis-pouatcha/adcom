@@ -2,15 +2,22 @@
     'use strict';
     angular.module('AdBase').controller('localityEditController',localityEditController);
 
-    localityEditController.$inject = ['$scope', 'localityService','$location','$routeParams'];
+    localityEditController.$inject = ['$scope', 'localityService','$location','$routeParams','countryService'];
 
-    function localityEditController($scope,localityService, $location,$routeParams){
+    function localityEditController($scope,localityService, $location,$routeParams,countryService){
         var self = this ;
         self.locality = {};
         self.edit = edit;
+        self.countrys = [];
         self.error = "";
 
-        load();
+        init();
+
+        function init(){
+
+            load();
+            loadCountry();
+        }
         
         function edit(){
             localityService.update(self.locality).then(function(result){
@@ -28,6 +35,12 @@
                 self.error = error;
             })
         };
+
+        function loadCountry(){
+            countryService.findActifsFromNow().then(function(data){
+                self.countrys=data;
+            });
+        }
     };
 
 

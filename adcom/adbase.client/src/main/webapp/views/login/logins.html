@@ -21,26 +21,29 @@
                         <div class="row" >
                             <div class="col-lg-3">
                                 <div class="form-group">
-                                    <label class=" control-label" for="">{{"logins_loginName"|translate}}</label>
+                                    <label class=" control-label" for="">{{"Login_loginName_description"|translate}}</label>
                                     <div class="">
-                                        <input type="text" id="" ng-model="loginCtrl.searchEntity.loginName" class="form-control">
+                                        <input type="text" id="" ng-model="loginCtrl.searchInput.entity.loginName" class="form-control">
                                     </div>
                                 </div>
                             </div>
                             <div class="col-lg-3">
                                 <div class="form-group">
-                                    <label class="control-label" for="">{{"logins_fullName"|translate}}</label>
+                                    <label class="control-label" for="">{{"Login_fullName_description"|translate}}</label>
                                     <div class="">
-                                        <input type="text"  ng-model="loginCtrl.searchEntity.fullName" class="form-control">
+                                        <input type="text"  ng-model="loginCtrl.searchInput.entity.fullName" class="form-control">
                                     </div>
                                 </div>
                             </div>
 
                             <div class="col-lg-3">
                                 <div class="form-group">
-                                    <label class="control-label" >{{"logins_ouIdentif"|translate}}</label>
+                                    <label class="control-label" >{{"Login_ouIdentif_description"|translate}}</label>
                                     <div class="">
-                                        <input type="text" ng-model="loginCtrl.searchEntity.ouIdentif" class="form-control">
+                                        <select class="form-control" ng-model="loginCtrl.searchInput.entity.ouIdentif" name="ouIdentif"
+                                                ng-options="orgUnit.identif as orgUnit.shortName for orgUnit in loginCtrl.orgUnits">
+                                            <option></option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -78,20 +81,20 @@
                         <table class="table table-bordered  table-striped pointer-element" >
                             <thead>
                             <tr>
-                                <th class="text-center">{{"logins_loginName"|translate}}</th>
-                                <th class="text-center">{{"logins_email"|translate}}</th>
-                                <th class="text-center">{{"logins_fullName"|translate}}</th>
-                                <th class="text-center">{{"logins_ouIdentif"|translate}}</th>
-                                <th class="text-center">{{"logins_accountLocked"|translate}}</th>
+                                <th class="text-center">{{"Login_ouIdentif_description"|translate}}</th>
+                                <th class="text-center">{{"Login_loginName_description"|translate}}</th>
+                                <th class="text-center">{{"Login_email_description"|translate}}</th>
+                                <th class="text-center">{{"Login_fullName_description"|translate}}</th>
+                                <th class="text-center">{{"Login_accountLocked_description"|translate}}</th>
                                 <th></th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr ng-repeat="login in loginCtrl.logins" >
+                                <td>{{login.ouIdentif}}</td>
                                 <td>{{login.loginName}}</td>
                                 <td>{{login.email}}</td>
                                 <td>{{login.fullName }}</td>
-                                <td>{{login.ouIdentif | uppercase}}</td>
                                 <td>{{login.accountLocked}}</td>
                                 <td><a href="#/login/show/{{login.id}}" ><i class="glyphicon glyphicon-eye-open"></i></a></td>
                             </tr>

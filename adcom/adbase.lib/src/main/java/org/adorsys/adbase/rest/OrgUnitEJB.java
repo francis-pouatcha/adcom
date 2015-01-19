@@ -30,12 +30,16 @@ public class OrgUnitEJB
    
    public OrgUnit create(OrgUnit entity)
    {
+	         return repository.save(attach(entity));
+   }
+   
+   public OrgUnit createCustom(OrgUnit entity) {
 	   String typeIdentif = entity.getTypeIdentif();
 	   OuType ouType = ouTypeEJB.findByIdentif(typeIdentif, new Date());
 	   Integer idSize = ouType.getIdSize();
 	   String generatedId = RandomStringUtils.randomAlphanumeric(idSize);
 	   entity.setIdentif(generatedId);
-      return repository.save(attach(entity));
+	   return create(entity);
    }
 
    public OrgUnit deleteById(String id)

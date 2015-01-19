@@ -2,14 +2,14 @@
     'use strict';
     angular.module('AdBase').controller('loginController',loginController);
 
-    loginController.$inject = ['$scope', 'loginService'];
+    loginController.$inject = ['$scope', 'loginService','orgUnitsService'];
 
-    function loginController($scope,loginService){
+    function loginController($scope,loginService,orgUnitsService){
         var self = this ;
 
         self.searchInput = {};
         self.totalItems ;
-        self.itemPerPage=1 ;
+        self.itemPerPage=25;
         self.currentPage = 1;
         self.maxSize = 5 ;
         self.logins = [];
@@ -19,6 +19,7 @@
         self.handleSearchRequestEvent = handleSearchRequestEvent;
         self.handlePrintRequestEvent = handlePrintRequestEvent;
         self.paginate = paginate;
+        self.orgUnits = [];
 
         init();
 
@@ -30,6 +31,14 @@
                 max:self.itemPerPage
             }
             findByLike(self.searchInput);
+            loadOrg();
+        }
+
+        function loadOrg(){
+            orgUnitsService.findActifsFromNow().then(function(entitySearchResult){
+                self.orgUnits = entitySearchResult;
+
+            })
         }
 
         function findByLike(searchInput){
@@ -39,26 +48,23 @@
             });
         }
 
-        function processSearchInput(searchEntity){
+        function processSearchInput(){
             var fileName = [];
-            if(searchEntity.loginName){
+            if(self.searchInput.entity.loginName){
                 fileName.push('loginName') ;
-                self.searchInput.entity.loginName = searchEntity.loginName ;
             }
-            if(searchEntity.fullName){
+            if(self.searchInput.entity.fullName){
                 fileName.push('fullName') ;
-                self.searchInput.entity.fullName = searchEntity.fullName ;
             }
-            if(searchEntity.ouIdentif){
+            if(self.searchInput.entity.ouIdentif){
                 fileName.push('ouIdentif') ;
-                self.searchInput.entity.fullName = searchEntity.ouIdentif ;
             }
             self.searchInput.fieldNames = fileName ;
             return self.searchInput ;
         };
 
         function  handleSearchRequestEvent(){
-            var searchInput =   processSearchInput(self.searchEntity);
+             processSearchInput();
             findByLike(self.searchInput);
         };
 

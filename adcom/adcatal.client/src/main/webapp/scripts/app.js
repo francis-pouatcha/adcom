@@ -11,7 +11,8 @@ angular.module('AdCatal', [
       'AuthInterceptor',
       'ngSanitize',
       'pascalprecht.translate',
-      'NavBar'
+      'NavBar',
+       'ngResource'
 ])
 .constant('APP_CONFIG',{
 	'appName':'Product Catalogue',

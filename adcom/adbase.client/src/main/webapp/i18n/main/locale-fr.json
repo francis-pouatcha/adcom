@@ -4,11 +4,6 @@
 	"workspace_ouWsIdentif":"Espace de Travaille",
 	"workspace_admin":"ADMINISTRATION",
 	"workspace_logOut":"Deconnexion",
-	"logins_loginName":"Nom de Connexion",
-	"logins_email":"Email",
-	"logins_fullName":"Nom",
-	"logins_ouIdentif":"Département",
-    "logins_accountLocked":"Bloque",
     "IdSize_is_required":"La taille de l'identifiant est requise",
     "TypeName_is_required":"Le nom du type d'org est requis.",
     "parentType_is_required":"Le type parent est requis",
@@ -111,5 +106,15 @@
     "ConverterCurrRate_srcCurrISO3_description":"Devise source",
     "ConverterCurrRate_destCurrISO3_description":"Devise destination",
     "ConverterCurrRate_exRate_description":"Taux echange",
-    "converterCurrRate_description":"Devise"
+    "converterCurrRate_description":"Devise",
+    "Login_accountExpir_description":"Date Exp Compte",
+    "Login_credtlExpir_description":"Date Exp Credential",
+    "Login_fullName_description":"Nom Complet",
+    "Login_email_description":"Email",
+    "Login_pwdHashed_description":"Mot de Pass",
+    "Login_loginAlias_description":"Login Alias",
+    "Login_loginName_description":"Nom de Connection",
+    "Login_ouIdentif_description":"Organisation",
+    "Login_disableLogin_description":"Login Desactiver",
+    "Login_accountLocked_description":"Compte Bloquer"
 }

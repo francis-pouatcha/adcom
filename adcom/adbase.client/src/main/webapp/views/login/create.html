@@ -9,7 +9,9 @@
                     <div class="form-group">
                         <label class="col-lg-4 ">{{ "Login_ouIdentif_description"| translate}} :</label>
                         <div class="col-lg-8" ng-class="{ 'has-error' : loginForm.ouIdentif.$invalid }" >
-                            <input type="text" ng-model="loginCreateCtrl.login.ouIdentif" name="ouIdentif" class="form-control" required >
+                            <select class="form-control" ng-model="loginCreateCtrl.login.ouIdentif" name="ouIdentif"
+                                    ng-options="orgUnit.identif as orgUnit.shortName for orgUnit in loginCreateCtrl.orgUnits">
+                            </select>
                             <p ng-show="loginForm.ouIdentif.$error.required" class="help-block">ouIdentif est  requis !</p>
                         </div>
                     </div>

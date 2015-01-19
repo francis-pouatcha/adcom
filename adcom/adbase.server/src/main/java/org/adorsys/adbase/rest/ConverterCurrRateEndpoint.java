@@ -2,6 +2,7 @@ package org.adorsys.adbase.rest;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -47,11 +48,14 @@ public class ConverterCurrRateEndpoint {
 	@DELETE
 	@Path("/{id:[0-9][0-9]*}")
 	public Response deleteById(@PathParam("id") String id) {
-		ConverterCurrRate deleted = ejb.deleteById(id);
-		if (deleted == null)
-			return Response.status(Status.NOT_FOUND).build();
-
-		return Response.ok(detach(deleted)).build();
+	      ConverterCurrRate deleted = ejb.deleteById(id);
+	      if (deleted == null)
+	         return Response.status(Status.NOT_FOUND).build();
+	      // Please do not implements business logic in Endpoint.
+	      // Here we have no transaction.
+	      deleted.setValidTo(new Date());
+	      deleted = update(deleted);
+	      return Response.ok(detach(deleted)).build();
 	}
 
 	@PUT

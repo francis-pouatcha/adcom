@@ -67,7 +67,7 @@ angular.module('AdBase')
             return deferred.promise;
         }
         
-        service.findActifsFromNow = function (id) {
+        service.findActifsFromNow = function () {
             var deferred = $q.defer();
             orgUnitsResource.findActifsFromNow().success(function(data,status,headers,config){
                 deferred.resolve(data);

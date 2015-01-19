@@ -5,16 +5,22 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adbase.jpa.Locality;
 import org.adorsys.adbase.jpa.LocalitySearchInput;
 import org.adorsys.adbase.jpa.LocalitySearchResult;
 import org.adorsys.adbase.repo.LocalityRepository;
+import org.apache.commons.lang3.StringUtils;
 
 @Stateless
 public class LocalityEJB
 {
+	
+	@Inject
+	private EntityManager em ;
 
    @Inject
    private LocalityRepository repository;
@@ -97,4 +103,78 @@ public class LocalityEJB
 	   return searchResult ;
 	   
    }
+   
+   public LocalitySearchResult doFind(LocalitySearchInput searchInput){	   
+
+		StringBuilder sb = new StringBuilder();
+		sb.append("SELECT l FROM Locality AS l WHERE l.validFrom <=:dateDay AND (l.validTo >:dateDay OR l.validTo IS NULL) ");
+		
+		
+		if(StringUtils.isNotBlank(searchInput.getEntity().getOuIdentif())){
+
+			sb.append("AND LOWER(l.ouIdentif) LIKE LOWER(:ouIdentif) ");
+		}
+
+		if(StringUtils.isNotBlank(searchInput.getEntity().getCtryISO3())){
+
+			sb.append("AND LOWER(l.ctryISO3) LIKE LOWER(:ctryISO3) ");
+		}
+
+		if(StringUtils.isNotBlank(searchInput.getEntity().getRegion())){
+
+			sb.append("AND LOWER(l.region) LIKE LOWER(:region) ");
+		}
+		
+		if(StringUtils.isNotBlank(searchInput.getEntity().getLocStr())){
+
+			sb.append("AND LOWER(l.locStr) LIKE LOWER(:locStr) ");
+		}
+
+		String query = sb.toString();
+		
+		Query createQuery = em.createQuery(query);
+		createQuery.setParameter("dateDay", new Date());
+
+		if(StringUtils.isNotBlank(searchInput.getEntity().getOuIdentif())){
+
+			String ouIdentif = searchInput.getEntity().getOuIdentif()+"%";
+			createQuery.setParameter("ouIdentif", ouIdentif);
+		}
+
+		if(StringUtils.isNotBlank(searchInput.getEntity().getCtryISO3())){
+
+			String ctryISO3 = searchInput.getEntity().getCtryISO3()+"%";
+			createQuery.setParameter("ctryISO3", ctryISO3);
+		}
+		
+		if(StringUtils.isNotBlank(searchInput.getEntity().getRegion())){
+
+			String region = searchInput.getEntity().getRegion()+"%";
+			createQuery.setParameter("region", region);
+		}
+
+		if(StringUtils.isNotBlank(searchInput.getEntity().getLocStr())){
+
+			String locStr = searchInput.getEntity().getLocStr()+"%";
+			createQuery.setParameter("locStr", locStr);
+		}
+
+		@SuppressWarnings("unchecked")
+		List<Locality> resultList = createQuery.getResultList();
+		
+		if(searchInput.getStart() >= 0){
+			createQuery.setFirstResult(searchInput.getStart());
+		}
+		if(searchInput.getMax() > 0){
+			createQuery.setMaxResults(searchInput.getMax());
+		}
+		List resultList2 = createQuery.getResultList();
+
+		LocalitySearchResult localitySearchResult = new LocalitySearchResult();
+		localitySearchResult.setCount(Long.valueOf(resultList.size()));
+		localitySearchResult.setSearchInput(searchInput);
+		localitySearchResult.setResultList(resultList2);
+
+		return  localitySearchResult;	   
+	}
 }
