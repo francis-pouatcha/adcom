@@ -205,6 +205,31 @@ angular.module('AdBase', [
             module: 'AdBase'
         })
 
+        .when('/sectermregistr/create',{
+            templateUrl:'views/terminalregist/createSecTermRegist.html',
+            controller:'secTermRegistCreateController',
+            controllerAs: 'secTermRegistCreateCtrl',
+            module: 'AdBase'
+        })
+        .when('/sectermregistr/show/:identif',{
+            templateUrl:'views/terminalregist/showSecTermRegist.html',
+            controller:'secTermRegistShowController',
+            controllerAs: 'secTermRegistShowCtrl',
+            module: 'AdBase'
+        })
+        .when('/sectermregistr/edit/:identif',{
+            templateUrl:'views/terminalregist/editSecTermRegist.html',
+            controller:'secTermRegistEditController',
+            controllerAs: 'secTermRegistEditCtrl',
+            module: 'AdBase'
+        })
+        .when('/sectermregistr',{
+            templateUrl:'views/terminalregist/listSecTermRegist.html',
+            controller:'secTermRegistController',
+            controllerAs: 'secTermRegistCtrl',
+            module: 'AdBase'
+        })
+
     .otherwise({
       redirectTo: '/'
     });

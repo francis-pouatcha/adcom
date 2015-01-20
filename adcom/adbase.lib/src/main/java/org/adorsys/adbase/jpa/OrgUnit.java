@@ -74,4 +74,10 @@ public class OrgUnit extends AbstractTimedData {
 			throw new IllegalStateException("Identifier must be set explicitely.");
 		return getIdentif();
 	}
+
+	@Override
+	public String toString() {
+		return "OrgUnit [ctryIso3=" + ctryIso3 + ", typeIdentif=" + typeIdentif
+				+ ", fullName=" + fullName + ", shortName=" + shortName + "]";
+	}
 }
