@@ -57,7 +57,7 @@ public class SecurityUtil {
 		String workspaceId = userPrincipal.getWorkspaceId();
 		SecUserSession secUserSession = secUsrSessEjb.findOneByWorkspaceId(workspaceId, new Date());
 		if(secUserSession == null) {
-			throw new IllegalStateException("The orgUnit should not be null");
+			throw new IllegalStateException("The current security session should not be null");
 		}
 		return secUserSession;
 	}

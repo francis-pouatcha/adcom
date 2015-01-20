@@ -148,8 +148,9 @@ public class OrgContactEJB
 		   isCtryIso3 = true;
 	   }
 	   TypedQuery<OrgContact> query = em.createQuery(qBuilder.toString(), OrgContact.class);
+	   
+	   query.setParameter("ouIdentif", ouIdentif);
 	   query.setParameter("validFrom", validFrom);
-
 	   if(isContactPeople) {
 		   query.setParameter("contactPeople", "%"+contactPeople+"%");
 	   }
@@ -199,7 +200,8 @@ public class OrgContactEJB
 	   }
 	   TypedQuery<Long> query = em.createQuery(qBuilder.toString(), Long.class);
 	   query.setParameter("validFrom", validFrom);
-
+	   query.setParameter("ouIdentif", ouIdentif);
+	   
 	   if(isContactPeople) {
 		   query.setParameter("contactPeople", "%"+contactPeople+"%");
 	   }
