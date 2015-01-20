@@ -57,7 +57,7 @@ public class OrgUnitEndpoint
    @Path("/{id}")
    public Response deleteById(@PathParam("id") String id)
    {
-      OrgUnit deleted = ejb.deleteById(id);
+      OrgUnit deleted = ejb.deleteCustomById(id);
       if (deleted == null)
          return Response.status(Status.NOT_FOUND).build();
 

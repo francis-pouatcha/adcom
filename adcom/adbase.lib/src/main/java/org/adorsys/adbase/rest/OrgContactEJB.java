@@ -26,9 +26,13 @@ public class OrgContactEJB
    
    public OrgContact create(OrgContact entity)
    {
-      Long count = countByOrgUnit(entity.getOuIdentif(), new Date());
-      entity.setContactIndex(Long.toString(count + 1));
       return repository.save(attach(entity));
+   }
+   
+   public OrgContact createCustom(OrgContact entity) {
+	   Long count = countByOrgUnit(entity.getOuIdentif(), new Date());
+	   entity.setContactIndex(Long.toString(count + 1));
+	   return create(entity);
    }
 
    public OrgContact deleteById(String id)
@@ -36,10 +40,23 @@ public class OrgContactEJB
       OrgContact entity = repository.findBy(id);
       if (entity != null)
       {
-    	  entity.setValidTo(new Date());
-    	  repository.save(entity);
+    	  repository.remove(entity);
       }
       return entity;
+   }
+
+   /**
+    * Update the validTo of the entity, and save.
+    * @param id
+    * @return
+    */
+   public OrgContact deleteCustomById(String id){
+	   OrgContact entity = repository.findBy(id);
+	   if(entity != null ) {
+	    	entity.setValidTo(new Date());
+	    	repository.save(entity);
+	   }
+	   return entity;
    }
 
    public OrgContact update(OrgContact entity)

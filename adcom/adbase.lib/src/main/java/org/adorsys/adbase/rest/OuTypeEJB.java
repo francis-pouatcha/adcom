@@ -28,13 +28,29 @@ public class OuTypeEJB
       return repository.save(attach(entity));
    }
 
+
    public OuType deleteById(String id)
    {
       OuType entity = repository.findBy(id);
       if (entity != null)
       {
+    	  repository.remove(entity);
+      }
+      return entity;
+   }
+   
+   /**
+    * Update the validTo of the entity, and save.
+    * @param id
+    * @return
+    */
+   public OuType deleteCustomById(String id)
+   {
+      OuType entity = repository.findBy(id);
+      if (entity != null)
+      {
     	  entity.setValidTo(new Date());
-    	  em.merge(entity);
+    	  repository.save(entity);
       }
       return entity;
    }

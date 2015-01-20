@@ -33,6 +33,16 @@ public class CountryEJB
       Country entity = repository.findBy(id);
       if (entity != null)
       {
+    	  repository.remove(entity);
+      }
+      return entity;
+   }
+
+   public Country deleteCustomById(String id)
+   {
+      Country entity = repository.findBy(id);
+      if (entity != null)
+      {
     	  entity.setValidTo(new Date());
     	  em.merge(entity);
       }

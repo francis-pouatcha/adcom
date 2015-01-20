@@ -42,13 +42,29 @@ public class OrgUnitEJB
 	   return create(entity);
    }
 
+
    public OrgUnit deleteById(String id)
    {
       OrgUnit entity = repository.findBy(id);
       if (entity != null)
       {
+    	  repository.remove(entity);
+      }
+      return entity;
+   }
+
+   /**
+    * Update the validTo of the entity, and save.
+    * @param id
+    * @return
+    */
+   public OrgUnit deleteCustomById(String id)
+   {
+      OrgUnit entity = repository.findBy(id);
+      if (entity != null)
+      {
     	  entity.setValidTo(new Date());
-    	  em.merge(entity);
+    	  repository.save(entity);
       }
       return entity;
    }

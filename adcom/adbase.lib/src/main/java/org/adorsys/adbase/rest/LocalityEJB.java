@@ -40,6 +40,18 @@ public class LocalityEJB
       return entity;
    }
 
+
+   public Locality deleteCustomById(String id)
+   {
+      Locality entity = repository.findBy(id);
+      if (entity != null)
+      {
+    	  entity.setValidTo(new Date());
+    	  repository.save(entity);
+      }
+      return entity;
+   }
+
    public Locality update(Locality entity)
    {
       return repository.save(attach(entity));

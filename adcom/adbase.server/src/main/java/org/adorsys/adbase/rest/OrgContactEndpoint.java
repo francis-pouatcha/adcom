@@ -49,14 +49,14 @@ public class OrgContactEndpoint
    @Produces({ "application/json", "application/xml" })
    public OrgContact create(OrgContact entity)
    {
-      return detach(ejb.create(entity));
+      return detach(ejb.createCustom(entity));
    }
 
    @DELETE
    @Path("/{id}")
    public Response deleteById(@PathParam("id") String id)
    {
-      OrgContact deleted = ejb.deleteById(id);
+      OrgContact deleted = ejb.deleteCustomById(id);
       if (deleted == null)
          return Response.status(Status.NOT_FOUND).build();
 

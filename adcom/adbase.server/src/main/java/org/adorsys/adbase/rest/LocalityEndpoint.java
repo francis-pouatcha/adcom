@@ -50,13 +50,10 @@ public class LocalityEndpoint
    @Path("/{id}")
    public Response deleteById(@PathParam("id") String id)
    {
-      Locality deleted = ejb.findById(id);
+      Locality deleted = ejb.deleteCustomById(id);
      
       if (deleted == null)
          return Response.status(Status.NOT_FOUND).build();
-
-      deleted.setValidTo(new Date());
-      deleted = update(deleted);
       return Response.ok(detach(deleted)).build();
    }
    @PUT

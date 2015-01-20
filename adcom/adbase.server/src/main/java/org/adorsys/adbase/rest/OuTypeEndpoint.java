@@ -51,7 +51,7 @@ public class OuTypeEndpoint
    @Path("/{id:[0-9][0-9]*}")
    public Response deleteById(@PathParam("id") String id)
    {
-      OuType deleted = ejb.deleteById(id);
+      OuType deleted = ejb.deleteCustomById(id);
       if (deleted == null)
          return Response.status(Status.NOT_FOUND).build();
 

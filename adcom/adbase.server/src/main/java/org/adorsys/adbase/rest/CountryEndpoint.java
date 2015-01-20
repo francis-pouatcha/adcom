@@ -52,7 +52,7 @@ public class CountryEndpoint
    @Path("/{id}")
    public Response deleteById(@PathParam("id") String id)
    {
-      Country deleted = ejb.deleteById(id);
+      Country deleted = ejb.deleteCustomById(id);
       if (deleted == null)
          return Response.status(Status.NOT_FOUND).build();
 
