@@ -46,7 +46,7 @@ public class ConverterCurrRateEndpoint {
 	}
 
 	@DELETE
-	@Path("/{id:[0-9][0-9]*}")
+	@Path("/{id}")
 	public Response deleteById(@PathParam("id") String id) {
 	      ConverterCurrRate deleted = ejb.deleteById(id);
 	      if (deleted == null)
@@ -59,7 +59,7 @@ public class ConverterCurrRateEndpoint {
 	}
 
 	@PUT
-	@Path("/{id:[0-9][0-9]*}")
+	@Path("/{id}")
 	@Produces({ "application/json", "application/xml" })
 	@Consumes({ "application/json", "application/xml" })
 	public ConverterCurrRate update(ConverterCurrRate entity) {
@@ -67,7 +67,7 @@ public class ConverterCurrRateEndpoint {
 	}
 
 	@GET
-	@Path("/{id:[0-9][0-9]*}")
+	@Path("/{id}")
 	@Produces({ "application/json", "application/xml" })
 	public Response findById(@PathParam("id") String id) {
 		ConverterCurrRate found = ejb.findById(id);

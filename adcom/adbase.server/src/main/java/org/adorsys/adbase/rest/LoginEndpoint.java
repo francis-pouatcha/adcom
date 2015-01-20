@@ -47,7 +47,7 @@ public class LoginEndpoint
    }
 
    @DELETE
-   @Path("/{id:[0-9][0-9]*}")
+   @Path("/{id}")
    public Response deleteById(@PathParam("id") String id)
    {
       Login deleted = ejb.deleteById(id);
