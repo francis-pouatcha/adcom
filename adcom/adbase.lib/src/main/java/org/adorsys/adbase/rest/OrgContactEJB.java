@@ -11,6 +11,7 @@ import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adbase.jpa.OrgContact;
 import org.adorsys.adbase.repo.OrgContactRepository;
+import org.adorsys.adbase.security.SecurityUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.deltaspike.data.api.QueryResult;
 
@@ -21,6 +22,9 @@ public class OrgContactEJB
    @Inject
    private OrgContactRepository repository;
 
+   @Inject
+   private SecurityUtil secUtil;
+   
    @Inject
    private EntityManager em;
    
@@ -112,20 +116,24 @@ public class OrgContactEJB
 	   return resultList.iterator().next();
    }
    
-   public List<OrgContact> searchOrgContacts(String ouIdentif, String email, String phone,
-		   String city, String ctryIso3,Date validFrom,int start, int max) {
+   public List<OrgContact> searchOrgContacts(String contactPeople, String email, String phone,String ctryIso3,String ouIdentif, Date validFrom,int start, int max) {
 	   validFrom = validFrom == null ? new Date() : validFrom;
-	   StringBuilder qBuilder = new StringBuilder("SELECT e FROM OrgContact AS e WHERE e.validFrom <= :validFrom AND (e.validTo IS NULL OR e.validTo > :validFrom) ");
+	   if(StringUtils.isBlank(ouIdentif)) {
+		   ouIdentif = secUtil.getCurrentOrgUnit().getIdentif();
+	   }
+	   StringBuilder qBuilder = new StringBuilder("SELECT e FROM OrgContact AS e WHERE e.ouIdentif = :ouIdentif AND e.validFrom <= :validFrom AND (e.validTo IS NULL OR e.validTo > :validFrom) ");
 	   
-	   boolean isOuIdentif = false;
+	   boolean isContactPeople = false;
 	   boolean isEmail = false;
 	   boolean isPhone = false;
-	   boolean isCity = false;
 	   boolean isCtryIso3 = false;
-	   
-	   if(StringUtils.isNotBlank(ouIdentif)) {
-		   qBuilder.append(" AND e.ouIdentif = :ouIdentif");
-		   isOuIdentif = true;
+
+	   if(StringUtils.isBlank(ouIdentif)) {
+		   ouIdentif = secUtil.getCurrentOrgUnit().getIdentif();
+	   }
+	   if(StringUtils.isNotBlank(contactPeople)) {
+		   qBuilder.append(" AND LOWER(e.contactPeople) LIKE(LOWER(:contactPeople)) ");
+		   isContactPeople = true;
 	   }
 	   if(StringUtils.isNotBlank(email)) {
 		   qBuilder.append(" AND e.email = :email");
@@ -134,10 +142,6 @@ public class OrgContactEJB
 	   if(StringUtils.isNotBlank(phone)) {
 		   qBuilder.append(" AND e.phone = :phone");
 		   isPhone = true;
-	   }
-	   if(StringUtils.isNotBlank(city)) {
-		   qBuilder.append(" AND LOWER(e.city) LIKE(LOWER(:city))");
-		   isCity = true;
 	   }
 	   if(StringUtils.isNotBlank(ctryIso3)) {
 		   qBuilder.append(" AND e.country = :ctryIso3");
@@ -145,8 +149,9 @@ public class OrgContactEJB
 	   }
 	   TypedQuery<OrgContact> query = em.createQuery(qBuilder.toString(), OrgContact.class);
 	   query.setParameter("validFrom", validFrom);
-	   if(isOuIdentif) {
-		   query.setParameter("ouIdentif", ouIdentif);
+
+	   if(isContactPeople) {
+		   query.setParameter("contactPeople", "%"+contactPeople+"%");
 	   }
 	   if(isEmail) {
 		   query.setParameter("email", email);
@@ -154,29 +159,31 @@ public class OrgContactEJB
 	   if(isPhone) {
 		   query.setParameter("phone", phone);
 	   }
-	   if(isCity) {
-		   query.setParameter("city", "%"+city+"%");
-	   }
 	   if(isCtryIso3) {
 		   query.setParameter("ctryIso3", ctryIso3);
 	   }
 	   return query.setFirstResult(start).setMaxResults(max).getResultList();
    }
 
-   public Long countOrgContacts(String ouIdentif, String email, String phone,
-		   String city, String ctryIso3,Date validFrom,int start, int max) {
+
+   public Long countOrgContacts(String contactPeople, String email, String phone,String ctryIso3,String ouIdentif, Date validFrom) {
 	   validFrom = validFrom == null ? new Date() : validFrom;
-	   StringBuilder qBuilder = new StringBuilder("SELECT COUNT(e) FROM OrgContact AS e WHERE e.validFrom <= :validFrom AND (e.validTo IS NULL OR e.validTo > :validFrom) ");
+	   if(StringUtils.isBlank(ouIdentif)) {
+		   ouIdentif = secUtil.getCurrentOrgUnit().getIdentif();
+	   }
+	   StringBuilder qBuilder = new StringBuilder("SELECT COUNT(e) FROM OrgContact AS e WHERE e.ouIdentif = :ouIdentif AND e.validFrom <= :validFrom AND (e.validTo IS NULL OR e.validTo > :validFrom) ");
 	   
-	   boolean isOuIdentif = false;
+	   boolean isContactPeople = false;
 	   boolean isEmail = false;
 	   boolean isPhone = false;
-	   boolean isCity = false;
 	   boolean isCtryIso3 = false;
-	   
-	   if(StringUtils.isNotBlank(ouIdentif)) {
-		   qBuilder.append(" AND e.ouIdentif = :ouIdentif");
-		   isOuIdentif = true;
+
+	   if(StringUtils.isBlank(ouIdentif)) {
+		   ouIdentif = secUtil.getCurrentOrgUnit().getIdentif();
+	   }
+	   if(StringUtils.isNotBlank(contactPeople)) {
+		   qBuilder.append(" AND LOWER(e.contactPeople) LIKE(LOWER(:contactPeople)) ");
+		   isContactPeople = true;
 	   }
 	   if(StringUtils.isNotBlank(email)) {
 		   qBuilder.append(" AND e.email = :email");
@@ -186,18 +193,15 @@ public class OrgContactEJB
 		   qBuilder.append(" AND e.phone = :phone");
 		   isPhone = true;
 	   }
-	   if(StringUtils.isNotBlank(city)) {
-		   qBuilder.append(" AND LOWER(e.city) LIKE(LOWER(:city))");
-		   isCity = true;
-	   }
 	   if(StringUtils.isNotBlank(ctryIso3)) {
 		   qBuilder.append(" AND e.country = :ctryIso3");
 		   isCtryIso3 = true;
 	   }
 	   TypedQuery<Long> query = em.createQuery(qBuilder.toString(), Long.class);
 	   query.setParameter("validFrom", validFrom);
-	   if(isOuIdentif) {
-		   query.setParameter("ouIdentif", ouIdentif);
+
+	   if(isContactPeople) {
+		   query.setParameter("contactPeople", "%"+contactPeople+"%");
 	   }
 	   if(isEmail) {
 		   query.setParameter("email", email);
@@ -205,14 +209,12 @@ public class OrgContactEJB
 	   if(isPhone) {
 		   query.setParameter("phone", phone);
 	   }
-	   if(isCity) {
-		   query.setParameter("city", "%"+city+"%");
-	   }
 	   if(isCtryIso3) {
 		   query.setParameter("ctryIso3", ctryIso3);
 	   }
 	   return query.getSingleResult();
    }
+   
    public QueryResult<OrgContact> findByOrgUnit(String ouIdentif, Date validOn){
 	   return repository.findByOrgUnit(ouIdentif, validOn);
    }

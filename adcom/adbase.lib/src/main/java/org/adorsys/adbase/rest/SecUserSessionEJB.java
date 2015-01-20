@@ -1,5 +1,6 @@
 package org.adorsys.adbase.rest;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -8,6 +9,7 @@ import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adbase.jpa.SecUserSession;
 import org.adorsys.adbase.repo.SecUserSessionRepository;
+import org.apache.deltaspike.data.api.QueryResult;
 
 @Stateless
 public class SecUserSessionEJB
@@ -71,6 +73,17 @@ public class SecUserSessionEJB
       return repository.countLike(entity, attributes);
    }
 
+   public QueryResult<SecUserSession> findByWorkspaceId(String workspaceId,Date when) {
+	   return repository.findByWorkspaceId(workspaceId,when);
+   }
+   
+   public SecUserSession findOneByWorkspaceId(String workspaceId,Date when) {
+	   QueryResult<SecUserSession> queryResult = findByWorkspaceId(workspaceId, when);
+	   if(queryResult.count() > 0) {
+		   return queryResult.getSingleResult();
+	   }
+	   return null;
+   }
    private SecUserSession attach(SecUserSession entity)
    {
       if (entity == null)

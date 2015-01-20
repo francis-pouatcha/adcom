@@ -1,6 +1,7 @@
 package org.adorsys.adbase.security;
 
 import java.security.Principal;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -9,7 +10,11 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import org.adorsys.adbase.jpa.Login;
+import org.adorsys.adbase.jpa.OrgUnit;
+import org.adorsys.adbase.jpa.SecUserSession;
 import org.adorsys.adbase.repo.LoginRepository;
+import org.adorsys.adbase.rest.OrgUnitEJB;
+import org.adorsys.adbase.rest.SecUserSessionEJB;
 import org.adorsys.adcore.auth.TermWsUserPrincipal;
 
 @Stateless
@@ -19,7 +24,13 @@ public class SecurityUtil {
 	private SessionContext sessionContext;
 
 	@Inject
+	private SecUserSessionEJB secUsrSessEjb;
+	
+	@Inject
 	private LoginRepository loginRepository;
+	
+	@Inject
+	private OrgUnitEJB orgUnitEJB;
 	
 	public TermWsUserPrincipal getCallerPrincipal(){
 		Principal callerPrincipal = sessionContext.getCallerPrincipal();
@@ -39,5 +50,25 @@ public class SecurityUtil {
 		List<Login> resultList = loginRepository.findByIdentif(loginName).maxResults(1).getResultList();
 		if(resultList.isEmpty()) throw new IllegalStateException("user with name not found: " + loginName);
 		return resultList.iterator().next();
+	}
+	
+	public SecUserSession getCurrentSecUserSession() {
+		TermWsUserPrincipal userPrincipal = getCallerPrincipal();
+		String workspaceId = userPrincipal.getWorkspaceId();
+		SecUserSession secUserSession = secUsrSessEjb.findOneByWorkspaceId(workspaceId, new Date());
+		if(secUserSession == null) {
+			throw new IllegalStateException("The orgUnit should not be null");
+		}
+		return secUserSession;
+	}
+	
+	public OrgUnit getCurrentOrgUnit() {
+		SecUserSession currentSecUserSession = getCurrentSecUserSession();
+		String ouId = currentSecUserSession.getOuId();
+		OrgUnit orgUnit = orgUnitEJB.findByIdentif(ouId, new Date());
+		if(orgUnit == null) {
+			throw new IllegalStateException("The orgUnit should not be null");
+		}
+		return orgUnit;
 	}
 }

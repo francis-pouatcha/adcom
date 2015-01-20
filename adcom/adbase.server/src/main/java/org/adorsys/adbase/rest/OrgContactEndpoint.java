@@ -173,20 +173,18 @@ public class OrgContactEndpoint
    @Produces({"application/json","application/xml"})
    public OrgContactSearchResult searchOrgContacts(OrgContactSearchInput searchInput) throws NotFoundOrNotActifEntityException
    {
-
 	   int start = searchInput.getStart();
 	   int max = searchInput.getMax();
 	   
 	   OrgContact entity = searchInput.getEntity();
+	   String contactPeople = entity.getContactPeople();
 	   String ouIdentif = entity.getOuIdentif();
 	   String email = entity.getEmail();
 	   String phone = entity.getPhone();
-	   String city = entity.getCity();
 	   String ctryIso3 = entity.getCountry();
-	   
 	   Date validFrom = new Date();
-	   List<OrgContact> orgContacts = ejb.searchOrgContacts(ouIdentif, email, phone, city, ctryIso3, validFrom, start, max);
-	   Long count = ejb.countOrgContacts(ouIdentif, email, phone, city, ctryIso3, validFrom, start, max);
+	   List<OrgContact> orgContacts = ejb.searchOrgContacts(contactPeople, email, phone, ctryIso3, ouIdentif, validFrom, start, max);
+	   Long count = ejb.countOrgContacts(contactPeople, email, phone, ctryIso3, ouIdentif, validFrom);
 	   List<OrgContactDto> dtos = ocDtoService.convert(orgContacts);
 	   return new OrgContactSearchResult(count, detach(orgContacts),dtos, detach(searchInput));
    }
