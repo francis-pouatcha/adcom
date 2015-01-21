@@ -13,4 +13,5 @@ public interface OuWsRestrictionRepository extends EntityRepository<OuWsRestrict
 {
 	@Query("SELECT e FROM OuWsRestriction AS e WHERE e.identif = ?1 AND e.validFrom <= ?2 AND (e.validTo IS NULL OR e.validTo > ?2)")
 	public QueryResult<OuWsRestriction> findByIdentif(String identif, Date validOn);
+	
 }

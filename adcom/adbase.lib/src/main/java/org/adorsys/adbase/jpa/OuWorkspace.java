@@ -58,4 +58,5 @@ public class OuWorkspace extends AbstractTimedData {
 	protected String makeIdentif() {
 		return ownerOuIdentif + "_" + wsIdentif + "_" + targetOuIdentif;
 	}
+
 }

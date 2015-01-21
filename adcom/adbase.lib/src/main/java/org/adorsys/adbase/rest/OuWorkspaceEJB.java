@@ -1,6 +1,8 @@
 package org.adorsys.adbase.rest;
 
 import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -8,7 +10,9 @@ import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adbase.jpa.OuWorkspace;
+import org.adorsys.adbase.jpa.OuWsRestriction;
 import org.adorsys.adbase.repo.OuWorkspaceRepository;
+import org.adorsys.adbase.util.OuWorkspaceId;
 
 @Stateless
 public class OuWorkspaceEJB 
@@ -32,6 +36,16 @@ public class OuWorkspaceEJB
       return entity;
    }
 
+   public OuWorkspace deleteCustomById(String id) {
+
+      OuWorkspace entity = repository.findBy(id);
+      if (entity != null)
+      {
+    	  entity.setValidTo(new Date());
+    	  repository.save(entity);
+      }
+      return entity;
+   }
    public OuWorkspace update(OuWorkspace entity)
    {
       return repository.save(attach(entity));
@@ -83,5 +97,58 @@ public class OuWorkspaceEJB
 	   List<OuWorkspace> resultList = repository.findByIdentif(identif, validOn).orderAsc("validFrom").maxResults(1).getResultList();
 	   if(resultList.isEmpty()) return null;
 	   return resultList.iterator().next();
+   }
+   
+   /**
+    * 	Assign a collection of OuWorkspace to an OrgUnit, represented here by its targetOutIdentif
+	 * @param workspaces
+	 * @param targetOuIdentif
+	 * @return
+	 */
+   public List<OuWorkspace> assignOuWorkspaces(List<OuWorkspace> workspaces,String targetOuIdentif) {
+	   Date time = new Date();
+	   List<OuWorkspace> assignedWs = new LinkedList<>();
+	   for (OuWorkspace ouWorkspace : workspaces) {
+		   OuWorkspace assigned = assignOuWorkspace(ouWorkspace, targetOuIdentif, time);
+		   assignedWs.add(assigned);
+	   }
+	   return assignedWs;
+   }
+   /**
+    * Assign a new workspace to an OrgUnit, represented here by the targetOuIdentif
+	 * @param workspace
+	 * @param targetOuIdentif
+	 * @param time
+	 * @return
+	 */
+	public OuWorkspace assignOuWorkspace(OuWorkspace workspace,String targetOuIdentif, Date time) {
+	   String identif = workspace.getIdentif();
+	   OuWorkspaceId wsId = new OuWorkspaceId(workspace.getId());
+	   //test if the targetOu has a similiar actif workspace.
+	   boolean hasWorkspace = hasOuWorkspace(targetOuIdentif, wsId.getWsIdentif(), wsId.getOwnerOuIdentif(), time);
+	   if(hasWorkspace) {
+		   //delete this workspace
+		   deleteCustomById(workspace.getId());
+	   }
+	   //create a new ouworkspace
+	   OuWorkspace assignedWs = new OuWorkspace();
+	   assignedWs.setOwnerOuIdentif(wsId.getOwnerOuIdentif());
+	   assignedWs.setWsIdentif(wsId.getWsIdentif());
+	   assignedWs.setTargetOuIdentif(wsId.getTargetOuIdentif());
+	   return create(assignedWs);
+   }
+   
+   /**
+    *  Test if the targetOuIdentif has a workspace wsIdentif from this ownerOuIdentif at the date time
+	 * @param targetOuIdentif
+	 * @param wsIdentif
+	 * @param ownerOuIdentif
+	 * @param time
+	 * @return
+	 */
+   public boolean hasOuWorkspace(String targetOuIdentif,String wsIdentif,String ownerOuIdentif,Date time) {
+	    String identif = new OuWorkspaceId(ownerOuIdentif, wsIdentif, targetOuIdentif).getIdentif();
+	    OuWorkspace ouWorkspace = findByIdentif(identif, time);
+	    return ouWorkspace != null;
    }
 }
