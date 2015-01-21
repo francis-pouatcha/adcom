@@ -37,7 +37,7 @@ public class OrgUnitEJB
 	   String typeIdentif = entity.getTypeIdentif();
 	   OuType ouType = ouTypeEJB.findByIdentif(typeIdentif, new Date());
 	   Integer idSize = ouType.getIdSize();
-	   String generatedId = RandomStringUtils.randomAlphanumeric(idSize);
+	   String generatedId = RandomStringUtils.randomAlphanumeric(idSize).toUpperCase();
 	   entity.setIdentif(generatedId);
 	   return create(entity);
    }
