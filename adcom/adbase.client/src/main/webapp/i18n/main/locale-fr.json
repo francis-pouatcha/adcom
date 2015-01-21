@@ -119,5 +119,10 @@
     "Login_accountLocked_description":"Compte Bloquer",
     "PricingCurrRate_srcCurrISO3_description":"prix source",
     "PricingCurrRate_destCurrISO3_description":"prix destination",
-    "PricingCurrRate_description":"Prix"
+    "PricingCurrRate_description":"Prix",
+    "OuWorkspace_ownerOuIdentif_description":"Org Unit prorietaire",
+    "Workspace_roleIdentif_description":"Role",
+    "Workspace_ouTypes_description":"Org Unit Type",
+    "Workspace_clientApp_description":"Client App",
+    "restriction":"Restriction"
 }

@@ -254,6 +254,12 @@ angular.module('AdBase', [
             controllerAs: 'secTermRegistCtrl',
             module: 'AdBase'
         })
+        .when('/workspace/:loginName',{
+            templateUrl:'views/workspace/workspace.html',
+            controller:'workspaceController',
+            controllerAs: 'workspaceCtrl',
+            module: 'AdBase'
+        })
 
     .otherwise({
       redirectTo: '/'
