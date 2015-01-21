@@ -1,10 +1,10 @@
 ﻿(function () {
     'use strict';
-    angular.module('AdBase').controller('converterCurrRateController',converterCurrRateController);
+    angular.module('AdBase').controller('pricingCurrRateController',pricingCurrRateController);
 
-    converterCurrRateController.$inject = ['$scope', 'converterCurrRateService'];
+    pricingCurrRateController.$inject = ['$scope', 'pricingCurrRateService'];
 
-    function converterCurrRateController($scope,converterCurrRateService){
+    function pricingCurrRateController($scope,pricingCurrRateService){
         var self = this ;
 
         self.searchInput = {};
@@ -12,7 +12,7 @@
         self.itemPerPage=25 ;
         self.currentPage = 1;
         self.maxSize = 5 ;
-        self.converterCurrRates = [];
+        self.pricingCurrRates = [];
         self.searchEntity = {};
         self.selectedIndex  ;
         self.handleSearchRequestEvent = handleSearchRequestEvent;
@@ -32,14 +32,14 @@
         }
 
         function findAllActive(searchInput){
-            converterCurrRateService.doFind(searchInput).then(function(entitySearchResult) {
-                self.converterCurrRates = entitySearchResult.resultList;
+            pricingCurrRateService.doFind(searchInput).then(function(entitySearchResult) {
+                self.pricingCurrRates = entitySearchResult.resultList;
                 self.totalItems = entitySearchResult.count ;
             });
         }
         function searchRequest(searchInput){
-            converterCurrRateService.doFind(searchInput).then(function(entitySearchResult) {
-                self.converterCurrRates = entitySearchResult.resultList;
+            pricingCurrRateService.doFind(searchInput).then(function(entitySearchResult) {
+                self.pricingCurrRates = entitySearchResult.resultList;
                 self.totalItems = entitySearchResult.count ;
             });
         }

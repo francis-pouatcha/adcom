@@ -113,5 +113,8 @@
     "Login_loginName_description":"Login Name",
     "Login_ouIdentif_description":"Organisation Unit",
     "Login_disableLogin_description":"Login disabled",
-    "Login_accountLocked_description":"Account locked"
+    "Login_accountLocked_description":"Account locked",
+    "PricingCurrRate_srcCurrISO3_description":"pricing source",
+    "PricingCurrRate_destCurrISO3_description":"pricing destination",
+    "PricingCurrRate_description":"Pricing"
 }

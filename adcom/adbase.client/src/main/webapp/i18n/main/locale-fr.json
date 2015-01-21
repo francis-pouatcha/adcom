@@ -116,5 +116,8 @@
     "Login_loginName_description":"Nom de Connection",
     "Login_ouIdentif_description":"Organisation",
     "Login_disableLogin_description":"Login Desactiver",
-    "Login_accountLocked_description":"Compte Bloquer"
+    "Login_accountLocked_description":"Compte Bloquer",
+    "PricingCurrRate_srcCurrISO3_description":"prix source",
+    "PricingCurrRate_destCurrISO3_description":"prix destination",
+    "PricingCurrRate_description":"Prix"
 }

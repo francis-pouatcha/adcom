@@ -205,6 +205,31 @@ angular.module('AdBase', [
             module: 'AdBase'
         })
 
+        .when('/pricingCurrRate',{
+            templateUrl:'views/pricingCurrRate/list.html',
+            controller:'pricingCurrRateController',
+            controllerAs: 'pricingCurrRateCtrl',
+            module: 'AdBase'
+        })
+        .when('/pricingCurrRate/create',{
+            templateUrl:'views/pricingCurrRate/create.html',
+            controller:'pricingCurrRateCreateController',
+            controllerAs: 'pricingCurrRateCreateCtrl',
+            module: 'AdBase'
+        })
+        .when('/pricingCurrRate/show/:identif',{
+            templateUrl:'views/pricingCurrRate/show.html',
+            controller:'pricingCurrRateShowController',
+            controllerAs: 'pricingCurrRateShowCtrl',
+            module: 'AdBase'
+        })
+        .when('/pricingCurrRate/edit/:identif',{
+            templateUrl:'views/pricingCurrRate/edit.html',
+            controller:'pricingCurrRateEditController',
+            controllerAs: 'pricingCurrRateEditCtrl',
+            module: 'AdBase'
+        })
+
     .otherwise({
       redirectTo: '/'
     });

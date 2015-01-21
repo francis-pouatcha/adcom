@@ -26,6 +26,8 @@ import org.adorsys.adbase.jpa.ConverterCurrRate;
 import org.adorsys.adbase.jpa.ConverterCurrRateSearchInput;
 import org.adorsys.adbase.jpa.ConverterCurrRateSearchResult;
 import org.adorsys.adbase.jpa.ConverterCurrRate_;
+import org.adorsys.adbase.jpa.LocalitySearchInput;
+import org.adorsys.adbase.jpa.LocalitySearchResult;
 
 /**
  * 
@@ -46,20 +48,17 @@ public class ConverterCurrRateEndpoint {
 	}
 
 	@DELETE
-	@Path("/{id:[0-9][0-9]*}")
+	@Path("/{id}")
 	public Response deleteById(@PathParam("id") String id) {
-	      ConverterCurrRate deleted = ejb.deleteById(id);
+	      ConverterCurrRate deleted = ejb.deleteCustom(id);
 	      if (deleted == null)
 	         return Response.status(Status.NOT_FOUND).build();
-	      // Please do not implements business logic in Endpoint.
-	      // Here we have no transaction.
-	      deleted.setValidTo(new Date());
-	      deleted = update(deleted);
+	      
 	      return Response.ok(detach(deleted)).build();
 	}
 
 	@PUT
-	@Path("/{id:[0-9][0-9]*}")
+	@Path("/{id}")
 	@Produces({ "application/json", "application/xml" })
 	@Consumes({ "application/json", "application/xml" })
 	public ConverterCurrRate update(ConverterCurrRate entity) {
@@ -67,7 +66,7 @@ public class ConverterCurrRateEndpoint {
 	}
 
 	@GET
-	@Path("/{id:[0-9][0-9]*}")
+	@Path("/{id}")
 	@Produces({ "application/json", "application/xml" })
 	public Response findById(@PathParam("id") String id) {
 		ConverterCurrRate found = ejb.findById(id);
@@ -93,6 +92,16 @@ public class ConverterCurrRateEndpoint {
 	public Long count() {
 		return ejb.count();
 	}
+	
+	 @POST
+	   @Path("/doFind")
+	   @Produces({ "application/json", "application/xml" })
+	   @Consumes({ "application/json", "application/xml" })
+	   public ConverterCurrRateSearchResult doFind(ConverterCurrRateSearchInput searchInput)
+	   {
+		 ConverterCurrRateSearchResult searchResult = ejb.doFind(searchInput);
+	      return searchResult ;
+	   }
 
 	@POST
 	@Path("/findBy")
