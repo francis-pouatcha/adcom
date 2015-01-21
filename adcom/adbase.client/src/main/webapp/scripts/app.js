@@ -261,6 +261,18 @@ angular.module('AdBase', [
             module: 'AdBase'
         })
 
+        .when('/connectionhistorys/show/:loginName',{
+            templateUrl:'views/connectionhistorys/showConnectionHistory.html',
+            controller:'connectionHistorysShowController',
+            controllerAs: 'connHstryShowCtrl',
+            module: 'AdBase'
+        })
+        .when('/connectionhistorys',{
+            templateUrl:'views/connectionhistorys/connectionhistorys.html',
+            controller:'connectionHistorysController',
+            controllerAs: 'connHstryCtrl',
+            module: 'AdBase'
+        })
     .otherwise({
       redirectTo: '/'
     });
