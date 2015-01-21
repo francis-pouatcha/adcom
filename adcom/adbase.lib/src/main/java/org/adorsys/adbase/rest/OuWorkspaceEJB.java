@@ -12,6 +12,7 @@ import javax.persistence.metamodel.SingularAttribute;
 import org.adorsys.adbase.jpa.OuWorkspace;
 import org.adorsys.adbase.jpa.OuWsRestriction;
 import org.adorsys.adbase.repo.OuWorkspaceRepository;
+import org.adorsys.adbase.security.SecurityUtil;
 import org.adorsys.adbase.util.OuWorkspaceId;
 
 @Stateless
@@ -20,6 +21,9 @@ public class OuWorkspaceEJB
 
    @Inject
    private OuWorkspaceRepository repository;
+   
+   @Inject
+   private SecurityUtil secUtil;
 
    public OuWorkspace create(OuWorkspace entity)
    {
@@ -123,7 +127,7 @@ public class OuWorkspaceEJB
 	 */
 	public OuWorkspace assignOuWorkspace(OuWorkspace workspace,String targetOuIdentif, Date time) {
 	   String identif = workspace.getIdentif();
-	   OuWorkspaceId wsId = new OuWorkspaceId(workspace.getId());
+	   OuWorkspaceId wsId = new OuWorkspaceId(identif);
 	   //test if the targetOu has a similiar actif workspace.
 	   boolean hasWorkspace = hasOuWorkspace(targetOuIdentif, wsId.getWsIdentif(), wsId.getOwnerOuIdentif(), time);
 	   if(hasWorkspace) {
@@ -151,4 +155,13 @@ public class OuWorkspaceEJB
 	    OuWorkspace ouWorkspace = findByIdentif(identif, time);
 	    return ouWorkspace != null;
    }
+   
+   public List<OuWorkspace> findByTargetOuIdentif(String targetOuIdentif, Date validOn) {
+	   return repository.findByTargetOuIdentif(targetOuIdentif, validOn);
+   }
+   public List<OuWorkspace> findActivesOuWorkspaces() {
+	   String identif = secUtil.getCurrentOrgUnit().getIdentif();
+	   return repository.findByTargetOuIdentif(identif, new Date());
+   }
+   
 }

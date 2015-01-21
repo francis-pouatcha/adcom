@@ -21,6 +21,10 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.adorsys.adbase.dto.OuWorkspaceDTO;
+import org.adorsys.adbase.dto.OuWorkspaceDTOHolder;
+import org.adorsys.adbase.dto.OuWorkspaceDtoService;
+import org.adorsys.adbase.exception.NotFoundOrNotActifEntityException;
 import org.adorsys.adbase.jpa.OuWorkspace;
 import org.adorsys.adbase.jpa.OuWorkspaceSearchInput;
 import org.adorsys.adbase.jpa.OuWorkspaceSearchResult;
@@ -38,6 +42,9 @@ public class OuWorkspaceEndpoint
    @Inject
    private OuWorkspaceEJB ejb;
 
+   @Inject
+   private OuWorkspaceDtoService dtoService;
+   
    @POST
    @Consumes({ "application/json", "application/xml" })
    @Produces({ "application/json", "application/xml" })
@@ -143,6 +150,37 @@ public class OuWorkspaceEndpoint
       return ejb.countByLike(searchInput.getEntity(), attributes);
    }
 
+
+   @GET
+   @Path("/findActivesOuWorkspaces")
+   @Produces({ "application/json", "application/xml" })
+   public List<OuWorkspace> findActivesOuWorkspaces()
+   {
+	   List<OuWorkspace> ouWorkspaces = ejb.findActivesOuWorkspaces();
+	   return ouWorkspaces;
+   }
+   
+
+   @GET
+   @Path("/findActivesOuWorkspaces/{targetOuIdentif}")
+   @Produces({ "application/json", "application/xml" })
+   public OuWorkspaceDTOHolder findOuWorkspaceDtoForTargetOu(@PathParam("targetOuIdentif")String targetOuIdentif) throws NotFoundOrNotActifEntityException {
+	   OuWorkspaceDTOHolder dtoHolder = dtoService.createDtos(targetOuIdentif);
+	   return dtoHolder;
+   }
+
+
+
+   @POST
+   @Path("/assignWorkspace")
+   @Consumes({ "application/json", "application/xml" })
+   @Produces({ "application/json", "application/xml" })
+   public OuWorkspaceDTOHolder assignWorkspace(OuWorkspaceDTOHolder dtoHolder) throws NotFoundOrNotActifEntityException {
+	   dtoService.assignWorkspaces(dtoHolder);
+	   OuWorkspaceDTOHolder dtoHolder2 = dtoService.createDtos(dtoHolder.getTargetOu().getIdentif());
+	   return dtoHolder2;
+   }
+   
    @SuppressWarnings("unchecked")
    private SingularAttribute<OuWorkspace, ?>[] readSeachAttributes(
          OuWorkspaceSearchInput searchInput)
