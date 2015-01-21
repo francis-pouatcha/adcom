@@ -47,7 +47,7 @@ public class InvInvtryItemEndpoint
    }
 
    @DELETE
-   @Path("/{id:[0-9][0-9]*}")
+   @Path("/{id}")
    public Response deleteById(@PathParam("id") String id)
    {
       InvInvtryItem deleted = ejb.deleteById(id);
@@ -58,7 +58,7 @@ public class InvInvtryItemEndpoint
    }
 
    @PUT
-   @Path("/{id:[0-9][0-9]*}")
+   @Path("/{id}")
    @Produces({ "application/json", "application/xml" })
    @Consumes({ "application/json", "application/xml" })
    public InvInvtryItem update(InvInvtryItem entity)
@@ -67,7 +67,7 @@ public class InvInvtryItemEndpoint
    }
 
    @GET
-   @Path("/{id:[0-9][0-9]*}")
+   @Path("/{id}")
    @Produces({ "application/json", "application/xml" })
    public Response findById(@PathParam("id") String id)
    {

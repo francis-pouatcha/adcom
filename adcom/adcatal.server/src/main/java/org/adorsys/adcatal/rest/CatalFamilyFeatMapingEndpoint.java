@@ -47,7 +47,7 @@ public class CatalFamilyFeatMapingEndpoint
    }
 
    @DELETE
-   @Path("/{id:[0-9][0-9]*}")
+   @Path("/{id}")
    public Response deleteById(@PathParam("id") String id)
    {
       CatalFamilyFeatMaping deleted = ejb.deleteById(id);
@@ -58,7 +58,7 @@ public class CatalFamilyFeatMapingEndpoint
    }
 
    @PUT
-   @Path("/{id:[0-9][0-9]*}")
+   @Path("/{id}")
    @Produces({ "application/json", "application/xml" })
    @Consumes({ "application/json", "application/xml" })
    public CatalFamilyFeatMaping update(CatalFamilyFeatMaping entity)
@@ -67,7 +67,7 @@ public class CatalFamilyFeatMapingEndpoint
    }
 
    @GET
-   @Path("/{id:[0-9][0-9]*}")
+   @Path("/{id}")
    @Produces({ "application/json", "application/xml" })
    public Response findById(@PathParam("id") String id)
    {

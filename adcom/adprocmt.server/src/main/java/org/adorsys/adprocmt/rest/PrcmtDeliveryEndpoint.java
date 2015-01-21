@@ -47,7 +47,7 @@ public class PrcmtDeliveryEndpoint
    }
 
    @DELETE
-   @Path("/{id:[0-9][0-9]*}")
+   @Path("/{id}")
    public Response deleteById(@PathParam("id") String id)
    {
       PrcmtDelivery deleted = ejb.deleteById(id);
@@ -58,7 +58,7 @@ public class PrcmtDeliveryEndpoint
    }
 
    @PUT
-   @Path("/{id:[0-9][0-9]*}")
+   @Path("/{id}")
    @Produces({ "application/json", "application/xml" })
    @Consumes({ "application/json", "application/xml" })
    public PrcmtDelivery update(PrcmtDelivery entity)
@@ -67,7 +67,7 @@ public class PrcmtDeliveryEndpoint
    }
 
    @GET
-   @Path("/{id:[0-9][0-9]*}")
+   @Path("/{id}")
    @Produces({ "application/json", "application/xml" })
    public Response findById(@PathParam("id") String id)
    {

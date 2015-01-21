@@ -36,6 +36,7 @@ public class OrgContactEJB
    public OrgContact createCustom(OrgContact entity) {
 	   Long count = countByOrgUnit(entity.getOuIdentif(), new Date());
 	   entity.setContactIndex(Long.toString(count + 1));
+	   entity.setOuIdentif(secUtil.getCurrentOrgUnit().getIdentif());
 	   return create(entity);
    }
 

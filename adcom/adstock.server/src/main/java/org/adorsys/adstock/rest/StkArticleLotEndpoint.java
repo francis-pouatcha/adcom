@@ -47,7 +47,7 @@ public class StkArticleLotEndpoint
    }
 
    @DELETE
-   @Path("/{id:[0-9][0-9]*}")
+   @Path("/{id}")
    public Response deleteById(@PathParam("id") String id)
    {
       StkArticleLot deleted = ejb.deleteById(id);
@@ -58,7 +58,7 @@ public class StkArticleLotEndpoint
    }
 
    @PUT
-   @Path("/{id:[0-9][0-9]*}")
+   @Path("/{id}")
    @Produces({ "application/json", "application/xml" })
    @Consumes({ "application/json", "application/xml" })
    public StkArticleLot update(StkArticleLot entity)
@@ -67,7 +67,7 @@ public class StkArticleLotEndpoint
    }
 
    @GET
-   @Path("/{id:[0-9][0-9]*}")
+   @Path("/{id}")
    @Produces({ "application/json", "application/xml" })
    public Response findById(@PathParam("id") String id)
    {

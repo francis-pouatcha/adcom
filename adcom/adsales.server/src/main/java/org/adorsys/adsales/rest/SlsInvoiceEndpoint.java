@@ -47,7 +47,7 @@ public class SlsInvoiceEndpoint
    }
 
    @DELETE
-   @Path("/{id:[0-9][0-9]*}")
+   @Path("/{id}")
    public Response deleteById(@PathParam("id") String id)
    {
       SlsInvoice deleted = ejb.deleteById(id);
@@ -58,7 +58,7 @@ public class SlsInvoiceEndpoint
    }
 
    @PUT
-   @Path("/{id:[0-9][0-9]*}")
+   @Path("/{id}")
    @Produces({ "application/json", "application/xml" })
    @Consumes({ "application/json", "application/xml" })
    public SlsInvoice update(SlsInvoice entity)
@@ -67,7 +67,7 @@ public class SlsInvoiceEndpoint
    }
 
    @GET
-   @Path("/{id:[0-9][0-9]*}")
+   @Path("/{id}")
    @Produces({ "application/json", "application/xml" })
    public Response findById(@PathParam("id") String id)
    {

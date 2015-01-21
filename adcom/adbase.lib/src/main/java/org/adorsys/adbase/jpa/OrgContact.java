@@ -190,4 +190,14 @@ public class OrgContact extends AbstractTimedData {
 	protected String makeIdentif() {
 		return ouIdentif + contactIndex;
 	}
+
+	@Override
+	public String toString() {
+		return "OrgContact [ouIdentif=" + ouIdentif + ", contactIndex="
+				+ contactIndex + ", street=" + street + ", street2=" + street2
+				+ ", zipCode=" + zipCode + ", city=" + city + ", subdivision="
+				+ subdivision + ", division=" + division + ", region=" + region
+				+ ", country=" + country + ", phone=" + phone + ", fax=" + fax
+				+ ", email=" + email + ", contactPeople=" + contactPeople + "]";
+	}
 }
