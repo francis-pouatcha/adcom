@@ -116,5 +116,17 @@
     "Login_loginName_description":"Nom de Connection",
     "Login_ouIdentif_description":"Organisation",
     "Login_disableLogin_description":"Login Desactiver",
-    "Login_accountLocked_description":"Compte Bloquer"
+    "Login_accountLocked_description":"Compte Bloquer",
+    "ConnectionHistory_description.title":"Historique de connections",
+    "ConnectionHistory_loginName_description.title":"Login",
+    "ConnectionHistory_terminalName_description.title":"Nom du terminal",
+    "ConnectionHistory_workspaceId_description.title":"Id espace de travail",
+    "ConnectionHistory_partnerId_description.title":"Id du partenaire",
+    "ConnectionHistory_ipAdress_description.title":"Addresse Ip",
+    "ConnectionHistory_firstLoginDate_description.title":"Date premiere connection",
+    "ConnectionHistory_lastLoginDate_description.title":"Date de derniere connection",
+    "ConnectionHistory_counter_description.title":"Compteur",
+    "ConnectionHistory_termCdtl_description.title":"Credential du terminal",
+    "ConnectionHistory_terminalId_description.title":"Id du terminal",
+    "ConnectionHistory_opr_description.title":"Operation"
 }

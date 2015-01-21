@@ -113,5 +113,16 @@
     "Login_loginName_description":"Login Name",
     "Login_ouIdentif_description":"Organisation Unit",
     "Login_disableLogin_description":"Login disabled",
-    "Login_accountLocked_description":"Account locked"
+    "ConnectionHistory_description.title":"Connection Historys",
+    "ConnectionHistory_loginName_description.title":"Login name",
+    "ConnectionHistory_terminalName_description.title":"Terminal name",
+    "ConnectionHistory_workspaceId_description.title":"Workspace Id",
+    "ConnectionHistory_partnerId_description.title":"Partner Id",
+    "ConnectionHistory_ipAdress_description.title":"Ip Address",
+    "ConnectionHistory_firstLoginDate_description.title":"First login date",
+    "ConnectionHistory_lastLoginDate_description.title":"Last login date",
+    "ConnectionHistory_counter_description.title":"Counter",
+    "ConnectionHistory_termCdtl_description.title":"Terminal credential",
+    "ConnectionHistory_terminalId_description.title":"Terminal Id",
+    "ConnectionHistory_opr_description.title":"Operation"
 }
