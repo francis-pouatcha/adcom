@@ -2,6 +2,7 @@ package org.adorsys.adbase.rest;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -50,13 +51,11 @@ public class SecTerminalEndpoint
    @Path("/{id}")
    public Response deleteById(@PathParam("id") String id)
    {
-      SecTerminal deleted = ejb.findById(id);
+      SecTerminal deleted = ejb.deleteCustom(id);
      
       if (deleted == null)
          return Response.status(Status.NOT_FOUND).build();
 
-      deleted.setValidTo(new Date());
-      deleted = update(deleted);
       return Response.ok(detach(deleted)).build();
    }
 
@@ -187,7 +186,7 @@ public class SecTerminalEndpoint
       return result.toArray(new SingularAttribute[result.size()]);
    }
 
-   
+   private static final List<String> emptyList = Collections.emptyList();
 
    private SecTerminal detach(SecTerminal entity)
    {

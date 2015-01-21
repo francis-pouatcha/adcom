@@ -124,5 +124,9 @@
     "ConnectionHistory_counter_description.title":"Counter",
     "ConnectionHistory_termCdtl_description.title":"Terminal credential",
     "ConnectionHistory_terminalId_description.title":"Terminal Id",
-    "ConnectionHistory_opr_description.title":"Operation"
+    "ConnectionHistory_opr_description.title":"Operation",
+    "Login_accountLocked_description":"Account locked",
+    "PricingCurrRate_srcCurrISO3_description":"pricing source",
+    "PricingCurrRate_destCurrISO3_description":"pricing destination",
+    "PricingCurrRate_description":"Pricing"
 }

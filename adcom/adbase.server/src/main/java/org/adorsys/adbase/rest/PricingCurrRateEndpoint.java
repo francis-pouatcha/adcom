@@ -21,6 +21,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.adorsys.adbase.jpa.LocalitySearchInput;
+import org.adorsys.adbase.jpa.LocalitySearchResult;
 import org.adorsys.adbase.jpa.PricingCurrRate;
 import org.adorsys.adbase.jpa.PricingCurrRateSearchInput;
 import org.adorsys.adbase.jpa.PricingCurrRateSearchResult;
@@ -50,7 +52,7 @@ public class PricingCurrRateEndpoint
    @Path("/{id}")
    public Response deleteById(@PathParam("id") String id)
    {
-      PricingCurrRate deleted = ejb.deleteById(id);
+      PricingCurrRate deleted = ejb.deleteCustom(id);
       if (deleted == null)
          return Response.status(Status.NOT_FOUND).build();
 
@@ -95,6 +97,16 @@ public class PricingCurrRateEndpoint
    public Long count()
    {
       return ejb.count();
+   }
+   
+   @POST
+   @Path("/doFind")
+   @Produces({ "application/json", "application/xml" })
+   @Consumes({ "application/json", "application/xml" })
+   public PricingCurrRateSearchResult doFind(PricingCurrRateSearchInput searchInput)
+   {
+	   PricingCurrRateSearchResult searchResult = ejb.doFind(searchInput);
+      return searchResult ;
    }
 
    @POST

@@ -38,6 +38,15 @@ public class ConverterCurrRateEJB {
 		}
 		return entity;
 	}
+	
+	public ConverterCurrRate deleteCustom(String id) {
+		ConverterCurrRate entity = repository.findBy(id);
+		if (entity != null) {
+			entity.setValidTo(new Date());
+			repository.save(entity);
+		}
+		return entity;
+	}
 
 	public ConverterCurrRate update(ConverterCurrRate entity) {
 		return repository.save(attach(entity));
@@ -149,7 +158,8 @@ public class ConverterCurrRateEJB {
 		if (searchInput.getMax() > 0) {
 			createQuery.setMaxResults(searchInput.getMax());
 		}
-		List resultList2 = createQuery.getResultList();
+		@SuppressWarnings("unchecked")
+		List<ConverterCurrRate> resultList2 = createQuery.getResultList();
 
 		ConverterCurrRateSearchResult converterCurrRateSearchResult = new ConverterCurrRateSearchResult();
 		converterCurrRateSearchResult.setCount(Long.valueOf(resultList.size()));

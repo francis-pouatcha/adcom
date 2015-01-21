@@ -128,5 +128,8 @@
     "ConnectionHistory_counter_description.title":"Compteur",
     "ConnectionHistory_termCdtl_description.title":"Credential du terminal",
     "ConnectionHistory_terminalId_description.title":"Id du terminal",
-    "ConnectionHistory_opr_description.title":"Operation"
+    "ConnectionHistory_opr_description.title":"Operation",
+    "PricingCurrRate_srcCurrISO3_description":"prix source",
+    "PricingCurrRate_destCurrISO3_description":"prix destination",
+    "PricingCurrRate_description":"Prix"
 }
