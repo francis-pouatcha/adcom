@@ -62,7 +62,7 @@ public class OuWorkspaceDtoService {
 		Date time = new Date();
 		for (OuWorkspaceDTO ouWorkspaceDTO : dtos) {
 			OuWorkspace workspace = ouWorkspaceEjb.findByIdentif(ouWorkspaceDTO.getIdentif(), time);
-			ouWorkspaceEjb.assignOuWorkspace(workspace, ouWorkspaceDTO.getTargetOuIdentif(), time);
+			ouWorkspaceEjb.assignOuWorkspace(workspace, dtoHolder.getTargetOu().getIdentif(), time);
 		}
 		return true;
 	}

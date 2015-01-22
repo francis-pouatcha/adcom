@@ -131,14 +131,14 @@ public class OuWorkspaceEJB
 	   //test if the targetOu has a similiar actif workspace.
 	   boolean hasWorkspace = hasOuWorkspace(targetOuIdentif, wsId.getWsIdentif(), wsId.getOwnerOuIdentif(), time);
 	   if(hasWorkspace) {
-		   //delete this workspace
-		   deleteCustomById(workspace.getId());
+		   //delete this workspace and exit
+		  deleteCustomById(workspace.getId());
 	   }
 	   //create a new ouworkspace
 	   OuWorkspace assignedWs = new OuWorkspace();
 	   assignedWs.setOwnerOuIdentif(wsId.getOwnerOuIdentif());
 	   assignedWs.setWsIdentif(wsId.getWsIdentif());
-	   assignedWs.setTargetOuIdentif(wsId.getTargetOuIdentif());
+	   assignedWs.setTargetOuIdentif(targetOuIdentif);
 	   return create(assignedWs);
    }
    
