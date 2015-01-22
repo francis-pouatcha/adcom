@@ -131,15 +131,17 @@ public class OuWorkspaceEJB
 	   //test if the targetOu has a similiar actif workspace.
 	   boolean hasWorkspace = hasOuWorkspace(targetOuIdentif, wsId.getWsIdentif(), wsId.getOwnerOuIdentif(), time);
 	   if(hasWorkspace) {
-		   //delete this workspace and exit
-		  deleteCustomById(workspace.getId());
+		   //delete the existing workspace
+		   OuWorkspace existingOuWs = findExstngOuWorkspaceForTarg(targetOuIdentif, wsId.getWsIdentif(), wsId.getOwnerOuIdentif(), time);
+		   return deleteCustomById(existingOuWs.getId());
+	   }else {
+		   //create a new ouworkspace
+		   OuWorkspace assignedWs = new OuWorkspace();
+		   assignedWs.setOwnerOuIdentif(wsId.getOwnerOuIdentif());
+		   assignedWs.setWsIdentif(wsId.getWsIdentif());
+		   assignedWs.setTargetOuIdentif(targetOuIdentif);
+		   return create(assignedWs);
 	   }
-	   //create a new ouworkspace
-	   OuWorkspace assignedWs = new OuWorkspace();
-	   assignedWs.setOwnerOuIdentif(wsId.getOwnerOuIdentif());
-	   assignedWs.setWsIdentif(wsId.getWsIdentif());
-	   assignedWs.setTargetOuIdentif(targetOuIdentif);
-	   return create(assignedWs);
    }
    
    /**
@@ -151,11 +153,14 @@ public class OuWorkspaceEJB
 	 * @return
 	 */
    public boolean hasOuWorkspace(String targetOuIdentif,String wsIdentif,String ownerOuIdentif,Date time) {
-	    String identif = new OuWorkspaceId(ownerOuIdentif, wsIdentif, targetOuIdentif).getIdentif();
-	    OuWorkspace ouWorkspace = findByIdentif(identif, time);
+	    OuWorkspace ouWorkspace = findExstngOuWorkspaceForTarg(targetOuIdentif, wsIdentif, ownerOuIdentif, time);
 	    return ouWorkspace != null;
    }
-   
+   private OuWorkspace findExstngOuWorkspaceForTarg(String targetOuIdentif,String wsIdentif,String ownerOuIdentif,Date time) {
+	    String identif = new OuWorkspaceId(ownerOuIdentif, wsIdentif, targetOuIdentif).getIdentif();
+	    OuWorkspace ouWorkspace = findByIdentif(identif, time);
+	    return ouWorkspace;
+  }
    public List<OuWorkspace> findByTargetOuIdentif(String targetOuIdentif, Date validOn) {
 	   return repository.findByTargetOuIdentif(targetOuIdentif, validOn);
    }

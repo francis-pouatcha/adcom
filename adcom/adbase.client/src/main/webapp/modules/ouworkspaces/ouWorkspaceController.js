@@ -29,9 +29,11 @@
         };
         
         function saveWorkspace() {
-            self.ouWorkspaceDTOHolder.dtos = self.cachedDto;
-            ouWorkspaceService.assignWorkspaces(self.ouWorkspaceDTOHolder).then(function(result){
+            var copy = self.ouWorkspaceDTOHolder;
+            copy.dtos = self.cachedDto;
+            ouWorkspaceService.assignWorkspaces(copy).then(function(result){
                 self.ouWorkspaceDTOHolder = result;
+                self.cachedDto = [];
             },function(error){
                 self.error = error;
             });
@@ -39,13 +41,18 @@
         
         function store(dto) {
             if(self.cachedDto.length >= 1) {
+                var ind ;
                 angular.forEach(self.cachedDto,function(value,index){
-                if(value.identif === dto.identif) {
-                    self.cachedDto.splice(index);
+                    if(value.identif === dto.identif) {
+                        ind = index;
+                    };
+                  });
+                
+                if(ind) {
+                    self.cachedDto.splice(ind);
                 }else {
-                    self.cachedDto.push(dto);
-                };
-              });
+                    self.cachedDto.push(dto);    
+                }
             }else {
                 self.cachedDto.push(dto);
             }
