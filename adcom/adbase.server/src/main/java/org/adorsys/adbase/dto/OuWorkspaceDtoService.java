@@ -10,8 +10,10 @@ import javax.inject.Inject;
 import org.adorsys.adbase.exception.NotFoundOrNotActifEntityException;
 import org.adorsys.adbase.jpa.OrgUnit;
 import org.adorsys.adbase.jpa.OuWorkspace;
+import org.adorsys.adbase.rest.OrgUnitIdEJB;
 import org.adorsys.adbase.rest.OuWorkspaceEJB;
 import org.adorsys.adbase.security.SecurityUtil;
+import org.apache.commons.lang3.StringUtils;
 
 @Singleton
 public class OuWorkspaceDtoService {
@@ -25,6 +27,9 @@ public class OuWorkspaceDtoService {
 	@Inject
 	private SecurityUtil secUtil;
 	
+	@Inject
+	private OrgUnitIdEJB ouIdEJB;
+	
 	/**
 	 * Create a list of OuWorkspace, with a boolean indicating whether the workspace has been assigned to the targetOuIdentif.
 	 * @param targetOuIdentif
@@ -33,9 +38,13 @@ public class OuWorkspaceDtoService {
 	 */
 	public OuWorkspaceDTOHolder createDtos(String targetOuIdentif) throws NotFoundOrNotActifEntityException {
 		Date time = new Date();
-		List<OuWorkspace> findActivesOuWorkspaces = ouWorkspaceEjb.findActivesOuWorkspaces();
+		String parentId = ouIdEJB.getParentId(targetOuIdentif);
+		if(StringUtils.isBlank(parentId)) {
+			parentId = secUtil.getCurrentOrgUnit().getIdentif();
+		}
+		List<OuWorkspace> findActivParentOuWorkspaces = ouWorkspaceEjb.findActivesOuWorkspaces(parentId);
 		List<OuWorkspaceDTO> dtos = new ArrayList<OuWorkspaceDTO>();
-		for (OuWorkspace ouWorkspace : findActivesOuWorkspaces) {
+		for (OuWorkspace ouWorkspace : findActivParentOuWorkspaces) {
 			OuWorkspaceDTO dto = createDto(targetOuIdentif, ouWorkspace,time);
 			dtos.add(dto);
 		}
