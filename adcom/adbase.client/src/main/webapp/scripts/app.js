@@ -273,6 +273,12 @@ angular.module('AdBase', [
             controllerAs: 'connHstryCtrl',
             module: 'AdBase'
         })
+        .when('/ouworkspaces/:targetOuIdentif',{
+            templateUrl:'views/ouworkspaces/ouWorkspaceManager.html',
+            controller:'ouWorkspaceController',
+            controllerAs: 'ouWrkspaceCtrl',
+            module: 'AdBase'
+        })
     .otherwise({
       redirectTo: '/'
     });

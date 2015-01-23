@@ -170,12 +170,11 @@ public class OuWorkspaceEndpoint
    }
 
 
-
    @POST
-   @Path("/assignWorkspace")
+   @Path("/assignWorkspaces")
    @Consumes({ "application/json", "application/xml" })
    @Produces({ "application/json", "application/xml" })
-   public OuWorkspaceDTOHolder assignWorkspace(OuWorkspaceDTOHolder dtoHolder) throws NotFoundOrNotActifEntityException {
+   public OuWorkspaceDTOHolder assignWorkspaces(OuWorkspaceDTOHolder dtoHolder) throws NotFoundOrNotActifEntityException {
 	   dtoService.assignWorkspaces(dtoHolder);
 	   OuWorkspaceDTOHolder dtoHolder2 = dtoService.createDtos(dtoHolder.getTargetOu().getIdentif());
 	   return dtoHolder2;
