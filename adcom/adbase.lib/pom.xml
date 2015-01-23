@@ -90,6 +90,11 @@
 			<groupId>org.jboss.as</groupId>
 			<artifactId>jboss-as-security</artifactId>
 		</dependency>
+		
+      <dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>adbase.lib</finalName>

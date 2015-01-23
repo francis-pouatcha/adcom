@@ -21,7 +21,9 @@ public class OrgUnitDto {
 	private String typeName;
 	private String ctrIso3;
 	private String countryName;
+	private String parentIdentif;
 	private Date validFrom;
+	private Date validTo;
 	
 	public OrgUnitDto() {
 	}
@@ -81,7 +83,19 @@ public class OrgUnitDto {
 	public void setValidFrom(Date validFrom) {
 		this.validFrom = validFrom;
 	}
-	
+	public String getParentIdentif() {
+		return parentIdentif;
+	}
+	public void setParentIdentif(String parentIdentif) {
+		this.parentIdentif = parentIdentif;
+	}
+	public Date getValidTo() {
+		return validTo;
+	}
+	public void setValidTo(Date validTo) {
+		this.validTo = validTo;
+	}
+
 
 	public static OrgUnitDto createDto(OrgUnit orgUnit, String ctryIso3, String typeName,
 			String ctrName) {
@@ -97,13 +111,26 @@ public class OrgUnitDto {
 		dto.setValidFrom(orgUnit.getValidFrom());
 		return dto;
 	}
+	
+	public OrgUnit toOrgUnit() {
+		OrgUnit ou = new OrgUnit();
+		ou.setCtryIso3(ctrIso3);
+		ou.setFullName(fullName);
+		ou.setIdentif(identif);
+		ou.setShortName(shortName);
+		ou.setTypeIdentif(typeIdentif);
+		ou.setValidFrom(validFrom);
+		ou.setValidTo(validTo);
+		return ou;
+	}
+	
 	@Override
 	public String toString() {
-		return "OrgUnitDto [identif=" + identif + ", fullName=" + fullName
-				+ ", shortName=" + shortName + ", typeIdentif=" + typeIdentif
-				+ ", typeName=" + typeName + ", ctrIso3=" + ctrIso3
-				+ ", countryName=" + countryName + ", validFrom=" + validFrom
-				+ "]";
+		return "OrgUnitDto [id=" + id + ", identif=" + identif + ", fullName="
+				+ fullName + ", shortName=" + shortName + ", typeIdentif="
+				+ typeIdentif + ", typeName=" + typeName + ", ctrIso3="
+				+ ctrIso3 + ", countryName=" + countryName + ", parentIdentif="
+				+ parentIdentif + ", validFrom=" + validFrom + "]";
 	}
 	
 }

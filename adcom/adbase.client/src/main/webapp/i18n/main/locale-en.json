@@ -53,6 +53,7 @@
     "OrgUnit_ctryIso3_description.title":"Country",
     "OrgUnit_description.title":"Organization Unit",
     "OrgUnit_fullName_description.title":"Organization Unit Name",
+    "OrgUnit_parentIdentif_description.title":"Parent organization",
     "OrgUnit_identif_description.title":"Identifier",
     "OrgUnit_shortName_description.title":"Short Organization Unit Name",
     "OrgUnit_typeIdentif_description.title":"Organization Unit Type",

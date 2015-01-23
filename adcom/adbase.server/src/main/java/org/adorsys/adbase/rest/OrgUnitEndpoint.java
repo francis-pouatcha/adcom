@@ -29,6 +29,7 @@ import org.adorsys.adbase.jpa.OrgUnit;
 import org.adorsys.adbase.jpa.OrgUnitSearchInput;
 import org.adorsys.adbase.jpa.OrgUnitSearchResult;
 import org.adorsys.adbase.jpa.OrgUnit_;
+import org.adorsys.adbase.security.SecurityUtil;
 
 /**
  * 
@@ -45,14 +46,27 @@ public class OrgUnitEndpoint
    @Inject
    private OrgUnitDtoService dtoService;
    
+   @Inject
+   private SecurityUtil secUtil;
+   
    @POST
    @Consumes({ "application/json", "application/xml" })
    @Produces({ "application/json", "application/xml" })
    public OrgUnit create(OrgUnit entity)
    {
-	   return detach(ejb.createCustom(entity));
+	   return detach(ejb.createCustom(entity,""));
    }
 
+   @POST
+   @Path("/createFromDto")
+   @Consumes({ "application/json", "application/xml" })
+   @Produces({ "application/json", "application/xml" })
+   public OrgUnit createFromDto(OrgUnitDto dto)
+   {
+	   OrgUnit entity = dto.toOrgUnit();
+	   return detach(ejb.createCustom(entity,dto.getParentIdentif()));
+   }
+   
    @DELETE
    @Path("/{id}")
    public Response deleteById(@PathParam("id") String id)
@@ -200,7 +214,8 @@ public class OrgUnitEndpoint
    @Path("/findActifsFromNow")
    @Produces({ "application/json", "application/xml" })
    public List<OrgUnit> findActifsFromNow() throws NotFoundOrNotActifEntityException{
-	   return ejb.findActifsFromNow();
+	   
+	   return ejb.findActifsByIdentif(secUtil.getCurrentOrgUnit().getIdentif(), new Date());
    }
    
    @SuppressWarnings("unchecked")

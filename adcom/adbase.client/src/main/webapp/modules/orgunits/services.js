@@ -15,10 +15,10 @@ angular.module('AdBase')
             });
             return deferred.promise;
     	};
-
-        service.create = function(orgUnit){
+        
+        service.createFromDto = function(orgUnit){
             var deferred = $q.defer();
-            orgUnitsResource.create(orgUnit).success(function(data,status,headers,config){
+            orgUnitsResource.createFromDto(orgUnit).success(function(data,status,headers,config){
                 deferred.resolve(data);
             }).error(function(data,status,headers,config){
                deferred.reject("An error occured when creating item"); 
