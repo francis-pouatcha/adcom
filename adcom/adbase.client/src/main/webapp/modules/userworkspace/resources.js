@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('AdBase').factory('workspaceResource',['$http', function($http){
+angular.module('AdBase').factory('userWorkspaceResource',['$http', function($http){
     var service = {};
-    var urlBase = '/adbase.server/rest/workspaces',
+    var urlBase = '/adbase.server/rest/userworkspaces',
     searchInput = {
         entity:{},
         start:0,
@@ -39,6 +39,14 @@ angular.module('AdBase').factory('workspaceResource',['$http', function($http){
         return $http.get(urlBase+'/'+entityId);
     };
 
+    service.loadUserWorkspaces = function(orgUnit,loginName){
+        return $http.get(urlBase+'/loadUserWorkspacesDto/'+orgUnit+'/'+loginName);
+    };
+
+    service.saveUserWorkspace = function(loginWorkspaceDtos){
+        return $http.post(urlBase+'/saveUserWorkspace',loginWorkspaceDtos);
+    };
+
     service.deleteById = function(entityId){
         return $http.delete(urlBase+'/'+entityId);
     };
@@ -54,18 +62,7 @@ angular.module('AdBase').factory('workspaceResource',['$http', function($http){
     service.getEntity = function(){
         return entity ;
     };
-    service.processPasswordChange = function(data){
-        return $http.post(urlBase+'/processPasswordChange',data);
-    };
-    service.changeUserPassword = function(data){
-        return $http.post(urlBase+'/changeUserPassword',data);
-    };
-    service.changeMyPassword = function(data){
-        return $http.post(urlBase+'/changeMyPassword',data);
-    };
-    service.findManagedLogins = function(searchInput){
-        return $http.post(urlBase+'/findManagedLogins',searchInput);
-    };
+
 
     function getSearchInput(){
         return searchInput ;

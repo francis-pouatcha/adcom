@@ -21,6 +21,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.adorsys.adbase.dto.LoginWorkspaceDto;
 import org.adorsys.adbase.jpa.UserWorkspace;
 import org.adorsys.adbase.jpa.UserWorkspaceSearchInput;
 import org.adorsys.adbase.jpa.UserWorkspaceSearchResult;
@@ -37,6 +38,9 @@ public class UserWorkspaceEndpoint
 
    @Inject
    private UserWorkspaceEJB ejb;
+   
+   @Inject
+   private LoginWsDtoService loginWsDtoService;
 
    @POST
    @Consumes({ "application/json", "application/xml" })
@@ -71,6 +75,22 @@ public class UserWorkspaceEndpoint
    @Produces({ "application/json", "application/xml" })
    public List<UserWorkspace> findUserWorkspaces(){
 	   return ejb.findUserWorkspaces();
+   }
+   
+   @GET
+   @Path("/loadUserWorkspacesDto/{orgUnit}/{loginName}")
+   @Produces({ "application/json", "application/xml" })
+   public List<LoginWorkspaceDto> loadUserWorkspaces(@PathParam("orgUnit") String orgUnit, @PathParam("loginName") String loginName){
+	   return loginWsDtoService.load(orgUnit,loginName);
+   }
+   
+   @POST
+   @Consumes({ "application/json", "application/xml" })
+   @Produces({ "application/json", "application/xml" })
+   @Path("/saveUserWorkspace")
+   public List<LoginWorkspaceDto> saveUserWorkspace(List<LoginWorkspaceDto> loginWorkspaceDtos)
+   {
+      return loginWsDtoService.saveUserWorkspace(loginWorkspaceDtos);
    }
 
    @GET

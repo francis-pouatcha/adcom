@@ -25,6 +25,16 @@ public class UserWorkspace extends AbstractTimedData {
 	@NotNull
 	private String ouWsIdentif;
 
+	public UserWorkspace(String loginName, String ouWsIdentif) {
+		super();
+		this.loginName = loginName;
+		this.ouWsIdentif = ouWsIdentif;
+	}
+	
+	public UserWorkspace() {
+		super();
+	}
+
 	public String getLoginName() {
 		return this.loginName;
 	}

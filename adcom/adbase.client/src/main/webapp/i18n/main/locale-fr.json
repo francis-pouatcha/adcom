@@ -133,6 +133,7 @@
     "PricingCurrRate_destCurrISO3_description":"prix destination",
     "PricingCurrRate_description":"Prix",
     "OuWorkspace_ownerOuIdentif_description":"Org Unit prorietaire",
+    "OuWorkspace_orgUnit_description":"Organisation",
     "Workspace_roleIdentif_description":"Role",
     "Workspace_ouTypes_description":"Org Unit Type",
     "Workspace_clientApp_description":"Client App",
