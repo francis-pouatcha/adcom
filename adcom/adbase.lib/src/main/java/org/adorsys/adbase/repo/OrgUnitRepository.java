@@ -17,4 +17,7 @@ public interface OrgUnitRepository extends EntityRepository<OrgUnit, String>
 
 	@Query("SELECT e FROM OrgUnit AS e WHERE e.validFrom <= ?1 AND (e.validTo IS NULL OR e.validTo > ?1)")
 	public List<OrgUnit>findActifs(Date validOn);
+
+	@Query("SELECT e FROM OrgUnit AS e WHERE e.identif = ?1 AND e.validFrom <= ?2 AND (e.validTo IS NULL OR e.validTo > ?2)")
+	public QueryResult<OrgUnit> findTreeByIdentif(String identif, Date validOn);
 }

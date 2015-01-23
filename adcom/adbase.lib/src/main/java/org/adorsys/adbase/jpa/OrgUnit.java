@@ -27,6 +27,10 @@ public class OrgUnit extends AbstractTimedData {
 	private String typeIdentif;
 
 	@Column
+	@Description("OrgUnit_parentIdentif_description")
+	private String parentIdentif;
+	
+	@Column
 	@Description("OrgUnit_fullName_description")
 	@NotNull
 	private String fullName;
@@ -66,6 +70,14 @@ public class OrgUnit extends AbstractTimedData {
 
 	public void setShortName(final String shortName) {
 		this.shortName = shortName;
+	}
+
+	public String getParentIdentif() {
+		return parentIdentif;
+	}
+
+	public void setParentIdentif(String parentIdentif) {
+		this.parentIdentif = parentIdentif;
 	}
 
 	@Override

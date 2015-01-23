@@ -204,4 +204,18 @@ public class OrgUnitEJB
    public List<OrgUnit> findActifsFromNow(){
 	   return findActifs(new Date());
    }
+
+   public List<OrgUnit> findTreeByIdentif(String identif, Date validFrom){
+
+	   validFrom = validFrom==null?new Date():validFrom;
+	   
+	   StringBuilder qBuilder = new StringBuilder("SELECT e FROM OrgUnit AS e WHERE e.validFrom <= :from AND (e.validTo IS NULL OR e.validTo > :from)  AND LOWER(e.typeIdentif) LIKE (LOWER(:typeIdentif))");
+	   TypedQuery<OrgUnit> query = em.createQuery(qBuilder.toString(), OrgUnit.class);
+	   query.setParameter("from", validFrom);
+	   query.setParameter("typeIdentif", "%"+identif);
+	   
+	   query.setMaxResults(100);
+	   return query.getResultList();
+   }
+   
 }
