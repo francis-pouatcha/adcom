@@ -16,4 +16,7 @@ public interface UserWorkspaceRepository extends EntityRepository<UserWorkspace,
 
 	@Query("SELECT e FROM UserWorkspace AS e WHERE e.loginName = ?1 AND e.validFrom <= ?2 AND (e.validTo IS NULL OR e.validTo > ?2)")
 	public QueryResult<UserWorkspace> findByLoginName(String loginName, Date now);
+	
+	@Query("SELECT e FROM UserWorkspace AS e WHERE e.loginName = ?1 AND e.ouWsIdentif = ?2 AND e.validFrom <= ?3 AND (e.validTo IS NULL OR e.validTo > ?3)")
+	public QueryResult<UserWorkspace> findByLoginNameAndOuWsIdentif(String loginName, String ouWsIdentif, Date now);
 }

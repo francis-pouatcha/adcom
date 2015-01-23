@@ -11,7 +11,7 @@
         self.error = "";
         self.countrys = [];
         self.outypes = [];
-        
+        self.actifOrgUnits = [];
         init();
         
         function init(){
@@ -19,7 +19,7 @@
         }
         function create(){
 
-            orgUnitsService.create(self.orgUnit).then(function(result){
+            orgUnitsService.createFromDto(self.orgUnit).then(function(result){
 
                 $location.path('/orgunits/show/'+result.identif);
             },function(error){
@@ -34,6 +34,11 @@
             });
             ouTypeService.findActifsFromNow().then(function(data){
                 self.outypes = data.resultList;
+            });
+            orgUnitsService.findActifsFromNow().then(function(actifOrgUnits){
+                self.actifOrgUnits = actifOrgUnits;
+            },function(error){
+                self.error = error;
             });
         }
     };

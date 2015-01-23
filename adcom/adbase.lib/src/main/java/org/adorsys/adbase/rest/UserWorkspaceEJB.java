@@ -168,4 +168,9 @@ public class UserWorkspaceEJB {
 		if(workspace==null) return null;
 		return workspace.getClientApp();
 	}
+	
+	public List<UserWorkspace> findAssignedUserWorkspace(String loginName, String ouWsIdentif){
+		return repository.findByLoginNameAndOuWsIdentif(loginName, ouWsIdentif, new Date()).getResultList();
+	}
+	
 }

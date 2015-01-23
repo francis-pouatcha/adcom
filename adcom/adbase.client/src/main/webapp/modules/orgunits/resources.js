@@ -14,6 +14,9 @@ angular.module('AdBase').factory('orgUnitsResource',['$http', function($http){
     service.create = function(entity){
         return $http.post(urlBase,entity);
     };
+    service.createFromDto = function(entity){
+        return $http.post(urlBase+'/createFromDto',entity);
+    };
 
     service.update = function(entity){
         return $http.put(urlBase+'/'+entity.id,entity);
@@ -70,7 +73,7 @@ angular.module('AdBase').factory('orgUnitsResource',['$http', function($http){
     
     
     service.findActifsFromNow = function() {
-        return $http.get(urlBase+'/findActifsFromNow/');
+        return $http.get(urlBase+'/findActifsFromNow');
     };
     return service;
     

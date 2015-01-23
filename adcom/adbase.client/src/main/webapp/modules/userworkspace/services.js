@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('AdBase')
-.factory('workspaceService',
-    ['workspaceResource','$cookieStore','sessionManager','$q',
-    function (workspaceResource,$cookieStore,sessionManager,$q) {
+.factory('userWorkspaceService',
+    ['userWorkspaceResource','$cookieStore','sessionManager','$q',
+    function (userWorkspaceResource,$cookieStore,sessionManager,$q) {
         var service = {};
 
         service.loadLogins = function(){
             var deferred = $q.defer();
-        	workspaceResource.listAll(workspaceResource.getSearchInput.start,workspaceResource.getSearchInput.max)
+        	userWorkspaceResource.listAll(userWorkspaceResource.getSearchInput.start,userWorkspaceResource.getSearchInput.max)
     			.success(function(data, status, headers, config){
                     deferred.resolve(data);
     			}).error(function(data, status, headers, config){
@@ -19,7 +19,7 @@ angular.module('AdBase')
 
         service.findLogins = function(searchInput){
             var deferred = $q.defer();
-            workspaceResource.findByLike(searchInput)
+            userWorkspaceResource.findByLike(searchInput)
                 .success(function(data, status, headers, config){
                     deferred.resolve(data);
                 }).error(function(data, status, headers, config){
@@ -30,7 +30,7 @@ angular.module('AdBase')
 
         service.create = function(entity){
             var deferred = $q.defer();
-            workspaceResource.create(entity).success(function(data){
+            userWorkspaceResource.create(entity).success(function(data){
                 deferred.resolve(data);
             }).error(function(error){
                 deferred.reject("Can not create, be sure that the login name is unique!")
@@ -40,7 +40,7 @@ angular.module('AdBase')
 
         service.update = function(entity){
             var deferred = $q.defer();
-            workspaceResource.update(entity).success(function(data){
+            userWorkspaceResource.update(entity).success(function(data){
                 deferred.resolve(data);
             }).error(function(){
                 deferred.reject("Can not update")
@@ -52,7 +52,7 @@ angular.module('AdBase')
 
             var deferred = $q.defer();
 
-            workspaceResource.findById(identif).success(function(data){
+            userWorkspaceResource.findById(identif).success(function(data){
 
                 deferred.resolve(data);
             }).error(function(data){
@@ -61,7 +61,27 @@ angular.module('AdBase')
             return deferred.promise;
         };
 
+        service.loadUserWorkspaces = function (orgUnit,loginName){
+            var deferred = $q.defer();
+            userWorkspaceResource.loadUserWorkspaces(orgUnit,loginName).success(function(data){
 
+                deferred.resolve(data);
+            }).error(function(data){
+                deferred.reject("entity do not exist!")
+            });
+            return deferred.promise;
+        };
+
+        service.saveUserWorkspace = function (loginWorkspaceDtos){
+            var deferred = $q.defer();
+            userWorkspaceResource.saveUserWorkspace(loginWorkspaceDtos).success(function(data){
+
+                deferred.resolve(data);
+            }).error(function(data){
+                deferred.reject("entity do not exist!")
+            });
+            return deferred.promise;
+        };
 
 
         return service;

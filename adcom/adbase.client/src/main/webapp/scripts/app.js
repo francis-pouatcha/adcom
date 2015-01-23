@@ -254,10 +254,10 @@ angular.module('AdBase', [
             controllerAs: 'secTermRegistCtrl',
             module: 'AdBase'
         })
-        .when('/workspace/:loginName',{
-            templateUrl:'views/workspace/workspace.html',
-            controller:'workspaceController',
-            controllerAs: 'workspaceCtrl',
+        .when('/userworkspace/:ouIdentif/:loginName',{
+            templateUrl:'views/userworkspace/workspace.html',
+            controller:'userWorkspaceController',
+            controllerAs: 'userWorkspaceCtrl',
             module: 'AdBase'
         })
 
