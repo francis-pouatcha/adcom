@@ -16,7 +16,7 @@ public class PrcmtDlvryItemSearchResult
    /*
     * The result list.
     */
-   private List<PrcmtDlvryItem> resultList;
+   private List<PrcmtDlvryItemEvtData> resultList;
 
    /*
     * The original search input object. For stateless clients.
@@ -28,7 +28,7 @@ public class PrcmtDlvryItemSearchResult
       super();
    }
 
-   public PrcmtDlvryItemSearchResult(Long count, List<PrcmtDlvryItem> resultList,
+   public PrcmtDlvryItemSearchResult(Long count, List<PrcmtDlvryItemEvtData> resultList,
          PrcmtDlvryItemSearchInput searchInput)
    {
       super();
@@ -42,7 +42,7 @@ public class PrcmtDlvryItemSearchResult
       return count;
    }
 
-   public List<PrcmtDlvryItem> getResultList()
+   public List<PrcmtDlvryItemEvtData> getResultList()
    {
       return resultList;
    }
@@ -57,7 +57,7 @@ public class PrcmtDlvryItemSearchResult
       this.count = count;
    }
 
-   public void setResultList(List<PrcmtDlvryItem> resultList)
+   public void setResultList(List<PrcmtDlvryItemEvtData> resultList)
    {
       this.resultList = resultList;
    }

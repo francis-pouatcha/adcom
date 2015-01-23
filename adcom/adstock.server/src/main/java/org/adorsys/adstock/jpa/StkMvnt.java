@@ -47,22 +47,36 @@ public class StkMvnt extends AbstractMvmtData {
 
 	@Column
 	@Description("StkMvnt_mvntType_description")
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
 	@NotNull
 	private StkMvtType mvntType;
 
 	@Column
 	@Description("StkMvnt_mvntOrigin_description")
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
 	@NotNull
 	private StkMvtTerminal mvntOrigin;
 
 	@Column
 	@Description("StkMvnt_mvntDest_description")
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
 	@NotNull
 	private StkMvtTerminal mvntDest;
 
+	// The main originating process
+	@Column
+	@Description("StkMvnt_prcssType_description")
+	@NotNull
+	private String prcssType;
+
+	// The identifier of the main originating process.
+	@Column
+	@Description("StkMvnt_prcssNbr_description")
+	@NotNull
+	private String prcssNbr;
+
+	// Doc numbers will be a string separated list of doc types and nbrs.
+	// like: INVOICE:XXX,PROX_ORDER:YYY,INVENTORY:ZZZ,CASH_RECEIPT:CCC
 	@Column
 	@Description("StkMvnt_origDocNbrs_description")
 	private String origDocNbrs;
@@ -138,4 +152,21 @@ public class StkMvnt extends AbstractMvmtData {
 	public void setOrigDocNbrs(final String origDocNbrs) {
 		this.origDocNbrs = origDocNbrs;
 	}
+
+	public String getPrcssType() {
+		return prcssType;
+	}
+
+	public void setPrcssType(String prcssType) {
+		this.prcssType = prcssType;
+	}
+
+	public String getPrcssNbr() {
+		return prcssNbr;
+	}
+
+	public void setPrcssNbr(String prcssNbr) {
+		this.prcssNbr = prcssNbr;
+	}
+	
 }

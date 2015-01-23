@@ -16,7 +16,7 @@ public class PrcmtDeliverySearchResult
    /*
     * The result list.
     */
-   private List<PrcmtDelivery> resultList;
+   private List<PrcmtDeliveryEvtData> resultList;
 
    /*
     * The original search input object. For stateless clients.
@@ -28,7 +28,7 @@ public class PrcmtDeliverySearchResult
       super();
    }
 
-   public PrcmtDeliverySearchResult(Long count, List<PrcmtDelivery> resultList,
+   public PrcmtDeliverySearchResult(Long count, List<PrcmtDeliveryEvtData> resultList,
          PrcmtDeliverySearchInput searchInput)
    {
       super();
@@ -42,7 +42,7 @@ public class PrcmtDeliverySearchResult
       return count;
    }
 
-   public List<PrcmtDelivery> getResultList()
+   public List<PrcmtDeliveryEvtData> getResultList()
    {
       return resultList;
    }
@@ -57,7 +57,7 @@ public class PrcmtDeliverySearchResult
       this.count = count;
    }
 
-   public void setResultList(List<PrcmtDelivery> resultList)
+   public void setResultList(List<PrcmtDeliveryEvtData> resultList)
    {
       this.resultList = resultList;
    }

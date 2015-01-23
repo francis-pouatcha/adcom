@@ -21,7 +21,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.adorsys.adprocmt.jpa.PrcmtProcOrder;
+import org.adorsys.adprocmt.jpa.PrcmtProcOrderEvtData;
 import org.adorsys.adprocmt.jpa.PrcmtProcOrderSearchInput;
 import org.adorsys.adprocmt.jpa.PrcmtProcOrderSearchResult;
 import org.adorsys.adprocmt.jpa.PrcmtProcOrder_;
@@ -41,7 +41,7 @@ public class PrcmtProcOrderEndpoint
    @POST
    @Consumes({ "application/json", "application/xml" })
    @Produces({ "application/json", "application/xml" })
-   public PrcmtProcOrder create(PrcmtProcOrder entity)
+   public PrcmtProcOrderEvtData create(PrcmtProcOrderEvtData entity)
    {
       return detach(ejb.create(entity));
    }
@@ -50,7 +50,7 @@ public class PrcmtProcOrderEndpoint
    @Path("/{id}")
    public Response deleteById(@PathParam("id") String id)
    {
-      PrcmtProcOrder deleted = ejb.deleteById(id);
+      PrcmtProcOrderEvtData deleted = ejb.deleteById(id);
       if (deleted == null)
          return Response.status(Status.NOT_FOUND).build();
 
@@ -61,7 +61,7 @@ public class PrcmtProcOrderEndpoint
    @Path("/{id}")
    @Produces({ "application/json", "application/xml" })
    @Consumes({ "application/json", "application/xml" })
-   public PrcmtProcOrder update(PrcmtProcOrder entity)
+   public PrcmtProcOrderEvtData update(PrcmtProcOrderEvtData entity)
    {
       return detach(ejb.update(entity));
    }
@@ -71,7 +71,7 @@ public class PrcmtProcOrderEndpoint
    @Produces({ "application/json", "application/xml" })
    public Response findById(@PathParam("id") String id)
    {
-      PrcmtProcOrder found = ejb.findById(id);
+      PrcmtProcOrderEvtData found = ejb.findById(id);
       if (found == null)
          return Response.status(Status.NOT_FOUND).build();
       return Response.ok(detach(found)).build();
@@ -82,7 +82,7 @@ public class PrcmtProcOrderEndpoint
    public PrcmtProcOrderSearchResult listAll(@QueryParam("start") int start,
          @QueryParam("max") int max)
    {
-      List<PrcmtProcOrder> resultList = ejb.listAll(start, max);
+      List<PrcmtProcOrderEvtData> resultList = ejb.listAll(start, max);
       PrcmtProcOrderSearchInput searchInput = new PrcmtProcOrderSearchInput();
       searchInput.setStart(start);
       searchInput.setMax(max);
@@ -103,9 +103,9 @@ public class PrcmtProcOrderEndpoint
    @Consumes({ "application/json", "application/xml" })
    public PrcmtProcOrderSearchResult findBy(PrcmtProcOrderSearchInput searchInput)
    {
-      SingularAttribute<PrcmtProcOrder, ?>[] attributes = readSeachAttributes(searchInput);
+      SingularAttribute<PrcmtProcOrderEvtData, ?>[] attributes = readSeachAttributes(searchInput);
       Long count = ejb.countBy(searchInput.getEntity(), attributes);
-      List<PrcmtProcOrder> resultList = ejb.findBy(searchInput.getEntity(),
+      List<PrcmtProcOrderEvtData> resultList = ejb.findBy(searchInput.getEntity(),
             searchInput.getStart(), searchInput.getMax(), attributes);
       return new PrcmtProcOrderSearchResult(count, detach(resultList),
             detach(searchInput));
@@ -116,7 +116,7 @@ public class PrcmtProcOrderEndpoint
    @Consumes({ "application/json", "application/xml" })
    public Long countBy(PrcmtProcOrderSearchInput searchInput)
    {
-      SingularAttribute<PrcmtProcOrder, ?>[] attributes = readSeachAttributes(searchInput);
+      SingularAttribute<PrcmtProcOrderEvtData, ?>[] attributes = readSeachAttributes(searchInput);
       return ejb.countBy(searchInput.getEntity(), attributes);
    }
 
@@ -126,9 +126,9 @@ public class PrcmtProcOrderEndpoint
    @Consumes({ "application/json", "application/xml" })
    public PrcmtProcOrderSearchResult findByLike(PrcmtProcOrderSearchInput searchInput)
    {
-      SingularAttribute<PrcmtProcOrder, ?>[] attributes = readSeachAttributes(searchInput);
+      SingularAttribute<PrcmtProcOrderEvtData, ?>[] attributes = readSeachAttributes(searchInput);
       Long countLike = ejb.countByLike(searchInput.getEntity(), attributes);
-      List<PrcmtProcOrder> resultList = ejb.findByLike(searchInput.getEntity(),
+      List<PrcmtProcOrderEvtData> resultList = ejb.findByLike(searchInput.getEntity(),
             searchInput.getStart(), searchInput.getMax(), attributes);
       return new PrcmtProcOrderSearchResult(countLike, detach(resultList),
             detach(searchInput));
@@ -139,16 +139,16 @@ public class PrcmtProcOrderEndpoint
    @Consumes({ "application/json", "application/xml" })
    public Long countByLike(PrcmtProcOrderSearchInput searchInput)
    {
-      SingularAttribute<PrcmtProcOrder, ?>[] attributes = readSeachAttributes(searchInput);
+      SingularAttribute<PrcmtProcOrderEvtData, ?>[] attributes = readSeachAttributes(searchInput);
       return ejb.countByLike(searchInput.getEntity(), attributes);
    }
 
    @SuppressWarnings("unchecked")
-   private SingularAttribute<PrcmtProcOrder, ?>[] readSeachAttributes(
+   private SingularAttribute<PrcmtProcOrderEvtData, ?>[] readSeachAttributes(
          PrcmtProcOrderSearchInput searchInput)
    {
       List<String> fieldNames = searchInput.getFieldNames();
-      List<SingularAttribute<PrcmtProcOrder, ?>> result = new ArrayList<SingularAttribute<PrcmtProcOrder, ?>>();
+      List<SingularAttribute<PrcmtProcOrderEvtData, ?>> result = new ArrayList<SingularAttribute<PrcmtProcOrderEvtData, ?>>();
       for (String fieldName : fieldNames)
       {
          Field[] fields = PrcmtProcOrder_.class.getFields();
@@ -158,7 +158,7 @@ public class PrcmtProcOrderEndpoint
             {
                try
                {
-                  result.add((SingularAttribute<PrcmtProcOrder, ?>) field.get(null));
+                  result.add((SingularAttribute<PrcmtProcOrderEvtData, ?>) field.get(null));
                }
                catch (IllegalArgumentException e)
                {
@@ -176,7 +176,7 @@ public class PrcmtProcOrderEndpoint
 
    
 
-   private PrcmtProcOrder detach(PrcmtProcOrder entity)
+   private PrcmtProcOrderEvtData detach(PrcmtProcOrderEvtData entity)
    {
       if (entity == null)
          return null;
@@ -184,12 +184,12 @@ public class PrcmtProcOrderEndpoint
       return entity;
    }
 
-   private List<PrcmtProcOrder> detach(List<PrcmtProcOrder> list)
+   private List<PrcmtProcOrderEvtData> detach(List<PrcmtProcOrderEvtData> list)
    {
       if (list == null)
          return list;
-      List<PrcmtProcOrder> result = new ArrayList<PrcmtProcOrder>();
-      for (PrcmtProcOrder entity : list)
+      List<PrcmtProcOrderEvtData> result = new ArrayList<PrcmtProcOrderEvtData>();
+      for (PrcmtProcOrderEvtData entity : list)
       {
          result.add(detach(entity));
       }

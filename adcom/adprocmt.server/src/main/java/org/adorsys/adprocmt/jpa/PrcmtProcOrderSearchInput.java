@@ -19,7 +19,7 @@ public class PrcmtProcOrderSearchInput
    /**
     * The entity holding search inputs.
     */
-   private PrcmtProcOrder entity;
+   private PrcmtProcOrderEvtData entity;
 
    /**
     * The start cursor
@@ -36,12 +36,12 @@ public class PrcmtProcOrderSearchInput
     */
    private List<String> fieldNames = new ArrayList<String>();
 
-   public PrcmtProcOrder getEntity()
+   public PrcmtProcOrderEvtData getEntity()
    {
       return entity;
    }
 
-   public void setEntity(PrcmtProcOrder entity)
+   public void setEntity(PrcmtProcOrderEvtData entity)
    {
       this.entity = entity;
    }

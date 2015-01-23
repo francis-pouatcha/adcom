@@ -22,6 +22,7 @@ public class CatalArticle extends AbstractTimedData {
 
 	@Column
 	@Description("CatalArticle_pic_description")
+	@NotNull
 	private String pic;
 
 	@Column
@@ -60,6 +61,16 @@ public class CatalArticle extends AbstractTimedData {
 	@Description("CatalArticle_vatRate_description")
 	private BigDecimal vatRate;
 
+	@Column
+	@Description("CatalArticle_pic_description")
+	@NotNull
+	private String lotMgtScheme = "FiFo";
+
+	@Column
+	@Description("CatalArticle_manageLot_description")
+	@NotNull
+	private Boolean mngByLot = Boolean.TRUE;
+	
 	public String getArticleName() {
 		return this.articleName;
 	}
@@ -123,9 +134,50 @@ public class CatalArticle extends AbstractTimedData {
 	public void setVatRate(final BigDecimal vatRate) {
 		this.vatRate = vatRate;
 	}
+	
+	public BigDecimal getMaxDisctRate() {
+		return maxDisctRate;
+	}
+
+	public void setMaxDisctRate(BigDecimal maxDisctRate) {
+		this.maxDisctRate = maxDisctRate;
+	}
+
+	public BigDecimal getMaxStockQty() {
+		return maxStockQty;
+	}
+
+	public void setMaxStockQty(BigDecimal maxStockQty) {
+		this.maxStockQty = maxStockQty;
+	}
+
+	public BigDecimal getMinStockQty() {
+		return minStockQty;
+	}
+
+	public void setMinStockQty(BigDecimal minStockQty) {
+		this.minStockQty = minStockQty;
+	}
+
+	public String getLotMgtScheme() {
+		return lotMgtScheme;
+	}
+
+	public void setLotMgtScheme(String lotMgtScheme) {
+		this.lotMgtScheme = lotMgtScheme;
+	}
 
 	@Override
 	protected String makeIdentif() {
 		return pic;
 	}
+
+	public Boolean getMngByLot() {
+		return mngByLot;
+	}
+
+	public void setMngByLot(Boolean mngByLot) {
+		this.mngByLot = mngByLot;
+	}
+	
 }

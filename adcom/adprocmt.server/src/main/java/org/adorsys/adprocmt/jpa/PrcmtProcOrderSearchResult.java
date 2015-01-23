@@ -16,7 +16,7 @@ public class PrcmtProcOrderSearchResult
    /*
     * The result list.
     */
-   private List<PrcmtProcOrder> resultList;
+   private List<PrcmtProcOrderEvtData> resultList;
 
    /*
     * The original search input object. For stateless clients.
@@ -28,7 +28,7 @@ public class PrcmtProcOrderSearchResult
       super();
    }
 
-   public PrcmtProcOrderSearchResult(Long count, List<PrcmtProcOrder> resultList,
+   public PrcmtProcOrderSearchResult(Long count, List<PrcmtProcOrderEvtData> resultList,
          PrcmtProcOrderSearchInput searchInput)
    {
       super();
@@ -42,7 +42,7 @@ public class PrcmtProcOrderSearchResult
       return count;
    }
 
-   public List<PrcmtProcOrder> getResultList()
+   public List<PrcmtProcOrderEvtData> getResultList()
    {
       return resultList;
    }
@@ -57,7 +57,7 @@ public class PrcmtProcOrderSearchResult
       this.count = count;
    }
 
-   public void setResultList(List<PrcmtProcOrder> resultList)
+   public void setResultList(List<PrcmtProcOrderEvtData> resultList)
    {
       this.resultList = resultList;
    }

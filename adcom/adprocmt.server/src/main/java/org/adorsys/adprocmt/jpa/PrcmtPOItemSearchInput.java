@@ -19,7 +19,7 @@ public class PrcmtPOItemSearchInput
    /**
     * The entity holding search inputs.
     */
-   private PrcmtPOItem entity;
+   private PrcmtPOItemEvtData entity;
 
    /**
     * The start cursor
@@ -36,12 +36,12 @@ public class PrcmtPOItemSearchInput
     */
    private List<String> fieldNames = new ArrayList<String>();
 
-   public PrcmtPOItem getEntity()
+   public PrcmtPOItemEvtData getEntity()
    {
       return entity;
    }
 
-   public void setEntity(PrcmtPOItem entity)
+   public void setEntity(PrcmtPOItemEvtData entity)
    {
       this.entity = entity;
    }

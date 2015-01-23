@@ -32,6 +32,8 @@
     <module>adterm.server</module>
     <module>adcom.all</module>
     <module>adcom.configuration</module>
+    <module>adstock.lib</module>
+    <module>adprocmt.lib</module>
   </modules>
   <scm>
     <connection>scm:git:https://github.com/francis-pouatcha/adcom.git</connection>
