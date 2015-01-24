@@ -21,7 +21,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.adorsys.adprocmt.jpa.PrcmtDlvryItemEvtData;
+import org.adorsys.adprocmt.jpa.PrcmtDlvryItem;
 import org.adorsys.adprocmt.jpa.PrcmtDlvryItemSearchInput;
 import org.adorsys.adprocmt.jpa.PrcmtDlvryItemSearchResult;
 import org.adorsys.adprocmt.jpa.PrcmtDlvryItem_;
@@ -41,7 +41,7 @@ public class PrcmtDlvryItemEndpoint
    @POST
    @Consumes({ "application/json", "application/xml" })
    @Produces({ "application/json", "application/xml" })
-   public PrcmtDlvryItemEvtData create(PrcmtDlvryItemEvtData entity)
+   public PrcmtDlvryItem create(PrcmtDlvryItem entity)
    {
       return detach(ejb.create(entity));
    }
@@ -50,7 +50,7 @@ public class PrcmtDlvryItemEndpoint
    @Path("/{id}")
    public Response deleteById(@PathParam("id") String id)
    {
-      PrcmtDlvryItemEvtData deleted = ejb.deleteById(id);
+      PrcmtDlvryItem deleted = ejb.deleteById(id);
       if (deleted == null)
          return Response.status(Status.NOT_FOUND).build();
 
@@ -61,7 +61,7 @@ public class PrcmtDlvryItemEndpoint
    @Path("/{id}")
    @Produces({ "application/json", "application/xml" })
    @Consumes({ "application/json", "application/xml" })
-   public PrcmtDlvryItemEvtData update(PrcmtDlvryItemEvtData entity)
+   public PrcmtDlvryItem update(PrcmtDlvryItem entity)
    {
       return detach(ejb.update(entity));
    }
@@ -71,7 +71,7 @@ public class PrcmtDlvryItemEndpoint
    @Produces({ "application/json", "application/xml" })
    public Response findById(@PathParam("id") String id)
    {
-      PrcmtDlvryItemEvtData found = ejb.findById(id);
+      PrcmtDlvryItem found = ejb.findById(id);
       if (found == null)
          return Response.status(Status.NOT_FOUND).build();
       return Response.ok(detach(found)).build();
@@ -82,7 +82,7 @@ public class PrcmtDlvryItemEndpoint
    public PrcmtDlvryItemSearchResult listAll(@QueryParam("start") int start,
          @QueryParam("max") int max)
    {
-      List<PrcmtDlvryItemEvtData> resultList = ejb.listAll(start, max);
+      List<PrcmtDlvryItem> resultList = ejb.listAll(start, max);
       PrcmtDlvryItemSearchInput searchInput = new PrcmtDlvryItemSearchInput();
       searchInput.setStart(start);
       searchInput.setMax(max);
@@ -103,9 +103,9 @@ public class PrcmtDlvryItemEndpoint
    @Consumes({ "application/json", "application/xml" })
    public PrcmtDlvryItemSearchResult findBy(PrcmtDlvryItemSearchInput searchInput)
    {
-      SingularAttribute<PrcmtDlvryItemEvtData, ?>[] attributes = readSeachAttributes(searchInput);
+      SingularAttribute<PrcmtDlvryItem, ?>[] attributes = readSeachAttributes(searchInput);
       Long count = ejb.countBy(searchInput.getEntity(), attributes);
-      List<PrcmtDlvryItemEvtData> resultList = ejb.findBy(searchInput.getEntity(),
+      List<PrcmtDlvryItem> resultList = ejb.findBy(searchInput.getEntity(),
             searchInput.getStart(), searchInput.getMax(), attributes);
       return new PrcmtDlvryItemSearchResult(count, detach(resultList),
             detach(searchInput));
@@ -116,7 +116,7 @@ public class PrcmtDlvryItemEndpoint
    @Consumes({ "application/json", "application/xml" })
    public Long countBy(PrcmtDlvryItemSearchInput searchInput)
    {
-      SingularAttribute<PrcmtDlvryItemEvtData, ?>[] attributes = readSeachAttributes(searchInput);
+      SingularAttribute<PrcmtDlvryItem, ?>[] attributes = readSeachAttributes(searchInput);
       return ejb.countBy(searchInput.getEntity(), attributes);
    }
 
@@ -126,9 +126,9 @@ public class PrcmtDlvryItemEndpoint
    @Consumes({ "application/json", "application/xml" })
    public PrcmtDlvryItemSearchResult findByLike(PrcmtDlvryItemSearchInput searchInput)
    {
-      SingularAttribute<PrcmtDlvryItemEvtData, ?>[] attributes = readSeachAttributes(searchInput);
+      SingularAttribute<PrcmtDlvryItem, ?>[] attributes = readSeachAttributes(searchInput);
       Long countLike = ejb.countByLike(searchInput.getEntity(), attributes);
-      List<PrcmtDlvryItemEvtData> resultList = ejb.findByLike(searchInput.getEntity(),
+      List<PrcmtDlvryItem> resultList = ejb.findByLike(searchInput.getEntity(),
             searchInput.getStart(), searchInput.getMax(), attributes);
       return new PrcmtDlvryItemSearchResult(countLike, detach(resultList),
             detach(searchInput));
@@ -139,16 +139,16 @@ public class PrcmtDlvryItemEndpoint
    @Consumes({ "application/json", "application/xml" })
    public Long countByLike(PrcmtDlvryItemSearchInput searchInput)
    {
-      SingularAttribute<PrcmtDlvryItemEvtData, ?>[] attributes = readSeachAttributes(searchInput);
+      SingularAttribute<PrcmtDlvryItem, ?>[] attributes = readSeachAttributes(searchInput);
       return ejb.countByLike(searchInput.getEntity(), attributes);
    }
 
    @SuppressWarnings("unchecked")
-   private SingularAttribute<PrcmtDlvryItemEvtData, ?>[] readSeachAttributes(
+   private SingularAttribute<PrcmtDlvryItem, ?>[] readSeachAttributes(
          PrcmtDlvryItemSearchInput searchInput)
    {
       List<String> fieldNames = searchInput.getFieldNames();
-      List<SingularAttribute<PrcmtDlvryItemEvtData, ?>> result = new ArrayList<SingularAttribute<PrcmtDlvryItemEvtData, ?>>();
+      List<SingularAttribute<PrcmtDlvryItem, ?>> result = new ArrayList<SingularAttribute<PrcmtDlvryItem, ?>>();
       for (String fieldName : fieldNames)
       {
          Field[] fields = PrcmtDlvryItem_.class.getFields();
@@ -158,7 +158,7 @@ public class PrcmtDlvryItemEndpoint
             {
                try
                {
-                  result.add((SingularAttribute<PrcmtDlvryItemEvtData, ?>) field.get(null));
+                  result.add((SingularAttribute<PrcmtDlvryItem, ?>) field.get(null));
                }
                catch (IllegalArgumentException e)
                {
@@ -176,7 +176,7 @@ public class PrcmtDlvryItemEndpoint
 
    
 
-   private PrcmtDlvryItemEvtData detach(PrcmtDlvryItemEvtData entity)
+   private PrcmtDlvryItem detach(PrcmtDlvryItem entity)
    {
       if (entity == null)
          return null;
@@ -184,12 +184,12 @@ public class PrcmtDlvryItemEndpoint
       return entity;
    }
 
-   private List<PrcmtDlvryItemEvtData> detach(List<PrcmtDlvryItemEvtData> list)
+   private List<PrcmtDlvryItem> detach(List<PrcmtDlvryItem> list)
    {
       if (list == null)
          return list;
-      List<PrcmtDlvryItemEvtData> result = new ArrayList<PrcmtDlvryItemEvtData>();
-      for (PrcmtDlvryItemEvtData entity : list)
+      List<PrcmtDlvryItem> result = new ArrayList<PrcmtDlvryItem>();
+      for (PrcmtDlvryItem entity : list)
       {
          result.add(detach(entity));
       }

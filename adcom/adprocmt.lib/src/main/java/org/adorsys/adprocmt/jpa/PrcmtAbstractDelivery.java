@@ -283,4 +283,27 @@ public class PrcmtAbstractDelivery extends AbstractMvmtData {
 	public void setDlvryStatus(String dlvryStatus) {
 		this.dlvryStatus = dlvryStatus;
 	}
+	public void copyTo(PrcmtAbstractDelivery target){
+		target.creatingUsr = creatingUsr;
+		target.creationDt = creationDt;
+		target.dlvryCur = dlvryCur;
+		target.dlvryDt = dlvryDt;
+		target.dlvryNbr = dlvryNbr;
+		target.dlvrySlipNbr = dlvrySlipNbr;
+		target.dlvryStatus = dlvryStatus;
+		target.dtOnDlvrySlip = dtOnDlvrySlip;
+		target.grossPPPreTax = grossPPPreTax;
+		target.netAmtToPay = netAmtToPay;
+		target.netPPPreTax = netPPPreTax;
+		target.netPPTaxIncl = netPPTaxIncl;
+		target.netPurchAmt = netPurchAmt;
+		target.orderDt = orderDt;
+		target.pymtDscntAmt = pymtDscntAmt;
+		target.pymtDscntPct = pymtDscntPct;
+		target.rcvngOrgUnit = rcvngOrgUnit;
+		target.rdngDscntAmt = rdngDscntAmt;
+		target.rebate = rebate;
+		target.supplier = supplier;
+		target.vatAmount = vatAmount;
+	}
 }

@@ -5,6 +5,6 @@ import org.apache.deltaspike.data.api.EntityRepository;
 import org.apache.deltaspike.data.api.Repository;
 
 @Repository(forEntity = PrcmtProcOrderEvtData.class)
-public interface PrcmtProcOrderRepository extends EntityRepository<PrcmtProcOrderEvtData, String>
+public interface PrcmtProcOrderEvtDataRepository extends EntityRepository<PrcmtProcOrderEvtData, String>
 {
 }

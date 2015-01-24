@@ -4,8 +4,6 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -100,21 +98,18 @@ public abstract class PrcmtAbstractProcOrder extends AbstractMvmtData {
 
 	@Column
 	@Description("PrcmtProcOrder_poTriggerMode_description")
-	@Enumerated(EnumType.ORDINAL)
 	@NotNull
-	private ProcmtPOTriggerMode poTriggerMode;
+	private String poTriggerMode;
 
 	@Column
 	@Description("PrcmtProcOrder_poType_description")
-	@Enumerated(EnumType.ORDINAL)
 	@NotNull
-	private ProcmtPOType poType;
+	private String poType;
 
 	@Column
 	@Description("PrcmtProcOrder_poStatus_description")
-	@Enumerated(EnumType.ORDINAL)
 	@NotNull
-	private ProcmtPOStatus poStatus;
+	private String poStatus;
 
 	public Date getOrderDt() {
 		return this.orderDt;
@@ -260,27 +255,28 @@ public abstract class PrcmtAbstractProcOrder extends AbstractMvmtData {
 		this.createdDt = createdDt;
 	}
 
-	public ProcmtPOTriggerMode getPoTriggerMode() {
-		return this.poTriggerMode;
+	public String getPoStatus() {
+		return poStatus;
 	}
 
-	public void setPoTriggerMode(final ProcmtPOTriggerMode poTriggerMode) {
+	public void setPoStatus(String poStatus) {
+		this.poStatus = poStatus;
+	}
+
+	public String getPoTriggerMode() {
+		return poTriggerMode;
+	}
+
+	public void setPoTriggerMode(String poTriggerMode) {
 		this.poTriggerMode = poTriggerMode;
 	}
 
-	public ProcmtPOType getPoType() {
-		return this.poType;
+	public String getPoType() {
+		return poType;
 	}
 
-	public void setPoType(final ProcmtPOType poType) {
+	public void setPoType(String poType) {
 		this.poType = poType;
 	}
 
-	public ProcmtPOStatus getPoStatus() {
-		return this.poStatus;
-	}
-
-	public void setPoStatus(final ProcmtPOStatus poStatus) {
-		this.poStatus = poStatus;
-	}
 }

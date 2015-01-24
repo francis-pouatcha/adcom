@@ -372,4 +372,37 @@ public class PrcmtAbstractDlvryItem extends AbstractMvmtData {
 	public void setCreationDt(final Date creationDt) {
 		this.creationDt = creationDt;
 	}
+	
+	public void copyTo(PrcmtAbstractDlvryItem target){
+		target.dlvryNbr=dlvryNbr;
+		target.poNbr=poNbr;
+		target.lotPic=lotPic;
+		target.artPic=artPic;
+		target.supplier=supplier;
+		target.supplierPic=supplierPic;
+		target.expirDt=expirDt;
+		target.qtyOrdered=qtyOrdered;
+		target.qtyDlvrd=qtyDlvrd;
+		target.freeQty=freeQty;
+		target.stkQtyPreDlvry=stkQtyPreDlvry;
+		target.pppuPreTax=pppuPreTax;
+		target.pppuCur=pppuCur;
+		target.grossPPPreTax=grossPPPreTax;
+		target.rebate=rebate;
+		target.netPPPreTax=netPPPreTax;
+		target.vatPct=vatPct;
+		target.vatAmount=vatAmount;
+		target.netPPTaxIncl=netPPPreTax;
+		target.sppuPreTax=sppuPreTax;
+		target.purchWrntyDys=purchWrntyDys;
+		target.purchRtrnDays=purchRtrnDays;
+		target.sppuCur=sppuCur;
+		target.minSppuHT=minSppuHT;
+		target.vatSalesPct=vatSalesPct;
+		target.salesWrntyDys=salesWrntyDys;
+		target.salesRtrnDays=salesRtrnDays;
+		target.creatingUsr=creatingUsr;
+		target.creationDt=creationDt;	
+	}
+		
 }

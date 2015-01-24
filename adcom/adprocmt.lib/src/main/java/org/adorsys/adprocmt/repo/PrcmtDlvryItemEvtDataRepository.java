@@ -5,6 +5,6 @@ import org.apache.deltaspike.data.api.EntityRepository;
 import org.apache.deltaspike.data.api.Repository;
 
 @Repository(forEntity = PrcmtDlvryItemEvtData.class)
-public interface PrcmtDlvryItemRepository extends EntityRepository<PrcmtDlvryItemEvtData, String>
+public interface PrcmtDlvryItemEvtDataRepository extends EntityRepository<PrcmtDlvryItemEvtData, String>
 {
 }

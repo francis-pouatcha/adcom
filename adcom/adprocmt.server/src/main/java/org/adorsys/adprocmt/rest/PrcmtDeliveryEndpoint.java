@@ -21,7 +21,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.adorsys.adprocmt.jpa.PrcmtDeliveryEvtData;
+import org.adorsys.adprocmt.jpa.PrcmtDelivery;
 import org.adorsys.adprocmt.jpa.PrcmtDeliverySearchInput;
 import org.adorsys.adprocmt.jpa.PrcmtDeliverySearchResult;
 import org.adorsys.adprocmt.jpa.PrcmtDelivery_;
@@ -41,7 +41,7 @@ public class PrcmtDeliveryEndpoint
    @POST
    @Consumes({ "application/json", "application/xml" })
    @Produces({ "application/json", "application/xml" })
-   public PrcmtDeliveryEvtData create(PrcmtDeliveryEvtData entity)
+   public PrcmtDelivery create(PrcmtDelivery entity)
    {
       return detach(ejb.create(entity));
    }
@@ -50,7 +50,7 @@ public class PrcmtDeliveryEndpoint
    @Path("/{id}")
    public Response deleteById(@PathParam("id") String id)
    {
-      PrcmtDeliveryEvtData deleted = ejb.deleteById(id);
+      PrcmtDelivery deleted = ejb.deleteById(id);
       if (deleted == null)
          return Response.status(Status.NOT_FOUND).build();
 
@@ -61,7 +61,7 @@ public class PrcmtDeliveryEndpoint
    @Path("/{id}")
    @Produces({ "application/json", "application/xml" })
    @Consumes({ "application/json", "application/xml" })
-   public PrcmtDeliveryEvtData update(PrcmtDeliveryEvtData entity)
+   public PrcmtDelivery update(PrcmtDelivery entity)
    {
       return detach(ejb.update(entity));
    }
@@ -71,7 +71,7 @@ public class PrcmtDeliveryEndpoint
    @Produces({ "application/json", "application/xml" })
    public Response findById(@PathParam("id") String id)
    {
-      PrcmtDeliveryEvtData found = ejb.findById(id);
+      PrcmtDelivery found = ejb.findById(id);
       if (found == null)
          return Response.status(Status.NOT_FOUND).build();
       return Response.ok(detach(found)).build();
@@ -82,7 +82,7 @@ public class PrcmtDeliveryEndpoint
    public PrcmtDeliverySearchResult listAll(@QueryParam("start") int start,
          @QueryParam("max") int max)
    {
-      List<PrcmtDeliveryEvtData> resultList = ejb.listAll(start, max);
+      List<PrcmtDelivery> resultList = ejb.listAll(start, max);
       PrcmtDeliverySearchInput searchInput = new PrcmtDeliverySearchInput();
       searchInput.setStart(start);
       searchInput.setMax(max);
@@ -103,9 +103,9 @@ public class PrcmtDeliveryEndpoint
    @Consumes({ "application/json", "application/xml" })
    public PrcmtDeliverySearchResult findBy(PrcmtDeliverySearchInput searchInput)
    {
-      SingularAttribute<PrcmtDeliveryEvtData, ?>[] attributes = readSeachAttributes(searchInput);
+      SingularAttribute<PrcmtDelivery, ?>[] attributes = readSeachAttributes(searchInput);
       Long count = ejb.countBy(searchInput.getEntity(), attributes);
-      List<PrcmtDeliveryEvtData> resultList = ejb.findBy(searchInput.getEntity(),
+      List<PrcmtDelivery> resultList = ejb.findBy(searchInput.getEntity(),
             searchInput.getStart(), searchInput.getMax(), attributes);
       return new PrcmtDeliverySearchResult(count, detach(resultList),
             detach(searchInput));
@@ -116,7 +116,7 @@ public class PrcmtDeliveryEndpoint
    @Consumes({ "application/json", "application/xml" })
    public Long countBy(PrcmtDeliverySearchInput searchInput)
    {
-      SingularAttribute<PrcmtDeliveryEvtData, ?>[] attributes = readSeachAttributes(searchInput);
+      SingularAttribute<PrcmtDelivery, ?>[] attributes = readSeachAttributes(searchInput);
       return ejb.countBy(searchInput.getEntity(), attributes);
    }
 
@@ -126,9 +126,9 @@ public class PrcmtDeliveryEndpoint
    @Consumes({ "application/json", "application/xml" })
    public PrcmtDeliverySearchResult findByLike(PrcmtDeliverySearchInput searchInput)
    {
-      SingularAttribute<PrcmtDeliveryEvtData, ?>[] attributes = readSeachAttributes(searchInput);
+      SingularAttribute<PrcmtDelivery, ?>[] attributes = readSeachAttributes(searchInput);
       Long countLike = ejb.countByLike(searchInput.getEntity(), attributes);
-      List<PrcmtDeliveryEvtData> resultList = ejb.findByLike(searchInput.getEntity(),
+      List<PrcmtDelivery> resultList = ejb.findByLike(searchInput.getEntity(),
             searchInput.getStart(), searchInput.getMax(), attributes);
       return new PrcmtDeliverySearchResult(countLike, detach(resultList),
             detach(searchInput));
@@ -139,16 +139,16 @@ public class PrcmtDeliveryEndpoint
    @Consumes({ "application/json", "application/xml" })
    public Long countByLike(PrcmtDeliverySearchInput searchInput)
    {
-      SingularAttribute<PrcmtDeliveryEvtData, ?>[] attributes = readSeachAttributes(searchInput);
+      SingularAttribute<PrcmtDelivery, ?>[] attributes = readSeachAttributes(searchInput);
       return ejb.countByLike(searchInput.getEntity(), attributes);
    }
 
    @SuppressWarnings("unchecked")
-   private SingularAttribute<PrcmtDeliveryEvtData, ?>[] readSeachAttributes(
+   private SingularAttribute<PrcmtDelivery, ?>[] readSeachAttributes(
          PrcmtDeliverySearchInput searchInput)
    {
       List<String> fieldNames = searchInput.getFieldNames();
-      List<SingularAttribute<PrcmtDeliveryEvtData, ?>> result = new ArrayList<SingularAttribute<PrcmtDeliveryEvtData, ?>>();
+      List<SingularAttribute<PrcmtDelivery, ?>> result = new ArrayList<SingularAttribute<PrcmtDelivery, ?>>();
       for (String fieldName : fieldNames)
       {
          Field[] fields = PrcmtDelivery_.class.getFields();
@@ -158,7 +158,7 @@ public class PrcmtDeliveryEndpoint
             {
                try
                {
-                  result.add((SingularAttribute<PrcmtDeliveryEvtData, ?>) field.get(null));
+                  result.add((SingularAttribute<PrcmtDelivery, ?>) field.get(null));
                }
                catch (IllegalArgumentException e)
                {
@@ -176,7 +176,7 @@ public class PrcmtDeliveryEndpoint
 
    
 
-   private PrcmtDeliveryEvtData detach(PrcmtDeliveryEvtData entity)
+   private PrcmtDelivery detach(PrcmtDelivery entity)
    {
       if (entity == null)
          return null;
@@ -184,12 +184,12 @@ public class PrcmtDeliveryEndpoint
       return entity;
    }
 
-   private List<PrcmtDeliveryEvtData> detach(List<PrcmtDeliveryEvtData> list)
+   private List<PrcmtDelivery> detach(List<PrcmtDelivery> list)
    {
       if (list == null)
          return list;
-      List<PrcmtDeliveryEvtData> result = new ArrayList<PrcmtDeliveryEvtData>();
-      for (PrcmtDeliveryEvtData entity : list)
+      List<PrcmtDelivery> result = new ArrayList<PrcmtDelivery>();
+      for (PrcmtDelivery entity : list)
       {
          result.add(detach(entity));
       }

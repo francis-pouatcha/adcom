@@ -1,10 +1,10 @@
 package org.adorsys.adprocmt.repo;
 
-import org.adorsys.adprocmt.jpa.PrcmtDlvryItemEvtData;
+import org.adorsys.adprocmt.jpa.PrcmtDlvryItem;
 import org.apache.deltaspike.data.api.EntityRepository;
 import org.apache.deltaspike.data.api.Repository;
 
-@Repository(forEntity = PrcmtDlvryItemEvtData.class)
-public interface PrcmtDlvryItemRepository extends EntityRepository<PrcmtDlvryItemEvtData, String>
+@Repository(forEntity = PrcmtDlvryItem.class)
+public interface PrcmtDlvryItemRepository extends EntityRepository<PrcmtDlvryItem, String>
 {
 }

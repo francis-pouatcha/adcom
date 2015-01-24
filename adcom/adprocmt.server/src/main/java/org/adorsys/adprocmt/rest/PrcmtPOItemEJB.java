@@ -6,7 +6,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
 
-import org.adorsys.adprocmt.jpa.PrcmtPOItemEvtData;
+import org.adorsys.adprocmt.jpa.PrcmtPOItem;
 import org.adorsys.adprocmt.repo.PrcmtPOItemRepository;
 
 @Stateless
@@ -16,14 +16,14 @@ public class PrcmtPOItemEJB
    @Inject
    private PrcmtPOItemRepository repository;
 
-   public PrcmtPOItemEvtData create(PrcmtPOItemEvtData entity)
+   public PrcmtPOItem create(PrcmtPOItem entity)
    {
       return repository.save(attach(entity));
    }
 
-   public PrcmtPOItemEvtData deleteById(String id)
+   public PrcmtPOItem deleteById(String id)
    {
-      PrcmtPOItemEvtData entity = repository.findBy(id);
+      PrcmtPOItem entity = repository.findBy(id);
       if (entity != null)
       {
          repository.remove(entity);
@@ -31,17 +31,17 @@ public class PrcmtPOItemEJB
       return entity;
    }
 
-   public PrcmtPOItemEvtData update(PrcmtPOItemEvtData entity)
+   public PrcmtPOItem update(PrcmtPOItem entity)
    {
       return repository.save(attach(entity));
    }
 
-   public PrcmtPOItemEvtData findById(String id)
+   public PrcmtPOItem findById(String id)
    {
       return repository.findBy(id);
    }
 
-   public List<PrcmtPOItemEvtData> listAll(int start, int max)
+   public List<PrcmtPOItem> listAll(int start, int max)
    {
       return repository.findAll(start, max);
    }
@@ -51,27 +51,27 @@ public class PrcmtPOItemEJB
       return repository.count();
    }
 
-   public List<PrcmtPOItemEvtData> findBy(PrcmtPOItemEvtData entity, int start, int max, SingularAttribute<PrcmtPOItemEvtData, ?>[] attributes)
+   public List<PrcmtPOItem> findBy(PrcmtPOItem entity, int start, int max, SingularAttribute<PrcmtPOItem, ?>[] attributes)
    {
       return repository.findBy(entity, start, max, attributes);
    }
 
-   public Long countBy(PrcmtPOItemEvtData entity, SingularAttribute<PrcmtPOItemEvtData, ?>[] attributes)
+   public Long countBy(PrcmtPOItem entity, SingularAttribute<PrcmtPOItem, ?>[] attributes)
    {
       return repository.count(entity, attributes);
    }
 
-   public List<PrcmtPOItemEvtData> findByLike(PrcmtPOItemEvtData entity, int start, int max, SingularAttribute<PrcmtPOItemEvtData, ?>[] attributes)
+   public List<PrcmtPOItem> findByLike(PrcmtPOItem entity, int start, int max, SingularAttribute<PrcmtPOItem, ?>[] attributes)
    {
       return repository.findByLike(entity, start, max, attributes);
    }
 
-   public Long countByLike(PrcmtPOItemEvtData entity, SingularAttribute<PrcmtPOItemEvtData, ?>[] attributes)
+   public Long countByLike(PrcmtPOItem entity, SingularAttribute<PrcmtPOItem, ?>[] attributes)
    {
       return repository.countLike(entity, attributes);
    }
 
-   private PrcmtPOItemEvtData attach(PrcmtPOItemEvtData entity)
+   private PrcmtPOItem attach(PrcmtPOItem entity)
    {
       if (entity == null)
          return null;

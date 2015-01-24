@@ -7,14 +7,14 @@ import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adprocmt.jpa.PrcmtDlvryItemEvtData;
-import org.adorsys.adprocmt.repo.PrcmtDlvryItemRepository;
+import org.adorsys.adprocmt.repo.PrcmtDlvryItemEvtDataRepository;
 
 @Stateless
-public class PrcmtDlvryItemEJB
+public class PrcmtDlvryItemEvtDataEJB
 {
 
    @Inject
-   private PrcmtDlvryItemRepository repository;
+   private PrcmtDlvryItemEvtDataRepository repository;
 
    public PrcmtDlvryItemEvtData create(PrcmtDlvryItemEvtData entity)
    {

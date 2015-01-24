@@ -6,76 +6,89 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
 
+import org.adorsys.adcore.utils.SequenceGenerator;
+import org.adorsys.adprocmt.jpa.PrcmtDelivery;
 import org.adorsys.adprocmt.jpa.PrcmtDeliveryEvtData;
 import org.adorsys.adprocmt.repo.PrcmtDeliveryRepository;
+import org.apache.commons.lang3.StringUtils;
 
 @Stateless
-public class PrcmtDeliveryEJB
-{
+public class PrcmtDeliveryEJB {
 
-   @Inject
-   private PrcmtDeliveryRepository repository;
+	@Inject
+	private PrcmtDeliveryRepository repository;
 
-   public PrcmtDeliveryEvtData create(PrcmtDeliveryEvtData entity)
-   {
-      return repository.save(attach(entity));
-   }
+	@Inject
+	private PrcmtDeliveryEvtDataEJB evtDataEJB;
 
-   public PrcmtDeliveryEvtData deleteById(String id)
-   {
-      PrcmtDeliveryEvtData entity = repository.findBy(id);
-      if (entity != null)
-      {
-         repository.remove(entity);
-      }
-      return entity;
-   }
+	public PrcmtDelivery create(PrcmtDelivery entity) {
+		if(StringUtils.isBlank(entity.getDlvryNbr())){
+			entity.setDlvryNbr(SequenceGenerator.getSequence(SequenceGenerator.DELIVERY_SEQUENCE_PREFIXE));
+		}
+		entity.setId(entity.getDlvryNbr());
+		PrcmtDeliveryEvtData evtData = new PrcmtDeliveryEvtData();
+		entity = repository.save(attach(entity));
+		entity.copyTo(evtData);
+		evtData.setId(entity.getId());
+		evtDataEJB.create(evtData);
+		return entity;
+	}
 
-   public PrcmtDeliveryEvtData update(PrcmtDeliveryEvtData entity)
-   {
-      return repository.save(attach(entity));
-   }
+	public PrcmtDelivery deleteById(String id) {
+		PrcmtDelivery entity = repository.findBy(id);
+		if (entity != null) {
+			repository.remove(entity);
+		}
+		evtDataEJB.deleteById(id);
+		return entity;
+	}
 
-   public PrcmtDeliveryEvtData findById(String id)
-   {
-      return repository.findBy(id);
-   }
+	public PrcmtDelivery update(PrcmtDelivery entity) {
+		entity = repository.save(attach(entity));
+		PrcmtDeliveryEvtData eventData = evtDataEJB.findById(entity.getId());
+		if(eventData!=null){
+			entity.copyTo(eventData);
+			evtDataEJB.update(eventData);
+		}
+		return entity;
+	}
 
-   public List<PrcmtDeliveryEvtData> listAll(int start, int max)
-   {
-      return repository.findAll(start, max);
-   }
+	public PrcmtDelivery findById(String id) {
+		return repository.findBy(id);
+	}
 
-   public Long count()
-   {
-      return repository.count();
-   }
+	public List<PrcmtDelivery> listAll(int start, int max) {
+		return repository.findAll(start, max);
+	}
 
-   public List<PrcmtDeliveryEvtData> findBy(PrcmtDeliveryEvtData entity, int start, int max, SingularAttribute<PrcmtDeliveryEvtData, ?>[] attributes)
-   {
-      return repository.findBy(entity, start, max, attributes);
-   }
+	public Long count() {
+		return repository.count();
+	}
 
-   public Long countBy(PrcmtDeliveryEvtData entity, SingularAttribute<PrcmtDeliveryEvtData, ?>[] attributes)
-   {
-      return repository.count(entity, attributes);
-   }
+	public List<PrcmtDelivery> findBy(PrcmtDelivery entity, int start, int max,
+			SingularAttribute<PrcmtDelivery, ?>[] attributes) {
+		return repository.findBy(entity, start, max, attributes);
+	}
 
-   public List<PrcmtDeliveryEvtData> findByLike(PrcmtDeliveryEvtData entity, int start, int max, SingularAttribute<PrcmtDeliveryEvtData, ?>[] attributes)
-   {
-      return repository.findByLike(entity, start, max, attributes);
-   }
+	public Long countBy(PrcmtDelivery entity,
+			SingularAttribute<PrcmtDelivery, ?>[] attributes) {
+		return repository.count(entity, attributes);
+	}
 
-   public Long countByLike(PrcmtDeliveryEvtData entity, SingularAttribute<PrcmtDeliveryEvtData, ?>[] attributes)
-   {
-      return repository.countLike(entity, attributes);
-   }
+	public List<PrcmtDelivery> findByLike(PrcmtDelivery entity, int start,
+			int max, SingularAttribute<PrcmtDelivery, ?>[] attributes) {
+		return repository.findByLike(entity, start, max, attributes);
+	}
 
-   private PrcmtDeliveryEvtData attach(PrcmtDeliveryEvtData entity)
-   {
-      if (entity == null)
-         return null;
+	public Long countByLike(PrcmtDelivery entity,
+			SingularAttribute<PrcmtDelivery, ?>[] attributes) {
+		return repository.countLike(entity, attributes);
+	}
 
-      return entity;
-   }
+	private PrcmtDelivery attach(PrcmtDelivery entity) {
+		if (entity == null)
+			return null;
+
+		return entity;
+	}
 }

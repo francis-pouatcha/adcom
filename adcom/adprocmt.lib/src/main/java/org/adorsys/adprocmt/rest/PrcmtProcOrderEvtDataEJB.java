@@ -7,14 +7,14 @@ import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adprocmt.jpa.PrcmtProcOrderEvtData;
-import org.adorsys.adprocmt.repo.PrcmtProcOrderRepository;
+import org.adorsys.adprocmt.repo.PrcmtProcOrderEvtDataRepository;
 
 @Stateless
-public class PrcmtProcOrderEJB
+public class PrcmtProcOrderEvtDataEJB
 {
 
    @Inject
-   private PrcmtProcOrderRepository repository;
+   private PrcmtProcOrderEvtDataRepository repository;
 
    public PrcmtProcOrderEvtData create(PrcmtProcOrderEvtData entity)
    {
