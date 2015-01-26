@@ -40,6 +40,9 @@ public class DefaultProcmtEnumDataProvider implements ProcmtEnumDataProvider {
 		Map<String, Map<String, List<String>>> result = new HashMap<String, Map<String, List<String>>>();
 		try {
 			InputStream inputStream = enumKlass.getResourceAsStream(enumKlass.getSimpleName()+".properties");
+			if(inputStream == null) {
+				return result;
+			}
 			Properties enProps = new Properties();
 			enProps.load(inputStream);
 			inputStream = enumKlass.getResourceAsStream(enumKlass.getSimpleName()+"_fr.properties");
