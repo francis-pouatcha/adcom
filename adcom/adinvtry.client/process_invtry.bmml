@@ -6,10 +6,10 @@
       </controlProperties>
     </control>
     <control controlID="1" controlTypeID="com.balsamiq.mockups::Canvas" x="149" y="98" w="812" h="45" measuredW="100" measuredH="70" zOrder="1" locked="false" isInGroup="-1"/>
-    <control controlID="2" controlTypeID="com.balsamiq.mockups::SubTitle" x="155" y="111" w="791" h="-1" measuredW="294" measuredH="19" zOrder="2" locked="false" isInGroup="-1">
+    <control controlID="2" controlTypeID="com.balsamiq.mockups::SubTitle" x="155" y="111" w="791" h="-1" measuredW="447" measuredH="19" zOrder="2" locked="false" isInGroup="-1">
       <controlProperties>
         <size>16</size>
-        <text>%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20of%2026-01-2015%2013%3A45%2C%20By%20user-1</text>
+        <text>%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20of%2026-01-2015%2013%3A45%2C%20By%20user-1%20%20%20%20status%20%3A%20ONGOING</text>
       </controlProperties>
     </control>
     <control controlID="4" controlTypeID="com.balsamiq.mockups::Link" x="157" y="108" w="-1" h="-1" measuredW="71" measuredH="24" zOrder="3" locked="false" isInGroup="-1">
