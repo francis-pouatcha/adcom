@@ -5,6 +5,8 @@ import java.util.UUID;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 
+import org.apache.commons.lang3.StringUtils;
+
 @MappedSuperclass
 public abstract class AbstractMvmtData extends AbstractEntity {
 
@@ -12,7 +14,7 @@ public abstract class AbstractMvmtData extends AbstractEntity {
 
 	@PrePersist
 	public void prePersist() {
-		if (getId() == null)
+		if (StringUtils.isBlank(getId()))
 			setId(UUID.randomUUID().toString());
 	}
 }

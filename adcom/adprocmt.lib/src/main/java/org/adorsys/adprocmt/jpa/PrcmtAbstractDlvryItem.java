@@ -4,84 +4,141 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 import org.adorsys.adcore.jpa.AbstractMvmtData;
+import org.adorsys.adcore.jpa.AmtOrPct;
+import org.adorsys.adcore.jpa.CurrencyEnum;
+import org.adorsys.adcore.utils.BigDecimalUtils;
+import org.adorsys.adcore.utils.CalendarUtil;
+import org.adorsys.adcore.utils.FinancialOps;
 import org.adorsys.javaext.description.Description;
 import org.adorsys.javaext.format.DateFormatPattern;
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 
 @MappedSuperclass
 @Description("PrcmtDlvryItem_description")
-public class PrcmtAbstractDlvryItem extends AbstractMvmtData {
+public abstract class PrcmtAbstractDlvryItem extends AbstractMvmtData {
 
 	private static final long serialVersionUID = 8446377222696584731L;
 
+	@Column
+	@Description("PrcmtDlvryItem_dlvryItemNbr_description")
+	@NotNull
+	private String dlvryItemNbr;
+	
 	@Column
 	@Description("PrcmtDlvryItem_dlvryNbr_description")
 	@NotNull
 	private String dlvryNbr;
 
-	@Column
-	@Description("PrcmtDlvryItem_poNbr_description")
-	private String poNbr;
-
+	/*
+	 * The lot identification code. Many delivery items can have the 
+	 * same lot identification code, but different storage locations.
+	 */
 	@Column
 	@Description("PrcmtDlvryItem_lotPic_description")
-	@NotNull
 	private String lotPic;
 
+	/*
+	 * The article identification code. This is the most important information in a delivery item.
+	 * This must be present for each delivery item submitted. If not the delivery item is 
+	 * rejected.
+	 * 
+	 * This is used to identify the article and if possible fill in missing informations like on
+	 * sales pricing.
+	 */
 	@Column
 	@Description("PrcmtDlvryItem_artPic_description")
 	@NotNull
 	private String artPic;
 
+	/*
+	 * The supplier of this item, if available.
+	 */
 	@Column
 	@Description("PrcmtDlvryItem_supplier_description")
 	private String supplier;
 
+	/*
+	 * The supplier specific identification code if available.
+	 */
 	@Column
 	@Description("PrcmtDlvryItem_supplierPic_description")
 	private String supplierPic;
 
+	/*
+	 * The expiration date of this lot. This is decisive for the splitting in lots.
+	 * All articles in the same lot have the same expiration date.
+	 */
 	@Temporal(TemporalType.TIMESTAMP)
 	@Description("PrcmtDlvryItem_expirDt_description")
 	private Date expirDt;
 
-	@Column
-	@Description("PrcmtDlvryItem_qtyOrdered_description")
-	private BigDecimal qtyOrdered;
-
+	/*
+	 * The quantity delivered. This can match the quantity ordered or not.
+	 * In the normal case, qtyOrdered = qtyDlvrd - freeQty = qtyBilled
+	 * 
+	 * But in some cases the delivery might be erroneous.
+	 * 
+	 */
 	@Column
 	@Description("PrcmtDlvryItem_qtyDlvrd_description")
 	@NotNull
 	private BigDecimal qtyDlvrd;
-
+	
+	/*
+	 * The free quantity. This might be a promotion of the supplier.
+	 * 
+	 * This information is generally not available in the procurement order.
+	 */
 	@Column
 	@Description("PrcmtDlvryItem_freeQty_description")
 	private BigDecimal freeQty;
 
+	/*
+	 * The quantity on the invoice. This might be less the the quantity delivered or
+	 * the quantity expected to be delivered. In which case a claim process might 
+	 * automatically be started by this application.
+	 */
 	@Column
-	@Description("PrcmtDlvryItem_stkQtyPreDlvry_description")
-	private BigDecimal stkQtyPreDlvry;
-
+	@Description("PrcmtDlvryItem_qtyBilled_description")
+	@NotNull
+	private BigDecimal qtyBilled;
+	
 	@Column
 	@Description("PrcmtDlvryItem_pppuPreTax_description")
 	private BigDecimal pppuPreTax;
 
 	@Column
 	@Description("PrcmtDlvryItem_pppuCur_description")
-	private String pppuCur;
+	@NotNull
+	private String pppuCur = CurrencyEnum.XAF.name();
 
 	@Column
 	@Description("PrcmtDlvryItem_grossPPPreTax_description")
 	private BigDecimal grossPPPreTax;
+	
+	@Column
+	@Description("PrcmtDlvryItem_rebateType_description")
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private AmtOrPct rebateType;
+	
+	@Column
+	@Description("PrcmtDlvryItem_rebateAmt_description")
+	private BigDecimal rebateAmt;
 
 	@Column
-	@Description("PrcmtDlvryItem_rebate_description")
-	private BigDecimal rebate;
+	@Description("PrcmtDlvryItem_rebatePct_description")
+	private BigDecimal rebatePct;
 
 	@Column
 	@Description("PrcmtDlvryItem_netPPPreTax_description")
@@ -92,8 +149,8 @@ public class PrcmtAbstractDlvryItem extends AbstractMvmtData {
 	private BigDecimal vatPct;
 
 	@Column
-	@Description("PrcmtDlvryItem_vatAmount_description")
-	private BigDecimal vatAmount;
+	@Description("PrcmtDlvryItem_vatAmt_description")
+	private BigDecimal vatAmt;
 
 	@Column
 	@Description("PrcmtDlvryItem_netPPTaxIncl_description")
@@ -141,20 +198,17 @@ public class PrcmtAbstractDlvryItem extends AbstractMvmtData {
 	@DateFormatPattern(pattern = "dd-MM-yyyy HH:mm")
 	private Date creationDt;
 
+	@PrePersist
+	public void prePersist() {
+		setId(dlvryItemNbr);
+	}
+
 	public String getDlvryNbr() {
 		return this.dlvryNbr;
 	}
 
 	public void setDlvryNbr(final String dlvryNbr) {
 		this.dlvryNbr = dlvryNbr;
-	}
-
-	public String getPoNbr() {
-		return this.poNbr;
-	}
-
-	public void setPoNbr(final String poNbr) {
-		this.poNbr = poNbr;
 	}
 
 	public String getLotPic() {
@@ -197,14 +251,6 @@ public class PrcmtAbstractDlvryItem extends AbstractMvmtData {
 		this.expirDt = expirDt;
 	}
 
-	public BigDecimal getQtyOrdered() {
-		return this.qtyOrdered;
-	}
-
-	public void setQtyOrdered(final BigDecimal qtyOrdered) {
-		this.qtyOrdered = qtyOrdered;
-	}
-
 	public BigDecimal getQtyDlvrd() {
 		return this.qtyDlvrd;
 	}
@@ -219,14 +265,6 @@ public class PrcmtAbstractDlvryItem extends AbstractMvmtData {
 
 	public void setFreeQty(final BigDecimal freeQty) {
 		this.freeQty = freeQty;
-	}
-
-	public BigDecimal getStkQtyPreDlvry() {
-		return this.stkQtyPreDlvry;
-	}
-
-	public void setStkQtyPreDlvry(final BigDecimal stkQtyPreDlvry) {
-		this.stkQtyPreDlvry = stkQtyPreDlvry;
 	}
 
 	public BigDecimal getPppuPreTax() {
@@ -253,14 +291,6 @@ public class PrcmtAbstractDlvryItem extends AbstractMvmtData {
 		this.grossPPPreTax = grossPPPreTax;
 	}
 
-	public BigDecimal getRebate() {
-		return this.rebate;
-	}
-
-	public void setRebate(final BigDecimal rebate) {
-		this.rebate = rebate;
-	}
-
 	public BigDecimal getNetPPPreTax() {
 		return this.netPPPreTax;
 	}
@@ -275,14 +305,6 @@ public class PrcmtAbstractDlvryItem extends AbstractMvmtData {
 
 	public void setVatPct(final BigDecimal vatPct) {
 		this.vatPct = vatPct;
-	}
-
-	public BigDecimal getVatAmount() {
-		return this.vatAmount;
-	}
-
-	public void setVatAmount(final BigDecimal vatAmount) {
-		this.vatAmount = vatAmount;
 	}
 
 	public BigDecimal getNetPPTaxIncl() {
@@ -373,25 +395,74 @@ public class PrcmtAbstractDlvryItem extends AbstractMvmtData {
 		this.creationDt = creationDt;
 	}
 	
+	public BigDecimal getRebateAmt() {
+		return rebateAmt;
+	}
+
+	public void setRebateAmt(BigDecimal rebateAmt) {
+		this.rebateAmt = rebateAmt;
+	}
+
+	public BigDecimal getRebatePct() {
+		return rebatePct;
+	}
+
+	public void setRebatePct(BigDecimal rebatePct) {
+		this.rebatePct = rebatePct;
+	}
+
+	public BigDecimal getVatAmt() {
+		return vatAmt;
+	}
+
+	public void setVatAmt(BigDecimal vatAmt) {
+		this.vatAmt = vatAmt;
+	}
+
+	public AmtOrPct getRebateType() {
+		return rebateType;
+	}
+
+	public void setRebateType(AmtOrPct rebateType) {
+		this.rebateType = rebateType;
+	}
+
+	public String getDlvryItemNbr() {
+		return dlvryItemNbr;
+	}
+
+	public void setDlvryItemNbr(String dlvryItemNbr) {
+		this.dlvryItemNbr = dlvryItemNbr;
+	}
+
+	public BigDecimal getQtyBilled() {
+		return qtyBilled;
+	}
+
+	public void setQtyBilled(BigDecimal qtyBilled) {
+		this.qtyBilled = qtyBilled;
+	}
+
 	public void copyTo(PrcmtAbstractDlvryItem target){
+		target.dlvryItemNbr=dlvryItemNbr;
 		target.dlvryNbr=dlvryNbr;
-		target.poNbr=poNbr;
 		target.lotPic=lotPic;
 		target.artPic=artPic;
 		target.supplier=supplier;
 		target.supplierPic=supplierPic;
 		target.expirDt=expirDt;
-		target.qtyOrdered=qtyOrdered;
 		target.qtyDlvrd=qtyDlvrd;
 		target.freeQty=freeQty;
-		target.stkQtyPreDlvry=stkQtyPreDlvry;
+		target.qtyBilled=qtyBilled;
 		target.pppuPreTax=pppuPreTax;
 		target.pppuCur=pppuCur;
 		target.grossPPPreTax=grossPPPreTax;
-		target.rebate=rebate;
+		target.rebateType = rebateType;
+		target.rebatePct=rebatePct;
+		target.rebateAmt=rebateAmt;
 		target.netPPPreTax=netPPPreTax;
 		target.vatPct=vatPct;
-		target.vatAmount=vatAmount;
+		target.vatAmt=vatAmt;
 		target.netPPTaxIncl=netPPPreTax;
 		target.sppuPreTax=sppuPreTax;
 		target.purchWrntyDys=purchWrntyDys;
@@ -404,5 +475,95 @@ public class PrcmtAbstractDlvryItem extends AbstractMvmtData {
 		target.creatingUsr=creatingUsr;
 		target.creationDt=creationDt;	
 	}
-		
+
+
+	public boolean contentEquals(PrcmtAbstractDlvryItem target){
+		if(!CalendarUtil.isSameDay(target.expirDt,expirDt)) return false;
+		if(!BigDecimalUtils.numericEquals(target.qtyDlvrd,qtyDlvrd)) return false;
+		if(!BigDecimalUtils.numericEquals(target.freeQty,freeQty)) return false;
+		if(!BigDecimalUtils.numericEquals(target.qtyBilled,qtyBilled)) return false;
+		if(!BigDecimalUtils.numericEquals(target.pppuPreTax,pppuPreTax)) return false;
+		if(!StringUtils.equals(target.pppuCur,pppuCur)) return false;
+		if(!BigDecimalUtils.numericEquals(target.grossPPPreTax,grossPPPreTax)) return false;
+		if(!ObjectUtils.equals(target.rebateType , rebateType)) return false;
+		if(!BigDecimalUtils.numericEquals(target.rebatePct,rebatePct)) return false;
+		if(!BigDecimalUtils.numericEquals(target.rebateAmt,rebateAmt)) return false;
+		if(!BigDecimalUtils.numericEquals(target.netPPPreTax,netPPPreTax)) return false;
+		if(!BigDecimalUtils.numericEquals(target.vatPct,vatPct)) return false;
+		if(!BigDecimalUtils.numericEquals(target.vatAmt,vatAmt)) return false;
+		if(!BigDecimalUtils.numericEquals(target.netPPTaxIncl,netPPPreTax)) return false;
+		if(!BigDecimalUtils.numericEquals(target.sppuPreTax,sppuPreTax)) return false;
+		if(!BigDecimalUtils.numericEquals(target.purchWrntyDys,purchWrntyDys)) return false;
+		if(!BigDecimalUtils.numericEquals(target.purchRtrnDays,purchRtrnDays)) return false;
+		if(!StringUtils.equals(target.sppuCur,sppuCur)) return false;
+		if(!BigDecimalUtils.numericEquals(target.minSppuHT,minSppuHT)) return false;
+		if(!BigDecimalUtils.numericEquals(target.vatSalesPct,vatSalesPct)) return false;
+		if(!BigDecimalUtils.numericEquals(target.salesWrntyDys,salesWrntyDys)) return false;
+		if(!BigDecimalUtils.numericEquals(target.salesRtrnDays,salesRtrnDays)) return false;
+		if(!StringUtils.equals(target.creatingUsr,creatingUsr)) return false;
+		if(!CalendarUtil.isSameInstant(target.creationDt,creationDt)) return false;
+
+		if(!StringUtils.equals(target.dlvryItemNbr,dlvryItemNbr)) return false;
+		if(!StringUtils.equals(target.dlvryNbr,dlvryNbr)) return false;
+		if(!StringUtils.equals(target.lotPic,lotPic)) return false;
+		if(!StringUtils.equals(target.artPic,artPic)) return false;
+		if(!StringUtils.equals(target.supplier,supplier)) return false;
+		if(!StringUtils.equals(target.supplierPic,supplierPic)) return false;
+		return true;
+	}
+	
+	public void addQtyDlvrd(BigDecimal qtyDlvrd) {
+		if(this.qtyDlvrd==null) this.qtyDlvrd=BigDecimal.ZERO;
+		if(qtyDlvrd==null) qtyDlvrd=BigDecimal.ZERO;
+		this.qtyDlvrd = this.qtyDlvrd.add(qtyDlvrd);
+	}
+
+	public void addFreeQty(BigDecimal freeQty) {
+		if(this.freeQty==null) this.freeQty=BigDecimal.ZERO;
+		if(freeQty==null) freeQty=BigDecimal.ZERO;
+		this.freeQty = this.freeQty.add(freeQty);
+	}
+
+	public void addQtyBilled(BigDecimal qtyBilled) {
+		if(this.qtyBilled==null) this.qtyBilled=BigDecimal.ZERO;
+		if(qtyBilled==null) qtyBilled=BigDecimal.ZERO;
+		this.qtyBilled = this.qtyBilled.add(qtyBilled);
+	}
+
+	public void addRebateAmt(BigDecimal rebateAmt) {
+		if(this.rebateAmt==null) this.rebateAmt=BigDecimal.ZERO;
+		if(rebateAmt==null) rebateAmt=BigDecimal.ZERO;
+		this.rebateAmt = this.rebateAmt.add(rebateAmt);
+	}
+	
+	public void evlte() {
+		if(this.qtyDlvrd==null) this.qtyDlvrd=BigDecimal.ZERO;
+		if(this.freeQty==null) this.freeQty=BigDecimal.ZERO;
+		BigDecimal qtyPurchased = this.qtyBilled==null?this.qtyDlvrd.subtract(this.freeQty):this.qtyBilled;
+		if(this.pppuPreTax==null) this.pppuPreTax=BigDecimal.ZERO;
+		this.grossPPPreTax = qtyPurchased.multiply(this.pppuPreTax);
+		if(this.rebatePct==null)this.rebatePct=BigDecimal.ZERO;
+		if(this.rebateAmt==null)this.rebateAmt=BigDecimal.ZERO;
+		if(this.grossPPPreTax.compareTo(BigDecimal.ZERO)<=0){
+			this.rebateAmt = BigDecimal.ZERO;
+			this.rebatePct = BigDecimal.ZERO;
+		} else {
+			if(AmtOrPct.PERCENT.equals(this.rebateType)){
+				this.rebateAmt = FinancialOps.amtFromPrct(this.grossPPPreTax, this.rebatePct, this.pppuCur);
+			} else {
+				this.rebatePct = FinancialOps.prctFromAmt(this.grossPPPreTax, this.rebateAmt, this.pppuCur);
+			}
+		}
+		this.netPPPreTax = FinancialOps.substract(this.grossPPPreTax, this.rebateAmt, this.pppuCur);
+
+		if(this.vatPct==null)this.vatPct=BigDecimal.ZERO;
+		if(this.vatAmt==null)this.vatAmt=BigDecimal.ZERO;
+		if(this.netPPPreTax.compareTo(BigDecimal.ZERO)<=0){
+			this.vatPct = BigDecimal.ZERO;
+			this.vatAmt = BigDecimal.ZERO;
+		} else {
+			this.vatAmt = FinancialOps.amtFromPrct(this.netPPPreTax, this.vatPct, this.pppuCur);
+		}
+		this.netPPTaxIncl = FinancialOps.add(this.netPPPreTax, this.vatAmt, this.pppuCur);
+	}
 }

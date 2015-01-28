@@ -16,7 +16,7 @@ public class PrcmtDeliveryEvt extends PrcmtAbstractDlvrHstry {
 	@Column
 	@NotNull
 	private String evtName;
-
+	
 	public String getLstnrName() {
 		return lstnrName;
 	}

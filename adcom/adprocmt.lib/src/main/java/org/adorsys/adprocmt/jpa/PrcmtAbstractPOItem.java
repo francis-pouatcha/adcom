@@ -5,6 +5,7 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -12,6 +13,7 @@ import javax.validation.constraints.NotNull;
 import org.adorsys.adcore.jpa.AbstractMvmtData;
 import org.adorsys.javaext.description.Description;
 import org.adorsys.javaext.format.DateFormatPattern;
+import org.apache.commons.lang3.StringUtils;
 
 @MappedSuperclass
 @Description("PrcmtPOItem_description")
@@ -38,6 +40,28 @@ public abstract class PrcmtAbstractPOItem extends AbstractMvmtData {
 	@NotNull
 	private BigDecimal qtyOrdered;
 
+	@Column
+	@Description("PrcmtPOItem_freeQty_description")
+	private BigDecimal freeQty;
+
+	/*
+	 * This is the receiving organization unit. The same aticle lot can be splitted to many 
+	 * receiving organization units.
+	 */
+	@Column
+	@Description("PrcmtPOItem_rcvngOrgUnit_description")
+	@NotNull
+	private String rcvngOrgUnit;
+
+	/*
+	 * The storage section in a warehouse in which the received articles where 
+	 * stored.
+	 */
+	@Column
+	@Description("PrcmtPOItem_strgSection_description")
+	@NotNull
+	private String strgSection;
+	
 	@Column
 	@Description("PrcmtPOItem_stkQtyPreOrder_description")
 	@NotNull
@@ -80,6 +104,12 @@ public abstract class PrcmtAbstractPOItem extends AbstractMvmtData {
 	@NotNull
 	private String creatingUsr;
 
+	@PrePersist
+	public void prePersist() {
+		if (StringUtils.isBlank(getId()))
+			setId(toId(poNbr, artPic, rcvngOrgUnit, strgSection));
+	}
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Description("PrcmtPOItem_createdDt_description")
 	@DateFormatPattern(pattern = "dd-MM-yyyy HH:mm")
@@ -204,5 +234,33 @@ public abstract class PrcmtAbstractPOItem extends AbstractMvmtData {
 
 	public void setCreatedDt(final Date createdDt) {
 		this.createdDt = createdDt;
+	}
+	
+	public BigDecimal getFreeQty() {
+		return freeQty;
+	}
+
+	public void setFreeQty(BigDecimal freeQty) {
+		this.freeQty = freeQty;
+	}
+
+	public String getRcvngOrgUnit() {
+		return rcvngOrgUnit;
+	}
+
+	public void setRcvngOrgUnit(String rcvngOrgUnit) {
+		this.rcvngOrgUnit = rcvngOrgUnit;
+	}
+
+	public String getStrgSection() {
+		return strgSection;
+	}
+
+	public void setStrgSection(String strgSection) {
+		this.strgSection = strgSection;
+	}
+
+	public static String toId(String poNbr, String artPic, String rcvngOrgUnit, String strgSection){
+		return poNbr + "_" + artPic + "_" + rcvngOrgUnit + "_" + strgSection;
 	}
 }

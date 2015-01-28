@@ -78,4 +78,10 @@ public class StkArtStockQtyEJB
 
       return entity;
    }
+   
+   public StkArtStockQty findOldest(String artPic){
+	   List<StkArtStockQty> resultList = repository.findByArtPic(artPic).orderDesc("seqNbr").maxResults(1).getResultList();
+	   if(resultList.isEmpty()) return null;
+	   return resultList.iterator().next();
+   }
 }

@@ -21,10 +21,10 @@ public class SequenceGenerator {
 	public static String CUSTOMER_INVOICE_SEQUENCE_PREFIXE = "CI";
 	public static String CUSTOMER_INVENTORY_SEQUENCE_PREFIXE = "IV";
 
-	static long time = 0l;// the time corresponding to the 01.01.2010 00:00:00:00 ...
+	static long time = 0l;// the time corresponding to the 01.01.2014 00:00:00:00 ...
 	static {
 		Date date = new Date();
-		date = DateUtils.setYears(date, 2014);// never change this date.
+		date = DateUtils.setYears(date, 2015);// never change this date.
 		date = DateUtils.truncate(date, Calendar.YEAR);
 		time = date.getTime();
 	}
@@ -37,6 +37,4 @@ public class SequenceGenerator {
 			return prefixe+Long.toString(System.currentTimeMillis()-time, 36).toUpperCase();
 		}
 	}
-
-
 }

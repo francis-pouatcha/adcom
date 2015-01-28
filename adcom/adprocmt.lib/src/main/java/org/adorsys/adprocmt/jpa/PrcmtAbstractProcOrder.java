@@ -5,6 +5,7 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -83,6 +84,7 @@ public abstract class PrcmtAbstractProcOrder extends AbstractMvmtData {
 
 	@Column
 	@Description("PrcmtProcOrder_ordrngOrgUnit_description")
+	@NotNull
 	private String ordrngOrgUnit;
 
 	@Column
@@ -111,6 +113,12 @@ public abstract class PrcmtAbstractProcOrder extends AbstractMvmtData {
 	@NotNull
 	private String poStatus;
 
+	@PrePersist
+	public void prePersist() {
+		if (getId() == null)
+			setId(poNbr);
+	}
+	
 	public Date getOrderDt() {
 		return this.orderDt;
 	}

@@ -9,12 +9,12 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
-import org.adorsys.adcore.jpa.AbstractTimedData;
+import org.adorsys.adcore.jpa.AbstractIdentifData;
 import org.adorsys.javaext.description.Description;
 
 @Entity
 @Description("StkArticleLot_description")
-public class StkArticleLot extends AbstractTimedData {
+public class StkArticleLot extends AbstractIdentifData {
 
 	private static final long serialVersionUID = 6790628013825127916L;
 
@@ -215,6 +215,10 @@ public class StkArticleLot extends AbstractTimedData {
 
 	@Override
 	protected String makeIdentif() {
+		return toId(artPic, lotPic);
+	}
+	
+	public static String toId(String artPic, String lotPic){
 		return artPic +"_"+lotPic;
 	}
 }

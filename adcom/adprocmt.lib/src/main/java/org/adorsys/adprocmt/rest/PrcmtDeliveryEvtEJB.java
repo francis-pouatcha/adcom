@@ -78,4 +78,8 @@ public class PrcmtDeliveryEvtEJB
 
       return entity;
    }
+   
+   public List<PrcmtDeliveryEvt> findByLstnrNameAndEvtName(String lstnrName, String evtName){
+	   return repository.findByLstnrNameAndEvtName(lstnrName, evtName);
+   }
 }

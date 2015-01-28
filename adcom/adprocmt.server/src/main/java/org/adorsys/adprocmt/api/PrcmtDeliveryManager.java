@@ -1,15 +1,32 @@
 package org.adorsys.adprocmt.api;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
+import org.adorsys.adbase.enums.BaseHistoryTypeEnum;
+import org.adorsys.adbase.enums.BaseProcStepEnum;
 import org.adorsys.adbase.enums.BaseProcessStatusEnum;
+import org.adorsys.adbase.jpa.SecUserSession;
 import org.adorsys.adbase.security.SecurityUtil;
-import org.adorsys.adcore.utils.SequenceGenerator;
+import org.adorsys.adcore.utils.BigDecimalUtils;
+import org.adorsys.adprocmt.jpa.PrcmtAbstractDlvry2PO;
 import org.adorsys.adprocmt.jpa.PrcmtDelivery;
+import org.adorsys.adprocmt.jpa.PrcmtDeliveryHstry;
+import org.adorsys.adprocmt.jpa.PrcmtDlvry2Ou;
+import org.adorsys.adprocmt.jpa.PrcmtDlvryArtPrcssng;
+import org.adorsys.adprocmt.jpa.PrcmtDlvryItem;
+import org.adorsys.adprocmt.jpa.PrcmtDlvryItem2Ou;
+import org.adorsys.adprocmt.jpa.PrcmtDlvryItem2POItem;
+import org.adorsys.adprocmt.jpa.PrcmtDlvryItem2StrgSctn;
 import org.adorsys.adprocmt.rest.PrcmtDeliveryEJB;
+import org.adorsys.adprocmt.rest.PrcmtDeliveryHstryEJB;
+import org.adorsys.adprocmt.rest.PrcmtDlvryArtPrcssngEJB;
+import org.adorsys.adprocmt.rest.PrcmtDlvryItemEJB;
+import org.apache.commons.lang3.StringUtils;
 
 @Stateless
 public class PrcmtDeliveryManager {
@@ -18,35 +35,383 @@ public class PrcmtDeliveryManager {
 	private PrcmtDeliveryEJB deliveryEJB;
 	
 	@Inject
+	private PrcmtDlvryItemEJB dlvryItemEJB; 
+	
+	@Inject
 	private SecurityUtil securityUtil;
 
-	/**
-	 * Initializes a delivery.
-	 * 
-	 * @param delivery
-	 * @return
-	 */
-	public PrcmtDelivery newDelivery(PrcmtDelivery delivery){
-		// Create the delivery
-		Date now = new Date();
-		String currentLoginName = securityUtil.getCurrentLoginName();
-		delivery.setCreatingUsr(currentLoginName);
-		delivery.setCreationDt(now);
-		delivery.setDlvryStatus(BaseProcessStatusEnum.ONGOING.name());
-		return deliveryEJB.create(delivery);
-	}
+	@Inject
+	private PrcmtDeliveryHstryEJB deliveryHstryEJB;
+
+	@Inject
+	private PrcmtDlvryArtProcessor dlvryArtProcessor;
+
+	@Inject
+	private PrcmtDlvryArtPrcssngEJB artPrcssngEJB;
+
 	
 	/**
-	 * Add items to a delivery, updating the delivery value.
+	 * Process an incoming delivery. The delivery holds :
+	 * 	- a partial list of delivery items holders,
+	 * 	- a complete list of receiving organization units holders,
 	 * 
-	 * @param deliveryItemsHolder
+	 * The
+	 * @param deliveryHolder
 	 * @return
 	 */
-	public PrcmtDelivery addDeliveryItems(PrcmtDeliveryItemsHolder deliveryItemsHolder){
-//		deliveryEJB.findById(id)
+	public PrcmtDeliveryHolder updateDelivery(PrcmtDeliveryHolder deliveryHolder){
+		PrcmtDelivery delivery = deliveryHolder.getDelivery();
+		String currentLoginName = securityUtil.getCurrentLoginName();
+		Date now = new Date();
 		
-		deliveryItemsHolder.getDelieryItems();
+		// Create the delivery object if necessary
+		delivery = createDeliveryObject(delivery, currentLoginName, now);
+		deliveryHolder.setDelivery(delivery);
+		boolean modified = false;
 		
-		return null;
+		modified |= synchProcmtOrderNbrs(deliveryHolder);
+		
+		modified |= synchRcvngOrgUnits(deliveryHolder);
+		
+		boolean itemModified = deleteHolders(deliveryHolder);
+		
+		List<PrcmtDeliveryItemHolder> deliveryItems = deliveryHolder.getDeliveryItems();
+		if(deliveryItems==null) deliveryItems=new ArrayList<PrcmtDeliveryItemHolder>();
+		
+		for (PrcmtDeliveryItemHolder itemHolder : deliveryItems) {
+			PrcmtDlvryItem dlvryItem = itemHolder.getDlvryItem();
+
+			if(StringUtils.isBlank(dlvryItem.getDlvryNbr()))
+				dlvryItem.setDlvryNbr(delivery.getDlvryNbr());
+			// check presence of the article pic
+			if(StringUtils.isBlank(dlvryItem.getArtPic()))
+				throw new IllegalStateException("Missing article identification code.");
+
+			if(StringUtils.isNotBlank(dlvryItem.getId())){
+				// todo check mdified
+				PrcmtDlvryItem persDi = dlvryItemEJB.findById(dlvryItem.getId());
+				if(persDi==null) throw new IllegalStateException("Missing delivery item with id: " + dlvryItem.getId());
+				if(!dlvryItem.contentEquals(persDi)){
+					dlvryItem.copyTo(persDi);
+					dlvryItem = dlvryItemEJB.update(persDi);
+					itemModified = true;
+				}
+			} else {
+				if (StringUtils.isNotBlank(dlvryItem.getDlvryItemNbr())) {
+					PrcmtDlvryItem persDi = dlvryItemEJB.findById(dlvryItem.getId());
+					if(persDi!=null){
+						if(!dlvryItem.contentEquals(persDi)){
+							dlvryItem.copyTo(persDi);
+							dlvryItem = dlvryItemEJB.update(persDi);
+							itemModified = true;
+						}
+					} else {
+						dlvryItem = dlvryItemEJB.create(dlvryItem);
+						itemModified = true;
+					}
+				} else {
+					dlvryItem = dlvryItemEJB.create(dlvryItem);
+					itemModified = true;
+				}
+			}
+
+			itemHolder.setDlvryItem(dlvryItem);
+			itemModified |= processItems2PoItems(itemHolder);
+			itemModified |= processItems2RecvngOus(itemHolder);
+			itemModified |= processItem2StrgSctns(itemHolder);
+			
+		}
+
+		
+		
+		if(itemModified){
+			// Create or update the delivery.
+			recomputeDelivery(delivery);
+			delivery.setDlvryStatus(BaseProcessStatusEnum.ONGOING.name());
+			delivery = deliveryEJB.update(delivery);
+			deliveryHolder.setDelivery(delivery);		
+		}
+		if(modified || itemModified){
+			createModifiedDeliveryHistory(delivery);
+		}
+		return deliveryHolder;
+	}
+	
+	private boolean deleteHolders(PrcmtDeliveryHolder deliveryHolder){
+		List<PrcmtDeliveryItemHolder> deliveryItems = deliveryHolder.getDeliveryItems();
+		List<PrcmtDeliveryItemHolder> diToRemove = new ArrayList<PrcmtDeliveryItemHolder>();
+		boolean modified = false;
+		for (PrcmtDeliveryItemHolder itemHolder : deliveryItems) {
+			if(itemHolder.isDeleted()){
+				PrcmtDlvryItem dlvryItem = itemHolder.getDlvryItem();
+				String id = StringUtils.isNotBlank(dlvryItem.getId())?dlvryItem.getId():dlvryItem.getDlvryItemNbr();
+				if(StringUtils.isNotBlank(id)){
+					dlvryItemEJB.deleteById(dlvryItem.getId());
+					modified = true;					
+				}
+				diToRemove.add(itemHolder);
+			}
+		}
+		deliveryItems.removeAll(diToRemove);
+		return modified;
+	}
+
+	private boolean processItem2StrgSctns(PrcmtDeliveryItemHolder itemHolder) {
+		PrcmtDlvryItem dlvryItem = itemHolder.getDlvryItem();
+		String dlvryItemNbr = dlvryItem.getDlvryItemNbr();
+		boolean modified = false;
+		List<PrcmtDlvryItem2StrgSctnHolder> strgSctns = itemHolder.getStrgSctns();
+		List<PrcmtDlvryItem2StrgSctnHolder> itemsToRemove = new ArrayList<PrcmtDlvryItem2StrgSctnHolder>();
+		for (PrcmtDlvryItem2StrgSctnHolder ouHolder : strgSctns) {
+			PrcmtDlvryItem2StrgSctn strgSctn = ouHolder.getStrgSctn();
+			PrcmtDlvryItem2StrgSctn persStrgSctn = dlvryItemEJB.findDlvryItem2StrgSctn(dlvryItemNbr, strgSctn.getStrgSection());
+			if(ouHolder.isDeleted()){
+				if(persStrgSctn!=null){
+					dlvryItemEJB.deletePoItem(dlvryItemNbr, strgSctn.getStrgSection());
+					modified=true;
+				}
+				itemsToRemove.add(ouHolder);
+				continue;
+			}
+			if(persStrgSctn==null){
+				strgSctn = dlvryItemEJB.addDlvryItem2StrgSctn(dlvryItem, strgSctn.getStrgSection(), strgSctn.getStkQtyPreDlvry(), strgSctn.getQtyStrd());
+				ouHolder.setStrgSctn(strgSctn);
+				modified=true;
+			} else {
+				if(!strgSctn.contentEquals(persStrgSctn)){
+					strgSctn = dlvryItemEJB.updateDlvryItem2StrgSctn(dlvryItem, strgSctn);
+					ouHolder.setStrgSctn(strgSctn);
+					modified=true;
+				}
+			}
+		}
+		strgSctns.removeAll(itemsToRemove);
+		return modified;
+	}
+
+	private boolean processItems2RecvngOus(PrcmtDeliveryItemHolder itemHolder) {
+		PrcmtDlvryItem dlvryItem = itemHolder.getDlvryItem();
+		String dlvryItemNbr = dlvryItem.getDlvryItemNbr();
+		boolean modified = false;
+		List<PrcmtDlvryItem2RcvngOrgUnitHolder> recvngOus = itemHolder.getRecvngOus();
+		List<PrcmtDlvryItem2RcvngOrgUnitHolder> itemsToRemove = new ArrayList<PrcmtDlvryItem2RcvngOrgUnitHolder>();
+		for (PrcmtDlvryItem2RcvngOrgUnitHolder ouHolder : recvngOus) {
+			PrcmtDlvryItem2Ou orgUnit = ouHolder.getRcvngOrgUnit();
+			PrcmtDlvryItem2Ou persOrgUnit = dlvryItemEJB.findDlvryItem2Ou(dlvryItemNbr, orgUnit.getRcvngOrgUnit());
+			if(ouHolder.isDeleted()){
+				if(persOrgUnit!=null){
+					dlvryItemEJB.deletePoItem(dlvryItemNbr, orgUnit.getRcvngOrgUnit());
+					modified=true;
+				}
+				itemsToRemove.add(ouHolder);
+				continue;
+			}
+			if(persOrgUnit==null){
+				orgUnit = dlvryItemEJB.addDlvryItem2Ou(dlvryItem, orgUnit.getRcvngOrgUnit(), orgUnit.getQtyDlvrd(), orgUnit.getFreeQty());
+				ouHolder.setRcvngOrgUnit(orgUnit);
+				modified=true;
+			} else {
+				if(!orgUnit.contentEquals(persOrgUnit)){
+					orgUnit = dlvryItemEJB.updateDlvryItem2Ou(dlvryItem, orgUnit);
+					ouHolder.setRcvngOrgUnit(orgUnit);
+					modified=true;
+				}
+			}
+		}
+		recvngOus.removeAll(itemsToRemove);
+		return modified;
+	}
+
+	private boolean processItems2PoItems(PrcmtDeliveryItemHolder itemHolder) {
+		PrcmtDlvryItem dlvryItem = itemHolder.getDlvryItem();
+		String dlvryItemNbr = dlvryItem.getDlvryItemNbr();
+		boolean modified = false;
+		List<PrcmtDlvryItem2PoItemHolder> poItems = itemHolder.getPoItems();
+		List<PrcmtDlvryItem2PoItemHolder> itemsToRemove = new ArrayList<PrcmtDlvryItem2PoItemHolder>();
+		for (PrcmtDlvryItem2PoItemHolder poItemHolder : poItems) {
+			PrcmtDlvryItem2POItem poItem = poItemHolder.getPoItem();
+			PrcmtDlvryItem2POItem persPOItem = dlvryItemEJB.findDlvryItem2POItem(dlvryItemNbr, poItem.getPoItemNbr());
+			if(poItemHolder.isDeleted()){
+				if(persPOItem!=null){
+					dlvryItemEJB.deletePoItem(dlvryItemNbr, poItem.getPoItemNbr());
+					modified=true;
+				}
+				itemsToRemove.add(poItemHolder);
+				continue;
+			}
+			if(persPOItem==null){
+				poItem = dlvryItemEJB.addDlvryItem2POItem(dlvryItem, poItem.getPoItemNbr(), poItem.getQtyOrdered(), poItem.getQtyDlvrd(), poItem.getFreeQty());
+				poItemHolder.setPoItem(poItem);
+				modified=true;
+			} else {
+				if(!poItem.contentEquals(persPOItem)){
+					poItem = dlvryItemEJB.updateDlvryItem2POItem(dlvryItem, poItem);
+					poItemHolder.setPoItem(poItem);
+					modified=true;
+				}
+			}
+		}
+		poItems.removeAll(itemsToRemove);
+		return modified;
+	}
+
+	private boolean synchRcvngOrgUnits(PrcmtDeliveryHolder deliveryHolder){
+		PrcmtDelivery delivery = deliveryHolder.getDelivery();
+		String dlvryNbr = delivery.getDlvryNbr();
+		boolean modified = false;
+		
+		// Process associated org units.
+		List<PrcmtDlvryRcvngOrgUnitHolder> rcvngOrgUnits = deliveryHolder.getRcvngOrgUnits();
+		List<PrcmtDlvryRcvngOrgUnitHolder> orgUnitToRemove = new ArrayList<PrcmtDlvryRcvngOrgUnitHolder>();
+		for (PrcmtDlvryRcvngOrgUnitHolder ouHolder : rcvngOrgUnits) {
+			PrcmtDlvry2Ou dlvry2Ou = deliveryEJB.findOrgUnit(dlvryNbr, ouHolder.getRcvngOrgUnit().getRcvngOrgUnit());
+			if(ouHolder.isDeleted()){
+				if(dlvry2Ou!=null){
+					deliveryEJB.deleteOrgUnit(dlvry2Ou.getId());
+					orgUnitToRemove.add(ouHolder);
+					modified = true;
+					continue;
+				}
+			}
+			if(dlvry2Ou==null){
+				dlvry2Ou = deliveryEJB.addOrgUnit(delivery, dlvryNbr, ouHolder.getRcvngOrgUnit().getQtyPct());
+				modified = true;
+			} else {
+				PrcmtDlvry2Ou rcvngOrgUnit = ouHolder.getRcvngOrgUnit();
+				if(!rcvngOrgUnit.contentEquals(dlvry2Ou)){
+					rcvngOrgUnit.copyTo(dlvry2Ou);
+					deliveryEJB.updateOrgUnit(dlvry2Ou);
+					modified = true;
+				}
+			}
+		}
+		rcvngOrgUnits.removeAll(orgUnitToRemove);
+		return modified;
+	}
+	
+	private boolean synchProcmtOrderNbrs(PrcmtDeliveryHolder deliveryHolder){
+		PrcmtDelivery delivery = deliveryHolder.getDelivery();
+		String dlvryNbr = delivery.getDlvryNbr();
+		boolean modified = false;
+		// Process associated orders
+		List<PrcmtOrderNbrHolder> procmtOrderNbrs = deliveryHolder.getProcmtOrderNbrs();
+		List<PrcmtOrderNbrHolder> poToRemove = new ArrayList<PrcmtOrderNbrHolder>();
+		for (PrcmtOrderNbrHolder poNbrHolder : procmtOrderNbrs) {
+			PrcmtAbstractDlvry2PO dlvryPO = deliveryEJB.findProcOrder(dlvryNbr, poNbrHolder.getProcmtOrderNbr());
+			if(poNbrHolder.isDeleted()){
+				if(dlvryPO!=null){
+					deliveryEJB.deleteProcOrder(dlvryPO.getId());
+				}
+				poToRemove.add(poNbrHolder);
+				modified = true;
+				continue;
+			}
+			if(dlvryPO==null){
+				dlvryPO = deliveryEJB.addProcOrder(delivery, poNbrHolder.getProcmtOrderNbr());
+				modified = true;
+			}
+		}
+		procmtOrderNbrs.removeAll(poToRemove);
+		
+		return modified;
+		
+	}
+	
+	private PrcmtDelivery createDeliveryObject(PrcmtDelivery delivery, String currentLoginName, Date now){
+		if(StringUtils.isBlank(delivery.getId())){
+			delivery.setCreatingUsr(currentLoginName);
+			delivery.setCreationDt(now);
+			delivery.setDlvryStatus(BaseProcessStatusEnum.ONGOING.name());
+			delivery = deliveryEJB.create(delivery);
+			createInitialDeliveryHistory(delivery);
+		}
+		return delivery;
+	}
+	
+	public PrcmtDeliveryHolder closeDelivery(PrcmtDeliveryHolder deliveryHolder){
+		deliveryHolder = updateDelivery(deliveryHolder);
+		PrcmtDelivery delivery = deliveryHolder.getDelivery();
+		List<PrcmtDlvryArtPrcssng> list = artPrcssngEJB.findByDlvryNbr(delivery.getDlvryNbr());
+		if(!list.isEmpty()){
+			for (PrcmtDlvryArtPrcssng artPrcssng : list) {
+				dlvryArtProcessor.process(artPrcssng.getId());
+			}
+		} else {
+			recomputeDelivery(delivery);
+			delivery.setDlvryStatus(BaseProcessStatusEnum.CLOSED.name());
+			delivery = deliveryEJB.update(delivery);
+			deliveryHolder.setDelivery(delivery);
+			createClosingDeliveryHistory(delivery);// Status closed
+		}
+		return deliveryHolder;
+	}	
+	
+	private void recomputeDelivery(final PrcmtDelivery delivery){
+		// update delivery object.
+		String dlvryNbr = delivery.getDlvryNbr();
+		Long count = dlvryItemEJB.countByDlvryNbr(dlvryNbr);
+		int start = 0;
+		int max = 100;
+		delivery.clearAmts();
+		while(start<=count){
+			List<PrcmtDlvryItem> list = dlvryItemEJB.findByDlvryNbr(dlvryNbr, start, max);
+			start +=max;
+			for (PrcmtDlvryItem prcmtDlvryItem : list) {
+				delivery.addGrossPPPreTax(prcmtDlvryItem.getGrossPPPreTax());
+				delivery.addRebate(prcmtDlvryItem.getRebateAmt());
+				delivery.addNetPPPreTax(prcmtDlvryItem.getNetPPPreTax());
+				delivery.addVatAmount(prcmtDlvryItem.getVatAmt());
+				delivery.addNetPPTaxIncl(prcmtDlvryItem.getNetPPTaxIncl());
+			}
+		}
+		delivery.evlte();
+	}
+	
+	private void createClosingDeliveryHistory(PrcmtDelivery delivery){
+		SecUserSession secUserSession = securityUtil.getCurrentSecUserSession();
+		PrcmtDeliveryHstry deliveryHstry = new PrcmtDeliveryHstry();
+		deliveryHstry.setAddtnlInfo(DeliveryInfo.prinInfo(delivery));
+		deliveryHstry.setComment(BaseHistoryTypeEnum.CLOSED.name());
+		deliveryHstry.setEntIdentif(delivery.getId());
+		deliveryHstry.setEntStatus(delivery.getDlvryStatus());
+		deliveryHstry.setHstryDt(new Date());
+		deliveryHstry.setHstryType(BaseHistoryTypeEnum.CLOSED.name());
+		
+		deliveryHstry.setOrignLogin(secUserSession.getLoginName());
+		deliveryHstry.setOrignWrkspc(secUserSession.getWorkspaceId());
+		deliveryHstry.setProcStep(BaseProcStepEnum.CLOSING.name());
+		deliveryHstryEJB.create(deliveryHstry);
+	}
+
+	private void createInitialDeliveryHistory(PrcmtDelivery delivery){
+		SecUserSession secUserSession = securityUtil.getCurrentSecUserSession();
+		PrcmtDeliveryHstry deliveryHstry = new PrcmtDeliveryHstry();
+		deliveryHstry.setComment(BaseHistoryTypeEnum.INITIATED.name());
+		deliveryHstry.setAddtnlInfo(DeliveryInfo.prinInfo(delivery));
+		deliveryHstry.setEntIdentif(delivery.getId());
+		deliveryHstry.setEntStatus(delivery.getDlvryStatus());
+		deliveryHstry.setHstryDt(new Date());
+		deliveryHstry.setHstryType(BaseHistoryTypeEnum.INITIATED.name());
+		
+		deliveryHstry.setOrignLogin(secUserSession.getLoginName());
+		deliveryHstry.setOrignWrkspc(secUserSession.getWorkspaceId());
+		deliveryHstry.setProcStep(BaseProcStepEnum.INITIATING.name());
+		deliveryHstryEJB.create(deliveryHstry);
+	}
+
+	private void createModifiedDeliveryHistory(PrcmtDelivery delivery){
+		SecUserSession secUserSession = securityUtil.getCurrentSecUserSession();
+		PrcmtDeliveryHstry deliveryHstry = new PrcmtDeliveryHstry();
+		deliveryHstry.setComment(BaseHistoryTypeEnum.MODIFIED.name());
+		deliveryHstry.setAddtnlInfo(DeliveryInfo.prinInfo(delivery));
+		deliveryHstry.setEntIdentif(delivery.getId());
+		deliveryHstry.setEntStatus(delivery.getDlvryStatus());
+		deliveryHstry.setHstryDt(new Date());
+		deliveryHstry.setHstryType(BaseHistoryTypeEnum.MODIFIED.name());
+		
+		deliveryHstry.setOrignLogin(secUserSession.getLoginName());
+		deliveryHstry.setOrignWrkspc(secUserSession.getWorkspaceId());
+		deliveryHstry.setProcStep(BaseProcStepEnum.MODIFYING.name());
+		deliveryHstryEJB.create(deliveryHstry);
 	}
 }

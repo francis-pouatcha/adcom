@@ -78,4 +78,7 @@ public class PrcmtDlvryEvtLstnrEJB
 
       return entity;
    }
+	public List<PrcmtDlvryEvtLstnr> findByEvtName(String evtName){
+		return repository.findByEvtName(evtName);
+	}   
 }

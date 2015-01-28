@@ -78,4 +78,17 @@ public class PrcmtPOItemEJB
 
       return entity;
    }
+   
+   public List<PrcmtPOItem> findByPoNbrAndArtPic(String poNbr, String artPic){
+	   return repository.findByPoNbrAndArtPic(poNbr, artPic);
+   }
+   public List<PrcmtPOItem> findByPoNbrAndArtPicAndRcvngOrgUnit(String poNbr, String artPic, String rcvngOrgUnit){
+	   return repository.findByPoNbrAndArtPicAndRcvngOrgUnit(poNbr, artPic, rcvngOrgUnit);
+   }
+   public List<PrcmtPOItem> findByPoNbrAndArtPicAndStrgSection(String poNbr, String artPic, String strgSection){
+	   return repository.findByPoNbrAndArtPicAndStrgSection(poNbr, artPic, strgSection);
+   }
+   public PrcmtPOItem findByIdentifFields(String poNbr, String artPic, String rcvngOrgUnit, String strgSection){
+	   return findById(PrcmtPOItem.toId(poNbr, artPic, rcvngOrgUnit, strgSection));
+   }
 }

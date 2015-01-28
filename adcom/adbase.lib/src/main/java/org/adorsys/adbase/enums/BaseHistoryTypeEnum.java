@@ -6,9 +6,14 @@ import org.adorsys.javaext.description.Description;
 public enum BaseHistoryTypeEnum
 {
    @Description("BaseHistoryTypeEnum_INFO_description")
-   INFO, @Description("BaseHistoryTypeEnum_APPROVAL_REQUESTED_description")
-   APPROVAL_REQUESTED, @Description("BaseHistoryTypeEnum_APPROVED_description")
-   APPROVED, @Description("BaseHistoryTypeEnum_FAILED_APPROVAL_description")
+   INFO, 
+   @Description("BaseHistoryTypeEnum_INITIATED_description")
+   INITIATED, 
+   @Description("BaseHistoryTypeEnum_APPROVAL_REQUESTED_description")
+   APPROVAL_REQUESTED, 
+   @Description("BaseHistoryTypeEnum_APPROVED_description")
+   APPROVED, 
+   @Description("BaseHistoryTypeEnum_FAILED_APPROVAL_description")
    FAILED_APPROVAL, @Description("BaseHistoryTypeEnum_DENIED_APPROVAL_description")
    DENIED_APPROVAL, @Description("BaseHistoryTypeEnum_FROZEN_APPROVING_description")
    FROZEN_APPROVING, @Description("BaseHistoryTypeEnum_FROZEN_ABANDONED_description")

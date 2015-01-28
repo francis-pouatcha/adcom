@@ -2,9 +2,11 @@ package org.adorsys.adprocmt.jpa;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.PrePersist;
 import javax.validation.constraints.NotNull;
 
 import org.adorsys.adcore.jpa.AbstractMvmtData;
+import org.apache.commons.lang3.StringUtils;
 
 @Entity
 public class PrcmtDlvryEvtLstnr extends AbstractMvmtData {
@@ -16,8 +18,15 @@ public class PrcmtDlvryEvtLstnr extends AbstractMvmtData {
 	private String lstnrName;
 
 	@Column
+	@NotNull
 	private String evtName;
 
+	@PrePersist
+	public void prePersist() {
+		if (StringUtils.isBlank(getId()))
+			setId(makeId());
+	}
+	
 	public String getLstnrName() {
 		return lstnrName;
 	}
@@ -32,5 +41,13 @@ public class PrcmtDlvryEvtLstnr extends AbstractMvmtData {
 
 	public void setEvtName(String evtName) {
 		this.evtName = evtName;
+	}
+	
+	public String makeId(){
+		return toId(lstnrName, evtName);
+	}
+	
+	public static String toId(String lstnrName, String evtName){
+		return lstnrName + "_" + evtName;
 	}
 }

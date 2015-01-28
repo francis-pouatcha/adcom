@@ -56,8 +56,26 @@ public class CalendarUtil {
 		
 		return new Instant(endDay, timeZoneId, dayStr, weekStr, monthStr, yearStr);
 	}
+	private static TimeZone DEFAULT_TIMEZONE = TimeZone.getTimeZone("Europe/London");
+	public static String getDayStr(Date date, String timeZoneId){
+		TimeZone tz = StringUtils.isBlank(timeZoneId)?DEFAULT_TIMEZONE:TimeZone.getTimeZone(timeZoneId);
+		GregorianCalendar calendar = new GregorianCalendar(tz);
+		calendar.setTime(date);
+		return DateFormatUtils.format(calendar, DAY_PATTERN);
+	}
 	
+	public static boolean isSameDay(Date d, Date o){
+		if(d==o) return true;
+		if(d==null || o==null) return false;
+		return DateUtils.isSameDay(d,o);
+	}
 
+	public static boolean isSameInstant(Date d, Date o){
+		if(d==o) return true;
+		if(d==null || o==null) return false;
+		return DateUtils.isSameInstant(d, o);
+	}
+	
 	/**
 	 * Parses the.
 	 * 

@@ -78,4 +78,10 @@ public class PrcmtProcOrderEJB
 
       return entity;
    }
+   
+   public PrcmtProcOrder findByPoNbr(String poNbr)
+   {
+      return repository.findBy(poNbr);
+   }
+   
 }

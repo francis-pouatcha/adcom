@@ -4,12 +4,17 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 import org.adorsys.adcore.jpa.AbstractMvmtData;
+import org.adorsys.adcore.jpa.AmtOrPct;
+import org.adorsys.adcore.jpa.CurrencyEnum;
+import org.adorsys.adcore.utils.FinancialOps;
 import org.adorsys.javaext.description.Description;
 import org.adorsys.javaext.format.DateFormatPattern;
 import org.adorsys.javaext.format.NumberFormatType;
@@ -51,7 +56,8 @@ public class PrcmtAbstractDelivery extends AbstractMvmtData {
 
 	@Column
 	@Description("PrcmtDelivery_dlvryCur_description")
-	private String dlvryCur;
+	@NotNull
+	private String dlvryCur = CurrencyEnum.XAF.name();
 
 	@Column
 	@Description("PrcmtDelivery_grossPPPreTax_description")
@@ -73,6 +79,12 @@ public class PrcmtAbstractDelivery extends AbstractMvmtData {
 	@Description("PrcmtDelivery_netPPTaxIncl_description")
 	private BigDecimal netPPTaxIncl;
 
+	@Column
+	@Description("PrcmtDelivery_pymtDscntType_description")
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private AmtOrPct pymtDscntType;
+	
 	@Column
 	@Description("PrcmtDelivery_pymtDscntPct_description")
 	private BigDecimal pymtDscntPct;
@@ -283,6 +295,15 @@ public class PrcmtAbstractDelivery extends AbstractMvmtData {
 	public void setDlvryStatus(String dlvryStatus) {
 		this.dlvryStatus = dlvryStatus;
 	}
+	
+	public AmtOrPct getPymtDscntType() {
+		return pymtDscntType;
+	}
+
+	public void setPymtDscntType(AmtOrPct pymtDscntType) {
+		this.pymtDscntType = pymtDscntType;
+	}
+
 	public void copyTo(PrcmtAbstractDelivery target){
 		target.creatingUsr = creatingUsr;
 		target.creationDt = creationDt;
@@ -300,10 +321,57 @@ public class PrcmtAbstractDelivery extends AbstractMvmtData {
 		target.orderDt = orderDt;
 		target.pymtDscntAmt = pymtDscntAmt;
 		target.pymtDscntPct = pymtDscntPct;
+		target.pymtDscntType = pymtDscntType;
 		target.rcvngOrgUnit = rcvngOrgUnit;
 		target.rdngDscntAmt = rdngDscntAmt;
 		target.rebate = rebate;
 		target.supplier = supplier;
 		target.vatAmount = vatAmount;
 	}
+	public void evlte() {
+		if(AmtOrPct.PERCENT.equals(this.pymtDscntType)){
+			if(this.pymtDscntPct==null)this.pymtDscntPct = BigDecimal.ZERO;
+			this.pymtDscntAmt = FinancialOps.amtFromPrct(this.netPPTaxIncl, this.pymtDscntPct, this.dlvryCur);
+		}
+		if(this.pymtDscntAmt==null) this.pymtDscntAmt=BigDecimal.ZERO;
+		
+		this.netPurchAmt = FinancialOps.substract(this.netPPTaxIncl, this.pymtDscntAmt, this.dlvryCur);
+		
+		if(this.rdngDscntAmt==null) this.rdngDscntAmt=BigDecimal.ZERO;
+		this.netAmtToPay = FinancialOps.substract(this.netPurchAmt, this.rdngDscntAmt, this.dlvryCur);
+	}
+	
+	public void clearAmts() {
+		this.grossPPPreTax=BigDecimal.ZERO;
+		this.rebate = BigDecimal.ZERO;
+		this.netPPPreTax=BigDecimal.ZERO;
+		this.vatAmount=BigDecimal.ZERO;
+		this.netPPTaxIncl=BigDecimal.ZERO;
+	}
+
+	public void addGrossPPPreTax(BigDecimal grossPPPreTax) {
+		if(this.grossPPPreTax==null)this.grossPPPreTax=BigDecimal.ZERO;
+		this.grossPPPreTax = this.grossPPPreTax.add(grossPPPreTax);
+	}
+
+	public void addRebate(BigDecimal rebate) {
+		if(this.rebate==null) this.rebate = BigDecimal.ZERO;
+		this.rebate=this.rebate.add(rebate);
+	}
+
+	public void addNetPPPreTax(BigDecimal netPPPreTax) {
+		if(this.netPPPreTax==null) this.netPPPreTax=BigDecimal.ZERO;
+		this.netPPPreTax = this.netPPPreTax.add(netPPPreTax);
+	}
+
+	public void addVatAmount(BigDecimal vatAmt) {
+		if(this.vatAmount==null)this.vatAmount=BigDecimal.ZERO;
+		this.vatAmount = this.vatAmount.add(vatAmt);
+	}
+
+	public void addNetPPTaxIncl(BigDecimal netPPTaxIncl) {
+		if(this.netPPTaxIncl==null)this.netPPTaxIncl=BigDecimal.ZERO;
+		this.netPPTaxIncl=this.netPPTaxIncl.add(netPPTaxIncl);
+	}
+	
 }

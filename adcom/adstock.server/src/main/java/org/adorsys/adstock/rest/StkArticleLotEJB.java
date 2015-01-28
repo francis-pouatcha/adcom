@@ -1,6 +1,5 @@
 package org.adorsys.adstock.rest;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -79,8 +78,8 @@ public class StkArticleLotEJB
 
       return entity;
    }
-   public StkArticleLot findByIdentif(String identif, Date validOn){
-	   List<StkArticleLot> resultList = repository.findByIdentif(identif, validOn).orderAsc("validFrom").maxResults(1).getResultList();
+   public StkArticleLot findByIdentif(String identif){
+	   List<StkArticleLot> resultList = repository.findByIdentif(identif).maxResults(1).getResultList();
 	   if(resultList.isEmpty()) return null;
 	   return resultList.iterator().next();
    }

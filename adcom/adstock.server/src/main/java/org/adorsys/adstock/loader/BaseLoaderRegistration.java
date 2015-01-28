@@ -21,16 +21,10 @@ public class BaseLoaderRegistration {
 	private DataSheetLoader dataSheetLoader;
 	@Inject
 	private StkSectionLoader stkSectionLoader;
-	@Inject
-	private StkArticleLotLoader stkArticleLotLoader;
-	@Inject
-	private StkArtLotSectionLoader stkArtLotSectionLoader;
 	
 	@PostConstruct
 	public void postConstruct(){
 		dataSheetLoader.registerLoader(StkSectionLoader.class.getSimpleName(), stkSectionLoader);
-		dataSheetLoader.registerLoader(StkArticleLotLoader.class.getSimpleName(), stkArticleLotLoader);
-		dataSheetLoader.registerLoader(StkArtLotSectionLoader.class.getSimpleName(), stkArtLotSectionLoader);
 		createTemplate();
 	}
 
@@ -44,8 +38,6 @@ public class BaseLoaderRegistration {
 	public void createTemplate(){
 		HSSFWorkbook workbook = new HSSFWorkbook();
 		stkSectionLoader.createTemplate(workbook);
-		stkArticleLotLoader.createTemplate(workbook);
-		stkArtLotSectionLoader.createTemplate(workbook);
 		dataSheetLoader.exportTemplate(workbook);
 	}
 	

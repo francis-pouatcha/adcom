@@ -4,11 +4,15 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.adorsys.javaext.description.Description;
+import org.apache.commons.lang3.StringUtils;
+import org.jgroups.util.UUID;
 
 @MappedSuperclass
 public abstract class AbstractEntityHistory extends AbstractEntity {
@@ -52,11 +56,19 @@ public abstract class AbstractEntityHistory extends AbstractEntity {
 
 	@Column
 	@Description("AbstractEntityHistory_comment_description")
+	@Size(max = 256)
 	private String comment;
 
 	@Column
 	@Description("AbstractEntityHistory_addtnlInfo_description")
+	@Size(max = 256)
 	private String addtnlInfo;
+	
+	@PrePersist
+	public void prePersist(){
+		if(StringUtils.isBlank(getId()))
+			setId(UUID.randomUUID().toString());
+	}
 
 	public String getEntIdentif() {
 		return entIdentif;
@@ -129,4 +141,17 @@ public abstract class AbstractEntityHistory extends AbstractEntity {
 	public void setAddtnlInfo(final String addtnlInfo) {
 		this.addtnlInfo = addtnlInfo;
 	}
+	
+	public void copyTo(AbstractEntityHistory target){
+		target.addtnlInfo=addtnlInfo;
+		target.comment = comment;
+		target.entIdentif=entIdentif;
+		target.entStatus=entStatus;
+		target.hstryDt=hstryDt;
+		target.hstryType=hstryType;
+		target.orignLogin=orignLogin;
+		target.orignWrkspc=orignWrkspc;
+		target.procStep=procStep;
+	}
+
 }
