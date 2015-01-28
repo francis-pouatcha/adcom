@@ -4,6 +4,9 @@
     <description>Forge Persistence Unit</description>
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
     <jta-data-source>java:jboss/datasources/ADDS</jta-data-source>
+    <class>org.adorsys.adcore.jpa.AbstractEntity</class>
+    <class>org.adorsys.adcore.jpa.AbstractIdentifData</class>
+    <class>org.adorsys.adcore.jpa.AbstractTimedData</class>
     <class>org.adorsys.adbase.jpa.ConnectionHistory</class>
     <class>org.adorsys.adbase.jpa.ConverterCurrRate</class>
     <class>org.adorsys.adbase.jpa.Country</class>
