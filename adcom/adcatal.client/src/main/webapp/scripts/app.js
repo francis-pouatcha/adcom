@@ -23,7 +23,10 @@ angular.module('AdCatal', [
 .config(['$routeProvider', '$httpProvider','$translateProvider','$translatePartialLoaderProvider',
          function($routeProvider,$httpProvider,$translateProvider,$translatePartialLoaderProvider) {
     $routeProvider
-      .when('/',{templateUrl:'views/landing.html',controller:'LandingPageController'})
+      .when('/',{templateUrl:'views/CatalArticle/search.html',controller:'catalArticleCtrl'})
+      .when('/CatalArticles/new',{templateUrl:'views/CatalArticle/create.html',controller:'catalArticleCreateCtrl'})
+      .when('/CatalArticles',{templateUrl:'views/CatalArticle/search.html',controller:'catalArticleCtrl'})
+      .when('/CatalArticles/edit/:CatalArticleId',{templateUrl:'views/CatalArticle/detail.html',controller:'EditCatalArticleController'})
       .when('/CatalArtDetailConfigs',{templateUrl:'views/CatalArtDetailConfig/search.html',controller:'SearchCatalArtDetailConfigController'})
       .when('/CatalArtDetailConfigs/new',{templateUrl:'views/CatalArtDetailConfig/detail.html',controller:'NewCatalArtDetailConfigController'})
       .when('/CatalArtDetailConfigs/edit/:CatalArtDetailConfigId',{templateUrl:'views/CatalArtDetailConfig/detail.html',controller:'EditCatalArtDetailConfigController'})
@@ -36,9 +39,6 @@ angular.module('AdCatal', [
       .when('/CatalArtManufSupps',{templateUrl:'views/CatalArtManufSupp/search.html',controller:'SearchCatalArtManufSuppController'})
       .when('/CatalArtManufSupps/new',{templateUrl:'views/CatalArtManufSupp/detail.html',controller:'NewCatalArtManufSuppController'})
       .when('/CatalArtManufSupps/edit/:CatalArtManufSuppId',{templateUrl:'views/CatalArtManufSupp/detail.html',controller:'EditCatalArtManufSuppController'})
-      .when('/CatalArticles',{templateUrl:'views/CatalArticle/search.html',controller:'SearchCatalArticleController'})
-      .when('/CatalArticles/new',{templateUrl:'views/CatalArticle/detail.html',controller:'NewCatalArticleController'})
-      .when('/CatalArticles/edit/:CatalArticleId',{templateUrl:'views/CatalArticle/detail.html',controller:'EditCatalArticleController'})
       .when('/CatalFamilyFeatMapings',{templateUrl:'views/CatalFamilyFeatMaping/search.html',controller:'SearchCatalFamilyFeatMapingController'})
       .when('/CatalFamilyFeatMapings/new',{templateUrl:'views/CatalFamilyFeatMaping/detail.html',controller:'NewCatalFamilyFeatMapingController'})
       .when('/CatalFamilyFeatMapings/edit/:CatalFamilyFeatMapingId',{templateUrl:'views/CatalFamilyFeatMaping/detail.html',controller:'EditCatalFamilyFeatMapingController'})
