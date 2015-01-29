@@ -69,6 +69,20 @@
                     </div>
 
                     <div class="form-group">
+                        <label class="col-lg-4 ">{{ "Entity_validFrom.title"| translate}} :</label>
+                        <div class="col-lg-8" ng-class="{ 'has-error' : localityForm.validFrom.$invalid }" >
+                            <input type="datime" date-time   ng-model="localityEditCtrl.locality.validFrom" name="validFrom" class="form-control" >
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="col-lg-4 ">{{ "Entity_validTo.title"| translate}} :</label>
+                        <div class="col-lg-8" ng-class="{ 'has-error' : localityForm.validTo.$invalid }" >
+                            <input type="datime" date-time  ng-model="localityEditCtrl.locality.validTo" name="validTo" class="form-control" >
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
                         <label class="col-lg-4"  > </label>
                         <div class="col-lg-8" >
                             <a class="btn-danger btn" href="#/locality/show/{{localityEditCtrl.locality.id}}"  ><i class="glyphicon glyphicon-remove" ></i> {{"Entity_cancel.title" | translate }}</a>

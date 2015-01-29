@@ -83,6 +83,20 @@
                     </div>
 
                     <div class="form-group">
+                        <label class="col-lg-4 ">{{ "Entity_validFrom.title"| translate}} :</label>
+                        <div class="col-lg-8">
+                            <input type="text" disabled value="{{secTermRegistShowCtrl.secTermRegist.validFrom | date : 'dd-MM-yyyy HH:mm'}}" name="validFrom" class="form-control">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="col-lg-4 ">{{ "Entity_validTo.title"| translate}} :</label>
+                        <div class="col-lg-8">
+                            <input type="text" disabled value="{{secTermRegistShowCtrl.secTermRegist.validTo | date : 'dd-MM-yyyy HH:mm'}}" name="validFrom" class="form-control">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
                         <label class="col-lg-4"  > </label>
                         <div class="col-lg-8" >
                             <a class="btn-default btn" href="#/sectermregistr"  ><i class="glyphicon glyphicon-" ></i> {{"Entity_back.title" | translate }}</a>

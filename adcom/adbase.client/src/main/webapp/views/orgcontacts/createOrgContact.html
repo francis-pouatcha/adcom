@@ -103,6 +103,22 @@
                         </div>
                     </div>
                     
+                    
+                    
+                    <div class="form-group">
+                        <label class="col-lg-4 ">{{ "Entity_validFrom.title"| translate}} :</label>
+                        <div class="col-lg-8" ng-class="{ 'has-error' : orgcontactForm.validFrom.$invalid }" >
+                            <input type="datime" date-time  partial="true" ng-model="ocCreateCtrl.orgContact.validFrom" name="validFrom" class="form-control" >
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="col-lg-4 ">{{ "Entity_validTo.title"| translate}} :</label>
+                        <div class="col-lg-8" ng-class="{ 'has-error' : orgcontactForm.validTo.$invalid }" >
+                            <input type="datime" date-time  ng-model="ocCreateCtrl.orgContact.validTo" name="validTo" class="form-control" >
+                        </div>
+                    </div>
+                    
                     <div class="form-group">
                         <label class="col-lg-4"  > </label>
                         <div class="col-lg-8" >
