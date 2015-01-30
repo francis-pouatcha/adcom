@@ -1,0 +1,63 @@
+<div class="container">
+
+    <div class="col-xs-offset-2 col-xs-8">
+        <div class="panel panel-default">
+            <div class="panel-heading"><b>{{ "Entity_create.title"| translate}}</b> </div>
+            <div class="panel-body">
+                <label class="error col-lg-offset-3 alert-danger" >{{stkSectionCreateCtrl.error}} </label>
+                <form  name="stkSectionForm" class="form-horizontal" novalidate="">
+                    <div class="form-group">
+                        <label class="col-lg-4 ">{{"StkSection_parentCode_description.title"| translate}} :</label>
+                        <div class="col-lg-8" ng-class="{ 'has-error' : stkSectionForm.parentCode.$invalid }" >
+                            <input type="text" ng-model="stkSectionCreateCtrl.stkSection.parentCode" name="parentCode" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-4 ">{{"StkSection_sectionCode_description.title"| translate}} :</label>
+                        <div class="col-lg-8" ng-class="{ 'has-error' : stkSectionForm.sectionCode.$invalid }" >
+                            <input type="text" ng-model="stkSectionCreateCtrl.stkSection.sectionCode" name="sectionCode" class="form-control" required >
+                            <p ng-show="stkSectionForm.sectionCode.$error.required" class="help-block">{{"StkSection_sectionCode_required.title"| translate}}</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-4 ">{{"StkSection_name_description.title"| translate}} :</label>
+                        <div class="col-lg-8" ng-class="{ 'has-error' : stkSectionForm.name.$invalid }" >
+                            <input type="text" ng-model="stkSectionCreateCtrl.stkSection.name" name="name" class="form-control" required >
+                            <p ng-show="stkSectionForm.name.$error.required" class="help-block">{{"StkSection_name_required.title"| translate}}</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-4 ">{{"StkSection_wharehouse_description.title"| translate}} :</label>
+                        <div class="col-lg-8" ng-class="{ 'has-error' : stkSectionForm.wharehouse.$invalid }" >
+                            <input type="text" ng-model="stkSectionCreateCtrl.stkSection.wharehouse" name="wharehouse" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-4 ">{{"StkSection_position_description.title"| translate}} :</label>
+                        <div class="col-lg-8" ng-class="{ 'has-error' : stkSectionForm.position.$invalid }" >
+                            <input type="text" ng-model="stkSectionCreateCtrl.stkSection.position" name="position" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-4 ">{{"StkSection_geoCode_description.title"| translate}} :</label>
+                        <div class="col-lg-8" ng-class="{ 'has-error' : stkSectionForm.geoCode.$invalid }" >
+                            <input type="text" ng-model="stkSectionCreateCtrl.stkSection.geoCode" name="geoCode" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-4"  > </label>
+                        <div class="col-lg-8" >
+                            <a class="btn-danger btn" href="#/"  ><i class="glyphicon glyphicon-remove" ></i> {{"Entity_cancel.title" | translate }}</a>
+                            <button ng-click="stkSectionCreateCtrl.create();" ng-disabled="stkSectionForm.$invalid" class="btn-success btn"  ><i class="glyphicon glyphicon-save"></i>  {{"Entity_save.title" | translate }}</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
