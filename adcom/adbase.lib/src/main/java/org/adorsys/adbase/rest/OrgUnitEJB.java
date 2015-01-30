@@ -213,11 +213,11 @@ public class OrgUnitEJB {
 		validFrom = validFrom == null ? new Date() : validFrom;
 
 		StringBuilder qBuilder = new StringBuilder(
-				"SELECT e FROM OrgUnit AS e WHERE e.validFrom <= :from AND (e.validTo IS NULL OR e.validTo > :from)  AND LOWER(e.typeIdentif) LIKE (LOWER(:typeIdentif))");
+				"SELECT e FROM OrgUnit AS e WHERE e.validFrom <= :from AND (e.validTo IS NULL OR e.validTo > :from)  AND LOWER(e.identif) LIKE (LOWER(:identif))");
 		TypedQuery<OrgUnit> query = em.createQuery(qBuilder.toString(),
 				OrgUnit.class);
 		query.setParameter("from", validFrom);
-		query.setParameter("typeIdentif", "%" + identif);
+		query.setParameter("identif", identif+"%");
 
 		query.setMaxResults(100);
 		return query.getResultList();

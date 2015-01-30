@@ -12,8 +12,8 @@ angular.module('AdCatal').controller('NewCatalArtDetailConfigController', functi
 
     $scope.save = function() {
         var successCallback = function(data,responseHeaders){
-            var id = locationParser(responseHeaders);
-            $location.path('/CatalArtDetailConfigs/edit/' + id);
+           // var id = locationParser(responseHeaders);
+            $location.path('/CatalArtDetailConfigs/edit/' + data.id);
             $scope.displayError = false;
         };
         var errorCallback = function() {

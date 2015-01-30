@@ -121,6 +121,16 @@
 "CatalProductFamily_parentIdentif_description.text":"Identifiant unique de la famille parent",
 "CatalProductFamily_parentIdentif_description.title":"Identifiant de la Famille Parent"
 
-
-
+"CatalPkgMode_description.text":"Le mode de conditionnement du produit",
+"CatalPkgMode_description.title":"Mode de Conditionement",
+"CatalPkgMode_pkgCode_description.title":"Code de conditionnement",
+"catalPkgMode_pkgCode_required.title":"Le code de conditionnement est requis",
+"catalPkgMode_pkgCode_required.text":"Le code de conditionnement est requis.",
+"catalPkgMode_name_required.title":"Le mode de conditionnement est requis",
+"catalPkgMode_name_required.text":"Le mode de conditionnement est requis.",
+"CatalPkgMode_pkgCode_description.text":"Le code du mode de conditionnement",
+"CatalPkgMode_name_NotNull_validation.text":"Le libellé  de ce Mode de conditionnment est réquis",
+"CatalPkgMode_name_NotNull_validation.title":"Le libellé  de ce Mode de conditionnment est réquis",
+"CatalPkgMode_name_description.text":"Nom du mode de conditionnement",
+"CatalPkgMode_name_description.title":"Mode de Conditionement"
 }

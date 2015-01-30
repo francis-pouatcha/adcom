@@ -68,7 +68,7 @@
             </tr>
         </thead>
         <tbody id="search-results-body">
-            <tr ng-repeat="result in searchResults | searchFilter:searchResults | startFrom:currentPage*pageSize | limitTo:pageSize">
+            <tr ng-repeat="result in searchResults">
                 <td><a href="#/CatalArtDetailConfigs/edit/{{result.id}}">{{result.artEquivCode}}</a></td>
                 <td><a href="#/CatalArtDetailConfigs/edit/{{result.id}}">{{result.sourceIdentif}}</a></td>
                 <td><a href="#/CatalArtDetailConfigs/edit/{{result.id}}">{{result.targetIdentif}}</a></td>
