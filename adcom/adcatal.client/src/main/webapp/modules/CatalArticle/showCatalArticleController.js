@@ -1,14 +1,15 @@
 'use strict';
 
-angular.module('AdCatal').controller('editCatalArticleCtrl',['$scope','catalArticleService','$routeParams','$location',function($scope,catalArticleService,$routeParams,$location){
+angular.module('AdCatal').controller('showCatalArticleCtrl',['$scope','catalArticleService','$routeParams','$location',function($scope,catalArticleService,$routeParams,$location){
     var self = this ;
-    $scope.editCatalArticleCtrl = self;
+    $scope.showCatalArticleCtrl = self;
     self.catalArticle = {};
-    self.update = update;
     self.error = "";
+    self.previousSuperAgent = previousSuperAgent;
+    self.nextSuperAgent = nextSuperAgent;
 
     function update(){
-        catalArticleService.update(self.catalArticle).then(function(result){
+        catalArticleService.create(self.catalArticle).then(function(result){
             $location.path('/CatalArticles/show/'+result.identif);
         },function(error){
             self.error = error;
@@ -31,5 +32,13 @@ angular.module('AdCatal').controller('editCatalArticleCtrl',['$scope','catalArti
         })
 
     };
+
+    function previousSuperAgent(){
+
+    }
+
+    function nextSuperAgent(){
+
+    }
 
 }]);

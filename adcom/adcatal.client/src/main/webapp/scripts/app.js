@@ -28,6 +28,7 @@ angular.module('AdCatal', [
       .when('/CatalArticles/new',{templateUrl:'views/CatalArticle/create.html',controller:'catalArticleCreateCtrl'})
       .when('/CatalArticles',{templateUrl:'views/CatalArticle/search.html',controller:'catalArticleCtrl'})
       .when('/CatalArticles/edit/:CatalArticleId',{templateUrl:'views/CatalArticle/edit.html',controller:'editCatalArticleCtrl'})
+      .when('/CatalArticles/show/:CatalArticleId',{templateUrl:'views/CatalArticle/show.html',controller:'showCatalArticleCtrl'})
       .when('/CatalArtDetailConfigs',{templateUrl:'views/CatalArtDetailConfig/search.html',controller:'SearchCatalArtDetailConfigController'})
       .when('/CatalArtDetailConfigs/new',{templateUrl:'views/CatalArtDetailConfig/detail.html',controller:'NewCatalArtDetailConfigController'})
       .when('/CatalArtDetailConfigs/edit/:CatalArtDetailConfigId',{templateUrl:'views/CatalArtDetailConfig/detail.html',controller:'EditCatalArtDetailConfigController'})

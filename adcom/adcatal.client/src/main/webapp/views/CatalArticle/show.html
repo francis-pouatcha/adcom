@@ -1,0 +1,108 @@
+<div class="container">
+
+    <div class="col-xs-10 col-xs-offset-1">
+        <div class="panel panel-default">
+            <div class="panel-heading"><b>{{ "Entity_show.title"| translate}}</b> </div>
+            <div class="panel-body">
+                <label class="error col-lg-offset-3 alert-danger" >{{showCatalArticleCtrl.error}} </label>
+                <form  name="catalArticleForm" class="form-horizontal" novalidate="">
+                        <div class="form-group">
+                            <label class="col-lg-3 ">{{"CatalArticle_pic_description.title"| translate}} :</label>
+                            <div class="col-lg-8" ng-class="{ 'has-error' : catalArticleForm.pic.$invalid }" >
+                                <input type="text" ng-model="showCatalArticleCtrl.catalArticle.pic" name="pic" class="form-control" disabled >
+                            </div>
+                        </div>
+                    <div class="form-group">
+                        <label class="col-lg-3">{{"CatalArticle_articleName_description.title"| translate}} :</label>
+                        <div class="col-lg-8" ng-class="{ 'has-error' : catalArticleForm.articleName.$invalid }" >
+                            <input type="text" ng-model="showCatalArticleCtrl.catalArticle.articleName" name="articleName" class="form-control" disabled >
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <label class="col-lg-2 ">{{"CatalArticle_sppu_description.title"| translate}} :</label>
+                        <div class="col-lg-4" >
+                            <input type="text" ng-model="showCatalArticleCtrl.catalArticle.sppu" name="sppu" class="form-control" disabled>
+                        </div>
+                        <label class="col-lg-2 ">{{"CatalArticle_maxDisctRate_description.title"| translate}} :</label>
+                        <div class="col-lg-4" >
+                            <input type="text" ng-model="showCatalArticleCtrl.catalArticle.maxDisctRate" name="maxDisctRate" class="form-control" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                            <label class="col-lg-2 ">{{"CatalArticle_familiesIdentif_description.title"| translate}} :</label>
+                            <div class="col-lg-4">
+                                <input type="text" ng-model="showCatalArticleCtrl.catalArticle.familiesIdentif" name="familiesIdentif" class="form-control" disabled >
+                            </div>
+                            <label class="col-lg-2 ">{{"CatalArticle_vatRate_description.title"| translate}} :</label>
+                            <div class="col-lg-4">
+                                <input type="text" ng-model="showCatalArticleCtrl.catalArticle.vatRate" value="19.25" name="vatRate" class="form-control" disabled>
+                            </div>
+                        </div>
+                        <div class=" form-group ">
+                            <label class="col-lg-2 ">{{"CatalArticle_minStockQty_description.title"| translate}} :</label>
+                            <div class="col-lg-4" >
+                                <input type="text" ng-model="showCatalArticleCtrl.catalArticle.minStockQty" name="minStockQty" class="form-control" disabled>
+                            </div>
+                            <label class="col-lg-2">{{"CatalArticle_maxStockQty_description.title"| translate}} :</label>
+                            <div class="col-lg-4" >
+                                <input type="text" ng-model="showCatalArticleCtrl.catalArticle.maxStockQty" name="maxStockQty" class="form-control" disabled>
+                            </div>
+                        </div>
+
+                        <div class=" form-group ">
+                            <label class="col-lg-2">{{"CatalArticle_active_description.title"| translate}} :</label>
+                            <div class="col-lg-4" >
+                                <input type="checkbox" ng-model="showCatalArticleCtrl.catalArticle.active" name="active" class="form-control" disabled>
+                            </div>
+                            <label class="col-lg-2 ">{{"CatalArticle_authorizedSale_description.title"| translate}} :</label>
+                            <div class="col-lg-4" >
+                                <input type="checkbox" ng-model="showCatalArticleCtrl.catalArticle.authorizedSale" name="authorizedSale" class="form-control" disabled>
+                            </div>
+                        </div>
+                </form>
+
+                <div  class="row ">
+                    <tabset justified="true">
+                        <tab heading="{{'CatalPicMapping_description' | translate}}">
+                            <br/>
+                            <div ng-include="'views/CatalArticle/pic-list.html'" />
+                        </tab>
+
+                        <tab heading="{{'CatalArtFeatMapping_description' | translate}}">
+                            <br/>
+                            <div ng-include="'views/CatalArticle/featMapping-list.html'" />
+                        </tab>
+
+                        <tab heading="{{'CatalArtManufSupp_description' | translate}}">
+                            <br />
+                            <div ng-include="'views/CatalArticle/manufSupp-list.html'"></div>
+                        </tab>
+                        <tab heading="{{'CatalArtEquivalence_description' | translate}}">
+                            <br />
+                            <div ng-include="'views/CatalArticle/equiv-list.html'"></div>
+                        </tab>
+                    </tabset>
+                </div>
+                <hr/>
+                <div class="row">
+                    <div class="col-lg-3">
+                        <a class="btn-default btn" ng-click="showCatalArticleCtrl.previousSuperAgent(showCatalArticleCtrl.catalArticle.pic)" ><i class="glyphicon glyphicon-chevron-left"></i> {{'Entity_previous.title' | translate}}</a>
+                    </div>
+                    <div class="col-lg-3">
+                        <a class="btn-danger btn" href="#/CatalArticles" ><i class="" ></i> {{'List' | translate}}</a>
+                    </div>
+                    <div class="col-lg-3">
+                        <a class="btn-default btn" ng-click="showCatalArticleCtrl.nextSuperAgent(showCatalArticleCtrl.catalArticle.pic)" >{{'Entity_next.title' | translate}} <i class="glyphicon glyphicon-chevron-right" ></i></a>
+                    </div>
+                    <div class="col-lg-3">
+                        <a class="btn-primary btn" href="#/CatalArticles/edit/{{showCatalArticleCtrl.catalArticle.pic}}" ><i class="glyphicon glyphicon-edit"></i> {{'Entity_edit.title' | translate}}</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
