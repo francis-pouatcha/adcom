@@ -8,6 +8,7 @@ angular.module('AdCatal', [
       'ngRoute',
       'ngCookies',
       'SessionManager',
+      'ui.bootstrap',
       'AuthInterceptor',
       'ngSanitize',
       'pascalprecht.translate',

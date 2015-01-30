@@ -25,11 +25,11 @@ angular.module('AdCatal').filter('searchFilter', function() {
         }
         return flag;
     }
-    this.filteredResults = [];
+    
 
     return function(results) {
 
-
+    	this.filteredResults = [];
         for (var ctr = 0; ctr < results.length; ctr++) {
             var flag = true;
             var searchCriteria = this.search;
