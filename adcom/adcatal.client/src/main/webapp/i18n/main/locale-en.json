@@ -21,6 +21,19 @@
 "CatalArticle_sppu_description.title":"Sales Price per Unit",
 "CatalArticle_vatRate_description.text":"The VAT rate in percent.",
 "CatalArticle_vatRate_description.title":"VAT Rate",
-"CatalArticle_stockQty_description.title":"In Stock"
+"CatalArticle_stockQty_description.title":"In Stock",
+    
+"CatalPkgMode_description.text":"The product packaging mode",
+"CatalPkgMode_pkgCode_description.title":"Packaging Code",
+"CatalPkgMode_pkgCode_description.text":"The packaging pode",
+"CatalPkgMode_description.title":"Packaging Mode",
+"CatalPkgMode_name_NotNull_validation.text":"The  name of this Packaging is required",
+"catalPkgMode_pkgCode_required.title":"The packaging code is required.",
+"catalPkgMode_pkgCode_required.text":"The packaging code is required.",
+"catalPkgMode_name_required.title":"The packaging mode is required.",
+"catalPkgMode_name_required.text":"The packaging mode is required.",
+"CatalPkgMode_name_NotNull_validation.title":"The  name of this Packaging is required",
+"CatalPkgMode_name_description.text":"The name of this packaging mode",
+"CatalPkgMode_name_description.title":"Packaging Mode"
 
 }

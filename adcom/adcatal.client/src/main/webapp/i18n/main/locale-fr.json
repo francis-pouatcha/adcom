@@ -21,6 +21,18 @@
 "CatalArticle_sppu_description.title":"Prix de Vente Unitaire",
 "CatalArticle_vatRate_description.text":"The taux de TVA en pourcent.",
 "CatalArticle_vatRate_description.title":"Taux TVA",
-"CatalArticle_stockQty_description.title":"En Stock"
+"CatalArticle_stockQty_description.title":"En Stock",
 
+"CatalPkgMode_description.text":"Le mode de conditionnement du produit",
+"CatalPkgMode_description.title":"Mode de Conditionement",
+"CatalPkgMode_pkgCode_description.title":"Code de conditionnement",
+"catalPkgMode_pkgCode_required.title":"Le code de conditionnement est requis",
+"catalPkgMode_pkgCode_required.text":"Le code de conditionnement est requis.",
+"catalPkgMode_name_required.title":"Le mode de conditionnement est requis",
+"catalPkgMode_name_required.text":"Le mode de conditionnement est requis.",
+"CatalPkgMode_pkgCode_description.text":"Le code du mode de conditionnement",
+"CatalPkgMode_name_NotNull_validation.text":"Le libell\u00E9  de ce Mode de conditionnment est r\u00E9quis",
+"CatalPkgMode_name_NotNull_validation.title":"Le libell\u00E9  de ce Mode de conditionnment est r\u00E9quis",
+"CatalPkgMode_name_description.text":"Nom du mode de conditionnement",
+"CatalPkgMode_name_description.title":"Mode de Conditionement"
 }
