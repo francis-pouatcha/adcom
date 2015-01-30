@@ -46,8 +46,8 @@
       <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-14.5" vertical-offset="462" max-vertical-offset="1470">
-              <caret line="54" column="67" selection-start-line="54" selection-start-column="67" selection-end-line="54" selection-end-column="67" />
+            <state vertical-scroll-proportion="0.20833333" vertical-offset="920" max-vertical-offset="1575">
+              <caret line="61" column="63" selection-start-line="61" selection-start-column="63" selection-end-line="61" selection-end-column="63" />
               <folding />
             </state>
           </provider>
@@ -73,21 +73,41 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="picMapping-form.html" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="picMapping-form.html" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/picMapping-form.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-20.625" vertical-offset="0" max-vertical-offset="765">
+            <state vertical-scroll-proportion="0.77102804" vertical-offset="0" max-vertical-offset="765">
               <caret line="33" column="91" selection-start-line="33" selection-start-column="91" selection-end-line="33" selection-end-column="91" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="pic-list.html" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="pic-list.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/pic-list.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.2706767" vertical-offset="0" max-vertical-offset="665">
+            <state vertical-scroll-proportion="-7.5" vertical-offset="0" max-vertical-offset="420">
               <caret line="12" column="57" selection-start-line="12" selection-start-column="57" selection-end-line="12" selection-end-column="57" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="locale-en.json" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/i18n/main/locale-en.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-79.375" vertical-offset="0" max-vertical-offset="2595">
+              <caret line="127" column="87" selection-start-line="127" selection-start-column="87" selection-end-line="127" selection-end-column="87" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="locale-fr.json" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/i18n/main/locale-fr.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-14.791667" vertical-offset="1550" max-vertical-offset="2205">
+              <caret line="127" column="88" selection-start-line="127" selection-start-column="88" selection-end-line="127" selection-end-column="88" />
               <folding />
             </state>
           </provider>
@@ -141,19 +161,19 @@
         <option value="$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/edit.html" />
         <option value="$PROJECT_DIR$/adcatal.client/src/main/webapp/modules/CatalArticle/editCatalArticleController.js" />
         <option value="$PROJECT_DIR$/adcatal.client/src/main/webapp/modules/CatalArticle/showCatalArticleController.js" />
-        <option value="$PROJECT_DIR$/adcatal.client/src/main/webapp/i18n/main/locale-fr.json" />
-        <option value="$PROJECT_DIR$/adcatal.client/src/main/webapp/i18n/main/locale-en.json" />
         <option value="$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/featMapping-list.html" />
         <option value="$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/manufSupp-list.html" />
         <option value="$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/equiv-list.html" />
         <option value="$PROJECT_DIR$/adcatal.client/src/main/webapp/modules/CatalArticle/picMappingcontrollers.js" />
         <option value="$PROJECT_DIR$/adcatal.client/src/main/webapp/modules/CatalArticle/picMAppingresources.js" />
         <option value="$PROJECT_DIR$/adcatal.client/src/main/webapp/modules/CatalArticle/catalPicMAppingresources.js" />
-        <option value="$PROJECT_DIR$/adcatal.client/src/main/webapp/index.html" />
         <option value="$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/show.html" />
         <option value="$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/picMapping-form.html" />
         <option value="$PROJECT_DIR$/adcatal.client/src/main/webapp/modules/CatalArticle/catalPicMappingscontroller.js" />
         <option value="$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/pic-list.html" />
+        <option value="$PROJECT_DIR$/adcatal.client/src/main/webapp/i18n/main/locale-en.json" />
+        <option value="$PROJECT_DIR$/adcatal.client/src/main/webapp/i18n/main/locale-fr.json" />
+        <option value="$PROJECT_DIR$/adcatal.client/src/main/webapp/index.html" />
       </list>
     </option>
   </component>
@@ -370,6 +390,36 @@
               <option name="myItemId" value="modules" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="adcom" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="adcom" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="adcatal.client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="webapp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="modules" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="CatalArticle" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
@@ -402,6 +452,10 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="i18n" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1105,22 +1159,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/i18n/main/locale-fr.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.64122134" vertical-offset="0" max-vertical-offset="655">
-          <caret line="28" column="54" selection-start-line="28" selection-start-column="54" selection-end-line="28" selection-end-column="54" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/i18n/main/locale-en.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-19.375" vertical-offset="0" max-vertical-offset="570">
-          <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/modules/CatalArticle/controllers.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1500">
@@ -1145,26 +1183,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-14.5" vertical-offset="462" max-vertical-offset="1470">
-          <caret line="54" column="67" selection-start-line="54" selection-start-column="67" selection-end-line="54" selection-end-column="67" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/show.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-1.875" vertical-offset="30" max-vertical-offset="1695">
           <caret line="5" column="36" selection-start-line="3" selection-start-column="8" selection-end-line="5" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/picMapping-form.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-20.625" vertical-offset="0" max-vertical-offset="765">
-          <caret line="33" column="91" selection-start-line="33" selection-start-column="91" selection-end-line="33" selection-end-column="91" />
           <folding />
         </state>
       </provider>
@@ -1179,8 +1201,40 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/pic-list.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2706767" vertical-offset="0" max-vertical-offset="665">
+        <state vertical-scroll-proportion="-7.5" vertical-offset="0" max-vertical-offset="420">
           <caret line="12" column="57" selection-start-line="12" selection-start-column="57" selection-end-line="12" selection-end-column="57" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/i18n/main/locale-en.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-79.375" vertical-offset="0" max-vertical-offset="2595">
+          <caret line="127" column="87" selection-start-line="127" selection-start-column="87" selection-end-line="127" selection-end-column="87" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/i18n/main/locale-fr.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-14.791667" vertical-offset="1550" max-vertical-offset="2205">
+          <caret line="127" column="88" selection-start-line="127" selection-start-column="88" selection-end-line="127" selection-end-column="88" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.20833333" vertical-offset="920" max-vertical-offset="1575">
+          <caret line="61" column="63" selection-start-line="61" selection-start-column="63" selection-end-line="61" selection-end-column="63" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/picMapping-form.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.77102804" vertical-offset="0" max-vertical-offset="765">
+          <caret line="33" column="91" selection-start-line="33" selection-start-column="91" selection-end-line="33" selection-end-column="91" />
           <folding />
         </state>
       </provider>

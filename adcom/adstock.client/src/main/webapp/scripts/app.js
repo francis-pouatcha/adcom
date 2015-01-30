@@ -18,7 +18,11 @@ angular.module('AdStock', [
 .config(['$routeProvider', '$httpProvider','$translateProvider','$translatePartialLoaderProvider',
          function($routeProvider,$httpProvider,$translateProvider,$translatePartialLoaderProvider) {
     $routeProvider
-    .when('/',{templateUrl:'views/landing.html',controller:'LandingPageController'})
+    .when('/',{templateUrl:'views/StkSection/search.html',controller:'stkSectionCtrl'})
+    .when('/StkSections',{templateUrl:'views/StkSection/search.html',controller:'stkSectionCtrl'})
+    .when('/StkSections/new',{templateUrl:'views/StkSection/create.html',controller:'stkSectionCreateCtrl'})
+    .when('/StkSections/edit/:StkSectionId',{templateUrl:'views/StkSection/detail.html',controller:'EditStkSectionController'})
+    .when('/StkSections/show/:StkSectionId',{templateUrl:'views/StkSection/detail.html',controller:'EditStkSectionController'})
     .when('/StkArtLotSections',{templateUrl:'views/StkArtLotSection/search.html',controller:'SearchStkArtLotSectionController'})
     .when('/StkArtLotSections/new',{templateUrl:'views/StkArtLotSection/detail.html',controller:'NewStkArtLotSectionController'})
     .when('/StkArtLotSections/edit/:StkArtLotSectionId',{templateUrl:'views/StkArtLotSection/detail.html',controller:'EditStkArtLotSectionController'})
@@ -40,9 +44,6 @@ angular.module('AdStock', [
     .when('/StkMvnts',{templateUrl:'views/StkMvnt/search.html',controller:'SearchStkMvntController'})
     .when('/StkMvnts/new',{templateUrl:'views/StkMvnt/detail.html',controller:'NewStkMvntController'})
     .when('/StkMvnts/edit/:StkMvntId',{templateUrl:'views/StkMvnt/detail.html',controller:'EditStkMvntController'})
-    .when('/StkSections',{templateUrl:'views/StkSection/search.html',controller:'SearchStkSectionController'})
-    .when('/StkSections/new',{templateUrl:'views/StkSection/detail.html',controller:'NewStkSectionController'})
-    .when('/StkSections/edit/:StkSectionId',{templateUrl:'views/StkSection/detail.html',controller:'EditStkSectionController'})
     .otherwise({redirectTo: '/' });
     
     $httpProvider.defaults.withCredentials = true;
