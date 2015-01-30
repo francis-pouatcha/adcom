@@ -25,6 +25,8 @@ angular.module('AdCatal')
     self.handlePrintRequestEvent = handlePrintRequestEvent;
     self.paginate = paginate;
 
+        init();
+
     function init(){
         self.searchInput = {
             entity:{},
@@ -32,6 +34,7 @@ angular.module('AdCatal')
             start:0,
             max:self.itemPerPage
         }
+        findByLike(self.searchInput);
     }
 
     function findByLike(searchInput){
