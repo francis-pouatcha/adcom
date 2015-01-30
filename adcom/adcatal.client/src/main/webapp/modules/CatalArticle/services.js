@@ -56,7 +56,7 @@ angular.module('AdCatal')
 
                 deferred.resolve(data);
             }).error(function(data){
-                deferred.reject("user do not exist!")
+                deferred.reject("entity do not exist!")
             });
             return deferred.promise;
         };

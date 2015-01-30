@@ -41,6 +41,13 @@ public class CatalArticleEJB
    {
       return repository.findBy(id);
    }
+   
+   public CatalArticle findByIdentif(String identif)
+   {
+	   List<CatalArticle> resultList = repository.findByIdentif(identif, new Date()).maxResults(1).getResultList();
+		if (resultList.isEmpty())return null;
+		return resultList.iterator().next();
+   }
 
    public List<CatalArticle> listAll(int start, int max)
    {

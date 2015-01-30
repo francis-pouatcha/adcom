@@ -21,6 +21,10 @@
 "CatalArticle_sppu_description.title":"Sales Price per Unit",
 "CatalArticle_vatRate_description.text":"The VAT rate in percent.",
 "CatalArticle_vatRate_description.title":"VAT Rate",
-"CatalArticle_stockQty_description.title":"In Stock"
+"CatalArticle_stockQty_description.title":"In Stock",
+    "CatalArticle_maxDisctRate_description.title":"Max Discount",
+    "CatalArticle_minStockQty_description.title":"Min Stock",
+    "CatalArticle_maxStockQty_description.title":"Max Stock"
+
 
 }

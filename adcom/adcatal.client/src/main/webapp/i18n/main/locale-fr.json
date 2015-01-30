@@ -21,6 +21,9 @@
 "CatalArticle_sppu_description.title":"Prix de Vente Unitaire",
 "CatalArticle_vatRate_description.text":"The taux de TVA en pourcent.",
 "CatalArticle_vatRate_description.title":"Taux TVA",
-"CatalArticle_stockQty_description.title":"En Stock"
+"CatalArticle_stockQty_description.title":"En Stock",
+ "CatalArticle_maxDisctRate_description.title":"Max Remise",
+  "CatalArticle_minStockQty_description.title":"Min Stock",
+    "CatalArticle_maxStockQty_description.title":"Max Stock"
 
 }

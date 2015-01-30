@@ -1,0 +1,80 @@
+<div class="container">
+
+    <div class="col-xs-10 col-xs-offset-1">
+        <div class="panel panel-default">
+            <div class="panel-heading"><b>{{ "Entity_update.title"| translate}}</b> </div>
+            <div class="panel-body">
+                <label class="error col-lg-offset-3 alert-danger" >{{editCatalArticleCtrl.error}} </label>
+                <form  name="catalArticleForm" class="form-horizontal" novalidate="">
+                        <div class="form-group">
+                            <label class="col-lg-3 ">{{"CatalArticle_pic_description.title"| translate}} :</label>
+                            <div class="col-lg-8" ng-class="{ 'has-error' : catalArticleForm.pic.$invalid }" >
+                                <input type="text" ng-model="editCatalArticleCtrl.catalArticle.pic" name="pic" class="form-control" required >
+                                <p ng-show="catalArticleForm.pic.$error.required" class="help-block">{{"CatalArticle_pic_required.title"| translate}}</p>
+                            </div>
+                        </div>
+                    <div class="form-group">
+                        <label class="col-lg-3">{{"CatalArticle_articleName_description.title"| translate}} :</label>
+                        <div class="col-lg-8" ng-class="{ 'has-error' : catalArticleForm.articleName.$invalid }" >
+                            <input type="text" ng-model="editCatalArticleCtrl.catalArticle.articleName" name="articleName" class="form-control" required >
+                            <p ng-show="catalArticleForm.articleName.$error.required" class="help-block">{{"CatalArticle_articleName_required.title"| translate}}</p>
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <label class="col-lg-2 ">{{"CatalArticle_sppu_description.title"| translate}} :</label>
+                        <div class="col-lg-4" >
+                            <input type="text" ng-model="editCatalArticleCtrl.catalArticle.sppu" name="sppu" class="form-control">
+                        </div>
+                        <label class="col-lg-2 ">{{"CatalArticle_maxDisctRate_description.title"| translate}} :</label>
+                        <div class="col-lg-4" >
+                            <input type="text" ng-model="editCatalArticleCtrl.catalArticle.maxDisctRate" name="maxDisctRate" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                            <label class="col-lg-2 ">{{"CatalArticle_familiesIdentif_description.title"| translate}} :</label>
+                            <div class="col-lg-4">
+                                <input type="text" ng-model="editCatalArticleCtrl.catalArticle.familiesIdentif" name="familiesIdentif" class="form-control" >
+                            </div>
+                            <label class="col-lg-2 ">{{"CatalArticle_vatRate_description.title"| translate}} :</label>
+                            <div class="col-lg-4">
+                                <input type="text" ng-model="editCatalArticleCtrl.catalArticle.vatRate" value="19.25" name="vatRate" class="form-control">
+                            </div>
+                        </div>
+                        <div class=" form-group ">
+                            <label class="col-lg-2 ">{{"CatalArticle_minStockQty_description.title"| translate}} :</label>
+                            <div class="col-lg-4" >
+                                <input type="text" ng-model="editCatalArticleCtrl.catalArticle.minStockQty" name="minStockQty" class="form-control">
+                            </div>
+                            <label class="col-lg-2">{{"CatalArticle_maxStockQty_description.title"| translate}} :</label>
+                            <div class="col-lg-4" >
+                                <input type="text" ng-model="editCatalArticleCtrl.catalArticle.maxStockQty" name="maxStockQty" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class=" form-group ">
+                            <label class="col-lg-2">{{"CatalArticle_active_description.title"| translate}} :</label>
+                            <div class="col-lg-4" >
+                                <input type="checkbox" ng-model="editCatalArticleCtrl.catalArticle.active" name="active" class="form-control">
+                            </div>
+                            <label class="col-lg-2 ">{{"CatalArticle_authorizedSale_description.title"| translate}} :</label>
+                            <div class="col-lg-4" >
+                                <input type="checkbox" ng-model="editCatalArticleCtrl.catalArticle.authorizedSale" name="authorizedSale" class="form-control">
+                            </div>
+                        </div>
+                    <br/>
+                    <div class="form-group">
+                        <label class="col-lg-4" > </label>
+                        <div class="col-lg-8" >
+                            <a class="btn-danger btn" href="#/"  ><i class="glyphicon glyphicon-remove" ></i> {{"Entity_cancel.title" | translate }}</a>
+                            <button ng-click="editCatalArticleCtrl.update();" ng-disabled="catalArticleForm.$invalid" class="btn-success btn"  ><i class="glyphicon glyphicon-save"></i>  {{"Entity_save.title" | translate }}</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
