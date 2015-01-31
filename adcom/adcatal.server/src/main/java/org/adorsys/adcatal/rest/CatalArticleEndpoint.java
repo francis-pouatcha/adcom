@@ -2,7 +2,9 @@ package org.adorsys.adcatal.rest;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -21,10 +23,17 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.adorsys.adcatal.jpa.CatalArt2ProductFamily;
+import org.adorsys.adcatal.jpa.CatalArt2ProductFamily_;
+import org.adorsys.adcatal.jpa.CatalArtFeatMapping;
+import org.adorsys.adcatal.jpa.CatalArtFeatMapping_;
 import org.adorsys.adcatal.jpa.CatalArticle;
 import org.adorsys.adcatal.jpa.CatalArticleSearchInput;
 import org.adorsys.adcatal.jpa.CatalArticleSearchResult;
 import org.adorsys.adcatal.jpa.CatalArticle_;
+import org.adorsys.adcatal.jpa.CatalPicMapping;
+import org.adorsys.adcatal.jpa.CatalPicMapping_;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 
@@ -47,14 +56,11 @@ public class CatalArticleEndpoint
    }
 
    @DELETE
-   @Path("/{id}")
-   public Response deleteById(@PathParam("id") String id)
+   @Path("/{pic}")
+   public Response deleteById(@PathParam("pic") String pic)
    {
-      CatalArticle deleted = ejb.deleteById(id);
-      if (deleted == null)
-         return Response.status(Status.NOT_FOUND).build();
-
-      return Response.ok(detach(deleted)).build();
+      ejb.deleteByPic(pic);
+      return Response.ok().build();
    }
 
    @PUT
@@ -134,6 +140,101 @@ public class CatalArticleEndpoint
             detach(searchInput));
    }
 
+   @Inject
+   private CatalPicMappingEJB picMappingEJB;
+   @Inject
+   private CatalArtFeatMappingEJB featMappingEJB;
+   @Inject
+   private CatalArt2ProductFamilyEJB art2ProductFamilyEJB;
+   
+   @SuppressWarnings("unchecked")
+   @POST
+   @Path("/findCustom")
+   @Produces({ "application/json", "application/xml" })
+   @Consumes({ "application/json", "application/xml" })
+   public CatalArticleSearchResult findCustom(CatalArticleSearchInput searchInput)
+   {
+	   if(searchInput.getFieldNames().isEmpty()) return findByLike(searchInput);
+	   
+	   CatalArticle entity = searchInput.getEntity();
+	   if(StringUtils.isNotBlank(entity.getPic())){
+		   CatalPicMapping picMapping = new CatalPicMapping();
+		   picMapping.setCode(entity.getPic());
+		   @SuppressWarnings("rawtypes")
+		   SingularAttribute[] attributes = new SingularAttribute[]{CatalPicMapping_.code};
+		   Long countLike = picMappingEJB.countBy(picMapping, attributes);
+		   List<CatalPicMapping> list = picMappingEJB.findByLike(picMapping, searchInput.getStart(), searchInput.getMax(), attributes);
+		   List<CatalArticle> resultList = new ArrayList<CatalArticle>();
+		   Map<String, CatalArticle> resultMap = new HashMap<String, CatalArticle>();
+		   for (CatalPicMapping catalPicMapping : list) {
+			   CatalArticle catalArticle = resultMap.get(catalPicMapping.getArtIdentif());
+			   if(catalArticle!=null){
+				   CatalArticle c = catalArticle;
+				   catalArticle=new CatalArticle();
+				   c.copyTo(catalArticle);
+			   } else {
+				   catalArticle = ejb.findByIdentif(catalPicMapping.getArtIdentif());
+				   resultMap.put(catalPicMapping.getArtIdentif(), catalArticle);
+			   }
+			   catalArticle.setPicMapping(catalPicMapping);
+			   resultList.add(catalArticle);
+		   }
+	      return new CatalArticleSearchResult(countLike, detach(resultList),
+	              detach(searchInput));
+	   } else if (entity.getFeatures()!=null && StringUtils.isNotBlank(entity.getFeatures().getArtName())){
+		   @SuppressWarnings("rawtypes")
+		   SingularAttribute[] attributes = new SingularAttribute[]{CatalArtFeatMapping_.artName};
+		   CatalArtFeatMapping artFeatMapping = entity.getFeatures();
+		   Long countLike = featMappingEJB.countBy(artFeatMapping, attributes);
+		   List<CatalArtFeatMapping> list = featMappingEJB.findByLike(artFeatMapping, searchInput.getStart(), searchInput.getMax(), attributes);
+		   List<CatalArticle> resultList = new ArrayList<CatalArticle>();
+		   Map<String, CatalArticle> resultMap = new HashMap<String, CatalArticle>();
+		   for (CatalArtFeatMapping featMapping : list) {
+			   CatalArticle catalArticle = resultMap.get(featMapping.getArtIdentif());
+			   if(catalArticle!=null){
+				   CatalArticle c = catalArticle;
+				   catalArticle=new CatalArticle();
+				   c.copyTo(catalArticle);
+			   } else {
+				   catalArticle = ejb.findByIdentif(featMapping.getArtIdentif());
+				   resultMap.put(featMapping.getArtIdentif(), catalArticle);
+			   }
+			   catalArticle.setFeatures(featMapping);
+			   resultList.add(catalArticle);
+		   }
+	      return new CatalArticleSearchResult(countLike, detach(resultList),
+	              detach(searchInput));
+	   } else if (entity.getFamilyFeatures()!=null && StringUtils.isNotBlank(entity.getFamilyFeatures().getFamilyName())){
+		   @SuppressWarnings("rawtypes")
+		   SingularAttribute[] attributes = new SingularAttribute[]{CatalArt2ProductFamily_.familyName};
+		   CatalArt2ProductFamily familyFeatures = entity.getFamilyFeatures();
+		   Long countLike = art2ProductFamilyEJB.countBy(familyFeatures, attributes);
+		   List<CatalArt2ProductFamily> list = art2ProductFamilyEJB.findByLike(familyFeatures, searchInput.getStart(), searchInput.getMax(), attributes);
+		   List<CatalArticle> resultList = new ArrayList<CatalArticle>();
+		   Map<String, CatalArticle> resultMap = new HashMap<String, CatalArticle>();
+		   for (CatalArt2ProductFamily featMapping : list) {
+			   CatalArticle catalArticle = resultMap.get(featMapping.getArtPic());
+			   if(catalArticle!=null){
+				   CatalArticle c = catalArticle;
+				   catalArticle=new CatalArticle();
+				   c.copyTo(catalArticle);
+			   } else {
+				   catalArticle = ejb.findByIdentif(featMapping.getArtPic());
+				   resultMap.put(featMapping.getArtPic(), catalArticle);
+			   }
+			   catalArticle.setFamilyFeatures(featMapping);
+			   resultList.add(catalArticle);
+		   }
+	      return new CatalArticleSearchResult(countLike, detach(resultList),
+	              detach(searchInput));
+	   } else {
+	      Long countLike = 0l;
+	      List<CatalArticle> resultList = java.util.Collections.emptyList();
+	      return new CatalArticleSearchResult(countLike, detach(resultList),
+	            detach(searchInput));
+	   }
+   }
+   
    @POST
    @Path("/countByLike")
    @Consumes({ "application/json", "application/xml" })
@@ -142,7 +243,7 @@ public class CatalArticleEndpoint
       SingularAttribute<CatalArticle, ?>[] attributes = readSeachAttributes(searchInput);
       return ejb.countByLike(searchInput.getEntity(), attributes);
    }
-
+   
    @SuppressWarnings("unchecked")
    private SingularAttribute<CatalArticle, ?>[] readSeachAttributes(
          CatalArticleSearchInput searchInput)

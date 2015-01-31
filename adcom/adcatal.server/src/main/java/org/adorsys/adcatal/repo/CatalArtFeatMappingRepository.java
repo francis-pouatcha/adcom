@@ -1,6 +1,6 @@
 package org.adorsys.adcatal.repo;
 
-import java.util.Date;
+import java.util.List;
 
 import org.adorsys.adcatal.jpa.CatalArtFeatMapping;
 import org.apache.deltaspike.data.api.EntityRepository;
@@ -11,6 +11,8 @@ import org.apache.deltaspike.data.api.Repository;
 @Repository(forEntity = CatalArtFeatMapping.class)
 public interface CatalArtFeatMappingRepository extends EntityRepository<CatalArtFeatMapping, String>
 {
-	@Query("SELECT e FROM CatalArtFeatMapping AS e WHERE e.identif = ?1 AND e.validFrom <= ?2 AND (e.validTo IS NULL OR e.validTo > ?2)")
-	public QueryResult<CatalArtFeatMapping> findByIdentif(String identif, Date validOn);
+	@Query("SELECT e FROM CatalArtFeatMapping AS e WHERE e.identif = ?1")
+	public QueryResult<CatalArtFeatMapping> findByIdentif(String identif);
+
+	public List<CatalArtFeatMapping> findByArtIdentif(String artIdentif);
 }

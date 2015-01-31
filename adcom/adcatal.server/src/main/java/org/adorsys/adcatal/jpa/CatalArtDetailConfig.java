@@ -6,7 +6,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 
-import org.adorsys.adcore.jpa.AbstractTimedData;
 import org.adorsys.javaext.description.Description;
 
 /**
@@ -17,38 +16,38 @@ import org.adorsys.javaext.description.Description;
  */
 @Entity
 @Description("CatalArtDetailConfig_description")
-public class CatalArtDetailConfig extends AbstractTimedData {
+public class CatalArtDetailConfig extends CatalAbstractArticle {
 
 	private static final long serialVersionUID = -2136313145008332965L;
 
 	@Column
-	@Description("CatalArtDetailConfig_artEquivCode_description")
+	@Description("CatalArtDetailConfig_artDetCode_description")
 	@NotNull
 	private String artDetCode;
 
+	/*
+	 * This describes the quantity of units of the detailed article in the main article.
+	 */
 	@Column
-	@Description("CatalArtDetailConfig_sourceIdentif_description")
+	@Description("CatalArtDetailConfig_qtyOfDtldInMain_description")
 	@NotNull
-	private String sourceIdentif;
+	private BigDecimal qtyOfDtldInMain;
 
+	/*
+	 * This expresses the proportion of the detailed article in the main article.
+	 */
 	@Column
-	@Description("CatalArtDetailConfig_targetIdentif_description")
+	@Description("CatalArtDetailConfig_targetPrprtn_description")
 	@NotNull
-	private String targetIdentif;
+	private BigDecimal pptnOfDtldInMain;
 
-	@Column
-	@Description("CatalArtDetailConfig_targetQty_description")
-	@NotNull
-	private BigDecimal targetQty;
-
-	@Column
-	@Description("CatalArtDetailConfig_salesPrice_description")
-	@NotNull
-	private BigDecimal salesPrice;
-
+	/*
+	 * Says if the quantitative relation between the main and the proportion should be managed
+	 * in proportions of in absolute quantity
+	 */
 	@Column
 	@Description("CatalArtDetailConfig_active_description")
-	private Boolean active;
+	private Boolean mngInPptn;
 
 	public String getArtDetCode() {
 		return artDetCode;
@@ -58,49 +57,32 @@ public class CatalArtDetailConfig extends AbstractTimedData {
 		this.artDetCode = artDetCode;
 	}
 
-	public String getSourceIdentif() {
-		return this.sourceIdentif;
+	public BigDecimal getQtyOfDtldInMain() {
+		return qtyOfDtldInMain;
 	}
 
-	public void setSourceIdentif(final String sourceIdentif) {
-		this.sourceIdentif = sourceIdentif;
+	public void setQtyOfDtldInMain(BigDecimal qtyOfDtldInMain) {
+		this.qtyOfDtldInMain = qtyOfDtldInMain;
 	}
 
-	public String getTargetIdentif() {
-		return this.targetIdentif;
+	public BigDecimal getPptnOfDtldInMain() {
+		return pptnOfDtldInMain;
 	}
 
-	public void setTargetIdentif(final String targetIdentif) {
-		this.targetIdentif = targetIdentif;
+	public void setPptnOfDtldInMain(BigDecimal pptnOfDtldInMain) {
+		this.pptnOfDtldInMain = pptnOfDtldInMain;
 	}
 
-	public BigDecimal getTargetQty() {
-		return this.targetQty;
+	public Boolean getMngInPptn() {
+		return mngInPptn;
 	}
 
-	public void setTargetQty(final BigDecimal targetQty) {
-		this.targetQty = targetQty;
-	}
-
-	public BigDecimal getSalesPrice() {
-		return this.salesPrice;
-	}
-
-	public void setSalesPrice(final BigDecimal salesPrice) {
-		this.salesPrice = salesPrice;
-	}
-
-	public Boolean getActive() {
-		return this.active;
-	}
-
-	public void setActive(final Boolean active) {
-		this.active = active;
+	public void setMngInPptn(Boolean mngInPptn) {
+		this.mngInPptn = mngInPptn;
 	}
 
 	@Override
 	protected String makeIdentif() {
 		return artDetCode;
 	}
-
 }

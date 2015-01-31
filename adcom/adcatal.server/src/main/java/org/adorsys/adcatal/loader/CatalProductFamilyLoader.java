@@ -22,7 +22,7 @@ public class CatalProductFamilyLoader extends
 	}
 
 	public CatalProductFamily findByIdentif(String identif, Date validOn) {
-		return ejb.findByIdentif(identif, validOn);
+		return ejb.findByIdentif(identif);
 	}
 
 	public CatalProductFamily create(CatalProductFamily entity) {
@@ -34,7 +34,8 @@ public class CatalProductFamilyLoader extends
 	}
 
 	public CatalProductFamily deleteById(String id) {
-		return ejb.deleteById(id);
+		CatalProductFamily family = ejb.findById(id);
+		return ejb.deleteByFamCode(family.getFamCode());
 	}
 
 }

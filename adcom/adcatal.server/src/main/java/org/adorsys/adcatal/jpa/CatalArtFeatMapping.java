@@ -4,12 +4,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 
-import org.adorsys.adcore.jpa.AbstractTimedData;
+import org.adorsys.adcore.jpa.AbstractIdentifData;
 import org.adorsys.javaext.description.Description;
+import org.apache.commons.lang3.StringUtils;
 
 @Entity
 @Description("CatalArtFeatMapping_description")
-public class CatalArtFeatMapping extends AbstractTimedData {
+public class CatalArtFeatMapping extends AbstractIdentifData {
 
 	private static final long serialVersionUID = -35779531489146424L;
 
@@ -77,6 +78,20 @@ public class CatalArtFeatMapping extends AbstractTimedData {
 
 	@Override
 	protected String makeIdentif() {
+		return toIdentif(artIdentif, langIso2);
+	}
+	
+	public static String toIdentif(String artIdentif, String langIso2){
 		return artIdentif + "_" + langIso2;
+	}
+	
+	public static boolean hasData(CatalArtFeatMapping obj){
+		return 
+				StringUtils.isBlank(obj.artName) && 
+				StringUtils.isBlank(obj.artIdentif) && 
+				StringUtils.isBlank(obj.langIso2) && 
+				StringUtils.isBlank(obj.substances) && 
+				StringUtils.isBlank(obj.identif) && 
+				StringUtils.isBlank(obj.usage);
 	}
 }

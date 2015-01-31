@@ -1,6 +1,7 @@
 package org.adorsys.adcatal.repo;
 
 import java.util.Date;
+import java.util.List;
 
 import org.adorsys.adcatal.jpa.CatalArticle;
 import org.apache.deltaspike.data.api.EntityRepository;
@@ -13,4 +14,7 @@ public interface CatalArticleRepository extends EntityRepository<CatalArticle, S
 {
 	@Query("SELECT e FROM CatalArticle AS e WHERE e.identif = ?1 AND e.validFrom <= ?2 AND (e.validTo IS NULL OR e.validTo > ?2)")
 	public QueryResult<CatalArticle> findByIdentif(String identif, Date validOn);
+
+	public List<CatalArticle> findByPic(String pic);
+
 }

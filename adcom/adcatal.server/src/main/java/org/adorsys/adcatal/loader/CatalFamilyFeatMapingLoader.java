@@ -34,7 +34,10 @@ public class CatalFamilyFeatMapingLoader extends
 	}
 
 	public CatalFamilyFeatMaping deleteById(String id) {
-		return ejb.deleteById(id);
+		CatalFamilyFeatMaping featMaping = ejb.findById(id);
+		if(featMaping==null) return null;
+		ejb.deleteByPfIdentif(featMaping.getPfIdentif());
+		return featMaping;
 	}
 
 }

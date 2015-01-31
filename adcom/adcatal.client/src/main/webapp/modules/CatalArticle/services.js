@@ -17,9 +17,9 @@ angular.module('AdCatal')
             return deferred.promise;
     	};
 
-        service.find = function(searchInput){
+        service.findCustom = function(searchInput){
             var deferred = $q.defer();
-            resource.findByLike(searchInput)
+            resource.findCustom(searchInput)
                 .success(function(data, status, headers, config){
                     deferred.resolve(data);
                 }).error(function(data, status, headers, config){

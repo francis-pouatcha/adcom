@@ -1,16 +1,14 @@
 package org.adorsys.adcatal.loader;
 
-import java.util.Date;
-
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import org.adorsys.adcatal.jpa.CatalPkgMode;
 import org.adorsys.adcatal.rest.CatalPkgModeEJB;
-import org.adorsys.adcore.xls.AbstractObjectLoader;
+import org.adorsys.adcore.xls.AbstractEnumLoader;
 
 @Stateless
-public class CatalPkgModeLoader extends AbstractObjectLoader<CatalPkgMode> {
+public class CatalPkgModeLoader extends AbstractEnumLoader<CatalPkgMode> {
 
 	@Inject
 	private CatalPkgModeEJB ejb;
@@ -20,8 +18,8 @@ public class CatalPkgModeLoader extends AbstractObjectLoader<CatalPkgMode> {
 		return new CatalPkgMode();
 	}
 
-	public CatalPkgMode findByIdentif(String identif, Date validOn) {
-		return ejb.findByIdentif(identif, validOn);
+	public CatalPkgMode findByIdentif(String identif) {
+		return ejb.findByIdentif(identif);
 	}
 
 	public CatalPkgMode create(CatalPkgMode entity) {
@@ -35,5 +33,4 @@ public class CatalPkgModeLoader extends AbstractObjectLoader<CatalPkgMode> {
 	public CatalPkgMode deleteById(String id) {
 		return ejb.deleteById(id);
 	}
-
 }

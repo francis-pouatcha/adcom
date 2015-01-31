@@ -9,6 +9,7 @@ import org.apache.commons.lang3.time.DateUtils;
 public class SequenceGenerator {
 	public static final String DEBTS_INVOICE_SEQUENCE_PREFIXE = "DS";
 	public static final String PAYMENT_SEQUENCE_PREFIX = "PY";
+	public static final String PRODUCT_FAMILY_SEQUENCE_PREFIXE = "PF";
 	public static String PORCHASE_SEQUENCE_PREFIXE = "CF";
 	public static String DELIVERY_SEQUENCE_PREFIXE = "DE";
 	public static String LOT_SEQUENCE_PREFIXE = "LO";

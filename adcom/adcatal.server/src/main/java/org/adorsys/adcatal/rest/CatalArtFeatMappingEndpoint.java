@@ -47,14 +47,11 @@ public class CatalArtFeatMappingEndpoint
    }
 
    @DELETE
-   @Path("/{id}")
-   public Response deleteById(@PathParam("id") String id)
+   @Path("/{pic}")
+   public Response deleteById(@PathParam("pic") String pic)
    {
-      CatalArtFeatMapping deleted = ejb.deleteById(id);
-      if (deleted == null)
-         return Response.status(Status.NOT_FOUND).build();
-
-      return Response.ok(detach(deleted)).build();
+      ejb.deleteByPic(pic);
+      return Response.ok().build();
    }
 
    @PUT

@@ -33,7 +33,10 @@ public class CatalArticleLoader extends AbstractObjectLoader<CatalArticle> {
 	}
 
 	public CatalArticle deleteById(String id) {
-		return ejb.deleteById(id);
+		CatalArticle article = ejb.findById(id);
+		if(article!=null)
+		ejb.deleteByPic(article.getPic());
+		return article;
 	}
 
 }

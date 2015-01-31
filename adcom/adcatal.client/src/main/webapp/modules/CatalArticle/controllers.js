@@ -34,20 +34,21 @@ angular.module('AdCatal')
             start:0,
             max:self.itemPerPage
         }
-        findByLike(self.searchInput);
+        findCustom(self.searchInput);
     }
 
-    function findByLike(searchInput){
-    	catalArticleService.find(searchInput).then(function(entitySearchResult) {
+    function findCustom(searchInput){
+    	catalArticleService.findCustom(searchInput).then(function(entitySearchResult) {
             self.catalArticles = entitySearchResult.resultList;
             self.totalItems = entitySearchResult.count ;
         });
     }
+    
 
     function processSearchInput(){
         var fieldNames = [];
-        if(self.searchInput.entity.articleName){
-        	fieldNames.push('articleName') ;
+        if(self.searchInput.entity.features.artName){
+        	fieldNames.push('features.artName') ;
         }
         if(self.searchInput.entity.pic){
         	fieldNames.push('pic') ;
@@ -61,13 +62,13 @@ angular.module('AdCatal')
 
     function  handleSearchRequestEvent(){
     	processSearchInput();
-    	findByLike(self.searchInput);
+    	findCustom(self.searchInput);
     };
 
     function paginate(){
     	self.searchInput.start = ((self.currentPage - 1)  * self.itemPerPage) ;
     	self.searchInput.max = self.itemPerPage ;
-    	findByLike(self.searchInput);
+    	findCustom(self.searchInput);
     };
 
 	function handlePrintRequestEvent(){		

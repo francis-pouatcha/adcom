@@ -1,183 +1,53 @@
 package org.adorsys.adcatal.jpa;
 
-import java.math.BigDecimal;
-
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.validation.constraints.NotNull;
+import javax.persistence.Transient;
 
-import org.adorsys.adcore.jpa.AbstractTimedData;
 import org.adorsys.javaext.description.Description;
 
 @Entity
 @Description("CatalArticle_description")
-public class CatalArticle extends AbstractTimedData {
+public class CatalArticle extends CatalAbstractArticle {
 
 	private static final long serialVersionUID = -1863080422505047660L;
-
-	@Column
-	@Description("CatalArticle_articleName_description")
-	@NotNull
-	private String articleName;
-
-	@Column
-	@Description("CatalArticle_pic_description")
-	@NotNull
-	private String pic;
-
-	@Column
-	@Description("CatalArticle_active_description")
-	private Boolean active;
-
-	@Column
-	@Description("CatalArticle_authorizedSale_description")
-	private Boolean authorizedSale;
-
-	@Column
-	@Description("CatalArticle_familiesIdentif_description")
-	private String familiesIdentif;
-
-	@Column
-	@Description("CatalArticle_sppu_description")
-	private BigDecimal sppu;
-
-	@Column
-	@Description("CatalArticle_sppuCurrIso3_description")
-	private String sppuCurrIso3;
 	
-	@Column
-	@Description("CatalArticle_maxDisctRate_description")
-	private BigDecimal maxDisctRate;
+	@Transient
+	private CatalArt2ProductFamily familyFeatures = new CatalArt2ProductFamily();
 
-	@Column
-	@Description("CatalArticle_maxStockQty_description")
-	private BigDecimal maxStockQty;
-
-	@Column
-	@Description("CatalArticle_minStockQty_description")
-	private BigDecimal minStockQty;
+	@Transient
+	private CatalArtFeatMapping features = new CatalArtFeatMapping();
 	
-	@Column
-	@Description("CatalArticle_vatRate_description")
-	private BigDecimal vatRate;
+	@Transient
+	private CatalPicMapping picMapping = new CatalPicMapping();
 
-	@Column
-	@Description("CatalArticle_pic_description")
-	@NotNull
-	private String lotMgtScheme = "FiFo";
-
-	@Column
-	@Description("CatalArticle_manageLot_description")
-	@NotNull
-	private Boolean mngByLot = Boolean.TRUE;
-	
-	public String getArticleName() {
-		return this.articleName;
+	public CatalArtFeatMapping getFeatures() {
+		return features;
 	}
 
-	public void setArticleName(final String articleName) {
-		this.articleName = articleName;
+	public void setFeatures(CatalArtFeatMapping features) {
+		this.features = features;
 	}
 
-	public String getPic() {
-		return this.pic;
+	public CatalArt2ProductFamily getFamilyFeatures() {
+		return familyFeatures;
 	}
 
-	public void setPic(final String pic) {
-		this.pic = pic;
+	public void setFamilyFeatures(CatalArt2ProductFamily familyFeatures) {
+		this.familyFeatures = familyFeatures;
 	}
 
-	public Boolean getActive() {
-		return this.active;
+	public CatalPicMapping getPicMapping() {
+		return picMapping;
 	}
 
-	public void setActive(final Boolean active) {
-		this.active = active;
+	public void setPicMapping(CatalPicMapping picMapping) {
+		this.picMapping = picMapping;
 	}
 
-	public Boolean getAuthorizedSale() {
-		return this.authorizedSale;
+	public void copyTo(CatalArticle target) {
+		super.copyTo(target);
+		target.features = features;
+		target.familyFeatures=familyFeatures;
+		target.picMapping=picMapping;
 	}
-
-	public void setAuthorizedSale(final Boolean authorizedSale) {
-		this.authorizedSale = authorizedSale;
-	}
-
-	public String getFamiliesIdentif() {
-		return this.familiesIdentif;
-	}
-
-	public void setFamiliesIdentif(final String familiesIdentif) {
-		this.familiesIdentif = familiesIdentif;
-	}
-
-	public BigDecimal getSppu() {
-		return this.sppu;
-	}
-
-	public void setSppu(final BigDecimal sppu) {
-		this.sppu = sppu;
-	}
-
-	public String getSppuCurrIso3() {
-		return this.sppuCurrIso3;
-	}
-
-	public void setSppuCurrIso3(final String sppuCurrIso3) {
-		this.sppuCurrIso3 = sppuCurrIso3;
-	}
-
-	public BigDecimal getVatRate() {
-		return this.vatRate;
-	}
-
-	public void setVatRate(final BigDecimal vatRate) {
-		this.vatRate = vatRate;
-	}
-	
-	public BigDecimal getMaxDisctRate() {
-		return maxDisctRate;
-	}
-
-	public void setMaxDisctRate(BigDecimal maxDisctRate) {
-		this.maxDisctRate = maxDisctRate;
-	}
-
-	public BigDecimal getMaxStockQty() {
-		return maxStockQty;
-	}
-
-	public void setMaxStockQty(BigDecimal maxStockQty) {
-		this.maxStockQty = maxStockQty;
-	}
-
-	public BigDecimal getMinStockQty() {
-		return minStockQty;
-	}
-
-	public void setMinStockQty(BigDecimal minStockQty) {
-		this.minStockQty = minStockQty;
-	}
-
-	public String getLotMgtScheme() {
-		return lotMgtScheme;
-	}
-
-	public void setLotMgtScheme(String lotMgtScheme) {
-		this.lotMgtScheme = lotMgtScheme;
-	}
-
-	@Override
-	protected String makeIdentif() {
-		return pic;
-	}
-
-	public Boolean getMngByLot() {
-		return mngByLot;
-	}
-
-	public void setMngByLot(Boolean mngByLot) {
-		this.mngByLot = mngByLot;
-	}
-	
 }

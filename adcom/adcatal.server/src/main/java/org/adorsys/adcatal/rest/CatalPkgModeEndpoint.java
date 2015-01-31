@@ -2,7 +2,6 @@ package org.adorsys.adcatal.rest;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -83,7 +82,7 @@ public class CatalPkgModeEndpoint
    @Produces({ "application/json", "application/xml" })
    public Response findByIdentif(@PathParam("identif") String identif)
    {
-	   CatalPkgMode found = ejb.findByIdentif(identif, new Date());
+	   CatalPkgMode found = ejb.findByIdentif(identif);
 	   if (found == null)
 		   return Response.status(Status.NOT_FOUND).build();
 	   return Response.ok(detach(found)).build();
@@ -152,10 +151,13 @@ public class CatalPkgModeEndpoint
    @Consumes({ "application/json", "application/xml" })
    public CatalPkgModeSearchResult searchCatalPkgModes(CatalPkgModeSearchInput searchInput)
    {
-	   List<CatalPkgMode> pkgModes = ejb.searchCatalPkgModes(searchInput);
-	   Long count = ejb.countCatalPkgModes(searchInput);
-	   CatalPkgModeSearchResult searchResult = new CatalPkgModeSearchResult(count, detach(pkgModes), detach(searchInput));
-	   return searchResult;
+	   return findByLike(searchInput);
+//	   if(searchInput.getStart()<0) searchInput.setStart(0);
+//	   if(searchInput.getMax()<0) searchInput.setMax(max);
+//	   List<CatalPkgMode> pkgModes = ejb.searchCatalPkgModes(searchInput);
+//	   Long count = ejb.countCatalPkgModes(searchInput);
+//	   CatalPkgModeSearchResult searchResult = new CatalPkgModeSearchResult(count, detach(pkgModes), detach(searchInput));
+//	   return searchResult;
    }
 
    @POST

@@ -47,10 +47,10 @@ public class CatalProductFamilyEndpoint
    }
 
    @DELETE
-   @Path("/{id}")
-   public Response deleteById(@PathParam("id") String id)
+   @Path("/{identif}")
+   public Response deleteById(@PathParam("identif") String identif)
    {
-      CatalProductFamily deleted = ejb.deleteById(id);
+      CatalProductFamily deleted = ejb.deleteByFamCode(identif);
       if (deleted == null)
          return Response.status(Status.NOT_FOUND).build();
 

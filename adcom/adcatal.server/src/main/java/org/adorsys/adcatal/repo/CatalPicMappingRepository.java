@@ -1,6 +1,7 @@
 package org.adorsys.adcatal.repo;
 
 import java.util.Date;
+import java.util.List;
 
 import org.adorsys.adcatal.jpa.CatalPicMapping;
 import org.apache.deltaspike.data.api.EntityRepository;
@@ -13,4 +14,6 @@ public interface CatalPicMappingRepository extends EntityRepository<CatalPicMapp
 {
 	@Query("SELECT e FROM CatalPicMapping AS e WHERE e.identif = ?1 AND e.validFrom <= ?2 AND (e.validTo IS NULL OR e.validTo > ?2)")
 	public QueryResult<CatalPicMapping> findByIdentif(String identif, Date validOn);
+
+	public List<CatalPicMapping> findByArtIdentif(String artIdentif);
 }

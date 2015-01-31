@@ -23,9 +23,10 @@ angular.module('AdCatal').factory('catalArticleResource',['$http', function($htt
         return $http.post(urlBase+'/findBy',entitySearchInput);
     };
 
-    service.findByLike = function(entitySearchInput){
-        return $http.post(urlBase+'/findByLike',entitySearchInput);
+    service.findCustom = function(entitySearchInput){
+        return $http.post(urlBase+'/findCustom',entitySearchInput);
     };
+
     service.findById = function(entityId){
         return $http.get(urlBase+'/'+entityId);
     };

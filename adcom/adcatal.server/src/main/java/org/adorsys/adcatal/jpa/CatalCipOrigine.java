@@ -6,7 +6,7 @@ import org.adorsys.adcore.jpa.DynEnum;
 import org.adorsys.javaext.description.Description;
 
 @Entity
-@Description("CatalPkgMode_description")
-public class CatalPkgMode extends DynEnum {
-	private static final long serialVersionUID = -5879339053254287705L;
+@Description("CatalCipOrigine_description")
+public class CatalCipOrigine extends DynEnum {
+	private static final long serialVersionUID = 2071625522792658207L;
 }

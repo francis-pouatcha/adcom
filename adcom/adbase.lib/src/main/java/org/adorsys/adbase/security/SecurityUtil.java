@@ -1,6 +1,7 @@
 package org.adorsys.adbase.security;
 
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -70,5 +71,13 @@ public class SecurityUtil {
 			throw new IllegalStateException("The orgUnit should not be null");
 		}
 		return orgUnit;
+	}
+
+	public String getUserLange() {
+		return "fr";
+	}
+
+	public List<String> getUserLangePrefs() {
+		return Arrays.asList("fr","en");
 	}
 }

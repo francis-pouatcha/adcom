@@ -51,7 +51,7 @@ public abstract class AbstractObjectLoader<T extends AbstractIdentifData> {
 		}
 	}
 	
-	private void update(Row row, List<PropertyDesc> fields, CellParser cellParser) {
+	protected void update(Row row, List<PropertyDesc> fields, CellParser cellParser) {
 		T newObject = newObject();
 		for (PropertyDesc propertyDesc : fields) {
 			propertyDesc.setProperty(row, newObject, cellParser);

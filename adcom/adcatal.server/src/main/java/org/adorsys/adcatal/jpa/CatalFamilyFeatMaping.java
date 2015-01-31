@@ -4,12 +4,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 
-import org.adorsys.adcore.jpa.AbstractTimedData;
+import org.adorsys.adcore.jpa.AbstractIdentifData;
 import org.adorsys.javaext.description.Description;
 
 @Entity
 @Description("CatalFamilyFeatMaping_description")
-public class CatalFamilyFeatMaping extends AbstractTimedData {
+public class CatalFamilyFeatMaping extends AbstractIdentifData {
 
 	private static final long serialVersionUID = -2759458392635728552L;
 
@@ -89,6 +89,10 @@ public class CatalFamilyFeatMaping extends AbstractTimedData {
 
 	@Override
 	protected String makeIdentif() {
+		return toIdentif(pfIdentif, langIso2);
+	}
+
+	public static String toIdentif(String pfIdentif, String langIso2) {
 		return pfIdentif + "_" + langIso2;
 	}
 }

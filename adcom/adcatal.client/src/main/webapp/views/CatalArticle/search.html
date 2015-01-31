@@ -15,21 +15,20 @@
                         <div class="row" >
                             <div class="col-lg-3">
                                 <div class="form-group">
-                                    <label class=" control-label" for="articleName">{{"CatalArticle_articleName_description.title"|translate}}</label>
-                                    <div class="">
-                                        <input type="text" id="articleName" ng-model="catalArticleCtrl.searchInput.entity.articleName" class="form-control">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="form-group">
                                     <label class=" control-label" for="pic">{{"CatalArticle_pic_description.title"|translate}}</label>
                                     <div class="">
                                         <input type="text" id="pic" ng-model="catalArticleCtrl.searchInput.entity.pic" class="form-control">
                                     </div>
                                 </div>
                             </div>
-
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class=" control-label" for="articleName">{{"CatalArticle_articleName_description.title"|translate}}</label>
+                                    <div class="">
+                                        <input type="text" id="articleName" ng-model="catalArticleCtrl.searchInput.entity.features.artName" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
                             <div class="col-lg-3">
                                 <div class="form-group">
                                     <label class=" control-label" for="familiesIdentif">{{"CatalArticle_familiesIdentif_description.title"|translate}}</label>
@@ -38,7 +37,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="col-lg-2">
                                 <div class="form-group">
                                     <button  ng-click="catalArticleCtrl.handleSearchRequestEvent()" class="btn btn-default " style="margin-top: 23px;" >
@@ -85,7 +83,7 @@
                             <tbody>
                             <tr ng-repeat="catalArticle in catalArticleCtrl.catalArticles" >
                                 <td>{{catalArticle.pic}}</td>
-                                <td>{{catalArticle.articleName}}</td>
+                                <td>{{catalArticle.features.artName}}</td>
                                 <td>{{catalArticle.stockQty}}</td>
                                 <td>{{catalArticle.sppu}}</td>
                                 <td>{{catalArticle.vatRate}}</td>

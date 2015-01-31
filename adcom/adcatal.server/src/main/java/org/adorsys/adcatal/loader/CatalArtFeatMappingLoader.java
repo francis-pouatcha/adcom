@@ -22,7 +22,7 @@ public class CatalArtFeatMappingLoader extends
 	}
 
 	public CatalArtFeatMapping findByIdentif(String identif, Date validOn) {
-		return ejb.findByIdentif(identif, validOn);
+		return ejb.findByIdentif(identif);
 	}
 
 	public CatalArtFeatMapping create(CatalArtFeatMapping entity) {
@@ -34,7 +34,9 @@ public class CatalArtFeatMappingLoader extends
 	}
 
 	public CatalArtFeatMapping deleteById(String id) {
-		return ejb.deleteById(id);
+		CatalArtFeatMapping featMapping = ejb.findById(id);
+		if(featMapping!=null) ejb.deleteByPic(featMapping.getArtIdentif());
+		return featMapping;
 	}
 
 }

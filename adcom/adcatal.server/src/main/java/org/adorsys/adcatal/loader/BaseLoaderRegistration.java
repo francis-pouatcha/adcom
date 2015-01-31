@@ -18,8 +18,8 @@ import org.adorsys.adcatal.jpa.CatalArtManufSupp;
 import org.adorsys.adcatal.jpa.CatalArticle;
 import org.adorsys.adcatal.jpa.CatalFamilyFeatMaping;
 import org.adorsys.adcatal.jpa.CatalPicMapping;
-import org.adorsys.adcatal.jpa.CatalPkgMode;
 import org.adorsys.adcatal.jpa.CatalProductFamily;
+import org.adorsys.adcatal.spi.CatalEnumDataProvider;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 @Startup
@@ -28,6 +28,8 @@ public class BaseLoaderRegistration {
 
 	@Inject
 	private DataSheetLoader dataSheetLoader;
+	@Inject
+	private CatalEnumDataProvider catalEnumDataProvider;
 	@Inject
 	private CatalArtDetailConfigLoader catalArtDetailConfigLoader;
 	@Inject
@@ -46,6 +48,8 @@ public class BaseLoaderRegistration {
 	private CatalProductFamilyLoader catalProductFamilyLoader;
 	@Inject
 	private CatalFamilyFeatMapingLoader catalFamilyFeatMapingLoader;
+	@Inject
+	private CatalCipOrigineLoader catalCipOrigineLoader;
 	
 	@PostConstruct
 	public void postConstruct(){
@@ -55,9 +59,11 @@ public class BaseLoaderRegistration {
 		dataSheetLoader.registerLoader(CatalArticle.class.getSimpleName(), catalArticleLoader);
 		dataSheetLoader.registerLoader(CatalArtManufSupp.class.getSimpleName(), catalArtManufSuppLoader);
 		dataSheetLoader.registerLoader(CatalPicMapping.class.getSimpleName(), catalPicMappingLoader);
-		dataSheetLoader.registerLoader(CatalPkgMode.class.getSimpleName(), catalPkgModeLoader);
 		dataSheetLoader.registerLoader(CatalProductFamily.class.getSimpleName(), catalProductFamilyLoader);
 		dataSheetLoader.registerLoader(CatalFamilyFeatMaping.class.getSimpleName(), catalFamilyFeatMapingLoader);
+		
+		catalPkgModeLoader.load(catalEnumDataProvider.getPkgModeData());
+		catalCipOrigineLoader.load(catalEnumDataProvider.getCipOrigineData());
 		createTemplate();
 	}
 
@@ -70,7 +76,6 @@ public class BaseLoaderRegistration {
 	
 	public void createTemplate(){
 		HSSFWorkbook workbook = new HSSFWorkbook();
-		catalPkgModeLoader.createTemplate(workbook);
 		catalProductFamilyLoader.createTemplate(workbook);
 		catalFamilyFeatMapingLoader.createTemplate(workbook);
 		catalArticleLoader.createTemplate(workbook);
