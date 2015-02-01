@@ -31,9 +31,9 @@
                             </div>
                             <div class="col-lg-3">
                                 <div class="form-group">
-                                    <label class=" control-label" for="familiesIdentif">{{"CatalArticle_familiesIdentif_description.title"|translate}}</label>
+                                    <label class=" control-label" for="familyName">{{"CatalArticle_familiesIdentif_description.title"|translate}}</label>
                                     <div class="">
-                                        <input type="text" id="familiesIdentif" ng-model="catalArticleCtrl.searchInput.entity.familiesIdentif" class="form-control">
+                                        <input type="text" id="familyName" ng-model="catalArticleCtrl.searchInput.entity.familyFeatures.familyName" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -87,7 +87,7 @@
                                 <td>{{catalArticle.stockQty}}</td>
                                 <td>{{catalArticle.sppu}}</td>
                                 <td>{{catalArticle.vatRate}}</td>
-                                <td>{{catalArticle.familiesIdentif}}</td>
+                                <td>{{catalArticle.familyFeatures.familyName}}</td>
                                 <td><a href="#/CatalArticles/show/{{catalArticle.pic}}" ><i class="glyphicon glyphicon-eye-open"></i></a></td>
                                 <td><a href="#/CatalArticles/edit/{{catalArticle.pic}}" ><i class="glyphicon glyphicon-edit"></i></a></td>
                             </tr>

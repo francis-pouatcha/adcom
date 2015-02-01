@@ -39,6 +39,14 @@ public class CatalFamilyFeatMaping extends AbstractIdentifData {
 	@Description("CatalFamilyFeatMaping_usage_description")
 	private String usage;
 
+	@Column
+	@Description("CatalFamilyFeatMaping_famPath_description")
+	private String famPath;
+
+	@Column
+	@Description("CatalFamilyFeatMaping_treats_description")
+	private String treats;
+	
 	public String getPfIdentif() {
 		return this.pfIdentif;
 	}
@@ -85,6 +93,22 @@ public class CatalFamilyFeatMaping extends AbstractIdentifData {
 
 	public void setUsage(final String usage) {
 		this.usage = usage;
+	}
+
+	public String getFamPath() {
+		return famPath;
+	}
+
+	public void setFamPath(String famPath) {
+		this.famPath = famPath;
+	}
+
+	public String getTreats() {
+		return treats;
+	}
+
+	public void setTreats(String treats) {
+		this.treats = treats;
 	}
 
 	@Override

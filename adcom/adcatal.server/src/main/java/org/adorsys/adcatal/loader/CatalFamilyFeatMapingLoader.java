@@ -22,7 +22,7 @@ public class CatalFamilyFeatMapingLoader extends
 	}
 
 	public CatalFamilyFeatMaping findByIdentif(String identif, Date validOn) {
-		return ejb.findByIdentif(identif, validOn);
+		return ejb.findByIdentif(identif);
 	}
 
 	public CatalFamilyFeatMaping create(CatalFamilyFeatMaping entity) {

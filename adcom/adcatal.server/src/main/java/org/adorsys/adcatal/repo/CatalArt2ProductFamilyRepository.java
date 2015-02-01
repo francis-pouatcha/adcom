@@ -17,4 +17,7 @@ public interface CatalArt2ProductFamilyRepository extends EntityRepository<Catal
 	public List<CatalArt2ProductFamily> findByArtPic(String artPic);
 
 	public List<CatalArt2ProductFamily> findByFamCode(String famCode);
+
+	public List<CatalArt2ProductFamily> findByFamCodeAndLangIso2(
+			String famCode, String langIso2);
 }

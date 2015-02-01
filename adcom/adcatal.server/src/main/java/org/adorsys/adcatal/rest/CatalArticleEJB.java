@@ -28,6 +28,9 @@ public class CatalArticleEJB {
 
 	@Inject
 	private CatalCipOrigineEnumContract cipOrigineEnumContract;
+	
+	@Inject
+	private CatalArt2ProductFamilyEJB art2ProductFamilyEJB;
 
 	@Inject
 	private SecurityUtil securityUtil;
@@ -74,6 +77,7 @@ public class CatalArticleEJB {
 		}
 		featMappingEJB.deleteByPic(pic);
 		picMappingEJB.deleteByArtIdentif(pic);
+		art2ProductFamilyEJB.deleteByArtPic(pic);
 		return entities;
 	}
 

@@ -8,7 +8,10 @@ angular.module('AdCatal')
     $scope.catalArticleCtrl = self;
 
     self.searchInput = {
-        entity:{},
+        entity:{
+        	features:{},
+    		familyFeatures:{}
+        },
         fieldNames:[],
         start:0,
         max:self.itemPerPage
@@ -29,7 +32,10 @@ angular.module('AdCatal')
 
     function init(){
         self.searchInput = {
-            entity:{},
+            entity:{
+            	features:{},
+        		familyFeatures:{}
+            },
             fieldNames:[],
             start:0,
             max:self.itemPerPage
@@ -49,12 +55,14 @@ angular.module('AdCatal')
         var fieldNames = [];
         if(self.searchInput.entity.features.artName){
         	fieldNames.push('features.artName') ;
+        	self.searchInput.entity.features.langIso2='fr';
         }
         if(self.searchInput.entity.pic){
         	fieldNames.push('pic') ;
         }
-        if(self.searchInput.entity.familiesIdentif){
-        	fieldNames.push('familiesIdentif') ;
+        if(self.searchInput.entity.familyFeatures.familyName){
+        	fieldNames.push('familyFeatures.familyName') ;
+        	self.searchInput.entity.familyFeatures.langIso2='fr';
         }
         self.searchInput.fieldNames = fieldNames ;
         return self.searchInput ;

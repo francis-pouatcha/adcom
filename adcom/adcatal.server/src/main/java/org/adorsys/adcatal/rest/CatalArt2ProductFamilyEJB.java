@@ -26,6 +26,18 @@ public class CatalArt2ProductFamilyEJB {
 		}
 		return entity;
 	}
+	public void deleteByFamCode(String famCode) {
+		List<CatalArt2ProductFamily> list = repository.findByFamCode(famCode);
+		for (CatalArt2ProductFamily productFamily : list) {
+			repository.remove(productFamily);
+		}
+	}
+	public void deleteByArtPic(String artPic) {
+		List<CatalArt2ProductFamily> list = repository.findByArtPic(artPic);
+		for (CatalArt2ProductFamily productFamily : list) {
+			repository.remove(productFamily);
+		}
+	}
 
 	public CatalArt2ProductFamily update(CatalArt2ProductFamily entity) {
 		return repository.save(attach(entity));
@@ -75,4 +87,9 @@ public class CatalArt2ProductFamilyEJB {
 	public CatalArt2ProductFamily findByIdentif(String identif) {
 		return findById(identif);
 	}
+	
+	public List<CatalArt2ProductFamily> findByFamCodeAndLangIso2(String famCode, String langIso2){
+		return repository.findByFamCodeAndLangIso2(famCode, langIso2);
+	}
+
 }
