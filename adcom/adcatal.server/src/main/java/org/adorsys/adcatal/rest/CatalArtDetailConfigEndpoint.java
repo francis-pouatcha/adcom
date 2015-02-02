@@ -52,7 +52,7 @@ public class CatalArtDetailConfigEndpoint
    @Path("/{id}")
    public Response deleteById(@PathParam("id") String id)
    {
-      CatalArtDetailConfig deleted = ejb.deleteById(id);
+      CatalArtDetailConfig deleted = ejb.deleteCustomById(id);
       if (deleted == null)
          return Response.status(Status.NOT_FOUND).build();
 

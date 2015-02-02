@@ -48,6 +48,17 @@ public class CatalArtDetailConfigEJB
       }
       return entity;
    }
+   
+   public CatalArtDetailConfig deleteCustomById(String id)
+   {
+	   CatalArtDetailConfig entity = repository.findBy(id);
+	   if (entity != null)
+	   {
+		   entity.setValidTo(new Date());
+		   repository.save(entity);
+	   }
+	   return entity;
+   }
 
    public CatalArtDetailConfig update(CatalArtDetailConfig entity)
    {
