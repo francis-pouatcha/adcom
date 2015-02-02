@@ -26,8 +26,8 @@
    					<ul class="dropdown-menu">
    						<li><a href="{{workspaceLink()}}" ng-click="workspaces()" class="pointer-element">{{"navbar_ouWsIdentif"|translate}}</a></li>
    						<li><a href="#" ng-click="logout();" class="pointer-element">{{"navbar_logOut"|translate}}</a></li>
-   						<li><a href="#" ng-click="changeLanguage('en')" class="pointer-element">English</a></li>
-   						<li><a href="#" ng-click="changeLanguage('fr')" class="pointer-element">Francais</a></li>
+   						<li ng-show="switchTo('en')"><a href="#" ng-click="changeLanguage('en')" class="pointer-element">English</a></li>
+   						<li ng-show="switchTo('fr')"><a href="#" ng-click="changeLanguage('fr')" class="pointer-element">Francais</a></li>
    					</ul>
    				</li>
    			</ul>

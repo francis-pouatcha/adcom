@@ -74,7 +74,10 @@ public class SecurityUtil {
 	}
 
 	public String getUserLange() {
-		return "fr";
+		TermWsUserPrincipal userPrincipal = getCallerPrincipal();
+		if(userPrincipal!=null)
+			return userPrincipal.getLangIso2();
+		return getUserLangePrefs().iterator().next();
 	}
 
 	public List<String> getUserLangePrefs() {

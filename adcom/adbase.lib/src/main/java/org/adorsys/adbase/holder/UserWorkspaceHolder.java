@@ -23,6 +23,8 @@ public class UserWorkspaceHolder implements Serializable {
 	private String terminalName;
 	
 	private String timeZone;
+	
+	private String langIso2;
 
 	public String getLoginName() {
 		return loginName;
@@ -95,4 +97,13 @@ public class UserWorkspaceHolder implements Serializable {
 	public void setTimeZone(String timeZone) {
 		this.timeZone = timeZone;
 	}
+
+	public String getLangIso2() {
+		return langIso2;
+	}
+
+	public void setLangIso2(String langIso2) {
+		this.langIso2 = langIso2;
+	}
+	
 }

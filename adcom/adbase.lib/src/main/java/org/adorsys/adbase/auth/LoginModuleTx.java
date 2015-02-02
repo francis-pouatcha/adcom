@@ -45,7 +45,7 @@ public class LoginModuleTx {
 
 	public TermWsUserPrincipal login_login(SecUserSession existingUserSession, 
 			SecTermSession secTermSession, SecTerminal secTerminal, 
-			TermCdtl termCdtl, Date currentDate, String ouId, String workspaceId){
+			TermCdtl termCdtl, Date currentDate, String ouId, String workspaceId, String langIso2){
 		
 		if(existingUserSession!=null && StringUtils.isNotBlank(existingUserSession.getId())){
 			secUserSessionEJB.deleteById(existingUserSession.getId());
@@ -56,6 +56,7 @@ public class LoginModuleTx {
 		secUserSession.setExpires(DateUtils.addDays(currentDate, 1));
 		secUserSession.setId(UUID.randomUUID().toString());
 		secUserSession.setLoginName(secTermSession.getLoginName());
+		secUserSession.setLangIso2(langIso2);
 		secUserSession.setTermSessionId(secTermSession.getId());
 		secUserSession.setOuId(ouId);
 		// Setin upthe workspace identifier 
@@ -78,6 +79,7 @@ public class LoginModuleTx {
 		newPrincipal.setAccessTime(secTerminal.getAccessTime());
 		newPrincipal.setLocality(secTerminal.getLocality());
 		newPrincipal.setLoginName(secTermSession.getLoginName());
+		newPrincipal.setLangIso2(secUserSession.getLangIso2());
 		newPrincipal.setLoginTime(currentDate);
 		newPrincipal.setMacAddress(secTerminal.getMacAddress());
 		newPrincipal.setTermCred(termCdtl.getCre());
@@ -96,6 +98,7 @@ public class LoginModuleTx {
 		secUserSession.setExpires(DateUtils.addDays(currentDate, 1));
 		secUserSession.setId(UUID.randomUUID().toString());
 		secUserSession.setLoginName(existingUserSession.getLoginName());
+		secUserSession.setLangIso2(existingUserSession.getLangIso2());
 		secUserSession.setTermSessionId(secTermSession.getId());
 		secUserSession.setWorkspaceId(existingUserSession.getWorkspaceId());
 		secUserSession.setOuId(existingUserSession.getOuId());
@@ -117,6 +120,7 @@ public class LoginModuleTx {
 		newPrincipal.setAccessTime(secTerminal.getAccessTime());
 		newPrincipal.setLocality(secTerminal.getLocality());
 		newPrincipal.setLoginName(secUserSession.getLoginName());
+		newPrincipal.setLangIso2(secUserSession.getLangIso2());
 		newPrincipal.setLoginTime(currentDate);
 		newPrincipal.setMacAddress(secTerminal.getMacAddress());
 		newPrincipal.setTermCred(termCdtl.getCre());
@@ -139,6 +143,7 @@ public class LoginModuleTx {
 		newUserSession.setExpires(DateUtils.addDays(new Date(), 1));
 		newUserSession.setTermSessionId(secTermSession.getId());
 		newUserSession.setLoginName(existingUserSession.getLoginName());
+		newUserSession.setLangIso2(existingUserSession.getLangIso2());
 		newUserSession.setOuId(existingUserSession.getOuId());
 		newUserSession.setWorkspaceId(newWorkspace);
 		secUserSessionEJB.deleteById(existingUserSession.getId());
@@ -159,6 +164,7 @@ public class LoginModuleTx {
 		newPrincipal.setAccessTime(secTerminal.getAccessTime());
 		newPrincipal.setLocality(secTerminal.getLocality());
 		newPrincipal.setLoginName(newUserSession.getLoginName());
+		newPrincipal.setLangIso2(newUserSession.getLangIso2());
 		newPrincipal.setLoginTime(currentDate);
 		newPrincipal.setMacAddress(secTerminal.getMacAddress());
 		newPrincipal.setTermCred(termCdtl.getCre());

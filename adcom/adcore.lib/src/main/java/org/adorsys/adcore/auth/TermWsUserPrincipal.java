@@ -26,6 +26,8 @@ public class TermWsUserPrincipal implements Principal {
 	private String termCred;
 	
 	private String loginName;
+	
+	private String langIso2 = "fr";// default
 
 	@Override
 	public String getName() {
@@ -118,6 +120,14 @@ public class TermWsUserPrincipal implements Principal {
 
 	public void setLoginName(String loginName) {
 		this.loginName = loginName;
+	}
+
+	public String getLangIso2() {
+		return langIso2;
+	}
+
+	public void setLangIso2(String langIso2) {
+		this.langIso2 = langIso2;
 	}
 	
 }

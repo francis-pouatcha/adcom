@@ -15,6 +15,8 @@ angular.module('AuthInterceptor',['SessionManager'])
             return config || $q.when(config);
 		},
 		response: function(response) {
+			var sessionManager3 = $injector.get('sessionManager');
+            sessionManager3.clearAuthErrors();
 			return response || $q.when(response);
 		},
 		responseError: function(rejection){

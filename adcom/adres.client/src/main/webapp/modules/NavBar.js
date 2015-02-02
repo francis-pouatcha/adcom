@@ -34,14 +34,18 @@ angular.module('NavBar',[
 			$scope.workspaceLink =sessionManager.workspaceLink;
 			$scope.workspaces = sessionManager.workspaces;
 			$scope.logout=sessionManager.logout;
-			$scope.changeLanguage = function (langKey) {
-	            $translate.use(langKey);
-	        };
 	        $scope.appMenuUrl = sessionManager.appMenuUrl;
 	        $scope.currentWs = sessionManager.userWsData();
 	        $scope.hasWorkspace = function(){
 	        	return sessionManager.isSet($scope.currentWs.roleIdentif);
 	        }
+	        $scope.switchTo = function(langKey){
+	        	return !$scope.hasWorkspace() && sessionManager.language()!=langKey;
+	        }
+			$scope.changeLanguage = function (langKey) {
+	            $translate.use(langKey);
+	            $translate.refresh();
+	        };
 		}
 	]
 );

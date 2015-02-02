@@ -73,11 +73,11 @@ public class CatalArticleEndpoint
    }
 
    @GET
-   @Path("/{id}")
+   @Path("/{identif}")
    @Produces({ "application/json", "application/xml" })
-   public Response findById(@PathParam("id") String id)
+   public Response findByIdentif(@PathParam("identif") String identif)
    {
-      CatalArticle found = ejb.findByIdentif(id);
+      CatalArticle found = ejb.findByIdentif(identif);
       if (found == null)
          return Response.status(Status.NOT_FOUND).build();
       return Response.ok(detach(found)).build();

@@ -69,6 +69,11 @@ public class Login extends AbstractIdentifData {
 	@Description("Login_accountExpir_description")
 	@DateFormatPattern(pattern = "dd-MM-yyyy HH:mm")
 	private Date accountExpir;
+	
+	@Column
+	@Description("Login_langIso2_description")
+	@NotNull
+	private String langIso2="fr";
 
 	@PrePersist
 	public void prePersist() {
@@ -163,6 +168,12 @@ public class Login extends AbstractIdentifData {
 		return loginName;
 	}
 	
+	public String getLangIso2() {
+		return langIso2;
+	}
+	public void setLangIso2(String langIso2) {
+		this.langIso2 = langIso2;
+	}
 	public String toLoginWorkspace(){
 		return ouIdentif+"_login_"+ouIdentif+"_"+loginName;
 	}

@@ -1,10 +1,5 @@
 'use strict';
 
-// declare modules
-//angular.module('SessionManager');
-//angular.module('AuthInterceptor');
-//angular.module('NavBar');
-
 angular.module('AdLogin', [
     'ngRoute',
     'ngCookies',
@@ -83,6 +78,7 @@ angular.module('AdLogin', [
         });
 
     	$translatePartialLoader.addPart('/adlogin.client/i18n/main');
+    	$translate.use(sessionManager.language());
     	$translate.refresh();
     	
     }]

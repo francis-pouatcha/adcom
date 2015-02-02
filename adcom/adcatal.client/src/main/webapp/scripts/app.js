@@ -1,9 +1,5 @@
 'use strict';
 
-//angular.module('SessionManager');
-//angular.module('AuthInterceptor');
-//angular.module('NavBar');
-
 angular.module('AdCatal', [
       'ngRoute',
       'ngCookies',
@@ -24,11 +20,11 @@ angular.module('AdCatal', [
 .config(['$routeProvider', '$httpProvider','$translateProvider','$translatePartialLoaderProvider',
          function($routeProvider,$httpProvider,$translateProvider,$translatePartialLoaderProvider) {
     $routeProvider
-      .when('/',{templateUrl:'views/CatalArticle/search.html',controller:'catalArticleCtrl'})
-      .when('/CatalArticles/new',{templateUrl:'views/CatalArticle/create.html',controller:'catalArticleCreateCtrl'})
-      .when('/CatalArticles',{templateUrl:'views/CatalArticle/search.html',controller:'catalArticleCtrl'})
-      .when('/CatalArticles/edit/:CatalArticleId',{templateUrl:'views/CatalArticle/edit.html',controller:'editCatalArticleCtrl'})
-      .when('/CatalArticles/show/:CatalArticleId',{templateUrl:'views/CatalArticle/show.html',controller:'showCatalArticleCtrl'})
+      .when('/',{templateUrl:'views/CatalArticle/CatalArticles.html',controller:'catalArticlesCtlr'})
+      .when('/CatalArticles/new',{templateUrl:'views/CatalArticle/CatalArticleCreate.html',controller:'catalArticleCreateCtlr'})
+      .when('/CatalArticles',{templateUrl:'views/CatalArticle/CatalArticles.html',controller:'catalArticlesCtlr'})
+      .when('/CatalArticles/edit/:pic',{templateUrl:'views/CatalArticle/CatalArticleEdit.html',controller:'catalArticleEditCtlr'})
+      .when('/CatalArticles/show/:pic',{templateUrl:'views/CatalArticle/CatalArticleShow.html',controller:'catalArticleShowCtlr'})
       .when('/CatalArtDetailConfigs',{templateUrl:'views/CatalArtDetailConfig/search.html',controller:'SearchCatalArtDetailConfigController'})
       .when('/CatalArtDetailConfigs/new',{templateUrl:'views/CatalArtDetailConfig/detail.html',controller:'NewCatalArtDetailConfigController'})
       .when('/CatalArtDetailConfigs/edit/:CatalArtDetailConfigId',{templateUrl:'views/CatalArtDetailConfig/detail.html',controller:'EditCatalArtDetailConfigController'})
@@ -100,5 +96,6 @@ angular.module('AdCatal', [
     });
 
 	$translatePartialLoader.addPart('/adcatal.client/i18n/main');
+	$translate.use(sessionManager.language());
 	$translate.refresh();
 }]);

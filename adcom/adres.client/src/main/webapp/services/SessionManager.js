@@ -31,9 +31,9 @@ angular.module('SessionManager',['Base64Factory','ADUtils'])
     	userFullName:'',
     	email:'',
     	terminalName:'',
-    	timeZone:''
+    	timeZone:'',
+    	langIso2:''
     };
-
     
     auth.isSet = function(value){
     	return !(typeof (value) === 'undefined') && value;
@@ -42,7 +42,7 @@ angular.module('SessionManager',['Base64Factory','ADUtils'])
     auth.hasValues = function(trm,usr){
     	return auth.isSet(trm) && auth.isSet(usr); 
     };
-    
+       
     auth.login = function(username, password, successCallback, errorCallback){
     	sess.opr='login';
     	sess.lgn=username;
@@ -86,7 +86,8 @@ angular.module('SessionManager',['Base64Factory','ADUtils'])
     	    userWsHolder.email=data.email;
     	    userWsHolder.terminalName=data.terminalName;
     	    userWsHolder.timeZone=data.timeZone;
-    		
+    	    userWsHolder.langIso2=data.langIso2;
+    	    
     		consumeSessData(headers);
     		adUtils.removeSearchOnUrl();
 			successCallback(data, status, headers, config);
@@ -117,7 +118,7 @@ angular.module('SessionManager',['Base64Factory','ADUtils'])
         return Base64.encode(auth_json);
     };
     
-    auth.operation = function(p){
+    auth.operation = function(value){
     	if(typeof (value) === 'undefined'){
     		return sess.opr;
     	} else {
@@ -133,7 +134,7 @@ angular.module('SessionManager',['Base64Factory','ADUtils'])
     		return auth;
     	}
     };
-    auth.workspace = function(p){
+    auth.workspace = function(value){
     	if(typeof (value) === 'undefined'){
     		return sess.wrk;
     	} else {
@@ -141,7 +142,7 @@ angular.module('SessionManager',['Base64Factory','ADUtils'])
     		return auth;
     	}
     };
-    auth.password = function(p){
+    auth.password = function(value){
     	if(typeof (value) === 'undefined'){
     		return sess.pwd;
     	} else {
@@ -149,7 +150,7 @@ angular.module('SessionManager',['Base64Factory','ADUtils'])
     		return auth;
     	}
     };
-    auth.terminalSession = function(p){
+    auth.terminalSession = function(value){
     	if(typeof (value) === 'undefined'){
     		return sess.trm;
     	} else {
@@ -157,7 +158,7 @@ angular.module('SessionManager',['Base64Factory','ADUtils'])
     		return auth;
     	}
     };
-    auth.userSession = function(p){
+    auth.userSession = function(value){
     	if(typeof (value) === 'undefined'){
     		return sess.usr;
     	} else {
@@ -211,6 +212,18 @@ angular.module('SessionManager',['Base64Factory','ADUtils'])
     auth.userWsData = function(){
     	return userWsHolder;
     }; 
+    
+    auth.language = function(l){
+    	if(auth.isSet(l) && (l=='fr' || l=='en')){
+    		userWsHolder.langIso2 = l;
+    		return userWsHolder.langIso2;
+    	}
+    	if(userWsHolder.langIso2=='fr' || userWsHolder.langIso2=='en')
+    		return userWsHolder.langIso2;
+    	
+    	userWsHolder.langIso2='fr';
+        return userWsHolder.langIso2;
+    }
 
     return auth;
 
@@ -228,6 +241,4 @@ angular.module('SessionManager',['Base64Factory','ADUtils'])
     	sess.trm='';
     	sess.usr='';
     };
-    
-
 }]);

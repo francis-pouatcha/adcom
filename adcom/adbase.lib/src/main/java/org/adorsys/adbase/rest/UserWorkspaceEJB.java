@@ -134,6 +134,11 @@ public class UserWorkspaceEJB {
 		holder.setEmail(login.getEmail());
 		holder.setTerminalName(principal.getTermName());
 		holder.setTimeZone(principal.getTimeZone());
+		if(StringUtils.isNotBlank(principal.getLangIso2())){
+			holder.setLangIso2(principal.getLangIso2());
+		} else {
+			holder.setLangIso2(login.getLangIso2());
+		}
 		return holder;
 	}
 	
@@ -142,6 +147,11 @@ public class UserWorkspaceEJB {
 		UserWorkspaceHolder holder = new UserWorkspaceHolder();
 		holder.setClientApp("/adlogin.client");
 		holder.setLoginName(login.getLoginName());
+		if(StringUtils.isNotBlank(principal.getLangIso2())){
+			holder.setLangIso2(principal.getLangIso2());
+		} else {
+			holder.setLangIso2(login.getLangIso2());
+		}
 		holder.setOuTypes(null);
 		holder.setRoleIdentif("login");
 		holder.setTargetOuIdentif(login.getOuIdentif());

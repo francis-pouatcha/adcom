@@ -39,6 +39,11 @@ public class SecUserSession extends AbstractMvmtData {
 	@Description("SecUserSession_workspaceId_description")
 	@NotNull
 	private String workspaceId;
+
+	@Column
+	@Description("SecUserSession_langIso2_description")
+	@NotNull
+	private String langIso2="fr";
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Description("SecUserSession_created_description")
@@ -99,5 +104,12 @@ public class SecUserSession extends AbstractMvmtData {
 	public void setOuId(String ouId) {
 		this.ouId = ouId;
 	}
-	
+
+	public String getLangIso2() {
+		return langIso2;
+	}
+
+	public void setLangIso2(String langIso2) {
+		this.langIso2 = langIso2;
+	}
 }

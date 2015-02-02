@@ -1,0 +1,23 @@
+<div ng-controller="catalPicMappingsCtlr as picCtlr" >
+    <a class="btn btn-success margBott10 pull-right" ng-click="picCtlr.openCreateForm('md')"><i class="glyphicon glyphicon-plus"></i> {{'Entity_create.title' | translate}}</a>
+    <br/>
+    <table class="table table-bordered table-striped">
+        <tr>
+            <th>{{"CatalPicMapping_artIdentif_description.title"|translate}}</th>
+            <th>{{"CatalPicMapping_code_description.title"|translate}}</th>
+            <th>{{"CatalPicMapping_codeOrigin_description.title"|translate}}</th>
+            <th>{{"CatalPicMapping_addInfo_description.title"|translate}}</th>
+            <th>{{"CatalPicMapping_priority_description.title"|translate}}</th>
+            <th></th>
+        </tr>
+        <tr ng-repeat="catalPicMapping in picCtlr.catalPicMappings">
+            <td><a >{{catalPicMapping.artIdentif}}</a></td>
+            <td><a >{{catalPicMapping.code}}</a></td>
+            <td><a >{{catalPicMapping.codeOriginTitle}}</a></td>
+            <td><a >{{catalPicMapping.addInfo}}</a></td>
+            <td><a >{{catalPicMapping.priority}}</a></td>
+            <td><a class="btn btn-default" ng-click="picCtlr.openEditForm('md',$index);"><i class="glyphicon glyphicon-edit"></i> </a>
+            </td>
+        </tr>
+    </table>
+</div>

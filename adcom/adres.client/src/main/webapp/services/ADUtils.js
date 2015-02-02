@@ -6,7 +6,6 @@
 'use strict';
 
 angular.module('ADUtils',[])
-
 .factory('adUtils',['$location',function($location){
     var service = {};
     service.loadApp = function(contextRoot){
@@ -24,3 +23,4 @@ angular.module('ADUtils',[])
     };
     return service;
 }]);
+

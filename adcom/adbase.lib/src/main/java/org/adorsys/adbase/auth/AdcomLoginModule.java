@@ -192,7 +192,7 @@ public class AdcomLoginModule implements LoginModule {
 
 			// create user session
 			newPrincipal = loginModuleTx.login_login(existingUserSession, 
-					secTermSession, secTerminal, termCdtl, currentDate, login.getOuIdentif(), login.toLoginWorkspace());
+					secTermSession, secTerminal, termCdtl, currentDate, login.getOuIdentif(), login.toLoginWorkspace(), login.getLangIso2());
 
 			return (true);
 		}
@@ -267,6 +267,7 @@ public class AdcomLoginModule implements LoginModule {
 				newPrincipal.setAccessTime(secTerminal.getAccessTime());
 				newPrincipal.setLocality(secTerminal.getLocality());
 				newPrincipal.setLoginName(existingUserSession.getLoginName());
+				newPrincipal.setLangIso2(existingUserSession.getLangIso2());
 				newPrincipal.setLoginTime(currentDate);
 				newPrincipal.setMacAddress(secTerminal.getMacAddress());
 				newPrincipal.setTermCred(termCdtl.getCre());
