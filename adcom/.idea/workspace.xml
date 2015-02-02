@@ -23,11 +23,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="CatalArtManufSupp.html" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="CatalArtManufSupp.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/CatalArtManufSupp.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.36199096" vertical-offset="0" max-vertical-offset="663">
+            <state vertical-scroll-proportion="-10.0" vertical-offset="0" max-vertical-offset="510">
               <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CatalPicMappingForm.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/CatalPicMappingForm.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-8.25" vertical-offset="12" max-vertical-offset="675">
+              <caret line="14" column="181" selection-start-line="14" selection-start-column="20" selection-end-line="14" selection-end-column="181" />
               <folding />
             </state>
           </provider>
@@ -36,28 +46,18 @@
       <file leaf-file-name="CatalArtManufSuppForm.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/CatalArtManufSuppForm.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-27.5" vertical-offset="0" max-vertical-offset="915">
-              <caret line="44" column="132" selection-start-line="44" selection-start-column="132" selection-end-line="44" selection-end-column="132" />
+            <state vertical-scroll-proportion="-8.75" vertical-offset="0" max-vertical-offset="915">
+              <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CatalArtManufSuppCtlrs.js" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="CatalArtManufSuppCtlrs.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/modules/CatalArticle/CatalArtManufSuppCtlrs.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="345" max-vertical-offset="1980">
-              <caret line="64" column="55" selection-start-line="64" selection-start-column="55" selection-end-line="64" selection-end-column="55" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CatalArtFeatMappingCtlrs.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/modules/CatalArticle/CatalArtFeatMappingCtlrs.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1241" max-vertical-offset="1980">
-              <caret line="97" column="45" selection-start-line="97" selection-start-column="45" selection-end-line="97" selection-end-column="45" />
+            <state vertical-scroll-proportion="0.4323144" vertical-offset="1233" max-vertical-offset="2310">
+              <caret line="102" column="21" selection-start-line="102" selection-start-column="21" selection-end-line="102" selection-end-column="21" />
               <folding />
             </state>
           </provider>
@@ -66,8 +66,8 @@
       <file leaf-file-name="CatalPicMappingCtlrs.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/modules/CatalArticle/CatalPicMappingCtlrs.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="881" max-vertical-offset="2250">
-              <caret line="74" column="8" selection-start-line="74" selection-start-column="8" selection-end-line="74" selection-end-column="51" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="840" max-vertical-offset="2250">
+              <caret line="123" column="71" selection-start-line="123" selection-start-column="53" selection-end-line="123" selection-end-column="71" />
               <folding />
             </state>
           </provider>
@@ -123,17 +123,17 @@
         <option value="$PROJECT_DIR$/adcatal.client/src/main/webapp/i18n/main/locale-fr.json" />
         <option value="$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/CatalPicMappings.html" />
         <option value="$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/CatalArtFeatMappings.html" />
-        <option value="$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/CatalPicMappingForm.html" />
         <option value="$PROJECT_DIR$/adcatal.client/src/main/webapp/modules/CatalArticle/CatalPicMappingCtlrs.js" />
         <option value="$PROJECT_DIR$/adcatal.client/src/main/webapp/modules/CatalArticle/CatalArtManufSuppResource.js" />
         <option value="$PROJECT_DIR$/adcatal.client/src/main/webapp/modules/CatalArticle/CatalArtManufSuppCtrls.js" />
-        <option value="$PROJECT_DIR$/adcatal.client/src/main/webapp/modules/CatalArticle/CatalArtManufSuppCtlrs.js" />
         <option value="$PROJECT_DIR$/adcatal.client/src/main/webapp/modules/CatalArticle/CatalArtFeatMappingCtlrs.js" />
         <option value="$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/CatalArtFeatMappingForm.html" />
         <option value="$PROJECT_DIR$/adcatal.client/src/main/webapp/index.html" />
         <option value="$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/CatalArticleShow.html" />
-        <option value="$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/CatalArtManufSuppForm.html" />
         <option value="$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/CatalArtManufSupp.html" />
+        <option value="$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/CatalPicMappingForm.html" />
+        <option value="$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/CatalArtManufSuppForm.html" />
+        <option value="$PROJECT_DIR$/adcatal.client/src/main/webapp/modules/CatalArticle/CatalArtManufSuppCtlrs.js" />
       </list>
     </option>
   </component>
@@ -881,22 +881,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/modules/CatalArticle/CatalPicMappingCtlrs.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="881" max-vertical-offset="2250">
-          <caret line="74" column="8" selection-start-line="74" selection-start-column="8" selection-end-line="74" selection-end-column="51" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/modules/CatalArticle/CatalArtManufSuppCtlrs.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="345" max-vertical-offset="1980">
-          <caret line="64" column="55" selection-start-line="64" selection-start-column="55" selection-end-line="64" selection-end-column="55" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-11.583333" vertical-offset="652" max-vertical-offset="1635">
@@ -921,14 +905,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/CatalPicMappingForm.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0234375" vertical-offset="0" max-vertical-offset="675">
-          <caret line="1" column="146" selection-start-line="1" selection-start-column="63" selection-end-line="1" selection-end-column="146" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/CatalArtFeatMappingForm.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.328125" vertical-offset="15" max-vertical-offset="990">
@@ -939,24 +915,48 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/modules/CatalArticle/CatalArtFeatMappingCtlrs.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1241" max-vertical-offset="1980">
+        <state vertical-scroll-proportion="0.32228917" vertical-offset="1241" max-vertical-offset="1980">
           <caret line="97" column="45" selection-start-line="97" selection-start-column="45" selection-end-line="97" selection-end-column="45" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/CatalArtManufSuppForm.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-27.5" vertical-offset="0" max-vertical-offset="915">
-          <caret line="44" column="132" selection-start-line="44" selection-start-column="132" selection-end-line="44" selection-end-column="132" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/CatalArtManufSupp.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.36199096" vertical-offset="0" max-vertical-offset="663">
+        <state vertical-scroll-proportion="-10.0" vertical-offset="0" max-vertical-offset="510">
           <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/CatalPicMappingForm.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-8.25" vertical-offset="12" max-vertical-offset="675">
+          <caret line="14" column="181" selection-start-line="14" selection-start-column="20" selection-end-line="14" selection-end-column="181" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/CatalArtManufSuppForm.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-8.75" vertical-offset="0" max-vertical-offset="915">
+          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/modules/CatalArticle/CatalPicMappingCtlrs.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="840" max-vertical-offset="2250">
+          <caret line="123" column="71" selection-start-line="123" selection-start-column="53" selection-end-line="123" selection-end-column="71" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/modules/CatalArticle/CatalArtManufSuppCtlrs.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4323144" vertical-offset="1233" max-vertical-offset="2310">
+          <caret line="102" column="21" selection-start-line="102" selection-start-column="21" selection-end-line="102" selection-end-column="21" />
           <folding />
         </state>
       </provider>

@@ -22,6 +22,7 @@ angular.module('AdCatal')
     self.handleSelectedItem = handleSelectedItem;
     self.error = "";
     self.deleteItem = deleteItem;
+    self.cipOrigines = [];
     
     init();
     function init(){
@@ -38,6 +39,7 @@ angular.module('AdCatal')
     	catalArtManufSuppResource.findByLike(searchInput)
     	.success(function(entitySearchResult) {
             self.catalArtManufSupps = entitySearchResult.resultList;
+            self.cipOrigines = entitySearchResult.cipOrigines;
         })
     	.error(function(error){
     		self.error = error;
@@ -55,16 +57,24 @@ angular.module('AdCatal')
             var modalInstance = $modal.open({
                 templateUrl: 'views/CatalArticle/CatalArtManufSuppForm.html',
                 controller: self.ModalInstanceCreateCtrl,
-                size: size
+                size: size,
+                resolve: {
+                    cipOrigines: function () {
+                        return self.cipOrigines;
+                    }
+                }
             });
         };
 
-        function ModalInstanceCreateCtrl($scope, $modalInstance) {
+        function ModalInstanceCreateCtrl($scope, $modalInstance,cipOrigines) {
             $scope.formCreate = false;
             $scope.catalArtManufSupp;
             $scope.currentAction="Entity_create.title";
+            $scope.cipOrigines=cipOrigines;
+            $scope.selectedCipOrigine=cipOrigines.length>0?cipOrigines[0]:null;
 
             $scope.save = function () {
+                $scope.catalArtManufSupp.msType=$scope.selectedCipOrigine.enumKey;
                 $scope.catalArtManufSupp.artIdentif = self.artIdentif;
             	catalArtManufSuppResource.create($scope.catalArtManufSupp).success(function () {
                     init();
@@ -87,23 +97,35 @@ angular.module('AdCatal')
                 resolve:{
                 	catalArtManufSupp: function(){
                         return self.selectedItem;
+                    },
+                    cipOrigines: function(){
+                        return self.cipOrigines;
                     }
                 }
+
             });
         };
 
-        function ModalInstanceEditCtrl($scope, $modalInstance,catalArtManufSupp,$timeout) {
+        function ModalInstanceEditCtrl($scope, $modalInstance,catalArtManufSupp,cipOrigines) {
             $scope.formCreate = false;
             $scope.catalArtManufSupp = catalArtManufSupp;
             $scope.currentAction="Entity_edit.title";
+            $scope.cipOrigines=cipOrigines;
+            $scope.selectedCipOrigine=function(){
+                for (var i = 0; i < cipOrigines.length; i++) {
+                    if(cipOrigines[i].enumKey==catalArtManufSupp.msType) return cipOrigines[i];
+                }
+                if(cipOrigines.length>0)return cipOrigines[0];
+                return null;
+            }();
 
             $scope.isClean = function() {
                 return !angular.equals(catalArtManufSupp, $scope.catalArtManufSupp);
             };
 
-
             $scope.save = function () {
                 $scope.catalArtManufSupp.artIdentif = self.artIdentif;
+                $scope.catalArtManufSupp.msType=$scope.selectedCipOrigine.enumKey;
             	catalArtManufSuppResource.update($scope.catalArtManufSupp).success(function(){
                    init();
                 });

@@ -1,7 +1,7 @@
 <div class="panel panel-default">
     <div class="panel-heading"><b>{{currentAction| translate}} {{'CatalPicMapping_description.title'| translate}} : {{catalPicMapping.artIdentif}}</b> </div>
     <div class="panel-body">
-        <form id="CatalPicMappingForm" name="CatalPicMappingForm" class="form-horizontal">
+        <form id="CatalPicMappingForm" name="CatalPicMappingForm" class="form-horizontal" novalidate="">
             <div class="control-group" ng-class="{error: CatalPicMappingForm.code.$invalid}">
                 <label for="code" class="control-label">{{'CatalPicMapping_code_description.title'|translate}}</label>
                 <div id="codeControls" class="controls">

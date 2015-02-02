@@ -21,10 +21,13 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.adorsys.adbase.security.SecurityUtil;
 import org.adorsys.adcatal.jpa.CatalArtManufSupp;
 import org.adorsys.adcatal.jpa.CatalArtManufSuppSearchInput;
 import org.adorsys.adcatal.jpa.CatalArtManufSuppSearchResult;
 import org.adorsys.adcatal.jpa.CatalArtManufSupp_;
+import org.adorsys.adcatal.jpa.CatalCipOrigine;
+import org.adorsys.adcatal.jpa.CatalPicMappingSearchResult;
 
 /**
  * 
@@ -37,6 +40,11 @@ public class CatalArtManufSuppEndpoint
 
    @Inject
    private CatalArtManufSuppEJB ejb;
+   @Inject
+   private CatalCipOrigineEJB cipOrigineEJB;
+   
+   @Inject
+   private SecurityUtil securityUtil;
 
    @POST
    @Consumes({ "application/json", "application/xml" })
@@ -130,9 +138,17 @@ public class CatalArtManufSuppEndpoint
       Long countLike = ejb.countByLike(searchInput.getEntity(), attributes);
       List<CatalArtManufSupp> resultList = ejb.findByLike(searchInput.getEntity(),
             searchInput.getStart(), searchInput.getMax(), attributes);
-      return new CatalArtManufSuppSearchResult(countLike, detach(resultList),
-            detach(searchInput));
+      return addEnums(new CatalArtManufSuppSearchResult(countLike, detach(resultList),
+            detach(searchInput)));
    }
+   
+   private CatalArtManufSuppSearchResult addEnums(CatalArtManufSuppSearchResult searchResult){
+	      String userLange = securityUtil.getUserLange();
+	      List<CatalCipOrigine> cipOrigines = cipOrigineEJB.findByLangIso2(userLange);
+	      searchResult.getCipOrigines().clear();
+	      searchResult.getCipOrigines().addAll(cipOrigines);
+	      return searchResult;
+}
 
    @POST
    @Path("/countByLike")
