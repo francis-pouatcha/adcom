@@ -12,14 +12,15 @@
             <th></th>
         </tr>
         <tr ng-repeat="catalArtFeatMapping in featCtlr.catalArtFeatMappings">
-            <td><a >{{catalArtFeatMapping.langIso2}}</a></td>
-            <td><a >{{catalArtFeatMapping.artName}}</a></td>
-            <td><a >{{catalArtFeatMapping.purpose}}</a></td>
-            <td><a >{{catalArtFeatMapping.usage}}</a></td>
-            <td><a >{{catalArtFeatMapping.warnings}}</a></td>
-            <td><a >{{catalArtFeatMapping.substances}}</a></td>
-            <td><a class="btn btn-default" ng-click="featCtlr.openEditForm('md',$index);"><i class="glyphicon glyphicon-edit"></i> </a>
+            <td>{{catalArtFeatMapping.langIso2}}</td>
+            <td>{{catalArtFeatMapping.artName}}</td>
+            <td>{{catalArtFeatMapping.purpose}}</td>
+            <td>{{catalArtFeatMapping.usage}}</td>
+            <td>{{catalArtFeatMapping.warnings}}</td>
+            <td>{{catalArtFeatMapping.substances}}</td>
+            <td><a class="" ng-click="featCtlr.openEditForm('md',$index);"><i class="glyphicon glyphicon-edit"></i></a>
             </td>
+            <td><a ng-click="featCtlr.deleteItem()" ><i class="glyphicon glyphicon-trash" ></i></a></td>
         </tr>
     </table>
 </div>

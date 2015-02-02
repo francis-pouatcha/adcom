@@ -1,5 +1,6 @@
 package org.adorsys.adcatal.jpa;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -22,6 +23,8 @@ public class CatalArtManufSuppSearchResult
     * The original search input object. For stateless clients.
     */
    private CatalArtManufSuppSearchInput searchInput;
+   
+   private List<CatalCipOrigine> cipOrigines = new ArrayList<CatalCipOrigine>();
 
    public CatalArtManufSuppSearchResult()
    {
@@ -66,5 +69,13 @@ public class CatalArtManufSuppSearchResult
    {
       this.searchInput = searchInput;
    }
+
+public List<CatalCipOrigine> getCipOrigines() {
+	return cipOrigines;
+}
+
+public void setCipOrigines(List<CatalCipOrigine> cipOrigines) {
+	this.cipOrigines = cipOrigines;
+}
 
 }

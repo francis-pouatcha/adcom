@@ -2,17 +2,16 @@
     
 angular.module('AdCatal')
 
-.controller('catalArtFeatMappingsCtlr',['$scope','catalArtFeatMappingResource','$modal','$routeParams',
-                                        function($scope,catalArtFeatMappingResource,$modal,$routeParams){
+.controller('catalArtManufSuppsCtlr',['$scope','catalArtManufSuppResource','$modal','$routeParams',function($scope,catalArtManufSuppResource,$modal,$routeParams){
 	
     var self = this ;
-    $scope.catalArtFeatMappingsCtlr = self;
+    $scope.catalArtManufSuppsCtlr = self;
 
     self.searchInput = {
         entity:{},
         fieldNames:[]
     };
-    self.catalArtFeatMappings = [];
+    self.catalArtManufSupps = [];
     self.selectedItem = {} ;
     self.selectedIndex  ;
     self.artIdentif;
@@ -23,6 +22,7 @@ angular.module('AdCatal')
     self.handleSelectedItem = handleSelectedItem;
     self.error = "";
     self.deleteItem = deleteItem;
+    self.cipOrigines = [];
     
     init();
     function init(){
@@ -36,9 +36,10 @@ angular.module('AdCatal')
     function findByLike(searchInput){
     	searchInput.entity.artIdentif=self.artIdentif;
     	searchInput.fieldNames.push('artIdentif');
-    	catalArtFeatMappingResource.findByLike(searchInput)
+    	catalArtManufSuppResource.findByLike(searchInput)
     	.success(function(entitySearchResult) {
-            self.catalArtFeatMappings = entitySearchResult.resultList;
+            self.catalArtManufSupps = entitySearchResult.resultList;
+            self.cipOrigines = entitySearchResult.cipOrigines;
         })
     	.error(function(error){
     		self.error = error;
@@ -48,26 +49,34 @@ angular.module('AdCatal')
         function handleSelectedItem(index){
             index = index ? index : 0 ;
             self.selectedIndex = index ;
-            angular.copy(self.catalArtFeatMappings[self.selectedIndex],self.selectedItem ) ;
+            angular.copy(self.catalArtManufSupps[self.selectedIndex],self.selectedItem ) ;
         };
 
 
         function openCreateForm(size){
             var modalInstance = $modal.open({
-                templateUrl: 'views/CatalArticle/CatalArtFeatMappingForm.html',
+                templateUrl: 'views/CatalArticle/CatalArtManufSuppForm.html',
                 controller: self.ModalInstanceCreateCtrl,
-                size: size
+                size: size,
+                resolve: {
+                    cipOrigines: function () {
+                        return self.cipOrigines;
+                    }
+                }
             });
         };
 
-        function ModalInstanceCreateCtrl($scope, $modalInstance) {
+        function ModalInstanceCreateCtrl($scope, $modalInstance,cipOrigines) {
             $scope.formCreate = false;
-            $scope.catalFeatMapping;
+            $scope.catalArtManufSupp;
             $scope.currentAction="Entity_create.title";
+            $scope.cipOrigines=cipOrigines;
+            $scope.selectedCipOrigine=cipOrigines.length>0?cipOrigines[0]:null;
 
             $scope.save = function () {
-                $scope.catalFeatMapping.artIdentif = self.artIdentif;
-            	catalArtFeatMappingResource.create($scope.catalFeatMapping).success(function () {
+                $scope.catalArtManufSupp.msType=$scope.selectedCipOrigine.enumKey;
+                $scope.catalArtManufSupp.artIdentif = self.artIdentif;
+            	catalArtManufSuppResource.create($scope.catalArtManufSupp).success(function () {
                     init();
                 });
                 $modalInstance.dismiss('cancel');
@@ -82,30 +91,42 @@ angular.module('AdCatal')
         function openEditForm(size,index){
             handleSelectedItem(index);
             var modalInstance = $modal.open({
-                templateUrl: 'views/CatalArticle/CatalArtFeatMappingForm.html',
+                templateUrl: 'views/CatalArticle/CatalArtManufSuppForm.html',
                 controller: self.ModalInstanceEditCtrl,
                 size: size,
                 resolve:{
-                	catalFeatMapping: function(){
+                	catalArtManufSupp: function(){
                         return self.selectedItem;
+                    },
+                    cipOrigines: function(){
+                        return self.cipOrigines;
                     }
                 }
+
             });
         };
 
-        function ModalInstanceEditCtrl($scope, $modalInstance,catalFeatMapping,$timeout) {
+        function ModalInstanceEditCtrl($scope, $modalInstance,catalArtManufSupp,cipOrigines) {
             $scope.formCreate = false;
-            $scope.catalFeatMapping = catalFeatMapping;
+            $scope.catalArtManufSupp = catalArtManufSupp;
             $scope.currentAction="Entity_edit.title";
+            $scope.cipOrigines=cipOrigines;
+            $scope.selectedCipOrigine=function(){
+                for (var i = 0; i < cipOrigines.length; i++) {
+                    if(cipOrigines[i].enumKey==catalArtManufSupp.msType) return cipOrigines[i];
+                }
+                if(cipOrigines.length>0)return cipOrigines[0];
+                return null;
+            }();
 
             $scope.isClean = function() {
-                return !angular.equals(catalFeatMapping, $scope.catalFeatMapping);
+                return !angular.equals(catalArtManufSupp, $scope.catalArtManufSupp);
             };
 
-
             $scope.save = function () {
-                $scope.catalFeatMapping.artIdentif = self.artIdentif;
-            	catalArtFeatMappingResource.update($scope.catalFeatMapping).success(function(){
+                $scope.catalArtManufSupp.artIdentif = self.artIdentif;
+                $scope.catalArtManufSupp.msType=$scope.selectedCipOrigine.enumKey;
+            	catalArtManufSuppResource.update($scope.catalArtManufSupp).success(function(){
                    init();
                 });
                 $modalInstance.dismiss('cancel');
@@ -118,7 +139,7 @@ angular.module('AdCatal')
 
         function deleteItem(index){
             handleSelectedItem();
-            catalArtFeatMappingResource.deleteById(self.selectedItem.id).success(function(){
+            catalArtManufSuppResource.deleteById(self.selectedItem.id).success(function(){
                 init();
             })
         }

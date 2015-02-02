@@ -7,8 +7,11 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
 
+import org.adorsys.adbase.security.SecurityUtil;
 import org.adorsys.adcatal.jpa.CatalArtManufSupp;
+import org.adorsys.adcatal.jpa.CatalCipOrigine;
 import org.adorsys.adcatal.repo.CatalArtManufSuppRepository;
+import org.apache.commons.lang3.StringUtils;
 
 @Stateless
 public class CatalArtManufSuppEJB 
@@ -16,10 +19,15 @@ public class CatalArtManufSuppEJB
 
    @Inject
    private CatalArtManufSuppRepository repository;
+   @Inject
+   private SecurityUtil securityUtil;
+   @Inject
+   private CatalCipOrigineEJB cipOrigineEJB; 
 
    public CatalArtManufSupp create(CatalArtManufSupp entity)
    {
-      return repository.save(attach(entity));
+       CatalArtManufSupp manufSupp = repository.save(attach(entity));
+      return processI18n(manufSupp);
    }
 
    public CatalArtManufSupp deleteById(String id)
@@ -29,7 +37,7 @@ public class CatalArtManufSuppEJB
       {
          repository.remove(entity);
       }
-      return entity;
+      return processI18n(entity);
    }
 
    public CatalArtManufSupp update(CatalArtManufSupp entity)
@@ -39,12 +47,14 @@ public class CatalArtManufSuppEJB
 
    public CatalArtManufSupp findById(String id)
    {
-      return repository.findBy(id);
+       CatalArtManufSupp manufSupp = repository.findBy(id);
+      return processI18n(manufSupp);
    }
 
    public List<CatalArtManufSupp> listAll(int start, int max)
    {
-      return repository.findAll(start, max);
+       List<CatalArtManufSupp> manufSupps = repository.findAll(start, max);
+      return processI18n(manufSupps);
    }
 
    public Long count()
@@ -54,7 +64,8 @@ public class CatalArtManufSuppEJB
 
    public List<CatalArtManufSupp> findBy(CatalArtManufSupp entity, int start, int max, SingularAttribute<CatalArtManufSupp, ?>[] attributes)
    {
-      return repository.findBy(entity, start, max, attributes);
+      List<CatalArtManufSupp> manufSupp = repository.findBy(entity, start, max, attributes);
+      return processI18n(manufSupp);
    }
 
    public Long countBy(CatalArtManufSupp entity, SingularAttribute<CatalArtManufSupp, ?>[] attributes)
@@ -64,7 +75,8 @@ public class CatalArtManufSuppEJB
 
    public List<CatalArtManufSupp> findByLike(CatalArtManufSupp entity, int start, int max, SingularAttribute<CatalArtManufSupp, ?>[] attributes)
    {
-      return repository.findByLike(entity, start, max, attributes);
+	   List<CatalArtManufSupp> manufSupps = repository.findByLike(entity, start, max, attributes);
+      return processI18n(manufSupps);
    }
 
    public Long countByLike(CatalArtManufSupp entity, SingularAttribute<CatalArtManufSupp, ?>[] attributes)
@@ -84,4 +96,41 @@ public class CatalArtManufSuppEJB
 	   if(resultList.isEmpty()) return null;
 	   return resultList.iterator().next();
    }
+   
+   private CatalArtManufSupp processI18n(final CatalArtManufSupp manufSupp) {
+		if(manufSupp==null) return null;
+		String msType = manufSupp.getMsType();
+		if (StringUtils.isNotBlank(msType)) {
+			String userLange = securityUtil.getUserLange();
+			CatalCipOrigine cipOrigine = cipOrigineEJB
+					.findByIdentif(CatalCipOrigine.toIdentif(msType,
+							userLange));
+			if (cipOrigine == null) {
+				List<String> userLanges = securityUtil.getUserLangePrefs();
+				for (String ulang : userLanges) {
+					if(StringUtils.equals(ulang, userLange)) continue;
+					cipOrigine = cipOrigineEJB.findByIdentif(CatalCipOrigine
+							.toIdentif(msType, ulang));
+					if (cipOrigine != null)
+						break;
+				}
+			}
+			if (cipOrigine != null) {
+				manufSupp.setMsTypeName(cipOrigine.getName());
+				manufSupp.setMsTypeDescription(cipOrigine.getDescription());
+			} else {
+				manufSupp.setMsTypeName(msType);
+				manufSupp.setMsTypeDescription(msType);
+			}
+		}
+		return manufSupp;
+	}
+	
+	private List<CatalArtManufSupp> processI18n(List<CatalArtManufSupp> manufSupps) {
+		for (CatalArtManufSupp catalmanufSupp : manufSupps) {
+			processI18n(catalmanufSupp);
+		}
+		return manufSupps;
+	}
+   
 }

@@ -11,13 +11,14 @@
             <th></th>
         </tr>
         <tr ng-repeat="catalPicMapping in picCtlr.catalPicMappings">
-            <td><a >{{catalPicMapping.artIdentif}}</a></td>
-            <td><a >{{catalPicMapping.code}}</a></td>
-            <td><a >{{catalPicMapping.codeOriginTitle}}</a></td>
-            <td><a >{{catalPicMapping.addInfo}}</a></td>
-            <td><a >{{catalPicMapping.priority}}</a></td>
-            <td><a class="btn btn-default" ng-click="picCtlr.openEditForm('md',$index);"><i class="glyphicon glyphicon-edit"></i> </a>
+            <td>{{catalPicMapping.artIdentif}}</td>
+            <td>{{catalPicMapping.code}}</td>
+            <td>{{catalPicMapping.codeOriginTitle}}</td>
+            <td>{{catalPicMapping.addInfo}}</td>
+            <td>{{catalPicMapping.priority}}</td>
+            <td><a class="" ng-click="picCtlr.openEditForm('md',$index);"><i class="glyphicon glyphicon-edit"></i></a>
             </td>
+            <td><a ng-click="picCtlr.deleteItem()" ><i class="glyphicon glyphicon-trash" ></i></a></td>
         </tr>
     </table>
 </div>
