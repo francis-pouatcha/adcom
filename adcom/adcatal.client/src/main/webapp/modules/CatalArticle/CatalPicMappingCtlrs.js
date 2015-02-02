@@ -15,15 +15,18 @@ angular.module('AdCatal')
     self.cipOrigines = [];
     self.selectedItem = {} ;
     self.selectedIndex  ;
+    self.artIdentif;
     self.openEditForm = openEditForm;
     self.openCreateForm = openCreateForm;
     self.ModalInstanceEditCtrl = ModalInstanceEditCtrl ;
     self.ModalInstanceCreateCtrl = ModalInstanceCreateCtrl ;
     self.handleSelectedItem = handleSelectedItem;
     self.error = "";
+    self.deleteItem = deleteItem;
     
     init();
     function init(){
+        self.artIdentif = $routeParams.pic;
         self.searchInput = {
             entity:{},
             fieldNames:[]
@@ -31,7 +34,7 @@ angular.module('AdCatal')
         findByLike(self.searchInput);
     }
     function findByLike(searchInput){
-    	searchInput.entity.artIdentif=$routeParams.pic;
+    	searchInput.entity.artIdentif=self.artIdentif;
     	searchInput.fieldNames.push('artIdentif');
     	catalPicMappingResource.findByLike(searchInput)
     	.success(function(entitySearchResult) {
@@ -72,6 +75,7 @@ angular.module('AdCatal')
         $scope.currentAction="Entity_create.title";
         $scope.save = function () {
         	$scope.catalPicMapping.codeOrigin=$scope.selectedCipOrigine.enumKey;
+            $scope.catalPicMapping.artIdentif = self.artIdentif;
             catalPicMappingResource.create($scope.catalPicMapping).success(function () {
                 init();
             });
@@ -112,12 +116,13 @@ angular.module('AdCatal')
         }();
         $scope.currentAction="Entity_edit.title";
         $scope.isClean = function() {
-            return angular.equals(catalPicMapping, $scope.catalPicMapping);
+            return !angular.equals(catalPicMapping, $scope.catalPicMapping);
         };
 
 
         $scope.save = function () {
         	$scope.catalPicMapping.codeOrigin=$scope.selectedCipOrigine.enumKey;
+            $scope.catalPicMapping.artIdentif = self.artIdentif;
             catalPicMappingResource.update($scope.catalPicMapping).success(function(){
                init();
             });
@@ -128,5 +133,12 @@ angular.module('AdCatal')
         };
 
     };
+
+    function deleteItem(index){
+            handleSelectedItem();
+            catalPicMappingResource.deleteById(self.selectedItem.identif).success(function(){
+                init();
+            })
+     }
 }]);
 

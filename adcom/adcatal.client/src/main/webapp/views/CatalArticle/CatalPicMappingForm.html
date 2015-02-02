@@ -18,7 +18,7 @@
             <div class="control-group" ng-class="{error: CatalPicMappingForm.addInfo.$invalid}">
                 <label for="addInfo" class="control-label">{{'CatalPicMapping_addInfo_description.title'|translate}}</label>
                 <div id="addInfoControls" class="controls">
-                    <input id="addInfo" name="addInfo" type="text" class="form-control" ng-model="catalPicMapping.addInfo" placeholder="{{'CatalPicMapping_addInfo_description.text'|translate}}"></input>
+                    <textarea id="addInfo" name="addInfo" rows="3" class="form-control" ng-model="catalPicMapping.addInfo" placeholder="{{'CatalPicMapping_addInfo_description.text'|translate}}"></textarea>
                 </div>
             </div>
             <div class="control-group" ng-class="{error: CatalPicMappingForm.priority.$invalid}">
