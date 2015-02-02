@@ -11,7 +11,7 @@ angular.module('AdCatal').controller('EditCatalProductFamilyController', functio
             $scope.catalProductFamily = new CatalProductFamilyResource(self.original);
         };
         var errorCallback = function() {
-            $location.path("/CatalProductFamilys");
+            $location.path("/CatalProductFamilies");
         };
         CatalProductFamilyResource.get({CatalProductFamilyId:$routeParams.CatalProductFamilyId}, successCallback, errorCallback);
     };
@@ -32,12 +32,12 @@ angular.module('AdCatal').controller('EditCatalProductFamilyController', functio
     };
 
     $scope.cancel = function() {
-        $location.path("/CatalProductFamilys");
+        $location.path("/CatalProductFamilies");
     };
 
     $scope.remove = function() {
         var successCallback = function() {
-            $location.path("/CatalProductFamilys");
+            $location.path("/CatalProductFamilies");
             $scope.displayError = false;
         };
         var errorCallback = function() {

@@ -37,9 +37,9 @@ angular.module('AdCatal', [
       .when('/CatalArtManufSupps',{templateUrl:'views/CatalArtManufSupp/search.html',controller:'SearchCatalArtManufSuppController'})
       .when('/CatalArtManufSupps/new',{templateUrl:'views/CatalArtManufSupp/detail.html',controller:'NewCatalArtManufSuppController'})
       .when('/CatalArtManufSupps/edit/:CatalArtManufSuppId',{templateUrl:'views/CatalArtManufSupp/detail.html',controller:'EditCatalArtManufSuppController'})
-      .when('/CatalFamilyFeatMapings',{templateUrl:'views/CatalFamilyFeatMaping/search.html',controller:'SearchCatalFamilyFeatMapingController'})
-      .when('/CatalFamilyFeatMapings/new',{templateUrl:'views/CatalFamilyFeatMaping/detail.html',controller:'NewCatalFamilyFeatMapingController'})
-      .when('/CatalFamilyFeatMapings/edit/:CatalFamilyFeatMapingId',{templateUrl:'views/CatalFamilyFeatMaping/detail.html',controller:'EditCatalFamilyFeatMapingController'})
+//      .when('/CatalFamilyFeatMapings',{templateUrl:'views/CatalFamilyFeatMaping/search.html',controller:'SearchCatalFamilyFeatMapingController'})
+//      .when('/CatalFamilyFeatMapings/new',{templateUrl:'views/CatalFamilyFeatMaping/detail.html',controller:'NewCatalFamilyFeatMapingController'})
+//      .when('/CatalFamilyFeatMapings/edit/:CatalFamilyFeatMapingId',{templateUrl:'views/CatalFamilyFeatMaping/detail.html',controller:'EditCatalFamilyFeatMapingController'})
       .when('/CatalManufSuppls',{templateUrl:'views/CatalManufSuppl/search.html',controller:'SearchCatalManufSupplController'})
       .when('/CatalManufSuppls/new',{templateUrl:'views/CatalManufSuppl/detail.html',controller:'NewCatalManufSupplController'})
       .when('/CatalManufSuppls/edit/:CatalManufSupplId',{templateUrl:'views/CatalManufSuppl/detail.html',controller:'EditCatalManufSupplController'})
@@ -50,9 +50,9 @@ angular.module('AdCatal', [
       .when('/CatalPkgModes/new',{templateUrl:'views/CatalPkgMode/create.html',controller:'catalPkgModeCreateCtrl'})
       .when('/CatalPkgModes/edit/:identif',{templateUrl:'views/CatalPkgMode/edit.html',controller:'catalPkgModeEditCtrl'})
       .when('/CatalPkgModes/show/:identif',{templateUrl:'views/CatalPkgMode/show.html',controller:'catalPkgModeShowCtrl'})
-      .when('/CatalProductFamilys',{templateUrl:'views/CatalProductFamily/search.html',controller:'SearchCatalProductFamilyController'})
-      .when('/CatalProductFamilys/new',{templateUrl:'views/CatalProductFamily/detail.html',controller:'NewCatalProductFamilyController'})
-      .when('/CatalProductFamilys/edit/:CatalProductFamilyId',{templateUrl:'views/CatalProductFamily/detail.html',controller:'EditCatalProductFamilyController'})
+//      .when('/CatalProductFamilies',{templateUrl:'views/CatalProductFamily/search.html',controller:'SearchCatalProductFamilyController'})
+//      .when('/CatalProductFamilies/new',{templateUrl:'views/CatalProductFamily/detail.html',controller:'NewCatalProductFamilyController'})
+//      .when('/CatalProductFamilies/edit/:CatalProductFamilyId',{templateUrl:'views/CatalProductFamily/detail.html',controller:'EditCatalProductFamilyController'})
       .otherwise({ redirectTo: '/' });
     
     $httpProvider.defaults.withCredentials = true;

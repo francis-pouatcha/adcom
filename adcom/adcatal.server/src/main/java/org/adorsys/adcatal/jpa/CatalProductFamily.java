@@ -73,4 +73,12 @@ public class CatalProductFamily extends AbstractIdentifData {
 	public void setFamPath(String famPath) {
 		this.famPath = famPath;
 	}
+
+	public void copyTo(CatalProductFamily target) {
+		target.famCode=famCode;
+		target.famPath=famPath;
+		target.features=features;
+		target.identif=identif;
+		target.parentIdentif=parentIdentif;
+	}
 }
