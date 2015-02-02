@@ -2,6 +2,7 @@ package org.adorsys.adcatal.rest;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -43,8 +44,9 @@ public class CatalArtDetailConfigEndpoint
    @Produces({ "application/json", "application/xml" })
    public CatalArtDetailConfig create(CatalArtDetailConfig entity)
    {
-      return detach(ejb.create(entity));
+	   return detach(ejb.createCustom(entity));
    }
+
 
    @DELETE
    @Path("/{id}")
@@ -75,6 +77,15 @@ public class CatalArtDetailConfigEndpoint
       if (found == null)
          return Response.status(Status.NOT_FOUND).build();
       return Response.ok(detach(found)).build();
+   }
+   
+   @GET
+   @Path("/findByArtPic/{pic}")
+   @Produces({ "application/json", "application/xml" })
+   public Response findByArtPic(@PathParam("pic") String pic)
+   {
+	   List<CatalArtDetailConfig> results = ejb.findByArtPicAndIdentif(pic, new Date());
+	   return Response.ok(detach(results)).build();
    }
 
    @GET

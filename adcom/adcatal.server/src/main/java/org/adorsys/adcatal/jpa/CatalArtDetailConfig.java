@@ -85,4 +85,15 @@ public class CatalArtDetailConfig extends CatalAbstractArticle {
 	protected String makeIdentif() {
 		return artDetCode;
 	}
+/*	
+	public CatalArtDetailConfig copyArticle(CatalArticle article, CatalArtDetailConfig artDetailConfig) {
+		artDetailConfig.setActive(article.getActive());
+		artDetailConfig.setAuthorizedSale(article.getAuthorizedSale());
+		artDetailConfig.setLotMgtScheme(lotMgtScheme);
+		artDetailConfig.setMaxDisctRate(maxDisctRate);
+		artDetailConfig.setMaxDisctRate(maxDisctRate);
+		artDetailConfig.setMaxStockQty(maxStockQty);
+		artDetailConfig.set
+		return this;
+	}*/
 }
