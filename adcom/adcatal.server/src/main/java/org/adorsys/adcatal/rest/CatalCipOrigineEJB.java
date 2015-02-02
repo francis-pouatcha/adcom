@@ -81,4 +81,8 @@ public class CatalCipOrigineEJB {
 	public CatalCipOrigine findByIdentif(String identif) {
 		return findById(identif);
 	}
+	
+	public List<CatalCipOrigine> findByLangIso2(String langIso2){
+		return repository.findByLangIso2(langIso2);
+	}
 }

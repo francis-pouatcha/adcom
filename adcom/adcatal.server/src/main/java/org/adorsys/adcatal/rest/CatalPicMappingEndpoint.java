@@ -21,6 +21,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.adorsys.adbase.security.SecurityUtil;
+import org.adorsys.adcatal.jpa.CatalCipOrigine;
 import org.adorsys.adcatal.jpa.CatalPicMapping;
 import org.adorsys.adcatal.jpa.CatalPicMappingSearchInput;
 import org.adorsys.adcatal.jpa.CatalPicMappingSearchResult;
@@ -37,6 +39,12 @@ public class CatalPicMappingEndpoint
 
    @Inject
    private CatalPicMappingEJB ejb;
+   
+   @Inject
+   private CatalCipOrigineEJB cipOrigineEJB;
+   
+   @Inject
+   private SecurityUtil securityUtil;
 
    @POST
    @Consumes({ "application/json", "application/xml" })
@@ -86,8 +94,8 @@ public class CatalPicMappingEndpoint
       CatalPicMappingSearchInput searchInput = new CatalPicMappingSearchInput();
       searchInput.setStart(start);
       searchInput.setMax(max);
-      return new CatalPicMappingSearchResult((long) resultList.size(),
-            detach(resultList), detach(searchInput));
+      return addEnums(new CatalPicMappingSearchResult((long) resultList.size(),
+            detach(resultList), detach(searchInput)));
    }
 
    @GET
@@ -107,8 +115,8 @@ public class CatalPicMappingEndpoint
       Long count = ejb.countBy(searchInput.getEntity(), attributes);
       List<CatalPicMapping> resultList = ejb.findBy(searchInput.getEntity(),
             searchInput.getStart(), searchInput.getMax(), attributes);
-      return new CatalPicMappingSearchResult(count, detach(resultList),
-            detach(searchInput));
+      return addEnums(new CatalPicMappingSearchResult(count, detach(resultList),
+            detach(searchInput)));
    }
 
    @POST
@@ -130,8 +138,17 @@ public class CatalPicMappingEndpoint
       Long countLike = ejb.countByLike(searchInput.getEntity(), attributes);
       List<CatalPicMapping> resultList = ejb.findByLike(searchInput.getEntity(),
             searchInput.getStart(), searchInput.getMax(), attributes);
-      return new CatalPicMappingSearchResult(countLike, detach(resultList),
-            detach(searchInput));
+      
+      return addEnums(new CatalPicMappingSearchResult(countLike, detach(resultList),
+              detach(searchInput)));
+   }
+   
+   private CatalPicMappingSearchResult addEnums(CatalPicMappingSearchResult searchResult){
+	      String userLange = securityUtil.getUserLange();
+	      List<CatalCipOrigine> cipOrigines = cipOrigineEJB.findByLangIso2(userLange);
+	      searchResult.getCipOrigines().clear();
+	      searchResult.getCipOrigines().addAll(cipOrigines);
+	      return searchResult;
    }
 
    @POST

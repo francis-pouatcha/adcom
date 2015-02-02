@@ -12,6 +12,7 @@ angular.module('AdCatal')
         fieldNames:[]
     };
     self.catalPicMappings = [];
+    self.cipOrigines = [];
     self.selectedItem = {} ;
     self.selectedIndex  ;
     self.openEditForm = openEditForm;
@@ -35,6 +36,7 @@ angular.module('AdCatal')
     	catalPicMappingResource.findByLike(searchInput)
     	.success(function(entitySearchResult) {
             self.catalPicMappings = entitySearchResult.resultList;
+            self.cipOrigines = entitySearchResult.cipOrigines;
         })
     	.error(function(error){
     		self.error = error;
@@ -52,15 +54,24 @@ angular.module('AdCatal')
         var modalInstance = $modal.open({
             templateUrl: 'views/CatalArticle/CatalPicMappingForm.html',
             controller: self.ModalInstanceCreateCtrl,
-            size: size
+            size: size,
+            resolve:{
+            	cipOrigines: function(){
+                    return self.cipOrigines;
+                }
+            }
+            
         });
     };
 
-    function ModalInstanceCreateCtrl($scope, $modalInstance) {
+    function ModalInstanceCreateCtrl($scope, $modalInstance,cipOrigines) {
         $scope.formCreate = false;
         $scope.catalPicMapping;
+        $scope.cipOrigines=cipOrigines;
+        $scope.selectedCipOrigine=cipOrigines.length>0?cipOrigines[0]:null;
         $scope.currentAction="Entity_create.title";
         $scope.save = function () {
+        	$scope.catalPicMapping.codeOrigin=$scope.selectedCipOrigine.enumKey;
             catalPicMappingResource.create($scope.catalPicMapping).success(function () {
                 init();
             });
@@ -80,14 +91,25 @@ angular.module('AdCatal')
             resolve:{
                 catalPicMapping: function(){
                     return self.selectedItem;
-                }
+                },
+		    	cipOrigines: function(){
+		            return self.cipOrigines;
+		        }
             }
         });
     };
 
-    function ModalInstanceEditCtrl($scope, $modalInstance,catalPicMapping,$timeout) {
+    function ModalInstanceEditCtrl($scope, $modalInstance,catalPicMapping,$timeout,cipOrigines) {
         $scope.formCreate = false;
         $scope.catalPicMapping = catalPicMapping;
+        $scope.cipOrigines=cipOrigines;
+        $scope.selectedCipOrigine=function(){
+        	for (var i = 0; i < cipOrigines.length; i++) {
+        		if(cipOrigines[i].enumKey==catalPicMapping.codeOrigin) return cipOrigines[i]; 
+        	}
+        	if(cipOrigines.length>0)return cipOrigines[0];
+        	return null;
+        }();
         $scope.currentAction="Entity_edit.title";
         $scope.isClean = function() {
             return angular.equals(catalPicMapping, $scope.catalPicMapping);
@@ -95,6 +117,7 @@ angular.module('AdCatal')
 
 
         $scope.save = function () {
+        	$scope.catalPicMapping.codeOrigin=$scope.selectedCipOrigine.enumKey;
             catalPicMappingResource.update($scope.catalPicMapping).success(function(){
                init();
             });

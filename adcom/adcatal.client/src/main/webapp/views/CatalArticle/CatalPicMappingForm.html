@@ -12,7 +12,7 @@
             <div class="control-group" ng-class="{error: CatalPicMappingForm.codeOrigin.$invalid}">
                 <label for="codeOrigin" class="control-label">{{'CatalPicMapping_codeOrigin_description.title'|translate}}</label>
                 <div id="codeOriginControls" class="controls">
-                    <input id="codeOrigin" name="codeOrigin" class="form-control" type="text" ng-model="catalPicMapping.codeOrigin" placeholder="{{'CatalPicMapping_codeOrigin_description.text'|translate}}"></input>
+					<select id="codeOrigin" name="codeOrigin" class="form-control" ng-options="cipOrigine.name for cipOrigine in cipOrigines" ng-model="selectedCipOrigine"></select>
                 </div>
             </div>
             <div class="control-group" ng-class="{error: CatalPicMappingForm.addInfo.$invalid}">
