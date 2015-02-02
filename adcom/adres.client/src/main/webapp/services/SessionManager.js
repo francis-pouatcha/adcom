@@ -7,8 +7,8 @@
 
 angular.module('Base64Factory');
 angular.module('ADUtils');
-angular.module('SessionManager',['Base64Factory','ADUtils'])
-.factory('sessionManager',['Base64','adUtils','$http',function(Base64,adUtils,$http){
+angular.module('SessionManager',['Base64Factory','ADUtils','pascalprecht.translate'])
+.factory('sessionManager',['Base64','adUtils','$http','$translate',function(Base64,adUtils,$http,$translate){
     var auth = {};
     var authErrorList = [];
     var sess = {
@@ -88,6 +88,11 @@ angular.module('SessionManager',['Base64Factory','ADUtils'])
     	    userWsHolder.timeZone=data.timeZone;
     	    userWsHolder.langIso2=data.langIso2;
     	    
+    	    if(userWsHolder.langIso2){
+    	    	$translate.use(userWsHolder.langIso2);
+    			$translate.refresh();
+        	};
+
     		consumeSessData(headers);
     		adUtils.removeSearchOnUrl();
 			successCallback(data, status, headers, config);
