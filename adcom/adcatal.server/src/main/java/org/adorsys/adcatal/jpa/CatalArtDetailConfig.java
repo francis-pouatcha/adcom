@@ -6,7 +6,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 
+import org.adorsys.adcore.utils.SequenceGenerator;
 import org.adorsys.javaext.description.Description;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Product Details Config
@@ -83,6 +85,9 @@ public class CatalArtDetailConfig extends CatalAbstractArticle {
 
 	@Override
 	protected String makeIdentif() {
+		if(StringUtils.isBlank(artDetCode)) {
+			artDetCode = SequenceGenerator.getSequence(SequenceGenerator.ARTICLE_DETAIL_SEQUENCE_PREFIXE);
+		}
 		return artDetCode;
 	}
 /*	
