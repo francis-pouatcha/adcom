@@ -1,21 +1,20 @@
-﻿'use strict';
+'use strict';
     
 angular.module('AdCatal')
 
-.controller('catalArtFeatMappingsCtlr',['$scope','catalArtFeatMappingResource','$modal','$routeParams',
-                                        function($scope,catalArtFeatMappingResource,$modal,$routeParams){
+.controller('catalArtDetailConfigCtlr',['$scope','catalArtDetailConfigResource','$modal','$routeParams',function($scope,catalArtDetailConfigResource,$modal,$routeParams){
 	
     var self = this ;
-    $scope.catalArtFeatMappingsCtlr = self;
+    $scope.catalArtDetailConfigCtlr = self;
 
     self.searchInput = {
         entity:{},
         fieldNames:[]
     };
-    self.catalArtFeatMappings = [];
+    self.catalArtDetailConfigs = [];
     self.selectedItem = {} ;
     self.selectedIndex  ;
-    self.artIdentif;
+    self.artPic;
     self.openEditForm = openEditForm;
     self.openCreateForm = openCreateForm;
     self.ModalInstanceEditCtrl = ModalInstanceEditCtrl ;
@@ -26,48 +25,45 @@ angular.module('AdCatal')
     
     init();
     function init(){
-        self.artIdentif = $routeParams.pic;
-        self.searchInput = {
-            entity:{},
-            fieldNames:[]
-        }
-        findByLike(self.searchInput);
+        self.artPic = $routeParams.pic;
+        search(self.artPic);
     }
-    function findByLike(searchInput){
-    	searchInput.entity.artIdentif=self.artIdentif;
-    	searchInput.fieldNames.push('artIdentif');
-    	catalArtFeatMappingResource.findByLike(searchInput)
-    	.success(function(entitySearchResult) {
-            self.catalArtFeatMappings = entitySearchResult.resultList;
-        })
-    	.error(function(error){
-    		self.error = error;
-    	});
+    function search(artPic){
+        catalArtDetailConfigResource.findByArtPic(artPic).success(function(result){
+            self.catalArtDetailConfigs = result;
+        }).error(function(error){
+            self.error = error;
+        });
     }
 
         function handleSelectedItem(index){
             index = index ? index : 0 ;
             self.selectedIndex = index ;
-            angular.copy(self.catalArtFeatMappings[self.selectedIndex],self.selectedItem ) ;
+            angular.copy(self.catalArtDetailConfigs[self.selectedIndex],self.selectedItem ) ;
         };
 
 
         function openCreateForm(size){
             var modalInstance = $modal.open({
-                templateUrl: 'views/CatalArticle/CatalArtFeatMappingForm.html',
+                templateUrl: 'views/CatalArticle/CatalArtDetailConfigForm.html',
                 controller: self.ModalInstanceCreateCtrl,
-                size: size
+                size: size,
+                resolve: {
+                    artPic: function () {
+                        return self.artPic;
+                    }
+                }
             });
         };
 
-        function ModalInstanceCreateCtrl($scope, $modalInstance) {
+        function ModalInstanceCreateCtrl($scope, $modalInstance,artPic) {
             $scope.formCreate = false;
-            $scope.catalFeatMapping;
+            $scope.artPic = artPic;
             $scope.currentAction="Entity_create.title";
 
             $scope.save = function () {
-                $scope.catalFeatMapping.artIdentif = self.artIdentif;
-            	catalArtFeatMappingResource.create($scope.catalFeatMapping).success(function () {
+                $scope.catalArtDetailConfig.pic = $scope.artPic;
+            	catalArtDetailConfigResource.create($scope.catalArtDetailConfig).success(function () {
                     init();
                 });
                 $modalInstance.dismiss('cancel');
@@ -82,30 +78,29 @@ angular.module('AdCatal')
         function openEditForm(size,index){
             handleSelectedItem(index);
             var modalInstance = $modal.open({
-                templateUrl: 'views/CatalArticle/CatalArtFeatMappingForm.html',
+                templateUrl: 'views/CatalArticle/CatalArtDetailConfigForm.html',
                 controller: self.ModalInstanceEditCtrl,
                 size: size,
                 resolve:{
-                	catalFeatMapping: function(){
+                	catalArtDetailConfig: function(){
                         return self.selectedItem;
+                    },
+                    artPic: function(){
+                        return self.artPic;
                     }
                 }
+
             });
         };
 
-        function ModalInstanceEditCtrl($scope, $modalInstance,catalFeatMapping,$timeout) {
+        function ModalInstanceEditCtrl($scope, $modalInstance,catalArtDetailConfig,artPic) {
             $scope.formCreate = false;
-            $scope.catalFeatMapping = catalFeatMapping;
+            $scope.catalArtDetailConfig = catalArtDetailConfig;
             $scope.currentAction="Entity_edit.title";
 
-            $scope.isClean = function() {
-                return !angular.equals(catalFeatMapping, $scope.catalFeatMapping);
-            };
-
-
             $scope.save = function () {
-                $scope.catalFeatMapping.artIdentif = self.artIdentif;
-            	catalArtFeatMappingResource.update($scope.catalFeatMapping).success(function(){
+                $scope.catalArtDetailConfig.pic = artPic;
+            	catalArtDetailConfigResource.update($scope.catalArtDetailConfig).success(function(){
                    init();
                 });
                 $modalInstance.dismiss('cancel');
@@ -118,7 +113,7 @@ angular.module('AdCatal')
 
         function deleteItem(index){
             handleSelectedItem();
-            catalArtFeatMappingResource.deleteById(self.selectedItem.id).success(function(){
+            catalArtDetailConfigResource.deleteById(self.selectedItem.id).success(function(){
                 init();
             })
         }

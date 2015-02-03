@@ -8,7 +8,7 @@ angular.module('AdCatal').controller('NewCatalProductFamilyController', function
     $scope.save = function() {
         var successCallback = function(data,responseHeaders){
             var id = locationParser(responseHeaders);
-            $location.path('/CatalProductFamilys/edit/' + id);
+            $location.path('/CatalProductFamilies/edit/' + id);
             $scope.displayError = false;
         };
         var errorCallback = function() {
@@ -18,6 +18,6 @@ angular.module('AdCatal').controller('NewCatalProductFamilyController', function
     };
     
     $scope.cancel = function() {
-        $location.path("/CatalProductFamilys");
+        $location.path("/CatalProductFamilies");
     };
 });

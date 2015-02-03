@@ -2,7 +2,10 @@ package org.adorsys.adcatal.rest;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -21,10 +24,13 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.adorsys.adcatal.jpa.CatalFamilyFeatMaping;
+import org.adorsys.adcatal.jpa.CatalFamilyFeatMaping_;
 import org.adorsys.adcatal.jpa.CatalProductFamily;
 import org.adorsys.adcatal.jpa.CatalProductFamilySearchInput;
 import org.adorsys.adcatal.jpa.CatalProductFamilySearchResult;
 import org.adorsys.adcatal.jpa.CatalProductFamily_;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 
@@ -37,6 +43,9 @@ public class CatalProductFamilyEndpoint
 
    @Inject
    private CatalProductFamilyEJB ejb;
+   
+   @Inject
+   private CatalFamilyFeatMapingEJB familyFeatMapingEJB;
 
    @POST
    @Consumes({ "application/json", "application/xml" })
@@ -67,11 +76,11 @@ public class CatalProductFamilyEndpoint
    }
 
    @GET
-   @Path("/{id}")
+   @Path("/{identif}")
    @Produces({ "application/json", "application/xml" })
-   public Response findById(@PathParam("id") String id)
+   public Response findByIdentif(@PathParam("identif") String identif)
    {
-      CatalProductFamily found = ejb.findById(id);
+      CatalProductFamily found = ejb.findByIdentif(identif);
       if (found == null)
          return Response.status(Status.NOT_FOUND).build();
       return Response.ok(detach(found)).build();
@@ -133,6 +142,67 @@ public class CatalProductFamilyEndpoint
       return new CatalProductFamilySearchResult(countLike, detach(resultList),
             detach(searchInput));
    }
+   
+   @SuppressWarnings("unchecked")
+   @POST
+   @Path("/findCustom")
+   @Produces({ "application/json", "application/xml" })
+   @Consumes({ "application/json", "application/xml" })
+   public CatalProductFamilySearchResult findCustom(CatalProductFamilySearchInput searchInput)
+   {
+	   if(searchInput.getFieldNames().isEmpty()) return findByLike(searchInput);
+	   
+	   CatalProductFamily entity = searchInput.getEntity();
+	   if(StringUtils.isNotBlank(entity.getFamCode())){
+		   @SuppressWarnings("rawtypes")
+		   SingularAttribute[] attributes = new SingularAttribute[]{CatalProductFamily_.famCode};
+		   Long countLike = ejb.countByLike(searchInput.getEntity(), attributes);
+		   List<CatalProductFamily> resultList = ejb.findByLike(searchInput.getEntity(),
+	          searchInput.getStart(), searchInput.getMax(), attributes);
+	      return new CatalProductFamilySearchResult(countLike, detach(resultList),detach(searchInput));
+	   } else if (entity.getFeatures()!=null && 
+			   (StringUtils.isNotBlank(entity.getFeatures().getFamilyName()) ||
+					   StringUtils.isNotBlank(entity.getFeatures().getPurpose()))){
+		   @SuppressWarnings("rawtypes")
+		   SingularAttribute[] attributes = null;
+		   if(StringUtils.isNotBlank(entity.getFeatures().getFamilyName())){
+			   attributes = new SingularAttribute[]{CatalFamilyFeatMaping_.familyName};
+		   } else if (StringUtils.isNotBlank(entity.getFeatures().getPurpose())){
+			   attributes = new SingularAttribute[]{CatalFamilyFeatMaping_.purpose};
+		   }
+		   
+		   CatalFamilyFeatMaping features = entity.getFeatures();
+		   Long countLike = familyFeatMapingEJB.countByLike(features, attributes);
+		   List<CatalFamilyFeatMaping> featuresList = Collections.emptyList(); 
+		   if(countLike>0l){
+			   featuresList = familyFeatMapingEJB.findByLike(features, searchInput.getStart(), searchInput.getMax(), attributes);
+		   }
+		   
+		   // Filter result
+		   List<CatalProductFamily> resultList = new ArrayList<CatalProductFamily>();
+		   Map<String, CatalProductFamily> resultMap = new HashMap<String, CatalProductFamily>();
+		   for (CatalFamilyFeatMaping featMapping : featuresList) {
+			   CatalProductFamily productFamily = resultMap.get(featMapping.getPfIdentif());
+			   if(productFamily!=null){
+				   CatalProductFamily p = productFamily;
+				   productFamily=new CatalProductFamily();
+				   p.copyTo(productFamily);
+			   } else {
+				   productFamily = ejb.findByIdentif(featMapping.getPfIdentif());
+				   resultMap.put(featMapping.getPfIdentif(), productFamily);
+			   }
+			   productFamily.setFeatures(featMapping);
+			   resultList.add(productFamily);
+		   }
+	      return new CatalProductFamilySearchResult(countLike, detach(resultList),
+	              detach(searchInput));
+	   } else {
+	      Long countLike = 0l;
+	      List<CatalProductFamily> resultList = java.util.Collections.emptyList();
+	      return new CatalProductFamilySearchResult(countLike, detach(resultList),
+	            detach(searchInput));
+	   }
+   }
 
    @POST
    @Path("/countByLike")
@@ -173,8 +243,6 @@ public class CatalProductFamilyEndpoint
       }
       return result.toArray(new SingularAttribute[result.size()]);
    }
-
-   
 
    private CatalProductFamily detach(CatalProductFamily entity)
    {

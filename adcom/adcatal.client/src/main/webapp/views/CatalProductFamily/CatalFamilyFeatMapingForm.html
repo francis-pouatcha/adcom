@@ -1,24 +1,24 @@
 <div class="panel panel-default">
-    <div class="panel-heading"><b>{{currentAction| translate}} {{'CatalArticle_pic_description.title'| translate}} : {{catalArtFeatMapping.artIdentif}}</b> </div>
+    <div class="panel-heading"><b>{{currentAction| translate}} {{'CatalProductFamily_famCode_description.title'| translate}} : {{catalFeatMapping.pfIdentif}}</b> </div>
     <div class="panel-body">
-        <form id="CatalArtFeatMappingForm" name="CatalArtFeatMappingForm" class="form-horizontal">
-            <div class="control-group" ng-class="{error: CatalArtFeatMappingForm.langIso2.$invalid}">
+        <form id="CatalFamilyFeatMapingForm" name="CatalFamilyFeatMapingForm" class="form-horizontal">
+            <div class="control-group" ng-class="{error: CatalFamilyFeatMapingForm.langIso2.$invalid}">
                 <label for="langIso2" class="control-label">{{'CatalAbstractFeatMapping_langIso2_description.title'|translate}}</label>
                 <div id="langIso2Controls" class="controls">
-                    <input id="langIso2" name="langIso2" type="text" class="form-control" required ng-model="catalFeatMapping.langIso2"
+                    <input id="langIso2" name="langIso2" type="text" class="form-control" required ng-model="catalFeatMapping.langIso2" 
                     	placeholder="{{'CatalAbstractFeatMapping_langIso2_description.text'|translate}}"></input>
-                    <span class="help-inline" ng-show="CatalArtFeatMappingForm.langIso2.$error.required">required</span>
+                    <span class="help-inline" ng-show="CatalFamilyFeatMapingForm.langIso2.$error.required">required</span>
                 </div>
             </div>
-            <div class="control-group" ng-class="{error: CatalArtFeatMappingForm.artName.$invalid}">
-                <label for="artName" class="control-label">{{'CatalArtFeatMapping_artName_description.title'|translate}}</label>
-                <div id="artNameControls" class="controls">
-                    <input id="artName" name="artName" type="text" required class="form-control" ng-model="catalFeatMapping.artName"
-                    	placeholder="{{'CatalArtFeatMapping_artName_description.text'|translate}}"></input>
-                    <span class="help-inline" ng-show="CatalArtFeatMappingForm.artName.$error.required">required</span>
+            <div class="control-group" ng-class="{error: CatalFamilyFeatMapingForm.familyName.$invalid}">
+                <label for="familyName" class="control-label">{{'CatalFamilyFeatMaping_familyName_description.title'|translate}}</label>
+                <div id="familyNameControls" class="controls">
+                    <input id="familyName" name="familyName" type="text" required class="form-control" ng-model="catalFeatMapping.familyName" 
+                    	placeholder="{{'CatalFamilyFeatMaping_familyName_description.text'|translate}}"></input>
+                    <span class="help-inline" ng-show="CatalFamilyFeatMapingForm.familyName.$error.required">required</span>
                 </div>
             </div>
-            <div class="control-group" ng-class="{error: CatalArtFeatMappingForm.purpose.$invalid}">
+            <div class="control-group" ng-class="{error: CatalFamilyFeatMapingForm.purpose.$invalid}">
                 <label for="purpose" class="control-label">{{'CatalAbstractFeatMapping_purpose_description.title'|translate}}</label>
                 <div id="purposeControls" class="controls">
                 	<textarea rows="3" id="purpose" name="purpose" class="form-control" 
@@ -26,7 +26,7 @@
                 	</textarea>
                 </div>
             </div>
-            <div class="control-group" ng-class="{error: CatalArtFeatMappingForm.usage.$invalid}">
+            <div class="control-group" ng-class="{error: CatalFamilyFeatMapingForm.usage.$invalid}">
                 <label for="usage" class="control-label">{{'CatalAbstractFeatMapping_usage_description.title'|translate}}</label>
                 <div id="usageControls" class="controls">
                 	<textarea rows="3" id="usage" name="usage" class="form-control" 
@@ -34,7 +34,7 @@
                 	</textarea>
                 </div>
             </div>
-            <div class="control-group" ng-class="{error: CatalArtFeatMappingForm.warnings.$invalid}">
+            <div class="control-group" ng-class="{error: CatalFamilyFeatMapingForm.warnings.$invalid}">
                 <label for="warnings" class="control-label">{{'CatalAbstractFeatMapping_warnings_description.title'|translate}}</label>
                 <div id="warningsControls" class="controls">
                 	<textarea rows="3" id="warnings" name="warnings" class="form-control" 
@@ -42,7 +42,7 @@
                 	</textarea>
                 </div>
             </div>
-            <div class="control-group" ng-class="{error: CatalArtFeatMappingForm.substances.$invalid}">
+            <div class="control-group" ng-class="{error: CatalFamilyFeatMapingForm.substances.$invalid}">
                 <label for="substances" class="control-label">{{'CatalAbstractFeatMapping_substances_description.title'|translate}}</label>
                 <div id="substancesControls" class="controls">
                 	<textarea rows="3" id="substances" name="substances" class="form-control" 
@@ -51,9 +51,8 @@
                 </div>
             </div>
             <div class="control-group">
-            	<br/>
                 <div class="controls">
-                    <button id="saveCatalArtFeatMapping" name="saveCatalArtFeatMapping" class="btn btn-primary" ng-disabled="isClean() || CatalArtFeatMappingForm.$invalid" ng-click="save()"><i class="icon-ok-sign icon-white"></i> {{'Entity_save.title'|translate}}</button>
+                    <button id="saveCatalFamilyFeatMaping" name="saveCatalFamilyFeatMaping" class="btn btn-primary" ng-disabled="isClean() || CatalFamilyFeatMapingForm.$invalid" ng-click="save()"><i class="icon-ok-sign icon-white"></i> {{'Entity_save.title'|translate}}</button>
                     <button id="cancel" name="cancel" class="btn" ng-click="cancel()"><i class="icon-remove-sign"></i> {{'Entity_cancel.title'|translate}}</button>
                 </div>
             </div>

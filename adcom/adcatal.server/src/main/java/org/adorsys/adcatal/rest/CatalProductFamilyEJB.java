@@ -12,6 +12,8 @@ import org.adorsys.adcatal.jpa.CatalArtFeatMapping;
 import org.adorsys.adcatal.jpa.CatalFamilyFeatMaping;
 import org.adorsys.adcatal.jpa.CatalProductFamily;
 import org.adorsys.adcatal.repo.CatalProductFamilyRepository;
+import org.adorsys.adcore.utils.SequenceGenerator;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 
 @Stateless
@@ -32,6 +34,25 @@ public class CatalProductFamilyEJB
    
    public CatalProductFamily create(CatalProductFamily entity)
    {
+	   String famCode = entity.getFamCode();
+	   if(StringUtils.isBlank(famCode))
+			famCode = SequenceGenerator.getSequence(SequenceGenerator.PRODUCT_FAMILY_SEQUENCE_PREFIXE);
+
+	   if(famCode.contains("/"))
+		   famCode.replace('/', '_');
+
+	   if(famCode.length()>50)
+		   famCode = famCode.substring(0, 48) + RandomStringUtils.randomNumeric(2);// Keep then distinct.
+	   
+	   String parentPath = "/";
+	   String parentIdentif = entity.getParentIdentif();
+	   if(StringUtils.isNotBlank(parentIdentif)){
+		   CatalProductFamily parent = findByIdentif(parentIdentif);
+		   if(parent!=null){
+			   parentPath=parent.getFamPath();
+		   }
+	   }
+	   entity.setFamPath(parentPath + famCode + "/");
 	   entity = repository.save(attach(entity));
 
 	   CatalFamilyFeatMaping features = entity.getFeatures();
@@ -43,10 +64,11 @@ public class CatalProductFamilyEJB
 			features.setLangIso2(lg);
 		}
 		if(StringUtils.isBlank(features.getLangIso2())){
-			String lg = securityUtil.getUserLange();
+			String lg = securityUtil.getUserLangePrefs().iterator().next();
 			features.setLangIso2(lg);
 		}
 		features.setPfIdentif(entity.getIdentif());
+		features.setFamPath(entity.getFamPath());
 		features = familyFeatMapingEJB.create(features);
 		entity.setFeatures(features);
 		return entity;
