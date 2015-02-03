@@ -127,6 +127,8 @@
 "CatalProductFamily_parentIdentif_description.title":"Identifiant de la Famille Parent",
 "CatalProductFamily_famCode_description.text":"Code de la Famille",
 "CatalProductFamily_famCode_description.title":"Code de la Famille",
+"CatalProductFamily_parent_description.text":"Famille Parent",
+"CatalProductFamily_parent_description.title":"Famille Parent",
 
 "CatalPkgMode_description.text":"Le mode de conditionnement du produit",
 "CatalPkgMode_description.title":"Mode de Conditionement",

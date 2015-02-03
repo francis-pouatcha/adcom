@@ -2,7 +2,8 @@
     
 angular.module('AdCatal')
 
-.controller('catalArtFeatMappingsCtlr',['$scope','catalFamilyFeatMapingResource','$modal','$routeParams',function($scope,catalFamilyFeatMapingResource,$modal,$routeParams){
+.controller('catalArtFeatMappingsCtlr',['$scope','catalFamilyFeatMapingResource','$modal','$routeParams',
+                                        function($scope,catalFamilyFeatMapingResource,$modal,$routeParams){
 	
     var self = this ;
     $scope.catalArtFeatMappingsCtlr = self;

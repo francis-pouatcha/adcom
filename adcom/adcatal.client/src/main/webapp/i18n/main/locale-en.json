@@ -127,6 +127,8 @@
 "CatalProductFamily_parentIdentif_description.title":"Identifier or the Parent Family",
 "CatalProductFamily_famCode_description.text":"Family Code",
 "CatalProductFamily_famCode_description.title":"Family Code",
+"CatalProductFamily_parent_description.text":"Parent Family",
+"CatalProductFamily_parent_description.title":"Parent Family",
 
 "CatalArticle_active_description.text":"Says if this article is active or not",
 "CatalArticle_active_description.title":"Active",

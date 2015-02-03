@@ -249,6 +249,12 @@ public class CatalProductFamilyEndpoint
       if (entity == null)
          return null;
 
+      if(StringUtils.isNotBlank(entity.getParentIdentif()) && entity.getParent()==null){
+    	  if(!StringUtils.equals(entity.getParentIdentif(), entity.getIdentif())){
+    		  CatalProductFamily parent = ejb.findByIdentif(entity.getParentIdentif());
+    		  entity.setParent(parent);
+    	  }
+      }
       return entity;
    }
 
