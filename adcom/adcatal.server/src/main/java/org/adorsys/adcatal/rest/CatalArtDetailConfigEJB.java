@@ -10,6 +10,7 @@ import javax.persistence.metamodel.SingularAttribute;
 import org.adorsys.adcatal.jpa.CatalArtDetailConfig;
 import org.adorsys.adcatal.jpa.CatalArticle;
 import org.adorsys.adcatal.repo.CatalArtDetailConfigRepository;
+import org.adorsys.adcore.utils.SequenceGenerator;
 import org.apache.commons.lang3.StringUtils;
 
 @Stateless
@@ -33,6 +34,8 @@ public class CatalArtDetailConfigEJB
 		Date validOn = new Date();
 		CatalArticle catalArticle = catalArticleEJB.findByIdentif(artPic, validOn);
 		if(catalArticle == null) throw new IllegalStateException("The article was not found");
+		String artCode = SequenceGenerator.getSequence(SequenceGenerator.ARTICLE_DETAIL_SEQUENCE_PREFIXE);
+		entity.setArtDetCode(artCode);
 		entity.setPic(artPic);
 		entity.setVatRate(catalArticle.getVatRate());
 		entity.setValidFrom(validOn);
