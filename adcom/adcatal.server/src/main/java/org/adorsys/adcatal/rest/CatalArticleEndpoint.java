@@ -23,6 +23,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.adorsys.adbase.jpa.Login;
 import org.adorsys.adcatal.jpa.CatalArt2ProductFamily;
 import org.adorsys.adcatal.jpa.CatalArt2ProductFamily_;
 import org.adorsys.adcatal.jpa.CatalArtFeatMapping;
@@ -102,6 +103,41 @@ public class CatalArticleEndpoint
    {
       return ejb.count();
    }
+   
+   	@GET
+	@Path("previous/{pic}")
+	@Produces({ "application/json", "application/xml" })
+	public Response previous(@PathParam("pic") String pic)
+	{
+		List<CatalArticle> found;
+		try {
+			found = ejb.findPrevious(pic);
+		} catch (Exception e) {
+			return Response.status(Status.NOT_FOUND).build();
+		}
+		if (found.isEmpty()){
+			return Response.status(Status.NOT_FOUND).build();
+		}
+		return Response.ok(detach(found.iterator().next())).build();
+	}
+   	
+   	@GET
+	@Path("next/{pic}")
+	@Produces({ "application/json", "application/xml" })
+	public Response next(@PathParam("pic") String pic)
+	{
+		List<CatalArticle> found;
+		try {
+			found = ejb.findNext(pic);
+		} catch (Exception e) {
+			return Response.status(Status.NOT_FOUND).build();
+		}
+		if (found.isEmpty()){
+			return Response.status(Status.NOT_FOUND).build();
+		}
+		return Response.ok(detach(found.iterator().next())).build();
+	}
+
 
    @POST
    @Path("/findBy")
