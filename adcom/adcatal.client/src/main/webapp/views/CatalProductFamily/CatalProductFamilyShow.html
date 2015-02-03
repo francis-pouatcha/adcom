@@ -39,42 +39,24 @@
 	                        </div>
 	                    </div>
                 </form>
-                <!-- 
                 <div  class="row ">
-                    <tabset justified="true">
-                        <tab heading="{{'CatalArtFeatMapping_description' | translate}}">
+                    <tabset justified="false">
+                        <tab heading="{{'CatalFamilyFeatMaping_description.title'|translate}}">
                             <br/>
-                            <div ng-include="'views/CatalArticle/CatalArtFeatMappings.html'" />
-                        </tab>
-
-                        <tab heading="{{'CatalArtManufSupp_description' | translate}}">
-                            <br />
-                            <div ng-include="'views/CatalArticle/manufSupp-list.html'"></div>
-                        </tab>
-                        <tab heading="{{'CatalArtEquivalence_description' | translate}}">
-                            <br />
-                            <div ng-include="'views/CatalArticle/equiv-list.html'"></div>
-                        </tab>
-                        <tab heading="{{'CatalProductFamily_description.title' | translate}}">
-                            <br />
-                            <div ng-include="'views/CatalArticle/productFamilies.html'"></div>
+                            <div ng-include="'views/CatalProductFamily/CatalFamilyFeatMapings.html'" />
                         </tab>
                     </tabset>
                 </div>
-                 -->
                 <hr/>
                 <div class="row">
-                    <div class="col-lg-3">
+                    <div class="col-lg-4">
                         <a class="btn-default btn" ng-click="catalProductFamilyShowCtlr.previousProductFamily(catalProductFamilyShowCtlr.catalProductFamily.famCode)" ><i class="glyphicon glyphicon-chevron-left"></i> {{'Entity_previous.title' | translate}}</a>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-4">
                         <a class="btn-danger btn" href="#/CatalProductFamilies" ><i class="" ></i> {{'List' | translate}}</a>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-4">
                         <a class="btn-default btn" ng-click="catalProductFamilyShowCtlr.nextProductFamily(catalProductFamilyShowCtlr.catalProductFamily.famCode)" >{{'Entity_next.title' | translate}} <i class="glyphicon glyphicon-chevron-right" ></i></a>
-                    </div>
-                    <div class="col-lg-3">
-                        <a class="btn-primary btn" href="#/CatalProductFamilies/edit/{{catalProductFamilyShowCtlr.catalProductFamily.famCode}}" ><i class="glyphicon glyphicon-edit"></i> {{'Entity_edit.title' | translate}}</a>
                     </div>
                 </div>
 

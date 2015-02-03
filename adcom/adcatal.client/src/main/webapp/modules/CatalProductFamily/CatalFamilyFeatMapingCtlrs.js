@@ -2,7 +2,7 @@
     
 angular.module('AdCatal')
 
-.controller('catalArtFeatMappingsCtlr',['$scope','catalArtFeatMappingResource','$modal','$routeParams',function($scope,catalArtFeatMappingResource,$modal,$routeParams){
+.controller('catalArtFeatMappingsCtlr',['$scope','catalFamilyFeatMapingResource','$modal','$routeParams',function($scope,catalFamilyFeatMapingResource,$modal,$routeParams){
 	
     var self = this ;
     $scope.catalArtFeatMappingsCtlr = self;
@@ -30,10 +30,9 @@ angular.module('AdCatal')
         findByLike(self.searchInput);
     }
     function findByLike(searchInput){
-    	var pic = $routeParams.pic;
-    	searchInput.entity.artIdentif=pic;
-    	searchInput.fieldNames.push('artIdentif');
-    	catalArtFeatMappingResource.findByLike(searchInput)
+    	searchInput.entity.pfIdentif=$routeParams.famCode;
+    	searchInput.fieldNames.push('pfIdentif');
+    	catalFamilyFeatMapingResource.findByLike(searchInput)
     	.success(function(entitySearchResult) {
             self.catalArtFeatMappings = entitySearchResult.resultList;
         })
@@ -51,7 +50,7 @@ angular.module('AdCatal')
 
         function openCreateForm(size){
             var modalInstance = $modal.open({
-                templateUrl: 'views/CatalArticle/CatalArtFeatMappingForm.html',
+                templateUrl: 'views/CatalProductFamily/CatalFamilyFeatMapingForm.html',
                 controller: self.ModalInstanceCreateCtrl,
                 size: size
             });
@@ -59,10 +58,11 @@ angular.module('AdCatal')
 
         function ModalInstanceCreateCtrl($scope, $modalInstance) {
             $scope.formCreate = false;
+            $scope.currentAction="Entity_create.title";
             $scope.catalFeatMapping;
 
             $scope.save = function () {
-            	catalArtFeatMappingResource.create($scope.catalFeatMapping).success(function () {
+            	catalFamilyFeatMapingResource.create($scope.catalFeatMapping).success(function () {
                     init();
                 });
                 $modalInstance.dismiss('cancel');
@@ -77,7 +77,7 @@ angular.module('AdCatal')
         function openEditForm(size,index){
             handleSelectedItem(index);
             var modalInstance = $modal.open({
-                templateUrl: 'views/CatalArticle/CatalArtFeatMappingForm.html',
+                templateUrl: 'views/CatalProductFamily/CatalFamilyFeatMapingForm.html',
                 controller: self.ModalInstanceEditCtrl,
                 size: size,
                 resolve:{
@@ -90,7 +90,8 @@ angular.module('AdCatal')
 
         function ModalInstanceEditCtrl($scope, $modalInstance,catalFeatMapping,$timeout) {
             $scope.formCreate = false;
-            $scope.catalFeatMapping = catalFeatMapping;
+            $scope.currentAction="Entity_edit.title";
+            $scope.catalFeatMapping = angular.copy(catalFeatMapping);
 
             $scope.isClean = function() {
                 return angular.equals(catalFeatMapping, $scope.catalFeatMapping);
@@ -98,7 +99,7 @@ angular.module('AdCatal')
 
 
             $scope.save = function () {
-            	catalArtFeatMappingResource.update($scope.catalFeatMapping).success(function(){
+            	catalFamilyFeatMapingResource.update($scope.catalFeatMapping).success(function(){
                    init();
                 });
                 $modalInstance.dismiss('cancel');

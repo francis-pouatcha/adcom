@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('AdCatal').factory('catalArtFeatMappingResource',['$http', function($http){
+angular.module('AdCatal').factory('catalFamilyFeatMapingResource',['$http', function($http){
     var service = {};
-    var urlBase = '/adcatal.server/rest/catalartfeatmappings',
+    var urlBase = '/adcatal.server/rest/catalfamilyfeatmapings',
     searchInput = {
         entity:{},
         start:0,

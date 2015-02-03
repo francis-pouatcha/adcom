@@ -80,11 +80,13 @@ angular.module('AdCatal')
 	}
     
 }])
-.controller('catalProductFamilyCreateCtlr',['$scope','catalProductFamilyResource','$location',function($scope,catalProductFamilyResource,$location){
+.controller('catalProductFamilyCreateCtlr',['$scope','catalProductFamilyResource','$location',
+                                            function($scope,catalProductFamilyResource,$location){
 	var self = this ;
     $scope.catalProductFamilyCreateCtlr = self;
     self.catalProductFamily = {};
     self.create = create;
+    self.cancel = cancel;
     self.error = "";
 
     function create(){
@@ -96,42 +98,11 @@ angular.module('AdCatal')
     		self.error = error;
     	});
     };
+
+    function cancel() {
+    	$location.path('/CatalProductFamilies');
+    };
 	
-}])
-.controller('catalProductFamilyEditCtlr',['$scope','catalProductFamilyResource','$routeParams','$location',function($scope,catalProductFamilyResource,$routeParams,$location){
-    var self = this ;
-    $scope.catalProductFamilyEditCtlr = self;
-    self.catalProductFamily = {};
-    self.update = update;
-    self.error = "";
-
-    function update(){
-    	catalProductFamilyResource.update(self.catalProductFamily)
-    	.success(function(data){
-            $location.path('/CatalProductFamilies/show/'+data.identif);
-        })
-    	.error(function(error){
-            self.error = error;
-        });
-    };
-
-    init();
-
-    function init(){
-        load();
-    }
-
-    function load(){
-        var famCode = $routeParams.famCode;
-        catalProductFamilyResource.findByIdentif(famCode)
-        .success(function(data){
-            self.catalProductFamily = data;
-        })
-        .error(function(error){
-            self.error = error;
-        });
-    };
-
 }])
 .controller('catalProductFamilyShowCtlr',['$scope','catalProductFamilyResource','$routeParams',
                                           function($scope,catalProductFamilyResource,$routeParams){

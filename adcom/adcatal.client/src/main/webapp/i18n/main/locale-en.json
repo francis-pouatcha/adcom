@@ -96,6 +96,8 @@
 "CatalFamilyFeatMaping_familyName_description.title":"Family Name",
 "CatalFamilyFeatMaping_pfIdentif_description.text":"The unique identifier of this family",
 "CatalFamilyFeatMaping_pfIdentif_description.title":"Identifier or this Family",
+"CatalFamilyFeatMaping_familyName_required.text":"The family name is required",
+"CatalFamilyFeatMaping_familyName_required.title":"The family name is required",
 
 "CatalPicMapping_addInfo_description.text":"Additional info",
 "CatalPicMapping_addInfo_description.title":"Additional Info",

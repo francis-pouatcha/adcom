@@ -1,5 +1,5 @@
 <div class="panel panel-default">
-    <div class="panel-heading"><b>{{'currentAction'| translate}} {{'CatalArticle_pic_description.title'| translate}} : {{catalArtFeatMapping.artIdentif}}</b> </div>
+    <div class="panel-heading"><b>{{currentAction| translate}} {{'CatalArticle_pic_description.title'| translate}} : {{catalArtFeatMapping.artIdentif}}</b> </div>
     <div class="panel-body">
         <form id="CatalArtFeatMappingForm" name="CatalArtFeatMappingForm" class="form-horizontal">
             <div class="control-group" ng-class="{error: CatalArtFeatMappingForm.langIso2.$invalid}">
@@ -7,7 +7,7 @@
                 <div id="langIso2Controls" class="controls">
                     <input id="langIso2" name="langIso2" type="text" class="form-control" required ng-model="catalFeatMapping.langIso2"
                     	placeholder="{{'CatalAbstractFeatMapping_langIso2_description.text'|translate}}"></input>
-                    <span class="help-inline" ng-show="CatalArtFeatMappingForm.artIdentif.$error.required">required</span>
+                    <span class="help-inline" ng-show="CatalArtFeatMappingForm.langIso2.$error.required">required</span>
                 </div>
             </div>
             <div class="control-group" ng-class="{error: CatalArtFeatMappingForm.artName.$invalid}">
@@ -51,8 +51,9 @@
                 </div>
             </div>
             <div class="control-group">
+            	<br/>
                 <div class="controls">
-                    <button id="saveCatalPicMapping" name="saveCatalPicMapping" class="btn btn-primary" ng-disabled="isClean() || CatalArtFeatMappingForm.$invalid" ng-click="save()"><i class="icon-ok-sign icon-white"></i> {{'Entity_save.title'|translate}}</button>
+                    <button id="saveCatalArtFeatMapping" name="saveCatalArtFeatMapping" class="btn btn-primary" ng-disabled="isClean() || CatalArtFeatMappingForm.$invalid" ng-click="save()"><i class="icon-ok-sign icon-white"></i> {{'Entity_save.title'|translate}}</button>
                     <button id="cancel" name="cancel" class="btn" ng-click="cancel()"><i class="icon-remove-sign"></i> {{'Entity_cancel.title'|translate}}</button>
                 </div>
             </div>
