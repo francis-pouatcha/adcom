@@ -6,7 +6,8 @@
         <label for="msIdentif" class="control-label">{{"CatalArtManufSupp_msIdentif_description.title"|translate}}</label>
         <div id="msIdentifControls" class="controls">
             <input type="text" class="form-control" name="msIdentif" id="msIdentif" ng-model="catalArtManufSupp.msIdentif" required autocomplete="off"
-                   typeahead="businessPartner as businessPartner.cpnyName for businessPartner in loadBusinessPartner($viewValue)" typeahead-loading="loading" placeholder="find a Supplier/Manufacturer" >
+                   typeahead="businessPartner as businessPartner.cpnyName for businessPartner in loadBusinessPartner($viewValue)"
+                   typeahead-loading="loading" placeholder="find a Supplier/Manufacturer">
             <span class="help-inline" ng-show="CatalArtManufSuppForm.msIdentif.$error.required">required</span>
         </div>
     </div>
