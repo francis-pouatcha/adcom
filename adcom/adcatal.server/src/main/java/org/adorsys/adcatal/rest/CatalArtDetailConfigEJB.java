@@ -34,8 +34,6 @@ public class CatalArtDetailConfigEJB
 		Date validOn = new Date();
 		CatalArticle catalArticle = catalArticleEJB.findByIdentif(artPic, validOn);
 		if(catalArticle == null) throw new IllegalStateException("The article was not found");
-		String artCode = SequenceGenerator.getSequence(SequenceGenerator.ARTICLE_DETAIL_SEQUENCE_PREFIXE);
-		entity.setArtDetCode(artCode);
 		entity.setPic(artPic);
 		entity.setVatRate(catalArticle.getVatRate());
 		entity.setValidFrom(validOn);

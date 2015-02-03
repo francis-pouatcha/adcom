@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('AdCatal').factory('catalProductFamilyResource',['$http', function($http){
+angular.module('AdCatal').factory('catalArt2ProductFamilyResource',['$http', function($http){
     var service = {};
-    var urlBase = '/adcatal.server/rest/catalproductfamilys',
+    var urlBase = '/adcatal.server/rest/catalart2productfamilys',
     searchInput = {
         entity:{},
         start:0,
@@ -14,6 +14,10 @@ angular.module('AdCatal').factory('catalProductFamilyResource',['$http', functio
     service.create = function(entity){
         return $http.post(urlBase,entity);
     };
+    
+    service.createCustom = function(artPic,entity){
+        return $http.post(urlBase+'/createCustom/'+artPic,entity);
+    };
 
     service.update = function(entity){
         return $http.put(urlBase+'/'+entity.id,entity);
@@ -23,12 +27,15 @@ angular.module('AdCatal').factory('catalProductFamilyResource',['$http', functio
         return $http.post(urlBase+'/findBy',entitySearchInput);
     };
 
-    service.findCustom = function(entitySearchInput){
-        return $http.post(urlBase+'/findCustom',entitySearchInput);
+    service.findByLike = function(entitySearchInput){
+        return $http.post(urlBase+'/findByLike',entitySearchInput);
     };
 
-    service.findByIdentif = function(identif){
-        return $http.get(urlBase+'/'+identif);
+    service.findByArtPic = function(artPic){
+        return $http.get(urlBase+'/findByArtPic/'+artPic);
+    };
+    service.findById = function(entityId){
+        return $http.get(urlBase+'/'+entityId);
     };
 
     service.deleteById = function(entityId){
@@ -46,7 +53,6 @@ angular.module('AdCatal').factory('catalProductFamilyResource',['$http', functio
     service.getEntity = function(){
         return entity ;
     };
-    
     function getSearchInput(){
         return searchInput ;
     };
