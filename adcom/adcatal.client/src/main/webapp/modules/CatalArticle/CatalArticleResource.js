@@ -35,6 +35,14 @@ angular.module('AdCatal').factory('catalArticleResource',['$http', function($htt
         return $http.delete(urlBase+'/'+entityId);
     };
 
+    service.next = function(entityId){
+        return $http.get(urlBase+'/next/'+entityId);
+    };
+
+    service.previous = function(entityId){
+        return $http.get(urlBase+'/previous/'+entityId);
+    };
+
     service.listAll = function(start,max){
         return $http.get(urlBase,{params: {start: start,max:max}});
     };

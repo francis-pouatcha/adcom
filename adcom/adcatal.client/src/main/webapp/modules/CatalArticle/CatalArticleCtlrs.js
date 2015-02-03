@@ -158,12 +158,16 @@ angular.module('AdCatal')
         });
     };
 
-    function previousArticle(){
-
+    function previousArticle(pic){
+        catalArticleResource.previous(pic).success(function(data){
+            $location.path('/CatalArticles/show/'+data.identif);
+        });
     }
 
-    function nextArticle(){
-
+    function nextArticle(pic){
+        catalArticleResource.next(pic).success(function(data){
+            $location.path('/CatalArticles/show/'+data.identif);
+        });
     }
 
 }]);
