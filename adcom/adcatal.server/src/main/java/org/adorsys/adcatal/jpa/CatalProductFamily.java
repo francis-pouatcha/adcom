@@ -2,6 +2,7 @@ package org.adorsys.adcatal.jpa;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.PrePersist;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
@@ -36,6 +37,15 @@ public class CatalProductFamily extends AbstractIdentifData {
 	@Transient
 	private CatalFamilyFeatMaping features = new CatalFamilyFeatMaping();
 
+	@PrePersist
+	public void prePersist() {
+		if (StringUtils.isBlank(famCode))
+			famCode = SequenceGenerator.getSequence(SequenceGenerator.PRODUCT_FAMILY_SEQUENCE_PREFIXE);
+		
+		setIdentif(famCode);
+		setId(famCode);
+	}
+	
 	public String getParentIdentif() {
 		return this.parentIdentif;
 	}
@@ -72,5 +82,13 @@ public class CatalProductFamily extends AbstractIdentifData {
 
 	public void setFamPath(String famPath) {
 		this.famPath = famPath;
+	}
+
+	public void copyTo(CatalProductFamily target) {
+		target.famCode=famCode;
+		target.famPath=famPath;
+		target.features=features;
+		target.identif=identif;
+		target.parentIdentif=parentIdentif;
 	}
 }

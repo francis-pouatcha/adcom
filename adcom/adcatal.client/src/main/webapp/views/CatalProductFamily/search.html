@@ -2,13 +2,13 @@
     <h3>Create a new CatalProductFamily</h3>
     <div class="control-group">
         <div class="controls">
-            <a id="Create" name="Create" class="btn btn-primary" href="#/CatalProductFamilys/new"><i class="icon-plus-sign icon-white"></i> Create</a>
+            <a id="Create" name="Create" class="btn btn-primary" href="#/CatalProductFamilies/new"><i class="icon-plus-sign icon-white"></i> Create</a>
         </div>
     </div>
 </div>
 <hr/>
 <div>
-    <h3>Search for CatalProductFamilys</h3>
+    <h3>Search for CatalProductFamilies</h3>
     <form id="CatalProductFamilySearch" class="form-horizontal">
     <div class="control-group">
         <label for="identif" class="control-label">Identif</label>
@@ -39,8 +39,8 @@
         </thead>
         <tbody id="search-results-body">
             <tr ng-repeat="result in searchResults | searchFilter:searchResults | startFrom:currentPage*pageSize | limitTo:pageSize">
-                <td><a href="#/CatalProductFamilys/edit/{{result.id}}">{{result.identif}}</a></td>
-                <td><a href="#/CatalProductFamilys/edit/{{result.id}}">{{result.parentIdentif}}</a></td>
+                <td><a href="#/CatalProductFamilies/edit/{{result.id}}">{{result.identif}}</a></td>
+                <td><a href="#/CatalProductFamilies/edit/{{result.id}}">{{result.parentIdentif}}</a></td>
             </tr>
         </tbody>
     </table>
