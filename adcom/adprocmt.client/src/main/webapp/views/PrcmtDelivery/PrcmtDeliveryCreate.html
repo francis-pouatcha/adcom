@@ -1,0 +1,81 @@
+<div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading"><b>{{ "Entity_create.title"| translate}}</b> </div>
+            <div class="panel-body">
+                <label class="error col-lg-offset-3 alert-danger" >{{prcmtDeliveryCreateCtlr.error}} </label>
+                <form  name="PrcmtDeliveryForm" id="PrcmtDeliveryForm" class="form-horizontal" novalidate="">
+                    <div class="form-group">
+                        <label class="col-lg-3 ">{{"PrcmtDelivery_dlvrySlipNbr_description.title"| translate}} :</label>
+                        <div class="col-lg-3" ng-class="{ 'has-error' : PrcmtDeliveryForm.dlvrySlipNbr.$invalid }" >
+                            <input type="text" ng-model="prcmtDeliveryCreateCtlr.prcmtDelivery.dlvrySlipNbr" id="dlvrySlipNbr" name="dlvrySlipNbr" class="form-control" required >
+                            <p ng-show="PrcmtDeliveryForm.dlvrySlipNbr.$error.required" class="help-block">{{"PrcmtDelivery_dlvrySlipNbr_description.title"| translate}}</p>
+                        </div>
+                        <label class="col-lg-3">{{"PrcmtDelivery_netPPPreTax_description.title"| translate}} :</label>
+                        <div class="col-lg-3" ng-class="{ 'has-error' : PrcmtDeliveryForm.netPPPreTax.$invalid }" >
+                            <input type="text" ng-model="prcmtDeliveryCreateCtlr.prcmtDelivery.netPPPreTax" id="netPPPreTax" name="netPPPreTax" class="form-control" required >
+                            <p ng-show="PrcmtDeliveryForm.netPPPreTax.$error.required" class="help-block">{{"PrcmtDelivery_netPPPreTax_description.title"| translate}}</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 ">{{"PrcmtDelivery_supplier_description.title"| translate}} :</label>
+                        <div class="col-lg-3" ng-class="{ 'has-error' : PrcmtDeliveryForm.supplier.$invalid }" >
+                            <input type="text" ng-model="prcmtDeliveryCreateCtlr.prcmtDelivery.supplier" id="supplier" name="supplier" class="form-control" required >
+                            <p ng-show="PrcmtDeliveryForm.supplier.$error.required" class="help-block">{{"PrcmtDelivery_supplier_description.title"| translate}}</p>
+                        </div>
+                        <label class="col-lg-3 ">{{"PrcmtDelivery_netPPTaxIncl_description.title"| translate}} :</label>
+                        <div class="col-lg-3" ng-class="{ 'has-error' : PrcmtDeliveryForm.netPPTaxIncl.$invalid }" >
+                            <input type="text" ng-model="prcmtDeliveryCreateCtlr.prcmtDelivery.netPPTaxIncl" id="netPPTaxIncl" name="netPPTaxIncl" class="form-control" required >
+                            <p ng-show="PrcmtDeliveryForm.netPPTaxIncl.$error.required" class="help-block">{{"PrcmtDelivery_netPPTaxIncl_description.title"| translate}}</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 ">{{"PrcmtDelivery_rcvngOrgUnit_description.title"| translate}} :</label>
+                        <div class="col-lg-3" ng-class="{ 'has-error' : PrcmtDeliveryForm.rcvngOrgUnit.$invalid }" >
+                            <input type="text" ng-model="prcmtDeliveryCreateCtlr.prcmtDelivery.rcvngOrgUnit" id="rcvngOrgUnit" name="rcvngOrgUnit" class="form-control" required >
+                            <p ng-show="PrcmtDeliveryForm.rcvngOrgUnit.$error.required" class="help-block">{{"PrcmtDelivery_rcvngOrgUnit_description.title"| translate}}</p>
+                        </div>
+                        <label class="col-lg-3 ">{{"PrcmtDelivery_netAmtToPay_description.title"| translate}} :</label>
+                        <div class="col-lg-3" ng-class="{ 'has-error' : PrcmtDeliveryForm.netAmtToPay.$invalid }" >
+                            <input type="text" ng-model="prcmtDeliveryCreateCtlr.prcmtDelivery.netAmtToPay" id="netAmtToPay" name="netAmtToPay" class="form-control" required >
+                            <p ng-show="PrcmtDeliveryForm.netAmtToPay.$error.required" class="help-block">{{"PrcmtDelivery_netAmtToPay_description.title"| translate}}</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 ">{{"PrcmtDelivery_orderDt_description.title"| translate}} :</label>
+                        <div class="col-lg-3" ng-class="{ 'has-error' : PrcmtDeliveryForm.orderDt.$invalid }" >
+                            <input type="datetime" date-time  view="date" min-view="date" views="['date']" dismiss="true" format="dd-MM-yyyy"
+                                   ng-model="prcmtDeliveryCreateCtlr.prcmtDelivery.orderDt" id="orderDt" name="orderDt" class="form-control"  >
+                        </div>
+                        <label class="col-lg-3 ">{{"PrcmtDelivery_netPurchAmt_description.title"| translate}} :</label>
+                        <div class="col-lg-3" ng-class="{ 'has-error' : PrcmtDeliveryForm.netPurchAmt.$invalid }" >
+                            <input type="text" ng-model="prcmtDeliveryCreateCtlr.prcmtDelivery.netPurchAmt" id="netPurchAmt" name="netPurchAmt" class="form-control" required >
+                            <p ng-show="PrcmtDeliveryForm.netPurchAmt.$error.required" class="help-block">{{"PrcmtDelivery_netPurchAmt_description.title"| translate}}</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 ">{{"PrcmtDelivery_dtOnDlvrySlip_description.title"| translate}} :</label>
+                        <div class="col-lg-3" ng-class="{ 'has-error' : PrcmtDeliveryForm.dtOnDlvrySlip.$invalid }" >
+                            <input type="datetime" date-time  view="date" min-view="date" views="['date']" dismiss="true" format="dd-MM-yyyy"
+                                   ng-model="prcmtDeliveryCreateCtlr.prcmtDelivery.dtOnDlvrySlip" id="dtOnDlvrySlip" name="dtOnDlvrySlip" class="form-control" required >
+                        </div>
+                        <label class="col-lg-3 ">{{"PrcmtDelivery_dlvryCur_description.title"| translate}} :</label>
+                        <div class="col-lg-3" ng-class="{ 'has-error' : PrcmtDeliveryForm.netPurchAmt.$invalid }" >
+                            <input type="text" ng-model="prcmtDeliveryCreateCtlr.prcmtDelivery.dlvryCur" id="dlvryCur" name="dlvryCur" class="form-control" >
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3"  > </label>
+                        <div class="col-lg-8" >
+                            <a class="btn-danger btn" href="#/"><i class="glyphicon glyphicon-remove" ></i> {{"Entity_cancel.title" | translate }}</a>
+                            <button ng-click="prcmtDeliveryCreateCtlr.create();" ng-disabled="catalArticleForm.$invalid" class="btn-success btn"  ><i class="glyphicon glyphicon-save"></i>  {{"Entity_save.title" | translate }}</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+  </div>
