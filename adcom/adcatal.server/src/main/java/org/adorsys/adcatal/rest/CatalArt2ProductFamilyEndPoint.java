@@ -2,7 +2,6 @@ package org.adorsys.adcatal.rest;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -22,82 +21,93 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.adorsys.adcatal.jpa.CatalArtDetailConfig;
-import org.adorsys.adcatal.jpa.CatalArtDetailConfigSearchInput;
-import org.adorsys.adcatal.jpa.CatalArtDetailConfigSearchResult;
-import org.adorsys.adcatal.jpa.CatalArtDetailConfig_;
+import org.adorsys.adcatal.jpa.CatalArt2ProductFamily;
+import org.adorsys.adcatal.jpa.CatalArt2ProductFamilySearchInput;
+import org.adorsys.adcatal.jpa.CatalArt2ProductFamilySearchResult;
+import org.adorsys.adcatal.jpa.CatalArt2ProductFamily_;
 
 /**
  * 
  */
 @Stateless
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-@Path("/catalartdetailconfigs")
-public class CatalArtDetailConfigEndpoint
+@Path("/catalart2productfamilys")
+public class CatalArt2ProductFamilyEndPoint
 {
 
    @Inject
-   private CatalArtDetailConfigEJB ejb;
+   private CatalArt2ProductFamilyEJB ejb;
+   
+   @Inject
+   private CatalArt2ProductFamilyEJBCustom ejbCustom;
 
    @POST
    @Consumes({ "application/json", "application/xml" })
    @Produces({ "application/json", "application/xml" })
-   public CatalArtDetailConfig create(CatalArtDetailConfig entity)
+   public CatalArt2ProductFamily create(CatalArt2ProductFamily entity)
    {
-	   return detach(ejb.createCustom(entity));
+      return detach(ejb.create(entity));
    }
-
+   
+   @POST
+   @Path("/createCustom/{artPic}")
+   @Consumes({ "application/json", "application/xml" })
+   public Response createCustom(@PathParam("artPic")String arcPic,CatalArt2ProductFamily entity)
+   {
+	   ejbCustom.createCustom(arcPic, entity);
+	   return Response.noContent().build();
+   }
 
    @DELETE
    @Path("/{id}")
    public Response deleteById(@PathParam("id") String id)
    {
-      CatalArtDetailConfig deleted = ejb.deleteCustomById(id);
-      if (deleted == null)
-         return Response.status(Status.NOT_FOUND).build();
-
-      return Response.ok(detach(deleted)).build();
+	   CatalArt2ProductFamily entity = ejb.deleteById(id);
+	   if(entity == null ) {
+		   return Response.status(Status.NOT_FOUND).build();
+	   }
+      return Response.ok(entity).build();
    }
 
    @PUT
    @Path("/{id}")
    @Produces({ "application/json", "application/xml" })
    @Consumes({ "application/json", "application/xml" })
-   public CatalArtDetailConfig update(CatalArtDetailConfig entity)
+   public CatalArt2ProductFamily update(CatalArt2ProductFamily entity)
    {
       return detach(ejb.update(entity));
    }
 
    @GET
-   @Path("/{id}")
+   @Path("/{identif}")
    @Produces({ "application/json", "application/xml" })
-   public Response findById(@PathParam("id") String id)
+   public Response findByIdentif(@PathParam("identif") String identif)
    {
-      CatalArtDetailConfig found = ejb.findById(id);
+      CatalArt2ProductFamily found = ejb.findByIdentif(identif);
       if (found == null)
          return Response.status(Status.NOT_FOUND).build();
       return Response.ok(detach(found)).build();
    }
    
    @GET
-   @Path("/findByArtPic/{pic}")
+   @Path("/findByArtPic/{artPic}")
    @Produces({ "application/json", "application/xml" })
-   public Response findByArtPic(@PathParam("pic") String pic)
+   public Response findByArtPic(@PathParam("artPic") String artPic)
    {
-	   List<CatalArtDetailConfig> results = ejb.findByArtPicAndIdentif(pic, new Date());
-	   return Response.ok(detach(results)).build();
+	   List<CatalArt2ProductFamily> result = ejb.findByArtPic(artPic);
+	   return Response.ok(detach(result)).build();
    }
 
    @GET
    @Produces({ "application/json", "application/xml" })
-   public CatalArtDetailConfigSearchResult listAll(@QueryParam("start") int start,
+   public CatalArt2ProductFamilySearchResult listAll(@QueryParam("start") int start,
          @QueryParam("max") int max)
    {
-      List<CatalArtDetailConfig> resultList = ejb.listAll(start, max);
-      CatalArtDetailConfigSearchInput searchInput = new CatalArtDetailConfigSearchInput();
+      List<CatalArt2ProductFamily> resultList = ejb.listAll(start, max);
+      CatalArt2ProductFamilySearchInput searchInput = new CatalArt2ProductFamilySearchInput();
       searchInput.setStart(start);
       searchInput.setMax(max);
-      return new CatalArtDetailConfigSearchResult((long) resultList.size(),
+      return new CatalArt2ProductFamilySearchResult((long) resultList.size(),
             detach(resultList), detach(searchInput));
    }
 
@@ -112,22 +122,22 @@ public class CatalArtDetailConfigEndpoint
    @Path("/findBy")
    @Produces({ "application/json", "application/xml" })
    @Consumes({ "application/json", "application/xml" })
-   public CatalArtDetailConfigSearchResult findBy(CatalArtDetailConfigSearchInput searchInput)
+   public CatalArt2ProductFamilySearchResult findBy(CatalArt2ProductFamilySearchInput searchInput)
    {
-      SingularAttribute<CatalArtDetailConfig, ?>[] attributes = readSeachAttributes(searchInput);
+      SingularAttribute<CatalArt2ProductFamily, ?>[] attributes = readSeachAttributes(searchInput);
       Long count = ejb.countBy(searchInput.getEntity(), attributes);
-      List<CatalArtDetailConfig> resultList = ejb.findBy(searchInput.getEntity(),
+      List<CatalArt2ProductFamily> resultList = ejb.findBy(searchInput.getEntity(),
             searchInput.getStart(), searchInput.getMax(), attributes);
-      return new CatalArtDetailConfigSearchResult(count, detach(resultList),
+      return new CatalArt2ProductFamilySearchResult(count, detach(resultList),
             detach(searchInput));
    }
 
    @POST
    @Path("/countBy")
    @Consumes({ "application/json", "application/xml" })
-   public Long countBy(CatalArtDetailConfigSearchInput searchInput)
+   public Long countBy(CatalArt2ProductFamilySearchInput searchInput)
    {
-      SingularAttribute<CatalArtDetailConfig, ?>[] attributes = readSeachAttributes(searchInput);
+      SingularAttribute<CatalArt2ProductFamily, ?>[] attributes = readSeachAttributes(searchInput);
       return ejb.countBy(searchInput.getEntity(), attributes);
    }
 
@@ -135,41 +145,42 @@ public class CatalArtDetailConfigEndpoint
    @Path("/findByLike")
    @Produces({ "application/json", "application/xml" })
    @Consumes({ "application/json", "application/xml" })
-   public CatalArtDetailConfigSearchResult findByLike(CatalArtDetailConfigSearchInput searchInput)
+   public CatalArt2ProductFamilySearchResult findByLike(CatalArt2ProductFamilySearchInput searchInput)
    {
-      SingularAttribute<CatalArtDetailConfig, ?>[] attributes = readSeachAttributes(searchInput);
+      SingularAttribute<CatalArt2ProductFamily, ?>[] attributes = readSeachAttributes(searchInput);
       Long countLike = ejb.countByLike(searchInput.getEntity(), attributes);
-      List<CatalArtDetailConfig> resultList = ejb.findByLike(searchInput.getEntity(),
+      List<CatalArt2ProductFamily> resultList = ejb.findByLike(searchInput.getEntity(),
             searchInput.getStart(), searchInput.getMax(), attributes);
-      return new CatalArtDetailConfigSearchResult(countLike, detach(resultList),
+      return new CatalArt2ProductFamilySearchResult(countLike, detach(resultList),
             detach(searchInput));
    }
+   
 
    @POST
    @Path("/countByLike")
    @Consumes({ "application/json", "application/xml" })
-   public Long countByLike(CatalArtDetailConfigSearchInput searchInput)
+   public Long countByLike(CatalArt2ProductFamilySearchInput searchInput)
    {
-      SingularAttribute<CatalArtDetailConfig, ?>[] attributes = readSeachAttributes(searchInput);
+      SingularAttribute<CatalArt2ProductFamily, ?>[] attributes = readSeachAttributes(searchInput);
       return ejb.countByLike(searchInput.getEntity(), attributes);
    }
 
    @SuppressWarnings("unchecked")
-   private SingularAttribute<CatalArtDetailConfig, ?>[] readSeachAttributes(
-         CatalArtDetailConfigSearchInput searchInput)
+   private SingularAttribute<CatalArt2ProductFamily, ?>[] readSeachAttributes(
+         CatalArt2ProductFamilySearchInput searchInput)
    {
       List<String> fieldNames = searchInput.getFieldNames();
-      List<SingularAttribute<CatalArtDetailConfig, ?>> result = new ArrayList<SingularAttribute<CatalArtDetailConfig, ?>>();
+      List<SingularAttribute<CatalArt2ProductFamily, ?>> result = new ArrayList<SingularAttribute<CatalArt2ProductFamily, ?>>();
       for (String fieldName : fieldNames)
       {
-         Field[] fields = CatalArtDetailConfig_.class.getFields();
+         Field[] fields = CatalArt2ProductFamily_.class.getFields();
          for (Field field : fields)
          {
             if (field.getName().equals(fieldName))
             {
                try
                {
-                  result.add((SingularAttribute<CatalArtDetailConfig, ?>) field.get(null));
+                  result.add((SingularAttribute<CatalArt2ProductFamily, ?>) field.get(null));
                }
                catch (IllegalArgumentException e)
                {
@@ -185,9 +196,7 @@ public class CatalArtDetailConfigEndpoint
       return result.toArray(new SingularAttribute[result.size()]);
    }
 
-   
-
-   private CatalArtDetailConfig detach(CatalArtDetailConfig entity)
+   private CatalArt2ProductFamily detach(CatalArt2ProductFamily entity)
    {
       if (entity == null)
          return null;
@@ -195,19 +204,19 @@ public class CatalArtDetailConfigEndpoint
       return entity;
    }
 
-   private List<CatalArtDetailConfig> detach(List<CatalArtDetailConfig> list)
+   private List<CatalArt2ProductFamily> detach(List<CatalArt2ProductFamily> list)
    {
       if (list == null)
          return list;
-      List<CatalArtDetailConfig> result = new ArrayList<CatalArtDetailConfig>();
-      for (CatalArtDetailConfig entity : list)
+      List<CatalArt2ProductFamily> result = new ArrayList<CatalArt2ProductFamily>();
+      for (CatalArt2ProductFamily entity : list)
       {
          result.add(detach(entity));
       }
       return result;
    }
 
-   private CatalArtDetailConfigSearchInput detach(CatalArtDetailConfigSearchInput searchInput)
+   private CatalArt2ProductFamilySearchInput detach(CatalArt2ProductFamilySearchInput searchInput)
    {
       searchInput.setEntity(detach(searchInput.getEntity()));
       return searchInput;

@@ -4,10 +4,12 @@ angular.module('AdProcmt', [
       'ngRoute',
       'ngCookies',
       'SessionManager',
+       'ui.bootstrap',
       'AuthInterceptor',
       'ngSanitize',
       'pascalprecht.translate',
-      'NavBar'
+      'NavBar',
+      'datePicker'
 ])
 .constant('APP_CONFIG',{
 	'appName':'Procurement',
@@ -18,10 +20,12 @@ angular.module('AdProcmt', [
 .config(['$routeProvider', '$httpProvider','$translateProvider','$translatePartialLoaderProvider',
          function($routeProvider,$httpProvider,$translateProvider,$translatePartialLoaderProvider) {
     $routeProvider
-    .when('/',{templateUrl:'views/landing.html',controller:'LandingPageController'})
-    .when('/PrcmtDeliverys',{templateUrl:'views/PrcmtDelivery/search.html',controller:'SearchPrcmtDeliveryController'})
-    .when('/PrcmtDeliverys/new',{templateUrl:'views/PrcmtDelivery/detail.html',controller:'NewPrcmtDeliveryController'})
-    .when('/PrcmtDeliverys/edit/:PrcmtDeliveryId',{templateUrl:'views/PrcmtDelivery/detail.html',controller:'EditPrcmtDeliveryController'})
+    .when('/',{templateUrl:'views/PrcmtDelivery/PrcmtDeliverys.html',controller:'prcmtDeliveryCtrl'})
+    .when('/PrcmtDeliverys',{templateUrl:'views/PrcmtDelivery/PrcmtDeliverys.html',controller:'prcmtDeliveryCtrl'})
+    .when('/PrcmtDeliverys/new',{templateUrl:'views/PrcmtDelivery/PrcmtDeliveryCreate.html',controller:'prcmtDeliveryCreateCtlr'})
+    .when('/PrcmtDeliverys/edit/:identif',{templateUrl:'views/PrcmtDelivery/PrcmtDeliveryEdit.html',controller:'prcmtDeliveryEditCtlr'})
+    .when('/PrcmtDeliverys/show/:identif',{templateUrl:'views/PrcmtDelivery/PrcmtDeliveryShow.html',controller:'prcmtDeliveryShowCtlr'})
+
     .when('/PrcmtDlvryItems',{templateUrl:'views/PrcmtDlvryItem/search.html',controller:'SearchPrcmtDlvryItemController'})
     .when('/PrcmtDlvryItems/new',{templateUrl:'views/PrcmtDlvryItem/detail.html',controller:'NewPrcmtDlvryItemController'})
     .when('/PrcmtDlvryItems/edit/:PrcmtDlvryItemId',{templateUrl:'views/PrcmtDlvryItem/detail.html',controller:'EditPrcmtDlvryItemController'})

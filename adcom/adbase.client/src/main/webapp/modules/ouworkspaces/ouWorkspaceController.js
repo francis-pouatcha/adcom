@@ -2,7 +2,7 @@
     'use strict';
     angular.module('AdBase').controller('ouWorkspaceController',ouWorkspaceController);
 
-    ouWorkspaceController.$inject = ['$scope', 'ouuserWorkspaceService','$location','$routeParams'];
+    ouWorkspaceController.$inject = ['$scope', 'ouWorkspaceService','$location','$routeParams'];
 
     function ouWorkspaceController($scope,ouWorkspaceService, $location,$routeParams){
         var self = this ;

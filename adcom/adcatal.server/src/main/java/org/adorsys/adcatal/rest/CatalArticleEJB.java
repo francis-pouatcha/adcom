@@ -177,4 +177,12 @@ public class CatalArticleEJB {
 		return catalArticles;
 	}
 
+	public List<CatalArticle> findPrevious(String pic) {
+		return repository.findPrevious(pic).maxResults(2).getResultList();
+	}
+
+	public List<CatalArticle> findNext(String pic) {
+		return repository.findNext(pic).maxResults(2).getResultList();
+	}
+
 }

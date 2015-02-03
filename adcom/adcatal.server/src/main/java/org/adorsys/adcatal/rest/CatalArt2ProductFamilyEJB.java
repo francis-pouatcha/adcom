@@ -91,5 +91,10 @@ public class CatalArt2ProductFamilyEJB {
 	public List<CatalArt2ProductFamily> findByFamCodeAndLangIso2(String famCode, String langIso2){
 		return repository.findByFamCodeAndLangIso2(famCode, langIso2);
 	}
-
+	public List<CatalArt2ProductFamily> findByArtPic(String artPic) {
+		return repository.findByArtPic(artPic);
+	}
+	public List<CatalArt2ProductFamily> findByFamCode(String famCode) {
+		return repository.findByFamCode(famCode);
+	}
 }

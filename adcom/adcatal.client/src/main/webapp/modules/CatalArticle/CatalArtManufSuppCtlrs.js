@@ -2,7 +2,7 @@
     
 angular.module('AdCatal')
 
-.controller('catalArtManufSuppsCtlr',['$scope','catalArtManufSuppResource','$modal','$routeParams',function($scope,catalArtManufSuppResource,$modal,$routeParams){
+.controller('catalArtManufSuppsCtlr',['$scope','catalArtManufSuppResource','bplegalptnridsResource','$modal','$routeParams','$q',function($scope,catalArtManufSuppResource,bplegalptnridsResource,$modal,$routeParams,$q){
 	
     var self = this ;
     $scope.catalArtManufSuppsCtlr = self;
@@ -23,7 +23,9 @@ angular.module('AdCatal')
     self.error = "";
     self.deleteItem = deleteItem;
     self.cipOrigines = [];
-    
+    self.currencys = ['XAF','EUR','NGN','USD'];
+    self.loadBusinessPartner = loadBusinessPartner;
+
     init();
     function init(){
         self.artIdentif = $routeParams.pic;
@@ -33,6 +35,27 @@ angular.module('AdCatal')
         }
         findByLike(self.searchInput);
     }
+
+    function loadBusinessPartner(businessPartnerName){
+        var searchInput = {
+            entity:{},
+            fieldNames:[],
+            start: 0,
+            max: 10
+        };
+        if(businessPartnerName){
+            searchInput.entity.cpnyName = businessPartnerName+'%';
+            searchInput.fieldNames.push('cpnyName');
+        }
+        var deferred = $q.defer();
+        bplegalptnridsResource.findByLike(searchInput).success(function (entitySearchResult) {
+            deferred.resolve(entitySearchResult);
+        }).error(function(){
+            deferred.reject("No Manufacturer/Supplier");
+        });
+        return deferred.promise;;
+    }
+
     function findByLike(searchInput){
     	searchInput.entity.artIdentif=self.artIdentif;
     	searchInput.fieldNames.push('artIdentif');
@@ -61,20 +84,32 @@ angular.module('AdCatal')
                 resolve: {
                     cipOrigines: function () {
                         return self.cipOrigines;
+                    },
+                    currencys: function () {
+                        return self.currencys;
                     }
                 }
             });
         };
 
-        function ModalInstanceCreateCtrl($scope, $modalInstance,cipOrigines) {
+        function ModalInstanceCreateCtrl($scope, $modalInstance,cipOrigines,currencys) {
             $scope.formCreate = false;
-            $scope.catalArtManufSupp;
+            $scope.catalArtManufSupp = {};
             $scope.currentAction="Entity_create.title";
+            $scope.currencys = currencys;
             $scope.cipOrigines=cipOrigines;
             $scope.selectedCipOrigine=cipOrigines.length>0?cipOrigines[0]:null;
 
+            $scope.loadBusinessPartner = function(val){
+                return self.loadBusinessPartner(val).then(function(entitySearchResult){
+                    return entitySearchResult.resultList;
+                })
+            }
+            $scope.loading = true;
+
             $scope.save = function () {
                 $scope.catalArtManufSupp.msType=$scope.selectedCipOrigine.enumKey;
+                $scope.catalArtManufSupp.msIdentif = $scope.catalArtManufSupp.msIdentif.identif;
                 $scope.catalArtManufSupp.artIdentif = self.artIdentif;
             	catalArtManufSuppResource.create($scope.catalArtManufSupp).success(function () {
                     init();
@@ -100,17 +135,21 @@ angular.module('AdCatal')
                     },
                     cipOrigines: function(){
                         return self.cipOrigines;
+                    },
+                    currencys: function () {
+                        return self.currencys;
                     }
                 }
 
             });
         };
 
-        function ModalInstanceEditCtrl($scope, $modalInstance,catalArtManufSupp,cipOrigines) {
+        function ModalInstanceEditCtrl($scope, $modalInstance,catalArtManufSupp,cipOrigines,currencys) {
             $scope.formCreate = false;
             $scope.catalArtManufSupp = catalArtManufSupp;
             $scope.currentAction="Entity_edit.title";
             $scope.cipOrigines=cipOrigines;
+            $scope.currencys = currencys;
             $scope.selectedCipOrigine=function(){
                 for (var i = 0; i < cipOrigines.length; i++) {
                     if(cipOrigines[i].enumKey==catalArtManufSupp.msType) return cipOrigines[i];
@@ -119,12 +158,20 @@ angular.module('AdCatal')
                 return null;
             }();
 
+            $scope.loadBusinessPartner = function(val){
+                return self.loadBusinessPartner(val).then(function(entitySearchResult){
+                    return entitySearchResult.resultList;
+                })
+            }
+            $scope.loading = true;
+
             $scope.isClean = function() {
                 return !angular.equals(catalArtManufSupp, $scope.catalArtManufSupp);
             };
 
             $scope.save = function () {
                 $scope.catalArtManufSupp.artIdentif = self.artIdentif;
+                $scope.catalArtManufSupp.msIdentif = $scope.catalArtManufSupp.msIdentif.identif;
                 $scope.catalArtManufSupp.msType=$scope.selectedCipOrigine.enumKey;
             	catalArtManufSuppResource.update($scope.catalArtManufSupp).success(function(){
                    init();

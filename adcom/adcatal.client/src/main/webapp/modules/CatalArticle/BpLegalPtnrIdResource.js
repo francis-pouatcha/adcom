@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('AdCatal').factory('catalArticleResource',['$http', function($http){
+angular.module('AdCatal').factory('bplegalptnridsResource',['$http', function($http){
     var service = {};
-    var urlBase = '/adcatal.server/rest/catalarticles',
+    var urlBase = '/adbnsptnr.server/rest/bplegalptnrids',
     searchInput = {
         entity:{},
         start:0,
@@ -27,20 +27,16 @@ angular.module('AdCatal').factory('catalArticleResource',['$http', function($htt
         return $http.post(urlBase+'/findCustom',entitySearchInput);
     };
 
+    service.findByLike = function(entitySearchInput){
+        return $http.post(urlBase+'/findByLike',entitySearchInput);
+    };
+
     service.findByIdentif = function(identif){
         return $http.get(urlBase+'/'+identif);
     };
 
     service.deleteById = function(entityId){
         return $http.delete(urlBase+'/'+entityId);
-    };
-
-    service.next = function(entityId){
-        return $http.get(urlBase+'/next/'+entityId);
-    };
-
-    service.previous = function(entityId){
-        return $http.get(urlBase+'/previous/'+entityId);
     };
 
     service.listAll = function(start,max){

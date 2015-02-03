@@ -46,6 +46,7 @@ angular.module('AdCatal').factory('catalProductFamilyResource',['$http', functio
     service.getEntity = function(){
         return entity ;
     };
+    
     function getSearchInput(){
         return searchInput ;
     };
