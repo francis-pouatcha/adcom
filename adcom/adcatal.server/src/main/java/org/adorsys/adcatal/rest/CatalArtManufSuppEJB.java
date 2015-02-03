@@ -22,7 +22,7 @@ public class CatalArtManufSuppEJB
    @Inject
    private SecurityUtil securityUtil;
    @Inject
-   private CatalCipOrigineEJB cipOrigineEJB; 
+   private CatalCipOrigineEJB cipOrigineEJB;
 
    public CatalArtManufSupp create(CatalArtManufSupp entity)
    {
