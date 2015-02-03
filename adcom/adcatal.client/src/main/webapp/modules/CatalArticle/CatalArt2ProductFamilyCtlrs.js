@@ -59,6 +59,7 @@ angular.module('AdCatal')
         function ModalInstanceCreateCtrl($scope, $modalInstance,catalProductFamilyResource,artPic) {
             $scope.formCreate = false;
             $scope.catalArt2ProductFamily = {};
+            $scope.catalArt2ProductFamily.artPic = artPic;
             $scope.currentAction="Entity_create.title";
             $scope.catalProductFamilies = [];
             loadDependencies();
@@ -106,6 +107,7 @@ angular.module('AdCatal')
         function ModalInstanceEditCtrl($scope, $modalInstance,catalProductFamilyResource,catalArt2ProductFamily,artPic) {
             $scope.formCreate = false;
             $scope.catalArt2ProductFamily = catalArt2ProductFamily;
+            $scope.catalArt2ProductFamily.artPic = artPic;
             $scope.currentAction="Entity_edit.title";
             
             loadDependencies();

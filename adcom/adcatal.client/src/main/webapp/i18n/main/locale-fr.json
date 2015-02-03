@@ -134,5 +134,18 @@
 "CatalPkgMode_name_NotNull_validation.text":"Le libellé  de ce Mode de conditionnment est réquis",
 "CatalPkgMode_name_NotNull_validation.title":"Le libellé  de ce Mode de conditionnment est réquis",
 "CatalPkgMode_name_description.text":"Nom du mode de conditionnement",
-"CatalPkgMode_name_description.title":"Mode de Conditionement"
+"CatalPkgMode_name_description.title":"Mode de Conditionement",
+    
+"CatalArt2ProductFamily_description.text":"Product Family",
+"CatalArt2ProductFamily_description.title":"Product Family",
+"CatalArt2ProductFamily_artPic_description.text":"The Article PIC",
+"CatalArt2ProductFamily_artPic_description.title":"Article PIC",
+"CatalArt2ProductFamily_famCode_description.text":"The Family Code",
+"CatalArt2ProductFamily_famCode_description.title":"Family Code",
+"CatalProductFamily_famPath_description.text":"The Family Path",
+"CatalProductFamily_famPath_description.title":"Family Path",
+"CatalArt2ProductFamily_langIso2_description.text":"The Language Code ISO2",
+"CatalArt2ProductFamily_langIso2_description.title":"Language Code ISO2",
+"CatalArt2ProductFamily_familyName_description.text":"The Family Name",
+"CatalArt2ProductFamily_familyName_description.title":"Family Name"
 }
