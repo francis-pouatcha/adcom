@@ -109,6 +109,7 @@ angular.module('AdCatal')
 
             $scope.save = function () {
                 $scope.catalArtManufSupp.msType=$scope.selectedCipOrigine.enumKey;
+                $scope.catalArtManufSupp.msIdentif = $scope.catalArtManufSupp.msIdentif.identif;
                 $scope.catalArtManufSupp.artIdentif = self.artIdentif;
             	catalArtManufSuppResource.create($scope.catalArtManufSupp).success(function () {
                     init();
@@ -170,6 +171,7 @@ angular.module('AdCatal')
 
             $scope.save = function () {
                 $scope.catalArtManufSupp.artIdentif = self.artIdentif;
+                $scope.catalArtManufSupp.msIdentif = $scope.catalArtManufSupp.msIdentif.identif;
                 $scope.catalArtManufSupp.msType=$scope.selectedCipOrigine.enumKey;
             	catalArtManufSuppResource.update($scope.catalArtManufSupp).success(function(){
                    init();

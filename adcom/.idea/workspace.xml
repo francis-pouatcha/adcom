@@ -36,8 +36,8 @@
       <file leaf-file-name="CatalArtManufSuppForm.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/CatalArtManufSuppForm.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-5.0" vertical-offset="0" max-vertical-offset="930">
-              <caret line="8" column="73" selection-start-line="8" selection-start-column="65" selection-end-line="8" selection-end-column="73" />
+            <state vertical-scroll-proportion="-4.375" vertical-offset="0" max-vertical-offset="930">
+              <caret line="7" column="121" selection-start-line="7" selection-start-column="112" selection-end-line="7" selection-end-column="121" />
               <folding />
             </state>
           </provider>
@@ -56,9 +56,12 @@
       <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-15.333333" vertical-offset="562" max-vertical-offset="1650">
-              <caret line="62" column="59" selection-start-line="62" selection-start-column="59" selection-end-line="62" selection-end-column="59" />
-              <folding />
+            <state vertical-scroll-proportion="-15.333333" vertical-offset="532" max-vertical-offset="1605">
+              <caret line="60" column="59" selection-start-line="60" selection-start-column="59" selection-end-line="60" selection-end-column="59" />
+              <folding>
+                <marker date="1422957771000" expanded="true" signature="731:5668" placeholder="..." />
+                <marker date="1422957771000" expanded="true" signature="819:1163" placeholder="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -86,8 +89,8 @@
       <file leaf-file-name="CatalArtManufSuppCtlrs.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/modules/CatalArticle/CatalArtManufSuppCtlrs.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.45180723" vertical-offset="390" max-vertical-offset="2985">
-              <caret line="46" column="64" selection-start-line="46" selection-start-column="64" selection-end-line="46" selection-end-column="64" />
+            <state vertical-scroll-proportion="0.70030123" vertical-offset="2130" max-vertical-offset="3015">
+              <caret line="173" column="96" selection-start-line="173" selection-start-column="96" selection-end-line="173" selection-end-column="96" />
               <folding />
             </state>
           </provider>
@@ -1125,9 +1128,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-15.333333" vertical-offset="562" max-vertical-offset="1650">
-          <caret line="62" column="59" selection-start-line="62" selection-start-column="59" selection-end-line="62" selection-end-column="59" />
-          <folding />
+        <state vertical-scroll-proportion="-15.333333" vertical-offset="532" max-vertical-offset="1605">
+          <caret line="60" column="59" selection-start-line="60" selection-start-column="59" selection-end-line="60" selection-end-column="59" />
+          <folding>
+            <marker date="1422957771000" expanded="true" signature="731:5668" placeholder="..." />
+            <marker date="1422957771000" expanded="true" signature="819:1163" placeholder="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1143,14 +1149,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="960">
           <caret line="4" column="22" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/CatalArtManufSupp.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-10.0" vertical-offset="0" max-vertical-offset="510">
-          <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1195,18 +1193,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/CatalArtManufSupp.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-10.0" vertical-offset="0" max-vertical-offset="510">
+          <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/CatalArtManufSuppForm.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.0" vertical-offset="0" max-vertical-offset="930">
-          <caret line="8" column="73" selection-start-line="8" selection-start-column="65" selection-end-line="8" selection-end-column="73" />
+        <state vertical-scroll-proportion="-4.375" vertical-offset="0" max-vertical-offset="930">
+          <caret line="7" column="121" selection-start-line="7" selection-start-column="112" selection-end-line="7" selection-end-column="121" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/modules/CatalArticle/CatalArtManufSuppCtlrs.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.45180723" vertical-offset="390" max-vertical-offset="2985">
-          <caret line="46" column="64" selection-start-line="46" selection-start-column="64" selection-end-line="46" selection-end-column="64" />
+        <state vertical-scroll-proportion="0.70030123" vertical-offset="2130" max-vertical-offset="3015">
+          <caret line="173" column="96" selection-start-line="173" selection-start-column="96" selection-end-line="173" selection-end-column="96" />
           <folding />
         </state>
       </provider>
