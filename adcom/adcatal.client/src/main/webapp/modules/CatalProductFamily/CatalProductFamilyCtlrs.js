@@ -78,7 +78,6 @@ angular.module('AdCatal')
 
 	function handlePrintRequestEvent(){		
 	}
-    
 }])
 .controller('catalProductFamilyCreateCtlr',['$scope','catalProductFamilyResource','$location','$modal',
                                             function($scope,catalProductFamilyResource,$location,$modal){
@@ -157,6 +156,7 @@ angular.module('AdCatal')
         };
         $scope.select = function (parentFamily) {
         	catalProductFamily.parent=parentFamily;
+        	catalProductFamily.parentIdentif=catalProductFamily.parent.famCode;
             $modalInstance.close('ok');
         };
         $scope.cancel = function () {
@@ -172,6 +172,7 @@ angular.module('AdCatal')
     self.error = "";
     self.previousProductFamily = previousProductFamily;
     self.nextProductFamily = nextProductFamily;
+	self.showParent;
 
     load();
 
@@ -180,6 +181,7 @@ angular.module('AdCatal')
         catalProductFamilyResource.findByIdentif(famCode)
         .success(function(data){
             self.catalProductFamily = data;
+            self.showParent = self.catalProductFamily.parent && self.catalProductFamily.parent.features;
         })
         .error(function(error){
             self.error = error;
@@ -191,4 +193,5 @@ angular.module('AdCatal')
     }
     function nextProductFamily(){
     }
+    
 }]);
