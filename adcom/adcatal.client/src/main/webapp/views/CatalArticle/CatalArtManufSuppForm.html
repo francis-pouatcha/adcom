@@ -5,14 +5,15 @@
     <div class="control-group" ng-class="{error: CatalArtManufSuppForm.msIdentif.$invalid}">
         <label for="msIdentif" class="control-label">{{"CatalArtManufSupp_msIdentif_description.title"|translate}}</label>
         <div id="msIdentifControls" class="controls">
-            <input id="msIdentif" name="msIdentif" type="text" required ng-model="catalArtManufSupp.msIdentif" class="form-control" placeholder="{{'CatalArtManufSupp_msIdentif_description.title'|translate}}"></input>
+            <input type="text" class="form-control" name="msIdentif" id="msIdentif" ng-model="catalArtManufSupp.msIdentif" required autocomplete="off"
+                   typeahead="businessPartner as businessPartner.cpnyName for businessPartner in loadBusinessPartner($viewValue)" typeahead-loading="loading" placeholder="find a Supplier/Manufacturer" >
             <span class="help-inline" ng-show="CatalArtManufSuppForm.msIdentif.$error.required">required</span>
         </div>
     </div>
     <div class="control-group" ng-class="{error: CatalArtManufSuppForm.msType.$invalid}">
         <label for="msType" class="control-label">{{"CatalArtManufSupp_msType_description.title"|translate}}</label>
         <div id="msTypeControls" class="controls">
-            <select id="codeOrigin" name="msType" class="form-control" ng-options="cipOrigine.name for cipOrigine in cipOrigines" ng-model="selectedCipOrigine"></select>
+            <select id="msType" name="msType" class="form-control" ng-options="cipOrigine.name for cipOrigine in cipOrigines" ng-model="selectedCipOrigine"></select>
         </div>
     </div>
     <div class="control-group" ng-class="{error: CatalArtManufSuppForm.warrantyMonths.$invalid}">
@@ -24,7 +25,7 @@
     <div class="control-group" ng-class="{error: CatalArtManufSuppForm.returnDays.$invalid}">
         <label for="returnDays" class="control-label">{{"CatalArtManufSupp_returnDays_description.title"|translate}}</label>
         <div id="returnDaysControls" class="controls">
-            <input id="returnDays" name="returnDays" class="form-control" type="text" ng-model="catalArtManufSupp.returnDays" placeholder="{{'CatalArtManufSupp_returnDays_description.title'|translate}}"></input>
+            <input id="returnDays"  name="returnDays" class="form-control" type="text" ng-model="catalArtManufSupp.returnDays" placeholder="{{'CatalArtManufSupp_returnDays_description.title'|translate}}"></input>
         </div>
     </div>
     <div class="control-group" ng-class="{error: CatalArtManufSuppForm.pppu.$invalid}">
@@ -36,7 +37,7 @@
     <div class="control-group" ng-class="{error: CatalArtManufSuppForm.pppuCurrIso3.$invalid}">
         <label for="pppuCurrIso3" class="control-label">{{"CatalArtManufSupp_pppuCurrIso3_description.title"|translate}}</label>
         <div id="pppuCurrIso3Controls" class="controls">
-            <input id="pppuCurrIso3" name="pppuCurrIso3" type="text" class="form-control" ng-model="catalArtManufSupp.pppuCurrIso3" placeholder="{{'CatalArtManufSupp_pppuCurrIso3_description.title'|translate}}"></input>
+            <select id="pppuCurrIso3" name="pppuCurrIso3" class="form-control" ng-options="currency for currency in currencys" ng-model="catalArtManufSupp.pppuCurrIso3"></select>
         </div>
     </div>
     <div class="control-group" ng-class="{error: CatalArtManufSuppForm.vatRate.$invalid}">
