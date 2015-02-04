@@ -28,7 +28,7 @@ public class PrcmtAbstractDelivery extends AbstractMvmtData {
 
 	@Column
 	@Description("PrcmtDelivery_dlvryNbr_description")
-	@NotNull
+	//@NotNull
 	private String dlvryNbr;
 
 	@Column
@@ -47,7 +47,7 @@ public class PrcmtAbstractDelivery extends AbstractMvmtData {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Description("PrcmtDelivery_dlvryDt_description")
-	@NotNull
+	//@NotNull
 	private Date dlvryDt;
 
 	@Column
@@ -81,7 +81,7 @@ public class PrcmtAbstractDelivery extends AbstractMvmtData {
 
 	@Column
 	@Description("PrcmtDelivery_pymtDscntType_description")
-	@NotNull
+	//@NotNull
 	@Enumerated(EnumType.STRING)
 	private AmtOrPct pymtDscntType;
 	
@@ -111,7 +111,7 @@ public class PrcmtAbstractDelivery extends AbstractMvmtData {
 
 	@Column
 	@Description("PrcmtDelivery_dlvryStatus_description")
-	@NotNull
+	//@NotNull
 	private String dlvryStatus;
 
 	@Column
@@ -120,12 +120,12 @@ public class PrcmtAbstractDelivery extends AbstractMvmtData {
 
 	@Column
 	@Description("PrcmtDelivery_creatingUsr_description")
-	@NotNull
+	//@NotNull
 	private String creatingUsr;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Description("PrcmtDelivery_creationDt_description")
-	@NotNull
+	//@NotNull
 	private Date creationDt;
 
 	public String getDlvryNbr() {
