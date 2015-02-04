@@ -53,7 +53,7 @@ angular.module('AdCatal')
         }).error(function(){
             deferred.reject("No Manufacturer/Supplier");
         });
-        return deferred.promise;;
+        return deferred.promise;
     }
 
     function findByLike(searchInput){

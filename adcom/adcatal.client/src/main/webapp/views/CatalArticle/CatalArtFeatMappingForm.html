@@ -1,7 +1,7 @@
 <div class="panel panel-default">
     <div class="panel-heading"><b>{{currentAction| translate}} {{'CatalArticle_pic_description.title'| translate}} : {{catalArtFeatMapping.artIdentif}}</b> </div>
     <div class="panel-body">
-        <form id="CatalArtFeatMappingForm" name="CatalArtFeatMappingForm" class="form-horizontal">
+        <form id="CatalArtFeatMappingForm" name="CatalArtFeatMappingForm" class="form-horizontal" novalidate>
             <div class="control-group" ng-class="{error: CatalArtFeatMappingForm.langIso2.$invalid}">
                 <label for="langIso2" class="control-label">{{'CatalAbstractFeatMapping_langIso2_description.title'|translate}}</label>
                 <div id="langIso2Controls" class="controls">
