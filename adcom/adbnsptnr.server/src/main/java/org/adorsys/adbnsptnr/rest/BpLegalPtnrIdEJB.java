@@ -9,6 +9,7 @@ import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adbnsptnr.jpa.BpLegalPtnrId;
 import org.adorsys.adbnsptnr.repo.BpLegalPtnrIdRepository;
+import org.apache.commons.lang3.StringUtils;
 
 @Stateless
 public class BpLegalPtnrIdEJB 
@@ -16,11 +17,6 @@ public class BpLegalPtnrIdEJB
 
    @Inject
    private BpLegalPtnrIdRepository repository;
-
-   public BpLegalPtnrId create(BpLegalPtnrId entity)
-   {
-      return repository.save(attach(entity));
-   }
 
    public BpLegalPtnrId deleteById(String id)
    {
@@ -34,7 +30,17 @@ public class BpLegalPtnrIdEJB
 
    public BpLegalPtnrId update(BpLegalPtnrId entity)
    {
-      return repository.save(attach(entity));
+	   if(entity==null) return null;
+	   if(StringUtils.isBlank(entity.getId()))
+		   return repository.save(attach(entity));
+
+	   BpLegalPtnrId found = findById(entity.getId());
+	   if(found==null) {// persist
+		   return repository.save(attach(entity));
+	   }
+	   if(found.updateContent(entity))
+		   return repository.save(found);
+	   return found;
    }
 
    public BpLegalPtnrId findById(String id)
@@ -84,4 +90,11 @@ public class BpLegalPtnrIdEJB
 	   if(resultList.isEmpty()) return null;
 	   return resultList.iterator().next();
    }
+
+	public void deleteByIdentif(String ptnrNbr) {
+		List<BpLegalPtnrId> resultList = repository.findAllByIdentif(ptnrNbr).getResultList();
+		for (BpLegalPtnrId bpLegalPtnrId : resultList) {
+			repository.remove(bpLegalPtnrId);
+		}
+	}
 }

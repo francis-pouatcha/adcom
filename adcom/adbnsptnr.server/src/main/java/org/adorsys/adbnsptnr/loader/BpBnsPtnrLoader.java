@@ -21,7 +21,7 @@ public class BpBnsPtnrLoader extends AbstractObjectLoader<BpBnsPtnr> {
 	}
 
 	public BpBnsPtnr findByIdentif(String identif, Date validOn) {
-		return ejb.findByIdentif(identif, validOn);
+		return ejb.findByIdentif(identif);
 	}
 
 	public BpBnsPtnr create(BpBnsPtnr entity) {

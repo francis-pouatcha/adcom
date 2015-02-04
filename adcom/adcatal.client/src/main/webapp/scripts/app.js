@@ -65,16 +65,14 @@ angular.module('AdCatal', [
 	$translateProvider.preferredLanguage('fr');
     
 }])
-
-.controller('LandingPageController', function LandingPageController() {})
-
-.controller('NavController', function NavController($scope, $location) {
-    $scope.matchesRoute = function(route) {
-        var path = $location.path();
-        return (path === ("/" + route) || path.indexOf("/" + route + "/") == 0);
-    };
-})
-
+//
+//.controller('NavController', function NavController($scope, $location) {
+//    $scope.matchesRoute = function(route) {
+//        var path = $location.path();
+//        return (path === ("/" + route) || path.indexOf("/" + route + "/") == 0);
+//    };
+//})
+//
 .run(['$rootScope', '$location','sessionManager','$translate','APP_CONFIG','$translatePartialLoader',
       function ($rootScope, $location, sessionManager,$translate,APP_CONFIG,$translatePartialLoader) {
     $rootScope.appName = APP_CONFIG.appName ;

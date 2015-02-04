@@ -38,14 +38,6 @@ public class BpLegalPtnrIdEndpoint
    @Inject
    private BpLegalPtnrIdEJB ejb;
 
-   @POST
-   @Consumes({ "application/json", "application/xml" })
-   @Produces({ "application/json", "application/xml" })
-   public BpLegalPtnrId create(BpLegalPtnrId entity)
-   {
-      return detach(ejb.create(entity));
-   }
-
    @DELETE
    @Path("/{id}")
    public Response deleteById(@PathParam("id") String id)

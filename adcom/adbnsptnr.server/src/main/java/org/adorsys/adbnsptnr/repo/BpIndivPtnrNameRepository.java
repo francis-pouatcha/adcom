@@ -13,4 +13,7 @@ public interface BpIndivPtnrNameRepository extends EntityRepository<BpIndivPtnrN
 {
 	@Query("SELECT e FROM BpIndivPtnrName AS e WHERE e.identif = ?1 AND e.validFrom <= ?2 AND (e.validTo IS NULL OR e.validTo > ?2)")
 	public QueryResult<BpIndivPtnrName> findByIdentif(String identif, Date validOn);
+
+	@Query("SELECT e FROM BpIndivPtnrName AS e WHERE e.identif = ?1")
+	public QueryResult<BpIndivPtnrName> findAllByIdentif(String identif);
 }

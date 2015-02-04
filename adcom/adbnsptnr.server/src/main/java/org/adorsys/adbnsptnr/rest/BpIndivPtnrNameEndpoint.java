@@ -38,14 +38,6 @@ public class BpIndivPtnrNameEndpoint
    @Inject
    private BpIndivPtnrNameEJB ejb;
 
-   @POST
-   @Consumes({ "application/json", "application/xml" })
-   @Produces({ "application/json", "application/xml" })
-   public BpIndivPtnrName create(BpIndivPtnrName entity)
-   {
-      return detach(ejb.create(entity));
-   }
-
    @DELETE
    @Path("/{id}")
    public Response deleteById(@PathParam("id") String id)

@@ -9,6 +9,7 @@ import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adbnsptnr.jpa.BpIndivPtnrName;
 import org.adorsys.adbnsptnr.repo.BpIndivPtnrNameRepository;
+import org.apache.commons.lang3.StringUtils;
 
 @Stateless
 public class BpIndivPtnrNameEJB 
@@ -16,11 +17,6 @@ public class BpIndivPtnrNameEJB
 
    @Inject
    private BpIndivPtnrNameRepository repository;
-
-   public BpIndivPtnrName create(BpIndivPtnrName entity)
-   {
-      return repository.save(attach(entity));
-   }
 
    public BpIndivPtnrName deleteById(String id)
    {
@@ -34,7 +30,17 @@ public class BpIndivPtnrNameEJB
 
    public BpIndivPtnrName update(BpIndivPtnrName entity)
    {
-      return repository.save(attach(entity));
+	   if(entity==null) return null;
+	   if(StringUtils.isBlank(entity.getId()))
+		   return repository.save(attach(entity));
+	   
+	   BpIndivPtnrName found = findById(entity.getId());
+	   if(found==null) {// persist
+		   return repository.save(attach(entity));
+	   }
+	   if(found.updateContent(entity))
+		   return repository.save(found);
+	   return found;
    }
 
    public BpIndivPtnrName findById(String id)
@@ -84,4 +90,11 @@ public class BpIndivPtnrNameEJB
 	   if(resultList.isEmpty()) return null;
 	   return resultList.iterator().next();
    }
+
+	public void deleteByIdentif(String ptnrNbr) {
+		List<BpIndivPtnrName> resultList = repository.findAllByIdentif(ptnrNbr).getResultList();
+		for (BpIndivPtnrName bpIndivPtnrName : resultList) {
+			repository.remove(bpIndivPtnrName);
+		}
+	}
 }

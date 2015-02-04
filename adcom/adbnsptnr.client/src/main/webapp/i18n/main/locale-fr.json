@@ -14,6 +14,8 @@
 "BpBnsPtnr_ptnrNbr_description.title":"Identifiantr",
 "BpBnsPtnr_ptnrType_description.text":"Le type de client.",
 "BpBnsPtnr_ptnrType_description.title":"Type Partenaire",
+"BpBnsPtnr_fullName_description.text":"Nom",
+"BpBnsPtnr_fullName_description.title":"Nom",
 
 "BpCtgryDscnt_ctgryCode_description.text":"Le code de cette categorie client",
 "BpCtgryDscnt_ctgryCode_description.title":"Code Categorie",
@@ -176,9 +178,9 @@
 "BpPtnrRole_description.title":"Role du Partenaire",
 
 "BpPtnrType_INDIVIDUAL_description.text":"Personnalié physique",
-"BpPtnrType_INDIVIDUAL_description.title":"Physique",
+"BpPtnrType_INDIVIDUAL_description.title":"Personne Physique",
 "BpPtnrType_LEGAL_description.text":"Personnalité juridique",
-"BpPtnrType_LEGAL_description.title":"Morale",
+"BpPtnrType_LEGAL_description.title":"Personne Morale",
 "BpPtnrType_description.text":"Type de partenaire.",
 "BpPtnrType_description.title":"Type de partenaire",
 

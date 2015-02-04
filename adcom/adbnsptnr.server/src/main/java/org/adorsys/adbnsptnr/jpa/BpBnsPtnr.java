@@ -4,14 +4,15 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
-import org.adorsys.adcore.jpa.AbstractTimedData;
+import org.adorsys.adcore.jpa.AbstractIdentifData;
 import org.adorsys.javaext.description.Description;
 
 @Entity
 @Description("BpBnsPtnr_description")
-public class BpBnsPtnr extends AbstractTimedData {
+public class BpBnsPtnr extends AbstractIdentifData {
 
 	private static final long serialVersionUID = -9038535636658903372L;
 
@@ -22,12 +23,23 @@ public class BpBnsPtnr extends AbstractTimedData {
 
 	@Column
 	@Description("BpBnsPtnr_ptnrType_description")
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
+	@NotNull
 	private BpPtnrType ptnrType;
 
 	@Column
 	@Description("BpBnsPtnr_ctryOfRsdnc_description")
 	private String ctryOfRsdnc;
+	
+	@Column
+	@Description("BpBnsPtnr_fullName_description")
+	private String fullName;
+	
+	@Transient
+	private BpIndivPtnrName indivPtnrName;
+	
+	@Transient
+	private BpLegalPtnrId legalPtnrId;
 
 	public String getPtnrNbr() {
 		return this.ptnrNbr;
@@ -57,4 +69,29 @@ public class BpBnsPtnr extends AbstractTimedData {
 	protected String makeIdentif() {
 		return ptnrNbr;
 	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+	public BpIndivPtnrName getIndivPtnrName() {
+		return indivPtnrName;
+	}
+
+	public void setIndivPtnrName(BpIndivPtnrName indivPtnrName) {
+		this.indivPtnrName = indivPtnrName;
+	}
+
+	public BpLegalPtnrId getLegalPtnrId() {
+		return legalPtnrId;
+	}
+
+	public void setLegalPtnrId(BpLegalPtnrId legalPtnrId) {
+		this.legalPtnrId = legalPtnrId;
+	}
+	
 }

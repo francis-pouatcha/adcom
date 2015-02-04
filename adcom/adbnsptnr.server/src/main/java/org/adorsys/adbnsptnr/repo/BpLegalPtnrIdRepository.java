@@ -13,4 +13,7 @@ public interface BpLegalPtnrIdRepository extends EntityRepository<BpLegalPtnrId,
 {
 	@Query("SELECT e FROM BpLegalPtnrId AS e WHERE e.identif = ?1 AND e.validFrom <= ?2 AND (e.validTo IS NULL OR e.validTo > ?2)")
 	public QueryResult<BpLegalPtnrId> findByIdentif(String identif, Date validOn);
+
+	@Query("SELECT e FROM BpLegalPtnrId AS e WHERE e.identif = ?1")
+	public QueryResult<BpLegalPtnrId> findAllByIdentif(String identif);
 }

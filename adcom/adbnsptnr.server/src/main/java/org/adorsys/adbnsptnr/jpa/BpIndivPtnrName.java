@@ -4,12 +4,16 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 import org.adorsys.adcore.jpa.AbstractTimedData;
+import org.adorsys.adcore.utils.CalendarUtil;
 import org.adorsys.javaext.description.Description;
+import org.apache.commons.lang3.StringUtils;
 
 @Entity
 @Description("BpIndivPtnrName_description")
@@ -34,11 +38,6 @@ public class BpIndivPtnrName extends AbstractTimedData {
 	@Description("BpIndivPtnrName_lastName_description")
 	@NotNull(message = "BpIndivPtnrName_lastName_NotNull_validation")
 	private String lastName;
-
-	@Column
-	@Description("BpIndivPtnrName_fullName_description")
-	@NotNull
-	private String fullName;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Description("BpIndivPtnrName_brthDt_description")
@@ -76,14 +75,6 @@ public class BpIndivPtnrName extends AbstractTimedData {
 		this.lastName = lastName;
 	}
 
-	public String getFullName() {
-		return this.fullName;
-	}
-
-	public void setFullName(final String fullName) {
-		this.fullName = fullName;
-	}
-
 	public Date getBrthDt() {
 		return this.brthDt;
 	}
@@ -95,5 +86,41 @@ public class BpIndivPtnrName extends AbstractTimedData {
 	@Override
 	protected String makeIdentif() {
 		return ptnrNbr;
+	}
+	
+	@PrePersist
+	public void prePersist(){
+		makeFullName();
+		super.prePersist();
+	}
+	
+	@PreUpdate
+	public void preUpdate(){
+		makeFullName();
+	} 
+	
+	public String makeFullName(){
+		return StringUtils.isBlank(firstName)?lastName:firstName + " " + lastName;
+	}
+	
+	public boolean updateContent(BpIndivPtnrName source){
+		boolean changed = false;
+		if(!StringUtils.equals(gender, source.gender)){
+			gender = source.gender;
+			changed = true;
+		}
+		if(!StringUtils.equals(firstName, source.firstName)){
+			firstName = source.firstName;
+			changed = true;
+		}
+		if(!StringUtils.equals(lastName, source.lastName)){
+			lastName = source.lastName;
+			changed = true;
+		}
+		if(!CalendarUtil.isSameDay(brthDt, source.brthDt)){
+			brthDt = source.brthDt;
+			changed = true;
+		}
+		return changed;
 	}
 }

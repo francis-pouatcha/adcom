@@ -14,6 +14,8 @@
 "BpBnsPtnr_ptnrNbr_description.title":"Identifier",
 "BpBnsPtnr_ptnrType_description.text":"The client type.",
 "BpBnsPtnr_ptnrType_description.title":"Partner Type",
+"BpBnsPtnr_fullName_description.text":"Name",
+"BpBnsPtnr_fullName_description.title":"Name",
 
 "BpCtgryDscnt_ctgryCode_description.text":"The code of this client category",
 "BpCtgryDscnt_ctgryCode_description.title":"Category Code",
