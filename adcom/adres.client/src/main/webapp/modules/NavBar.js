@@ -12,7 +12,6 @@ angular.module('NavBar',[
      'AuthInterceptor',
      'pascalprecht.translate'
 ])
-
 .controller('navbarCtrl', 
 	['$scope', '$translate','$translatePartialLoader', '$rootScope','sessionManager','$location', 
 		 function ($scope, $translate, $translatePartialLoader, $rootScope,sessionManager,$location) {
