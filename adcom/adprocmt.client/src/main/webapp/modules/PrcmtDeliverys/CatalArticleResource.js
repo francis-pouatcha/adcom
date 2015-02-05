@@ -27,6 +27,14 @@ angular.module('AdProcmt').factory('catalArticleResource',['$http', function($ht
         return $http.post(urlBase+'/findCustom',entitySearchInput);
     };
 
+    service.findByNameStartWith = function(entitySearchInput){
+        return $http.post(urlBase+'/findByNameStartWith',entitySearchInput);
+    };
+
+    service.findByPicLike = function(entitySearchInput){
+        return $http.post(urlBase+'/findByPicLike',entitySearchInput);
+    };
+
     service.findByIdentif = function(identif){
         return $http.get(urlBase+'/'+identif);
     };
