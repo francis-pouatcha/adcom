@@ -76,6 +76,17 @@ public class InvInvtryEndpoint
          return Response.status(Status.NOT_FOUND).build();
       return Response.ok(detach(found)).build();
    }
+   
+   @GET
+   @Path("/findByIdentif/{identif}")
+   @Produces({ "application/json", "application/xml" })
+   public Response findByIdentif(@PathParam("identif") String identif)
+   {
+	   InvInvtry found = ejb.findByIdentif(identif);
+	   if (found == null)
+		   return Response.status(Status.NOT_FOUND).build();
+	   return Response.ok(detach(found)).build();
+   }
 
    @GET
    @Produces({ "application/json", "application/xml" })

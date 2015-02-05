@@ -1,0 +1,57 @@
+<div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading"><b>{{ "Entity_create.title"| translate}}</b> </div>
+            <div class="panel-body">
+                <label class="error col-lg-offset-3 alert-danger" >{{invtryEditCtlr.error}} </label>
+                <form  name="InvInvtry" id="InvInvtry" class="form-horizontal" novalidate="">
+                    <div class="form-group">
+                        <label class="col-lg-3 ">{{"InvInvtry_descptn_description.title"| translate}} :</label>
+                        <div class="col-lg-3" ng-class="{ 'has-error' : InvInvtry.descptn.$invalid }" >
+                            <input type="text" ng-model="invtryEditCtlr.invtry.descptn" id="descptn" name="dlvrySlipNbr" class="form-control" required >
+                            <p ng-show="InvInvtry.descptn.$error.required" class="help-block">{{"InvInvtry_descptn_description.title"| translate}}</p>
+                        </div>
+                        <label class="col-lg-3">{{"InvInvtry_invtryNbr_description.title"| translate}} :</label>
+                        <div class="col-lg-3" ng-class="{ 'has-error' : InvInvtry.invtryNbr.$invalid }" >
+                            <input type="text" ng-model="invtryEditCtlr.invtry.invtryNbr" id="invtryNbr" name="invtryNbr" class="form-control" required >
+                            <p ng-show="InvInvtry.invtryNbr.$error.required" class="help-block">{{"InvInvtry_invtryNbr_description.title"| translate}}</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 ">{{"InvInvtry_gapPurchAmtHT_description.title"| translate}} :</label>
+                        <div class="col-lg-3" ng-class="{ 'has-error' : InvInvtry.gapPurchAmtHT.$invalid }" >
+                            <input type="text" ng-model="invtryEditCtlr.invtry.gapPurchAmtHT" id="gapPurchAmtHT" name="gapPurchAmtHT" class="form-control" required >
+                            <p ng-show="InvInvtry.gapPurchAmtHT.$error.required" class="help-block">{{"InvInvtry_gapPurchAmtHT_description.title"| translate}}</p>
+                        </div>
+                        <label class="col-lg-3 ">{{"InvInvtry_invtryStatus_description.title"| translate}} :</label>
+                        <div class="col-lg-3" ng-class="{ 'has-error' : InvInvtry.invtryStatus.$invalid }" >
+                            <input disabled type="text" ng-model="invtryEditCtlr.invtry.invtryStatus" id="invtryStatus" name="invtryStatus" class="form-control" required >
+                            <p ng-show="InvInvtry.invtryStatus.$error.required" class="help-block">{{"InvInvtry_invtryStatus_description.title"| translate}}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="col-lg-3 ">{{"InvInvtry_gapSaleAmtHT_description.title"| translate}} :</label>
+                        <div class="col-lg-3" ng-class="{ 'has-error' : InvInvtry.gapSaleAmtHT.$invalid }" >
+                            <input type="text" ng-model="invtryEditCtlr.invtry.gapSaleAmtHT" id="gapSaleAmtHT" name="gapSaleAmtHT" class="form-control" required >
+                            <p ng-show="InvInvtry.gapSaleAmtHT.$error.required" class="help-block">{{"InvInvtry_acsngDt_description.title"| translate}}</p>
+                        </div>
+                         <label class="col-lg-3 ">{{"InvInvtry_invtryDt_description.title"| translate}} :</label>
+                        <div class="col-lg-3" ng-class="{ 'has-error' : InvInvtry.invtryDt.$invalid }" >
+                            <input type="datetime" date-time  view="date" min-view="date" views="['date']" dismiss="true" format="dd-MM-yyyy"
+                                   ng-model="invtryEditCtlr.invtry.invtryDt" id="invtryDt" name="invtryDt" class="form-control"  >
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="form-group">
+                        <label class="col-lg-3"  > </label>
+                        <div class="col-lg-8" >
+                            <a class="btn-danger btn" href="#/InvInvtrys"><i class="glyphicon glyphicon-remove" ></i> {{"Entity_cancel.title" | translate }}</a>
+                            <button ng-click="invtryEditCtlr.update();" ng-disabled="catalArticleForm.$invalid" class="btn-success btn"  ><i class="glyphicon glyphicon-save"></i>  {{"Entity_save.title" | translate }}</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+  </div>
