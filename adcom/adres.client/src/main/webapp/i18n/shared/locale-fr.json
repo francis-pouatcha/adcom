@@ -57,6 +57,10 @@
     "BaseCountryName_iso2_description.title":"Code Pays Iso 2",
     "BaseCountryName_iso3_description.title":"Code Pays Iso 3",
     "BaseCountryName_langsIso2_description.title":"Langue",
-    "BaseCountryName_name_description.title":"Nom du Pays"
+    "BaseCountryName_name_description.title":"Nom du Pays",
+    
+    "Gender_FEMALE_Description.title":"Feminin",
+    "Gender_MALE_Description.title":"Masculin"
+    
     
 }

@@ -5,13 +5,7 @@
            <label class="error col-lg-offset-3 alert-danger" >{{bpBnsPtnrEditCtlr.error}} </label>
            <form  name="bpBnsPtnrForm" class="form-horizontal" novalidate="">
 	            <div class="form-group">
-	            	<!-- 
-	                <label class="col-lg-2">{{"BpBnsPtnr_ptnrNbr_description.title"| translate}} :</label>
-	                <div class="col-lg-2" ng-class="{ 'has-error' : bpBnsPtnrForm.ptnrNbr.$invalid }" >
-	                    <input type="text" ng-model="bpBnsPtnrEditCtlr.bpBnsPtnr.ptnrNbr" name="ptnrNbr" class="form-control" disabled >
-	                </div>
-	            	 -->
-	            	 
+
 		              <label class="col-lg-2">{{"BpBnsPtnr_ptnrType_description.title"| translate}} :</label>
 		              <div class="col-lg-2" ng-class="{ 'has-error' : bpBnsPtnrForm.ptnrType.$invalid }" >
 	                    	<input value="{{bpBnsPtnrEditCtlr.bpBnsPtnrUtils.ptnrTypeI18nMsgTitleKey(bpBnsPtnrEditCtlr.bpBnsPtnr.ptnrType)|translate}}" type="text" name="ptnrType" class="form-control" disabled >
@@ -80,7 +74,7 @@
                    <label class="col-lg-4" > </label>
                    <div class="col-lg-8" >
                        <a class="btn-danger btn" href="#/"  ><i class="glyphicon glyphicon-remove" ></i> {{"Entity_cancel.title" | translate }}</a>
-                       <button ng-click="bpBnsPtnrEditCtlr.update();" ng-disabled="bpBnsPtnrForm.$invalid" class="btn-success btn"  ><i class="glyphicon glyphicon-save"></i>  {{"Entity_save.title" | translate }}</button>
+                       <button ng-click="bpBnsPtnrEditCtlr.update();" class="btn-success btn"  ><i class="glyphicon glyphicon-save"></i>  {{"Entity_save.title" | translate }}</button>
                    </div>
                </div>
            </form>
