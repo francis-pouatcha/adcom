@@ -22,6 +22,7 @@ angular.module('AdProcmt').controller('prcmtDeliveryShowCtlr',['$scope','prcmtDe
     self.selectedItem;
     self.taux;
     self.tauxMultiplicateur = tauxMultiplicateur;
+    self.totalAmountEntered = 0;
 
     load();
 
@@ -46,7 +47,7 @@ angular.module('AdProcmt').controller('prcmtDeliveryShowCtlr',['$scope','prcmtDe
             max:10
         };
         if(name){
-            searchInput.entity.features.artName = name;
+            searchInput.entity.features.artName = name+'%';
             searchInput.fieldNames.push('features.artName') ;
             searchInput.entity.features.langIso2='fr';
         }
@@ -108,9 +109,11 @@ angular.module('AdProcmt').controller('prcmtDeliveryShowCtlr',['$scope','prcmtDe
         self.prcmtDeliveryItemHolders.push(self.prcmtDeliveryItemHolder);
         self.prcmtDeliveryItemHolder = {dlvryItem:{}};
         self.taux = "";
+        calculTotalAmountEntered();
     }
     function deleteItem(index){
         self.prcmtDeliveryItemHolders.splice(index);
+        calculTotalAmountEntered();
     }
     function editItem(index){
         self.taux = "";
@@ -122,6 +125,14 @@ angular.module('AdProcmt').controller('prcmtDeliveryShowCtlr',['$scope','prcmtDe
         if(self.prcmtDeliveryItemHolder.dlvryItem.pppuPreTax && self.taux){
             self.prcmtDeliveryItemHolder.dlvryItem.sppuPreTax = 1 * self.prcmtDeliveryItemHolder.dlvryItem.pppuPreTax + (self.prcmtDeliveryItemHolder.dlvryItem.pppuPreTax * (self.taux / 100)) ;
         }
+    }
+
+    function calculTotalAmountEntered(){
+        self.totalAmountEntered = 0;
+        for(var i=0;i<self.prcmtDeliveryItemHolders.length;i++){
+            self.totalAmountEntered = self.totalAmountEntered + (self.prcmtDeliveryItemHolders[i].dlvryItem.pppuPreTax * self.prcmtDeliveryItemHolders[i].dlvryItem.qtyDlvrd);
+        }
+
     }
 
 }]);

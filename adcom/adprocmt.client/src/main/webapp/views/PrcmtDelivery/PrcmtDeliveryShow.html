@@ -1,8 +1,10 @@
 <div>
     <div class="well">
         <h4>
-            <a>PR0001</a> of 23-09-2014, <b>Delivery Slip No: </b>2035, <b>Amount Ht:</b> 86000 cfa,
-            <b>Amount Entered:</b> 13000 cfa
+            <a>{{prcmtDeliveryShowCtlr.prcmtDelivery.dlvryNbr}}</a> of {{prcmtDeliveryShowCtlr.prcmtDelivery.orderDt | date:'dd-MM-yyyy'}},
+            <b>Delivery Slip No: </b>{{prcmtDeliveryShowCtlr.prcmtDelivery.dlvrySlipNbr}},
+            <b>Amount Ht:</b> {{prcmtDeliveryShowCtlr.prcmtDelivery.netPPTaxIncl}} cfa,
+            <b>Amount Entered:</b> {{prcmtDeliveryShowCtlr.totalAmountEntered}} cfa
             <p class="pull-right">
                 <a class=" btn btn-default" href="#/"  type="button">Cancel</a>
                 <button class=" btn btn-primary" ng-click="prcmtDeliveryShowCtlr.save()" type="button">Save</button>
@@ -34,7 +36,7 @@
                             <input type="hidden" value="{{prcmtDeliveryShowCtlr.prcmtDelivery.dlvryNbr}}" ng-model="prcmtDeliveryShowCtlr.prcmtDeliveryItemHolder.dlvryItem.dlvryNbr" >
                             <td>
                                 <div ng-class="{ 'has-error' : prcmtDeliveryItemForm.artPic.$invalid }" >
-                                    <input type="text" class="form-control" name="artPic" id="artPic" required autocomplete="off" ng-model="prcmtDeliveryShowCtlr.prcmtDeliveryItemHolder.dlvryItem.artPic"
+                                    <input type="text" ng- class="form-control" name="artPic" id="artPic" required autocomplete="off" ng-model="prcmtDeliveryShowCtlr.prcmtDeliveryItemHolder.dlvryItem.artPic"
                                        typeahead="article as article.pic for article in prcmtDeliveryShowCtlr.loadArticlesByCipLike($viewValue)"
                                        typeahead-loading="loading" typeahead-on-select='prcmtDeliveryShowCtlr.onSelect($item, $model, $label)' >
                                 </div>
