@@ -19,9 +19,16 @@ angular.module('AdBnsptnr')
       {enumKey:'INDIVIDUAL', translKey:'BpPtnrType_INDIVIDUAL_description.title'},
       {enumKey:'LEGAL', translKey:'BpPtnrType_LEGAL_description.title'}
     ];
-    	
     
+    service.genderI18nMsgTitleKey = function(enumKey){
+    	return "BpGender_"+enumKey+"_Description";
+    }
 
+    service.genders = [
+      {enumKey:'FEMALE', translKey:'BpGender_FEMALE_description.title'},
+      {enumKey:'MALE', translKey:'BpGender_MALE_description.title'}
+    ];
+    
     return service;
 })
 .controller('bpBnsPtnrsCtlr',['$scope','bpBnsPtnrResource','bpBnsPtnrUtils',function($scope,bpBnsPtnrResource,bpBnsPtnrUtils){
@@ -102,15 +109,15 @@ angular.module('AdBnsptnr')
 	}
     
 }])
-.controller('bpBnsPtnrCreateCtlr',['$scope','bpBnsPtnrResource','bpBnsPtnrUtils',
-                                   function($scope,bpBnsPtnrResource,bpBnsPtnrUtils){
+.controller('bpBnsPtnrCreateCtlr',['$scope','bpBnsPtnrResource','bpBnsPtnrUtils','$modal',
+                                   function($scope,bpBnsPtnrResource,bpBnsPtnrUtils,$modal){
 	var self = this ;
     $scope.bpBnsPtnrCreateCtlr = self;
     self.bpBnsPtnr = {};
     self.create = create;
     self.error = "";
-    self.isIndividual=bpBnsPtnrUtils.isIndividual;
-    self.isInstitution=bpBnsPtnrUtils.isInstitution;
+    self.bpBnsPtnrUtils=bpBnsPtnrUtils;
+    self.selectCountry=selectCountry;
 
     function create(){
     	bpBnsPtnrResource.create(self.bpBnsPtnr)
@@ -122,6 +129,23 @@ angular.module('AdBnsptnr')
     	});
     };
 	
+    function selectCountry(size){
+        var modalInstance = $modal.open({
+            templateUrl: '/adres.client/views/CountryNames.html',
+            controller: 'countryNamesCtlr',
+            size: size,
+            resolve : {
+            	urlBase : function(){
+            		return '/adbnsptnr.server/rest/';
+            	},
+            	countryNameHolder: function(){
+            		return self.bpBnsPtnr;
+            	}
+            }
+        
+        });
+    }
+    
 }])
 .controller('bpBnsPtnrEditCtlr',['$scope','bpBnsPtnrResource','$routeParams','$location','bpBnsPtnrUtils','$modal',
                                  function($scope,bpBnsPtnrResource,$routeParams,$location,bpBnsPtnrUtils,$modal){
