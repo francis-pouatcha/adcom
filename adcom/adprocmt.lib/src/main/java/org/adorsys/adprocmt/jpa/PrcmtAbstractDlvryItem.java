@@ -10,6 +10,7 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.adorsys.adcore.jpa.AbstractMvmtData;
@@ -59,6 +60,14 @@ public abstract class PrcmtAbstractDlvryItem extends AbstractMvmtData {
 	@Description("PrcmtDlvryItem_artPic_description")
 	@NotNull
 	private String artPic;
+	
+	/*
+	 * this field is use to carry article name
+	 */
+	@Column
+	@Description("PrcmtDlvryItem_artName_description")
+	@Transient
+	private String artName;
 
 	/*
 	 * The supplier of this item, if available.
