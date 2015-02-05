@@ -1,6 +1,7 @@
 package org.adorsys.adinvtry.jpa;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -16,63 +17,85 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class InvInvtrySearchInput
 {
 
-   /**
-    * The entity holding search inputs.
-    */
-   private InvInvtry entity;
+	/**
+	 * The entity holding search inputs.
+	 */
+	private InvInvtry entity;
 
-   /**
-    * The start cursor
-    */
-   private int start = -1;
+	/**
+	 * The start cursor
+	 */
+	private int start = -1;
 
-   /**
-    * The max number of records to return.
-    */
-   private int max = -1;
+	/**
+	 * The max number of records to return.
+	 */
+	private int max = -1;
 
-   /**
-    * The field names to be included in the search.
-    */
-   private List<String> fieldNames = new ArrayList<String>();
+	/**
+	 * The field names to be included in the search.
+	 */
+	private List<String> fieldNames = new ArrayList<String>();
 
-   public InvInvtry getEntity()
-   {
-      return entity;
-   }
+	private Date from;
 
-   public void setEntity(InvInvtry entity)
-   {
-      this.entity = entity;
-   }
+	private Date to;
 
-   public List<String> getFieldNames()
-   {
-      return fieldNames;
-   }
+	public InvInvtry getEntity()
+	{
+		return entity;
+	}
 
-   public void setFieldNames(List<String> fieldNames)
-   {
-      this.fieldNames = fieldNames;
-   }
+	public void setEntity(InvInvtry entity)
+	{
+		this.entity = entity;
+	}
 
-   public int getStart()
-   {
-      return start;
-   }
+	public List<String> getFieldNames()
+	{
+		return fieldNames;
+	}
 
-   public void setStart(int start)
-   {
-      this.start = start;
-   }
+	public void setFieldNames(List<String> fieldNames)
+	{
+		this.fieldNames = fieldNames;
+	}
 
-   public int getMax()
-   {
-      return max;
-   }
+	public int getStart()
+	{
+		return start;
+	}
 
-   public void setMax(int max)
-   {
-      this.max = max;
-   }
+	public void setStart(int start)
+	{
+		this.start = start;
+	}
+
+	public int getMax()
+	{
+		return max;
+	}
+
+	public void setMax(int max)
+	{
+		this.max = max;
+	}
+
+	public Date getFrom() {
+		return from;
+	}
+
+	public void setFrom(Date from) {
+		this.from = from;
+	}
+
+	public Date getTo() {
+		return to;
+	}
+
+	public void setTo(Date to) {
+		this.to = to;
+	}
+
+
 }

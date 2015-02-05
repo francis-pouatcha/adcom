@@ -12,7 +12,7 @@
                         </div>
                         <label class="col-lg-3">{{"InvInvtry_invtryNbr_description.title"| translate}} :</label>
                         <div class="col-lg-3" ng-class="{ 'has-error' : InvInvtry.invtryNbr.$invalid }" >
-                            <input type="text" ng-model="invtryEditCtlr.invtry.invtryNbr" id="invtryNbr" name="invtryNbr" class="form-control" required >
+                            <input type="text" value="{{invtryEditCtlr.invtry.invtryNbr}}" id="invtryNbr" name="invtryNbr" class="form-control" disabled >
                             <p ng-show="InvInvtry.invtryNbr.$error.required" class="help-block">{{"InvInvtry_invtryNbr_description.title"| translate}}</p>
                         </div>
                     </div>

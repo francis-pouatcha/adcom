@@ -27,6 +27,10 @@ angular.module('AdInvtry').factory('invtryResource',['$http', function($http){
         return $http.post(urlBase+'/findCustom',entitySearchInput);
     };
     
+    service.findInvInvtrys = function(entitySearchInput){
+        return $http.post(urlBase+'/findInvInvtrys',entitySearchInput);
+    };
+    
     service.findByLike = function(entitySearchInput){
         return $http.post(urlBase+'/findByLike',entitySearchInput);
     };

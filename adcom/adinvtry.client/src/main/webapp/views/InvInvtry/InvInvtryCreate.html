@@ -4,18 +4,6 @@
             <div class="panel-body">
                 <label class="error col-lg-offset-3 alert-danger" >{{invtryCreateCtlr.error}} </label>
                 <form  name="InvInvtry" id="InvInvtry" class="form-horizontal" novalidate="">
-                    <div class="form-group">
-                        <label class="col-lg-3 ">{{"InvInvtry_descptn_description.title"| translate}} :</label>
-                        <div class="col-lg-3" ng-class="{ 'has-error' : InvInvtry.descptn.$invalid }" >
-                            <input type="text" ng-model="invtryCreateCtlr.invtry.descptn" id="descptn" name="dlvrySlipNbr" class="form-control" required >
-                            <p ng-show="InvInvtry.descptn.$error.required" class="help-block">{{"InvInvtry_descptn_description.title"| translate}}</p>
-                        </div>
-                        <label class="col-lg-3">{{"InvInvtry_invtryNbr_description.title"| translate}} :</label>
-                        <div class="col-lg-3" ng-class="{ 'has-error' : InvInvtry.invtryNbr.$invalid }" >
-                            <input type="text" ng-model="invtryCreateCtlr.invtry.invtryNbr" id="invtryNbr" name="invtryNbr" class="form-control" required >
-                            <p ng-show="InvInvtry.invtryNbr.$error.required" class="help-block">{{"InvInvtry_invtryNbr_description.title"| translate}}</p>
-                        </div>
-                    </div>
 
                     <div class="form-group">
                         <label class="col-lg-3 ">{{"InvInvtry_acsngDt_description.title"| translate}} :</label>
@@ -26,15 +14,15 @@
                         </div>
                         <label class="col-lg-3 ">{{"InvInvtry_gapSaleAmtHT_description.title"| translate}} :</label>
                         <div class="col-lg-3" ng-class="{ 'has-error' : InvInvtry.gapSaleAmtHT.$invalid }" >
-                            <input type="text" ng-model="invtryCreateCtlr.invtry.gapSaleAmtHT" id="gapSaleAmtHT" name="gapSaleAmtHT" class="form-control" required >
-                            <p ng-show="InvInvtry.gapSaleAmtHT.$error.required" class="help-block">{{"InvInvtry_acsngDt_description.title"| translate}}</p>
+                            <input type="text" disabled ng-model="invtryCreateCtlr.invtry.gapSaleAmtHT" id="gapSaleAmtHT" name="gapSaleAmtHT" class="form-control" required >
+                            <p ng-show="InvInvtry.gapSaleAmtHT.$error.required" class="help-block">{{"InvInvtry_gapSaleAmtHT_description.title"| translate}}</p>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="col-lg-3 ">{{"InvInvtry_gapPurchAmtHT_description.title"| translate}} :</label>
                         <div class="col-lg-3" ng-class="{ 'has-error' : InvInvtry.gapPurchAmtHT.$invalid }" >
-                            <input type="text" ng-model="invtryCreateCtlr.invtry.gapPurchAmtHT" id="gapPurchAmtHT" name="gapPurchAmtHT" class="form-control" required >
+                            <input type="text" disabled ng-model="invtryCreateCtlr.invtry.gapPurchAmtHT" id="gapPurchAmtHT" name="gapPurchAmtHT" class="form-control" required >
                             <p ng-show="InvInvtry.gapPurchAmtHT.$error.required" class="help-block">{{"InvInvtry_gapPurchAmtHT_description.title"| translate}}</p>
                         </div>
                         <label class="col-lg-3 ">{{"InvInvtry_invtryStatus_description.title"| translate}} :</label>
@@ -45,6 +33,12 @@
                     </div>
 
                     <div class="form-group">
+                        <label class="col-lg-3 ">{{"InvInvtry_descptn_description.title"| translate}} :</label>
+                        <div class="col-lg-3" ng-class="{ 'has-error' : InvInvtry.descptn.$invalid }" >
+                            <input type="text" ng-model="invtryCreateCtlr.invtry.descptn" id="descptn" name="dlvrySlipNbr" class="form-control" required >
+                            <p ng-show="InvInvtry.descptn.$error.required" class="help-block">{{"InvInvtry_descptn_description.title"| translate}}</p>
+                        </div>
+                        
                         <label class="col-lg-3 ">{{"InvInvtry_invtryDt_description.title"| translate}} :</label>
                         <div class="col-lg-3" ng-class="{ 'has-error' : InvInvtry.invtryDt.$invalid }" >
                             <input type="datetime" date-time  view="date" min-view="date" views="['date']" dismiss="true" format="dd-MM-yyyy"

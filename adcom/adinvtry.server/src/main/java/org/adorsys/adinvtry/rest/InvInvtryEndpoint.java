@@ -2,6 +2,7 @@ package org.adorsys.adinvtry.rest;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -25,6 +26,7 @@ import org.adorsys.adinvtry.jpa.InvInvtry;
 import org.adorsys.adinvtry.jpa.InvInvtrySearchInput;
 import org.adorsys.adinvtry.jpa.InvInvtrySearchResult;
 import org.adorsys.adinvtry.jpa.InvInvtry_;
+import org.apache.commons.lang3.time.DateUtils;
 
 /**
  * 
@@ -144,6 +146,20 @@ public class InvInvtryEndpoint
       return new InvInvtrySearchResult(countLike, detach(resultList),
             detach(searchInput));
    }
+   
+   @POST
+   @Path("/findInvInvtrys")
+   @Produces({ "application/json", "application/xml" })
+   @Consumes({ "application/json", "application/xml" })
+   public InvInvtrySearchResult findInvInvtrys(InvInvtrySearchInput searchInput)
+   {
+	   Date now = new Date();
+	   List<InvInvtry> results = ejb.findInvInvtrys(searchInput, now);
+	   Long count = ejb.countInvInvtrys(searchInput, now);
+	   return new InvInvtrySearchResult(count, detach(results),
+	            detach(searchInput));
+   }
+
 
    @POST
    @Path("/countByLike")

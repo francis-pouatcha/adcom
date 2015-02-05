@@ -41,7 +41,7 @@ angular.module('AdInvtry')
     }
 
     function findByLike(searchInput){
-    	invtryResource.findByLike(searchInput)
+    	invtryResource.findInvInvtrys(searchInput)
     		.success(function(entitySearchResult) {
 	            self.invtrys = entitySearchResult.resultList;
 	            self.totalItems = entitySearchResult.count ;
@@ -78,7 +78,9 @@ angular.module('AdInvtry')
 	var self = this ;
     $scope.invtryCreateCtlr = self;
     self.invtry = {
-        invtryStatus:"ONGOING"
+        invtryStatus:"ONGOING",
+        gapSaleAmtHT:"0.0",
+        gapPurchAmtHT:"0.0"
     };
     self.create = create;
     self.error = "";
