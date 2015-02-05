@@ -123,15 +123,15 @@ angular.module('AdBnsptnr')
     };
 	
 }])
-.controller('bpBnsPtnrEditCtlr',['$scope','bpBnsPtnrResource','$routeParams','$location','bpBnsPtnrUtils',
-                                 function($scope,bpBnsPtnrResource,$routeParams,$location,bpBnsPtnrUtils){
+.controller('bpBnsPtnrEditCtlr',['$scope','bpBnsPtnrResource','$routeParams','$location','bpBnsPtnrUtils','$modal',
+                                 function($scope,bpBnsPtnrResource,$routeParams,$location,bpBnsPtnrUtils,$modal){
     var self = this ;
     $scope.bpBnsPtnrEditCtlr = self;
     self.bpBnsPtnr = {};
     self.update = update;
     self.error = "";
-    self.isIndividual=bpBnsPtnrUtils.isIndividual;
-    self.isInstitution=bpBnsPtnrUtils.isInstitution;
+    self.bpBnsPtnrUtils=bpBnsPtnrUtils;
+    self.selectCountry=selectCountry;
 
     function update(){
     	bpBnsPtnrResource.update(self.bpBnsPtnr)
@@ -158,8 +158,24 @@ angular.module('AdBnsptnr')
         .error(function(error){
             self.error = error;
         });
-    };
+    }
     
+    function selectCountry(size){
+        var modalInstance = $modal.open({
+            templateUrl: '/adres.client/views/CountryNames.html',
+            controller: 'countryNamesCtlr',
+            size: size,
+            resolve : {
+            	urlBase : function(){
+            		return '/adbnsptnr.server/rest/';
+            	},
+            	countryNameHolder: function(){
+            		return self.bpBnsPtnr;
+            	}
+            }
+        
+        });
+    }
 
 }])
 .controller('bpBnsPtnrShowCtlr',['$scope','bpBnsPtnrResource','$routeParams','$location','bpBnsPtnrUtils',
@@ -170,9 +186,8 @@ angular.module('AdBnsptnr')
     self.error = "";
     self.previousBP = previousBP;
     self.nextBP = nextBP;
-    self.isIndividual=bpBnsPtnrUtils.isIndividual;
-    self.isInstitution=bpBnsPtnrUtils.isInstitution;
-
+    self.bpBnsPtnrUtils=bpBnsPtnrUtils;
+    
     load();
 
     function load(){

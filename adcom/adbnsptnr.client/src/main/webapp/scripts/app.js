@@ -3,11 +3,14 @@
 angular.module('AdBnsptnr', [
       'ngRoute',
       'ngCookies',
+      'ui.bootstrap',
       'SessionManager',
       'AuthInterceptor',
       'ngSanitize',
       'pascalprecht.translate',
-      'NavBar'
+      'NavBar',
+       'ngResource'
+      
 ])
 .constant('APP_CONFIG',{
 	'appName':'Business Partner',

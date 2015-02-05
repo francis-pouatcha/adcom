@@ -30,6 +30,13 @@
     <class>org.adorsys.adbase.jpa.UserWsRestriction</class>
     <class>org.adorsys.adbase.jpa.Workspace</class>
     <class>org.adorsys.adbase.jpa.WorkspaceRestriction</class>
+	<class>org.adorsys.adbase.jpa.BaseDocType</class>    
+	<class>org.adorsys.adbase.jpa.BaseHistoryType</class>    
+	<class>org.adorsys.adbase.jpa.BaseProcessStatus</class>    
+	<class>org.adorsys.adbase.jpa.BaseProcStep</class>    
+	<class>org.adorsys.adbase.jpa.BaseRoleInProcess</class>    
+	<class>org.adorsys.adbase.jpa.BaseSttlmtOp</class>    
+	<class>org.adorsys.adbase.jpa.BaseCountryName</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.hbm2ddl.auto" value="update"/>

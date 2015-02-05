@@ -7,6 +7,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
+import org.adorsys.adbase.jpa.BaseCountryName;
 import org.adorsys.adcore.jpa.AbstractIdentifData;
 import org.adorsys.javaext.description.Description;
 
@@ -30,6 +31,9 @@ public class BpBnsPtnr extends AbstractIdentifData {
 	@Column
 	@Description("BpBnsPtnr_ctryOfRsdnc_description")
 	private String ctryOfRsdnc;
+	
+	@Transient
+	private BaseCountryName countryName;
 	
 	@Column
 	@Description("BpBnsPtnr_fullName_description")
@@ -63,6 +67,14 @@ public class BpBnsPtnr extends AbstractIdentifData {
 
 	public void setCtryOfRsdnc(final String ctryOfRsdnc) {
 		this.ctryOfRsdnc = ctryOfRsdnc;
+	}
+
+	public BaseCountryName getCountryName() {
+		return countryName;
+	}
+
+	public void setCountryName(BaseCountryName countryName) {
+		this.countryName = countryName;
 	}
 
 	@Override

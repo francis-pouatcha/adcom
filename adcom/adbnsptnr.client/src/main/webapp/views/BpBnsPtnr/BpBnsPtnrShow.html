@@ -11,20 +11,14 @@
                            </div>
 	                        <label class="col-lg-2">{{"BpBnsPtnr_ptnrType_description.title"| translate}} :</label>
 	                        <div class="col-lg-2" ng-class="{ 'has-error' : bpBnsPtnrForm.ptnrType.$invalid }" >
-	                            <input type="text" ng-model="bpBnsPtnrShowCtlr.bpBnsPtnr.ptnrType" name="ptnrType" class="form-control" disabled >
+	                            <input value="{{bpBnsPtnrShowCtlr.bpBnsPtnrUtils.ptnrTypeI18nMsgTitleKey(bpBnsPtnrShowCtlr.bpBnsPtnr.ptnrType)|translate}}" type="text" name="ptnrType" class="form-control" disabled >
 	                        </div>
 	                        <label class="col-lg-2 ">{{"BpBnsPtnr_ctryOfRsdnc_description.title"| translate}} :</label>
 	                        <div class="col-lg-2" >
 	                            <input type="text" ng-model="bpBnsPtnrShowCtlr.bpBnsPtnr.ctryOfRsdnc" name="ctryOfRsdnc" class="form-control" disabled>
 	                        </div>
                     	</div>
-	                    <div class="form-group">
-	                        <label class="col-lg-2">{{"BpIndivPtnrName_fullName_description.title"| translate}} :</label>
-	                        <div class="col-lg-10" >
-	                            <input type="text" ng-model="bpBnsPtnrShowCtlr.bpBnsPtnr.fullName" name="fullName" class="form-control" disabled>
-	                        </div>
-	                    </div>
-                        <div class=" form-group" ng-show="bpBnsPtnrShowCtlr.isIndividual(bpBnsPtnrShowCtlr.bpBnsPtnr)">
+                        <div class=" form-group" ng-show="bpBnsPtnrShowCtlr.bpBnsPtnrUtils.isIndividual(bpBnsPtnrShowCtlr.bpBnsPtnr)">
                             <label class="col-lg-2 ">{{"BpIndivPtnrName_firstName_description.title"| translate}} :</label>
                             <div class="col-lg-4" >
                                 <input type="text" ng-model="bpBnsPtnrShowCtlr.bpBnsPtnr.indivPtnrName.firstName" name="firstName" class="form-control" disabled>
@@ -34,7 +28,7 @@
                                 <input type="text" ng-model="bpBnsPtnrShowCtlr.bpBnsPtnr.indivPtnrName.lastName" name="lastName" class="form-control" disabled>
                             </div>
 	                    </div>
-                        <div class=" form-group" ng-show="bpBnsPtnrShowCtlr.isIndividual(bpBnsPtnrShowCtlr.bpBnsPtnr)">
+                        <div class=" form-group" ng-show="bpBnsPtnrShowCtlr.bpBnsPtnrUtils.isIndividual(bpBnsPtnrShowCtlr.bpBnsPtnr)">
                             <label class="col-lg-2 ">{{"BpIndivPtnrName_gender_description.title"| translate}} :</label>
                             <div class="col-lg-4">
                                 <input type="text" ng-model="bpBnsPtnrShowCtlr.bpBnsPtnr.indivPtnrName.gender" name="gender" class="form-control" disabled>
@@ -44,28 +38,30 @@
                                 <input type="text" ng-model="bpBnsPtnrShowCtlr.bpBnsPtnr.indivPtnrName.brthDt" name="brthDt" class="form-control" disabled>
                             </div>
 	                    </div>
-                        <div class="form-group" ng-show="bpBnsPtnrShowCtlr.isInstitution(bpBnsPtnrShowCtlr.bpBnsPtnr)">
+                        <div class="form-group" ng-show="bpBnsPtnrShowCtlr.bpBnsPtnrUtils.isInstitution(bpBnsPtnrShowCtlr.bpBnsPtnr)">
                             <label class="col-lg-2">{{"BpLegalPtnrId_cpnyName_description.title"| translate}} :</label>
-                            <div class="col-lg-6" >
+                            <div class="col-lg-10" >
                                 <input type="text" ng-model="bpBnsPtnrShowCtlr.bpBnsPtnr.legalPtnrId.cpnyName" name="cpnyName" class="form-control" disabled>
                             </div>
+	                    </div>
+                        <div class="form-group" ng-show="bpBnsPtnrShowCtlr.bpBnsPtnrUtils.isInstitution(bpBnsPtnrShowCtlr.bpBnsPtnr)">
                             <label class="col-lg-2">{{"BpLegalPtnrId_legalForm_description.title"| translate}} :</label>
-                            <div class="col-lg-2" >
+                            <div class="col-lg-4" >
                                 <input type="text" ng-model="bpBnsPtnrShowCtlr.bpBnsPtnr.legalPtnrId.legalForm" name="legalForm" class="form-control" disabled>
                             </div>
+                            <label class="col-lg-2 ">{{"BpLegalPtnrId_equity_description.title"| translate}} :</label>
+                            <div class="col-lg-4" >
+                                <input type="text" ng-model="bpBnsPtnrShowCtlr.bpBnsPtnr.legalPtnrId.equity" name="equity" class="form-control" disabled>
+                            </div>
 	                    </div>
-                        <div class="form-group" ng-show="bpBnsPtnrShowCtlr.isInstitution(bpBnsPtnrShowCtlr.bpBnsPtnr)">
+                        <div class="form-group" ng-show="bpBnsPtnrShowCtlr.bpBnsPtnrUtils.isInstitution(bpBnsPtnrShowCtlr.bpBnsPtnr)">
                             <label class="col-lg-2">{{"BpLegalPtnrId_cmrcRgstrNbr_description.title"| translate}} :</label>
-                            <div class="col-lg-2" >
-                                <input type="checkbox" ng-model="bpBnsPtnrShowCtlr.bpBnsPtnr.legalPtnrId.cmrcRgstrNbr" name="cmrcRgstrNbr" class="form-control" disabled>
+                            <div class="col-lg-4" >
+                                <input type="text" ng-model="bpBnsPtnrShowCtlr.bpBnsPtnr.legalPtnrId.cmrcRgstrNbr" name="cmrcRgstrNbr" class="form-control" disabled>
                             </div>
                             <label class="col-lg-2 ">{{"BpLegalPtnrId_taxPayerIdNbr_description.title"| translate}} :</label>
-                            <div class="col-lg-2" >
-                                <input type="checkbox" ng-model="bpBnsPtnrShowCtlr.bpBnsPtnr.legalPtnrId.taxPayerIdNbr" name="taxPayerIdNbr" class="form-control" disabled>
-                            </div>
-                            <label class="col-lg-2 ">{{"BpLegalPtnrId_equity_description.title"| translate}} :</label>
-                            <div class="col-lg-2" >
-                                <input type="checkbox" ng-model="bpBnsPtnrShowCtlr.bpBnsPtnr.legalPtnrId.equity" name="equity" class="form-control" disabled>
+                            <div class="col-lg-4" >
+                                <input type="text" ng-model="bpBnsPtnrShowCtlr.bpBnsPtnr.legalPtnrId.taxPayerIdNbr" name="taxPayerIdNbr" class="form-control" disabled>
                             </div>
                         </div>
                 </form>

@@ -22,5 +22,26 @@ angular.module('ADUtils',[])
     	$location.url('usr',null);
     };
     return service;
+}])
+.factory('genericResource',['$http', function($http){
+    var service = {};
+
+    service.findBy = function(urlBase, entitySearchInput){
+        return $http.post(urlBase+'/findBy',entitySearchInput);
+    };
+
+    service.findByLike = function(urlBase, entitySearchInput){
+        return $http.post(urlBase+'/findByLike',entitySearchInput);
+    };
+
+    service.findById = function(urlBase, entityId){
+        return $http.get(urlBase+'/'+entityId);
+    };
+
+    service.findByIdentif = function(identif){
+        return $http.get(urlBase+'/findByIdentif/'+identif);
+    }
+    return service;
+    
 }]);
 

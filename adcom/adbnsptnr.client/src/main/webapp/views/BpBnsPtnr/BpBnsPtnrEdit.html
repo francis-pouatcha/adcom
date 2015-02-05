@@ -1,25 +1,31 @@
 <div class="container">
    <div class="panel panel-default">
-       <div class="panel-heading"><b>{{ "Entity_update.title"| translate}}</b> </div>
+       <div class="panel-heading"><b>{{ "Entity_update.title"| translate}} {{"BpBnsPtnr_ptnrNbr_description.title"| translate}} No. {{bpBnsPtnrEditCtlr.bpBnsPtnr.ptnrNbr}}</b> </div>
        <div class="panel-body">
            <label class="error col-lg-offset-3 alert-danger" >{{bpBnsPtnrEditCtlr.error}} </label>
            <form  name="bpBnsPtnrForm" class="form-horizontal" novalidate="">
 	            <div class="form-group">
+	            	<!-- 
 	                <label class="col-lg-2">{{"BpBnsPtnr_ptnrNbr_description.title"| translate}} :</label>
 	                <div class="col-lg-2" ng-class="{ 'has-error' : bpBnsPtnrForm.ptnrNbr.$invalid }" >
 	                    <input type="text" ng-model="bpBnsPtnrEditCtlr.bpBnsPtnr.ptnrNbr" name="ptnrNbr" class="form-control" disabled >
 	                </div>
+	            	 -->
+	            	 
 		              <label class="col-lg-2">{{"BpBnsPtnr_ptnrType_description.title"| translate}} :</label>
 		              <div class="col-lg-2" ng-class="{ 'has-error' : bpBnsPtnrForm.ptnrType.$invalid }" >
-		                  <input type="text" ng-model="bpBnsPtnrEditCtlr.bpBnsPtnr.ptnrType" name="ptnrType" class="form-control" disabled >
+	                    	<input value="{{bpBnsPtnrEditCtlr.bpBnsPtnrUtils.ptnrTypeI18nMsgTitleKey(bpBnsPtnrEditCtlr.bpBnsPtnr.ptnrType)|translate}}" type="text" name="ptnrType" class="form-control" disabled >
 		              </div>
 		              <label class="col-lg-2 ">{{"BpBnsPtnr_ctryOfRsdnc_description.title"| translate}} :</label>
-		              <div class="col-lg-2" >
-		                  <input type="text" ng-model="bpBnsPtnrEditCtlr.bpBnsPtnr.ctryOfRsdnc" name="ctryOfRsdnc" class="form-control" required>
+		              <div class="col-lg-4" >
+		                  <input type="text" ng-model="bpBnsPtnrEditCtlr.bpBnsPtnr.countryName.name" name="ctryOfRsdnc" class="form-control" disabled>
                            <p ng-show="bpBnsPtnrForm.ctryOfRsdnc.$error.required" class="help-block">{{"BpBnsPtnr_ctryOfRsdnc_required.title"| translate}}</p>
 		              </div>
+		              <div class="col-lg-2">
+							<button ng-click="bpBnsPtnrEditCtlr.selectCountry('md');" class="btn-success btn"  ><i class="glyphicon glyphicon-eye-open"></i>  {{"Entity_select.title" | translate }}</button>
+		              </div>
 	         		</div>
-                    <div class=" form-group" ng-show="bpBnsPtnrEditCtlr.isIndividual(bpBnsPtnrEditCtlr.bpBnsPtnr)">
+                    <div class=" form-group" ng-show="bpBnsPtnrEditCtlr.bpBnsPtnrUtils.isIndividual(bpBnsPtnrEditCtlr.bpBnsPtnr)">
                         <label class="col-lg-2 ">{{"BpIndivPtnrName_firstName_description.title"| translate}} :</label>
                         <div class="col-lg-4" >
                             <input type="text" ng-model="bpBnsPtnrEditCtlr.bpBnsPtnr.indivPtnrName.firstName" name="firstName" class="form-control">
@@ -30,7 +36,7 @@
                            	<p ng-show="bpBnsPtnrForm.lastName.$error.required" class="help-block">{{"BpIndivPtnrName_lastName_required.title"| translate}}</p>
                         </div>
                  	</div>
-                    <div class=" form-group" ng-show="bpBnsPtnrEditCtlr.isIndividual(bpBnsPtnrEditCtlr.bpBnsPtnr)">
+                    <div class=" form-group" ng-show="bpBnsPtnrEditCtlr.bpBnsPtnrUtils.isIndividual(bpBnsPtnrEditCtlr.bpBnsPtnr)">
                         <label class="col-lg-2 ">{{"BpIndivPtnrName_gender_description.title"| translate}} :</label>
                         <div class="col-lg-4">
                             <input type="text" ng-model="bpBnsPtnrEditCtlr.bpBnsPtnr.indivPtnrName.gender" name="gender" class="form-control" required>
@@ -41,29 +47,31 @@
                             <input type="text" ng-model="bpBnsPtnrEditCtlr.bpBnsPtnr.indivPtnrName.brthDt" name="brthDt" class="form-control" >
                         </div>
                 	 </div>
-                    <div class="form-group" ng-show="bpBnsPtnrEditCtlr.isInstitution(bpBnsPtnrEditCtlr.bpBnsPtnr)">
+                    <div class="form-group" ng-show="bpBnsPtnrEditCtlr.bpBnsPtnrUtils.isInstitution(bpBnsPtnrEditCtlr.bpBnsPtnr)">
                         <label class="col-lg-2">{{"BpLegalPtnrId_cpnyName_description.title"| translate}} :</label>
-                        <div class="col-lg-6" >
+                        <div class="col-lg-10" >
                             <input type="text" ng-model="bpBnsPtnrEditCtlr.bpBnsPtnr.legalPtnrId.cpnyName" name="cpnyName" class="form-control" required>
                            	<p ng-show="bpBnsPtnrForm.cpnyName.$error.required" class="help-block">{{"BpIndivPtnrName_cpnyName_required.title"| translate}}</p>
                         </div>
+                 	</div>
+                    <div class="form-group" ng-show="bpBnsPtnrEditCtlr.bpBnsPtnrUtils.isInstitution(bpBnsPtnrEditCtlr.bpBnsPtnr)">
                         <label class="col-lg-2">{{"BpLegalPtnrId_legalForm_description.title"| translate}} :</label>
-                        <div class="col-lg-2" >
+                        <div class="col-lg-4" >
                             <input type="text" ng-model="bpBnsPtnrEditCtlr.bpBnsPtnr.legalPtnrId.legalForm" name="legalForm" class="form-control">
                         </div>
-                 	</div>
-                    <div class="form-group" ng-show="bpBnsPtnrEditCtlr.isInstitution(bpBnsPtnrEditCtlr.bpBnsPtnr)">
-                        <label class="col-lg-2">{{"BpLegalPtnrId_cmrcRgstrNbr_description.title"| translate}} :</label>
-                        <div class="col-lg-2" >
-                            <input type="checkbox" ng-model="bpBnsPtnrEditCtlr.bpBnsPtnr.legalPtnrId.cmrcRgstrNbr" name="cmrcRgstrNbr" class="form-control">
-                        </div>
-                        <label class="col-lg-2 ">{{"BpLegalPtnrId_taxPayerIdNbr_description.title"| translate}} :</label>
-                        <div class="col-lg-2" >
-                            <input type="checkbox" ng-model="bpBnsPtnrEditCtlr.bpBnsPtnr.legalPtnrId.taxPayerIdNbr" name="taxPayerIdNbr" class="form-control">
-                        </div>
                         <label class="col-lg-2 ">{{"BpLegalPtnrId_equity_description.title"| translate}} :</label>
-                        <div class="col-lg-2" >
-                            <input type="checkbox" ng-model="bpBnsPtnrEditCtlr.bpBnsPtnr.legalPtnrId.equity" name="equity" class="form-control">
+                        <div class="col-lg-4" >
+                            <input type="text" ng-model="bpBnsPtnrEditCtlr.bpBnsPtnr.legalPtnrId.equity" name="equity" class="form-control">
+                        </div>
+                 	</div>
+                    <div class="form-group" ng-show="bpBnsPtnrEditCtlr.bpBnsPtnrUtils.bpBnsPtnrUtils.isInstitution(bpBnsPtnrEditCtlr.bpBnsPtnr)">
+                        <label class="col-lg-2 ">{{"BpLegalPtnrId_taxPayerIdNbr_description.title"| translate}} :</label>
+                        <div class="col-lg-4" >
+                            <input type="text" ng-model="bpBnsPtnrEditCtlr.bpBnsPtnr.legalPtnrId.taxPayerIdNbr" name="taxPayerIdNbr" class="form-control">
+                        </div>
+                        <label class="col-lg-2">{{"BpLegalPtnrId_cmrcRgstrNbr_description.title"| translate}} :</label>
+                        <div class="col-lg-4" >
+                            <input type="text" ng-model="bpBnsPtnrEditCtlr.bpBnsPtnr.legalPtnrId.cmrcRgstrNbr" name="cmrcRgstrNbr" class="form-control">
                         </div>
                     </div>
 

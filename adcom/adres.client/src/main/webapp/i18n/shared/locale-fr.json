@@ -51,5 +51,12 @@
     "Entity_back.title":"Retour",
     "Entity_validFrom.title":"Valide du",
     "Entity_validTo.title":"Valide au",
-    "Entity_Result.title":"Résultat"
+    "Entity_Result.title":"Résultat",
+    
+    "BaseCountryName_isoCode_description.title":"Code Pays",
+    "BaseCountryName_iso2_description.title":"Code Pays Iso 2",
+    "BaseCountryName_iso3_description.title":"Code Pays Iso 3",
+    "BaseCountryName_langsIso2_description.title":"Langue",
+    "BaseCountryName_name_description.title":"Nom du Pays"
+    
 }

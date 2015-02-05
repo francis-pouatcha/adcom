@@ -7,6 +7,9 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
 
+import org.adorsys.adbase.jpa.BaseCountryName;
+import org.adorsys.adbase.rest.BaseCountryNameEJB;
+import org.adorsys.adbase.security.SecurityUtil;
 import org.adorsys.adbnsptnr.jpa.BpBnsPtnr;
 import org.adorsys.adbnsptnr.jpa.BpIndivPtnrName;
 import org.adorsys.adbnsptnr.jpa.BpLegalPtnrId;
@@ -36,6 +39,10 @@ public class BpBnsPtnrEJB
 		   entity.setFullName(ptnrName.makeFullName());
 	   } else if (BpPtnrType.LEGAL.equals(entity.getPtnrType()) && ptnrId!=null){
 		   entity.setFullName(ptnrId.getCpnyName());
+	   }
+	   
+	   if(entity.getCountryName()!=null && !StringUtils.equals(entity.getCtryOfRsdnc(), entity.getCountryName().getIso3())){
+		   entity.setCtryOfRsdnc(entity.getCountryName().getIso3());
 	   }
 	   entity = repository.save(attach(entity));
 	   
@@ -71,6 +78,12 @@ public class BpBnsPtnrEJB
 		   orig.setCtryOfRsdnc(entity.getCtryOfRsdnc());
 		   changed=true;
 	   }
+	   
+	   if(entity.getCountryName()!=null && !StringUtils.equals(entity.getCtryOfRsdnc(), entity.getCountryName().getIso3())){
+		   entity.setCtryOfRsdnc(entity.getCountryName().getIso3());
+		   changed=true;
+	   }
+
 	   
 	   if(BpPtnrType.INDIVIDUAL.equals(orig.getPtnrType()) && ptnrName!=null){
 		   ptnrName = indivPtnrNameEJB.update(ptnrName);
@@ -142,6 +155,11 @@ public class BpBnsPtnrEJB
 	   return findById(identif);
    }
 
+   	@Inject
+   	private BaseCountryNameEJB countryNameEJB;
+   	@Inject
+   	private SecurityUtil securityUtil;
+   
 	private BpBnsPtnr detach(BpBnsPtnr entity) {
 		if(entity==null) return null;
 		Date validOn = new Date();
@@ -154,6 +172,13 @@ public class BpBnsPtnrEJB
 					entity.getPtnrNbr(), validOn);
 			entity.setLegalPtnrId(ptnrId);
 		}
+		
+	   if(entity.getCountryName()==null || !StringUtils.equals(entity.getCtryOfRsdnc(), entity.getCountryName().getIso3())){
+		   String userLange = securityUtil.getUserLange();
+		   BaseCountryName baseCountryName = countryNameEJB.findById(BaseCountryName.toIdentif(entity.getCtryOfRsdnc(), userLange));
+		   entity.setCountryName(baseCountryName);
+	   }
+
 		return entity;
 	}
 	public List<BpBnsPtnr> detach(List<BpBnsPtnr> entities){
