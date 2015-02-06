@@ -78,17 +78,18 @@ angular.module('AdCatal')
 
 	function handlePrintRequestEvent(){		
 	}
-    
 }])
-.controller('catalProductFamilyCreateCtlr',['$scope','catalProductFamilyResource','$location',
-                                            function($scope,catalProductFamilyResource,$location){
+.controller('catalProductFamilyCreateCtlr',['$scope','catalProductFamilyResource','$location','$modal',
+                                            function($scope,catalProductFamilyResource,$location,$modal){
 	var self = this ;
     $scope.catalProductFamilyCreateCtlr = self;
     self.catalProductFamily = {};
     self.create = create;
     self.cancel = cancel;
     self.error = "";
-
+    self.ModalParentSelectCtlr=ModalParentSelectCtlr;
+    self.openSelectParentForm=openSelectParentForm;
+        
     function create(){
     	catalProductFamilyResource.create(self.catalProductFamily)
     	.success(function(data){
@@ -102,7 +103,66 @@ angular.module('AdCatal')
     function cancel() {
     	$location.path('/CatalProductFamilies');
     };
-	
+
+    function openSelectParentForm(size){
+        var modalInstance = $modal.open({
+            templateUrl: 'views/CatalProductFamily/CatalParentFamilySearchModal.html',
+            controller: self.ModalParentSelectCtlr,
+            size: size,
+            resolve:{
+            	catalProductFamily: function(){
+                    return self.catalProductFamily;
+                }
+            }
+        });
+    };
+
+    function ModalParentSelectCtlr($scope, $modalInstance,catalProductFamily) {
+        $scope.catalParentFamilies = [];
+        $scope.searchEntity = {};
+        $scope.error = "";
+        $scope.searchInput = {
+            entity:{
+            	features:{}
+            },
+            fieldNames:[],
+            start:0,
+            max:10
+        };
+
+        $scope.processSearchInput = function(){
+            var fieldNames = [];
+            if($scope.searchInput.entity.features.familyName){
+            	fieldNames.push('features.familyName') ;
+            }
+            if($scope.searchInput.entity.famCode){
+            	fieldNames.push('famCode') ;
+            }
+            if($scope.searchInput.entity.features.purpose){
+            	fieldNames.push('features.purpose') ;
+            }
+            $scope.searchInput.fieldNames = fieldNames ;
+            return $scope.searchInput ;
+        };
+
+        $scope.handleSearchRequestEvent = function(){
+        	catalProductFamilyResource.findCustom($scope.processSearchInput($scope.searchInput))
+        		.success(function(entitySearchResult) {
+        			$scope.catalParentFamilies = entitySearchResult.resultList;
+        		})
+        		.error(function(error){
+        			$scope.error=error;
+        		});
+        };
+        $scope.select = function (parentFamily) {
+        	catalProductFamily.parent=parentFamily;
+        	catalProductFamily.parentIdentif=catalProductFamily.parent.famCode;
+            $modalInstance.close('ok');
+        };
+        $scope.cancel = function () {
+            $modalInstance.dismiss('cancel');
+        };
+    }
 }])
 .controller('catalProductFamilyShowCtlr',['$scope','catalProductFamilyResource','$routeParams',
                                           function($scope,catalProductFamilyResource,$routeParams){
@@ -112,6 +172,7 @@ angular.module('AdCatal')
     self.error = "";
     self.previousProductFamily = previousProductFamily;
     self.nextProductFamily = nextProductFamily;
+	self.showParent;
 
     load();
 
@@ -120,6 +181,7 @@ angular.module('AdCatal')
         catalProductFamilyResource.findByIdentif(famCode)
         .success(function(data){
             self.catalProductFamily = data;
+            self.showParent = self.catalProductFamily.parent && self.catalProductFamily.parent.features;
         })
         .error(function(error){
             self.error = error;
@@ -131,4 +193,5 @@ angular.module('AdCatal')
     }
     function nextProductFamily(){
     }
+    
 }]);

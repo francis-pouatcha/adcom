@@ -46,10 +46,17 @@ public class CatalProductFamilyEJB
 	   
 	   String parentPath = "/";
 	   String parentIdentif = entity.getParentIdentif();
+	   CatalProductFamily parent = entity.getParent();
+	   if(parent!=null && StringUtils.isBlank(parentIdentif)){
+		   parentIdentif = parent.getFamCode();
+		   entity.setParentIdentif(parentIdentif);
+	   }
 	   if(StringUtils.isNotBlank(parentIdentif)){
-		   CatalProductFamily parent = findByIdentif(parentIdentif);
+		   parent = findByIdentif(parentIdentif);
 		   if(parent!=null){
 			   parentPath=parent.getFamPath();
+		   } else {
+			   entity.setParentIdentif(null);// reset parent identifier if non existant.
 		   }
 	   }
 	   entity.setFamPath(parentPath + famCode + "/");

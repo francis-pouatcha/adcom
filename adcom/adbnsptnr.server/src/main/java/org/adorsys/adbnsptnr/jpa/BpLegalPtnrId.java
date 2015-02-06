@@ -7,7 +7,9 @@ import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 
 import org.adorsys.adcore.jpa.AbstractTimedData;
+import org.adorsys.adcore.utils.BigDecimalUtils;
 import org.adorsys.javaext.description.Description;
+import org.apache.commons.lang3.StringUtils;
 
 @Entity
 @Description("BpLegalPtnrId_description")
@@ -105,5 +107,35 @@ public class BpLegalPtnrId extends AbstractTimedData {
 	@Override
 	protected String makeIdentif() {
 		return ptnrNbr;
+	}
+	
+	
+	public boolean updateContent(BpLegalPtnrId source){
+		boolean changed = false;
+		if(!StringUtils.equals(cpnyName, source.cpnyName)){
+			cpnyName = source.cpnyName;
+			changed = true;
+		}
+		if(!StringUtils.equals(shortName, source.shortName)){
+			shortName = source.shortName;
+			changed = true;
+		}
+		if(!StringUtils.equals(legalForm, source.legalForm)){
+			legalForm = source.legalForm;
+			changed = true;
+		}
+		if(!BigDecimalUtils.numericEquals(equity, equity)){
+			equity = source.equity;
+			changed = true;
+		}
+		if(!StringUtils.equals(cmrcRgstrNbr, source.cmrcRgstrNbr)){
+			cmrcRgstrNbr = source.cmrcRgstrNbr;
+			changed = true;
+		}
+		if(!StringUtils.equals(taxPayerIdNbr, source.taxPayerIdNbr)){
+			taxPayerIdNbr = source.taxPayerIdNbr;
+			changed = true;
+		}
+		return changed;
 	}
 }

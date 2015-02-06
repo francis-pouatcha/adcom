@@ -11,6 +11,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
+import org.adorsys.adbase.jpa.BaseCountryName;
 import org.adorsys.adbase.jpa.ConverterCurrRate;
 import org.adorsys.adbase.jpa.Country;
 import org.adorsys.adbase.jpa.Locality;
@@ -73,6 +74,8 @@ public class BaseLoaderRegistration {
 	private SecTermRegistLoader secTermRegistLoader;
 	@Inject
 	private SecTerminalLoader secTerminalLoader;
+	@Inject
+	private BaseCountryNameLoader baseCountryNameLoader;
 	
 	@PostConstruct
 	public void postConstruct(){
@@ -94,6 +97,7 @@ public class BaseLoaderRegistration {
 		dataSheetLoader.registerLoader(UserWsRestriction.class.getSimpleName(), userWsRestrictionLoader);
 		dataSheetLoader.registerLoader(SecTermRegist.class.getSimpleName(), secTermRegistLoader);
 		dataSheetLoader.registerLoader(SecTerminal.class.getSimpleName(), secTerminalLoader);
+		dataSheetLoader.registerLoader(BaseCountryName.class.getSimpleName(),baseCountryNameLoader);
 		createTemplate();
 	}
 
@@ -109,6 +113,7 @@ public class BaseLoaderRegistration {
 		roleEntryLoader.createTemplate(workbook);
 		permEntryLoader.createTemplate(workbook);
 		countryLoader.createTemplate(workbook);
+		baseCountryNameLoader.createTemplate(workbook);
 		converterCurrRateLoader.createTemplate(workbook);
 		pricingCurrRateLoader.createTemplate(workbook);
 		ouTypeLoader.createTemplate(workbook);

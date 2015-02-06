@@ -5,6 +5,10 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
 
+import org.adorsys.adbnsptnr.jpa.BpPtnrContactRole;
+import org.adorsys.adbnsptnr.jpa.BpPtnrIdType;
+import org.adorsys.adbnsptnr.jpa.BpPtnrRole;
+import org.adorsys.adbnsptnr.jpa.BpPtnrType;
 import org.adorsys.adcore.xls.XlsConverterFactory;
 
 @Startup
@@ -28,9 +32,9 @@ public class BaseConverterRegistration {
 	
 	@PostConstruct
 	public void postConstruct(){
-		converterFactory.registerConverter(BpPtnrContactRoleConverter.class.getName(), bpPtnrContactRoleConverter);
-		converterFactory.registerConverter(BpPtnrIdTypeConverter.class.getName(), bpPtnrIdTypeConverter);
-		converterFactory.registerConverter(BpPtnrRoleConverter.class.getName(), bpPtnrRoleConverter);
-		converterFactory.registerConverter(BpPtnrTypeConverter.class.getName(), bpPtnrTypeConverter);
+		converterFactory.registerConverter(BpPtnrContactRole.class.getName(), bpPtnrContactRoleConverter);
+		converterFactory.registerConverter(BpPtnrIdType.class.getName(), bpPtnrIdTypeConverter);
+		converterFactory.registerConverter(BpPtnrRole.class.getName(), bpPtnrRoleConverter);
+		converterFactory.registerConverter(BpPtnrType.class.getName(), bpPtnrTypeConverter);
 	}
 }

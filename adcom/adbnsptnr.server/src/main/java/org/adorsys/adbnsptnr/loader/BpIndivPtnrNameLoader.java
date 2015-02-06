@@ -5,7 +5,9 @@ import java.util.Date;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
+import org.adorsys.adbnsptnr.jpa.BpBnsPtnr;
 import org.adorsys.adbnsptnr.jpa.BpIndivPtnrName;
+import org.adorsys.adbnsptnr.rest.BpBnsPtnrEJB;
 import org.adorsys.adbnsptnr.rest.BpIndivPtnrNameEJB;
 import org.adorsys.adcore.xls.AbstractObjectLoader;
 
@@ -15,6 +17,9 @@ public class BpIndivPtnrNameLoader extends
 
 	@Inject
 	private BpIndivPtnrNameEJB ejb;
+	
+	@Inject
+	private BpBnsPtnrEJB ptnrEJB;
 
 	@Override
 	protected BpIndivPtnrName newObject() {
@@ -26,7 +31,13 @@ public class BpIndivPtnrNameLoader extends
 	}
 
 	public BpIndivPtnrName create(BpIndivPtnrName entity) {
-		return ejb.create(entity);
+		BpBnsPtnr bnsPtnr = ptnrEJB.findByIdentif(entity.getPtnrNbr());
+		if(bnsPtnr!=null){
+			bnsPtnr.setIndivPtnrName(entity);
+			bnsPtnr = ptnrEJB.update(bnsPtnr);
+			return bnsPtnr.getIndivPtnrName();
+		}
+		return entity;
 	}
 
 	public BpIndivPtnrName update(BpIndivPtnrName found) {

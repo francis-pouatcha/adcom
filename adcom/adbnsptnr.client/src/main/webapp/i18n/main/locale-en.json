@@ -14,6 +14,8 @@
 "BpBnsPtnr_ptnrNbr_description.title":"Identifier",
 "BpBnsPtnr_ptnrType_description.text":"The client type.",
 "BpBnsPtnr_ptnrType_description.title":"Partner Type",
+"BpBnsPtnr_fullName_description.text":"Name",
+"BpBnsPtnr_fullName_description.title":"Name",
 
 "BpCtgryDscnt_ctgryCode_description.text":"The code of this client category",
 "BpCtgryDscnt_ctgryCode_description.title":"Category Code",
@@ -88,6 +90,8 @@
 "BpPtnrContact_langIso2_description.title":"Language",
 "BpPtnrContact_ptnrNbr_description.text":"Identifier of this Partner",
 "BpPtnrContact_ptnrNbr_description.title":"Identifier",
+"BpPtnrContact_cntctIndex_description.text":"Contact Index",
+"BpPtnrContact_cntctIndex_description.title":"Contact Index",
 
 "BpPtnrCreditDtls_creditAuthrzd_description.text":"Whether or not the customer can purchase on credit",
 "BpPtnrCreditDtls_creditAuthrzd_description.title":"Credit Authorized",
@@ -197,6 +201,27 @@
 "Insurrance_insurerNbr_description.text":"The insurer",
 "Insurrance_insurerNbr_description.title":"Insurer",
 "Insurrance_memberNbr_description.text":"Member Number",
-"Insurrance_memberNbr_description.title":"Member Number"
+"Insurrance_memberNbr_description.title":"Member Number",
+
+"BpGender_FEMALE_description.title":"Female",
+"BpGender_MALE_description.title":"Male",
+
+"BpPtnrContactRole_MAIN_CONTACT_description.text":"Main Contact",
+"BpPtnrContactRole_MAIN_CONTACT_description.title":"Main Contact",
+"BpPtnrContactRole_ALT_CONTACT_description.text":"Alternative Contact",
+"BpPtnrContactRole_ALT_CONTACT_description.title":"Alternative Contact",
+"BpPtnrContactRole_OFFICE_ADDRESS_description.text":"Office Address",
+"BpPtnrContactRole_OFFICE_ADDRESS_description.title":"Office Address",
+"BpPtnrContactRole_HOME_ADDRESS_description.text":"Home Address",
+"BpPtnrContactRole_HOME_ADDRESS_description.title":"Home Address",
+"BpPtnrContactRole_DELIVERY_ADDRESS_description.text":"Delivery Address",
+"BpPtnrContactRole_DELIVERY_ADDRESS_description.title":"Delivery Address",
+"BpPtnrContactRole_INVOICE_ADDRESS_description.text":"Invoice Address",
+"BpPtnrContactRole_INVOICE_ADDRESS_description.title":"Invoice Address",
+"BpPtnrContactRole_SUPPORT_CONTACT_description.text":"Info Address",
+"BpPtnrContactRole_SUPPORT_CONTACT_description.title":"Info Address",
+"BpPtnrContactRole_EMERGENCY_CONTACT_description.text":"Emergency Contact",
+"BpPtnrContactRole_EMERGENCY_CONTACT_description.title":"Emergency Contact"
+
 
 }

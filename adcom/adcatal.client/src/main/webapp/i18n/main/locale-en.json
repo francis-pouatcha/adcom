@@ -22,6 +22,7 @@
 "CatalArticle_vatRate_description.text":"The VAT rate in percent.",
 "CatalArticle_vatRate_description.title":"VAT Rate",
 "CatalArticle_stockQty_description.title":"In Stock",
+<<<<<<< HEAD
  "CatalArticle_maxDisctRate_description.title":"Max Discount",
  "CatalArticle_minStockQty_description.title":"Min Stock",
  "CatalArticle_maxStockQty_description.title":"Max Stock",
@@ -45,10 +46,26 @@
 "CatalArtDetailConfig_targetQty_description.title":"Target Quantity",
 
 
+
+"CatalArticle_maxDisctRate_description.title":"Max Discount",
+"CatalArticle_minStockQty_description.title":"Min Stock",
+"CatalArticle_maxStockQty_description.title":"Max Stock",
+ 
+"CatalArtDetailConfig_description.title":"Detail",
+"CatalArtDetailConfig_description.text":"The article detail config",   
+"CatalArtDetailConfig_artDetCode_description.text":"The code of this article detail",
+"CatalArtDetailConfig_qtyOfDtldInMain_description.text":"The quantity of units of the detailed article in the main article.",
+"CatalArtDetailConfig_pptnOfDtldInMain_description.text":"The proportion of the detailed article in the main article.",
+"CatalArtDetailConfig_mngInPptn_description.text":"The quantitative relation between the main and the proportion should be managed in proportions of in absolute quantity",
+"CatalArtDetailConfig_artDetCode_description.title":"Article detail code",
+"CatalArtDetailConfig_qtyOfDtldInMain_description.title":"Quantity Of detailled article in the main",
+"CatalArtDetailConfig_pptnOfDtldInMain_description.title":"Proportion of the detailed article in the main article",
+"CatalArtDetailConfig_mngInPptn_description.title":"Manage by Proportion",
+    
 "CatalArtEquivalence_artEquivCode_description.text":"The Article Equivalence Code",
 "CatalArtEquivalence_artEquivCode_description.title":"Article Equivalence Code",
 "CatalArtEquivalence_description.text":"An article equivalent to this article",
-"CatalArtEquivalence_description.title":"Article Equivalence",
+"CatalArtEquivalence_description.title":"Equivalences",
 "CatalArtEquivalence_equivArtIdentif_description.text":"Identifier of the Equivalent Article",
 "CatalArtEquivalence_equivArtIdentif_description.title":"Identifier of the Equivalent Article",
 "CatalArtEquivalence_mainArtIdentif_description.text":"Identifier of the Main Article",
@@ -70,12 +87,12 @@
 "CatalArtFeatMapping_artName_description.text":"The name of this article in this language",
 "CatalArtFeatMapping_artName_description.title":"Article Name",
 "CatalArtFeatMapping_description.text":"Article Feature Mapping",
-"CatalArtFeatMapping_description.title":"Article Feature Mapping",
+"CatalArtFeatMapping_description.title":"Features",
 
 "CatalArtManufSupp_artIdentif_description.text":"The unique identifier of this article",
 "CatalArtManufSupp_artIdentif_description.title":"Identifier or this Article",
 "CatalArtManufSupp_description.text":"The manufacturer or supplier of a product.",
-"CatalArtManufSupp_description.title":"Product Manufacturer or Supplier",
+"CatalArtManufSupp_description.title":"Manufacturers or Suppliers",
 "CatalArtManufSupp_msIdentif_description.text":"Manufaturer or Supplier Identifier",
 "CatalArtManufSupp_msIdentif_description.title":"Manufacturer or Supplier Identifier",
 "CatalArtManufSupp_msType_description.text":"Type of this Manufaturer or Supplier",
@@ -92,7 +109,7 @@
 "CatalArtManufSupp_warrantyMonths_description.title":"Default Warranty Time in Months",
 
 "CatalFamilyFeatMaping_description.text":"Family Feature Mapping",
-"CatalFamilyFeatMaping_description.title":"Family Feature Mapping",
+"CatalFamilyFeatMaping_description.title":"Features",
 "CatalFamilyFeatMaping_familyName_description.text":"The name of this family in this language",
 "CatalFamilyFeatMaping_familyName_description.title":"Family Name",
 "CatalFamilyFeatMaping_pfIdentif_description.text":"The unique identifier of this family",
@@ -108,8 +125,8 @@
 "CatalPicMapping_codeOrigin_description.title":"Code Origin",
 "CatalPicMapping_code_description.text":"Code",
 "CatalPicMapping_code_description.title":"Code",
-"CatalPicMapping_description.text":"Pic Mapping",
-"CatalPicMapping_description.title":"PIC Mapping",
+"CatalPicMapping_description.text":"Product Codes",
+"CatalPicMapping_description.title":"Product Codes",
 "CatalPicMapping_priority_description.text":"Priority",
 "CatalPicMapping_priority_description.title":"Priority",
 
@@ -121,13 +138,17 @@
 "CatalPkgMode_name_description.title":"Packaging Mode",
 
 "CatalProductFamily_description.text":"Product Family",
-"CatalProductFamily_description.title":"Product Family",
+"CatalProductFamily_description.title":"Families",
 "CatalProductFamily_identif_description.text":"The unique identifier of this family",
 "CatalProductFamily_identif_description.title":"Identifier or this Family",
 "CatalProductFamily_parentIdentif_description.text":"The unique identifier of the parent family",
 "CatalProductFamily_parentIdentif_description.title":"Identifier or the Parent Family",
 "CatalProductFamily_famCode_description.text":"Family Code",
 "CatalProductFamily_famCode_description.title":"Family Code",
+"CatalProductFamily_famPath_description.text":"The Family Path",
+"CatalProductFamily_famPath_description.title":"Family Path",
+"CatalProductFamily_parent_description.text":"Parent Family",
+"CatalProductFamily_parent_description.title":"Parent Family",
 
 "CatalArticle_active_description.text":"Says if this article is active or not",
 "CatalArticle_active_description.title":"Active",
@@ -164,7 +185,17 @@
 "catalPkgMode_name_required.text":"The packaging mode is required.",
 "CatalPkgMode_name_NotNull_validation.title":"The  name of this Packaging is required",
 "CatalPkgMode_name_description.text":"The name of this packaging mode",
-"CatalPkgMode_name_description.title":"Packaging Mode"
+"CatalPkgMode_name_description.title":"Packaging Mode",
 
-
+"CatalArt2ProductFamily_description.text":"Product Family",
+"CatalArt2ProductFamily_description.title":"Product Family",
+"CatalArt2ProductFamily_artPic_description.text":"The Article PIC",
+"CatalArt2ProductFamily_artPic_description.title":"Article PIC",
+"CatalArt2ProductFamily_famCode_description.text":"The Family Code",
+"CatalArt2ProductFamily_famCode_description.title":"Family Code",
+"CatalArt2ProductFamily_langIso2_description.text":"The Language Code ISO2",
+"CatalArt2ProductFamily_langIso2_description.title":"Language Code ISO2",
+"CatalArt2ProductFamily_familyName_description.text":"The Family Name",
+"CatalArt2ProductFamily_familyName_description.title":"Family Name"
+    
 }

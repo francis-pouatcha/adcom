@@ -26,6 +26,9 @@ public class CatalProductFamily extends AbstractIdentifData {
 	@Description("CatalProductFamily_parentIdentif_description")
 	private String parentIdentif;
 	
+	@Transient
+	private CatalProductFamily parent;
+	
 	/*
 	 * This is the mapping of the path from the root to the immediate parent of
 	 * this product. We will use slash as a path separator.
@@ -84,8 +87,17 @@ public class CatalProductFamily extends AbstractIdentifData {
 		this.famPath = famPath;
 	}
 
+	public CatalProductFamily getParent() {
+		return parent;
+	}
+
+	public void setParent(CatalProductFamily parent) {
+		this.parent = parent;
+	}
+
 	public void copyTo(CatalProductFamily target) {
 		target.famCode=famCode;
+		target.parent=parent;
 		target.famPath=famPath;
 		target.features=features;
 		target.identif=identif;

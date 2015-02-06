@@ -14,6 +14,8 @@
 "BpBnsPtnr_ptnrNbr_description.title":"Identifiantr",
 "BpBnsPtnr_ptnrType_description.text":"Le type de client.",
 "BpBnsPtnr_ptnrType_description.title":"Type Partenaire",
+"BpBnsPtnr_fullName_description.text":"Nom",
+"BpBnsPtnr_fullName_description.title":"Nom",
 
 "BpCtgryDscnt_ctgryCode_description.text":"Le code de cette categorie client",
 "BpCtgryDscnt_ctgryCode_description.title":"Code Categorie",
@@ -38,7 +40,7 @@
 "BpIndivPtnrName_description.text":"Nom Partenaire Individu",
 "BpIndivPtnrName_description.title":"Nom Partenaire Individu",
 "BpIndivPtnrName_firstName_description.text":"Le prénom de ce client.",
-"BpIndivPtnrName_firstName_description.title":"Nom",
+"BpIndivPtnrName_firstName_description.title":"Prénom",
 "BpIndivPtnrName_fullName_description.text":"Le nom complet de ce client",
 "BpIndivPtnrName_fullName_description.title":"Nom Complet",
 "BpIndivPtnrName_gender_description.text":"Le genre de ce client.",
@@ -46,7 +48,7 @@
 "BpIndivPtnrName_lastName_NotNull_validation.text":"Le nom de ce client est réquis",
 "BpIndivPtnrName_lastName_NotNull_validation.title":"Le nom de ce client est réquis",
 "BpIndivPtnrName_lastName_description.text":"Le nom de ce client",
-"BpIndivPtnrName_lastName_description.title":"Prénom",
+"BpIndivPtnrName_lastName_description.title":"Nom",
 "BpIndivPtnrName_ptnrNbr_description.text":"Identifiant de ce Partenaire",
 "BpIndivPtnrName_ptnrNbr_description.title":"Identifiantr",
 
@@ -88,6 +90,8 @@
 "BpPtnrContact_langIso2_description.title":"Language",
 "BpPtnrContact_ptnrNbr_description.text":"Identifiant de ce Partenaire",
 "BpPtnrContact_ptnrNbr_description.title":"Identifiantr",
+"BpPtnrContact_cntctIndex_description.text":"Contact No",
+"BpPtnrContact_cntctIndex_description.title":"Contact No",
 
 "BpPtnrCreditDtls_creditAuthrzd_description.text":"Autorise ou non le crédit au client",
 "BpPtnrCreditDtls_creditAuthrzd_description.title":"Crédit Autorisé",
@@ -176,9 +180,9 @@
 "BpPtnrRole_description.title":"Role du Partenaire",
 
 "BpPtnrType_INDIVIDUAL_description.text":"Personnalié physique",
-"BpPtnrType_INDIVIDUAL_description.title":"Physique",
+"BpPtnrType_INDIVIDUAL_description.title":"Personne Physique",
 "BpPtnrType_LEGAL_description.text":"Personnalité juridique",
-"BpPtnrType_LEGAL_description.title":"Morale",
+"BpPtnrType_LEGAL_description.title":"Personne Morale",
 "BpPtnrType_description.text":"Type de partenaire.",
 "BpPtnrType_description.title":"Type de partenaire",
 
@@ -197,6 +201,28 @@
 "Insurrance_insurerNbr_description.text":"Assureur",
 "Insurrance_insurerNbr_description.title":"Assureur",
 "Insurrance_memberNbr_description.text":"Numéro du Membre",
-"Insurrance_memberNbr_description.title":"Numéro du Membre"
+"Insurrance_memberNbr_description.title":"Numéro du Membre",
+
+"BpGender_FEMALE_description.title":"Feminin",
+"BpGender_MALE_description.title":"Masculin",
+
+"BpPtnrContactRole_MAIN_CONTACT_description.text":"Contact Principale",
+"BpPtnrContactRole_MAIN_CONTACT_description.title":"Contact Principale",
+"BpPtnrContactRole_ALT_CONTACT_description.text":"Contact Alternatif",
+"BpPtnrContactRole_ALT_CONTACT_description.title":"Contact Alternatif",
+"BpPtnrContactRole_OFFICE_ADDRESS_description.text":"Adresse Professionnelle",
+"BpPtnrContactRole_OFFICE_ADDRESS_description.title":"Adresse Professionnelle",
+"BpPtnrContactRole_HOME_ADDRESS_description.text":"Adresse du Domicile",
+"BpPtnrContactRole_HOME_ADDRESS_description.title":"Adresse du Domicile",
+"BpPtnrContactRole_DELIVERY_ADDRESS_description.text":"Adresse de Livraison",
+"BpPtnrContactRole_DELIVERY_ADDRESS_description.title":"Adresse de Livraison",
+"BpPtnrContactRole_INVOICE_ADDRESS_description.text":"Adresse de Facturation",
+"BpPtnrContactRole_INVOICE_ADDRESS_description.title":"Adresse de Facturation",
+"BpPtnrContactRole_SUPPORT_CONTACT_description.text":"Adresse pour Infos",
+"BpPtnrContactRole_SUPPORT_CONTACT_description.title":"Adresse pour Infos",
+"BpPtnrContactRole_EMERGENCY_CONTACT_description.text":"Contact d'Urgence",
+"BpPtnrContactRole_EMERGENCY_CONTACT_description.title":"Contact d'Urgence"
+
+
 
 }

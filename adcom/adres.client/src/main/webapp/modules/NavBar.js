@@ -12,10 +12,9 @@ angular.module('NavBar',[
      'AuthInterceptor',
      'pascalprecht.translate'
 ])
-
 .controller('navbarCtrl', 
-	['$scope', '$translate','$translatePartialLoader', '$rootScope','sessionManager', 
-		 function ($scope, $translate, $translatePartialLoader, $rootScope,sessionManager) {
+	['$scope', '$translate','$translatePartialLoader', '$rootScope','sessionManager','$location', 
+		 function ($scope, $translate, $translatePartialLoader, $rootScope,sessionManager,$location) {
 			$translatePartialLoader.addPart('/adres.client/i18n/shared');
 			$translate.refresh();
 
@@ -46,6 +45,11 @@ angular.module('NavBar',[
 	            $translate.use(langKey);
 	            $translate.refresh();
 	        };
+	        $scope.matchesRoute = function(route) {
+	        	var path = $location.path();
+	        	return (path === ("/" + route) || path.indexOf("/" + route + "/") == 0);
+	        };
+	        
 		}
 	]
 );
