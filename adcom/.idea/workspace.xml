@@ -53,31 +53,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="OrgUnitResources.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/OrgUnitResources.js">
+      <file leaf-file-name="PrcmtDeliveryShowCtrl.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/PrcmtDeliveryShowCtrl.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="300">
-              <caret line="11" column="6" selection-start-line="11" selection-start-column="6" selection-end-line="11" selection-end-column="6" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1353" max-vertical-offset="2340">
+              <caret line="78" column="61" selection-start-line="78" selection-start-column="61" selection-end-line="78" selection-end-column="61" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PrcmtDeliveryCreate.html" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/adprocmt.client/src/main/webapp/views/PrcmtDelivery/PrcmtDeliveryCreate.html">
+      <file leaf-file-name="PrcmtDeliveryShow.html" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/adprocmt.client/src/main/webapp/views/PrcmtDelivery/PrcmtDeliveryShow.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.65625" vertical-offset="615" max-vertical-offset="1350">
-              <caret line="69" column="97" selection-start-line="69" selection-start-column="97" selection-end-line="69" selection-end-column="97" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CatalArtManufSuppCtlrs.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/modules/CatalArticle/CatalArtManufSuppCtlrs.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="3" max-vertical-offset="3015">
-              <caret line="25" column="47" selection-start-line="25" selection-start-column="4" selection-end-line="25" selection-end-column="47" />
+            <state vertical-scroll-proportion="0.13574661" vertical-offset="330" max-vertical-offset="1710">
+              <caret line="28" column="37" selection-start-line="28" selection-start-column="37" selection-end-line="28" selection-end-column="37" />
               <folding />
             </state>
           </provider>
@@ -136,7 +126,6 @@
         <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/CatalArticleResource.js" />
         <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/PrcmtDeliveryResource.js" />
         <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/PrcmtDeliveryShowCtrl.js" />
-        <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/views/PrcmtDelivery/PrcmtDeliveryShow.html" />
         <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/views/PrcmtDelivery/CatalTypeaheadTemplate.html" />
         <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/views/PrcmtDelivery/PrcmtDeliverys.html" />
         <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/BpLegalPtnrIdResource.js" />
@@ -144,6 +133,7 @@
         <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/OrgUnitResources.js" />
         <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/PrcmtDeliveryCtrl.js" />
         <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/views/PrcmtDelivery/PrcmtDeliveryCreate.html" />
+        <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/views/PrcmtDelivery/PrcmtDeliveryShow.html" />
       </list>
     </option>
   </component>
@@ -886,22 +876,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/PrcmtDeliveryShowCtrl.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="645" max-vertical-offset="2340">
-          <caret line="78" column="61" selection-start-line="78" selection-start-column="61" selection-end-line="78" selection-end-column="61" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/adprocmt.client/src/main/webapp/views/PrcmtDelivery/PrcmtDeliveryShow.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.125" vertical-offset="405" max-vertical-offset="1710">
-          <caret line="40" column="111" selection-start-line="40" selection-start-column="111" selection-end-line="40" selection-end-column="111" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/adprocmt.client/src/main/webapp/views/PrcmtDelivery/CatalTypeaheadTemplate.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-1.25" vertical-offset="0" max-vertical-offset="135">
@@ -966,22 +940,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/PrcmtDeliveryResource.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="960">
-          <caret line="31" column="6" selection-start-line="29" selection-start-column="3" selection-end-line="31" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/OrgUnitResources.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="300">
-          <caret line="11" column="6" selection-start-line="11" selection-start-column="6" selection-end-line="11" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/modules/CatalArticle/CatalArtManufSuppCtlrs.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="3" max-vertical-offset="3015">
@@ -1010,6 +968,38 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.65625" vertical-offset="615" max-vertical-offset="1350">
           <caret line="69" column="97" selection-start-line="69" selection-start-column="97" selection-end-line="69" selection-end-column="97" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/OrgUnitResources.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.23571429" vertical-offset="0" max-vertical-offset="700">
+          <caret line="11" column="6" selection-start-line="11" selection-start-column="6" selection-end-line="11" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/PrcmtDeliveryResource.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="960">
+          <caret line="31" column="6" selection-start-line="29" selection-start-column="3" selection-end-line="31" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/PrcmtDeliveryShowCtrl.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1353" max-vertical-offset="2340">
+          <caret line="78" column="61" selection-start-line="78" selection-start-column="61" selection-end-line="78" selection-end-column="61" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adprocmt.client/src/main/webapp/views/PrcmtDelivery/PrcmtDeliveryShow.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.13574661" vertical-offset="330" max-vertical-offset="1710">
+          <caret line="28" column="37" selection-start-line="28" selection-start-column="37" selection-end-line="28" selection-end-column="37" />
           <folding />
         </state>
       </provider>
