@@ -83,6 +83,6 @@ public class BpPtnrContact extends AbstractTimedData {
 
 	@Override
 	protected String makeIdentif() {
-		return ptnrNbr + "_" + cntctRole.name() + "_" + langIso2 + "_" + cntctIndex;
+		return ptnrNbr + "_" + cntctRole==null?"null":cntctRole.name() + "_" + langIso2 + "_" + cntctIndex;
 	}
 }

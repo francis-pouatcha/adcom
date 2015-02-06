@@ -2,7 +2,7 @@
 
 angular.module('AdBnsptnr').factory('bpPtnrContactResource',['$http', function($http){
     var service = {};
-    var urlBase = '/adcatal.server/rest/bpptnrcontacts',
+    var urlBase = '/adbnsptnr.server/rest/bpptnrcontacts',
     searchInput = {
         entity:{},
         start:0,
