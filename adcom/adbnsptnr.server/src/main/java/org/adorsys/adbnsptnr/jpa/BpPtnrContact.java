@@ -2,6 +2,8 @@ package org.adorsys.adbnsptnr.jpa;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -26,6 +28,7 @@ public class BpPtnrContact extends AbstractTimedData {
 
 	@Column
 	@Description("BpPtnrContact_cntctRole_description")
+	@Enumerated(EnumType.STRING)
 	private BpPtnrContactRole cntctRole;
 
 	@Column
@@ -80,6 +83,6 @@ public class BpPtnrContact extends AbstractTimedData {
 
 	@Override
 	protected String makeIdentif() {
-		return ptnrNbr + "_" + cntctRole.name() + "_" + langIso2 + "_" + cntctIndex;
+		return ptnrNbr + "_" + cntctRole==null?"null":cntctRole.name() + "_" + langIso2 + "_" + cntctIndex;
 	}
 }

@@ -1,0 +1,99 @@
+<div class="row">
+        <div class="panel panel-default  ng-scope">
+            <div class="panel-heading no-collapse">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <b>{{"Entity_search.title"|translate}}</b>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="">
+                    <form role="form" class="">
+                        <div class="row" >
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class=" control-label" for="dateMin">{{"Entity_validFrom.title"|translate}}</label>
+                                    <div class="">
+                                        <input type="datetime" date-time  view="date" min-view="date" views="['date']" dismiss="true" format="dd-MM-yyyy"
+                                               id="dateMin" ng-model="invtryCtrl.searchInput.from" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class=" control-label" for="dateMax">{{"Entity_validTo.title"|translate}}</label>
+                                    <div class="">
+                                        <input type="datetime" date-time  view="date" min-view="date" views="['date']" dismiss="true" format="dd-MM-yyyy"
+                                               id="dateMax" ng-model="invtryCtrl.searchInput.to" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="form-group">
+                                    <button  ng-click="invtryCtrl.handleSearchRequestEvent()" class="btn btn-default " style="margin-top: 23px;" >
+                                        <i class="glyphicon glyphicon-search"></i>
+                                    </button>
+                                    <button  ng-click="invtryCtrl.handlePrintRequestEvent()" class="btn btn-default " style="margin-top: 23px;" >
+                                        <i class="glyphicon glyphicon-print"></i>
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="panel panel-default ">
+            <div class="panel-heading no-collapse"><b>{{"InvInvtry_description.title"|translate}}</b></div>
+            <div class="panel-body">
+                <div class="col-lg-12">
+                    <div  class="row">
+                        <a class="btn btn-primary pull-right margBott10" href="#/InvInvtrys/new" >
+                            <i class="glyphicon-plus"></i> {{'Entity_create.title'|translate}}
+                        </a>
+
+                    </div>
+                    <div class="table-overflow-middle row">
+                        <table class="table table-bordered  table-striped pointer-element" >
+                            <thead>
+                            <tr>
+                                <th>{{'InvInvtry_invtryNbr_description.title'| translate}}</th>
+                                <th>{{'InvInvtry_acsngUser_description.title'| translate}}</th>
+                                <th>{{'InvInvtry_acsngDt_description.title'| translate}}</th>
+                                <th>{{'InvInvtry_gapSaleAmtHT_description.title'| translate}}</th>
+                                <th>{{'InvInvtry_gapPurchAmtHT_description.title'| translate}}</th>
+                                <th>{{'InvInvtry_invtryStatus_description.title'| translate}}</th>
+                                <th>{{'InvInvtry_descptn_description.title'| translate}}</th>
+                                <th>{{'InvInvtry_invtryDt_description.title'| translate}}</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="invtry in invtryCtrl.invtrys" >
+                                <td>{{invtry.invtryNbr}}</td>
+                                <td>{{invtry.acsngUser}}</td>
+                                <td>{{invtry.acsngDt | date:'yyyy-MM-dd HH:mm'}}</td>
+                                <td>{{invtry.gapSaleAmtHT}}</td>
+                                <td>{{invtry.gapPurchAmtHT}}</td>
+                                <td>{{invtry.invtryStatus}}</td>
+                                <td>{{invtry.descptn}}</td>
+                                <td>{{invtry.invtryDt | date:'yyyy-MM-dd HH:mm'}}</td>
+                                <td><a href="#/InvInvtrys/show/{{invtry.id}}" ><i class="glyphicon glyphicon-eye-open"></i></a></td>
+                                <td><a href="#/InvInvtrys/edit/{{invtry.id}}" ><i class="glyphicon glyphicon-edit"></i></a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <ul  class="pull-right">
+                        <pagination  total-items="invtryCtrl.totalItems" items-per-page="invtryCtrl.itemPerPage"  class="pagination-sm" ng-model="invtryCtrl.currentPage" ng-change="invtryCtrl.paginate()"></pagination>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+</div>

@@ -3,24 +3,28 @@
        <div class="panel-heading"><b>{{ "Entity_create.title"|translate}}</b> </div>
        <div class="panel-body">
            <label class="error col-lg-offset-3 alert-danger" >{{bpBnsPtnrCreateCtlr.error}} </label>
+           
            <form  name="bpBnsPtnrForm" class="form-horizontal" novalidate="">
 	            <div class="form-group">
-	                <label class="col-lg-2">{{"BpBnsPtnr_ptnrNbr_description.title"| translate}} :</label>
-	                <div class="col-lg-2" ng-class="{ 'has-error' : bpBnsPtnrForm.ptnrNbr.$invalid }" >
-	                    <input type="text" ng-model="bpBnsPtnrCreateCtlr.bpBnsPtnr.ptnrNbr" name="ptnrNbr" class="form-control" disabled >
-	                </div>
+
 		              <label class="col-lg-2">{{"BpBnsPtnr_ptnrType_description.title"| translate}} :</label>
 		              <div class="col-lg-2" ng-class="{ 'has-error' : bpBnsPtnrForm.ptnrType.$invalid }" >
-		                  <input type="text" ng-model="bpBnsPtnrCreateCtlr.bpBnsPtnr.ptnrType" name="ptnrType" class="form-control" required>
-                           <p ng-show="bpBnsPtnrForm.ptnrType.$error.required" class="help-block">{{"BpBnsPtnr_ptnrType_required.title"| translate}}</p>
+				            <select class="form-control" name="ptnrType" ng-model="bpBnsPtnrCreateCtlr.bpBnsPtnr.ptnrType"
+				                    ng-options="bpBnsPtnrType.enumKey as bpBnsPtnrType.translKey|translate for bpBnsPtnrType in bpBnsPtnrCreateCtlr.bpBnsPtnrUtils.bpBnsPtnrTypes"  required>
+				                    <option value=""/>
+							</select>
+                           <p ng-show="bpBnsPtnrForm.ptnrType.$error.required" class="help-block">{{"Entity_required.title"| translate}}</p>
 		              </div>
 		              <label class="col-lg-2 ">{{"BpBnsPtnr_ctryOfRsdnc_description.title"| translate}} :</label>
-		              <div class="col-lg-2" >
-		                  <input type="text" ng-model="bpBnsPtnrCreateCtlr.bpBnsPtnr.ctryOfRsdnc" name="ctryOfRsdnc" class="form-control" required>
-                           <p ng-show="bpBnsPtnrForm.ctryOfRsdnc.$error.required" class="help-block">{{"BpBnsPtnr_ctryOfRsdnc_required.title"| translate}}</p>
+		              <div class="col-lg-4" >
+		                  <input type="text" ng-model="bpBnsPtnrCreateCtlr.bpBnsPtnr.countryName.name" name="ctryOfRsdnc" class="form-control" disabled>
+                           <p ng-show="bpBnsPtnrForm.ctryOfRsdnc.$error.required" class="help-block">{{"Entity_required.title"| translate}}</p>
+		              </div>
+		              <div class="col-lg-2">
+							<button ng-click="bpBnsPtnrCreateCtlr.selectCountry('md');" class="btn-success btn"  ><i class="glyphicon glyphicon-eye-open"></i>  {{"Entity_select.title" | translate }}</button>
 		              </div>
 	         		</div>
-                    <div class=" form-group" ng-show="bpBnsPtnrCreateCtlr.isIndividual(bpBnsPtnrCreateCtlr.bpBnsPtnr)">
+                    <div class=" form-group" ng-show="bpBnsPtnrCreateCtlr.bpBnsPtnrUtils.isIndividual(bpBnsPtnrCreateCtlr.bpBnsPtnr)">
                         <label class="col-lg-2 ">{{"BpIndivPtnrName_firstName_description.title"| translate}} :</label>
                         <div class="col-lg-4" >
                             <input type="text" ng-model="bpBnsPtnrCreateCtlr.bpBnsPtnr.indivPtnrName.firstName" name="firstName" class="form-control">
@@ -28,43 +32,48 @@
                         <label class="col-lg-2 ">{{"BpIndivPtnrName_lastName_description.title"| translate}} :</label>
                         <div class="col-lg-4" >
                             <input type="text" ng-model="bpBnsPtnrCreateCtlr.bpBnsPtnr.indivPtnrName.lastName" name="lastName" class="form-control" required>
-                           	<p ng-show="bpBnsPtnrForm.lastName.$error.required" class="help-block">{{"BpIndivPtnrName_lastName_required.title"| translate}}</p>
+                           	<p ng-show="bpBnsPtnrForm.lastName.$error.required" class="help-block">{{"Entity_required.title"| translate}}</p>
                         </div>
                  	</div>
-                    <div class=" form-group" ng-show="bpBnsPtnrCreateCtlr.isIndividual(bpBnsPtnrCreateCtlr.bpBnsPtnr)">
+                    <div class=" form-group" ng-show="bpBnsPtnrCreateCtlr.bpBnsPtnrUtils.isIndividual(bpBnsPtnrCreateCtlr.bpBnsPtnr)">
                         <label class="col-lg-2 ">{{"BpIndivPtnrName_gender_description.title"| translate}} :</label>
                         <div class="col-lg-4">
-                            <input type="text" ng-model="bpBnsPtnrCreateCtlr.bpBnsPtnr.indivPtnrName.gender" name="gender" class="form-control" required>
-                           	<p ng-show="bpBnsPtnrForm.gender.$error.required" class="help-block">{{"BpIndivPtnrName_gender_required.title"| translate}}</p>
+				            <select class="form-control" name="gender" ng-model="bpBnsPtnrCreateCtlr.bpBnsPtnr.indivPtnrName.gender"
+				                    ng-options="bpGender.enumKey as bpGender.translKey|translate for bpGender in bpBnsPtnrCreateCtlr.bpBnsPtnrUtils.genders"  required>
+				                    <option value=""/>
+							</select>
+                           	<p ng-show="bpBnsPtnrForm.gender.$error.required" class="help-block">{{"Entity_required.title"| translate}}</p>
                         </div>
                         <label class="col-lg-2 ">{{"BpIndivPtnrName_brthDt_description.title"| translate}} :</label>
                         <div class="col-lg-4" >
                             <input type="text" ng-model="bpBnsPtnrCreateCtlr.bpBnsPtnr.indivPtnrName.brthDt" name="brthDt" class="form-control" >
                         </div>
                 	 </div>
-                    <div class="form-group" ng-show="bpBnsPtnrCreateCtlr.isInstitution(bpBnsPtnrCreateCtlr.bpBnsPtnr)">
+                    <div class="form-group" ng-show="bpBnsPtnrCreateCtlr.bpBnsPtnrUtils.isInstitution(bpBnsPtnrCreateCtlr.bpBnsPtnr)">
                         <label class="col-lg-2">{{"BpLegalPtnrId_cpnyName_description.title"| translate}} :</label>
-                        <div class="col-lg-6" >
+                        <div class="col-lg-10" >
                             <input type="text" ng-model="bpBnsPtnrCreateCtlr.bpBnsPtnr.legalPtnrId.cpnyName" name="cpnyName" class="form-control" required>
-                           	<p ng-show="bpBnsPtnrForm.cpnyName.$error.required" class="help-block">{{"BpIndivPtnrName_cpnyName_required.title"| translate}}</p>
-                        </div>
-                        <label class="col-lg-2">{{"BpLegalPtnrId_legalForm_description.title"| translate}} :</label>
-                        <div class="col-lg-2" >
-                            <input type="text" ng-model="bpBnsPtnrCreateCtlr.bpBnsPtnr.legalPtnrId.legalForm" name="legalForm" class="form-control">
+                           	<p ng-show="bpBnsPtnrForm.cpnyName.$error.required" class="help-block">{{"Entity_required.title"| translate}}</p>
                         </div>
                  	</div>
-                    <div class="form-group" ng-show="bpBnsPtnrCreateCtlr.isInstitution(bpBnsPtnrCreateCtlr.bpBnsPtnr)">
-                        <label class="col-lg-2">{{"BpLegalPtnrId_cmrcRgstrNbr_description.title"| translate}} :</label>
-                        <div class="col-lg-2" >
-                            <input type="checkbox" ng-model="bpBnsPtnrCreateCtlr.bpBnsPtnr.legalPtnrId.cmrcRgstrNbr" name="cmrcRgstrNbr" class="form-control">
-                        </div>
-                        <label class="col-lg-2 ">{{"BpLegalPtnrId_taxPayerIdNbr_description.title"| translate}} :</label>
-                        <div class="col-lg-2" >
-                            <input type="checkbox" ng-model="bpBnsPtnrCreateCtlr.bpBnsPtnr.legalPtnrId.taxPayerIdNbr" name="taxPayerIdNbr" class="form-control">
+                    <div class="form-group" ng-show="bpBnsPtnrCreateCtlr.bpBnsPtnrUtils.isInstitution(bpBnsPtnrCreateCtlr.bpBnsPtnr)">
+                        <label class="col-lg-2">{{"BpLegalPtnrId_legalForm_description.title"| translate}} :</label>
+                        <div class="col-lg-4" >
+                            <input type="text" ng-model="bpBnsPtnrCreateCtlr.bpBnsPtnr.legalPtnrId.legalForm" name="legalForm" class="form-control">
                         </div>
                         <label class="col-lg-2 ">{{"BpLegalPtnrId_equity_description.title"| translate}} :</label>
-                        <div class="col-lg-2" >
-                            <input type="checkbox" ng-model="bpBnsPtnrCreateCtlr.bpBnsPtnr.legalPtnrId.equity" name="equity" class="form-control">
+                        <div class="col-lg-4" >
+                            <input type="text" ng-model="bpBnsPtnrCreateCtlr.bpBnsPtnr.legalPtnrId.equity" name="equity" class="form-control">
+                        </div>
+                 	</div>
+                    <div class="form-group" ng-show="bpBnsPtnrCreateCtlr.bpBnsPtnrUtils.bpBnsPtnrUtils.isInstitution(bpBnsPtnrCreateCtlr.bpBnsPtnr)">
+                        <label class="col-lg-2 ">{{"BpLegalPtnrId_taxPayerIdNbr_description.title"| translate}} :</label>
+                        <div class="col-lg-4" >
+                            <input type="text" ng-model="bpBnsPtnrCreateCtlr.bpBnsPtnr.legalPtnrId.taxPayerIdNbr" name="taxPayerIdNbr" class="form-control">
+                        </div>
+                        <label class="col-lg-2">{{"BpLegalPtnrId_cmrcRgstrNbr_description.title"| translate}} :</label>
+                        <div class="col-lg-4" >
+                            <input type="text" ng-model="bpBnsPtnrCreateCtlr.bpBnsPtnr.legalPtnrId.cmrcRgstrNbr" name="cmrcRgstrNbr" class="form-control">
                         </div>
                     </div>
 
@@ -73,11 +82,10 @@
                    <label class="col-lg-4" > </label>
                    <div class="col-lg-8" >
                        <a class="btn-danger btn" href="#/"  ><i class="glyphicon glyphicon-remove" ></i> {{"Entity_cancel.title" | translate }}</a>
-                       <button ng-click="bpBnsPtnrCreateCtlr.create();" ng-disabled="bpBnsPtnrForm.$invalid" class="btn-success btn"  ><i class="glyphicon glyphicon-save"></i>  {{"Entity_save.title" | translate }}</button>
+                       <button ng-click="bpBnsPtnrCreateCtlr.create();" class="btn-success btn"  ><i class="glyphicon glyphicon-save"></i>  {{"Entity_save.title" | translate }}</button>
                    </div>
                </div>
            </form>
-
        </div>
    </div>
 </div>

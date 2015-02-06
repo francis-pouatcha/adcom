@@ -7,7 +7,8 @@ angular.module('AdInvtry', [
       'AuthInterceptor',
       'ngSanitize',
       'pascalprecht.translate',
-      'NavBar'
+      'NavBar',
+      'datePicker'
 ])
 .constant('APP_CONFIG',{
 	'appName':'Inventory Management',
@@ -18,10 +19,11 @@ angular.module('AdInvtry', [
 .config(['$routeProvider', '$httpProvider','$translateProvider','$translatePartialLoaderProvider',
          function($routeProvider,$httpProvider,$translateProvider,$translatePartialLoaderProvider) {
     $routeProvider
-    .when('/',{templateUrl:'views/landing.html',controller:'LandingPageController'})
-    .when('/InvInvtrys',{templateUrl:'views/InvInvtry/search.html',controller:'SearchInvInvtryController'})
-    .when('/InvInvtrys/new',{templateUrl:'views/InvInvtry/detail.html',controller:'NewInvInvtryController'})
-    .when('/InvInvtrys/edit/:InvInvtryId',{templateUrl:'views/InvInvtry/detail.html',controller:'EditInvInvtryController'})
+    .when('/',{templateUrl:'views/InvInvtry/InvInvtrys.html',controller:'invtryCtrl'})
+    .when('/InvInvtrys',{templateUrl:'views/InvInvtry/InvInvtrys.html',controller:'invtryCtrl'})
+    .when('/InvInvtrys/new',{templateUrl:'views/InvInvtry/InvInvtryCreate.html',controller:'invtryCreateCtlr'})
+    .when('/InvInvtrys/show/:identif',{templateUrl:'views/InvInvtry/InvInvtryShow.html',controller:'invInvtryShowCtlr'})
+    .when('/InvInvtrys/edit/:identif',{templateUrl:'views/InvInvtry/InvInvtryEdit.html',controller:'invtryEditCtlr'})
     .when('/InvInvtryItems',{templateUrl:'views/InvInvtryItem/search.html',controller:'SearchInvInvtryItemController'})
     .when('/InvInvtryItems/new',{templateUrl:'views/InvInvtryItem/detail.html',controller:'NewInvInvtryItemController'})
     .when('/InvInvtryItems/edit/:InvInvtryItemId',{templateUrl:'views/InvInvtryItem/detail.html',controller:'EditInvInvtryItemController'})
