@@ -22,7 +22,7 @@ angular.module('AdInvtry', [
     .when('/',{templateUrl:'views/InvInvtry/InvInvtrys.html',controller:'invtryCtrl'})
     .when('/InvInvtrys',{templateUrl:'views/InvInvtry/InvInvtrys.html',controller:'invtryCtrl'})
     .when('/InvInvtrys/new',{templateUrl:'views/InvInvtry/InvInvtryCreate.html',controller:'invtryCreateCtlr'})
-    .when('/InvInvtrys/show/:identif',{templateUrl:'views/InvInvtry/InvInvtryShow.html',controller:'invtryShowCtlr'})
+    .when('/InvInvtrys/show/:identif',{templateUrl:'views/InvInvtry/InvInvtryShow.html',controller:'invInvtryShowCtlr'})
     .when('/InvInvtrys/edit/:identif',{templateUrl:'views/InvInvtry/InvInvtryEdit.html',controller:'invtryEditCtlr'})
     .when('/InvInvtryItems',{templateUrl:'views/InvInvtryItem/search.html',controller:'SearchInvInvtryItemController'})
     .when('/InvInvtryItems/new',{templateUrl:'views/InvInvtryItem/detail.html',controller:'NewInvInvtryItemController'})
