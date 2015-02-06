@@ -4,6 +4,7 @@ angular.module('AdInvtry', [
       'ngRoute',
       'ngCookies',
       'SessionManager',
+      'ui.bootstrap',
       'AuthInterceptor',
       'ngSanitize',
       'pascalprecht.translate',

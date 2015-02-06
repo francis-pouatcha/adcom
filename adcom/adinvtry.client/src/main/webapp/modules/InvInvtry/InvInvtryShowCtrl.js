@@ -87,8 +87,8 @@ angular.module('AdInvtry').controller('invInvtryShowCtlr',['$scope','invtryResou
     }
 
     function onSelect(item,model,label){
-        self.invInvtryItemHolder.dlvryItem.artPic = item.pic;
-        self.invInvtryItemHolder.dlvryItem.artName = item.features.artName;
+        self.invInvtryItemHolder.invInvtryItem.artPic = item.pic;
+        self.invInvtryItemHolder.invInvtryItem.artName = item.features.artName;
         self.taux = "";
     }
 
@@ -120,15 +120,15 @@ angular.module('AdInvtry').controller('invInvtryShowCtlr',['$scope','invtryResou
     }
 
     function tauxMultiplicateur(){
-        if(self.invInvtryItemHolder.dlvryItem.pppuPreTax && self.taux){
-            self.invInvtryItemHolder.dlvryItem.sppuPreTax = 1 * self.invInvtryItemHolder.dlvryItem.pppuPreTax + (self.invInvtryItemHolder.dlvryItem.pppuPreTax * (self.taux / 100)) ;
+        if(self.invInvtryItemHolder.invInvtryItem.pppuPreTax && self.taux){
+            self.invInvtryItemHolder.invInvtryItem.sppuPreTax = 1 * self.invInvtryItemHolder.invInvtryItem.pppuPreTax + (self.invInvtryItemHolder.invInvtryItem.pppuPreTax * (self.taux / 100)) ;
         }
     }
 
     function calculTotalAmountEntered(){
         self.totalAmountEntered = 0;
         for(var i=0;i<self.invInvtryItemHolders.length;i++){
-            self.totalAmountEntered = self.totalAmountEntered + (self.invInvtryItemHolders[i].dlvryItem.pppuPreTax * self.invInvtryItemHolders[i].dlvryItem.qtyDlvrd);
+            self.totalAmountEntered = self.totalAmountEntered + (self.invInvtryItemHolders[i].invInvtryItem.pppuPreTax * self.invInvtryItemHolders[i].invInvtryItem.qtyDlvrd);
         }
 
     }

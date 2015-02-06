@@ -30,22 +30,22 @@
                             <input type="hidden" value="{{invInvtryShowCtlr.invInvtry.dlvryNbr}}" ng-model="invInvtryShowCtlr.invInvtryItemHolder.invInvtryItem.invtryNbr" >
                             <td>
                                 <div ng-class="{ 'has-error' : invInvtryItemForm.artPic.$invalid }" >
-                                    <input disabled type="text" ng- class="form-control" name="artPic" id="artPic" required autocomplete="off" ng-model="invInvtryShowCtlr.invInvtryItemHolder.invInvtryItem.artPic"
-                                       typeahead="article as article.pic for article in invInvtryShowCtlr.loadArticlesByCipLike($viewValue)"
+                                    <input type="text" ng- class="form-control" name="artPic" id="artPic" required autocomplete="off" ng-model="invInvtryShowCtlr.invInvtryItemHolder.invInvtryItem.artPic"
+                                       typeahead="article as article.pic for article in  invInvtryShowCtlr.loadArticlesByCipLike($viewValue)"
                                        typeahead-loading="loading" typeahead-on-select='invInvtryShowCtlr.onSelect($item, $model, $label)' >
                                 </div>
                             </td>
                             <td>
                                 <div ng-class="{ 'has-error' : invInvtryItemForm.artName.$invalid }" >
-                                    <input disabled type="text" class="form-control" required id="artName" autocomplete="off" ng-model="invInvtryShowCtlr.invInvtryItemHolder.invInvtryItem.artName"
-                                       typeahead="article as article.features.artName for article in invInvtryShowCtlr.loadArticlesByNameLike($viewValue)"
+                                    <input type="text" class="form-control" required id="artName" autocomplete="off" ng-model="invInvtryShowCtlr.invInvtryItemHolder.invInvtryItem.artName"
+                                       typeahead="article as article.features.artName for article in  invInvtryShowCtlr.loadArticlesByNameLike($viewValue)"
                                        typeahead-loading="loading" typeahead-on-select='invInvtryShowCtlr.onSelect($item, $model, $label)' name="artName" >
                                 </div>
                             </td>
                             <td><input type="text" class="form-control" disabled ></td>
                             <td>
                                 <div ng-class="{ 'has-error' : invInvtryItemForm.qtyDlvrd.$invalid }" >
-                                    <input disabled type="text" class="form-control" required name="qtyDlvrd" id="qtyDlvrd" ng-model="invInvtryShowCtlr.invInvtryItemHolder.invInvtryItem.qtyDlvrd" >
+                                    <input type="text" class="form-control" required name="qtyDlvrd" id="qtyDlvrd" ng-model="invInvtryShowCtlr.invInvtryItemHolder.invInvtryItem.qtyDlvrd" >
                                 </div>
                             </td>
                            
