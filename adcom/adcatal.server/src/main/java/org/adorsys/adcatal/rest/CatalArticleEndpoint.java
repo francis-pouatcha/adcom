@@ -183,7 +183,6 @@ public class CatalArticleEndpoint
             detach(searchInput));
    }
 
-   @SuppressWarnings("unchecked")
    @POST
    @Path("/findCustom")
    @Produces({ "application/json", "application/xml" })

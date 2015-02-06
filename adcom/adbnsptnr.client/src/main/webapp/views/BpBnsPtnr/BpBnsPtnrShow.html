@@ -15,7 +15,7 @@
 	                        </div>
 	                        <label class="col-lg-2 ">{{"BpBnsPtnr_ctryOfRsdnc_description.title"| translate}} :</label>
 	                        <div class="col-lg-2" >
-	                            <input type="text" ng-model="bpBnsPtnrShowCtlr.bpBnsPtnr.ctryOfRsdnc" name="ctryOfRsdnc" class="form-control" disabled>
+		                  		<input type="text" ng-model="bpBnsPtnrShowCtlr.bpBnsPtnr.countryName.name" name="ctryOfRsdnc" class="form-control" disabled>
 	                        </div>
                     	</div>
                         <div class=" form-group" ng-show="bpBnsPtnrShowCtlr.bpBnsPtnrUtils.isIndividual(bpBnsPtnrShowCtlr.bpBnsPtnr)">
@@ -31,7 +31,8 @@
                         <div class=" form-group" ng-show="bpBnsPtnrShowCtlr.bpBnsPtnrUtils.isIndividual(bpBnsPtnrShowCtlr.bpBnsPtnr)">
                             <label class="col-lg-2 ">{{"BpIndivPtnrName_gender_description.title"| translate}} :</label>
                             <div class="col-lg-4">
-                                <input type="text" ng-model="bpBnsPtnrShowCtlr.bpBnsPtnr.indivPtnrName.gender" name="gender" class="form-control" disabled>
+	                            <input value="{{bpBnsPtnrShowCtlr.bpBnsPtnrUtils.genderI18nMsgTitleKey(bpBnsPtnrShowCtlr.bpBnsPtnr.indivPtnrName.gender)|translate}}" 
+	                            	type="text" name="gender" class="form-control" disabled >
                             </div>
                             <label class="col-lg-2 ">{{"BpIndivPtnrName_brthDt_description.title"| translate}} :</label>
                             <div class="col-lg-4" >
@@ -65,9 +66,15 @@
                             </div>
                         </div>
                 </form>
-			<!-- 
                 <div  class="row ">
-                    <tabset justified="true">
+                    <tabset justified="false">
+                        <tab heading="{{'BpPtnrContact_description.title' | translate}}">
+                            <br/>
+                            <div ng-include="'views/BpBnsPtnr/BpPtnrContacts.html'" />
+                        </tab>
+                    </tabset>
+                </div>
+			<!-- 
                         <tab heading="{{'CatalPicMapping_description.title' | translate}}">
                             <br/>
                             <div ng-include="'views/BpBnsPtnr/CatalPicMappings.html'" />
@@ -94,8 +101,6 @@
                             <br />
                             <div ng-include="'views/BpBnsPtnr/CatalArtDetailConfig.html'"></div>
                         </tab>
-                    </tabset>
-                </div>
 			 -->
                 <hr/>
                 <div class="row">

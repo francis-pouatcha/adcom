@@ -50,13 +50,11 @@
     "Entity_Result.title":"Result",
     "Entity_By.title":"By",
     "Entity_Of.title":"Of",
+    "Entity_required.title":"Required",
     
     "BaseCountryName_isoCode_description.title":"Country Code",
     "BaseCountryName_iso2_description.title":"Country Code Iso 2",
     "BaseCountryName_iso3_description.title":"Country Code Iso 3",
     "BaseCountryName_langsIso2_description.title":"Language",
-    "BaseCountryName_name_description.title":"Country Name",
-    
-    "Gender_FEMALE_Description.title":"Female",
-    "Gender_MALE_Description.title":"Male"
+    "BaseCountryName_name_description.title":"Country Name"    
 }

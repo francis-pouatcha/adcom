@@ -19,24 +19,40 @@ angular.module('AdBnsptnr')
       {enumKey:'INDIVIDUAL', translKey:'BpPtnrType_INDIVIDUAL_description.title'},
       {enumKey:'LEGAL', translKey:'BpPtnrType_LEGAL_description.title'}
     ];
-    	
     
+    service.genderI18nMsgTitleKey = function(enumKey){
+    	return "BpGender_"+enumKey+"_Description";
+    }
 
+    service.genders = [
+      {enumKey:'FEMALE', translKey:'BpGender_FEMALE_description.title'},
+      {enumKey:'MALE', translKey:'BpGender_MALE_description.title'}
+    ];
+    
     return service;
 })
-.controller('bpBnsPtnrsCtlr',['$scope','bpBnsPtnrResource','bpBnsPtnrUtils',function($scope,bpBnsPtnrResource,bpBnsPtnrUtils){
+.factory('bpStateHolder',function(){
 	
+	var serv = {
+	};
+
+
+	return serv;
+
+})
+.controller('bpBnsPtnrsCtlr',['$scope','bpBnsPtnrResource','bpBnsPtnrUtils','bpStateHolder',
+                              function($scope,bpBnsPtnrResource,bpBnsPtnrUtils,bpStateHolder){
     var self = this ;
     $scope.bpBnsPtnrsCtlr = self;
 
     self.searchInput = {
-        entity:{},
-        fieldNames:[],
-        start:0,
-        max:self.itemPerPage
-    };
-    self.totalItems ;
+	        entity:{},
+	        fieldNames:[],
+	        start:0,
+	        max:self.itemPerPage
+	    };
     self.itemPerPage=25;
+    self.totalItems ;
     self.currentPage = 1;
     self.maxSize = 5 ;
     self.bpBnsPtnrs = [];
@@ -52,21 +68,30 @@ angular.module('AdBnsptnr')
     init();
 
     function init(){
-        self.searchInput = {
-            entity:{},
-            fieldNames:[],
-            start:0,
-            max:self.itemPerPage
-        }
-        findByLike(self.searchInput);
+    	if(bpStateHolder.searchInput){
+    		self.searchInput=bpStateHolder.searchInput;
+        	self.bpBnsPtnrs=bpStateHolder.bpBnsPtnrs;
+        	self.totalItems=bpStateHolder.totalItems;
+    	} else {
+			self.searchInput = {
+					entity:{},
+					fieldNames:[],
+					start:0,
+					max:self.itemPerPage
+			};
+			findByLike(self.searchInput);
+    	}
     }
 
     function findByLike(searchInput){
-    	bpBnsPtnrResource.findByLike(searchInput)
-    		.success(function(entitySearchResult) {
-	            self.bpBnsPtnrs = entitySearchResult.resultList;
-	            self.totalItems = entitySearchResult.count ;
-    		});
+		bpBnsPtnrResource.findByLike(searchInput)
+		.success(function(entitySearchResult) {
+			self.bpBnsPtnrs = entitySearchResult.resultList;
+			self.totalItems = entitySearchResult.count ;
+			bpStateHolder.bpBnsPtnrs=self.bpBnsPtnrs;
+			bpStateHolder.totalItems=self.totalItems;
+			bpStateHolder.searchInput=self.searchInput;
+		});
     }
 
     function processSearchInput(){
@@ -88,7 +113,6 @@ angular.module('AdBnsptnr')
     };
 
     function  handleSearchRequestEvent(){
-    	processSearchInput();
     	findByLike(self.searchInput);
     };
 
@@ -102,15 +126,15 @@ angular.module('AdBnsptnr')
 	}
     
 }])
-.controller('bpBnsPtnrCreateCtlr',['$scope','bpBnsPtnrResource','bpBnsPtnrUtils',
-                                   function($scope,bpBnsPtnrResource,bpBnsPtnrUtils){
+.controller('bpBnsPtnrCreateCtlr',['$scope','bpBnsPtnrResource','bpBnsPtnrUtils','$modal',
+                                   function($scope,bpBnsPtnrResource,bpBnsPtnrUtils,$modal){
 	var self = this ;
     $scope.bpBnsPtnrCreateCtlr = self;
     self.bpBnsPtnr = {};
     self.create = create;
     self.error = "";
-    self.isIndividual=bpBnsPtnrUtils.isIndividual;
-    self.isInstitution=bpBnsPtnrUtils.isInstitution;
+    self.bpBnsPtnrUtils=bpBnsPtnrUtils;
+    self.selectCountry=selectCountry;
 
     function create(){
     	bpBnsPtnrResource.create(self.bpBnsPtnr)
@@ -122,6 +146,23 @@ angular.module('AdBnsptnr')
     	});
     };
 	
+    function selectCountry(size){
+        var modalInstance = $modal.open({
+            templateUrl: '/adres.client/views/CountryNames.html',
+            controller: 'countryNamesCtlr',
+            size: size,
+            resolve : {
+            	urlBase : function(){
+            		return '/adbnsptnr.server/rest/';
+            	},
+            	countryNameHolder: function(){
+            		return self.bpBnsPtnr;
+            	}
+            }
+        
+        });
+    }
+    
 }])
 .controller('bpBnsPtnrEditCtlr',['$scope','bpBnsPtnrResource','$routeParams','$location','bpBnsPtnrUtils','$modal',
                                  function($scope,bpBnsPtnrResource,$routeParams,$location,bpBnsPtnrUtils,$modal){
@@ -178,8 +219,8 @@ angular.module('AdBnsptnr')
     }
 
 }])
-.controller('bpBnsPtnrShowCtlr',['$scope','bpBnsPtnrResource','$routeParams','$location','bpBnsPtnrUtils',
-                                 function($scope,bpBnsPtnrResource,$routeParams,$location,bpBnsPtnrUtils){
+.controller('bpBnsPtnrShowCtlr',['$scope','bpBnsPtnrResource','$routeParams','$location','bpBnsPtnrUtils','bpStateHolder',
+                                 function($scope,bpBnsPtnrResource,$routeParams,$location,bpBnsPtnrUtils,bpStateHolder){
     var self = this ;
     $scope.bpBnsPtnrShowCtlr = self;
     self.bpBnsPtnr = {};
@@ -199,18 +240,41 @@ angular.module('AdBnsptnr')
         .error(function(error){
             self.error = error;
         });
-    };
+    }
 
     function previousBP(ptnrNbr){
-        bpBnsPtnrResource.previous(ptnrNbr).success(function(data){
-            $location.path('/BpBnsPtnrs/show/'+data.identif);
-        });
+    	if(!bpStateHolder.bpBnsPtnrs || bpStateHolder.bpBnsPtnrs.length<=0) return;
+
+    	var previousNbr;
+    	for (var index in bpStateHolder.bpBnsPtnrs) {
+    	    if(bpStateHolder.bpBnsPtnrs[index].ptnrNbr==ptnrNbr){
+    	    	break;
+    	    } else {
+    	    	previousNbr=bpStateHolder.bpBnsPtnrs[index].ptnrNbr;
+    	    }
+    	}
+    	if(!previousNbr){
+    		previousNbr = bpStateHolder.bpBnsPtnrs[bpStateHolder.bpBnsPtnrs.length-1].ptnrNbr;
+    	}
+		$location.path('/BpBnsPtnrs/show/'+previousNbr);
     }
 
     function nextBP(ptnrNbr){
-        bpBnsPtnrResource.next(ptnrNbr).success(function(data){
-            $location.path('/BpBnsPtnrs/show/'+data.identif);
-        });
+    	if(!bpStateHolder.bpBnsPtnrs || bpStateHolder.bpBnsPtnrs.length<=0) return;
+
+    	var nextNbr;
+    	var found = false;
+    	for (var index in bpStateHolder.bpBnsPtnrs) {
+    		if(found) {
+    			nextNbr = bpStateHolder.bpBnsPtnrs[index].ptnrNbr;
+    			break;
+    		}
+    	    if(bpStateHolder.bpBnsPtnrs[index].ptnrNbr==ptnrNbr)found=true;
+    	}
+    	if(!nextNbr){
+    		nextNbr = bpStateHolder.bpBnsPtnrs[0].ptnrNbr;
+    	}
+		$location.path('/BpBnsPtnrs/show/'+nextNbr);
     }
 
 }]);
