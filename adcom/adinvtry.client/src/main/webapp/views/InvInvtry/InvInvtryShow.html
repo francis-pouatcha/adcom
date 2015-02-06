@@ -1,0 +1,80 @@
+<div>
+    <div class="well">
+        <h4>
+            <a>PR0001</a> of 23-09-2014, <b>Delivery Slip No: </b>2035, <b>Amount Ht:</b> 86000 cfa,
+            <b>Amount Entered:</b> 13000 cfa
+            <p class="pull-right">
+                <button class=" btn btn-default" type="button">Cancel</button>
+                <button class=" btn btn-primary" type="button">Close</button>
+            </p>
+        </h4>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading"><b>Add Procurement Delivery Item</b> </div>
+        <div class="panel-body">
+            <table class="table table-bordered" >
+                <thead>
+                <tr>
+                    <th class="clo-lg-2">CIP</th>
+                    <th class="col-lg-3">Designation</th>
+                    <th>Qte Stock</th>
+                    <th>Qte</th>
+                    <th>Prix Vente</th>
+                    <th>prix Achat</th>
+                    <th>Taux Mul</th>
+                    <th>Date P</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <form>
+                            <td>
+                                <input type="text" class="form-control" required autocomplete="off" ng-model="prcmtDeliveryShowCtlr.prcmtDeliveryItem.pic"
+                                       typeahead="article as article.pic for article in prcmtDeliveryShowCtlr.loadArticlesByCipLike($viewValue)"
+                                       typeahead-loading="loading" typeahead-on-select='prcmtDeliveryShowCtlr.onSelect($item, $model, $label)' >
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" required autocomplete="off" ng-model="prcmtDeliveryShowCtlr.prcmtDeliveryItem.artName"
+                                       typeahead="article as article.features.artName for article in prcmtDeliveryShowCtlr.loadArticlesByNameLike($viewValue)"
+                                       typeahead-loading="loading" typeahead-on-select='prcmtDeliveryShowCtlr.onSelect($item, $model, $label)' >
+                            </td>
+                            <td><input type="text" class="form-control" disabled ></td>
+                            <td><input type="text" class="form-control" ></td>
+                            <td><input type="text" class="form-control" ></td>
+                            <td><input type="text" class="form-control" ></td>
+                            <td><input type="text" class="form-control" ></td>
+                            <td><input type="text" class="form-control" placeholder="MMYY" ></td>
+                            <td><button class="btn btn-default" ><i class="glyphicon glyphicon-plus"></i> Add</button></td>
+                            <input type="hidden" name="identif" >
+                        </form>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading"><b>List Procurement Delivery Item</b> </div>
+        <div class="panel-body">
+            <table class="table table-bordered  table-striped" >
+                <thead>
+                <tr>
+                    <th class="col-lg-2" >CIP</th>
+                    <th class="col-lg-3" >Designation</th>
+                    <th>Qte Stock</th>
+                    <th>Qte</th>
+                    <th>Prix Vente</th>
+                    <th>prix Achat</th>
+                    <th>Taux Mul</th>
+                    <th>Date P</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
