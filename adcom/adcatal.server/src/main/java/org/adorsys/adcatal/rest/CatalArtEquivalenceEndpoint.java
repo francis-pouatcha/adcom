@@ -3,6 +3,7 @@ package org.adorsys.adcatal.rest;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -37,13 +38,25 @@ public class CatalArtEquivalenceEndpoint
 
    @Inject
    private CatalArtEquivalenceEJB ejb;
+   
+   @Inject
+   private CatalArticleEJB articleEJB;
+   
+   public static final Logger LOGS= Logger.getLogger(CatalArtEquivalenceEndpoint.class.getName());
 
    @POST
    @Consumes({ "application/json", "application/xml" })
    @Produces({ "application/json", "application/xml" })
    public CatalArtEquivalence create(CatalArtEquivalence entity)
    {
-      return detach(ejb.create(entity));
+	   String mainArtName = articleEJB.findByIdentif(entity.getMainArtIdentif()).getFeatures().getArtName();
+	   String equivArtName = articleEJB.findByIdentif(entity.getEquivArtIdentif()).getFeatures().getArtName();
+	   String generateEquivCode = ejb.generateEquivCode(entity.getMainArtIdentif(), entity.getEquivArtIdentif());
+	   entity.setArtEquivCode(generateEquivCode);
+	   CatalArtEquivalence create = ejb.create(entity);
+	   create.setMainArtName(mainArtName);
+	   create.setEquivArtName(equivArtName);
+      return detach(create);
    }
 
    @DELETE
@@ -63,6 +76,8 @@ public class CatalArtEquivalenceEndpoint
    @Consumes({ "application/json", "application/xml" })
    public CatalArtEquivalence update(CatalArtEquivalence entity)
    {
+	   String generateEquivCode = ejb.generateEquivCode(entity.getMainArtIdentif(), entity.getEquivArtIdentif());
+	   entity.setArtEquivCode(generateEquivCode);
       return detach(ejb.update(entity));
    }
 

@@ -44,7 +44,8 @@
 "CatalArtDetailConfig_targetQty_description.text":"Quantity of the target product",
 "CatalArtDetailConfig_targetQty_description.title":"Target Quantity",
 
-"CatalArtEquivalence_artEquivCode_description.text":"Article Equivalence Code",
+
+"CatalArtEquivalence_artEquivCode_description.text":"The Article Equivalence Code",
 "CatalArtEquivalence_artEquivCode_description.title":"Article Equivalence Code",
 "CatalArtEquivalence_description.text":"An article equivalent to this article",
 "CatalArtEquivalence_description.title":"Article Equivalence",
