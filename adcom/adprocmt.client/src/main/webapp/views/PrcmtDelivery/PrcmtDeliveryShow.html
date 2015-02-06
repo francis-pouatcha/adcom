@@ -43,7 +43,7 @@
                             </td>
                             <td>
                                 <div ng-class="{ 'has-error' : prcmtDeliveryItemForm.artName.$invalid }" >
-                                    <input type="text" class="form-control" select-on-click required id="artName" autocomplete="off" ng-model="prcmtDeliveryShowCtlr.prcmtDeliveryItemHolder.dlvryItem.artName"
+                                    <input type="text" class="form-control" select-on-click focus required id="artName" autocomplete="off" ng-model="prcmtDeliveryShowCtlr.prcmtDeliveryItemHolder.dlvryItem.artName"
                                        typeahead="article as article.features.artName for article in prcmtDeliveryShowCtlr.loadArticlesByNameLike($viewValue)"
                                        typeahead-loading="loading" typeahead-on-select='prcmtDeliveryShowCtlr.onSelect($item, $model, $label)' name="artName" >
                                 </div>
@@ -63,7 +63,7 @@
                             <td><input type="text" class="form-control" ng-model="prcmtDeliveryShowCtlr.prcmtDeliveryItemHolder.dlvryItem.sppuPreTax" ></td>
                             <td><input type="text" class="form-control" ng-model="prcmtDeliveryShowCtlr.taux" ng-change="prcmtDeliveryShowCtlr.tauxMultiplicateur()" ></td>
                             <td><input type="text" class="form-control" ng-model="prcmtDeliveryShowCtlr.prcmtDeliveryItemHolder.dlvryItem.expirDt" placeholder="MMYY" ></td>
-                            <td><button class="btn btn-default" ng-disabled="prcmtDeliveryItemForm.$invalid" ng-click="prcmtDeliveryShowCtlr.addItem()" ><i class="glyphicon glyphicon-plus"></i> Add</button></td>
+                            <td><button class="btn btn-default" ng-enter="prcmtDeliveryShowCtlr.addItem()" ng-disabled="prcmtDeliveryItemForm.$invalid" ng-click="prcmtDeliveryShowCtlr.addItem()" ><i class="glyphicon glyphicon-plus"></i> Add</button></td>
 
                     </tr>
                 </tbody>
