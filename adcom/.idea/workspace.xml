@@ -23,11 +23,31 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="PrcmtDeliveryShow.html" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/adprocmt.client/src/main/webapp/views/PrcmtDelivery/PrcmtDeliveryShow.html">
+      <file leaf-file-name="PrcmtDeliveryCtrl.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/PrcmtDeliveryCtrl.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.06787331" vertical-offset="0" max-vertical-offset="1710">
-              <caret line="3" column="130" selection-start-line="3" selection-start-column="130" selection-end-line="3" selection-end-column="130" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1053" max-vertical-offset="2880">
+              <caret line="84" column="4" selection-start-line="84" selection-start-column="4" selection-end-line="84" selection-end-column="4" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CatalArtManufSuppForm.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/CatalArtManufSuppForm.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-17.5" vertical-offset="180" max-vertical-offset="945">
+              <caret line="40" column="126" selection-start-line="40" selection-start-column="79" selection-end-line="40" selection-end-column="126" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PrcmtDeliveryResource.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/PrcmtDeliveryResource.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="960">
+              <caret line="31" column="6" selection-start-line="29" selection-start-column="3" selection-end-line="31" selection-end-column="6" />
               <folding />
             </state>
           </provider>
@@ -36,28 +56,18 @@
       <file leaf-file-name="PrcmtDeliveryShowCtrl.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/PrcmtDeliveryShowCtrl.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2160">
-              <caret line="24" column="31" selection-start-line="24" selection-start-column="31" selection-end-line="24" selection-end-column="31" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1353" max-vertical-offset="2340">
+              <caret line="78" column="61" selection-start-line="78" selection-start-column="61" selection-end-line="78" selection-end-column="61" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="app.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/adprocmt.client/src/main/webapp/scripts/app.js">
+      <file leaf-file-name="PrcmtDeliveryShow.html" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/adprocmt.client/src/main/webapp/views/PrcmtDelivery/PrcmtDeliveryShow.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="30" max-vertical-offset="1320">
-              <caret line="25" column="133" selection-start-line="25" selection-start-column="112" selection-end-line="25" selection-end-column="133" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PrcmtDeliveryCtrl.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/PrcmtDeliveryCtrl.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1121" max-vertical-offset="2025">
-              <caret line="101" column="22" selection-start-line="101" selection-start-column="22" selection-end-line="101" selection-end-column="22" />
+            <state vertical-scroll-proportion="0.13574661" vertical-offset="330" max-vertical-offset="1710">
+              <caret line="28" column="37" selection-start-line="28" selection-start-column="37" selection-end-line="28" selection-end-column="37" />
               <folding />
             </state>
           </provider>
@@ -73,9 +83,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/create.html" />
-        <option value="$PROJECT_DIR$/adbase.client/src/main/webapp/views/login/logins.html" />
-        <option value="$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/search.html" />
         <option value="$PROJECT_DIR$/adcatal.client/src/main/webapp/modules/CatalArticle/services.js" />
         <option value="$PROJECT_DIR$/adcatal.client/src/main/webapp/modules/CatalArticle/EditCatalArticleController.js" />
         <option value="$PROJECT_DIR$/adcatal.client/src/main/webapp/scripts/app.js" />
@@ -110,19 +117,22 @@
         <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/PrcmtDeliveryCtrls.js" />
         <option value="$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/CatalArticleCreate.html" />
         <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/scripts/app.js" />
-        <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/PrcmtDeliveryResource.js" />
         <option value="$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/CatalArtManufSuppForm.html" />
         <option value="$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/CatalArtFeatMappingForm.html" />
-        <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/views/PrcmtDelivery/PrcmtDeliveryCreate.html" />
         <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/views/PrcmtDelivery/PrcmtDeliveryEdit.html" />
-        <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/CatalArticleResource.js" />
         <option value="$PROJECT_DIR$/adcatal.client/src/main/webapp/modules/CatalArticle/CatalArtManufSuppCtlrs.js" />
-        <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/index.html" />
-        <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/PrcmtDeliveryCtrl.js" />
-        <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/views/PrcmtDelivery/PrcmtDeliverys.html" />
         <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/PrcmtDeliveryManagerResource.js" />
         <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/PrcmtDeliverySowCtrl.js" />
+        <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/CatalArticleResource.js" />
+        <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/PrcmtDeliveryResource.js" />
         <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/PrcmtDeliveryShowCtrl.js" />
+        <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/views/PrcmtDelivery/CatalTypeaheadTemplate.html" />
+        <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/views/PrcmtDelivery/PrcmtDeliverys.html" />
+        <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/BpLegalPtnrIdResource.js" />
+        <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/index.html" />
+        <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/OrgUnitResources.js" />
+        <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/PrcmtDeliveryCtrl.js" />
+        <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/views/PrcmtDelivery/PrcmtDeliveryCreate.html" />
         <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/views/PrcmtDelivery/PrcmtDeliveryShow.html" />
       </list>
     </option>
@@ -307,36 +317,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="scripts" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="adcom" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="adcom" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="adprocmt.client" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="modules" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -433,80 +413,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="i18n" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="adcom" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="adcom" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="adbase.client" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="adcom" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="adcom" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="adbase.client" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="adcom" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="adcom" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="adbase.client" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="views" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -521,7 +427,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="adbase.client" />
+              <option name="myItemId" value="adcatal.client" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -541,59 +447,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="locality" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="adcom" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="adcom" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="adbase.client" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="modules" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="adcom" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="adcom" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="adbase.client" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
+              <option name="myItemId" value="CatalArticle" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -742,35 +596,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/adbase.client/src/main/webapp/modules/userworkspace/userWorkspaceController.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="705">
-          <caret line="27" column="70" selection-start-line="27" selection-start-column="70" selection-end-line="27" selection-end-column="70" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/adbase.client/src/main/webapp/views/userworkspace/workspace.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.7083334" vertical-offset="64" max-vertical-offset="765">
-          <caret line="7" column="82" selection-start-line="7" selection-start-column="82" selection-end-line="7" selection-end-column="82" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/adbase.client/src/main/webapp/modules/userworkspace/resources.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.9588068" vertical-offset="0" max-vertical-offset="1170">
-          <caret line="45" column="29" selection-start-line="45" selection-start-column="12" selection-end-line="45" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/adbase.client/src/main/webapp/views/login/logins.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.34586465" vertical-offset="1090" max-vertical-offset="1800">
-          <caret line="88" column="41" selection-start-line="88" selection-start-column="41" selection-end-line="88" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/adbase.client/src/main/webapp/modules/login/controller/loginsEditController.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="213" max-vertical-offset="915">
@@ -913,14 +738,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.2083335" vertical-offset="382" max-vertical-offset="1605">
-          <caret line="37" column="4" selection-start-line="37" selection-start-column="4" selection-end-line="37" selection-end-column="86" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/CatalArticleCreate.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-23.875" vertical-offset="132" max-vertical-offset="795">
@@ -1027,50 +844,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/PrcmtDeliveryResource.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8748222" vertical-offset="90" max-vertical-offset="960">
-          <caret line="47" column="6" selection-start-line="47" selection-start-column="6" selection-end-line="47" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/CatalArticleResource.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="167" max-vertical-offset="1020">
-          <caret line="2" column="24" selection-start-line="2" selection-start-column="24" selection-end-line="2" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/CatalArtManufSuppForm.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.625" vertical-offset="0" max-vertical-offset="945">
-          <caret line="9" column="46" selection-start-line="7" selection-start-column="123" selection-end-line="9" selection-end-column="46" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/CatalArticles.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-11.166667" vertical-offset="977" max-vertical-offset="1620">
-          <caret line="83" column="67" selection-start-line="83" selection-start-column="51" selection-end-line="83" selection-end-column="67" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/modules/CatalArticle/CatalArticleCtlrs.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2685">
           <caret line="11" column="12" selection-start-line="11" selection-start-column="12" selection-end-line="11" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/modules/CatalArticle/CatalArtManufSuppCtlrs.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="758" max-vertical-offset="3015">
-          <caret line="75" column="10" selection-start-line="71" selection-start-column="8" selection-end-line="75" selection-end-column="10" />
           <folding />
         </state>
       </provider>
@@ -1083,42 +860,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/adprocmt.client/src/main/webapp/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-33.291668" vertical-offset="221" max-vertical-offset="1185">
-          <caret line="68" column="68" selection-start-line="68" selection-start-column="68" selection-end-line="68" selection-end-column="68" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/adprocmt.client/src/main/webapp/scripts/app.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="30" max-vertical-offset="1320">
+        <state vertical-scroll-proportion="0.5021834" vertical-offset="30" max-vertical-offset="1320">
           <caret line="25" column="133" selection-start-line="25" selection-start-column="112" selection-end-line="25" selection-end-column="133" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/adprocmt.client/src/main/webapp/views/PrcmtDelivery/PrcmtDeliverys.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-21.5" vertical-offset="909" max-vertical-offset="1725">
-          <caret line="95" column="85" selection-start-line="95" selection-start-column="83" selection-end-line="95" selection-end-column="85" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/adprocmt.client/src/main/webapp/views/PrcmtDelivery/PrcmtDeliveryCreate.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="13.958333" vertical-offset="380" max-vertical-offset="1290">
-          <caret line="3" column="36" selection-start-line="1" selection-start-column="7" selection-end-line="3" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/PrcmtDeliveryCtrl.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1076" max-vertical-offset="2025">
-          <caret line="101" column="22" selection-start-line="101" selection-start-column="22" selection-end-line="101" selection-end-column="22" />
           <folding />
         </state>
       </provider>
@@ -1131,18 +876,130 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/adprocmt.client/src/main/webapp/views/PrcmtDelivery/CatalTypeaheadTemplate.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-1.25" vertical-offset="0" max-vertical-offset="135">
+          <caret line="2" column="3" selection-start-line="2" selection-start-column="3" selection-end-line="2" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/CatalArticleResource.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.042857144" vertical-offset="0" max-vertical-offset="1140">
+          <caret line="2" column="24" selection-start-line="2" selection-start-column="16" selection-end-line="2" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.087278105" vertical-offset="614" max-vertical-offset="1290">
+          <caret line="37" column="4" selection-start-line="37" selection-start-column="4" selection-end-line="37" selection-end-column="66" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adprocmt.client/src/main/webapp/views/PrcmtDelivery/PrcmtDeliverys.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.765625" vertical-offset="275" max-vertical-offset="1725">
+          <caret line="51" column="89" selection-start-line="51" selection-start-column="89" selection-end-line="51" selection-end-column="89" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adbase.client/src/main/webapp/modules/orgunits/resources.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1275">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/BpLegalPtnrIdResource.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.088626295" vertical-offset="0" max-vertical-offset="677">
+          <caret line="4" column="57" selection-start-line="4" selection-start-column="57" selection-end-line="4" selection-end-column="57" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adprocmt.client/src/main/webapp/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7337278" vertical-offset="509" max-vertical-offset="1215">
+          <caret line="67" column="56" selection-start-line="67" selection-start-column="56" selection-end-line="67" selection-end-column="56" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/CatalArticles.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.19909503" vertical-offset="723" max-vertical-offset="1620">
+          <caret line="57" column="89" selection-start-line="57" selection-start-column="54" selection-end-line="57" selection-end-column="89" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/modules/CatalArticle/CatalArtManufSuppCtlrs.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="3" max-vertical-offset="3015">
+          <caret line="25" column="47" selection-start-line="25" selection-start-column="4" selection-end-line="25" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/PrcmtDeliveryCtrl.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1053" max-vertical-offset="2880">
+          <caret line="84" column="4" selection-start-line="84" selection-start-column="4" selection-end-line="84" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adcatal.client/src/main/webapp/views/CatalArticle/CatalArtManufSuppForm.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-17.5" vertical-offset="180" max-vertical-offset="945">
+          <caret line="40" column="126" selection-start-line="40" selection-start-column="79" selection-end-line="40" selection-end-column="126" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adprocmt.client/src/main/webapp/views/PrcmtDelivery/PrcmtDeliveryCreate.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.65625" vertical-offset="615" max-vertical-offset="1350">
+          <caret line="69" column="97" selection-start-line="69" selection-start-column="97" selection-end-line="69" selection-end-column="97" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/OrgUnitResources.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.23571429" vertical-offset="0" max-vertical-offset="700">
+          <caret line="11" column="6" selection-start-line="11" selection-start-column="6" selection-end-line="11" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/PrcmtDeliveryResource.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="960">
+          <caret line="31" column="6" selection-start-line="29" selection-start-column="3" selection-end-line="31" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/PrcmtDeliveryShowCtrl.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2160">
-          <caret line="24" column="31" selection-start-line="24" selection-start-column="31" selection-end-line="24" selection-end-column="31" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1353" max-vertical-offset="2340">
+          <caret line="78" column="61" selection-start-line="78" selection-start-column="61" selection-end-line="78" selection-end-column="61" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/adprocmt.client/src/main/webapp/views/PrcmtDelivery/PrcmtDeliveryShow.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.06787331" vertical-offset="0" max-vertical-offset="1710">
-          <caret line="3" column="130" selection-start-line="3" selection-start-column="130" selection-end-line="3" selection-end-column="130" />
+        <state vertical-scroll-proportion="0.13574661" vertical-offset="330" max-vertical-offset="1710">
+          <caret line="28" column="37" selection-start-line="28" selection-start-column="37" selection-end-line="28" selection-end-column="37" />
           <folding />
         </state>
       </provider>

@@ -51,7 +51,7 @@ angular.module('AdProcmt').controller('prcmtDeliveryShowCtlr',['$scope','prcmtDe
             searchInput.fieldNames.push('features.artName') ;
             searchInput.entity.features.langIso2='fr';
         }
-        return findCustomArticle(searchInput).then(function(entitySearchResult){
+        return findByNameStartWith(searchInput).then(function(entitySearchResult){
             return entitySearchResult.resultList;
         });
     }
@@ -69,14 +69,26 @@ angular.module('AdProcmt').controller('prcmtDeliveryShowCtlr',['$scope','prcmtDe
             searchInput.entity.pic = pic;
             searchInput.fieldNames.push('pic') ;
         }
-        return findCustomArticle(searchInput).then(function(entitySearchResult){
+        return findByPicLike(searchInput).then(function(entitySearchResult){
             return entitySearchResult.resultList;
         });
     }
 
-    function findCustomArticle (searchInput) {
+    function findByNameStartWith (searchInput) {
         var deferred = $q.defer();
-        catalArticleResource.findCustom(searchInput)
+        catalArticleResource.findByNameStartWith(searchInput)
+            .success(function(entitySearchResult) {
+                deferred.resolve(entitySearchResult);
+            })
+            .error(function(){
+                deferred.reject("No Article");
+            });
+        return deferred.promise;
+    }
+
+    function findByPicLike (searchInput) {
+        var deferred = $q.defer();
+        catalArticleResource.findByPicLike(searchInput)
             .success(function(entitySearchResult) {
                 deferred.resolve(entitySearchResult);
             })

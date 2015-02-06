@@ -20,7 +20,9 @@
                     <div class="form-group">
                         <label class="col-lg-3 ">{{"PrcmtDelivery_supplier_description.title"| translate}} :</label>
                         <div class="col-lg-3" ng-class="{ 'has-error' : PrcmtDeliveryForm.supplier.$invalid }" >
-                            <input type="text" ng-model="prcmtDeliveryCreateCtlr.prcmtDelivery.supplier" id="supplier" name="supplier" class="form-control" required >
+                            <input type="text" ng-model="prcmtDeliveryCreateCtlr.prcmtDelivery.supplier" id="supplier" name="supplier" class="form-control" required
+                                   autocomplete="off" typeahead="businessPartner as businessPartner.cpnyName for businessPartner in prcmtDeliveryCreateCtlr.loadBusinessPartner($viewValue)"
+                                   typeahead-loading="loading" placeholder="find a Supplier/Manufacturer">
                             <p ng-show="PrcmtDeliveryForm.supplier.$error.required" class="help-block">{{"PrcmtDelivery_supplier_description.title"| translate}}</p>
                         </div>
                         <label class="col-lg-3 ">{{"PrcmtDelivery_netPPTaxIncl_description.title"| translate}} :</label>
@@ -33,7 +35,9 @@
                     <div class="form-group">
                         <label class="col-lg-3 ">{{"PrcmtDelivery_rcvngOrgUnit_description.title"| translate}} :</label>
                         <div class="col-lg-3" ng-class="{ 'has-error' : PrcmtDeliveryForm.rcvngOrgUnit.$invalid }" >
-                            <input type="text" ng-model="prcmtDeliveryCreateCtlr.prcmtDelivery.rcvngOrgUnit" id="rcvngOrgUnit" name="rcvngOrgUnit" class="form-control" required >
+                            <input type="text" ng-model="prcmtDeliveryCreateCtlr.prcmtDelivery.rcvngOrgUnit" id="rcvngOrgUnit" name="rcvngOrgUnit" class="form-control" required
+                                   typeahead="orgUnit as orgUnit.fullName for orgUnit in prcmtDeliveryCreateCtlr.loadOrgUnit($viewValue)"
+                                   typeahead-loading="loading" placeholder="find an organisation" >
                             <p ng-show="PrcmtDeliveryForm.rcvngOrgUnit.$error.required" class="help-block">{{"PrcmtDelivery_rcvngOrgUnit_description.title"| translate}}</p>
                         </div>
                         <label class="col-lg-3 ">{{"PrcmtDelivery_netAmtToPay_description.title"| translate}} :</label>
@@ -63,7 +67,7 @@
                         </div>
                         <label class="col-lg-3 ">{{"PrcmtDelivery_dlvryCur_description.title"| translate}} :</label>
                         <div class="col-lg-3" ng-class="{ 'has-error' : PrcmtDeliveryForm.netPurchAmt.$invalid }" >
-                            <input type="text" ng-model="prcmtDeliveryCreateCtlr.prcmtDelivery.dlvryCur" id="dlvryCur" name="dlvryCur" class="form-control" >
+                            <select ng-options="currency for currency in prcmtDeliveryCreateCtlr.currencys" ng-model="prcmtDeliveryCreateCtlr.prcmtDelivery.dlvryCur" id="dlvryCur" name="dlvryCur" class="form-control" ></select>
                         </div>
                     </div>
                     <hr/>

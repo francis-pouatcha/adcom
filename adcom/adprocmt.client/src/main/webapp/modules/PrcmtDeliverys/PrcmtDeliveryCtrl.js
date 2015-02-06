@@ -74,14 +74,71 @@ angular.module('AdProcmt')
 	}
     
 }])
-.controller('prcmtDeliveryCreateCtlr',['$scope','$location','prcmtDeliveryResource',function($scope,$location,prcmtDeliveryResource){
+.controller('prcmtDeliveryCreateCtlr',['$scope','$location','$q','prcmtDeliveryResource','bplegalptnridsResource','orgUnitsResource',function($scope,$location,$q,prcmtDeliveryResource,bplegalptnridsResource,orgUnitsResource){
 	var self = this ;
     $scope.prcmtDeliveryCreateCtlr = self;
     self.prcmtDelivery = {};
     self.create = create;
     self.error = "";
+    self.loadBusinessPartner = loadBusinessPartner;
+    self.loadOrgUnit = loadOrgUnit;
+    self.currencys = ['XAF','EUR','NGN','USD'];
+
+        function loadBusinessPartner(val){
+            return loadBusinessPartnerPromise(val).then(function(entitySearchResult){
+                return entitySearchResult.resultList;
+            })
+        }
+
+        function loadBusinessPartnerPromise(businessPartnerName){
+            var searchInput = {
+                entity:{},
+                fieldNames:[],
+                start: 0,
+                max: 10
+            };
+            if(businessPartnerName){
+                searchInput.entity.cpnyName = businessPartnerName+'%';
+                searchInput.fieldNames.push('cpnyName');
+            }
+            var deferred = $q.defer();
+            bplegalptnridsResource.findByLike(searchInput).success(function (entitySearchResult) {
+                deferred.resolve(entitySearchResult);
+            }).error(function(){
+                deferred.reject("No Manufacturer/Supplier");
+            });
+            return deferred.promise;
+        }
+
+        function loadOrgUnit(val){
+            return loadOrgUnitPromise(val).then(function(entitySearchResult){
+                return entitySearchResult.resultList;
+            })
+        }
+
+        function loadOrgUnitPromise(val){
+            var searchInput = {
+                entity:{},
+                fieldNames:[],
+                start: 0,
+                max: 10
+            };
+            if(val){
+                searchInput.entity.fullName = val+'%';
+                searchInput.fieldNames.push('fullName');
+            }
+            var deferred = $q.defer();
+            orgUnitsResource.findByLike(searchInput).success(function (entitySearchResult) {
+                deferred.resolve(entitySearchResult);
+            }).error(function(){
+                deferred.reject("No organisation unit");
+            });
+            return deferred.promise;
+        }
 
     function create(){
+        self.prcmtDelivery.supplier = self.prcmtDelivery.supplier.ptnrNbr;
+        self.prcmtDelivery.rcvngOrgUnit = self.prcmtDelivery.rcvngOrgUnit.identif;
     	prcmtDeliveryResource.create(self.prcmtDelivery)
     	.success(function(data){
     		$location.path('/PrcmtDeliverys/show/'+data.id);
