@@ -74,14 +74,15 @@ public class AdcomAuthValve extends AdcomAuthBase {
 		GenericPrincipal existingGenericPrincipal = authPrincipals.get(suppliedAuthParams.toIdString());
     	if(existingGenericPrincipal!=null)request.setUserPrincipal(existingGenericPrincipal);
 
-    	Principal authenticated = context.getRealm().authenticate(suppliedAuthParams.toString(), termCdtl.toString());
+    	Principal authenticated = context.getRealm().authenticate(suppliedAuthParams.toString(), termCdtl.toString());		
     	
     	GenericPrincipal generatedGenericPrincipal = null;
     	if(authenticated==null){
-    		Object attribute = request.getAttribute("AUTH-ERROR");
-    		if(attribute!=null){
-    			response.addHeader("X-AUTH-ERROR", attribute.toString());
-    		}
+        	Object attribute = request.getAttribute("USER-LANG");
+    		if(attribute!=null)response.addHeader("X-USER-LANG", attribute.toString());
+    		attribute = request.getAttribute("AUTH-ERROR");
+    		if(attribute!=null)response.addHeader("X-AUTH-ERROR", attribute.toString());
+
 			response.sendError(HttpServletResponse.SC_UNAUTHORIZED,MESSAGES.authenticationFailure());
 			return (false);
     	} else if (authenticated==existingGenericPrincipal){// cached
@@ -99,7 +100,6 @@ public class AdcomAuthValve extends AdcomAuthBase {
 			throw new IllegalStateException("Included user principal is instance of : " + generatedGenericPrincipal.getUserPrincipal().getClass().getName() + " We are expecting an instance of : " + TermWsUserPrincipal.class.getName());
     	TermWsUserPrincipal generatedUserPrincipal = (TermWsUserPrincipal) generatedGenericPrincipal.getUserPrincipal();
     	
-    	
     	setSessionHeader(generatedUserPrincipal, response);
 
 		AuthParams generatedAuthParams = new AuthParams(generatedUserPrincipal.getTermSessionId(), generatedUserPrincipal.getUserSessionId());
@@ -108,11 +108,7 @@ public class AdcomAuthValve extends AdcomAuthBase {
     		noCache(request,response);
     	} else if (OpId.wsin.name().equals(opr)){
     		updatePrincipal(suppliedAuthParams, generatedAuthParams, generatedGenericPrincipal);
-//    		clearSsoCookie(request, response);
     		noCache(request,response);
-//    	} else if (OpId.wsout.name().equals(opr) || OpId.logout.name().equals(opr)) {
-//    		clearPrincipal(suppliedAuthParams, generatedGenericPrincipal);
-//    		setSsoCookie(generatedUserPrincipal, request, response);
     	} else if (OpId.req.name().equals(opr)) {
     		updatePrincipal(suppliedAuthParams, generatedAuthParams, generatedGenericPrincipal);
     		privateCache(request,response);
@@ -131,7 +127,6 @@ public class AdcomAuthValve extends AdcomAuthBase {
 
 	@Override
 	public void logout(Request request) throws ServletException {
-
         // Remove the authentication information from our request
         request.setAuthType(null);
         request.setUserPrincipal(null);
@@ -156,19 +151,7 @@ public class AdcomAuthValve extends AdcomAuthBase {
 	        response.setHeader("Expires", DATE_ONE);
         }
 	}
-//	private void clearSsoCookie(Request request, HttpServletResponse response){
-//		SecureSSOCookie secureSSOCookie = new SecureSSOCookie();
-//		Cookie secureSsoCookie = secureSSOCookie.selectSecureCookie(request.getCookies());
-//		if(secureSsoCookie!=null){
-//			secureSsoCookie.setMaxAge(0);
-//    		response.addCookie(secureSsoCookie);
-//		}
-//	}
-//	private void setSsoCookie(TermWsUserPrincipal userPrincipal, Request request, HttpServletResponse response){
-//		SecureSSOCookie secureSSOCookie = new SecureSSOCookie();
-//		Cookie secureSsoCookie = secureSSOCookie.setSecureCookie(userPrincipal.getUserSessionId(), request.getServerName(), 300);
-//		response.addCookie(secureSsoCookie);
-//	}	
+
 	private void updatePrincipal(AuthParams suppliedAuthParams, AuthParams generatedAuthParams,GenericPrincipal genericPrincipal ){
 		if(!StringUtils.equals(suppliedAuthParams.toIdString(), generatedAuthParams.toIdString())){
 	    	authPrincipals.remove(suppliedAuthParams.toIdString());
@@ -182,6 +165,7 @@ public class AdcomAuthValve extends AdcomAuthBase {
 		response.addHeader("X-USER-LOGIN", userPrincipal.getLoginName());
 		response.addHeader("X-USER-SESSION", userPrincipal.getUserSessionId());
 		response.addHeader("X-TERM-SESSION", userPrincipal.getTermSessionId());		
+		response.addHeader("X-USER-LANG", userPrincipal.getLangIso2());
 	}
 
 	private void clearPrincipal(AuthParams suppliedAuthParams,

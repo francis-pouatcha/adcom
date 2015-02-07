@@ -5,8 +5,8 @@
 
 'use strict';
 
-angular.module('Base64Factory');
-angular.module('ADUtils');
+//angular.module('Base64Factory');
+//angular.module('ADUtils');
 angular.module('SessionManager',['Base64Factory','ADUtils','pascalprecht.translate'])
 .factory('sessionManager',['Base64','adUtils','$http','$translate',function(Base64,adUtils,$http,$translate){
     var auth = {};
@@ -42,7 +42,20 @@ angular.module('SessionManager',['Base64Factory','ADUtils','pascalprecht.transla
     auth.hasValues = function(trm,usr){
     	return auth.isSet(trm) && auth.isSet(usr); 
     };
-       
+
+    auth.termAuth = function(successCallback, errorCallback){
+    	sess.opr='term';
+        $http.get('/adbase.server/rest/session/term')
+        .success(function(data, status, headers, config) {
+			consumeSessData(headers);
+        	successCallback(data, status, headers, config);
+		})
+        .error(function(data, status, headers, config) {
+			consumeSessData(headers);
+			errorCallback(data, status, headers, config);
+		});
+    };
+    
     auth.login = function(username, password, successCallback, errorCallback){
     	sess.opr='login';
     	sess.lgn=username;
@@ -217,18 +230,15 @@ angular.module('SessionManager',['Base64Factory','ADUtils','pascalprecht.transla
     auth.userWsData = function(){
     	return userWsHolder;
     }; 
-    
-    auth.language = function(l){
-    	if(auth.isSet(l) && (l=='fr' || l=='en')){
-    		userWsHolder.langIso2 = l;
-    		return userWsHolder.langIso2;
-    	}
-    	if(userWsHolder.langIso2=='fr' || userWsHolder.langIso2=='en')
-    		return userWsHolder.langIso2;
+
+    auth.language = function(l, optional){
+    	if(!auth.isSet(l)) return userWsHolder.langIso2;
+    	if(userWsHolder.langIso2 && optional) return userWsHolder.langIso2;
     	
-    	userWsHolder.langIso2='fr';
-        return userWsHolder.langIso2;
-    }
+    	userWsHolder.langIso2 = l;
+		$translate.use(userWsHolder.langIso2);
+		$translate.refresh();
+    };
 
     return auth;
 

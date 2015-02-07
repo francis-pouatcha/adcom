@@ -60,6 +60,7 @@ public class RegistrationEJB {
 		termCredtl.setExpires(DateUtils.addYears(now, 20));
 		termCredtl.setTermId(secTerminal.getId());
 		termCredtl = termCredtlEJB.create(termCredtl);
+		termCredtl.setLangIso2(secTerminal.getLangIso2());
 		String cookieStr = termCredtl.getId();
 		
 		SecTermSession termSess = new SecTermSession();
@@ -68,6 +69,7 @@ public class RegistrationEJB {
 		termSess.setExpires(DateUtils.addYears(now, 1));
 		termSess.setTermId(secTerminal.getId());
 		termSess.setTermCredtl(termCredtl.getId());
+		termSess.setLangIso2(termCredtl.getLangIso2());
 		termSess = termSessionEJB.create(termSess);
 		termCredtl.setTermSessionId(termSess.getId());
 		termCredtl = termCredtlEJB.update(termCredtl);

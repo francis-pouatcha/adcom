@@ -6,19 +6,25 @@ import java.util.UUID;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 import org.adorsys.adbase.jpa.ConnectionHistory;
 import org.adorsys.adbase.jpa.Login;
+import org.adorsys.adbase.jpa.SecTermCredtl;
 import org.adorsys.adbase.jpa.SecTermSession;
 import org.adorsys.adbase.jpa.SecTerminal;
 import org.adorsys.adbase.jpa.SecUserSession;
 import org.adorsys.adbase.rest.ConnectionHistoryEJB;
 import org.adorsys.adbase.rest.LoginEJB;
+import org.adorsys.adbase.rest.SecTermCredtlEJB;
 import org.adorsys.adbase.rest.SecTermSessionEJB;
+import org.adorsys.adbase.rest.SecTerminalEJB;
 import org.adorsys.adbase.rest.SecUserSessionEJB;
+import org.adorsys.adcore.auth.AuthParams;
 import org.adorsys.adcore.auth.OpId;
 import org.adorsys.adcore.auth.TermCdtl;
 import org.adorsys.adcore.auth.TermWsUserPrincipal;
+import org.adorsys.adcore.utils.AccessTimeValidator;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 
@@ -39,9 +45,15 @@ public class LoginModuleTx {
 	
 	@Inject
 	private SecTermSessionEJB secTermSessionEJB;
+
+	@Inject
+	private SecTermCredtlEJB secTermCredtlEJB;
 	
 	@Inject
 	private LoginEJB loginEJB;
+	
+	@Inject
+	private SecTerminalEJB secTerminalEJB;	
 
 	public TermWsUserPrincipal login_login(SecUserSession existingUserSession, 
 			SecTermSession secTermSession, SecTerminal secTerminal, 
@@ -259,4 +271,134 @@ public class LoginModuleTx {
 		return h;
 	}
 	
+	public SecTermSession readTerminalSession(AuthParams auth, TermCdtl termCdtl, HttpServletRequest request){
+		String opr = auth.getOpr();
+		String providedTermCred = termCdtl.getCre();
+		SecTermCredtl secTermCredtl = secTermCredtlEJB.findById(providedTermCred);
+		if (secTermCredtl == null){
+			returnWithAttr(request, "AUTH-ERROR",
+					MessagesKeys.TERM_CRED_NOT_FOUND_ERROR.name());
+			return null;
+		}
+		setAttr(request, "USER-LANG", secTermCredtl.getLangIso2());
+
+		if (StringUtils.isBlank(auth.getTrm())){
+			// This situation can only happen in the case of a login or workspace in.
+			if(!OpId.login.name().equals(opr)){
+				returnWithAttr(request, "AUTH-ERROR",
+						MessagesKeys.NO_TERM_SESSION_ERROR.name());
+				return null;
+			}
+		}
+		
+		SecTermSession secTermSession = null;
+
+		String storedTermSessionId = secTermCredtl.getTermSessionId();
+		// Means there is no session associated with this terminal
+		if(StringUtils.isNotBlank(auth.getTrm())){
+			if(!StringUtils.equals(storedTermSessionId,auth.getTrm())){
+				// This can not be.
+				returnWithAttr(request, "AUTH-ERROR",
+						MessagesKeys.WRONG_TERM_SESSION_ERROR.name());
+				return null;
+			}
+			secTermSession = secTermSessionEJB.findById(auth
+					.getTrm());
+			if (secTermSession != null) return secTermSession;
+			
+			returnWithAttr(request, "AUTH-ERROR",
+				MessagesKeys.NO_TERM_SESSION_ERROR.name());
+			return null;
+		}
+
+		if(StringUtils.isBlank(storedTermSessionId)){
+			if(StringUtils.isBlank(termCdtl.getCert())){
+				returnWithAttr(request, "AUTH-ERROR",
+						MessagesKeys.NO_TERM_SESSION_ERROR.name());
+				return null;
+			} 
+			// create the term session
+			Date now = new Date();
+			secTermSession = new SecTermSession();
+			secTermSession.setTermName(secTermCredtl.getTermName());
+			secTermSession.setCreated(now);
+			secTermSession.setExpires(DateUtils.addYears(now, 1));
+			secTermSession.setTermId(secTermCredtl.getTermId());
+			secTermSession.setTermCredtl(secTermCredtl.getId());
+			secTermSession.setLangIso2(secTermCredtl.getLangIso2());
+			secTermSession = secTermSessionEJB.create(secTermSession);
+			storedTermSessionId = secTermSession.getId();
+			secTermCredtl.setTermSessionId(storedTermSessionId);
+			secTermCredtlEJB.update(secTermCredtl);
+			return secTermSession;
+		}
+
+		// Identify the terminal
+		secTermSession = secTermSessionEJB.findById(storedTermSessionId);
+		if (secTermSession == null){
+			returnWithAttr(request, "AUTH-ERROR",
+					MessagesKeys.TERM_CRED_NOT_FOUND_ERROR.name());
+			return null;
+		}
+		// validate the session if not a ssl session
+		if(StringUtils.isBlank(termCdtl.getCert()) && !StringUtils.equals(auth.getTky(), secTermSession.getTermKey())){
+			returnWithAttr(request, "AUTH-ERROR",
+					MessagesKeys.TERM_AUTH_ERROR.name());
+			return null;
+		}
+		return secTermSession;
+	}
+	
+	public SecTerminal readAndCheckSecTerminal(SecTermSession secTermSession, HttpServletRequest request, Date currentDate){
+		SecTerminal secTerminal = secTerminalEJB.findById(secTermSession.getTermId());
+		if (secTerminal == null){
+			returnWithAttr(request, "AUTH-ERROR",
+					MessagesKeys.UNKNOWN_TERM_ERROR.name());
+			return null;
+		}
+
+		// Validate terminal
+		if(!checkLocality(request, secTerminal.getLocality())) return null;
+		if(!checkValidity(request, secTerminal.getValidFrom(), secTerminal.getValidTo(), currentDate)) return null;
+		if(!checkTermAccessTime(request, secTerminal.getAccessTime(), secTerminal.getTimeZone())) return null;
+		return secTerminal;
+	}
+	
+	
+
+	private boolean returnWithAttr(HttpServletRequest request, String key,
+			String value) {
+		if (request != null)
+			request.setAttribute(key, value);
+		return false;
+	}
+
+	private void setAttr(HttpServletRequest request, String key,
+			String value) {
+		if (request != null)
+			request.setAttribute(key, value);
+	}
+
+	
+	private boolean checkTermAccessTime(HttpServletRequest request, String accessTime, String timeZone){
+		if(StringUtils.isBlank(accessTime) || StringUtils.isBlank(timeZone)) return true;
+		if(!AccessTimeValidator.check(accessTime, timeZone))
+			return returnWithAttr(request, "AUTH-ERROR",
+					MessagesKeys.TERM_ACCESS_TIME_ERROR.name());
+		return true;
+	}
+	
+	private boolean checkLocality(HttpServletRequest request, String locality){
+		if(StringUtils.isBlank(locality)) return true;
+		
+		// check locality
+		
+		return true;
+	}
+
+	private boolean checkValidity(HttpServletRequest request, Date validFrom, Date validTo, Date currentDate){
+		if((validFrom!=null && currentDate.before(validFrom)) || (validTo!=null && currentDate.after(validTo)))
+			return returnWithAttr(request, "AUTH-ERROR",MessagesKeys.TERM_VALIDITY_ERROR.name());
+		return true;
+	}
 }

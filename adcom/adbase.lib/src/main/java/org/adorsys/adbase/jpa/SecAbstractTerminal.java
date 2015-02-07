@@ -52,6 +52,10 @@ public class SecAbstractTerminal extends AbstractTimedData {
 	@Description("SecTerminal_macAddress_description")
 	private String macAddress;
 	
+	@Column
+	@Description("SecTerminal_langIso2_description")
+	private String langIso2;	
+	
 	public SecAbstractTerminal() {}
 
 	public SecAbstractTerminal(SecAbstractTerminal d) {
@@ -65,6 +69,7 @@ public class SecAbstractTerminal extends AbstractTimedData {
 		this.authUsers = d.authUsers;
 		this.authWorkspaces = d.authWorkspaces;
 		this.macAddress = d.macAddress;
+		this.langIso2 = d.langIso2;
 	}
 
 	public String getTermName() {
@@ -143,5 +148,12 @@ public class SecAbstractTerminal extends AbstractTimedData {
 	protected String makeIdentif() {
 		return termId;
 	}
-	
+
+	public String getLangIso2() {
+		return langIso2;
+	}
+
+	public void setLangIso2(String langIso2) {
+		this.langIso2 = langIso2;
+	}
 }

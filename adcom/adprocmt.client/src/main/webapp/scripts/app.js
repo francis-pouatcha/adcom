@@ -44,7 +44,7 @@ angular.module('AdProcmt', [
         urlTemplate: '{part}/locale-{lang}.json'
     });
 
-	$translateProvider.preferredLanguage('fr');
+	
     
 }])
 
@@ -62,6 +62,7 @@ angular.module('AdProcmt', [
     $rootScope.appName = APP_CONFIG.appName ;
     $rootScope.appVersion = APP_CONFIG.appVersion ;
     sessionManager.appMenuUrl("/adprocmt.client/menu.html");
+    $translatePartialLoader.addPart('/adprocmt.client/i18n/main');
     $rootScope.sessionManager = sessionManager;
     $rootScope.$on('$locationChangeStart', function (event, next, current) {
     	var noSess = !sessionManager.hasValues(sessionManager.terminalSession(), sessionManager.userSession());
@@ -69,7 +70,8 @@ angular.module('AdProcmt', [
 			var sessParam = $location.search();
 			if(sessParam && sessionManager.hasValues(sessParam.trm,sessParam.usr)){
 				sessionManager.wsin(sessParam.trm,sessParam.usr,
-					function(){
+					function(data, status, headers, config){
+						sessionManager.language(headers('X-USER-LANG'),false);
 						$location.path('/');
 					}
 				);
@@ -77,6 +79,4 @@ angular.module('AdProcmt', [
     	}
     });
 
-	$translatePartialLoader.addPart('/adprocmt.client/i18n/main');
-	$translate.refresh();
 }]);

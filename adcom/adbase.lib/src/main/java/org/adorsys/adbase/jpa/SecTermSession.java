@@ -77,6 +77,10 @@ public class SecTermSession extends AbstractMvmtData {
 	@Description("SecTermSession_ipAddress_description")
 	private String ipAddress;
 
+	@Column
+	@Description("SecTermSession_langIso2_description")
+	private String langIso2;
+	
 	@PrePersist
 	public void prePersist() {
 		if(StringUtils.isBlank(getId()));
@@ -154,5 +158,12 @@ public class SecTermSession extends AbstractMvmtData {
 	public void setIpAddress(String ipAddress) {
 		this.ipAddress = ipAddress;
 	}
-	
+
+	public String getLangIso2() {
+		return langIso2;
+	}
+
+	public void setLangIso2(String langIso2) {
+		this.langIso2 = langIso2;
+	}
 }

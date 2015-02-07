@@ -44,9 +44,6 @@ angular.module('AdAcc', [
     $translateProvider.useLoader('$translatePartialLoader', {
         urlTemplate: '{part}/locale-{lang}.json'
     });
-
-	$translateProvider.preferredLanguage('fr');
-    
 }])
 
 .controller('LandingPageController', function LandingPageController() {})
@@ -62,6 +59,7 @@ angular.module('AdAcc', [
       function ($rootScope, $location, sessionManager,$translate,APP_CONFIG,$translatePartialLoader) {
     $rootScope.appName = APP_CONFIG.appName ;
     $rootScope.appVersion = APP_CONFIG.appVersion ;
+    $translatePartialLoader.addPart('/adacc.client/i18n/main');
     sessionManager.appMenuUrl("/adacc.client/menu.html");
     $rootScope.sessionManager = sessionManager;
     $rootScope.$on('$locationChangeStart', function (event, next, current) {
@@ -70,7 +68,8 @@ angular.module('AdAcc', [
 			var sessParam = $location.search();
 			if(sessParam && sessionManager.hasValues(sessParam.trm,sessParam.usr)){
 				sessionManager.wsin(sessParam.trm,sessParam.usr,
-					function(){
+					function(data, status, headers, config){
+						sessionManager.language(headers('X-USER-LANG'),false);
 						$location.path('/');
 					}
 				);
@@ -78,6 +77,4 @@ angular.module('AdAcc', [
     	}
     });
 
-	$translatePartialLoader.addPart('/adacc.client/i18n/main');
-	$translate.refresh();
 }]);

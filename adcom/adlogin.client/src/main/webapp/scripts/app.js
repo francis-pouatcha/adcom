@@ -42,7 +42,7 @@ angular.module('AdLogin', [
         urlTemplate: '{part}/locale-{lang}.json'
     });
 
-	$translateProvider.preferredLanguage('fr');	
+		
 }])
 
 .run(['$rootScope', '$location','sessionManager','$translate','APP_CONFIG','workspaceService','$translatePartialLoader',
@@ -50,13 +50,21 @@ angular.module('AdLogin', [
 	    $rootScope.appName = APP_CONFIG.appName ;
 	    $rootScope.appVersion = APP_CONFIG.appVersion ;
 	    $rootScope.sessionManager = sessionManager;
-	    
+    	$translatePartialLoader.addPart('/adlogin.client/i18n/main');    	
+		$translate.refresh();		
 	    sessionManager.workspaceLink("#/workspaces");// Special handling for the login application.
 	    sessionManager.workspaces(function(){
         	if($location.path()!='/workspaces'){
         		$location.path('/workspaces');
         	} else {
-        		workspaceService.loadWorkspaces(function(data, status, headers, config){}, function(data, status, headers, config){});
+        		workspaceService.loadWorkspaces(
+    				function(data, status, headers, config){
+    					sessionManager.language(headers('X-USER-LANG'),true);
+    				}, 
+    				function(data, status, headers, config){
+    					sessionManager.language(headers('X-USER-LANG'),true);
+    				}
+        		);
         	}
     	});
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
@@ -67,19 +75,28 @@ angular.module('AdLogin', [
         		if(path=='/workspaces' || path=='/' || path==''){
         			var sessParam = $location.search();
         			if(sessParam && sessionManager.hasValues(sessParam.trm,sessParam.usr)){
-        				sessionManager.wsin(sessParam.trm,sessParam.usr,function(){});
+        				sessionManager.wsin(sessParam.trm,sessParam.usr,
+        					function(data, status, headers, config){
+        						sessionManager.language(headers('X-USER-LANG'),false);
+        					}
+        				);
         			}
         		}	
         	}
         	noSess = !sessionManager.hasValues(sessionManager.terminalSession(), sessionManager.userSession());
+        	if(noSess){
+	    		workspaceService.loadWorkspaces(
+    				function(data, status, headers, config){
+    					sessionManager.language(headers('X-USER-LANG'),true);
+    				}, 
+    				function(data, status, headers, config){
+    					sessionManager.language(headers('X-USER-LANG'),true);
+    				}
+	        	);
+        	}
         	if(noLoginPath && noSess){
 				$location.path('/login');
         	}
         });
-
-    	$translatePartialLoader.addPart('/adlogin.client/i18n/main');
-    	$translate.use(sessionManager.language());
-    	$translate.refresh();
-    	
     }]
 );

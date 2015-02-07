@@ -36,7 +36,7 @@ angular.module('AdInvtry', [
         urlTemplate: '{part}/locale-{lang}.json'
     });
 
-	$translateProvider.preferredLanguage('fr');
+	
     
 }])
 
@@ -53,6 +53,7 @@ angular.module('AdInvtry', [
       function ($rootScope, $location, sessionManager,$translate,APP_CONFIG,$translatePartialLoader) {
     $rootScope.appName = APP_CONFIG.appName ;
     $rootScope.appVersion = APP_CONFIG.appVersion ;
+    $translatePartialLoader.addPart('/adinvtry.client/i18n/main');
     sessionManager.appMenuUrl("/adinvtry.client/menu.html");
     $rootScope.sessionManager = sessionManager;
     $rootScope.$on('$locationChangeStart', function (event, next, current) {
@@ -61,7 +62,8 @@ angular.module('AdInvtry', [
 			var sessParam = $location.search();
 			if(sessParam && sessionManager.hasValues(sessParam.trm,sessParam.usr)){
 				sessionManager.wsin(sessParam.trm,sessParam.usr,
-					function(){
+					function(data, status, headers, config){
+						sessionManager.language(headers('X-USER-LANG'),false);
 						$location.path('/');
 					}
 				);
@@ -69,7 +71,5 @@ angular.module('AdInvtry', [
     	}
     });
 
-	$translatePartialLoader.addPart('/adinvtry.client/i18n/main');
-	$translate.refresh();
 }]);
 

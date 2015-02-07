@@ -10,13 +10,17 @@ angular.module('pascalprecht.translate');
 angular.module('NavBar',[
      'SessionManager',
      'AuthInterceptor',
-     'pascalprecht.translate'
+     'pascalprecht.translate',
+     'ADUtils'
 ])
+.run(['$translate','$translatePartialLoader',
+      function($translate,$translatePartialLoader){
+	$translatePartialLoader.addPart('/adres.client/i18n/shared');
+	$translate.refresh();		
+}])
 .controller('navbarCtrl', 
 	['$scope', '$translate','$translatePartialLoader', '$rootScope','sessionManager','$location', 
 		 function ($scope, $translate, $translatePartialLoader, $rootScope,sessionManager,$location) {
-			$translatePartialLoader.addPart('/adres.client/i18n/shared');
-			$translate.refresh();
 
 			$rootScope.$on('$translateChangeSuccess', function () {
 				 $translate(['workspace_ouWsIdentif', 'workspace_user', 'workspace_appMenu','workspace_logOut'])
@@ -37,19 +41,17 @@ angular.module('NavBar',[
 	        $scope.currentWs = sessionManager.userWsData();
 	        $scope.hasWorkspace = function(){
 	        	return sessionManager.isSet($scope.currentWs.roleIdentif);
-	        }
+	        };
 	        $scope.switchTo = function(langKey){
 	        	return !$scope.hasWorkspace() && sessionManager.language()!=langKey;
-	        }
+	        };
 			$scope.changeLanguage = function (langKey) {
-	            $translate.use(langKey);
-	            $translate.refresh();
+				sessionManager.language(langKey,false);
 	        };
 	        $scope.matchesRoute = function(route) {
 	        	var path = $location.path();
 	        	return (path === ("/" + route) || path.indexOf("/" + route + "/") == 0);
 	        };
-	        
 		}
 	]
 );

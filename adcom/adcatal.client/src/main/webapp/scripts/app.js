@@ -62,7 +62,7 @@ angular.module('AdCatal', [
         urlTemplate: '{part}/locale-{lang}.json'
     });
 
-	$translateProvider.preferredLanguage('fr');
+	
     
 }])
 //
@@ -77,6 +77,7 @@ angular.module('AdCatal', [
       function ($rootScope, $location, sessionManager,$translate,APP_CONFIG,$translatePartialLoader) {
     $rootScope.appName = APP_CONFIG.appName ;
     $rootScope.appVersion = APP_CONFIG.appVersion ;
+    $translatePartialLoader.addPart('/adcatal.client/i18n/main');
     sessionManager.appMenuUrl("/adcatal.client/menu.html");
     $rootScope.sessionManager = sessionManager;
     $rootScope.$on('$locationChangeStart', function (event, next, current) {
@@ -85,15 +86,12 @@ angular.module('AdCatal', [
 			var sessParam = $location.search();
 			if(sessParam && sessionManager.hasValues(sessParam.trm,sessParam.usr)){
 				sessionManager.wsin(sessParam.trm,sessParam.usr,
-					function(){
+					function(data, status, headers, config){
+						sessionManager.language(headers('X-USER-LANG'),false);
 						$location.path('/');
 					}
 				);
 			}
     	}
     });
-
-	$translatePartialLoader.addPart('/adcatal.client/i18n/main');
-	$translate.use(sessionManager.language());
-	$translate.refresh();
 }]);

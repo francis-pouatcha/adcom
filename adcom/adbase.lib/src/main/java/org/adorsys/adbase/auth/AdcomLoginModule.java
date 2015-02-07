@@ -23,24 +23,18 @@ import javax.security.jacc.PolicyContextException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.adorsys.adbase.jpa.Login;
-import org.adorsys.adbase.jpa.SecTermCredtl;
 import org.adorsys.adbase.jpa.SecTermSession;
 import org.adorsys.adbase.jpa.SecTerminal;
 import org.adorsys.adbase.jpa.SecUserSession;
 import org.adorsys.adbase.jpa.UserWorkspace;
 import org.adorsys.adbase.rest.LoginEJB;
-import org.adorsys.adbase.rest.SecTermCredtlEJB;
-import org.adorsys.adbase.rest.SecTermSessionEJB;
-import org.adorsys.adbase.rest.SecTerminalEJB;
 import org.adorsys.adbase.rest.SecUserSessionEJB;
 import org.adorsys.adbase.rest.UserWorkspaceEJB;
 import org.adorsys.adcore.auth.AuthParams;
 import org.adorsys.adcore.auth.OpId;
 import org.adorsys.adcore.auth.TermCdtl;
 import org.adorsys.adcore.auth.TermWsUserPrincipal;
-import org.adorsys.adcore.utils.AccessTimeValidator;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.jboss.security.SecurityConstants;
 import org.jboss.security.SimpleGroup;
 import org.jboss.security.SimplePrincipal;
@@ -60,35 +54,22 @@ public class AdcomLoginModule implements LoginModule {
 	protected boolean loginOk;
 
 	private LoginEJB loginEJB;
-	private SecTermSessionEJB secTermSessionEJB;
-	private SecTermCredtlEJB secTermCredtlEJB;
-	private SecTerminalEJB secTerminalEJB;
 	private SecUserSessionEJB secUserSessionEJB;
 	private UserWorkspaceEJB userWorkspaceEJB;
 	private LoginModuleTx loginModuleTx;
 
 	private TermWsUserPrincipal newPrincipal;
-//	
-//	private String opr = null;
 
 	@Override
 	public void initialize(Subject subject, CallbackHandler callbackHandler,
 			Map<String, ?> sharedState, Map<String, ?> options) {
 		this.subject = subject;
 		this.callbackHandler = callbackHandler;
-		// this.sharedState = sharedState;
-		// this.options = options;
 
 		InitialContext initialContext;
 		try {
 			initialContext = new InitialContext();
 			loginEJB = (LoginEJB) initialContext.lookup("java:module/LoginEJB");
-			secTermSessionEJB = (SecTermSessionEJB) initialContext
-					.lookup("java:module/SecTermSessionEJB");
-			secTermCredtlEJB = (SecTermCredtlEJB) initialContext
-					.lookup("java:module/SecTermCredtlEJB");
-			secTerminalEJB = (SecTerminalEJB) initialContext
-					.lookup("java:module/SecTerminalEJB");
 			secUserSessionEJB = (SecUserSessionEJB) initialContext
 					.lookup("java:module/SecUserSessionEJB");
 			userWorkspaceEJB = (UserWorkspaceEJB) initialContext
@@ -122,11 +103,15 @@ public class AdcomLoginModule implements LoginModule {
 		// after successful authentication of terminal, authenticate user.
 		AuthParams auth = BasicAuthUtils.readAuthHeader(request);
 		TermCdtl termCdtl = readTermCredtl();
-//		opr = auth.getOpr();
 		
-		SecTermSession secTermSession = readTerminalSession(auth, termCdtl, request);
+		/*
+		 * Check the terminal session.
+		 */
+		SecTermSession secTermSession = loginModuleTx.readTerminalSession(auth, termCdtl, request);
 		if(secTermSession==null) return false;
-		SecTerminal secTerminal = readAndCheckSecTerminal(secTermSession, request, currentDate);
+		
+		SecTerminal secTerminal = loginModuleTx.readAndCheckSecTerminal(secTermSession, request, currentDate);
+		if(secTerminal==null) return false;
 
 		TermWsUserPrincipal existingPrincipal = (TermWsUserPrincipal) request.getUserPrincipal();
 		if(existingPrincipal!=null && !StringUtils.equals(existingPrincipal.getUserSessionId(), secTermSession.getUserSession()))
@@ -136,7 +121,7 @@ public class AdcomLoginModule implements LoginModule {
 		// So far terminal valid
 		SecUserSession existingUserSession = null;
 		if(StringUtils.isNotBlank(secTermSession.getUserSession()))existingUserSession = secUserSessionEJB.findById(secTermSession.getUserSession());
-		
+				
 		// login
 		if (OpId.login.name().equals(auth.getOpr())) {
 			
@@ -332,7 +317,6 @@ public class AdcomLoginModule implements LoginModule {
 		Set<Principal> principals = subject.getPrincipals();
 		Set<SimplePrincipal> principals2Remove = subject.getPrincipals(SimplePrincipal.class);
 		principals.removeAll(principals2Remove);
-//		TermWsUserPrincipal
 		Set<TermWsUserPrincipal> principals2Remove2 = subject.getPrincipals(TermWsUserPrincipal.class);
 		principals.removeAll(principals2Remove2);
 		return true;
@@ -344,29 +328,7 @@ public class AdcomLoginModule implements LoginModule {
 			request.setAttribute(key, value);
 		return false;
 	}
-	
-	private boolean checkTermAccessTime(HttpServletRequest request, String accessTime, String timeZone){
-		if(StringUtils.isBlank(accessTime) || StringUtils.isBlank(timeZone)) return true;
-		if(!AccessTimeValidator.check(accessTime, timeZone))
-			return returnWithAttr(request, "AUTH-ERROR",
-					MessagesKeys.TERM_ACCESS_TIME_ERROR.name());
-		return true;
-	}
-	
-	private boolean checkLocality(HttpServletRequest request, String locality){
-		if(StringUtils.isBlank(locality)) return true;
-		
-		// check locality
-		
-		return true;
-	}
 
-	private boolean checkValidity(HttpServletRequest request, Date validFrom, Date validTo, Date currentDate){
-		if((validFrom!=null && currentDate.before(validFrom)) || (validTo!=null && currentDate.after(validTo)))
-			return returnWithAttr(request, "AUTH-ERROR",MessagesKeys.TERM_VALIDITY_ERROR.name());
-		return true;
-	}
-	
 	private TermCdtl readTermCredtl(){
 		NameCallback nameCallback = new NameCallback("Enter your user name: ");
 		PasswordCallback passwordCallback = new PasswordCallback(
@@ -382,97 +344,6 @@ public class AdcomLoginModule implements LoginModule {
 		char[] termPwd = passwordCallback.getPassword();
 		String termPwdStr = new String(termPwd);
 		return TermCdtl.fromString(termPwdStr);
-	}
-	
-	private SecTermSession readTerminalSession(AuthParams auth, TermCdtl termCdtl, HttpServletRequest request){
-		String opr = auth.getOpr();
-		String providedTermCred = termCdtl.getCre();
-		SecTermCredtl secTermCredtl = secTermCredtlEJB.findById(providedTermCred);
-		if (secTermCredtl == null){
-			returnWithAttr(request, "AUTH-ERROR",
-					MessagesKeys.TERM_CRED_NOT_FOUND_ERROR.name());
-			return null;
-		}
-
-		if (StringUtils.isBlank(auth.getTrm())){
-			// This situation can only happen in the case of a login or workspace in.
-			if(!OpId.login.name().equals(opr)){
-				returnWithAttr(request, "AUTH-ERROR",
-						MessagesKeys.NO_TERM_SESSION_ERROR.name());
-				return null;
-			}
-		}
-		
-		SecTermSession secTermSession = null;
-
-		String storedTermSessionId = secTermCredtl.getTermSessionId();
-		// Means there is no session associated with this terminal
-		if(StringUtils.isNotBlank(auth.getTrm())){
-			if(!StringUtils.equals(storedTermSessionId,auth.getTrm())){
-				// This can not be.
-				returnWithAttr(request, "AUTH-ERROR",
-						MessagesKeys.WRONG_TERM_SESSION_ERROR.name());
-				return null;
-			}
-			secTermSession = secTermSessionEJB.findById(auth
-					.getTrm());
-			if (secTermSession != null) return secTermSession;
-			
-			returnWithAttr(request, "AUTH-ERROR",
-				MessagesKeys.NO_TERM_SESSION_ERROR.name());
-			return null;
-		}
-
-		if(StringUtils.isBlank(storedTermSessionId)){
-			if(StringUtils.isBlank(termCdtl.getCert())){
-				returnWithAttr(request, "AUTH-ERROR",
-						MessagesKeys.NO_TERM_SESSION_ERROR.name());
-				return null;
-			} 
-			// create the term session
-			Date now = new Date();
-			secTermSession = new SecTermSession();
-			secTermSession.setTermName(secTermCredtl.getTermName());
-			secTermSession.setCreated(now);
-			secTermSession.setExpires(DateUtils.addYears(now, 1));
-			secTermSession.setTermId(secTermCredtl.getTermId());
-			secTermSession.setTermCredtl(secTermCredtl.getId());
-			secTermSession = secTermSessionEJB.create(secTermSession);
-			storedTermSessionId = secTermSession.getId();
-			secTermCredtl.setTermSessionId(storedTermSessionId);
-			secTermCredtlEJB.update(secTermCredtl);
-			return secTermSession;
-		}
-
-		// Identify the terminal
-		secTermSession = secTermSessionEJB.findById(storedTermSessionId);
-		if (secTermSession == null){
-			returnWithAttr(request, "AUTH-ERROR",
-					MessagesKeys.TERM_CRED_NOT_FOUND_ERROR.name());
-			return null;
-		}
-		// validate the session if not a ssl session
-		if(StringUtils.isBlank(termCdtl.getCert()) && !StringUtils.equals(auth.getTky(), secTermSession.getTermKey())){
-			returnWithAttr(request, "AUTH-ERROR",
-					MessagesKeys.TERM_AUTH_ERROR.name());
-			return null;
-		}
-		return secTermSession;
-	}
-	
-	private SecTerminal readAndCheckSecTerminal(SecTermSession secTermSession, HttpServletRequest request, Date currentDate){
-		SecTerminal secTerminal = secTerminalEJB.findById(secTermSession.getTermId());
-		if (secTerminal == null){
-			returnWithAttr(request, "AUTH-ERROR",
-					MessagesKeys.UNKNOWN_TERM_ERROR.name());
-			return null;
-		}
-
-		// Validate terminal
-		if(!checkLocality(request, secTerminal.getLocality())) return null;
-		if(!checkValidity(request, secTerminal.getValidFrom(), secTerminal.getValidTo(), currentDate)) return null;
-		if(!checkTermAccessTime(request, secTerminal.getAccessTime(), secTerminal.getTimeZone())) return null;
-		return secTerminal;
 	}
 	
 	/**

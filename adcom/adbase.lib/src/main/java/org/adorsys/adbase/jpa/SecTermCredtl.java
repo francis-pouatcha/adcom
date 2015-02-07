@@ -59,6 +59,10 @@ public class SecTermCredtl extends AbstractMvmtData {
 	@NotNull
 	private Date expires;
 
+	@Column
+	@Description("SecTermSession_langIso2_description")
+	private String langIso2;
+
 	@PrePersist
 	public void prePersist() {
 		if(StringUtils.isBlank(getId()));
@@ -112,5 +116,12 @@ public class SecTermCredtl extends AbstractMvmtData {
 	public void setTermSessionId(String termSessionId) {
 		this.termSessionId = termSessionId;
 	}
-	
+
+	public String getLangIso2() {
+		return langIso2;
+	}
+
+	public void setLangIso2(String langIso2) {
+		this.langIso2 = langIso2;
+	}
 }

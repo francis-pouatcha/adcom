@@ -289,8 +289,6 @@ angular.module('AdBase', [
     $translateProvider.useLoader('$translatePartialLoader', {
         urlTemplate: '{part}/locale-{lang}.json'
     });
-
-	$translateProvider.preferredLanguage('fr');
     
 }])
 
@@ -298,6 +296,7 @@ angular.module('AdBase', [
     function ($rootScope, $location, loginService, sessionManager,$translate,APP_CONFIG,$translatePartialLoader) {
 	    $rootScope.appName = APP_CONFIG.appName ;
 	    $rootScope.appVersion = APP_CONFIG.appVersion ;
+	    $translatePartialLoader.addPart('/adbase.client/i18n/main');
 	    sessionManager.appMenuUrl("/adbase.client/menu_resp.html");
 	    $rootScope.sessionManager = sessionManager;
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
@@ -307,7 +306,8 @@ angular.module('AdBase', [
     			var sessParam = $location.search();
     			if(sessParam && sessionManager.hasValues(sessParam.trm,sessParam.usr)){
     				sessionManager.wsin(sessParam.trm,sessParam.usr,
-    					function(){
+    					function(data, status, headers, config){
+							sessionManager.language(headers('X-USER-LANG'),false);
     						loginService.loadLogins(
     		        			function(data, status, headers, config){
     		        				$location.path('/');
@@ -318,7 +318,5 @@ angular.module('AdBase', [
     			}
         	}
         });
-        $translatePartialLoader.addPart('/adbase.client/i18n/main');
-    	$translate.refresh();
     }]
 );
