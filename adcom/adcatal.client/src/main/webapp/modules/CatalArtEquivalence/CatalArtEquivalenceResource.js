@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('AdProcmt').factory('catalArticleResource',['$http', function($http){
+angular.module('AdCatal').factory('catalArtEquivalenceResource',['$http', function($http){
     var service = {};
-    var urlBase = '/adcatal.server/rest/catalarticles',
+    var urlBase = '/adcatal.server/rest/catalartequivalences',
     searchInput = {
         entity:{},
         start:0,
@@ -22,18 +22,7 @@ angular.module('AdProcmt').factory('catalArticleResource',['$http', function($ht
     service.findBy = function(entitySearchInput){
         return $http.post(urlBase+'/findBy',entitySearchInput);
     };
-
-    service.findCustom = function(entitySearchInput){
-        return $http.post(urlBase+'/findCustom',entitySearchInput);
-    };
-
-    service.findByNameStartWith = function(entitySearchInput){
-        return $http.post(urlBase+'/findByNameStartWith',entitySearchInput);
-    };
-
-    service.findByPicLike = function(entitySearchInput){
-        return $http.post(urlBase+'/findByPicLike',entitySearchInput);
-    };
+    
 
     service.findByIdentif = function(identif){
         return $http.get(urlBase+'/'+identif);
@@ -41,14 +30,6 @@ angular.module('AdProcmt').factory('catalArticleResource',['$http', function($ht
 
     service.deleteById = function(entityId){
         return $http.delete(urlBase+'/'+entityId);
-    };
-
-    service.next = function(entityId){
-        return $http.get(urlBase+'/next/'+entityId);
-    };
-
-    service.previous = function(entityId){
-        return $http.get(urlBase+'/previous/'+entityId);
     };
 
     service.listAll = function(start,max){

@@ -52,6 +52,8 @@
     "Entity_validFrom.title":"Valide du",
     "Entity_validTo.title":"Valide au",
     "Entity_Result.title":"Résultat",
+    "Entity_By.title":"Par",
+    "Entity_Of.title":"Du",
     "Entity_required.title":"Requis",
     
     "BaseCountryName_isoCode_description.title":"Code Pays",

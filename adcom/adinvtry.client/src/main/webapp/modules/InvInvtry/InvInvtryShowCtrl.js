@@ -1,13 +1,13 @@
 'use strict';
 
-angular.module('AdProcmt').controller('prcmtDeliveryShowCtlr',['$scope','prcmtDeliveryResource','catalArticleResource','prcmtDeliveryManagerResource','$routeParams','$location','$q',function($scope,prcmtDeliveryResource,catalArticleResource,prcmtDeliveryManagerResource,$routeParams,$location,$q){
+angular.module('AdInvtry').controller('invInvtryShowCtlr',['$scope','invtryResource','catalArticleResource','$routeParams','$location','$q',function($scope,invtryResource,catalArticleResource,$routeParams,$location,$q){
     var self = this ;
-    $scope.prcmtDeliveryShowCtlr = self;
-    self.prcmtDelivery = {};
-    self.prcmtDeliveryItemHolder = {
+    $scope.invInvtryShowCtlr = self;
+    self.invInvtry = {};
+    self.invInvtryItemHolder = {
         dlvryItem:{}
     };
-    self.prcmtDeliveryItemHolders = [];
+    self.invInvtryItemHolders = [];
     self.error = "";
     self.loadArticlesByNameLike = loadArticlesByNameLike;
     self.loadArticlesByCipLike = loadArticlesByCipLike;
@@ -28,9 +28,9 @@ angular.module('AdProcmt').controller('prcmtDeliveryShowCtlr',['$scope','prcmtDe
 
     function load(){
         var identif = $routeParams.identif;
-        prcmtDeliveryResource.findByIdentif(identif)
+        invtryResource.findByIdentif(identif)
             .success(function(data){
-                self.prcmtDelivery = data;
+                self.invInvtry = data;
             })
             .error(function(error){
                 self.error = error;
@@ -51,7 +51,7 @@ angular.module('AdProcmt').controller('prcmtDeliveryShowCtlr',['$scope','prcmtDe
             searchInput.fieldNames.push('features.artName') ;
             searchInput.entity.features.langIso2='fr';
         }
-        return findByNameStartWith(searchInput).then(function(entitySearchResult){
+        return findCustomArticle(searchInput).then(function(entitySearchResult){
             return entitySearchResult.resultList;
         });
     }
@@ -69,26 +69,14 @@ angular.module('AdProcmt').controller('prcmtDeliveryShowCtlr',['$scope','prcmtDe
             searchInput.entity.pic = pic;
             searchInput.fieldNames.push('pic') ;
         }
-        return findByPicLike(searchInput).then(function(entitySearchResult){
+        return findCustomArticle(searchInput).then(function(entitySearchResult){
             return entitySearchResult.resultList;
         });
     }
 
-    function findByNameStartWith (searchInput) {
+    function findCustomArticle (searchInput) {
         var deferred = $q.defer();
-        catalArticleResource.findByNameStartWith(searchInput)
-            .success(function(entitySearchResult) {
-                deferred.resolve(entitySearchResult);
-            })
-            .error(function(){
-                deferred.reject("No Article");
-            });
-        return deferred.promise;
-    }
-
-    function findByPicLike (searchInput) {
-        var deferred = $q.defer();
-        catalArticleResource.findByPicLike(searchInput)
+        catalArticleResource.findCustom(searchInput)
             .success(function(entitySearchResult) {
                 deferred.resolve(entitySearchResult);
             })
@@ -99,18 +87,16 @@ angular.module('AdProcmt').controller('prcmtDeliveryShowCtlr',['$scope','prcmtDe
     }
 
     function onSelect(item,model,label){
-        self.prcmtDeliveryItemHolder.dlvryItem.artPic = item.pic;
-        self.prcmtDeliveryItemHolder.dlvryItem.artName = item.features.artName;
+        self.invInvtryItemHolder.invInvtryItem.artPic = item.pic;
+        self.invInvtryItemHolder.invInvtryItem.artName = item.features.artName;
         self.taux = "";
     }
 
     function save(){
-        var prcmtDeliveryHolder = {};
-        prcmtDeliveryHolder.delivery = self.prcmtDelivery;
-        prcmtDeliveryHolder.deliveryItems = self.prcmtDeliveryItemHolders;
-        prcmtDeliveryManagerResource.update(prcmtDeliveryHolder).success(function(){
-            //update succes
-        });
+        var invInvtryHolder = {};
+        invInvtryHolder.invInvtry = self.invInvtry;
+        invInvtryHolder.invInvtryItems = self.invInvtryItemHolders;
+        //save
     }
 
     function close () {
@@ -118,31 +104,31 @@ angular.module('AdProcmt').controller('prcmtDeliveryShowCtlr',['$scope','prcmtDe
     }
 
     function addItem(){
-        self.prcmtDeliveryItemHolders.push(self.prcmtDeliveryItemHolder);
-        self.prcmtDeliveryItemHolder = {dlvryItem:{}};
+        self.invInvtryItemHolders.push(self.invInvtryItemHolder);
+        self.invInvtryItemHolder = {dlvryItem:{}};
         self.taux = "";
         calculTotalAmountEntered();
     }
     function deleteItem(index){
-        self.prcmtDeliveryItemHolders.splice(index);
+        self.invInvtryItemHolders.splice(index);
         calculTotalAmountEntered();
     }
     function editItem(index){
         self.taux = "";
-        angular.copy(self.prcmtDeliveryItemHolders[index],self.prcmtDeliveryItemHolder) ;
+        angular.copy(self.invInvtryItemHolders[index],self.invInvtryItemHolder) ;
         deleteItem(index);
     }
 
     function tauxMultiplicateur(){
-        if(self.prcmtDeliveryItemHolder.dlvryItem.pppuPreTax && self.taux){
-            self.prcmtDeliveryItemHolder.dlvryItem.sppuPreTax = 1 * self.prcmtDeliveryItemHolder.dlvryItem.pppuPreTax + (self.prcmtDeliveryItemHolder.dlvryItem.pppuPreTax * (self.taux / 100)) ;
+        if(self.invInvtryItemHolder.invInvtryItem.pppuPreTax && self.taux){
+            self.invInvtryItemHolder.invInvtryItem.sppuPreTax = 1 * self.invInvtryItemHolder.invInvtryItem.pppuPreTax + (self.invInvtryItemHolder.invInvtryItem.pppuPreTax * (self.taux / 100)) ;
         }
     }
 
     function calculTotalAmountEntered(){
         self.totalAmountEntered = 0;
-        for(var i=0;i<self.prcmtDeliveryItemHolders.length;i++){
-            self.totalAmountEntered = self.totalAmountEntered + (self.prcmtDeliveryItemHolders[i].dlvryItem.pppuPreTax * self.prcmtDeliveryItemHolders[i].dlvryItem.qtyDlvrd);
+        for(var i=0;i<self.invInvtryItemHolders.length;i++){
+            self.totalAmountEntered = self.totalAmountEntered + (self.invInvtryItemHolders[i].invInvtryItem.pppuPreTax * self.invInvtryItemHolders[i].invInvtryItem.qtyDlvrd);
         }
 
     }

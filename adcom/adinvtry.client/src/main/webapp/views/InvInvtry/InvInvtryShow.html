@@ -1,17 +1,20 @@
 <div>
     <div class="well">
         <h4>
-            <a>PR0001</a> of 23-09-2014, <b>Delivery Slip No: </b>2035, <b>Amount Ht:</b> 86000 cfa,
-            <b>Amount Entered:</b> 13000 cfa
+            <a>{{invInvtryShowCtlr.invInvtry.invtryNbr}}</a> {{"Entity_Of.title" | translate}} {{invInvtryShowCtlr.invInvtry.invtryDt | date:'dd-MM-yyyy'}},
+            <b> {{"Entity_By.title" | translate}} : </b>{{invInvtryShowCtlr.invInvtry.acsngUser}},
+            <b>{{"InvInvtry_invtryStatus_description.title" | translate}} :</b> {{invInvtryShowCtlr.invInvtry.invtryStatus}}
             <p class="pull-right">
-                <button class=" btn btn-default" type="button">Cancel</button>
-                <button class=" btn btn-primary" type="button">Close</button>
+                <a class=" btn btn-default" href="#/"  type="button">Cancel</a>
+                <button class=" btn btn-primary" ng-click="invInvtryShowCtlr.save()" type="button">{{ "Entity_save.title" | translate }} </button>
+                <button class=" btn btn-primary" ng-click="invInvtryShowCtlr.close()" type="button">{{"Entity_saveleave.title" | translate}} </button>
             </p>
         </h4>
     </div>
     <div class="panel panel-default">
-        <div class="panel-heading"><b>Add Procurement Delivery Item</b> </div>
+        <div class="panel-heading"><b> {{"Entity_add.title"|translate}} {{"InvInvtryItem_description.title" | translate}} </b> </div>
         <div class="panel-body">
+            <form name="invInvtryItemForm" id="invInvtryItemForm" novalidate >
             <table class="table table-bordered" >
                 <thead>
                 <tr>
@@ -19,42 +22,43 @@
                     <th class="col-lg-3">Designation</th>
                     <th>Qte Stock</th>
                     <th>Qte</th>
-                    <th>Prix Vente</th>
-                    <th>prix Achat</th>
-                    <th>Taux Mul</th>
-                    <th>Date P</th>
                     <th></th>
                 </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <form>
+                            <input type="hidden" value="{{invInvtryShowCtlr.invInvtry.dlvryNbr}}" ng-model="invInvtryShowCtlr.invInvtryItemHolder.invInvtryItem.invtryNbr" >
                             <td>
-                                <input type="text" class="form-control" required autocomplete="off" ng-model="prcmtDeliveryShowCtlr.prcmtDeliveryItem.pic"
-                                       typeahead="article as article.pic for article in prcmtDeliveryShowCtlr.loadArticlesByCipLike($viewValue)"
-                                       typeahead-loading="loading" typeahead-on-select='prcmtDeliveryShowCtlr.onSelect($item, $model, $label)' >
+                                <div ng-class="{ 'has-error' : invInvtryItemForm.artPic.$invalid }" >
+                                    <input type="text" ng- class="form-control" name="artPic" id="artPic" required autocomplete="off" ng-model="invInvtryShowCtlr.invInvtryItemHolder.invInvtryItem.artPic"
+                                       typeahead="article as article.pic for article in  invInvtryShowCtlr.loadArticlesByCipLike($viewValue)"
+                                       typeahead-loading="loading" typeahead-on-select='invInvtryShowCtlr.onSelect($item, $model, $label)' >
+                                </div>
                             </td>
                             <td>
-                                <input type="text" class="form-control" required autocomplete="off" ng-model="prcmtDeliveryShowCtlr.prcmtDeliveryItem.artName"
-                                       typeahead="article as article.features.artName for article in prcmtDeliveryShowCtlr.loadArticlesByNameLike($viewValue)"
-                                       typeahead-loading="loading" typeahead-on-select='prcmtDeliveryShowCtlr.onSelect($item, $model, $label)' >
+                                <div ng-class="{ 'has-error' : invInvtryItemForm.artName.$invalid }" >
+                                    <input type="text" class="form-control" required id="artName" autocomplete="off" ng-model="invInvtryShowCtlr.invInvtryItemHolder.invInvtryItem.artName"
+                                       typeahead="article as article.features.artName for article in  invInvtryShowCtlr.loadArticlesByNameLike($viewValue)"
+                                       typeahead-loading="loading" typeahead-on-select='invInvtryShowCtlr.onSelect($item, $model, $label)' name="artName" >
+                                </div>
                             </td>
                             <td><input type="text" class="form-control" disabled ></td>
-                            <td><input type="text" class="form-control" ></td>
-                            <td><input type="text" class="form-control" ></td>
-                            <td><input type="text" class="form-control" ></td>
-                            <td><input type="text" class="form-control" ></td>
-                            <td><input type="text" class="form-control" placeholder="MMYY" ></td>
-                            <td><button class="btn btn-default" ><i class="glyphicon glyphicon-plus"></i> Add</button></td>
-                            <input type="hidden" name="identif" >
-                        </form>
+                            <td>
+                                <div ng-class="{ 'has-error' : invInvtryItemForm.qtyDlvrd.$invalid }" >
+                                    <input type="text" class="form-control" required name="qtyDlvrd" id="qtyDlvrd" ng-model="invInvtryShowCtlr.invInvtryItemHolder.invInvtryItem.qtyDlvrd" >
+                                </div>
+                            </td>
+                           
+                            <td><button class="btn btn-default" ng-disabled="invInvtryItemForm.$invalid" ng-click="invInvtryShowCtlr.addItem()" ><i class="glyphicon glyphicon-plus"></i> Add</button></td>
+
                     </tr>
                 </tbody>
             </table>
+          </form>
         </div>
     </div>
     <div class="panel panel-default">
-        <div class="panel-heading"><b>List Procurement Delivery Item</b> </div>
+        <div class="panel-heading"><b> {{"InvInvtryItem_description.title" | translate}} </b> </div>
         <div class="panel-body">
             <table class="table table-bordered  table-striped" >
                 <thead>
@@ -63,16 +67,18 @@
                     <th class="col-lg-3" >Designation</th>
                     <th>Qte Stock</th>
                     <th>Qte</th>
-                    <th>Prix Vente</th>
-                    <th>prix Achat</th>
-                    <th>Taux Mul</th>
-                    <th>Date P</th>
-                    <th></th>
                     <th></th>
                 </tr>
                 </thead>
                 <tbody>
-
+                    <tr ng-repeat="invInvtryItemHolder in invInvtryShowCtlr.invInvtryItemHolders"  >
+                        <td>{{invInvtryItemHolder.invInvtryItem.artPic}}</td>
+                        <td>{{invInvtryItemHolder.invInvtryItem.artName}}</td>
+                        <td>{{invInvtryItemHolder.invInvtryItem.artName}}</td>
+                        <td>{{invInvtryItemHolder.invInvtryItem.qtyDlvrd}}</td>
+                        <td><a ng-click="invInvtryShowCtlr.editItem($index)" class=""><i class="glyphicon glyphicon-edit"></i></a></td>
+                        <td><a ng-click="invInvtryShowCtlr.deleteItem($index)" class=""><i class="glyphicon glyphicon-trash"></i></a></td>
+                    </tr>
                 </tbody>
             </table>
         </div>

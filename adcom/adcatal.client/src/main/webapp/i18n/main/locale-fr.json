@@ -37,13 +37,15 @@
 "CatalArtDetailConfig_pptnOfDtldInMain_description.title":"La proportion détaillée",
 "CatalArtDetailConfig_mngInPptn_description.title":"Gérér En Proportion",
 
-"CatalArtEquivalence_artEquivCode_description.title":"Code of this Article Equivalence",
-"CatalArtEquivalence_description.text":"Un article équivalent à cet article",
-"CatalArtEquivalence_description.title":"Équivalences",
+
+"CatalArtEquivalence_artEquivCode_description.text":"Code de l'equivalence",
+"CatalArtEquivalence_artEquivCode_description.title":"Code equivalence",
+"CatalArtEquivalence_description.text":"Un article équivalent \u00E0 cet article",
+"CatalArtEquivalence_description.title":"Equivalence du Produit",
 "CatalArtEquivalence_equivArtIdentif_description.text":"Identifiant du Produit Equivalent",
-"CatalArtEquivalence_equivArtIdentif_description.title":"Identifiant du Produit Equivalent",
+"CatalArtEquivalence_equivArtIdentif_description.title":"Identifiant Produit Equivalent",
 "CatalArtEquivalence_mainArtIdentif_description.text":"Identifiant du Produit Principal",
-"CatalArtEquivalence_mainArtIdentif_description.title":"Identifiant du Produit Principal",
+"CatalArtEquivalence_mainArtIdentif_description.title":"Identifiant Produit Principal",
 
 "CatalAbstractFeatMapping_langIso2_description.text":"Code Language",
 "CatalAbstractFeatMapping_langIso2_description.title":"Code Language",

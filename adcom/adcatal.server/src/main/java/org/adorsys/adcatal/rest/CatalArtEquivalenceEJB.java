@@ -84,4 +84,9 @@ public class CatalArtEquivalenceEJB
 	   if(resultList.isEmpty()) return null;
 	   return resultList.iterator().next();
    }
+   
+   // Generate the equivalence code
+   public String generateEquivCode(String mainArtIdentif, String equivArtIdentif){
+	   return mainArtIdentif+"-"+equivArtIdentif;
+   }
 }
