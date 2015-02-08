@@ -1,17 +1,12 @@
 {
+	"current_language":"en",
+
 	"navbar_loginName":"Login Name",
 	"navbar_ouWsIdentif":"Workspace",
 	"navbar_user":"User",
 	"navbar_logOut":"Logout",
 	"navbar_appMenu":"Menu",
-
-    "New":"New",
-    "Create":"Create",
-    "idSize":"Id size",
-    "typeName":"Type name",
-    "paretnType":"Parent type",
-    "Ok":"Ok",
-    "print": "Print",
+    
     "Entity_leave.title": "leave",
     "Entity_change.title": "Change  ",
     "Entity_activate.title": "Activate ",
@@ -51,10 +46,23 @@
     "Entity_By.title":"By",
     "Entity_Of.title":"Of",
     "Entity_required.title":"Required",
+    "Entity_list.title":"List",
     
     "BaseCountryName_isoCode_description.title":"Country Code",
     "BaseCountryName_iso2_description.title":"Country Code Iso 2",
     "BaseCountryName_iso3_description.title":"Country Code Iso 3",
     "BaseCountryName_langsIso2_description.title":"Language",
-    "BaseCountryName_name_description.title":"Country Name"    
+    "BaseCountryName_name_description.title":"Country Name",
+    
+    "BaseGender_FEMALE_description.title":"Female",
+	"BaseGender_MALE_description.title":"Male",
+    
+    "BaseLanguage_fr_description.title":"French",
+    "BaseLanguage_en_description.title":"English",
+    
+	"workspace_loginName":"Login Name",
+	"workspace_ouWsIdentif":"Workspace",
+	"workspace_admin":"ADMINISTRATION",
+	"workspace_logOut":"Logout"
+    
 }

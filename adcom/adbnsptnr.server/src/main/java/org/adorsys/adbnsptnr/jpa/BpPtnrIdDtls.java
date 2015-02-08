@@ -6,16 +6,19 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.PrePersist;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
-import org.adorsys.adcore.jpa.AbstractTimedData;
+import org.adorsys.adcore.jpa.AbstractMvmtData;
+import org.adorsys.adcore.utils.SequenceGenerator;
 import org.adorsys.javaext.description.Description;
+import org.apache.commons.lang3.StringUtils;
 
 @Entity
 @Description("BpPtnrIdDtls_description")
-public class BpPtnrIdDtls extends AbstractTimedData {
+public class BpPtnrIdDtls extends AbstractMvmtData {
 
 	private static final long serialVersionUID = -1455712464712681064L;
 
@@ -25,8 +28,14 @@ public class BpPtnrIdDtls extends AbstractTimedData {
 	private String ptnrNbr;
 
 	@Column
+	@Description("BpPtnrIdDtls_idNbr_description")
+	@NotNull
+	private String idNbr;
+	
+	@Column
 	@Description("BpPtnrIdDtls_ptnrIdType_description")
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
+	@NotNull
 	private BpPtnrIdType ptnrIdType;
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -49,6 +58,12 @@ public class BpPtnrIdDtls extends AbstractTimedData {
 	@Description("BpPtnrIdDtls_issuingCtry_description")
 	private String issuingCtry;
 
+	@PrePersist
+	public void prePersist() {
+		if (StringUtils.isBlank(getId()))
+			setId(SequenceGenerator.getSequence(SequenceGenerator.ID_SEQUENCE_PREFIXE));
+	}
+	
 	public String getPtnrNbr() {
 		return this.ptnrNbr;
 	}
@@ -103,10 +118,5 @@ public class BpPtnrIdDtls extends AbstractTimedData {
 
 	public void setIssuingCtry(final String issuingCtry) {
 		this.issuingCtry = issuingCtry;
-	}
-
-	@Override
-	protected String makeIdentif() {
-		return ptnrNbr;
 	}
 }

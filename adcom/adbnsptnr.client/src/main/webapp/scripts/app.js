@@ -9,7 +9,9 @@ angular.module('AdBnsptnr', [
       'ngSanitize',
       'pascalprecht.translate',
       'NavBar',
-       'ngResource'
+       'ngResource',
+       'datePicker',
+       'ADUtils'
       
 ])
 .constant('APP_CONFIG',{
@@ -67,8 +69,8 @@ angular.module('AdBnsptnr', [
     
 }])
 
-.run(['$rootScope', '$location','sessionManager','$translate','APP_CONFIG','$translatePartialLoader',
-      function ($rootScope, $location, sessionManager,$translate,APP_CONFIG,$translatePartialLoader) {
+.run(['$rootScope', '$location','sessionManager','$translate','APP_CONFIG','$translatePartialLoader','commonTranslations',
+      function ($rootScope, $location, sessionManager,$translate,APP_CONFIG,$translatePartialLoader, commonTranslations) {
     $rootScope.appName = APP_CONFIG.appName ;
     $rootScope.appVersion = APP_CONFIG.appVersion ;
     $translatePartialLoader.addPart('/adbnsptnr.client/i18n/main');

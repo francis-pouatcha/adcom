@@ -19,6 +19,7 @@ public class BpPtnrContactEJB
 
    public BpPtnrContact create(BpPtnrContact entity)
    {
+	   increaseIndex(entity);
       return repository.save(attach(entity));
    }
 
@@ -83,5 +84,15 @@ public class BpPtnrContactEJB
 	   List<BpPtnrContact> resultList = repository.findByIdentif(identif, validOn).orderAsc("validFrom").maxResults(1).getResultList();
 	   if(resultList.isEmpty()) return null;
 	   return resultList.iterator().next();
+   }
+   
+   public void increaseIndex(final BpPtnrContact entity){
+	   List<BpPtnrContact> resultList = repository.findByPtnrNbrAndCntctRoleAndLangIso2(entity.getPtnrNbr(), entity.getCntctRole(), entity.getLangIso2()).orderDesc("cntctIndex").maxResults(1).getResultList();
+	   if(!resultList.isEmpty()){
+		   BpPtnrContact bpPtnrContact = resultList.iterator().next();
+		   entity.setCntctIndex(bpPtnrContact.getCntctIndex()+1);
+	   } else {
+		   entity.setCntctIndex(0);
+	   }
    }
 }

@@ -23,15 +23,21 @@ angular.module('NavBar',[
 		 function ($scope, $translate, $translatePartialLoader, $rootScope,sessionManager,$location) {
 
 			$rootScope.$on('$translateChangeSuccess', function () {
-				 $translate(['workspace_ouWsIdentif', 'workspace_user', 'workspace_appMenu','workspace_logOut'])
+				$translate(['workspace_ouWsIdentif', 'workspace_user', 'workspace_appMenu','workspace_logOut',
+				             'navbar_appMenu','navbar_loginName','navbar_ouWsIdentif','navbar_user','navbar_logOut'])
 				 .then(function (translations) {
 					 $scope.workspace_ouWsIdentif = translations.workspace_ouWsIdentif;
 					 $scope.workspace_user = translations.workspace_user;
 					 $scope.workspace_appMenu = translations.workspace_appMenu;
 					 $scope.workspace_logOut = translations.workspace_logOut;
+					 $scope.navbar_appMenu=translations.navbar_appMenu;
+					 $scope.navbar_loginName=translations.navbar_loginName;
+					 $scope.navbar_ouWsIdentif=translations.navbar_ouWsIdentif;
+					 $scope.navbar_user=translations.navbar_user;
+					 $scope.navbar_logOut=translations.navbar_logOut;
 			 	 });
+				 
 			});
-			
 			$scope.userSession = sessionManager.userSession;
 			$scope.loginName = sessionManager.loginName;
 			$scope.workspaceLink =sessionManager.workspaceLink;

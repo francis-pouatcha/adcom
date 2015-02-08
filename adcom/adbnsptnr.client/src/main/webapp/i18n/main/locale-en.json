@@ -16,6 +16,8 @@
 "BpBnsPtnr_ptnrType_description.title":"Partner Type",
 "BpBnsPtnr_fullName_description.text":"Name",
 "BpBnsPtnr_fullName_description.title":"Name",
+"BpBnsPtnr_findACountry_description.title":"Type to find a Country",
+"BpBnsPtnr_NoCountryFound_description.title":"No Country found",
 
 "BpCtgryDscnt_ctgryCode_description.text":"The code of this client category",
 "BpCtgryDscnt_ctgryCode_description.title":"Category Code",
@@ -80,8 +82,8 @@
 "BpPtnrAccntBlnce_side_description.text":"Side",
 "BpPtnrAccntBlnce_side_description.title":"Side",
 
-"BpPtnrContact_cntctRole_description.text":"Role of the contact",
-"BpPtnrContact_cntctRole_description.title":"Contact Role",
+"BpPtnrContact_cntctRole_description.text":"Type of the contact",
+"BpPtnrContact_cntctRole_description.title":"Type of Contact",
 "BpPtnrContact_description.text":"Partner Contact",
 "BpPtnrContact_description.title":"Partner Contact",
 "BpPtnrContact_description_description.text":"Description of this contact.",
@@ -138,23 +140,25 @@
 "BpPtnrIdDtls_ptnrIdType_description.title":"Identity Type",
 "BpPtnrIdDtls_ptnrNbr_description.text":"Identifier of this Partner",
 "BpPtnrIdDtls_ptnrNbr_description.title":"Identifier",
+"BpPtnrIdDtls_idNbr_description.title":"Number",
+"BpPtnrIdDtls_idNbr_description.text":"Number",
 
 "BpPtnrIdType_DRIVERLICNBR_description.text":"Driver Licence Number",
-"BpPtnrIdType_DRIVERLICNBR_description.title":"Driver Licence Number",
+"BpPtnrIdType_DRIVERLICNBR_description.title":"Driver Licence",
 "BpPtnrIdType_EMPLOYEENBR_description.text":"Employee Number",
-"BpPtnrIdType_EMPLOYEENBR_description.title":"Employee Number",
+"BpPtnrIdType_EMPLOYEENBR_description.title":"Employee Card",
 "BpPtnrIdType_IDCARDNBR_description.text":"National Identity Cart Number",
-"BpPtnrIdType_IDCARDNBR_description.title":"National Identity Cart Number",
+"BpPtnrIdType_IDCARDNBR_description.title":"National Identity Cart",
 "BpPtnrIdType_INSURED_description.text":"Insured",
-"BpPtnrIdType_INSURED_description.title":"Insured",
+"BpPtnrIdType_INSURED_description.title":"Insurance Card",
 "BpPtnrIdType_INSURER_description.text":"Insurer",
-"BpPtnrIdType_INSURER_description.title":"Insurer",
+"BpPtnrIdType_INSURER_description.title":"Insurer Card",
 "BpPtnrIdType_MEMBERSHIP_description.text":"Membership Card Number",
-"BpPtnrIdType_MEMBERSHIP_description.title":"Membership Card Number",
+"BpPtnrIdType_MEMBERSHIP_description.title":"Membership Card",
 "BpPtnrIdType_PASSPORTNBR_description.text":"Passport Number",
-"BpPtnrIdType_PASSPORTNBR_description.title":"Passport Number",
+"BpPtnrIdType_PASSPORTNBR_description.title":"Passport",
 "BpPtnrIdType_RESDTCARDNBR_description.text":"Resident Card Number",
-"BpPtnrIdType_RESDTCARDNBR_description.title":"Resident Card Number",
+"BpPtnrIdType_RESDTCARDNBR_description.title":"Resident Card",
 "BpPtnrIdType_description.text":"Partner Id Type.",
 "BpPtnrIdType_description.title":"Partner Id Type",
 
@@ -203,9 +207,6 @@
 "Insurrance_memberNbr_description.text":"Member Number",
 "Insurrance_memberNbr_description.title":"Member Number",
 
-"BpGender_FEMALE_description.title":"Female",
-"BpGender_MALE_description.title":"Male",
-
 "BpPtnrContactRole_MAIN_CONTACT_description.text":"Main Contact",
 "BpPtnrContactRole_MAIN_CONTACT_description.title":"Main Contact",
 "BpPtnrContactRole_ALT_CONTACT_description.text":"Alternative Contact",
@@ -214,6 +215,8 @@
 "BpPtnrContactRole_OFFICE_ADDRESS_description.title":"Office Address",
 "BpPtnrContactRole_HOME_ADDRESS_description.text":"Home Address",
 "BpPtnrContactRole_HOME_ADDRESS_description.title":"Home Address",
+"BpPtnrContactRole_PRIVATE_ADDRESS_description.text":"Private Address",
+"BpPtnrContactRole_PRIVATE_ADDRESS_description.title":"Private Address",
 "BpPtnrContactRole_DELIVERY_ADDRESS_description.text":"Delivery Address",
 "BpPtnrContactRole_DELIVERY_ADDRESS_description.title":"Delivery Address",
 "BpPtnrContactRole_INVOICE_ADDRESS_description.text":"Invoice Address",
@@ -222,6 +225,4 @@
 "BpPtnrContactRole_SUPPORT_CONTACT_description.title":"Info Address",
 "BpPtnrContactRole_EMERGENCY_CONTACT_description.text":"Emergency Contact",
 "BpPtnrContactRole_EMERGENCY_CONTACT_description.title":"Emergency Contact"
-
-
 }

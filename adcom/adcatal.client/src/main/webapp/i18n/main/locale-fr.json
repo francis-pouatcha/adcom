@@ -21,9 +21,13 @@
 "CatalArticle_sppu_description.title":"Prix de Vente Unitaire",
 "CatalArticle_vatRate_description.text":"The taux de TVA en pourcent.",
 "CatalArticle_vatRate_description.title":"Taux TVA",
+"CatalArticle_stockQty_description.text":"En Stock",
 "CatalArticle_stockQty_description.title":"En Stock",
+"CatalArticle_maxDisctRate_description.text":"Max Remise",
 "CatalArticle_maxDisctRate_description.title":"Max Remise",
+"CatalArticle_minStockQty_description.text":"Min Stock",
 "CatalArticle_minStockQty_description.title":"Min Stock",
+"CatalArticle_maxStockQty_description.text":"Max Stock",
 "CatalArticle_maxStockQty_description.title":"Max Stock",
 
 "CatalArtDetailConfig_description.title":"Détail",
@@ -36,7 +40,6 @@
 "CatalArtDetailConfig_qtyOfDtldInMain_description.title":"Quantité détaillée",
 "CatalArtDetailConfig_pptnOfDtldInMain_description.title":"La proportion détaillée",
 "CatalArtDetailConfig_mngInPptn_description.title":"Gérér En Proportion",
-
 
 "CatalArtEquivalence_artEquivCode_description.text":"Code de l'equivalence",
 "CatalArtEquivalence_artEquivCode_description.title":"Code equivalence",

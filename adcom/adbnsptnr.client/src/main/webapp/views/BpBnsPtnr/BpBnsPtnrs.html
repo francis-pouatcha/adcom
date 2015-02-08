@@ -3,7 +3,7 @@
             <div class="panel-heading no-collapse">
                 <div class="row">
                     <div class="col-lg-3">
-                        <b>{{"Entity_search.title"|translate}}</b>
+                        <b>{{bpBnsPtnrsCtlr.bpBnsPtnrUtils.translations['Entity_search.title']}}</b>
                     </div>
                 </div>
             </div>
@@ -13,7 +13,7 @@
                         <div class="row" >
                             <div class="col-lg-3">
                                 <div class="form-group">
-                                    <label class=" control-label" for="ptnrNbr">{{"BpBnsPtnr_ptnrNbr_description.title"|translate}}</label>
+                                    <label class=" control-label" for="ptnrNbr">{{bpBnsPtnrsCtlr.bpBnsPtnrUtils.translations['BpBnsPtnr_ptnrNbr_description.title']}}</label>
                                     <div class="">
                                         <input type="text" id="ptnrNbr" ng-model="bpBnsPtnrsCtlr.searchInput.entity.ptnrNbr" class="form-control">
                                     </div>
@@ -21,7 +21,7 @@
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
-                                    <label class=" control-label" for="fullName">{{"BpBnsPtnr_fullName_description.title"|translate}}</label>
+                                    <label class=" control-label" for="fullName">{{bpBnsPtnrsCtlr.bpBnsPtnrUtils.translations['BpBnsPtnr_fullName_description.title']}}</label>
                                     <div class="">
                                         <input type="text" id="fullName" ng-model="bpBnsPtnrsCtlr.searchInput.entity.fullName" class="form-control">
                                     </div>
@@ -29,10 +29,11 @@
                             </div>
                             <div class="col-lg-3">
                                 <div class="form-group">
-                                    <label class=" control-label" for="ptnrType">{{"BpBnsPtnr_ptnrType_description.title"|translate}}</label>
+                                    <label class=" control-label" for="ptnrType">{{bpBnsPtnrsCtlr.bpBnsPtnrUtils.translations['BpBnsPtnr_ptnrType_description.title']}}</label>
                                     <div class="">
 							            <select class="form-control" name="ptnrType" ng-model="bpBnsPtnrsCtlr.searchInput.entity.ptnrType"
-							                    ng-options="bpBnsPtnrType.enumKey as bpBnsPtnrType.translKey|translate for bpBnsPtnrType in bpBnsPtnrsCtlr.bpBnsPtnrUtils.bpBnsPtnrTypes" >
+							                    ng-options="bpBnsPtnrType.enumKey as bpBnsPtnrsCtlr.bpBnsPtnrUtils.translations[bpBnsPtnrType.translKey] 
+							                    	for bpBnsPtnrType in bpBnsPtnrsCtlr.bpBnsPtnrUtils.bpBnsPtnrTypes" >
 							                    <option value=""/>
 										</select>
                                     </div>
@@ -57,12 +58,12 @@
         </div>
 
         <div class="panel panel-default ">
-            <div class="panel-heading no-collapse"><b>{{"Entity_Result.title"|translate}}</b></div>
+            <div class="panel-heading no-collapse"><b>{{bpBnsPtnrsCtlr.bpBnsPtnrUtils.translations['Entity_Result.title']}}</b></div>
             <div class="panel-body">
                 <div class="col-lg-12">
                     <div  class="row">
                         <a class="btn btn-primary pull-right margBott10" href="#/BpBnsPtnrs/new" >
-                            <i class="glyphicon-plus"></i> {{'Entity_create.title'|translate}}
+                            <i class="glyphicon-plus"></i> {{bpBnsPtnrsCtlr.bpBnsPtnrUtils.translations['Entity_create.title']}}
                         </a>
 
                     </div>
@@ -70,10 +71,10 @@
                         <table class="table table-bordered  table-striped pointer-element" >
                             <thead>
                             <tr>
-                                <th class="text-center">{{"BpBnsPtnr_ptnrNbr_description.title"|translate}}</th>
-                                <th class="text-center">{{"BpBnsPtnr_fullName_description.title"|translate}}</th>
-                                <th class="text-center">{{"BpBnsPtnr_ptnrType_description.title"|translate}}</th>
-                                <th class="text-center">{{"BpBnsPtnr_ctryOfRsdnc_description.title"|translate}}</th>
+                                <th class="text-center">{{bpBnsPtnrsCtlr.bpBnsPtnrUtils.translations['BpBnsPtnr_ptnrNbr_description.title']}}</th>
+                                <th class="text-center">{{bpBnsPtnrsCtlr.bpBnsPtnrUtils.translations['BpBnsPtnr_fullName_description.title']}}</th>
+                                <th class="text-center">{{bpBnsPtnrsCtlr.bpBnsPtnrUtils.translations['BpBnsPtnr_ptnrType_description.title']}}</th>
+                                <th class="text-center">{{bpBnsPtnrsCtlr.bpBnsPtnrUtils.translations['BpBnsPtnr_ctryOfRsdnc_description.title']}}</th>
                                 <th></th>
                                 <th></th>
                             </tr>
@@ -82,10 +83,10 @@
                             <tr ng-repeat="bpBnsPtnr in bpBnsPtnrsCtlr.bpBnsPtnrs" >
                                 <td>{{bpBnsPtnr.ptnrNbr}}</td>
                                 <td>{{bpBnsPtnr.fullName}}</td>
-                                <td>{{bpBnsPtnrsCtlr.bpBnsPtnrUtils.ptnrTypeI18nMsgTitleKey(bpBnsPtnr.ptnrType)|translate}}</td>
-                                <td>{{bpBnsPtnr.ctryOfRsdnc}}</td>
-                                <td><a href="#/BpBnsPtnrs/show/{{bpBnsPtnr.ptnrNbr}}" ><i class="glyphicon glyphicon-eye-open"></i></a></td>
-                                <td><a href="#/BpBnsPtnrs/edit/{{bpBnsPtnr.ptnrNbr}}" ><i class="glyphicon glyphicon-edit"></i></a></td>
+                                <td>{{bpBnsPtnrsCtlr.bpBnsPtnrUtils.ptnrTypeI18nMsgTitleValue(bpBnsPtnr.ptnrType)}}</td>
+                                <td>{{bpBnsPtnr.countryName.name}}</td>
+                                <td><a href="" ng-click="bpBnsPtnrsCtlr.show(bpBnsPtnr,$index)"><i class="glyphicon glyphicon-eye-open"></i></a></td>
+                                <td><a href="" ng-click="bpBnsPtnrsCtlr.edit(bpBnsPtnr,$index)"><i class="glyphicon glyphicon-edit"></i></a></td>
                             </tr>
                             </tbody>
                         </table>

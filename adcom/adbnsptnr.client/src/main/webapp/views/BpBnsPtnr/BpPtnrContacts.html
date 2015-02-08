@@ -1,20 +1,20 @@
 <div ng-controller="bpPtnrContactsCtlr as bpCtlr" >
-    <a class="btn btn-success margBott10 pull-right" ng-click="bpCtlr.openCreateForm('md')"><i class="glyphicon glyphicon-plus"></i> {{'Entity_create.title' | translate}}</a>
+    <a class="btn btn-success margBott10 pull-right" ng-click="bpCtlr.openCreateForm('md')"><i class="glyphicon glyphicon-plus"></i> {{bpCtlr.bpPtnrContactUtils.translations['Entity_create.title']}}</a>
     <br/>
     <table class="table table-bordered table-striped">
         <tr>
-            <th>{{"BpPtnrContact_langIso2_description.title"|translate}}</th>
-            <th>{{"BpPtnrContact_cntctRole_description.title"|translate}}</th>
-            <th>{{"BpPtnrContact_cntctIndex_description.title"|translate}}</th>
-            <th>{{"BpPtnrContact_description_description.title"|translate}}</th>
-            <th></th>
-            <th></th>
+            <th width="10%">{{bpCtlr.bpPtnrContactUtils.translations['BpPtnrContact_cntctRole_description.title']}}</th>
+            <th width="5%">{{bpCtlr.bpPtnrContactUtils.translations['BpPtnrContact_cntctIndex_description.title']}}</th>
+            <th width="65%">{{bpCtlr.bpPtnrContactUtils.translations['BpPtnrContact_description_description.title']}}</th>
+            <th width="10%">{{bpCtlr.bpPtnrContactUtils.translations['BpPtnrContact_langIso2_description.title']}}</th>
+            <th width="5%"></th>
+            <th width="5%"></th>
         </tr>
         <tr ng-repeat="bpPtnrContact in bpCtlr.bpPtnrContacts">
-            <td>{{bpPtnrContact.langIso2}}</td>
-            <td>{{bpPtnrContact.cntctRole}}</td>
+            <td>{{bpCtlr.bpPtnrContactUtils.contactRoleI18nMsgTitleValue(bpPtnrContact.cntctRole)}}</td>
             <td>{{bpPtnrContact.cntctIndex}}</td>
-            <td>{{bpPtnrContact.description}}</td>
+            <td><pre>{{bpPtnrContact.description}}</pre></td>
+            <td>{{bpCtlr.bpPtnrContactUtils.languageI18nMsgTitleValue(bpPtnrContact.langIso2)}}</td>
             <td><a class="" ng-click="bpCtlr.openEditForm('md',$index);"><i class="glyphicon glyphicon-edit"></i></a>
             </td>
             <td><a ng-click="bpCtlr.deleteItem()" ><i class="glyphicon glyphicon-trash" ></i></a></td>

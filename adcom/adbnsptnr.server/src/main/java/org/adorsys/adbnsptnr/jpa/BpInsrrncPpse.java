@@ -39,7 +39,7 @@ public class BpInsrrncPpse extends AbstractTimedData {
 	
 	@Column
 	@Description("BpInsrrncPpse_ppseType_description")
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
 	private BpInsrncPpseType ppseType;
 
 	@Column

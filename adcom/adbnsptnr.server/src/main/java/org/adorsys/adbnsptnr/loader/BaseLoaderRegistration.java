@@ -31,8 +31,6 @@ public class BaseLoaderRegistration {
 	@Inject
 	private DataSheetLoader dataSheetLoader;
 	@Inject
-	private BpPtnrIdDtlsLoader bpPtnrIdDtlsLoader;
-	@Inject
 	private BpPtnrCtgryLoader bpPtnrCtgryLoader;
 	@Inject
 	private BpPtnrCtgryDtlsLoader bpPtnrCtgryDtlsLoader;
@@ -61,7 +59,6 @@ public class BaseLoaderRegistration {
 		dataSheetLoader.registerLoader(BpBnsPtnr.class.getSimpleName(), bpBnsPtnrLoader);
 		dataSheetLoader.registerLoader(BpLegalPtnrId.class.getSimpleName(), bpLegalPtnrIdLoader);
 		dataSheetLoader.registerLoader(BpIndivPtnrName.class.getSimpleName(), bpIndivPtnrNameLoader);
-		dataSheetLoader.registerLoader(BpPtnrIdDtls.class.getSimpleName(), bpPtnrIdDtlsLoader);
 		dataSheetLoader.registerLoader(BpPtnrContact.class.getSimpleName(), bpPtnrContactLoader);
 		dataSheetLoader.registerLoader(BpCtgryOfPtnr.class.getSimpleName(), bpCtgryOfPtnrLoader);
 		dataSheetLoader.registerLoader(BpPtnrCreditDtls.class.getSimpleName(), bpPtnrCreditDtlsLoader);
@@ -84,7 +81,6 @@ public class BaseLoaderRegistration {
 		bpBnsPtnrLoader.createTemplate(workbook);
 		bpLegalPtnrIdLoader.createTemplate(workbook);
 		bpIndivPtnrNameLoader.createTemplate(workbook);
-		bpPtnrIdDtlsLoader.createTemplate(workbook);
 		bpPtnrContactLoader.createTemplate(workbook);
 		bpCtgryOfPtnrLoader.createTemplate(workbook);
 		bpPtnrCreditDtlsLoader.createTemplate(workbook);

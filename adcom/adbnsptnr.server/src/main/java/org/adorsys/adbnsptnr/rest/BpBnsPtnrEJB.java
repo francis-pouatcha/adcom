@@ -15,12 +15,12 @@ import org.adorsys.adbnsptnr.jpa.BpIndivPtnrName;
 import org.adorsys.adbnsptnr.jpa.BpLegalPtnrId;
 import org.adorsys.adbnsptnr.jpa.BpPtnrType;
 import org.adorsys.adbnsptnr.repo.BpBnsPtnrRepository;
+import org.adorsys.adcore.utils.SequenceGenerator;
 import org.apache.commons.lang3.StringUtils;
 
 @Stateless
 public class BpBnsPtnrEJB 
 {
-
    @Inject
    private BpBnsPtnrRepository repository;
    
@@ -32,6 +32,9 @@ public class BpBnsPtnrEJB
 
    public BpBnsPtnr create(BpBnsPtnr entity)
    {	
+	   if(StringUtils.isBlank(entity.getPtnrNbr())){
+		   entity.setPtnrNbr(SequenceGenerator.getSequence(SequenceGenerator.BUSINESS_PARTNER_SEQUENCE_PREFIXE));
+	   }
 	   BpIndivPtnrName ptnrName = entity.getIndivPtnrName();
 	   BpLegalPtnrId ptnrId = entity.getLegalPtnrId();
 	   

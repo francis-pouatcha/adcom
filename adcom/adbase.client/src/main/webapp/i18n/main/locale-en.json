@@ -1,10 +1,5 @@
 {
-	"Username":"User Name",
 	"Login":"Login",
-	"workspace_loginName":"Login Name",
-	"workspace_ouWsIdentif":"Workspace",
-	"workspace_admin":"ADMINISTRATION",
-	"workspace_logOut":"Logout",
     "IdSize_is_required":"Id size is required",
     "TypeName_is_required":"Type name is required.",
     "parentType_is_required":"Parent type is required.",

@@ -10,18 +10,20 @@ public class SequenceGenerator {
 	public static final String DEBTS_INVOICE_SEQUENCE_PREFIXE = "DS";
 	public static final String PAYMENT_SEQUENCE_PREFIX = "PY";
 	public static final String PRODUCT_FAMILY_SEQUENCE_PREFIXE = "PF";
-	public static String PORCHASE_SEQUENCE_PREFIXE = "CF";
-	public static String DELIVERY_SEQUENCE_PREFIXE = "DE";
-	public static String LOT_SEQUENCE_PREFIXE = "LO";
-	public static String INVENTORY_SEQUENCE_PREFIXE = "INV";
-	public static String SALE_SEQUENCE_PREFIXE = "SO";
-	public static String AGENCY_SEQUENCE_PREFIXE = "AG";
-	public static String CASHDRAWER_SEQUENCE_PREFIXE = "CD";
-	public static String PRESCRIPTIONBOOK_SEQUENCE_PREFIXE = "PB";
-	public static String CUSTOMER_VOUCHER_SEQUENCE_PREFIXE = "CV";
-	public static String CUSTOMER_INVOICE_SEQUENCE_PREFIXE = "CI";
-	public static String CUSTOMER_INVENTORY_SEQUENCE_PREFIXE = "IV";
-	public static String ARTICLE_DETAIL_SEQUENCE_PREFIXE = "AD";
+	public static final String PORCHASE_SEQUENCE_PREFIXE = "CF";
+	public static final String DELIVERY_SEQUENCE_PREFIXE = "DE";
+	public static final String LOT_SEQUENCE_PREFIXE = "LO";
+	public static final String INVENTORY_SEQUENCE_PREFIXE = "INV";
+	public static final String SALE_SEQUENCE_PREFIXE = "SO";
+	public static final String AGENCY_SEQUENCE_PREFIXE = "AG";
+	public static final String CASHDRAWER_SEQUENCE_PREFIXE = "CD";
+	public static final String PRESCRIPTIONBOOK_SEQUENCE_PREFIXE = "PB";
+	public static final String CUSTOMER_VOUCHER_SEQUENCE_PREFIXE = "CV";
+	public static final String CUSTOMER_INVOICE_SEQUENCE_PREFIXE = "CI";
+	public static final String CUSTOMER_INVENTORY_SEQUENCE_PREFIXE = "IV";
+	public static final String ARTICLE_DETAIL_SEQUENCE_PREFIXE = "AD";
+	public static final String BUSINESS_PARTNER_SEQUENCE_PREFIXE = "BP";
+	public static final String ID_SEQUENCE_PREFIXE = "ID";
 
 	static long time = 0l;// the time corresponding to the 01.01.2014 00:00:00:00 ...
 	static {
@@ -30,7 +32,7 @@ public class SequenceGenerator {
 		date = DateUtils.truncate(date, Calendar.YEAR);
 		time = date.getTime();
 	}
-	public static String getSequence(String prefixe){
+	public static final String getSequence(String prefixe){
 		synchronized (prefixe) {
 			try {
 				Thread.currentThread().sleep(20);

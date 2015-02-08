@@ -16,6 +16,8 @@
 "BpBnsPtnr_ptnrType_description.title":"Type Partenaire",
 "BpBnsPtnr_fullName_description.text":"Nom",
 "BpBnsPtnr_fullName_description.title":"Nom",
+"BpBnsPtnr_findACountry_description.title":"Saisir le nom du Pays",
+"BpBnsPtnr_NoCountryFound_description.title":"Pas de pays trouvé",
 
 "BpCtgryDscnt_ctgryCode_description.text":"Le code de cette categorie client",
 "BpCtgryDscnt_ctgryCode_description.title":"Code Categorie",
@@ -80,8 +82,8 @@
 "BpPtnrAccntBlnce_side_description.text":"Coté",
 "BpPtnrAccntBlnce_side_description.title":"Coté",
 
-"BpPtnrContact_cntctRole_description.text":"Role du contact",
-"BpPtnrContact_cntctRole_description.title":"Role du Contact",
+"BpPtnrContact_cntctRole_description.text":"Genre de contact",
+"BpPtnrContact_cntctRole_description.title":"Genre de Contact",
 "BpPtnrContact_description.text":"Contact Partenaire",
 "BpPtnrContact_description.title":"Contact Partenaire",
 "BpPtnrContact_description_description.text":"Description du contact.",
@@ -138,23 +140,25 @@
 "BpPtnrIdDtls_ptnrIdType_description.title":"Genre Identité",
 "BpPtnrIdDtls_ptnrNbr_description.text":"Identifiant de ce Partenaire",
 "BpPtnrIdDtls_ptnrNbr_description.title":"Identifiantr",
+"BpPtnrIdDtls_idNbr_description.title":"Numéro",
+"BpPtnrIdDtls_idNbr_description.text":"Numéro",
 
 "BpPtnrIdType_DRIVERLICNBR_description.text":"Numéro Permit de Conduire",
-"BpPtnrIdType_DRIVERLICNBR_description.title":"Numéro Permit de Conduire",
+"BpPtnrIdType_DRIVERLICNBR_description.title":"Permit de Conduire",
 "BpPtnrIdType_EMPLOYEENBR_description.text":"Numéro Employée",
-"BpPtnrIdType_EMPLOYEENBR_description.title":"Numéro Employée",
+"BpPtnrIdType_EMPLOYEENBR_description.title":"Carte Proffessionelle",
 "BpPtnrIdType_IDCARDNBR_description.text":"Numéro Carte Identité Nationale",
-"BpPtnrIdType_IDCARDNBR_description.title":"Numéro Carte Identité Nationale",
+"BpPtnrIdType_IDCARDNBR_description.title":"Carte Identité Nationale",
 "BpPtnrIdType_INSURED_description.text":"Assuré",
-"BpPtnrIdType_INSURED_description.title":"Assuré",
+"BpPtnrIdType_INSURED_description.title":"Carte d'Assuré",
 "BpPtnrIdType_INSURER_description.text":"Assurer",
-"BpPtnrIdType_INSURER_description.title":"Assurer",
+"BpPtnrIdType_INSURER_description.title":"Carte d'Assureur",
 "BpPtnrIdType_MEMBERSHIP_description.text":"Numéro Carte de Membre",
-"BpPtnrIdType_MEMBERSHIP_description.title":"Numéro Carte de Membre",
+"BpPtnrIdType_MEMBERSHIP_description.title":"Carte de Membre",
 "BpPtnrIdType_PASSPORTNBR_description.text":"Numéro Passport",
-"BpPtnrIdType_PASSPORTNBR_description.title":"Numéro Passport",
+"BpPtnrIdType_PASSPORTNBR_description.title":"Passport",
 "BpPtnrIdType_RESDTCARDNBR_description.text":"Numéro Carte de Résident",
-"BpPtnrIdType_RESDTCARDNBR_description.title":"Numéro Carte de Résident",
+"BpPtnrIdType_RESDTCARDNBR_description.title":"Carte de Résident",
 "BpPtnrIdType_description.text":"Genre Identité du partenaire",
 "BpPtnrIdType_description.title":"Genre Identité du partenaire",
 
@@ -203,9 +207,6 @@
 "Insurrance_memberNbr_description.text":"Numéro du Membre",
 "Insurrance_memberNbr_description.title":"Numéro du Membre",
 
-"BpGender_FEMALE_description.title":"Feminin",
-"BpGender_MALE_description.title":"Masculin",
-
 "BpPtnrContactRole_MAIN_CONTACT_description.text":"Contact Principale",
 "BpPtnrContactRole_MAIN_CONTACT_description.title":"Contact Principale",
 "BpPtnrContactRole_ALT_CONTACT_description.text":"Contact Alternatif",
@@ -214,6 +215,8 @@
 "BpPtnrContactRole_OFFICE_ADDRESS_description.title":"Adresse Professionnelle",
 "BpPtnrContactRole_HOME_ADDRESS_description.text":"Adresse du Domicile",
 "BpPtnrContactRole_HOME_ADDRESS_description.title":"Adresse du Domicile",
+"BpPtnrContactRole_PRIVATE_ADDRESS_description.text":"Adresse Privée",
+"BpPtnrContactRole_PRIVATE_ADDRESS_description.title":"Adresse Privée",
 "BpPtnrContactRole_DELIVERY_ADDRESS_description.text":"Adresse de Livraison",
 "BpPtnrContactRole_DELIVERY_ADDRESS_description.title":"Adresse de Livraison",
 "BpPtnrContactRole_INVOICE_ADDRESS_description.text":"Adresse de Facturation",
@@ -222,7 +225,4 @@
 "BpPtnrContactRole_SUPPORT_CONTACT_description.title":"Adresse pour Infos",
 "BpPtnrContactRole_EMERGENCY_CONTACT_description.text":"Contact d'Urgence",
 "BpPtnrContactRole_EMERGENCY_CONTACT_description.title":"Contact d'Urgence"
-
-
-
 }

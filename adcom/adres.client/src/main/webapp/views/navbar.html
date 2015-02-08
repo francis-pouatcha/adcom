@@ -12,20 +12,20 @@
    		</div>
    		<div>
    			<ul class="nav navbar-nav navbar-center" ng-show="hasWorkspace()">
-   				<li><a><span class="navbar-brand col-lg-offset-2" style="text-align:center">{{"navbar_ouWsIdentif"|translate}} : {{currentWs.roleIdentif}} {{currentWs.targetOuIdentif}} | {{"navbar_user"|translate}} : {{currentWs.userFullName}} </span></a></li>
+   				<li><a><span class="navbar-brand col-lg-offset-2" style="text-align:center">{{navbar_ouWsIdentif}} : {{currentWs.roleIdentif}} {{currentWs.targetOuIdentif}} | {{navbar_user}} : {{currentWs.userFullName}} </span></a></li>
    			</ul>
 
    			<ul class="nav navbar-nav navbar-right">
    				<li ng-show="appMenuUrl()" class="dropdown">
 					<a class="dropdown-toggle glyphicon glyphicon-list" data-toggle="dropdown" href="">
-						<b >{{"navbar_appMenu"|translate}}</b>
+						<b >{{navbar_appMenu}}</b>
 					</a>   					
    					<ul class="dropdown-menu" ng-include="appMenuUrl()"></ul>
    				</li>
    				<li class="dropdown" ng-show="userSession()"><a class="dropdown-toggle glyphicon glyphicon-user" data-toggle="dropdown" href=""><b  ng-bind="loginName()"></b></a>
    					<ul class="dropdown-menu">
-   						<li><a href="{{workspaceLink()}}" ng-click="workspaces()" class="pointer-element">{{"navbar_ouWsIdentif"|translate}}</a></li>
-   						<li><a href="#" ng-click="logout();" class="pointer-element">{{"navbar_logOut"|translate}}</a></li>
+   						<li><a href="{{workspaceLink()}}" ng-click="workspaces()" class="pointer-element">{{navbar_ouWsIdentif}}</a></li>
+   						<li><a href="#" ng-click="logout();" class="pointer-element">{{navbar_logOut}}</a></li>
    						<li ng-show="switchTo('en')"><a href="#" ng-click="changeLanguage('en')" class="pointer-element">English</a></li>
    						<li ng-show="switchTo('fr')"><a href="#" ng-click="changeLanguage('fr')" class="pointer-element">Francais</a></li>
    					</ul>
