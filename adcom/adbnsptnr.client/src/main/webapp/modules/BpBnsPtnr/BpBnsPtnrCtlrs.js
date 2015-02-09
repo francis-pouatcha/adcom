@@ -116,12 +116,14 @@ angular.module('AdBnsptnr')
     
     return service;
 }])
-.factory('bpStateHolder',function(){
+.factory('bpBnsPtnrState',['$rootScope',function($rootScope){
 	
 	var serv = {
 	};
-
+	var activeTab="bpPtnrContact";
+	
 	serv.bpBnsPtnrs=[];
+	serv.bpBnsPtnr;
 	serv.bpBnsPtnrIndex=-1;
 	serv.replace = function(bpBnsPtnr){
 		if(!serv.bpBnsPtnrs || !bpBnsPtnr) return;
@@ -152,12 +154,20 @@ angular.module('AdBnsptnr')
 		serv.bpBnsPtnrIndex=length-1;
 		return true;
 	};
-	
+	serv.bpPtnrContactActive=true;
+	serv.bpPtnrIdDtlsActive=false;
+	serv.tabSelected=function(tabName){
+		activeTab=tabName;
+		serv.bpPtnrContactActive= tabName=='bpPtnrContact';
+		serv.bpPtnrIdDtlsActive= tabName=='bpPtnrIdDtls';
+		$rootScope.$broadcast('BpBnsPtnrsSelected', {tabName:tabName,bpBnsPtnr:serv.bpBnsPtnr});
+	}
+
 	return serv;
 
-})
-.controller('bpBnsPtnrsCtlr',['$scope','genericResource','bpBnsPtnrUtils','bpStateHolder','$location','$rootScope',
-                              function($scope,genericResource,bpBnsPtnrUtils,bpStateHolder,$location,$rootScope){
+}])
+.controller('bpBnsPtnrsCtlr',['$scope','genericResource','bpBnsPtnrUtils','bpBnsPtnrState','$location','$rootScope',
+                              function($scope,genericResource,bpBnsPtnrUtils,bpBnsPtnrState,$location,$rootScope){
     var self = this ;
     $scope.bpBnsPtnrsCtlr = self;
 
@@ -190,10 +200,10 @@ angular.module('AdBnsptnr')
     init();
 
     function init(){
-    	if(bpStateHolder.searchInput){
-    		self.searchInput=bpStateHolder.searchInput;
-        	self.bpBnsPtnrs=bpStateHolder.bpBnsPtnrs;
-        	self.totalItems=bpStateHolder.totalItems;
+    	if(bpBnsPtnrState.searchInput){
+    		self.searchInput=bpBnsPtnrState.searchInput;
+        	self.bpBnsPtnrs=bpBnsPtnrState.bpBnsPtnrs;
+        	self.totalItems=bpBnsPtnrState.totalItems;
     	} else {
 			self.searchInput = {
 					entity:{},
@@ -209,16 +219,16 @@ angular.module('AdBnsptnr')
 		genericResource.findByLike(bpBnsPtnrUtils.urlBase, searchInput)
 		.success(function(entitySearchResult) {
 			// store search
-			bpStateHolder.searchInput=self.searchInput;
+			bpBnsPtnrState.searchInput=self.searchInput;
 
 			// Store result
-			bpStateHolder.bpBnsPtnrs = entitySearchResult.resultList;
-			bpStateHolder.totalItems = entitySearchResult.count ;
-			bpStateHolder.bpBnsPtnrIndex=-1
+			bpBnsPtnrState.bpBnsPtnrs = entitySearchResult.resultList;
+			bpBnsPtnrState.totalItems = entitySearchResult.count ;
+			bpBnsPtnrState.bpBnsPtnrIndex=-1
 			
 			// Display
-			self.bpBnsPtnrs = bpStateHolder.bpBnsPtnrs;
-			self.totalItems = bpStateHolder.totalItems;
+			self.bpBnsPtnrs = bpBnsPtnrState.bpBnsPtnrs;
+			self.totalItems = bpBnsPtnrState.totalItems;
 		});
     }
 
@@ -255,20 +265,20 @@ angular.module('AdBnsptnr')
 	}
 	
 	function show(bpBnsPtnr, index){
-		if(bpStateHolder.peek(bpBnsPtnr, index)){
+		if(bpBnsPtnrState.peek(bpBnsPtnr, index)){
 			$location.path('/BpBnsPtnrs/show/'+bpBnsPtnr.ptnrNbr);
 		}
 	}
 
 	function edit(bpBnsPtnr, index){
-		if(bpStateHolder.peek(bpBnsPtnr, index)){
+		if(bpBnsPtnrState.peek(bpBnsPtnr, index)){
 			$location.path('/BpBnsPtnrs/edit/'+bpBnsPtnr.ptnrNbr);
 		}
 	}
 	
 }])
-.controller('bpBnsPtnrCreateCtlr',['$scope','bpBnsPtnrUtils','$translate','genericResource','$location','bpStateHolder',
-                                  function($scope,bpBnsPtnrUtils,$translate,genericResource,$location,bpStateHolder){
+.controller('bpBnsPtnrCreateCtlr',['$scope','bpBnsPtnrUtils','$translate','genericResource','$location','bpBnsPtnrState',
+                                  function($scope,bpBnsPtnrUtils,$translate,genericResource,$location,bpBnsPtnrState){
 	var self = this ;
     $scope.bpBnsPtnrCreateCtlr = self;
     self.bpBnsPtnr = {};
@@ -280,7 +290,7 @@ angular.module('AdBnsptnr')
     function create(){
     	genericResource.create(bpBnsPtnrUtils.urlBase, self.bpBnsPtnr)
     	.success(function(bpBnsPtnr){
-    		if(bpStateHolder.push(bpBnsPtnr)){
+    		if(bpBnsPtnrState.push(bpBnsPtnr)){
     			$location.path('/BpBnsPtnrs/show/'+bpBnsPtnr.ptnrNbr);
     		}
     	})
@@ -289,11 +299,11 @@ angular.module('AdBnsptnr')
     	});
     };
 }])
-.controller('bpBnsPtnrEditCtlr',['$scope','genericResource','$routeParams','$location','bpBnsPtnrUtils','$modal','bpStateHolder',
-                                 function($scope,genericResource,$routeParams,$location,bpBnsPtnrUtils,$modal,bpStateHolder){
+.controller('bpBnsPtnrEditCtlr',['$scope','genericResource','$routeParams','$location','bpBnsPtnrUtils','$modal','bpBnsPtnrState',
+                                 function($scope,genericResource,$routeParams,$location,bpBnsPtnrUtils,$modal,bpBnsPtnrState){
     var self = this ;
     $scope.bpBnsPtnrEditCtlr = self;
-    self.bpBnsPtnr = bpStateHolder.bpBnsPtnr;
+    self.bpBnsPtnr = bpBnsPtnrState.bpBnsPtnr;
     self.update = update;
     self.error = "";
     self.bpBnsPtnrUtils=bpBnsPtnrUtils;
@@ -302,7 +312,7 @@ angular.module('AdBnsptnr')
     function update(){
     	genericResource.update(bpBnsPtnrUtils.urlBase, self.bpBnsPtnr)
     	.success(function(bpBnsPtnr){
-    		if(bpStateHolder.replace(bpBnsPtnr)){
+    		if(bpBnsPtnrState.replace(bpBnsPtnr)){
     			$location.path('/BpBnsPtnrs/show/'+bpBnsPtnr.ptnrNbr);
     		}
         })
@@ -321,8 +331,8 @@ angular.module('AdBnsptnr')
         var ptnrNbr = $routeParams.ptnrNbr;
         genericResource.findById(bpBnsPtnrUtils.urlBase, ptnrNbr)
         .success(function(bpBnsPtnr){
-            if(bpStateHolder.replace(bpBnsPtnr)){
-            	self.bpBnsPtnr = bpStateHolder.bpBnsPtnr;
+            if(bpBnsPtnrState.replace(bpBnsPtnr)){
+            	self.bpBnsPtnr = bpBnsPtnrState.bpBnsPtnr;
         	}
         })
         .error(function(error){
@@ -348,51 +358,58 @@ angular.module('AdBnsptnr')
     }
 
 }])
-.controller('bpBnsPtnrShowCtlr',['$scope','genericResource','$routeParams','$location','bpBnsPtnrUtils','bpStateHolder',
-                                 function($scope,genericResource,$routeParams,$location,bpBnsPtnrUtils,bpStateHolder){
+.controller('bpBnsPtnrShowCtlr',['$scope','genericResource','$routeParams','$location','bpBnsPtnrUtils','bpBnsPtnrState',
+                                 function($scope,genericResource,$routeParams,$location,bpBnsPtnrUtils,bpBnsPtnrState){
     var self = this ;
     $scope.bpBnsPtnrShowCtlr = self;
-    self.bpBnsPtnr = bpStateHolder.bpBnsPtnr;
+    self.bpBnsPtnr = bpBnsPtnrState.bpBnsPtnr;
     self.error = "";
     self.previousBP = previousBP;
     self.nextBP = nextBP;
     self.bpBnsPtnrUtils=bpBnsPtnrUtils;
+    self.selectDependent=selectDependent;
+    self.bpPtnrContactActive=bpBnsPtnrState.bpPtnrContactActive;
+    self.bpPtnrIdDtlsActive=bpBnsPtnrState.bpPtnrIdDtlsActive;
     
     function previousBP(ptnrNbr){
-    	if(!bpStateHolder.bpBnsPtnrs || bpStateHolder.bpBnsPtnrs.length<=0) return;
+    	if(!bpBnsPtnrState.bpBnsPtnrs || bpBnsPtnrState.bpBnsPtnrs.length<=0) return;
 
     	var previousBpBnsPtnr; 
-    	for (var index in bpStateHolder.bpBnsPtnrs) {
-    	    if(bpStateHolder.bpBnsPtnrs[index].ptnrNbr==ptnrNbr){
+    	for (var index in bpBnsPtnrState.bpBnsPtnrs) {
+    	    if(bpBnsPtnrState.bpBnsPtnrs[index].ptnrNbr==ptnrNbr){
     	    	break;
     	    } else {
-    	    	previousBpBnsPtnr=bpStateHolder.bpBnsPtnrs[index];
+    	    	previousBpBnsPtnr=bpBnsPtnrState.bpBnsPtnrs[index];
     	    }
     	}
     	if(!previousBpBnsPtnr){
-    		previousBpBnsPtnr = bpStateHolder.bpBnsPtnrs[bpStateHolder.bpBnsPtnrs.length-1];
+    		previousBpBnsPtnr = bpBnsPtnrState.bpBnsPtnrs[bpBnsPtnrState.bpBnsPtnrs.length-1];
     	}
-    	bpStateHolder.bpBnsPtnr = previousBpBnsPtnr;
+    	bpBnsPtnrState.bpBnsPtnr = previousBpBnsPtnr;
 		$location.path('/BpBnsPtnrs/show/'+previousBpBnsPtnr.ptnrNbr);
     }
 
     function nextBP(ptnrNbr){
-    	if(!bpStateHolder.bpBnsPtnrs || bpStateHolder.bpBnsPtnrs.length<=0) return;
+    	if(!bpBnsPtnrState.bpBnsPtnrs || bpBnsPtnrState.bpBnsPtnrs.length<=0) return;
 
     	var nextBpBnsPtnr; 
     	var found = false;
-    	for (var index in bpStateHolder.bpBnsPtnrs) {
+    	for (var index in bpBnsPtnrState.bpBnsPtnrs) {
     		if(found) {
-    			nextBpBnsPtnr = bpStateHolder.bpBnsPtnrs[index];
+    			nextBpBnsPtnr = bpBnsPtnrState.bpBnsPtnrs[index];
     			break;
     		}
-    	    if(bpStateHolder.bpBnsPtnrs[index].ptnrNbr==ptnrNbr)found=true;
+    	    if(bpBnsPtnrState.bpBnsPtnrs[index].ptnrNbr==ptnrNbr)found=true;
     	}
     	if(!nextBpBnsPtnr){
-    		nextBpBnsPtnr = bpStateHolder.bpBnsPtnrs[0];
+    		nextBpBnsPtnr = bpBnsPtnrState.bpBnsPtnrs[0];
     	}
-    	bpStateHolder.bpBnsPtnr = nextBpBnsPtnr;
+    	bpBnsPtnrState.bpBnsPtnr = nextBpBnsPtnr;
 		$location.path('/BpBnsPtnrs/show/'+nextBpBnsPtnr.ptnrNbr);
+    }
+    
+    function selectDependent(tabName){
+    	bpBnsPtnrState.tabSelected(tabName);
     }
 
 }]);

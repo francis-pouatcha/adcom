@@ -109,6 +109,8 @@ public class BpBnsPtnrEJB
 	   } else if (BpPtnrType.LEGAL.equals(orig.getPtnrType()) && ptnrId!=null){
 		   orig.setLegalPtnrId(ptnrId);
 	   }
+	   
+	   orig.setCountryName(entity.getCountryName());
 	   return orig;
    }
    

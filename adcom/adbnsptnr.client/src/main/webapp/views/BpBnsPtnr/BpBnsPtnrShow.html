@@ -68,12 +68,14 @@
                         </div>
                 </form>
                 <div  class="row ">
-                    <tabset justified="false">
-                        <tab heading="{{bpBnsPtnrShowCtlr.bpBnsPtnrUtils.translations['BpPtnrContact_description.title']}}">
+                    <tabset justified="false" >
+                        <tab heading="{{bpBnsPtnrShowCtlr.bpBnsPtnrUtils.translations['BpPtnrContact_description.title']}}" 
+                        	select="bpBnsPtnrShowCtlr.selectDependent('bpPtnrContact')" active="bpBnsPtnrShowCtlr.bpPtnrContactActive">
                             <br/>
                             <div ng-include="'views/BpBnsPtnr/BpPtnrContacts.html'" />
                         </tab>
-                        <tab heading="{{bpBnsPtnrShowCtlr.bpBnsPtnrUtils.translations['BpPtnrIdDtls_description.title']}}">
+                        <tab heading="{{bpBnsPtnrShowCtlr.bpBnsPtnrUtils.translations['BpPtnrIdDtls_description.title']}}" 
+                        	select="bpBnsPtnrShowCtlr.selectDependent('bpPtnrIdDtls')" active="bpBnsPtnrShowCtlr.bpPtnrIdDtlsActive">
                             <br/>
                             <div ng-include="'views/BpBnsPtnr/BpPtnrIdDtlss.html'" />
                         </tab>

@@ -1,12 +1,11 @@
 ﻿'use strict';
     
 angular.module('AdBnsptnr')
-.factory('bpPtnrIdDtlsUtils',['$translate','commonTranslations','$rootScope','sessionManager',
-                function($translate,commonTranslations,$rootScope,sessionManager){
+.factory('bpPtnrIdDtlsUtils',['$translate','$rootScope',
+                function($translate,$rootScope){
     var service = {};
     
     service.urlBase='/adbnsptnr.server/rest/bpptnriddtlss';
-    service.commonTranslations=commonTranslations;
     
     service.ptnrIdTypeI18nMsgTitleKey = function(enumKey){
     	return "BpPtnrIdType_"+enumKey+"_description.title";
@@ -42,26 +41,25 @@ angular.module('AdBnsptnr')
     	            'BpPtnrIdDtls_expirdDt_description.title',
     	            'BpPtnrIdDtls_issuedBy_description.title',
     	            'BpPtnrIdDtls_issuedIn_description.title',
-    	            'BpPtnrIdDtls_issuingCtry_description.title'
+    	            'BpPtnrIdDtls_issuingCtry_description.title',
+    	            
+    	            'Entity_create.title',
+    	            'Entity_required.title',
+    	            'Entity_save.title',
+    	            'Entity_cancel.title',
+    	            'Entity_edit.title',
+    	            'BpBnsPtnr_findACountry_description.title'
     	            ])
 		 .then(function (translations) {
 			 service.translations = translations;
 	 	 });    	
     };
     
-    service.load = function(){
-		service.translate();
-		var current_language = sessionManager.language();
-		if(service.commonTranslations.translations.length<=0 || current_language!=service.commonTranslations.translations['current_language']){
-			service.commonTranslations.translate();
-		}
-	};
-	
-	service.load();
+    service.translate();
     
     return service;
 }])
-.factory('bpPtnrIdDtlssState',function(){
+.factory('bpPtnrIdDtlssState',['bpBnsPtnrState',function(bpBnsPtnrState){
 	
 	var serv = {
 	};
@@ -76,14 +74,17 @@ angular.module('AdBnsptnr')
 			}
 		}
 	};
+	serv.bpPtnrIdDtlsActive= function(){ 
+		return bpBnsPtnrState.bpPtnrIdDtlsActive;
+	}
 
 	return serv;
 
-})
+}])
 .controller('bpPtnrIdDtlssCtlr',['$scope','genericResource','$modal','$routeParams',
-                                 'bpPtnrIdDtlsUtils','bpPtnrIdDtlssState',
+                                 'bpPtnrIdDtlsUtils','bpPtnrIdDtlssState','$rootScope','bpBnsPtnrUtils',
                      function($scope,genericResource,$modal,$routeParams,
-                    		 bpPtnrIdDtlsUtils,bpPtnrIdDtlssState){
+                    		 bpPtnrIdDtlsUtils,bpPtnrIdDtlssState,$rootScope,bpBnsPtnrUtils){
 	
     var self = this ;
     $scope.bpPtnrIdDtlssCtlr = self;
@@ -105,24 +106,36 @@ angular.module('AdBnsptnr')
     self.deleteItem = deleteItem;
     self.bpPtnrIdDtlsUtils=bpPtnrIdDtlsUtils;
     self.genericResource=genericResource;
-    self.commonTranslations=bpPtnrIdDtlsUtils.commonTranslations;
+    self.searchPerformed=false;
+
+    var unregisterHandle = $rootScope.$on('BpBnsPtnrsSelected', function(event, data){
+    	if(!data || data.tabName!='bpPtnrIdDtls') return; // wrong tab
+    	if(self.ptnrNbr && self.ptnrNbr!=data.bpBnsPtnr.ptnrNbr) return; //event didn't come form this instance.
+    	if(self.searchPerformed) return;
+    	self.ptnrNbr=data.bpBnsPtnr.ptnrNbr;
+        findByLike(self.searchInput);
+    });
+    $scope.$on('$destroy', function () {
+    	unregisterHandle();
+    });
     
     init();
     function init(){
-    	self.ptnrNbr = $routeParams.ptnrNbr;
-        self.searchInput = {
-            entity:{},
-            fieldNames:[]
-        }
+    	if(!bpPtnrIdDtlssState.bpPtnrIdDtlsActive()) return;// return if not the active tab.
+        self.ptnrNbr = $routeParams.ptnrNbr;
         findByLike(self.searchInput);
     }
+    
     function findByLike(searchInput){
     	searchInput.entity.ptnrNbr=self.ptnrNbr;
-    	searchInput.fieldNames.push('ptnrNbr');
+    	if(searchInput.fieldNames.indexOf('ptnrNbr')<0){
+    		searchInput.fieldNames.push('ptnrNbr');
+    	}
     	genericResource.findByLike(bpPtnrIdDtlsUtils.urlBase, searchInput)
     	.success(function(entitySearchResult) {
             bpPtnrIdDtlssState.bpPtnrIdDtlss=entitySearchResult.resultList;
             self.bpPtnrIdDtlss=bpPtnrIdDtlssState.bpPtnrIdDtlss;
+            self.searchPerformed=true;
         })
     	.error(function(error){
     		self.error = error;
@@ -146,10 +159,10 @@ angular.module('AdBnsptnr')
     function ModalInstanceCreateCtrl($scope, $modalInstance) {
         $scope.formCreate = true;
         $scope.bpPtnrIdDtls;
-        $scope.currentAction=bpPtnrIdDtlsUtils.commonTranslations.translations["Entity_create.title"];
+        $scope.currentAction=bpPtnrIdDtlsUtils.translations["Entity_create.title"];
         $scope.bpPtnrIdDtlsUtils=bpPtnrIdDtlsUtils;
         $scope.error="";
-        $scope.commonTranslations=bpPtnrIdDtlsUtils.commonTranslations;
+        $scope.loadCountryNames = bpBnsPtnrUtils.loadCountryNames;
         
         $scope.save = function () {
             $scope.bpPtnrIdDtls.ptnrNbr = self.ptnrNbr;
@@ -184,9 +197,8 @@ angular.module('AdBnsptnr')
     function ModalInstanceEditCtrl($scope, $modalInstance,bpPtnrIdDtls) {
     	$scope.formEdit = true;
         $scope.bpPtnrIdDtls = bpPtnrIdDtls;
-        $scope.currentAction=bpPtnrIdDtlsUtils.commonTranslations.translations["Entity_edit.title"];
+        $scope.currentAction=bpPtnrIdDtlsUtils.translations["Entity_edit.title"];
         $scope.bpPtnrIdDtlsUtils=bpPtnrIdDtlsUtils;
-        $scope.commonTranslations=bpPtnrIdDtlsUtils.commonTranslations;
 
         $scope.isClean = function() {
             return !angular.equals(bpPtnrIdDtls, $scope.bpPtnrIdDtls);
@@ -210,7 +222,7 @@ angular.module('AdBnsptnr')
     function deleteItem(index){
         handleSelectedItem();
         genericResource.deleteById(bpPtnrIdDtlsUtils.urlBase, self.selectedItem.id).success(function(){
-            init();
+            findByLike(self.searchInput);
         })
     }
 }]);

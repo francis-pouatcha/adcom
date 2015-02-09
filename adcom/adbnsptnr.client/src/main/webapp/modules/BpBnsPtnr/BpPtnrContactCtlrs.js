@@ -77,7 +77,7 @@ angular.module('AdBnsptnr')
 
     return service;
 }])
-.factory('bpPtnrContactsState',function(){
+.factory('bpPtnrContactsState',['bpBnsPtnrState',function(bpBnsPtnrState){
 	
 	var serv = {
 	};
@@ -92,12 +92,17 @@ angular.module('AdBnsptnr')
 			}
 		}
 	};
+	serv.bpPtnrContactActive= function(){
+		return bpBnsPtnrState.bpPtnrContactActive;
+	}
 
 	return serv;
 
-})
-.controller('bpPtnrContactsCtlr',['$scope','genericResource','$modal','$routeParams','bpPtnrContactUtils','bpPtnrContactsState',
-                     function($scope,genericResource,$modal,$routeParams,bpPtnrContactUtils,bpPtnrContactsState){
+}])
+.controller('bpPtnrContactsCtlr',['$scope','genericResource','$modal','$routeParams',
+                                  'bpPtnrContactUtils','bpPtnrContactsState','$rootScope',
+                     function($scope,genericResource,$modal,$routeParams,
+                    		 bpPtnrContactUtils,bpPtnrContactsState,$rootScope){
 	
     var self = this ;
     $scope.bpPtnrContactsCtlr = self;
@@ -119,81 +124,94 @@ angular.module('AdBnsptnr')
     self.deleteItem = deleteItem;
     self.bpPtnrContactUtils=bpPtnrContactUtils;
     self.genericResource=genericResource;
+    self.searchPerformed=false;
+    
+    var unregisterHandle = $rootScope.$on('BpBnsPtnrsSelected', function(event, data){
+    	if(!data || data.tabName!='bpPtnrContact') return; // wrong tab
+    	if(self.ptnrNbr && self.ptnrNbr!=data.bpBnsPtnr.ptnrNbr) return; //event didn't come form this instance.
+    	if(self.searchPerformed) return;
+    	self.ptnrNbr=data.bpBnsPtnr.ptnrNbr;
+        findByLike(self.searchInput);
+    });
+    $scope.$on('$destroy', function () {
+    	unregisterHandle();
+    });
     
     init();
     function init(){
-    	self.ptnrNbr = $routeParams.ptnrNbr;
-        self.searchInput = {
-            entity:{},
-            fieldNames:[]
-        }
+    	if(!bpPtnrContactsState.bpPtnrContactActive()) return;// return if not the active tab.
+        self.ptnrNbr = $routeParams.ptnrNbr;
         findByLike(self.searchInput);
     }
+    
     function findByLike(searchInput){
     	searchInput.entity.ptnrNbr=self.ptnrNbr;
-    	searchInput.fieldNames.push('ptnrNbr');
+    	if(searchInput.fieldNames.indexOf('ptnrNbr')<0){
+    		searchInput.fieldNames.push('ptnrNbr');
+    	}
     	genericResource.findByLike(bpPtnrContactUtils.urlBase, searchInput)
     	.success(function(entitySearchResult) {
             bpPtnrContactsState.bpPtnrContacts=entitySearchResult.resultList;
             self.bpPtnrContacts=bpPtnrContactsState.bpPtnrContacts;
+            self.searchPerformed=true;
         })
     	.error(function(error){
     		self.error = error;
     	});
     }
 
-        function handleSelectedItem(index){
-            index = index ? index : 0 ;
-            self.selectedIndex = index ;
-            angular.copy(self.bpPtnrContacts[self.selectedIndex],self.selectedItem ) ;
-        };
+    function handleSelectedItem(index){
+        index = index ? index : 0 ;
+        self.selectedIndex = index ;
+        angular.copy(self.bpPtnrContacts[self.selectedIndex],self.selectedItem ) ;
+    };
 
 
-        function openCreateForm(size){
-            var modalInstance = $modal.open({
-                templateUrl: 'views/BpBnsPtnr/BpPtnrContactForm.html',
-                controller: self.ModalInstanceCreateCtrl,
-                size: size
+    function openCreateForm(size){
+        var modalInstance = $modal.open({
+            templateUrl: 'views/BpBnsPtnr/BpPtnrContactForm.html',
+            controller: self.ModalInstanceCreateCtrl,
+            size: size
+        });
+    };
+
+    function ModalInstanceCreateCtrl($scope, $modalInstance) {
+        $scope.formCreate = true;
+        $scope.bpPtnrContact;
+        $scope.currentAction=bpPtnrContactUtils.translations["Entity_create.title"];
+        $scope.bpPtnrContactUtils=bpPtnrContactUtils;
+        $scope.error="";
+        
+        $scope.save = function () {
+            $scope.bpPtnrContact.ptnrNbr = self.ptnrNbr;
+        	genericResource.create(bpPtnrContactUtils.urlBase, $scope.bpPtnrContact)
+        	.success(function (data) {
+        		bpPtnrContactsState.bpPtnrContacts.push(data);
+        		$modalInstance.dismiss('cancel');
+            })
+            .error(function(data, status){
+            	$scope.error= status + " " + data;
             });
-        };
-
-        function ModalInstanceCreateCtrl($scope, $modalInstance) {
-            $scope.formCreate = true;
-            $scope.bpPtnrContact;
-            $scope.currentAction=bpPtnrContactUtils.translations["Entity_create.title"];
-            $scope.bpPtnrContactUtils=bpPtnrContactUtils;
-            $scope.error="";
             
-            $scope.save = function () {
-                $scope.bpPtnrContact.ptnrNbr = self.ptnrNbr;
-            	genericResource.create(bpPtnrContactUtils.urlBase, $scope.bpPtnrContact)
-            	.success(function (data) {
-            		bpPtnrContactsState.bpPtnrContacts.push(data);
-            		$modalInstance.dismiss('cancel');
-                })
-                .error(function(data, status){
-                	$scope.error= status + " " + data;
-                });
-                
-            };
-            $scope.cancel = function () {
-                $modalInstance.dismiss('cancel');
-            };
-        }
-
-        function openEditForm(size,index){
-            handleSelectedItem(index);
-            var modalInstance = $modal.open({
-                templateUrl: 'views/BpBnsPtnr/BpPtnrContactForm.html',
-                controller: self.ModalInstanceEditCtrl,
-                size: size,
-                resolve:{
-                	bpPtnrContact: function(){
-                        return self.selectedItem;
-                    }
-                }
-            });
         };
+        $scope.cancel = function () {
+            $modalInstance.dismiss('cancel');
+        };
+    }
+
+    function openEditForm(size,index){
+        handleSelectedItem(index);
+        var modalInstance = $modal.open({
+            templateUrl: 'views/BpBnsPtnr/BpPtnrContactForm.html',
+            controller: self.ModalInstanceEditCtrl,
+            size: size,
+            resolve:{
+            	bpPtnrContact: function(){
+                    return self.selectedItem;
+                }
+            }
+        });
+    };
 
     function ModalInstanceEditCtrl($scope, $modalInstance,bpPtnrContact) {
     	$scope.formEdit = true;
@@ -223,7 +241,7 @@ angular.module('AdBnsptnr')
     function deleteItem(index){
         handleSelectedItem();
         genericResource.deleteById(bpPtnrContactUtils.urlBase, self.selectedItem.id).success(function(){
-            init();
+            findByLike(self.searchInput);
         })
     }
 

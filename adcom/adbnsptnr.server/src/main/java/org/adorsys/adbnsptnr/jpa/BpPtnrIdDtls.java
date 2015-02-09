@@ -9,8 +9,10 @@ import javax.persistence.Enumerated;
 import javax.persistence.PrePersist;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
+import org.adorsys.adbase.jpa.BaseCountryName;
 import org.adorsys.adcore.jpa.AbstractMvmtData;
 import org.adorsys.adcore.utils.SequenceGenerator;
 import org.adorsys.javaext.description.Description;
@@ -57,6 +59,9 @@ public class BpPtnrIdDtls extends AbstractMvmtData {
 	@Column
 	@Description("BpPtnrIdDtls_issuingCtry_description")
 	private String issuingCtry;
+	
+	@Transient
+	private BaseCountryName issuingCtryName;
 
 	@PrePersist
 	public void prePersist() {
@@ -118,5 +123,21 @@ public class BpPtnrIdDtls extends AbstractMvmtData {
 
 	public void setIssuingCtry(final String issuingCtry) {
 		this.issuingCtry = issuingCtry;
+	}
+
+	public String getIdNbr() {
+		return idNbr;
+	}
+
+	public void setIdNbr(String idNbr) {
+		this.idNbr = idNbr;
+	}
+
+	public BaseCountryName getIssuingCtryName() {
+		return issuingCtryName;
+	}
+
+	public void setIssuingCtryName(BaseCountryName issuingCtryName) {
+		this.issuingCtryName = issuingCtryName;
 	}
 }

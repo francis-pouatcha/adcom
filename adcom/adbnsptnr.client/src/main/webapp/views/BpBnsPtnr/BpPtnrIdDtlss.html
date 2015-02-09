@@ -1,6 +1,6 @@
 <div ng-controller="bpPtnrIdDtlssCtlr as bpIdCtlr" >
     <a class="btn btn-success margBott10 pull-right" ng-click="bpIdCtlr.openCreateForm('md')">
-    	<i class="glyphicon glyphicon-plus"></i> {{bpIdCtlr.commonTranslations.tranlations['Entity_create.title']}}</a>
+    	<i class="glyphicon glyphicon-plus"></i> {{bpIdCtlr.bpPtnrIdDtlsUtils.translations['Entity_create.title']}}</a>
     <br/>
     <table class="table table-bordered table-striped">
         <tr>
@@ -16,7 +16,7 @@
         </tr>
         <tr ng-repeat="bpPtnrIdDtls in bpIdCtlr.bpPtnrIdDtlss">
             <td>{{bpIdCtlr.bpPtnrIdDtlsUtils.ptnrIdTypeI18nMsgTitleValue(bpPtnrIdDtls.ptnrIdType)}}</td>
-            <td>{{bpPtnrIdDtls.issuingCtry}}</td>
+            <td>{{bpPtnrIdDtls.issuingCtryName.name}}</td>
             <td>{{bpPtnrIdDtls.idNbr}}</td>
             <td>{{bpPtnrIdDtls.issuedIn}}</td>
             <td>{{bpPtnrIdDtls.issuedBy}}</td>
