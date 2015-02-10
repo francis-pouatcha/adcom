@@ -1,23 +1,23 @@
-<div ng-controller="bpPtnrContactsCtlr as bpCtlr" >
-    <a class="btn btn-success margBott10 pull-right" ng-click="bpCtlr.openCreateForm('md')"><i class="glyphicon glyphicon-plus"></i> {{bpCtlr.bpPtnrContactUtils.translations['Entity_create.title']}}</a>
+<div ng-controller="bpPtnrContactsCtlr" >
+    <a class="btn btn-success margBott10 pull-right" ng-click="openCreateForm('md')"><i class="glyphicon glyphicon-plus"></i> {{bpPtnrContactUtils.translations['Entity_create.title']}}</a>
     <br/>
     <table class="table table-bordered table-striped">
         <tr>
-            <th width="10%">{{bpCtlr.bpPtnrContactUtils.translations['BpPtnrContact_cntctRole_description.title']}}</th>
-            <th width="5%">{{bpCtlr.bpPtnrContactUtils.translations['BpPtnrContact_cntctIndex_description.title']}}</th>
-            <th width="65%">{{bpCtlr.bpPtnrContactUtils.translations['BpPtnrContact_description_description.title']}}</th>
-            <th width="10%">{{bpCtlr.bpPtnrContactUtils.translations['BpPtnrContact_langIso2_description.title']}}</th>
+            <th width="10%">{{bpPtnrContactUtils.translations['BpPtnrContact_cntctRole_description.title']}}</th>
+            <th width="5%">{{bpPtnrContactUtils.translations['BpPtnrContact_cntctIndex_description.title']}}</th>
+            <th width="65%">{{bpPtnrContactUtils.translations['BpPtnrContact_description_description.title']}}</th>
+            <th width="10%">{{bpPtnrContactUtils.translations['BpPtnrContact_langIso2_description.title']}}</th>
             <th width="5%"></th>
             <th width="5%"></th>
         </tr>
-        <tr ng-repeat="bpPtnrContact in bpCtlr.bpPtnrContacts">
-            <td>{{bpCtlr.bpPtnrContactUtils.contactRoleI18nMsgTitleValue(bpPtnrContact.cntctRole)}}</td>
+        <tr ng-repeat="bpPtnrContact in bpPtnrContacts()">
+            <td>{{bpPtnrContactUtils.contactRoleI18nMsgTitleValue(bpPtnrContact.cntctRole)}}</td>
             <td>{{bpPtnrContact.cntctIndex}}</td>
             <td><pre>{{bpPtnrContact.description}}</pre></td>
-            <td>{{bpCtlr.bpPtnrContactUtils.languageI18nMsgTitleValue(bpPtnrContact.langIso2)}}</td>
-            <td><a class="" ng-click="bpCtlr.openEditForm('md',$index);"><i class="glyphicon glyphicon-edit"></i></a>
+            <td>{{bpPtnrContactUtils.languageI18nMsgTitleValue(bpPtnrContact.langIso2)}}</td>
+            <td><a class="" ng-click="openEditForm('md',bpPtnrContact);"><i class="glyphicon glyphicon-edit"></i></a>
             </td>
-            <td><a ng-click="bpCtlr.deleteItem()" ><i class="glyphicon glyphicon-trash" ></i></a></td>
+            <td><a ng-click="deleteItem(bpPtnrContact)" ><i class="glyphicon glyphicon-trash" ></i></a></td>
         </tr>
     </table>
 </div>

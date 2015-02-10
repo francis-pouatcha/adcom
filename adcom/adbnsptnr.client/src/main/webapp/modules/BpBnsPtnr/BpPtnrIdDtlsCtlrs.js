@@ -1,11 +1,12 @@
 ﻿'use strict';
     
 angular.module('AdBnsptnr')
-.factory('bpPtnrIdDtlsUtils',['$translate','$rootScope',
-                function($translate,$rootScope){
+.factory('bpPtnrIdDtlsUtils',['$translate','$rootScope','bpBnsPtnrUtils',
+                function($translate,$rootScope,bpBnsPtnrUtils){
     var service = {};
     
     service.urlBase='/adbnsptnr.server/rest/bpptnriddtlss';
+    service.loadCountryNames=bpBnsPtnrUtils.loadCountryNames;
     
     service.ptnrIdTypeI18nMsgTitleKey = function(enumKey){
     	return "BpPtnrIdType_"+enumKey+"_description.title";
@@ -61,114 +62,163 @@ angular.module('AdBnsptnr')
 }])
 .factory('bpPtnrIdDtlssState',['bpBnsPtnrState',function(bpBnsPtnrState){
 	
-	var serv = {
+	var service = {
 	};
 	
-	serv.bpPtnrIdDtlss=[];
-	serv.replace = function(bpPtnrIdDtls){
-		if(!serv.bpPtnrIdDtlss || !bpPtnrIdDtls) return;
-		for (var index in serv.bpPtnrIdDtlss) {
-			if(serv.bpPtnrIdDtlss[index].ptnrNbr==bpPtnrIdDtls.ptnrNbr){
-				serv.bpPtnrIdDtlss[index]=bpPtnrIdDtls;
-				break;
-			}
-		}
-	};
-	serv.bpPtnrIdDtlsActive= function(){ 
-		return bpBnsPtnrState.bpPtnrIdDtlsActive;
-	}
+	service.bpBnsPtnr = bpBnsPtnrState.bpBnsPtnr;
+    var searchResultsVar = {};
 
-	return serv;
+    // The search state.
+    // The current list of business partners.
+    service.bpPtnrIdDtlss = function(ptnrNbr){
+        var nbr = ptnrNbr;
+        if(!ptnrNbr) {
+            var bpBnsPtnr = bpBnsPtnrState.bpBnsPtnr();
+            if(bpBnsPtnr)
+                nbr = bpBnsPtnr.ptnrNbr;
+        }
+        if(nbr && searchResultsVar[nbr]) return searchResultsVar[nbr];
+        return [];
+    };
 
-}])
-.controller('bpPtnrIdDtlssCtlr',['$scope','genericResource','$modal','$routeParams',
-                                 'bpPtnrIdDtlsUtils','bpPtnrIdDtlssState','$rootScope','bpBnsPtnrUtils',
-                     function($scope,genericResource,$modal,$routeParams,
-                    		 bpPtnrIdDtlsUtils,bpPtnrIdDtlssState,$rootScope,bpBnsPtnrUtils){
-	
-    var self = this ;
-    $scope.bpPtnrIdDtlssCtlr = self;
+    var selectedIndexVar=-1;
+    service.selectedIndex= function(selectedIndexIn){
+        if(selectedIndexIn)selectedIndexVar=selectedIndexIn;
+        return selectedIndexVar;
+    };
 
-    self.searchInput = {
+    service.consumeSearchResult = function(ptnrNbr, entitySearchResult){
+        if(entitySearchResult.resultList){
+            searchResultsVar[ptnrNbr] = entitySearchResult.resultList;
+        } else {
+            searchResultsVar[ptnrNbr] = [];
+        }
+    };
+    
+    service.hasSearchResult = function(ptnrNbr){
+    	var res = searchResultsVar[ptnrNbr];
+    	if(res) return true;
+    	return false;
+    }
+    
+    service.bpPtnrIdDtls = function(index,ptnrNbr){
+        var list = service.bpPtnrIdDtlss(ptnrNbr);
+        if(!index || index<0 || index>=list.length) return;
+        selectedIndexVar=index;
+        return list[selectedIndexVar];
+    };
+
+    // replace the current partner after a change.
+    service.replace = function(bpPtnrIdDtls){
+        if(!bpPtnrIdDtls) return;
+        var list = service.bpPtnrIdDtlss(bpPtnrIdDtls.ptnrNbr);
+
+        if(selectedIndexVar>=0 && selectedIndexVar<list.length && list[selectedIndexVar].id==bpPtnrIdDtls.id){
+            list[selectedIndexVar]=bpPtnrIdDtls;
+        }else {
+            for (var index in list) {
+                if(list[index].id==bpPtnrIdDtls.id){
+                    list[index]=bpPtnrIdDtls;
+                    selectedIndexVar=index;
+                    break;
+                }
+            }
+        }
+    };
+
+    service.push = function(bpPtnrIdDtls){
+        if(!bpPtnrIdDtls) return false;
+        var list = searchResultsVar[bpPtnrIdDtls.ptnrNbr];
+        if(!list){
+            list = [];
+            searchResultsVar[bpPtnrIdDtls.ptnrNbr]=list;
+        }
+        var length = list.push(bpPtnrIdDtls);
+        selectedIndexVar = length-1;
+    };
+
+	service.bpPtnrIdDtlsActive= bpBnsPtnrState.bpPtnrIdDtlsActive;
+
+    service.searchInput = {
         entity:{},
         fieldNames:[]
     };
-    self.bpPtnrIdDtlss=[];
-    self.selectedItem = {} ;
-    self.selectedIndex  ;
-    self.ptnrNbr;
-    self.openEditForm = openEditForm;
-    self.openCreateForm = openCreateForm;
-    self.ModalInstanceEditCtrl = ModalInstanceEditCtrl ;
-    self.ModalInstanceCreateCtrl = ModalInstanceCreateCtrl ;
-    self.handleSelectedItem = handleSelectedItem;
-    self.error = "";
-    self.deleteItem = deleteItem;
-    self.bpPtnrIdDtlsUtils=bpPtnrIdDtlsUtils;
-    self.genericResource=genericResource;
-    self.searchPerformed=false;
 
-    var unregisterHandle = $rootScope.$on('BpBnsPtnrsSelected', function(event, data){
-    	if(!data || data.tabName!='bpPtnrIdDtls') return; // wrong tab
-    	if(self.ptnrNbr && self.ptnrNbr!=data.bpBnsPtnr.ptnrNbr) return; //event didn't come form this instance.
-    	if(self.searchPerformed) return;
-    	self.ptnrNbr=data.bpBnsPtnr.ptnrNbr;
-        findByLike(self.searchInput);
+	return service;
+
+}])
+
+.controller('bpPtnrIdDtlssCtlr',['$scope','genericResource','$modal','$routeParams',
+                                 'bpPtnrIdDtlsUtils','bpPtnrIdDtlssState','$rootScope',
+                     function($scope,genericResource,$modal,$routeParams,
+                    		 bpPtnrIdDtlsUtils,bpPtnrIdDtlssState,$rootScope){
+	
+    $scope.bpPtnrIdDtlss=bpPtnrIdDtlssState.bpPtnrIdDtlss;
+    $scope.error = "";
+    $scope.bpPtnrIdDtlsUtils=bpPtnrIdDtlsUtils;
+    $scope.genericResource=genericResource;
+
+    var ptnrSelectedUnregisterHdl = $rootScope.$on('BpBnsPtnrsSelected', function(event, data){
+        var bpBnsPtnr = bpPtnrIdDtlssState.bpBnsPtnr();
+        if(!bpBnsPtnr || !data || !data.bpBnsPtnr || bpBnsPtnr.ptnrNbr!=data.bpBnsPtnr.ptnrNbr) return;
+        loadPtnrIdDtlss(data.bpBnsPtnr.ptnrNbr);
     });
     $scope.$on('$destroy', function () {
-    	unregisterHandle();
+    	ptnrSelectedUnregisterHdl();
     });
-    
     init();
     function init(){
-    	if(!bpPtnrIdDtlssState.bpPtnrIdDtlsActive()) return;// return if not the active tab.
-        self.ptnrNbr = $routeParams.ptnrNbr;
-        findByLike(self.searchInput);
+        var bpBnsPtnr = bpPtnrIdDtlssState.bpBnsPtnr();
+        if(bpBnsPtnr && bpBnsPtnr.ptnrNbr)loadPtnrIdDtlss(bpBnsPtnr.ptnrNbr);
     }
-    
-    function findByLike(searchInput){
-    	searchInput.entity.ptnrNbr=self.ptnrNbr;
+    function loadPtnrIdDtlss(ptnrNbr){
+        if(!bpPtnrIdDtlssState.bpPtnrIdDtlsActive()) return;
+        if(!bpPtnrIdDtlssState.hasSearchResult(ptnrNbr)) {
+            findByLike(bpPtnrIdDtlssState.searchInput, ptnrNbr);
+        }
+    }
+
+    function findByLike(searchInput,ptnrNbr){
+    	searchInput.entity.ptnrNbr=ptnrNbr;
     	if(searchInput.fieldNames.indexOf('ptnrNbr')<0){
     		searchInput.fieldNames.push('ptnrNbr');
     	}
     	genericResource.findByLike(bpPtnrIdDtlsUtils.urlBase, searchInput)
     	.success(function(entitySearchResult) {
-            bpPtnrIdDtlssState.bpPtnrIdDtlss=entitySearchResult.resultList;
-            self.bpPtnrIdDtlss=bpPtnrIdDtlssState.bpPtnrIdDtlss;
-            self.searchPerformed=true;
+    		bpPtnrIdDtlssState.consumeSearchResult(ptnrNbr, entitySearchResult);
         })
     	.error(function(error){
     		self.error = error;
     	});
     }
 
-    function handleSelectedItem(index){
-        index = index ? index : 0 ;
-        self.selectedIndex = index ;
-        angular.copy(self.bpPtnrIdDtlss[self.selectedIndex],self.selectedItem ) ;
-    };
-
-    function openCreateForm(size){
+    $scope.openCreateForm =function(size){
         var modalInstance = $modal.open({
             templateUrl: 'views/BpBnsPtnr/BpPtnrIdDtlsForm.html',
-            controller: self.ModalInstanceCreateCtrl,
-            size: size
+            controller: ModalInstanceCreateCtrl,
+            size: size,
+            resolve: {
+                bpBnsPtnr: function(){
+                    return bpPtnrIdDtlssState.bpBnsPtnr();
+                }
+            }
         });
     };
 
-    function ModalInstanceCreateCtrl($scope, $modalInstance) {
+    function ModalInstanceCreateCtrl($scope, $modalInstance,bpBnsPtnr) {
         $scope.formCreate = true;
         $scope.bpPtnrIdDtls;
         $scope.currentAction=bpPtnrIdDtlsUtils.translations["Entity_create.title"];
         $scope.bpPtnrIdDtlsUtils=bpPtnrIdDtlsUtils;
         $scope.error="";
-        $scope.loadCountryNames = bpBnsPtnrUtils.loadCountryNames;
+        $scope.bpBnsPtnr=bpBnsPtnr;
+        $scope.loadCountryNames = bpPtnrIdDtlsUtils.loadCountryNames;
         
         $scope.save = function () {
-            $scope.bpPtnrIdDtls.ptnrNbr = self.ptnrNbr;
+            $scope.bpPtnrIdDtls.ptnrNbr = bpBnsPtnr.ptnrNbr;
         	genericResource.create(bpPtnrIdDtlsUtils.urlBase, $scope.bpPtnrIdDtls)
-        	.success(function (data) {
-        		bpPtnrIdDtlssState.bpPtnrIdDtlss.push(data);
+        	.success(function (bpPtnrIdDtls) {
+        		bpPtnrIdDtlssState.push(bpPtnrIdDtls);
         		$modalInstance.dismiss('cancel');
             })
             .error(function(data, status){
@@ -178,33 +228,40 @@ angular.module('AdBnsptnr')
         $scope.cancel = function () {
             $modalInstance.dismiss('cancel');
         };
+        $scope.isClean = function() {
+            return false;
+        };
+        
     }
 
-    function openEditForm(size,index){
-        handleSelectedItem(index);
+    function openEditForm(size,index,bpPtnrIdDtls){
         var modalInstance = $modal.open({
             templateUrl: 'views/BpBnsPtnr/BpPtnrIdDtlsForm.html',
             controller: self.ModalInstanceEditCtrl,
             size: size,
             resolve:{
             	bpPtnrIdDtls: function(){
-                    return self.selectedItem;
+                    return bpPtnrIdDtls;
+                },
+                bpBnsPtnr: function(){
+                    return bpPtnrIdDtlssState.bpBnsPtnr();
                 }
             }
         });
     };
 
-    function ModalInstanceEditCtrl($scope, $modalInstance,bpPtnrIdDtls) {
+    function ModalInstanceEditCtrl($scope, $modalInstance,bpPtnrIdDtls,bpBnsPtnr) {
     	$scope.formEdit = true;
-        $scope.bpPtnrIdDtls = bpPtnrIdDtls;
+        $scope.bpPtnrIdDtls = angular.copy(bpPtnrIdDtls);
         $scope.currentAction=bpPtnrIdDtlsUtils.translations["Entity_edit.title"];
         $scope.bpPtnrIdDtlsUtils=bpPtnrIdDtlsUtils;
-
+        $scope.bpBnsPtnr=bpBnsPtnr;
+        $scope.loadCountryNames = bpPtnrIdDtlsUtils.loadCountryNames;
+        
         $scope.isClean = function() {
-            return !angular.equals(bpPtnrIdDtls, $scope.bpPtnrIdDtls);
+            return angular.equals(bpPtnrIdDtls, $scope.bpPtnrIdDtls);
         };
         $scope.save = function () {
-            $scope.bpPtnrIdDtls.ptnrNbr = self.ptnrNbr;
             genericResource.update(bpPtnrIdDtlsUtils.urlBase, $scope.bpPtnrIdDtls)
             .success(function(data){
         		bpPtnrIdDtlssState.replace(data);
@@ -219,10 +276,9 @@ angular.module('AdBnsptnr')
         };
     };
 
-    function deleteItem(index){
-        handleSelectedItem();
-        genericResource.deleteById(bpPtnrIdDtlsUtils.urlBase, self.selectedItem.id).success(function(){
-            findByLike(self.searchInput);
+    function deleteItem(bpPtnrIdDtls){
+        genericResource.deleteById(bpPtnrIdDtlsUtils.urlBase, bpPtnrIdDtls.id).success(function(){
+            findByLike(bpPtnrIdDtlssState.searchInput, bpPtnrIdDtls.ptnrNbr);
         })
     }
 }]);

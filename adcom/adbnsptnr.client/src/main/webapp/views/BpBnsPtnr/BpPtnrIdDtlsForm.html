@@ -1,5 +1,5 @@
 <div class="panel panel-default">
-    <div class="panel-heading"><b>{{currentAction}} {{bpPtnrIdDtlsUtils.translations['BpBnsPtnr_ptnrNbr_description.title']}} : {{bpPtnrIdDtls.ptnrNbr}}</b> </div>
+    <div class="panel-heading"><b>{{currentAction}} {{bpPtnrIdDtlsUtils.translations['BpBnsPtnr_ptnrNbr_description.title']}} : {{bpBnsPtnr.ptnrNbr}}</b> </div>
     <div class="panel-body">
         <form id="BpPtnrIdDtlsForm" name="BpPtnrIdDtlsForm" class="" novalidate>
             <div class="control-group col-md-6" ng-class="{error: BpPtnrIdDtlsForm.ptnrIdType.$invalid}">
@@ -59,7 +59,7 @@
             <div class="control-group" col-md-12>
             	<br/>
                 <div class="controls">
-                    <button id="saveBpPtnrIdDtls" name="saveBpPtnrIdDtls" class="btn btn-primary" ng-disabled="BpPtnrIdDtlsForm.$invalid" ng-click="save()"><i class="icon-ok-sign icon-white"></i> {{bpPtnrIdDtlsUtils.translations['Entity_save.title']}}</button>
+                    <button id="saveBpPtnrIdDtls" name="saveBpPtnrIdDtls" class="btn btn-primary" ng-click="save()"><i class="icon-ok-sign icon-white"></i> {{bpPtnrIdDtlsUtils.translations['Entity_save.title']}}</button>
                     <button id="cancel" name="cancel" class="btn" ng-click="cancel()"><i class="icon-remove-sign"></i> {{bpPtnrIdDtlsUtils.translations['Entity_cancel.title']}}</button>
                 </div>
             </div>

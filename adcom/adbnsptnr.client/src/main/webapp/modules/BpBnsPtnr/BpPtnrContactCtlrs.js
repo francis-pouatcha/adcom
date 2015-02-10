@@ -79,151 +79,203 @@ angular.module('AdBnsptnr')
 }])
 .factory('bpPtnrContactsState',['bpBnsPtnrState',function(bpBnsPtnrState){
 	
-	var serv = {
+	var service = {
 	};
 	
-	serv.bpPtnrContacts=[];
-	serv.replace = function(bpPtnrContact){
-		if(!serv.bpPtnrContacts || !bpPtnrContact) return;
-		for (var index in serv.bpPtnrContacts) {
-			if(serv.bpPtnrContacts[index].ptnrNbr==bpPtnrContact.ptnrNbr){
-				serv.bpPtnrContacts[index]=bpPtnrContact;
-				break;
-			}
-		}
-	};
-	serv.bpPtnrContactActive= function(){
-		return bpBnsPtnrState.bpPtnrContactActive;
-	}
+	service.bpBnsPtnr = bpBnsPtnrState.bpBnsPtnr;
+    var searchResultsVar = {};
 
-	return serv;
+    // The search state.
+    // The current list of business partners.
+    service.bpPtnrContacts = function(ptnrNbr){
+        var nbr = ptnrNbr;
+        if(!ptnrNbr) {
+            var bpBnsPtnr = bpBnsPtnrState.bpBnsPtnr();
+            if(bpBnsPtnr)
+                nbr = bpBnsPtnr.ptnrNbr;
+        }
+        if(nbr && searchResultsVar[nbr]) return searchResultsVar[nbr];
+        return [];
+    };
+
+    var selectedIndexVar=-1;
+    service.selectedIndex= function(selectedIndexIn){
+        if(selectedIndexIn)selectedIndexVar=selectedIndexIn;
+        return selectedIndexVar;
+    };
+
+    service.consumeSearchResult = function(ptnrNbr, entitySearchResult){
+        if(entitySearchResult.resultList){
+            searchResultsVar[ptnrNbr] = entitySearchResult.resultList;
+        } else {
+            searchResultsVar[ptnrNbr] = [];
+        }
+    };
+    
+    service.hasSearchResult = function(ptnrNbr){
+    	var res = searchResultsVar[ptnrNbr];
+    	if(res) return true;
+    	return false;
+    }
+
+    service.bpPtnrContact = function(index,ptnrNbr){
+        var list = service.bpPtnrContacts(ptnrNbr);
+        if(!index || index<0 || index>=list.length) return;
+        selectedIndexVar=index;
+        return list[selectedIndexVar];
+    };
+
+    // replace the current partner after a change.
+    service.replace = function(bpPtnrContact){
+        if(!bpPtnrContact) return;
+        var list = service.bpPtnrContacts(bpPtnrContact.ptnrNbr);
+
+        if(selectedIndexVar>=0 && selectedIndexVar<list.length && list[selectedIndexVar].id==bpPtnrContact.id){
+            list[selectedIndexVar]=bpPtnrContact;
+        }else {
+            for (var index in list) {
+                if(list[index].id==bpPtnrContact.id){
+                    list[index]=bpPtnrContact;
+                    selectedIndexVar=index;
+                    break;
+                }
+            }
+        }
+    };
+
+    service.push = function(bpPtnrContact){
+        if(!bpPtnrContact) return false;
+        var list = searchResultsVar[bpPtnrContact.ptnrNbr];
+        if(!list){
+            list = [];
+            searchResultsVar[bpPtnrContact.ptnrNbr]=list;
+        }
+        var length = list.push(bpPtnrContact);
+        selectedIndexVar = length-1;
+    };
+
+	service.bpPtnrContactActive= bpBnsPtnrState.bpPtnrContactActive;
+
+    service.searchInput = {
+        entity:{},
+        fieldNames:[]
+    };
+
+	return service;
 
 }])
 .controller('bpPtnrContactsCtlr',['$scope','genericResource','$modal','$routeParams',
                                   'bpPtnrContactUtils','bpPtnrContactsState','$rootScope',
                      function($scope,genericResource,$modal,$routeParams,
                     		 bpPtnrContactUtils,bpPtnrContactsState,$rootScope){
-	
-    var self = this ;
-    $scope.bpPtnrContactsCtlr = self;
 
-    self.searchInput = {
-        entity:{},
-        fieldNames:[]
-    };
-    self.bpPtnrContacts=[];
-    self.selectedItem = {} ;
-    self.selectedIndex  ;
-    self.ptnrNbr;
-    self.openEditForm = openEditForm;
-    self.openCreateForm = openCreateForm;
-    self.ModalInstanceEditCtrl = ModalInstanceEditCtrl ;
-    self.ModalInstanceCreateCtrl = ModalInstanceCreateCtrl ;
-    self.handleSelectedItem = handleSelectedItem;
-    self.error = "";
-    self.deleteItem = deleteItem;
-    self.bpPtnrContactUtils=bpPtnrContactUtils;
-    self.genericResource=genericResource;
-    self.searchPerformed=false;
-    
-    var unregisterHandle = $rootScope.$on('BpBnsPtnrsSelected', function(event, data){
-    	if(!data || data.tabName!='bpPtnrContact') return; // wrong tab
-    	if(self.ptnrNbr && self.ptnrNbr!=data.bpBnsPtnr.ptnrNbr) return; //event didn't come form this instance.
-    	if(self.searchPerformed) return;
-    	self.ptnrNbr=data.bpBnsPtnr.ptnrNbr;
-        findByLike(self.searchInput);
+    $scope.bpPtnrContacts=bpPtnrContactsState.bpPtnrContacts;
+    $scope.error = "";
+    $scope.bpPtnrContactUtils=bpPtnrContactUtils;
+    $scope.genericResource=genericResource;
+
+    var ptnrSelectedUnregisterHdl = $rootScope.$on('BpBnsPtnrsSelected', function(event, data){
+        var bpBnsPtnr = bpPtnrContactsState.bpBnsPtnr();
+        if(!bpBnsPtnr || !data || !data.bpBnsPtnr || bpBnsPtnr.ptnrNbr!=data.bpBnsPtnr.ptnrNbr) return;
+        loadContacts(data.bpBnsPtnr.ptnrNbr);
     });
     $scope.$on('$destroy', function () {
-    	unregisterHandle();
+        ptnrSelectedUnregisterHdl();
     });
-    
     init();
     function init(){
-    	if(!bpPtnrContactsState.bpPtnrContactActive()) return;// return if not the active tab.
-        self.ptnrNbr = $routeParams.ptnrNbr;
-        findByLike(self.searchInput);
+        var bpBnsPtnr = bpPtnrContactsState.bpBnsPtnr();
+        if(bpBnsPtnr && bpBnsPtnr.ptnrNbr)loadContacts(bpBnsPtnr.ptnrNbr);
     }
-    
-    function findByLike(searchInput){
-    	searchInput.entity.ptnrNbr=self.ptnrNbr;
+    function loadContacts (ptnrNbr){
+        if(!bpPtnrContactsState.bpPtnrContactActive()) return;
+        if(!bpPtnrContactsState.hasSearchResult(ptnrNbr)) {
+            findByLike(bpPtnrContactsState.searchInput, ptnrNbr);
+        }
+    }
+
+    function findByLike(searchInput,ptnrNbr){
+    	searchInput.entity.ptnrNbr=ptnrNbr;
     	if(searchInput.fieldNames.indexOf('ptnrNbr')<0){
     		searchInput.fieldNames.push('ptnrNbr');
     	}
     	genericResource.findByLike(bpPtnrContactUtils.urlBase, searchInput)
     	.success(function(entitySearchResult) {
-            bpPtnrContactsState.bpPtnrContacts=entitySearchResult.resultList;
-            self.bpPtnrContacts=bpPtnrContactsState.bpPtnrContacts;
-            self.searchPerformed=true;
+            bpPtnrContactsState.consumeSearchResult(ptnrNbr, entitySearchResult);
         })
     	.error(function(error){
-    		self.error = error;
+    		$scope.error = error;
     	});
     }
 
-    function handleSelectedItem(index){
-        index = index ? index : 0 ;
-        self.selectedIndex = index ;
-        angular.copy(self.bpPtnrContacts[self.selectedIndex],self.selectedItem ) ;
-    };
-
-
-    function openCreateForm(size){
+    $scope.openCreateForm =function(size){
         var modalInstance = $modal.open({
             templateUrl: 'views/BpBnsPtnr/BpPtnrContactForm.html',
-            controller: self.ModalInstanceCreateCtrl,
-            size: size
-        });
-    };
-
-    function ModalInstanceCreateCtrl($scope, $modalInstance) {
-        $scope.formCreate = true;
-        $scope.bpPtnrContact;
-        $scope.currentAction=bpPtnrContactUtils.translations["Entity_create.title"];
-        $scope.bpPtnrContactUtils=bpPtnrContactUtils;
-        $scope.error="";
-        
-        $scope.save = function () {
-            $scope.bpPtnrContact.ptnrNbr = self.ptnrNbr;
-        	genericResource.create(bpPtnrContactUtils.urlBase, $scope.bpPtnrContact)
-        	.success(function (data) {
-        		bpPtnrContactsState.bpPtnrContacts.push(data);
-        		$modalInstance.dismiss('cancel');
-            })
-            .error(function(data, status){
-            	$scope.error= status + " " + data;
-            });
-            
-        };
-        $scope.cancel = function () {
-            $modalInstance.dismiss('cancel');
-        };
-    }
-
-    function openEditForm(size,index){
-        handleSelectedItem(index);
-        var modalInstance = $modal.open({
-            templateUrl: 'views/BpBnsPtnr/BpPtnrContactForm.html',
-            controller: self.ModalInstanceEditCtrl,
+            controller: ModalInstanceCreateCtrl,
             size: size,
-            resolve:{
-            	bpPtnrContact: function(){
-                    return self.selectedItem;
+            resolve: {
+                bpBnsPtnr: function(){
+                    return bpPtnrContactsState.bpBnsPtnr();
                 }
             }
         });
     };
 
-    function ModalInstanceEditCtrl($scope, $modalInstance,bpPtnrContact) {
+    var ModalInstanceCreateCtrl = function($scope, $modalInstance,bpBnsPtnr) {
+        $scope.formCreate = true;
+        $scope.bpPtnrContact;
+        $scope.currentAction=bpPtnrContactUtils.translations["Entity_create.title"];
+        $scope.bpPtnrContactUtils=bpPtnrContactUtils;
+        $scope.error="";
+        $scope.bpBnsPtnr=bpBnsPtnr;
+
+        $scope.save = function () {
+            $scope.bpPtnrContact.ptnrNbr = bpBnsPtnr.ptnrNbr;
+        	genericResource.create(bpPtnrContactUtils.urlBase, $scope.bpPtnrContact)
+        	.success(function (bpPtnrContact) {
+        		bpPtnrContactsState.push(bpPtnrContact);
+        		$modalInstance.dismiss('cancel');
+            })
+            .error(function(data, status){
+            	$scope.error= status + " " + data;
+            });
+
+        };
+        $scope.cancel = function () {
+            $modalInstance.dismiss('cancel');
+        };
+        $scope.isClean = function() {
+            return false;
+        };
+    };
+
+    $scope.openEditForm = function(size,bpPtnrContact){
+        var modalInstance = $modal.open({
+            templateUrl: 'views/BpBnsPtnr/BpPtnrContactForm.html',
+            controller: ModalInstanceEditCtrl,
+            size: size,
+            resolve:{
+            	bpPtnrContact: function(){
+                    return bpPtnrContact;
+                },
+                bpBnsPtnr: function(){
+                    return bpPtnrContactsState.bpBnsPtnr();
+                }
+            }
+        });
+    };
+
+    var ModalInstanceEditCtrl = function($scope, $modalInstance,bpPtnrContact,bpBnsPtnr) {
     	$scope.formEdit = true;
-        $scope.bpPtnrContact = bpPtnrContact;
+        $scope.bpPtnrContact = angular.copy(bpPtnrContact);
         $scope.currentAction=bpPtnrContactUtils.translations["Entity_edit.title"];
         $scope.bpPtnrContactUtils=bpPtnrContactUtils;
+        $scope.bpBnsPtnr=bpBnsPtnr;
 
         $scope.isClean = function() {
-            return !angular.equals(bpPtnrContact, $scope.bpPtnrContact);
+            return angular.equals(bpPtnrContact, $scope.bpPtnrContact);
         };
         $scope.save = function () {
-            $scope.bpPtnrContact.ptnrNbr = self.ptnrNbr;
             genericResource.update(bpPtnrContactUtils.urlBase, $scope.bpPtnrContact)
             .success(function(data){
         		bpPtnrContactsState.replace(data);
@@ -238,12 +290,11 @@ angular.module('AdBnsptnr')
         };
     };
 
-    function deleteItem(index){
-        handleSelectedItem();
-        genericResource.deleteById(bpPtnrContactUtils.urlBase, self.selectedItem.id).success(function(){
-            findByLike(self.searchInput);
+    $scope.deleteItem = function(bpPtnrContact){
+        genericResource.deleteById(bpPtnrContactUtils.urlBase, bpPtnrContact.id).success(function(){
+            findByLike(bpPtnrContactsState.searchInput, bpPtnrContact.ptnrNbr);
         })
-    }
+    };
 
 }]);
 
