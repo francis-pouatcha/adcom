@@ -14,5 +14,6 @@ public enum BpPtnrRole
    GOVERNMENT, @Description("BpPtnrRole_BROKER_description")
    BROKER, @Description("BpPtnrRole_SHAREHOLDER_description")
    SHAREHOLDER, @Description("BpPtnrRole_BANKER_description")
-   BANKER
+   BANKER, @Description("BpPtnrRole_INSURANCE_description")
+   INSURANCE
 }

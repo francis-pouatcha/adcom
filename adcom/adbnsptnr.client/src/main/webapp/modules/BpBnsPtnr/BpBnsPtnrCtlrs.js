@@ -7,6 +7,8 @@ angular.module('AdBnsptnr')
 
     service.urlBase='/adbnsptnr.server/rest/bpbnsptnrs';
     service.countryNamesUrlBase='/adbnsptnr.server/rest/basecountrynames';
+    service.bpctgryofptnrsUrlBase='/adbnsptnr.server/rest/bpctgryofptnrs';
+    service.bpptnrctgrydtlssUrlBase='/adbnsptnr.server/rest/bpptnrctgrydtlss';
 
     service.isIndividual = function(bpBnsPtnr){
     	return bpBnsPtnr.ptnrType=='INDIVIDUAL';
@@ -76,7 +78,8 @@ angular.module('AdBnsptnr')
     	            'Entity_cancel.title',
     	            'Entity_save.title',
     	            'BpPtnrContact_description.title',
-    	            'BpPtnrIdDtls_description.title'
+    	            'BpPtnrIdDtls_description.title',
+    	            'BpInsurrance_description.title'
     	            
     	            ])
 		 .then(function (translations) {
@@ -112,6 +115,64 @@ angular.module('AdBnsptnr')
         return deferred.promise;
     }    
 
+    service.loadInsurances = function(val){
+        return loadInsurancesPromise(val).then(function(entitySearchResult){
+            return entitySearchResult.resultList;
+        });
+    };
+
+    function loadInsurancesPromise(insuranceName){
+        var searchInput = {
+            entity:{},
+            fieldNames:[],
+            start: 0,
+            max: 10
+        };
+        if(insuranceName){
+            searchInput.entity.fullName = insuranceName+'%';
+            searchInput.entity.whenInRole = 'INSURANCE';
+            searchInput.fieldNames.push('fullName');
+            searchInput.fieldNames.push('whenInRole');
+        }
+        var deferred = $q.defer();
+        genericResource.findByLike(service.bpctgryofptnrsUrlBase, searchInput)
+		.success(function(entitySearchResult) {
+        	deferred.resolve(entitySearchResult);
+		})
+        .error(function(error){
+            deferred.reject(error);
+        });
+        return deferred.promise;
+    }    
+    
+    service.loadCtgryDtls = function(val){
+        return loadCtgryDtlsPromise(val).then(function(entitySearchResult){
+            return entitySearchResult.resultList;
+        });
+    };
+
+    function loadCtgryDtlsPromise(ctgryName){
+        var searchInput = {
+            entity:{},
+            fieldNames:[],
+            start: 0,
+            max: 10
+        };
+        if(ctgryName){
+            searchInput.entity.name = ctgryName+'%';
+            searchInput.fieldNames.push('name');
+        }
+        var deferred = $q.defer();
+        genericResource.findByLike(service.bpptnrctgrydtlssUrlBase, searchInput)
+		.success(function(entitySearchResult) {
+        	deferred.resolve(entitySearchResult);
+		})
+        .error(function(error){
+            deferred.reject(error);
+        });
+        return deferred.promise;
+    }    
+    
     service.translate();
     
     return service;
@@ -134,6 +195,12 @@ angular.module('AdBnsptnr')
         return bpPtnrIdDtlsActiveVar;
     };
 
+    var bpInsurranceActiveVar=false;
+    service.bpInsurranceActive=function(bpInsurranceActiveIn){
+        if(bpInsurranceActiveIn)bpInsurranceActiveVar=bpInsurranceActiveIn;
+        return bpInsurranceActiveVar;
+    };
+    
     // A cache of dependents by ptnrNbr
     var depCacheVar = {};
 
@@ -224,7 +291,7 @@ angular.module('AdBnsptnr')
     // returns sets and returns the business partner at the passed index or
     // if not set the business partner at the currently selected index.
     service.bpBnsPtnr = function(index){
-        if(index && index>=0 && index<bpBnsPtnrsVar.length)selectedIndexVar=index;
+        if(index>=0 && index<bpBnsPtnrsVar.length)selectedIndexVar=index;
         if(selectedIndexVar<0 || selectedIndexVar>=bpBnsPtnrsVar.length) return;
         return bpBnsPtnrsVar[selectedIndexVar];
     };
@@ -237,7 +304,7 @@ angular.module('AdBnsptnr')
             bpBnsPtnrsVar[selectedIndexVar]=bpBnsPtnr;
         } else {
             for (var index in bpBnsPtnrsVar) {
-                if(index && bpBnsPtnrsVar[index].ptnrNbr==bpBnsPtnr.ptnrNbr){
+                if(bpBnsPtnrsVar[index].ptnrNbr==bpBnsPtnr.ptnrNbr){
                     bpBnsPtnrsVar[index]=bpBnsPtnr;
                     selectedIndexVar=index;
                     break;
@@ -249,7 +316,7 @@ angular.module('AdBnsptnr')
     // CHeck if the business partner to be displayed is at the correct index.
     service.peek = function(bpBnsPtnr, index){
         if(!bpBnsPtnrsVar || !bpBnsPtnr) return false;
-        if(index && index>=0 && index<bpBnsPtnrsVar.length){
+        if(index>=0 && index<bpBnsPtnrsVar.length){
             selectedIndexVar=index;
             return true;
         }
@@ -428,6 +495,7 @@ function($scope,genericResource,bpBnsPtnrUtils,bpBnsPtnrState,$location,$rootSco
     $scope.bpBnsPtnrUtils=bpBnsPtnrUtils;
     $scope.bpPtnrContactActive=bpBnsPtnrState.bpPtnrContactActive();
     $scope.bpPtnrIdDtlsActive=bpBnsPtnrState.bpPtnrIdDtlsActive();
+    $scope.bpInsurranceActive=bpBnsPtnrState.bpInsurranceActive();
     
     $scope.previous = function (){
         var bp = bpBnsPtnrState.previous();
@@ -435,7 +503,6 @@ function($scope,genericResource,bpBnsPtnrUtils,bpBnsPtnrState,$location,$rootSco
             $scope.bpBnsPtnr=bp;
             bpBnsPtnrState.tabSelected();
         }
-//		$location.path('/BpBnsPtnrs/show/');
     }
 
     $scope.next =  function (){
@@ -444,7 +511,6 @@ function($scope,genericResource,bpBnsPtnrUtils,bpBnsPtnrState,$location,$rootSco
             $scope.bpBnsPtnr=bp;
             bpBnsPtnrState.tabSelected();
         }
-//        $location.path('/BpBnsPtnrs/show/');
     };
     $scope.tabSelected = function(tabName){
     	bpBnsPtnrState.tabSelected(tabName);

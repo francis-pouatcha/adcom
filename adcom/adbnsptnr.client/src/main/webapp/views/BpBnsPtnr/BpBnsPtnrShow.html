@@ -79,32 +79,13 @@
                             <br/>
                             <div ng-include="'views/BpBnsPtnr/BpPtnrIdDtlss.html'" />
                         </tab>
+                        <tab heading="{{bpBnsPtnrUtils.translations['BpInsurrance_description.title']}}"
+                        	select="tabSelected('bpInsurrance')" active="bpInsurranceActive">
+                            <br/>
+                            <div ng-include="'views/BpBnsPtnr/BpInsurrances.html'" />
+                        </tab>
                     </tabset>
                 </div>
-			<!-- 
-
-                        <tab heading="{{'CatalArtFeatMapping_description.title']}}">
-                            <br/>
-                            <div ng-include="'views/BpBnsPtnr/CatalArtFeatMappings.html'" />
-                        </tab>
-
-                        <tab heading="{{'CatalArtManufSupp_description.title']}}">
-                            <br />
-                            <div ng-include="'views/BpBnsPtnr/CatalArtManufSupp.html'"></div>
-                        </tab>
-                        <tab heading="{{'CatalArtEquivalence_description.title']}}">
-                            <br />
-                            <div ng-include="'views/BpBnsPtnr/equiv-list.html'"></div>
-                        </tab>
-                        <tab heading="{{'CatalProductFamily_description.title']}}">
-                            <br />
-                            <div ng-include="'views/BpBnsPtnr/CatalArt2ProductFamily.html'"></div>
-                        </tab>
-                        <tab heading="{{'CatalArtDetailConfig_description.title']}}">
-                            <br />
-                            <div ng-include="'views/BpBnsPtnr/CatalArtDetailConfig.html'"></div>
-                        </tab>
-			 -->
                 <hr/>
                 <div class="row">
                     <div class="col-lg-3">

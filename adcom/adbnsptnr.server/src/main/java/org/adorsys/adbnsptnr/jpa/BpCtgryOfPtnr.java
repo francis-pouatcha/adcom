@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.adorsys.adcore.jpa.AbstractTimedData;
@@ -27,9 +28,28 @@ public class BpCtgryOfPtnr extends AbstractTimedData {
 
 	@Column
 	@Description("BpCtgryOfPtnr_whenInRole_description")
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
 	private BpPtnrRole whenInRole;
 
+	@Column
+	@Description("BpCtgryOfPtnr_fullName_description")
+	private String fullName;
+
+	@Column
+	@Description("BpCtgryOfPtnr_nbrInCtgry_description")
+	private String nbrInCtgry;
+
+	@Column
+	@Description("BpCtgryOfPtnr_titleInCtgry_description")
+	private String titleInCtgry;
+
+	@Column
+	@Description("BpCtgryOfPtnr_description_description")
+	private String description;
+	
+	@Transient
+	private BpPtnrCtgryDtls ctgryDtls;
+	
 	public String getPtnrNbr() {
 		return this.ptnrNbr;
 	}
@@ -57,5 +77,45 @@ public class BpCtgryOfPtnr extends AbstractTimedData {
 	@Override
 	protected String makeIdentif() {
 		return ptnrNbr +"_"+ctgryCode;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+	public String getNbrInCtgry() {
+		return nbrInCtgry;
+	}
+
+	public void setNbrInCtgry(String nbrInCtgry) {
+		this.nbrInCtgry = nbrInCtgry;
+	}
+
+	public String getTitleInCtgry() {
+		return titleInCtgry;
+	}
+
+	public void setTitleInCtgry(String titleInCtgry) {
+		this.titleInCtgry = titleInCtgry;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public BpPtnrCtgryDtls getCtgryDtls() {
+		return ctgryDtls;
+	}
+
+	public void setCtgryDtls(BpPtnrCtgryDtls ctgryDtls) {
+		this.ctgryDtls = ctgryDtls;
 	}
 }

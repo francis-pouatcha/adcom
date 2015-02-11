@@ -84,4 +84,9 @@ public class BpCtgryDscntEJB
 	   if(resultList.isEmpty()) return null;
 	   return resultList.iterator().next();
    }
+
+   public List<BpCtgryDscnt> findByCtgryCode(String ctgryCode){
+	   return repository.findByCtgryCode(ctgryCode).getResultList();
+   }
+   
 }

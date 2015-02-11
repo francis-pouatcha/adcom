@@ -224,7 +224,7 @@ public class CatalArticleEndpoint
 	   @SuppressWarnings("rawtypes")
 	   SingularAttribute[] attributes = new SingularAttribute[]{CatalArtFeatMapping_.artName};
 	   CatalArtFeatMapping artFeatMapping = entity.getFeatures();
-	   Long countLike = featMappingEJB.countBy(artFeatMapping, attributes);
+	   Long countLike = featMappingEJB.countByLike(artFeatMapping, attributes);
 	   List<CatalArtFeatMapping> list = featMappingEJB.findByLike(artFeatMapping, searchInput.getStart(), searchInput.getMax(), attributes);
 	   List<CatalArticle> resultList = new ArrayList<CatalArticle>();
 	   Map<String, CatalArticle> resultMap = new HashMap<String, CatalArticle>();

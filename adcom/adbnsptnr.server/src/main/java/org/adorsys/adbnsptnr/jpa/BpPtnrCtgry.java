@@ -4,14 +4,15 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
-import org.adorsys.adcore.jpa.AbstractTimedData;
+import org.adorsys.adcore.jpa.AbstractIdentifData;
 import org.adorsys.javaext.description.Description;
 
 @Entity
 @Description("BpPtnrCtgry_description")
-public class BpPtnrCtgry extends AbstractTimedData {
+public class BpPtnrCtgry extends AbstractIdentifData {
 
 	private static final long serialVersionUID = -5239368389118117504L;
 
@@ -26,9 +27,15 @@ public class BpPtnrCtgry extends AbstractTimedData {
 
 	@Column
 	@Description("BpPtnrCtgry_ptnrRole_description")
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
 	private BpPtnrRole ptnrRole;
+	
+	@Transient
+	private BpPtnrCtgryDtls ctgryDtls;
 
+	@Transient
+	private BpPtnrCtgryDtls parentCtgryDtls;
+	
 	public String getCtgryCode() {
 		return this.ctgryCode;
 	}
@@ -56,5 +63,30 @@ public class BpPtnrCtgry extends AbstractTimedData {
 	@Override
 	protected String makeIdentif() {
 		return ctgryCode;
+	}
+
+	public BpPtnrCtgryDtls getCtgryDtls() {
+		return ctgryDtls;
+	}
+
+	public void setCtgryDtls(BpPtnrCtgryDtls ctgryDtls) {
+		this.ctgryDtls = ctgryDtls;
+	}
+
+	public BpPtnrCtgryDtls getParentCtgryDtls() {
+		return parentCtgryDtls;
+	}
+
+	public void setParentCtgryDtls(BpPtnrCtgryDtls parentCtgryDtls) {
+		this.parentCtgryDtls = parentCtgryDtls;
+	}
+
+	public void copyTo(BpPtnrCtgry target) {
+		target.ctgryCode=ctgryCode;
+		target.ctgryDtls=ctgryDtls;
+		target.identif=identif;
+		target.parentCode=parentCode;
+		target.parentCtgryDtls=parentCtgryDtls;
+		target.ptnrRole=ptnrRole;
 	}
 }

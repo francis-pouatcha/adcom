@@ -1,0 +1,28 @@
+<div class="panel panel-default">
+    <div class="panel-heading"><b>{{currentAction}} {{bpCtgryDscntUtils.translations['BpPtnrCtgry_ctgryCode_description.title']}} : {{bpPtnrCtgry.ctgryCode}}</b> </div>
+    <div class="panel-body">
+        <form id="BpCtgryDscntForm" name="BpCtgryDscntForm" class="form-horizontal" novalidate>
+            <div class="control-group" ng-class="{error: BpCtgryDscntForm.dscntAuthrzd.$invalid}">
+                <label for="dscntAuthrzd" class="control-label">{{bpCtgryDscntUtils.translations['BpCtgryDscnt_dscntAuthrzd_description.title']}}</label>
+                <div id="dscntAuthrzdControls" class="controls">
+                    <input type="checkbox" ng-model="bpCtgryDscnt.dscntAuthrzd" name="dscntAuthrzd" id="dscntAuthrzd" class="form-control" required>
+                    <span class="help-inline" ng-show="BpCtgryDscntForm.dscntAuthrzd.$error.required">{{bpCtgryDscntUtils.translations['Entity_required.title']}}</span>
+                </div>
+            </div>
+            <div class="control-group" ng-class="{error: BpCtgryDscntForm.maxDscntRatePct.$invalid}">
+                <label for="maxDscntRatePct" class="control-label">{{bpCtgryDscntUtils.translations['BpCtgryDscnt_maxDscntRatePct_description.title']}}</label>
+                <div id="maxDscntRatePctControls" class="controls">
+                    <input type="text" ng-model="bpCtgryDscnt.maxDscntRatePct" name="maxDscntRatePct" min="0" max="100" class="form-control" required>
+                    <span class="help-inline" ng-show="BpCtgryDscntForm.maxDscntRatePct.$error.required">{{bpCtgryDscntUtils.translations['Entity_required.title']}}</span>
+                </div>
+            </div>
+            <div class="control-group">
+            	<br/>
+                <div class="controls">
+                    <button id="saveBpCtgryDscnt" name="saveBpCtgryDscnt" class="btn btn-primary" ng-disabled="isClean() || BpCtgryDscntForm.$invalid" ng-click="save()"><i class="icon-ok-sign icon-white"></i> {{bpCtgryDscntUtils.translations['Entity_save.title']}}</button>
+                    <button id="cancel" name="cancel" class="btn" ng-click="cancel()"><i class="icon-remove-sign"></i> {{bpCtgryDscntUtils.translations['Entity_cancel.title']}}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+  </div>

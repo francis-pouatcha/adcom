@@ -45,18 +45,18 @@
             <div class="control-group col-md-6" ng-class="{error: BpPtnrIdDtlsForm.issuedDt.$invalid}">
                 <label for="issuedDt" class="control-label">{{bpPtnrIdDtlsUtils.translations['BpPtnrIdDtls_issuedDt_description.title']}}</label>
                 <div id="issuedDtControls" class="controls">
-                    <input type="datetime" date-time  view="date" min-view="date" views="['date']" dismiss="true" format="dd-MM-yyyy" 
+                    <input type="text" date-time  view="date" min-view="date" views="['date']" dismiss="true" format="dd-MM-yyyy" 
                     	ng-model="bpPtnrIdDtls.issuedDt" name="issuedDt" id="issuedDt" class="form-control">
                 </div>
             </div>
             <div class="control-group col-md-6" ng-class="{error: BpPtnrIdDtlsForm.expirdDt.$invalid}">
                 <label for="expirdDt" class="control-label">{{bpPtnrIdDtlsUtils.translations['BpPtnrIdDtls_expirdDt_description.title']}}</label>
                 <div id="expirdDtControls" class="controls">
-                    <input type="datetime" date-time  view="date" min-view="date" views="['date']" dismiss="true" format="dd-MM-yyyy" 
+                    <input type="text" date-time  view="date" min-view="date" views="['date']" format="dd-MM-yyyy" 
                     	ng-model="bpPtnrIdDtls.expirdDt" name="expirdDt" id="expirdDt" class="form-control">
                 </div>
             </div>
-            <div class="control-group" col-md-12>
+            <div class="control-group col-md-12" >
             	<br/>
                 <div class="controls">
                     <button id="saveBpPtnrIdDtls" name="saveBpPtnrIdDtls" class="btn btn-primary" ng-click="save()"><i class="icon-ok-sign icon-white"></i> {{bpPtnrIdDtlsUtils.translations['Entity_save.title']}}</button>

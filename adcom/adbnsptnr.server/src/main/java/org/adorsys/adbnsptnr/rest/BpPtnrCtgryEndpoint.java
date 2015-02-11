@@ -2,7 +2,10 @@ package org.adorsys.adbnsptnr.rest;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -22,9 +25,12 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.adorsys.adbnsptnr.jpa.BpPtnrCtgry;
+import org.adorsys.adbnsptnr.jpa.BpPtnrCtgryDtls;
+import org.adorsys.adbnsptnr.jpa.BpPtnrCtgryDtls_;
 import org.adorsys.adbnsptnr.jpa.BpPtnrCtgrySearchInput;
 import org.adorsys.adbnsptnr.jpa.BpPtnrCtgrySearchResult;
 import org.adorsys.adbnsptnr.jpa.BpPtnrCtgry_;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 
@@ -37,6 +43,9 @@ public class BpPtnrCtgryEndpoint
 
    @Inject
    private BpPtnrCtgryEJB ejb;
+   
+   @Inject
+   private BpPtnrCtgryDtlsEJB ctgryDtlsEJB;
 
    @POST
    @Consumes({ "application/json", "application/xml" })
@@ -47,10 +56,10 @@ public class BpPtnrCtgryEndpoint
    }
 
    @DELETE
-   @Path("/{id}")
-   public Response deleteById(@PathParam("id") String id)
+   @Path("/{identif}")
+   public Response deleteByIdentif(@PathParam("identif") String identif)
    {
-      BpPtnrCtgry deleted = ejb.deleteById(id);
+      BpPtnrCtgry deleted = ejb.deleteByIdentif(identif);
       if (deleted == null)
          return Response.status(Status.NOT_FOUND).build();
 
@@ -134,6 +143,58 @@ public class BpPtnrCtgryEndpoint
             detach(searchInput));
    }
 
+   @POST
+   @Path("/findCustom")
+   @Produces({ "application/json", "application/xml" })
+   @Consumes({ "application/json", "application/xml" })
+   public BpPtnrCtgrySearchResult findCustom(BpPtnrCtgrySearchInput searchInput)
+   {
+	  BpPtnrCtgry entity = searchInput.getEntity();
+	  if(entity.getCtgryDtls()!=null && StringUtils.isNotBlank(entity.getCtgryDtls().getName())){
+		  return findByNameLike(searchInput);
+	  }
+	  return findByLike(searchInput);
+   }
+
+   @SuppressWarnings("unchecked")
+   @POST
+   @Path("/findByNameLike")
+   @Produces({ "application/json", "application/xml" })
+   @Consumes({ "application/json", "application/xml" })
+   public BpPtnrCtgrySearchResult findByNameLike(BpPtnrCtgrySearchInput searchInput)
+   {
+	  BpPtnrCtgry entity = searchInput.getEntity();
+	  if(entity.getCtgryDtls()==null || StringUtils.isBlank(entity.getCtgryDtls().getName())){
+		  Long countLike = 0l;
+	      List<BpPtnrCtgry> resultList = Collections.emptyList();
+	        return new BpPtnrCtgrySearchResult(countLike, detach(resultList),
+	              detach(searchInput));
+	   }
+	  @SuppressWarnings("rawtypes")
+	  SingularAttribute[] attributes = new SingularAttribute[]{BpPtnrCtgryDtls_.name};
+	  BpPtnrCtgryDtls ctgryDtls = entity.getCtgryDtls();
+	  Map<String, BpPtnrCtgry> resultMap = new HashMap<String, BpPtnrCtgry>();
+	  List<BpPtnrCtgry> resultList = new ArrayList<BpPtnrCtgry>();
+	  Long countByLike = ctgryDtlsEJB.countByLike(ctgryDtls, attributes);
+	  List<BpPtnrCtgryDtls> list = ctgryDtlsEJB.findByLike(ctgryDtls, searchInput.getStart(), searchInput.getMax(), attributes);
+	  for (BpPtnrCtgryDtls bpPtnrCtgryDtls : list) {
+		  BpPtnrCtgry ptnrCtgry = resultMap.get(bpPtnrCtgryDtls.getCtgryCode());
+		  if(ptnrCtgry!=null){
+			  BpPtnrCtgry c = ptnrCtgry;
+			  ptnrCtgry = new BpPtnrCtgry();
+			  c.copyTo(ptnrCtgry);
+			  ptnrCtgry.setId(c.getId());
+		  } else {
+			ptnrCtgry = ejb.findByIdentif(bpPtnrCtgryDtls.getCtgryCode());
+			resultMap.put(bpPtnrCtgryDtls.getCtgryCode(), ptnrCtgry);
+		  }
+		  ptnrCtgry.setCtgryDtls(bpPtnrCtgryDtls);
+		  resultList.add(ptnrCtgry);
+	  }
+      return new BpPtnrCtgrySearchResult(countByLike, detach(resultList),
+              detach(searchInput));
+   }
+   
    @POST
    @Path("/countByLike")
    @Consumes({ "application/json", "application/xml" })

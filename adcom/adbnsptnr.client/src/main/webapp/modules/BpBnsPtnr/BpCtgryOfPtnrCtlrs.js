@@ -1,158 +1,293 @@
 ﻿'use strict';
     
 angular.module('AdBnsptnr')
-.factory('bpPtnrContactUtils',function(){
+.factory('bpCtgryOfPtnrUtils',['$translate','$rootScope','bpBnsPtnrUtils',
+                function($translate,$rootScope,bpBnsPtnrUtils){
     var service = {};
     
-    service.urlBase='/adbnsptnr.server/rest/bpptnrcontacts';
+    service.urlBase='/adbnsptnr.server/rest/bpctgryofptnrs';
+    service.loadCountryNames=bpBnsPtnrUtils.loadCountryNames;
     
-    service.contactRoleI18nMsgTitleKey = function(enumKey){
-    	return "BpPtnrContactRole_"+enumKey+"_description.title";
+    service.whenInRole18nMsgTitleKey = function(enumKey){
+    	return "BpPtnrRole_"+enumKey+"_description.title";
+    };
+    service.whenInRole18nMsgTitleValue = function(enumKey){
+    	return service.translations[service.whenInRole18nMsgTitleKey(enumKey)];
+    };
+    
+    service.bpCtgryOfPtnrRoles = [
+      {enumKey:'CUSTOMER', translKey:'BpPtnrRole_CUSTOMER_description.title'},
+      {enumKey:'SUPPLIER', translKey:'BpPtnrRole_SUPPLIER_description.title'},
+      {enumKey:'EMPLOYER', translKey:'BpPtnrRole_EMPLOYER_description.title'},
+      {enumKey:'STAFF', translKey:'BpPtnrRole_STAFF_description.title'},
+      {enumKey:'MANUFACTURER', translKey:'BpPtnrRole_MANUFACTURER_description.title'},
+      {enumKey:'GOVERNMENT', translKey:'BpPtnrRole_GOVERNMENT_description.title'},
+      {enumKey:'BROKER', translKey:'BpPtnrRole_BROKER_description.title'},
+      {enumKey:'SHAREHOLDER', translKey:'BpPtnrRole_SHAREHOLDER_description.title'},
+      {enumKey:'BANKER', translKey:'BpPtnrRole_BANKER_description.title'},
+      {enumKey:'INSURANCE', translKey:'BpPtnrRole_INSURANCE_description.title'}
+    ];
+
+    service.translate = function(){
+    	$translate(['BpPtnrRole_CUSTOMER_description.title',
+    	            'BpPtnrRole_SUPPLIER_description.title',
+    	            'BpPtnrRole_EMPLOYER_description.title',
+    	            'BpPtnrRole_STAFF_description.title',
+    	            'BpPtnrRole_MANUFACTURER_description.title',
+    	            'BpPtnrRole_GOVERNMENT_description.title',
+    	            'BpPtnrRole_BROKER_description.title',
+    	            'BpPtnrRole_SHAREHOLDER_description.title',
+    	            'BpPtnrRole_BANKER_description.title',
+    	            'BpPtnrRole_INSURANCE_description.title',
+    	            
+    	            'BpCtgryOfPtnr_ctgryCode_description.title',
+    	            'BpCtgryOfPtnr_fullName_description.title',
+    	            'BpCtgryOfPtnr_whenInRole_description.title',
+    	            'BpCtgryOfPtnr_nbrInCtgry_description.title',
+    	            'BpCtgryOfPtnr_titleInCtgry_description.title',
+    	            'BpCtgryOfPtnr_description_description.title',
+    	            
+    	            'BpBnsPtnr_ptnrNbr_description.title',
+    	            
+    	            'Entity_create.title',
+    	            'Entity_required.title',
+    	            'Entity_save.title',
+    	            'Entity_cancel.title',
+    	            'Entity_edit.title',
+    	            'BpBnsPtnr_findACountry_description.title'
+    	            ])
+		 .then(function (translations) {
+			 service.translations = translations;
+	 	 });    	
+    };
+    
+    service.translate();
+    
+    return service;
+}])
+.factory('bpCtgryOfPtnrsState',['bpBnsPtnrState',function(bpBnsPtnrState){
+	
+	var service = {
+	};
+	
+	service.bpBnsPtnr = bpBnsPtnrState.bpBnsPtnr;
+    var searchResultsVar = {};
+
+    // The search state.
+    // The current list of business partners.
+    service.bpCtgryOfPtnrs = function(ptnrNbr){
+        var nbr = ptnrNbr;
+        if(!ptnrNbr) {
+            var bpBnsPtnr = bpBnsPtnrState.bpBnsPtnr();
+            if(bpBnsPtnr)
+                nbr = bpBnsPtnr.ptnrNbr;
+        }
+        if(nbr && searchResultsVar[nbr]) return searchResultsVar[nbr];
+        return [];
+    };
+
+    var selectedIndexVar=-1;
+    service.selectedIndex= function(selectedIndexIn){
+        if(selectedIndexIn)selectedIndexVar=selectedIndexIn;
+        return selectedIndexVar;
+    };
+
+    service.consumeSearchResult = function(ptnrNbr, entitySearchResult){
+        if(entitySearchResult.resultList){
+            searchResultsVar[ptnrNbr] = entitySearchResult.resultList;
+        } else {
+            searchResultsVar[ptnrNbr] = [];
+        }
+    };
+    
+    service.hasSearchResult = function(ptnrNbr){
+    	var res = searchResultsVar[ptnrNbr];
+    	if(res) return true;
+    	return false;
     }
     
-    service.bpPtnrContactRoles = [
-      {enumKey:'MAIN_CONTACT', translKey:'BpPtnrContactRole_MAIN_CONTACT_description.title'},
-      {enumKey:'ALT_CONTACT', translKey:'BpPtnrContactRole_ALT_CONTACT_description.title'},
-      {enumKey:'HOME_ADDRESS', translKey:'BpPtnrContactRole_HOME_ADDRESS_description.title'},
-      {enumKey:'PRIVATE_ADDRESS', translKey:'BpPtnrContactRole_PRIVATE_ADDRESS_description.title'},
-      {enumKey:'DELIVERY_ADDRESS', translKey:'BpPtnrContactRole_DELIVERY_ADDRESS_description.title'},
-      {enumKey:'INVOICE_ADDRESS', translKey:'BpPtnrContactRole_INVOICE_ADDRESS_description.title'},
-      {enumKey:'SUPPORT_CONTACT', translKey:'BpPtnrContactRole_SUPPORT_CONTACT_description.title'},
-      {enumKey:'EMERGENCY_CONTACT', translKey:'BpPtnrContactRole_EMERGENCY_CONTACT_description.title'}
-    ];
-    return service;
-})
-.controller('bpPtnrContactsCtlr',['$scope','genericResource','$modal','$routeParams','bpPtnrContactUtils',
-                                        function($scope,genericResource,$modal,$routeParams,bpPtnrContactUtils){
-	
-    var self = this ;
-    $scope.bpPtnrContactsCtlr = self;
+    service.bpCtgryOfPtnr = function(index,ptnrNbr){
+        var list = service.bpCtgryOfPtnrs(ptnrNbr);
+        if(!index || index<0 || index>=list.length) return;
+        selectedIndexVar=index;
+        return list[selectedIndexVar];
+    };
 
-    self.searchInput = {
+    // replace the current partner after a change.
+    service.replace = function(bpCtgryOfPtnr){
+        if(!bpCtgryOfPtnr) return;
+        var list = service.bpCtgryOfPtnrs(bpCtgryOfPtnr.ptnrNbr);
+
+        if(selectedIndexVar>=0 && selectedIndexVar<list.length && list[selectedIndexVar].id==bpCtgryOfPtnr.id){
+            list[selectedIndexVar]=bpCtgryOfPtnr;
+        }else {
+            for (var index in list) {
+                if(list[index].id==bpCtgryOfPtnr.id){
+                    list[index]=bpCtgryOfPtnr;
+                    selectedIndexVar=index;
+                    break;
+                }
+            }
+        }
+    };
+
+    service.push = function(bpCtgryOfPtnr){
+        if(!bpCtgryOfPtnr) return false;
+        var list = searchResultsVar[bpCtgryOfPtnr.ptnrNbr];
+        if(!list){
+            list = [];
+            searchResultsVar[bpCtgryOfPtnr.ptnrNbr]=list;
+        }
+        var length = list.push(bpCtgryOfPtnr);
+        selectedIndexVar = length-1;
+    };
+
+	service.bpCtgryOfPtnrActive= bpBnsPtnrState.bpCtgryOfPtnrActive;
+
+    service.searchInput = {
         entity:{},
         fieldNames:[]
     };
-    self.bpPtnrContacts = [];
-    self.selectedItem = {} ;
-    self.selectedIndex  ;
-    self.ptnrNbr;
-    self.openEditForm = openEditForm;
-    self.openCreateForm = openCreateForm;
-    self.ModalInstanceEditCtrl = ModalInstanceEditCtrl ;
-    self.ModalInstanceCreateCtrl = ModalInstanceCreateCtrl ;
-    self.handleSelectedItem = handleSelectedItem;
-    self.error = "";
-    self.deleteItem = deleteItem;
-    self.bpPtnrContactUtils=bpPtnrContactUtils;
-    
+
+	return service;
+
+}])
+
+.controller('bpCtgryOfPtnrsCtlr',['$scope','genericResource','$modal','$routeParams',
+                                 'bpCtgryOfPtnrUtils','bpCtgryOfPtnrsState','$rootScope',
+                     function($scope,genericResource,$modal,$routeParams,
+                    		 bpCtgryOfPtnrUtils,bpCtgryOfPtnrsState,$rootScope){
+	
+    $scope.bpCtgryOfPtnrs=bpCtgryOfPtnrsState.bpCtgryOfPtnrs;
+    $scope.error = "";
+    $scope.bpCtgryOfPtnrUtils=bpCtgryOfPtnrUtils;
+    $scope.genericResource=genericResource;
+
+    var ptnrSelectedUnregisterHdl = $rootScope.$on('BpBnsPtnrsSelected', function(event, data){
+        var bpBnsPtnr = bpCtgryOfPtnrsState.bpBnsPtnr();
+        if(!bpBnsPtnr || !data || !data.bpBnsPtnr || bpBnsPtnr.ptnrNbr!=data.bpBnsPtnr.ptnrNbr) return;
+        loadPtnrIdDtlss(data.bpBnsPtnr.ptnrNbr);
+    });
+    $scope.$on('$destroy', function () {
+    	ptnrSelectedUnregisterHdl();
+    });
     init();
     function init(){
-        self.ptnrNbr = $routeParams.ptnrNbr;
-        self.searchInput = {
-            entity:{},
-            fieldNames:[]
-        }
-        findByLike(self.searchInput);
+        var bpBnsPtnr = bpCtgryOfPtnrsState.bpBnsPtnr();
+        if(bpBnsPtnr && bpBnsPtnr.ptnrNbr)loadPtnrIdDtlss(bpBnsPtnr.ptnrNbr);
     }
-    function findByLike(searchInput){
-    	searchInput.entity.ptnrNbr=self.ptnrNbr;
-    	searchInput.fieldNames.push('ptnrNbr');
-    	genericResource.findByLike(bpPtnrContactUtils.urlBase, searchInput)
+    function loadPtnrIdDtlss(ptnrNbr){
+        if(!bpCtgryOfPtnrsState.bpCtgryOfPtnrActive()) return;
+        if(!bpCtgryOfPtnrsState.hasSearchResult(ptnrNbr)) {
+            findByLike(bpCtgryOfPtnrsState.searchInput, ptnrNbr);
+        }
+    }
+
+    function findByLike(searchInput,ptnrNbr){
+    	searchInput.entity.ptnrNbr=ptnrNbr;
+    	if(searchInput.fieldNames.indexOf('ptnrNbr')<0){
+    		searchInput.fieldNames.push('ptnrNbr');
+    	}
+    	genericResource.findByLike(bpCtgryOfPtnrUtils.urlBase, searchInput)
     	.success(function(entitySearchResult) {
-            self.bpPtnrContacts = entitySearchResult.resultList;
+    		bpCtgryOfPtnrsState.consumeSearchResult(ptnrNbr, entitySearchResult);
         })
     	.error(function(error){
     		self.error = error;
     	});
     }
 
-        function handleSelectedItem(index){
-            index = index ? index : 0 ;
-            self.selectedIndex = index ;
-            angular.copy(self.bpPtnrContacts[self.selectedIndex],self.selectedItem ) ;
-        };
-
-
-        function openCreateForm(size){
-            var modalInstance = $modal.open({
-                templateUrl: 'views/BpBnsPtnr/BpPtnrContactForm.html',
-                controller: self.ModalInstanceCreateCtrl,
-                size: size,
-                resolve:{
-                    bpPtnrContactUtils: function(){
-                    	return self.bpPtnrContactUtils;
-                    }
+    $scope.openCreateForm =function(size){
+        var modalInstance = $modal.open({
+            templateUrl: 'views/BpBnsPtnr/BpCtgryOfPtnrForm.html',
+            controller: ModalInstanceCreateCtrl,
+            size: size,
+            resolve: {
+                bpBnsPtnr: function(){
+                    return bpCtgryOfPtnrsState.bpBnsPtnr();
                 }
-            });
+            }
+        });
+    };
+
+    function ModalInstanceCreateCtrl($scope, $modalInstance,bpBnsPtnr) {
+        $scope.formCreate = true;
+        $scope.bpCtgryOfPtnr={
+        	issuedDt:new Date(),
+        	expirdDt:new Date()
         };
-
-        function ModalInstanceCreateCtrl($scope, $modalInstance,bpPtnrContactUtils) {
-            $scope.formCreate = false;
-            $scope.bpPtnrContact;
-            $scope.currentAction="Entity_create.title";
-            $scope.bpPtnrContactUtils=bpPtnrContactUtils;
-
-            $scope.save = function () {
-                $scope.bpPtnrContact.ptnrNbr = self.ptnrNbr;
-            	genericResource.create(bpPtnrContactUtils.urlBase, $scope.bpPtnrContact).success(function () {
-                    init();
-                });
-                $modalInstance.dismiss('cancel');
-            };
-            $scope.cancel = function () {
-                $modalInstance.dismiss('cancel');
-            };
-
-        }
-
-
-        function openEditForm(size,index){
-            handleSelectedItem(index);
-            var modalInstance = $modal.open({
-                templateUrl: 'views/BpBnsPtnr/BpPtnrContactForm.html',
-                controller: self.ModalInstanceEditCtrl,
-                size: size,
-                resolve:{
-                	bpPtnrContact: function(){
-                        return self.selectedItem;
-                    },
-                    bpPtnrContactUtils: function(){
-                    	return self.bpPtnrContactUtils;
-                    }
-                }
-            });
-        };
-
-        function ModalInstanceEditCtrl($scope, $modalInstance,bpPtnrContact,$timeout,bpPtnrContactUtils) {
-            $scope.formCreate = false;
-            $scope.bpPtnrContact = bpPtnrContact;
-            $scope.currentAction="Entity_edit.title";
-            $scope.bpPtnrContactUtils=bpPtnrContactUtils;
-
-            $scope.isClean = function() {
-                return !angular.equals(bpPtnrContact, $scope.bpPtnrContact);
-            };
-
-
-            $scope.save = function () {
-                $scope.bpPtnrContact.ptnrNbr = self.ptnrNbr;
-            	genericResource.update(bpPtnrContactUtils.urlBase, $scope.bpPtnrContact).success(function(){
-                   init();
-                });
-                $modalInstance.dismiss('cancel');
-            };
-            $scope.cancel = function () {
-                $modalInstance.dismiss('cancel');
-            };
-
-        };
-
-        function deleteItem(index){
-            handleSelectedItem();
-            genericResource.deleteById(bpPtnrContactUtils.urlBase, self.selectedItem.id).success(function(){
-                init();
+        $scope.currentAction=bpCtgryOfPtnrUtils.translations["Entity_create.title"];
+        $scope.bpCtgryOfPtnrUtils=bpCtgryOfPtnrUtils;
+        $scope.error="";
+        $scope.bpBnsPtnr=bpBnsPtnr;
+        $scope.loadCountryNames = bpCtgryOfPtnrUtils.loadCountryNames;
+        
+        $scope.save = function () {
+            $scope.bpCtgryOfPtnr.ptnrNbr = bpBnsPtnr.ptnrNbr;
+        	genericResource.create(bpCtgryOfPtnrUtils.urlBase, $scope.bpCtgryOfPtnr)
+        	.success(function (bpCtgryOfPtnr) {
+        		bpCtgryOfPtnrsState.push(bpCtgryOfPtnr);
+        		$modalInstance.dismiss('cancel');
             })
-        }
+            .error(function(data, status){
+            	$scope.error= status + " " + data;
+            });
+        };
+        $scope.cancel = function () {
+            $modalInstance.dismiss('cancel');
+        };
+        $scope.isClean = function() {
+            return false;
+        };
+        
+    }
 
-    }]);
+    function openEditForm(size,index,bpCtgryOfPtnr){
+        var modalInstance = $modal.open({
+            templateUrl: 'views/BpBnsPtnr/BpCtgryOfPtnrForm.html',
+            controller: self.ModalInstanceEditCtrl,
+            size: size,
+            resolve:{
+            	bpCtgryOfPtnr: function(){
+                    return bpCtgryOfPtnr;
+                },
+                bpBnsPtnr: function(){
+                    return bpCtgryOfPtnrsState.bpBnsPtnr();
+                }
+            }
+        });
+    };
+
+    function ModalInstanceEditCtrl($scope, $modalInstance,bpCtgryOfPtnr,bpBnsPtnr) {
+    	$scope.formEdit = true;
+        $scope.bpCtgryOfPtnr = angular.copy(bpCtgryOfPtnr);
+        $scope.currentAction=bpCtgryOfPtnrUtils.translations["Entity_edit.title"];
+        $scope.bpCtgryOfPtnrUtils=bpCtgryOfPtnrUtils;
+        $scope.bpBnsPtnr=bpBnsPtnr;
+        $scope.loadCountryNames = bpCtgryOfPtnrUtils.loadCountryNames;
+        
+        $scope.isClean = function() {
+            return angular.equals(bpCtgryOfPtnr, $scope.bpCtgryOfPtnr);
+        };
+        $scope.save = function () {
+            genericResource.update(bpCtgryOfPtnrUtils.urlBase, $scope.bpCtgryOfPtnr)
+            .success(function(data){
+        		bpCtgryOfPtnrsState.replace(data);
+        		$modalInstance.dismiss('cancel');
+            })
+            .error(function(data, status){
+            	$scope.error= status + " " + data;
+            });
+        };
+        $scope.cancel = function () {
+            $modalInstance.dismiss('cancel');
+        };
+    };
+
+    function deleteItem(bpCtgryOfPtnr){
+        genericResource.deleteById(bpCtgryOfPtnrUtils.urlBase, bpCtgryOfPtnr.id).success(function(){
+            findByLike(bpCtgryOfPtnrsState.searchInput, bpCtgryOfPtnr.ptnrNbr);
+        })
+    }
+}]);
 

@@ -13,4 +13,7 @@ public interface BpCtgryDscntRepository extends EntityRepository<BpCtgryDscnt, S
 {
 	@Query("SELECT e FROM BpCtgryDscnt AS e WHERE e.identif = ?1 AND e.validFrom <= ?2 AND (e.validTo IS NULL OR e.validTo > ?2)")
 	public QueryResult<BpCtgryDscnt> findByIdentif(String identif, Date validOn);
+
+	@Query("SELECT e FROM BpCtgryDscnt AS e WHERE e.ctgryCode = ?1")
+	public QueryResult<BpCtgryDscnt> findByCtgryCode(String ctgryCode);
 }

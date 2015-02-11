@@ -68,6 +68,10 @@ public class BpPtnrCtgryDtls extends AbstractTimedData {
 
 	@Override
 	protected String makeIdentif() {
+		return toIdentif(ctgryCode, langIso2);
+	}
+	
+	public static String toIdentif(String ctgryCode, String langIso2){
 		return ctgryCode + "_" + langIso2;
 	}
 }

@@ -24,6 +24,7 @@ public class SequenceGenerator {
 	public static final String ARTICLE_DETAIL_SEQUENCE_PREFIXE = "AD";
 	public static final String BUSINESS_PARTNER_SEQUENCE_PREFIXE = "BP";
 	public static final String ID_SEQUENCE_PREFIXE = "ID";
+	public static final String BUSINESS_PARTNER_CATEGORY_SEQUENCE_PREFIXE = "BPC";
 
 	static long time = 0l;// the time corresponding to the 01.01.2014 00:00:00:00 ...
 	static {

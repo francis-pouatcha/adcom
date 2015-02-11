@@ -21,7 +21,7 @@ public class BpPtnrCtgryLoader extends AbstractObjectLoader<BpPtnrCtgry> {
 	}
 
 	public BpPtnrCtgry findByIdentif(String identif, Date validOn) {
-		return ejb.findByIdentif(identif, validOn);
+		return ejb.findByIdentif(identif);
 	}
 
 	public BpPtnrCtgry create(BpPtnrCtgry entity) {
@@ -33,7 +33,7 @@ public class BpPtnrCtgryLoader extends AbstractObjectLoader<BpPtnrCtgry> {
 	}
 
 	public BpPtnrCtgry deleteById(String id) {
-		return ejb.deleteById(id);
+		return ejb.deleteByIdentif(id);
 	}
 
 }

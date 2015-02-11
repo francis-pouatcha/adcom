@@ -1,12 +1,11 @@
 ﻿'use strict';
     
 angular.module('AdBnsptnr')
-.factory('bpPtnrIdDtlsUtils',['$translate','$rootScope','bpBnsPtnrUtils',
+.factory('bpInsuredUtils',['$translate','$rootScope','bpBnsPtnrUtils',
                 function($translate,$rootScope,bpBnsPtnrUtils){
     var service = {};
     
-    service.urlBase='/adbnsptnr.server/rest/bpptnriddtlss';
-    service.loadCtgryDtls=bpBnsPtnrUtils.loadCtgryDtls;
+    service.urlBase='/adbnsptnr.server/rest/insurrances';
     
     service.ptnrIdTypeI18nMsgTitleKey = function(enumKey){
     	return "BpPtnrIdType_"+enumKey+"_description.title";
@@ -149,13 +148,13 @@ angular.module('AdBnsptnr')
 }])
 
 .controller('bpPtnrIdDtlssCtlr',['$scope','genericResource','$modal','$routeParams',
-                                 'bpPtnrIdDtlsUtils','bpPtnrIdDtlssState','$rootScope',
+                                 'bpInsuredUtils','bpPtnrIdDtlssState','$rootScope',
                      function($scope,genericResource,$modal,$routeParams,
-                    		 bpPtnrIdDtlsUtils,bpPtnrIdDtlssState,$rootScope){
+                    		 bpInsuredUtils,bpPtnrIdDtlssState,$rootScope){
 	
     $scope.bpPtnrIdDtlss=bpPtnrIdDtlssState.bpPtnrIdDtlss;
     $scope.error = "";
-    $scope.bpPtnrIdDtlsUtils=bpPtnrIdDtlsUtils;
+    $scope.bpInsuredUtils=bpInsuredUtils;
     $scope.genericResource=genericResource;
 
     var ptnrSelectedUnregisterHdl = $rootScope.$on('BpBnsPtnrsSelected', function(event, data){
@@ -183,7 +182,7 @@ angular.module('AdBnsptnr')
     	if(searchInput.fieldNames.indexOf('ptnrNbr')<0){
     		searchInput.fieldNames.push('ptnrNbr');
     	}
-    	genericResource.findByLike(bpPtnrIdDtlsUtils.urlBase, searchInput)
+    	genericResource.findByLike(bpInsuredUtils.urlBase, searchInput)
     	.success(function(entitySearchResult) {
     		bpPtnrIdDtlssState.consumeSearchResult(ptnrNbr, entitySearchResult);
         })
@@ -211,15 +210,15 @@ angular.module('AdBnsptnr')
         	issuedDt:new Date(),
         	expirdDt:new Date()
         };
-        $scope.currentAction=bpPtnrIdDtlsUtils.translations["Entity_create.title"];
-        $scope.bpPtnrIdDtlsUtils=bpPtnrIdDtlsUtils;
+        $scope.currentAction=bpInsuredUtils.translations["Entity_create.title"];
+        $scope.bpInsuredUtils=bpInsuredUtils;
         $scope.error="";
         $scope.bpBnsPtnr=bpBnsPtnr;
-        $scope.loadCountryNames = bpPtnrIdDtlsUtils.loadCountryNames;
+        $scope.loadCountryNames = bpInsuredUtils.loadCountryNames;
         
         $scope.save = function () {
             $scope.bpPtnrIdDtls.ptnrNbr = bpBnsPtnr.ptnrNbr;
-        	genericResource.create(bpPtnrIdDtlsUtils.urlBase, $scope.bpPtnrIdDtls)
+        	genericResource.create(bpInsuredUtils.urlBase, $scope.bpPtnrIdDtls)
         	.success(function (bpPtnrIdDtls) {
         		bpPtnrIdDtlssState.push(bpPtnrIdDtls);
         		$modalInstance.dismiss('cancel');
@@ -256,16 +255,16 @@ angular.module('AdBnsptnr')
     function ModalInstanceEditCtrl($scope, $modalInstance,bpPtnrIdDtls,bpBnsPtnr) {
     	$scope.formEdit = true;
         $scope.bpPtnrIdDtls = angular.copy(bpPtnrIdDtls);
-        $scope.currentAction=bpPtnrIdDtlsUtils.translations["Entity_edit.title"];
-        $scope.bpPtnrIdDtlsUtils=bpPtnrIdDtlsUtils;
+        $scope.currentAction=bpInsuredUtils.translations["Entity_edit.title"];
+        $scope.bpInsuredUtils=bpInsuredUtils;
         $scope.bpBnsPtnr=bpBnsPtnr;
-        $scope.loadCountryNames = bpPtnrIdDtlsUtils.loadCountryNames;
+        $scope.loadCountryNames = bpInsuredUtils.loadCountryNames;
         
         $scope.isClean = function() {
             return angular.equals(bpPtnrIdDtls, $scope.bpPtnrIdDtls);
         };
         $scope.save = function () {
-            genericResource.update(bpPtnrIdDtlsUtils.urlBase, $scope.bpPtnrIdDtls)
+            genericResource.update(bpInsuredUtils.urlBase, $scope.bpPtnrIdDtls)
             .success(function(data){
         		bpPtnrIdDtlssState.replace(data);
         		$modalInstance.dismiss('cancel');
@@ -280,7 +279,7 @@ angular.module('AdBnsptnr')
     };
 
     function deleteItem(bpPtnrIdDtls){
-        genericResource.deleteById(bpPtnrIdDtlsUtils.urlBase, bpPtnrIdDtls.id).success(function(){
+        genericResource.deleteById(bpInsuredUtils.urlBase, bpPtnrIdDtls.id).success(function(){
             findByLike(bpPtnrIdDtlssState.searchInput, bpPtnrIdDtls.ptnrNbr);
         })
     }

@@ -36,7 +36,7 @@ public class BpInsurrance extends AbstractTimedData {
 	private String insurerNbr;
 
 	@Column
-	@Description("BpInsurrance_memberNbr_description")
+	@Description("BpInsurrance_contractNbr_description")
 	@NotNull
 	private String contractNbr;
 
