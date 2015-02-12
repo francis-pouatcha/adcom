@@ -12,7 +12,6 @@ import org.adorsys.adbase.enums.BaseProcStepEnum;
 import org.adorsys.adbase.enums.BaseProcessStatusEnum;
 import org.adorsys.adbase.jpa.SecUserSession;
 import org.adorsys.adbase.security.SecurityUtil;
-import org.adorsys.adcore.utils.BigDecimalUtils;
 import org.adorsys.adprocmt.jpa.PrcmtAbstractDlvry2PO;
 import org.adorsys.adprocmt.jpa.PrcmtDelivery;
 import org.adorsys.adprocmt.jpa.PrcmtDeliveryHstry;

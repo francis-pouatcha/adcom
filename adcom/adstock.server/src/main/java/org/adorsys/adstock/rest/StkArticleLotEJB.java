@@ -83,4 +83,7 @@ public class StkArticleLotEJB
 	   if(resultList.isEmpty()) return null;
 	   return resultList.iterator().next();
    }
+   public List<StkArticleLot> findByArtPicLike(String artPick) {
+	   return repository.findByArtPicLike(artPick);
+   }
 }

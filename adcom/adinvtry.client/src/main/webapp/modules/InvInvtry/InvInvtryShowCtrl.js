@@ -70,7 +70,16 @@ angular.module('AdInvtry').controller('invInvtryShowCtlr',['$scope','invtryResou
             searchInput.fieldNames.push('pic') ;
         }
         return findCustomArticle(searchInput).then(function(entitySearchResult){
-            return entitySearchResult.resultList;
+            var articles = entitySearchResult.resultList;
+            return findStkByArtPic(articles);;
+        });
+    }
+    
+    function findStkByArtPic(articles) {
+        stkArtResource.findStkByArtPic(articles).success(function(data){
+            return data.resultList;
+        }).error(function(error){
+           console.log(error); 
         });
     }
 
