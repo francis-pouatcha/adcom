@@ -71,16 +71,20 @@ angular.module('AdInvtry').controller('invInvtryShowCtlr',['$scope','invtryResou
         }
         return findCustomArticle(searchInput).then(function(entitySearchResult){
             var articles = entitySearchResult.resultList;
-            return findStkByArtPic(articles);;
+            return findStkByArtPic(articles).then(function(result){
+                return result;
+            });
         });
     }
     
     function findStkByArtPic(articles) {
+        var deferred = $q.defer();
         stkArtResource.findStkByArtPic(articles).success(function(data){
-            return data.resultList;
+            deferred.resolve(data.resultList);
         }).error(function(error){
-           console.log(error); 
+            deferred.reject("No Article");
         });
+        return deferred.promise;
     }
 
     function findCustomArticle (searchInput) {

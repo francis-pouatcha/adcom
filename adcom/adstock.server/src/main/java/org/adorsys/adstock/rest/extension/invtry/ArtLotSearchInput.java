@@ -9,13 +9,9 @@ import java.util.List;
  */
 public class ArtLotSearchInput {
 	/**
-	 * The artPic field.
+	 * The artPic fields. A list of artPics is used here, in case we want to do a batch search of products.
 	 */
-	private String artPic;
-	/**
-	 * The artDesign field.
-	 */
-	private String artDesign;
+	private List<String> artPics;
 	/**
 	 * The start field.
 	 */
@@ -35,18 +31,14 @@ public class ArtLotSearchInput {
 	
 	public ArtLotSearchInput() {}
 	
-	public String getArtPic() {
-		return artPic;
+	public List<String> getArtPics() {
+		return artPics;
 	}
-	public void setArtPic(String artPic) {
-		this.artPic = artPic;
+
+	public void setArtPics(List<String> artPics) {
+		this.artPics = artPics;
 	}
-	public String getArtDesign() {
-		return artDesign;
-	}
-	public void setArtDesign(String artDesign) {
-		this.artDesign = artDesign;
-	}
+
 	public long getStart() {
 		return start;
 	}
@@ -73,9 +65,9 @@ public class ArtLotSearchInput {
 	}
 	@Override
 	public String toString() {
-		return "ArtLotSearchInput [artPic=" + artPic + ", artDesign="
-				+ artDesign + ", start=" + start + ", max=" + max + ", fields="
-				+ fields + ", applyLike=" + applyLike + "]";
+		return "ArtLotSearchInput [artPics=" + artPics + ", start=" + start
+				+ ", max=" + max + ", fields=" + fields + ", applyLike="
+				+ applyLike + "]";
 	}
 	
 }

@@ -82,4 +82,8 @@ public class StkArticleLot2OuEJB
 	   return repository.findByArtPicAndLotPic(artPic, lotPic);
    }
    
+   public List<StkArticleLot2Ou> findByArtPicLikeAndOuLike(String artPic, String ouId) {
+	   return repository.findByArtPicLikeAndOuLike(artPic, ouId);
+   }
+   
 }

@@ -11,9 +11,11 @@ import java.util.Map;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
+import org.adorsys.adbase.security.SecurityUtil;
 import org.adorsys.adstock.jpa.StkArticleLot;
-import org.adorsys.adstock.jpa.StkArticleLot2StrgSctn;
+import org.adorsys.adstock.jpa.StkArticleLot2Ou;
 import org.adorsys.adstock.rest.StkArticleLot2OuEJB;
+import org.adorsys.adstock.rest.StkArticleLot2StrgSctnEJB;
 import org.adorsys.adstock.rest.StkArticleLotEJB;
 import org.apache.commons.lang3.StringUtils;
 
@@ -31,7 +33,10 @@ public class StkArticleInvtryIntegrationEJB {
 	private StkArticleLot2OuEJB articleLot2OuEJB;
 	
 	@Inject
-	private StkArticleLot2StrgSctn articleLot2StrgSctn;
+	private StkArticleLot2StrgSctnEJB articleLot2StrgSctn;
+	
+	@Inject
+	private SecurityUtil securityUtil;
 	
 	public List<StkArticleLot> findArtLotByArticlePic(List<String> artPics) {
 		if(artPics == null) artPics = new ArrayList<String>();
@@ -55,7 +60,45 @@ public class StkArticleInvtryIntegrationEJB {
 			List<StkArticleLot> artPicLike) {
 		HashMap<String,StkArticleLot> map = new HashMap<String, StkArticleLot>(artPicLike.size());
 		for (StkArticleLot stkArticleLot : artPicLike) {
-			map.put(stkArticleLot.getArtPic(), stkArticleLot);
+			map.put(stkArticleLot.getIdentif(), stkArticleLot);
+		}
+		return map;
+	}
+	public List<StkArticleLot2Ou> findArtLot2Ou(List<String> artPics) {
+		if(artPics == null) artPics = new ArrayList<String>();
+		Map<String,StkArticleLot2Ou> artLot2Ous = new HashMap<String, StkArticleLot2Ou>();
+		String ouId = securityUtil.getCurrentOrgUnit().getIdentif();
+		for (String artPic : artPics) {
+			Map<String, StkArticleLot2Ou> resultMap = findArtLot2OuByArtPic(artPic,ouId);
+			artLot2Ous.putAll(resultMap);
+		}
+		return new ArrayList<StkArticleLot2Ou>(artLot2Ous.values());
+	}
+
+	/**
+	 * findArtLot2OuByArtPic.
+	 *
+	 * @param artPic
+	 * @return
+	 */
+	private Map<String, StkArticleLot2Ou> findArtLot2OuByArtPic(String artPic,String ouId) {
+		if(StringUtils.isBlank(artPic)) throw new IllegalArgumentException("Invalid article pic. Empty pic is not accepted here.");
+		if(StringUtils.isBlank(ouId)) ouId = securityUtil.getCurrentOrgUnit().getIdentif();
+		List<StkArticleLot2Ou> stkArticleLot2Ous = articleLot2OuEJB.findByArtPicLikeAndOuLike(artPic, ouId);
+		return transformStkArticleLot2OusToMap(stkArticleLot2Ous);
+	}
+
+	/**
+	 * transformStkArticleLot2OusToMap.
+	 *
+	 * @param stkArticleLot2Ous
+	 * @return
+	 */
+	private Map<String, StkArticleLot2Ou> transformStkArticleLot2OusToMap(
+			List<StkArticleLot2Ou> stkArticleLot2Ous) {
+		HashMap<String,StkArticleLot2Ou> map = new HashMap<String, StkArticleLot2Ou>(stkArticleLot2Ous.size());
+		for (StkArticleLot2Ou stkArticleLot2Ou : stkArticleLot2Ous) {
+			map.put(stkArticleLot2Ou.getIdentif(), stkArticleLot2Ou);
 		}
 		return map;
 	}
