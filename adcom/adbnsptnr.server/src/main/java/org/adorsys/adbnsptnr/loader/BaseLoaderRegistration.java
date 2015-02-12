@@ -12,7 +12,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
 import org.adorsys.adbnsptnr.jpa.BpBnsPtnr;
-import org.adorsys.adbnsptnr.jpa.BpCtgryDscnt;
+import org.adorsys.adbnsptnr.jpa.BpPtnrContract;
 import org.adorsys.adbnsptnr.jpa.BpCtgryOfPtnr;
 import org.adorsys.adbnsptnr.jpa.BpIndivPtnrName;
 import org.adorsys.adbnsptnr.jpa.BpInsurrance;
@@ -55,7 +55,7 @@ public class BaseLoaderRegistration {
 	public void postConstruct(){
 		dataSheetLoader.registerLoader(BpPtnrCtgry.class.getSimpleName(), bpPtnrCtgryLoader);
 		dataSheetLoader.registerLoader(BpPtnrCtgryDtls.class.getSimpleName(), bpPtnrCtgryDtlsLoader);
-		dataSheetLoader.registerLoader(BpCtgryDscnt.class.getSimpleName(), bpCtgryDscntLoader);
+		dataSheetLoader.registerLoader(BpPtnrContract.class.getSimpleName(), bpCtgryDscntLoader);
 		dataSheetLoader.registerLoader(BpBnsPtnr.class.getSimpleName(), bpBnsPtnrLoader);
 		dataSheetLoader.registerLoader(BpLegalPtnrId.class.getSimpleName(), bpLegalPtnrIdLoader);
 		dataSheetLoader.registerLoader(BpIndivPtnrName.class.getSimpleName(), bpIndivPtnrNameLoader);

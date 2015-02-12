@@ -21,27 +21,27 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.adorsys.adbnsptnr.jpa.BpCtgryDscnt;
-import org.adorsys.adbnsptnr.jpa.BpCtgryDscntSearchInput;
-import org.adorsys.adbnsptnr.jpa.BpCtgryDscntSearchResult;
-import org.adorsys.adbnsptnr.jpa.BpCtgryDscnt_;
+import org.adorsys.adbnsptnr.jpa.BpPtnrContract;
+import org.adorsys.adbnsptnr.jpa.BpPtnrContractSearchInput;
+import org.adorsys.adbnsptnr.jpa.BpPtnrContractSearchResult;
+import org.adorsys.adbnsptnr.jpa.BpPtnrContract_;
 
 /**
  * 
  */
 @Stateless
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-@Path("/bpctgrydscnts")
-public class BpCtgryDscntEndpoint
+@Path("/bpptnrcontracts")
+public class BpPtnrContractEndpoint
 {
 
    @Inject
-   private BpCtgryDscntEJB ejb;
+   private BpPtnrContractEJB ejb;
 
    @POST
    @Consumes({ "application/json", "application/xml" })
    @Produces({ "application/json", "application/xml" })
-   public BpCtgryDscnt create(BpCtgryDscnt entity)
+   public BpPtnrContract create(BpPtnrContract entity)
    {
       return detach(ejb.create(entity));
    }
@@ -50,7 +50,7 @@ public class BpCtgryDscntEndpoint
    @Path("/{id}")
    public Response deleteById(@PathParam("id") String id)
    {
-      BpCtgryDscnt deleted = ejb.deleteById(id);
+      BpPtnrContract deleted = ejb.deleteById(id);
       if (deleted == null)
          return Response.status(Status.NOT_FOUND).build();
 
@@ -61,7 +61,7 @@ public class BpCtgryDscntEndpoint
    @Path("/{id}")
    @Produces({ "application/json", "application/xml" })
    @Consumes({ "application/json", "application/xml" })
-   public BpCtgryDscnt update(BpCtgryDscnt entity)
+   public BpPtnrContract update(BpPtnrContract entity)
    {
       return detach(ejb.update(entity));
    }
@@ -71,7 +71,7 @@ public class BpCtgryDscntEndpoint
    @Produces({ "application/json", "application/xml" })
    public Response findById(@PathParam("id") String id)
    {
-      BpCtgryDscnt found = ejb.findById(id);
+      BpPtnrContract found = ejb.findById(id);
       if (found == null)
          return Response.status(Status.NOT_FOUND).build();
       return Response.ok(detach(found)).build();
@@ -79,14 +79,14 @@ public class BpCtgryDscntEndpoint
 
    @GET
    @Produces({ "application/json", "application/xml" })
-   public BpCtgryDscntSearchResult listAll(@QueryParam("start") int start,
+   public BpPtnrContractSearchResult listAll(@QueryParam("start") int start,
          @QueryParam("max") int max)
    {
-      List<BpCtgryDscnt> resultList = ejb.listAll(start, max);
-      BpCtgryDscntSearchInput searchInput = new BpCtgryDscntSearchInput();
+      List<BpPtnrContract> resultList = ejb.listAll(start, max);
+      BpPtnrContractSearchInput searchInput = new BpPtnrContractSearchInput();
       searchInput.setStart(start);
       searchInput.setMax(max);
-      return new BpCtgryDscntSearchResult((long) resultList.size(),
+      return new BpPtnrContractSearchResult((long) resultList.size(),
             detach(resultList), detach(searchInput));
    }
 
@@ -101,22 +101,22 @@ public class BpCtgryDscntEndpoint
    @Path("/findBy")
    @Produces({ "application/json", "application/xml" })
    @Consumes({ "application/json", "application/xml" })
-   public BpCtgryDscntSearchResult findBy(BpCtgryDscntSearchInput searchInput)
+   public BpPtnrContractSearchResult findBy(BpPtnrContractSearchInput searchInput)
    {
-      SingularAttribute<BpCtgryDscnt, ?>[] attributes = readSeachAttributes(searchInput);
+      SingularAttribute<BpPtnrContract, ?>[] attributes = readSeachAttributes(searchInput);
       Long count = ejb.countBy(searchInput.getEntity(), attributes);
-      List<BpCtgryDscnt> resultList = ejb.findBy(searchInput.getEntity(),
+      List<BpPtnrContract> resultList = ejb.findBy(searchInput.getEntity(),
             searchInput.getStart(), searchInput.getMax(), attributes);
-      return new BpCtgryDscntSearchResult(count, detach(resultList),
+      return new BpPtnrContractSearchResult(count, detach(resultList),
             detach(searchInput));
    }
 
    @POST
    @Path("/countBy")
    @Consumes({ "application/json", "application/xml" })
-   public Long countBy(BpCtgryDscntSearchInput searchInput)
+   public Long countBy(BpPtnrContractSearchInput searchInput)
    {
-      SingularAttribute<BpCtgryDscnt, ?>[] attributes = readSeachAttributes(searchInput);
+      SingularAttribute<BpPtnrContract, ?>[] attributes = readSeachAttributes(searchInput);
       return ejb.countBy(searchInput.getEntity(), attributes);
    }
 
@@ -124,41 +124,41 @@ public class BpCtgryDscntEndpoint
    @Path("/findByLike")
    @Produces({ "application/json", "application/xml" })
    @Consumes({ "application/json", "application/xml" })
-   public BpCtgryDscntSearchResult findByLike(BpCtgryDscntSearchInput searchInput)
+   public BpPtnrContractSearchResult findByLike(BpPtnrContractSearchInput searchInput)
    {
-      SingularAttribute<BpCtgryDscnt, ?>[] attributes = readSeachAttributes(searchInput);
+      SingularAttribute<BpPtnrContract, ?>[] attributes = readSeachAttributes(searchInput);
       Long countLike = ejb.countByLike(searchInput.getEntity(), attributes);
-      List<BpCtgryDscnt> resultList = ejb.findByLike(searchInput.getEntity(),
+      List<BpPtnrContract> resultList = ejb.findByLike(searchInput.getEntity(),
             searchInput.getStart(), searchInput.getMax(), attributes);
-      return new BpCtgryDscntSearchResult(countLike, detach(resultList),
+      return new BpPtnrContractSearchResult(countLike, detach(resultList),
             detach(searchInput));
    }
 
    @POST
    @Path("/countByLike")
    @Consumes({ "application/json", "application/xml" })
-   public Long countByLike(BpCtgryDscntSearchInput searchInput)
+   public Long countByLike(BpPtnrContractSearchInput searchInput)
    {
-      SingularAttribute<BpCtgryDscnt, ?>[] attributes = readSeachAttributes(searchInput);
+      SingularAttribute<BpPtnrContract, ?>[] attributes = readSeachAttributes(searchInput);
       return ejb.countByLike(searchInput.getEntity(), attributes);
    }
 
    @SuppressWarnings("unchecked")
-   private SingularAttribute<BpCtgryDscnt, ?>[] readSeachAttributes(
-         BpCtgryDscntSearchInput searchInput)
+   private SingularAttribute<BpPtnrContract, ?>[] readSeachAttributes(
+         BpPtnrContractSearchInput searchInput)
    {
       List<String> fieldNames = searchInput.getFieldNames();
-      List<SingularAttribute<BpCtgryDscnt, ?>> result = new ArrayList<SingularAttribute<BpCtgryDscnt, ?>>();
+      List<SingularAttribute<BpPtnrContract, ?>> result = new ArrayList<SingularAttribute<BpPtnrContract, ?>>();
       for (String fieldName : fieldNames)
       {
-         Field[] fields = BpCtgryDscnt_.class.getFields();
+         Field[] fields = BpPtnrContract_.class.getFields();
          for (Field field : fields)
          {
             if (field.getName().equals(fieldName))
             {
                try
                {
-                  result.add((SingularAttribute<BpCtgryDscnt, ?>) field.get(null));
+                  result.add((SingularAttribute<BpPtnrContract, ?>) field.get(null));
                }
                catch (IllegalArgumentException e)
                {
@@ -176,7 +176,7 @@ public class BpCtgryDscntEndpoint
 
    
 
-   private BpCtgryDscnt detach(BpCtgryDscnt entity)
+   private BpPtnrContract detach(BpPtnrContract entity)
    {
       if (entity == null)
          return null;
@@ -184,19 +184,19 @@ public class BpCtgryDscntEndpoint
       return entity;
    }
 
-   private List<BpCtgryDscnt> detach(List<BpCtgryDscnt> list)
+   private List<BpPtnrContract> detach(List<BpPtnrContract> list)
    {
       if (list == null)
          return list;
-      List<BpCtgryDscnt> result = new ArrayList<BpCtgryDscnt>();
-      for (BpCtgryDscnt entity : list)
+      List<BpPtnrContract> result = new ArrayList<BpPtnrContract>();
+      for (BpPtnrContract entity : list)
       {
          result.add(detach(entity));
       }
       return result;
    }
 
-   private BpCtgryDscntSearchInput detach(BpCtgryDscntSearchInput searchInput)
+   private BpPtnrContractSearchInput detach(BpPtnrContractSearchInput searchInput)
    {
       searchInput.setEntity(detach(searchInput.getEntity()));
       return searchInput;

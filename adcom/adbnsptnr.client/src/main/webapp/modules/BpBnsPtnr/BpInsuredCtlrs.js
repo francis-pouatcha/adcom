@@ -42,6 +42,7 @@ angular.module('AdBnsptnr')
     	            'BpPtnrIdDtls_issuedBy_description.title',
     	            'BpPtnrIdDtls_issuedIn_description.title',
     	            'BpPtnrIdDtls_issuingCtry_description.title',
+    	            'BpPtnrCtgry_create.title',
     	            
     	            'Entity_create.title',
     	            'Entity_required.title',

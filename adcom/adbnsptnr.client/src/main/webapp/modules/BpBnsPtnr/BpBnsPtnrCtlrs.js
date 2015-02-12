@@ -340,8 +340,9 @@ angular.module('AdBnsptnr')
     };
 
     service.previous = function (){
-        if(bpBnsPtnrsVar.length<=0 || selectedIndexVar<0 || selectedIndexVar>=bpBnsPtnrsVar.length) return;
-        if(selectedIndexVar==0){
+    	if(bpBnsPtnrsVar.length<=0) return;
+
+        if(selectedIndexVar<=0){
             selectedIndexVar=bpBnsPtnrsVar.length-1;
         } else {
             selectedIndexVar-=1;
@@ -350,15 +351,16 @@ angular.module('AdBnsptnr')
     };
 
     service.next = function(){
-        if(bpBnsPtnrsVar.length<=0 || selectedIndexVar<0 || selectedIndexVar>=bpBnsPtnrsVar.length) return;
-        if(selectedIndexVar>=bpBnsPtnrsVar.length){
-            selectedIndexVar=0;
-        } else {
+    	if(bpBnsPtnrsVar.length<=0) return;
+    	
+    	if(selectedIndexVar>=bpBnsPtnrsVar.length-1 || selectedIndexVar<0){
+    		selectedIndexVar=0;
+    	} else {
             selectedIndexVar+=1;
-        }
+    	}
+
         return service.bpBnsPtnr();
     };
-
 
     return service;
 

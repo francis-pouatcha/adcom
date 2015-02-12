@@ -5,7 +5,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class BpCtgryDscntSearchResult
+public class BpPtnrContractSearchResult
 {
 
    /*
@@ -16,20 +16,20 @@ public class BpCtgryDscntSearchResult
    /*
     * The result list.
     */
-   private List<BpCtgryDscnt> resultList;
+   private List<BpPtnrContract> resultList;
 
    /*
     * The original search input object. For stateless clients.
     */
-   private BpCtgryDscntSearchInput searchInput;
+   private BpPtnrContractSearchInput searchInput;
 
-   public BpCtgryDscntSearchResult()
+   public BpPtnrContractSearchResult()
    {
       super();
    }
 
-   public BpCtgryDscntSearchResult(Long count, List<BpCtgryDscnt> resultList,
-         BpCtgryDscntSearchInput searchInput)
+   public BpPtnrContractSearchResult(Long count, List<BpPtnrContract> resultList,
+         BpPtnrContractSearchInput searchInput)
    {
       super();
       this.count = count;
@@ -42,12 +42,12 @@ public class BpCtgryDscntSearchResult
       return count;
    }
 
-   public List<BpCtgryDscnt> getResultList()
+   public List<BpPtnrContract> getResultList()
    {
       return resultList;
    }
 
-   public BpCtgryDscntSearchInput getSearchInput()
+   public BpPtnrContractSearchInput getSearchInput()
    {
       return searchInput;
    }
@@ -57,12 +57,12 @@ public class BpCtgryDscntSearchResult
       this.count = count;
    }
 
-   public void setResultList(List<BpCtgryDscnt> resultList)
+   public void setResultList(List<BpPtnrContract> resultList)
    {
       this.resultList = resultList;
    }
 
-   public void setSearchInput(BpCtgryDscntSearchInput searchInput)
+   public void setSearchInput(BpPtnrContractSearchInput searchInput)
    {
       this.searchInput = searchInput;
    }

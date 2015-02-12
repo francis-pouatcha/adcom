@@ -32,7 +32,7 @@ angular.module('AdBnsptnr')
     
     service.translate = function(){
     	$translate(['BpPtnrRole_CUSTOMER_description.title',
-    	            'BpPtnrRole_CUSTOMER_description.title',
+    	            'BpPtnrRole_SUPPLIER_description.title',
     	            'BpPtnrRole_EMPLOYER_description.title',
     	            'BpPtnrRole_STAFF_description.title',
     	            'BpPtnrRole_MANUFACTURER_description.title',
@@ -47,7 +47,7 @@ angular.module('AdBnsptnr')
     	            'BpPtnrCtgry_ptnrRole_description.title',
     	            'BpPtnrCtgry_parentCode_description.title',
     	            'BpPtnrCtgryDtls_description.title',
-    	            'BpCtgryDscnt_description.title',
+    	            'BpPtnrContract_description.title',
     	            'BpPtnrCtgryDtls_description_description.title',
 
     	            'Entity_show.title',
@@ -60,7 +60,8 @@ angular.module('AdBnsptnr')
     	            'Entity_Result.title',
     	            'Entity_search.title',
     	            'Entity_cancel.title',
-    	            'Entity_save.title'
+    	            'Entity_save.title',
+    	            'Entity_type_to_select.title'
     	            
     	            ])
 		 .then(function (translations) {
@@ -86,7 +87,7 @@ angular.module('AdBnsptnr')
             searchInput.fieldNames.push('name');
         }
         var deferred = $q.defer();
-        genericResource.findCustom(service.bpptnrctgrydtlssUrlBase, searchInput)
+        genericResource.findByLike(service.bpptnrctgrydtlssUrlBase, searchInput)
 		.success(function(entitySearchResult) {
         	deferred.resolve(entitySearchResult);
 		})
@@ -112,10 +113,10 @@ angular.module('AdBnsptnr')
         return bpPtnrCtgryDtlsActiveVar;
     };
 
-    var bpCtgryDscntActiveVar=false;
-    service.bpCtgryDscntActive=function(bpCtgryDscntActiveIn){
-        if(bpCtgryDscntActiveIn)bpCtgryDscntActiveVar=bpCtgryDscntActiveIn;
-        return bpCtgryDscntActiveVar;
+    var bpCtgryContractActiveVar=false;
+    service.bpCtgryContractActive=function(bpCtgryContractActiveIn){
+        if(bpCtgryContractActiveIn)bpCtgryContractActiveVar=bpCtgryContractActiveIn;
+        return bpCtgryContractActiveVar;
     };
 
     // The search state.
@@ -247,14 +248,15 @@ angular.module('AdBnsptnr')
         if(tabName){
             activeTabVar=tabName;
             bpPtnrCtgryDtlsActiveVar= tabName=='bpPtnrCtgryDtls';
-            bpCtgryDscntActiveVar= tabName=='bpCtgryDscnt';
+            bpCtgryContractActiveVar= tabName=='bpCtgryContract';
         }
         $rootScope.$broadcast('BpPtnrCtgrysSelected', {tabName:activeTabVar,bpPtnrCtgry:service.bpPtnrCtgry()});
     };
 
     service.previous = function (){
-        if(bpPtnrCtgrysVar.length<=0 || selectedIndexVar<0 || selectedIndexVar>=bpPtnrCtgrysVar.length) return;
-        if(selectedIndexVar==0){
+    	if(bpPtnrCtgrysVar.length<=0) return;
+
+        if(selectedIndexVar<=0){
             selectedIndexVar=bpPtnrCtgrysVar.length-1;
         } else {
             selectedIndexVar-=1;
@@ -263,15 +265,16 @@ angular.module('AdBnsptnr')
     };
 
     service.next = function(){
-        if(bpPtnrCtgrysVar.length<=0 || selectedIndexVar<0 || selectedIndexVar>=bpPtnrCtgrysVar.length) return;
-        if(selectedIndexVar>=bpPtnrCtgrysVar.length){
-            selectedIndexVar=0;
-        } else {
+    	if(bpPtnrCtgrysVar.length<=0) return;
+    	
+    	if(selectedIndexVar>=bpPtnrCtgrysVar.length-1 || selectedIndexVar<0){
+    		selectedIndexVar=0;
+    	} else {
             selectedIndexVar+=1;
-        }
+    	}
+
         return service.bpPtnrCtgry();
     };
-
 
     return service;
 
@@ -405,7 +408,7 @@ function($scope,genericResource,bpPtnrCtgryUtils,bpPtnrCtgryState,$location,$roo
     $scope.error = "";
     $scope.bpPtnrCtgryUtils=bpPtnrCtgryUtils;
     $scope.bpPtnrCtgryDtlsActive=bpPtnrCtgryState.bpPtnrCtgryDtlsActive();
-    $scope.bpCtgryDscntActive=bpPtnrCtgryState.bpCtgryDscntActive();
+    $scope.bpCtgryContractActive=bpPtnrCtgryState.bpCtgryContractActive();
     
     $scope.previous = function (){
         var bp = bpPtnrCtgryState.previous();

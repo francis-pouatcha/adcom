@@ -5,34 +5,34 @@ import java.util.Date;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
-import org.adorsys.adbnsptnr.jpa.BpCtgryDscnt;
-import org.adorsys.adbnsptnr.rest.BpCtgryDscntEJB;
+import org.adorsys.adbnsptnr.jpa.BpPtnrContract;
+import org.adorsys.adbnsptnr.rest.BpPtnrContractEJB;
 import org.adorsys.adcore.xls.AbstractObjectLoader;
 
 @Stateless
-public class BpCtgryDscntLoader extends AbstractObjectLoader<BpCtgryDscnt> {
+public class BpCtgryDscntLoader extends AbstractObjectLoader<BpPtnrContract> {
 
 	@Inject
-	private BpCtgryDscntEJB ejb;
+	private BpPtnrContractEJB ejb;
 
 	@Override
-	protected BpCtgryDscnt newObject() {
-		return new BpCtgryDscnt();
+	protected BpPtnrContract newObject() {
+		return new BpPtnrContract();
 	}
 
-	public BpCtgryDscnt findByIdentif(String identif, Date validOn) {
+	public BpPtnrContract findByIdentif(String identif, Date validOn) {
 		return ejb.findByIdentif(identif, validOn);
 	}
 
-	public BpCtgryDscnt create(BpCtgryDscnt entity) {
+	public BpPtnrContract create(BpPtnrContract entity) {
 		return ejb.create(entity);
 	}
 
-	public BpCtgryDscnt update(BpCtgryDscnt found) {
+	public BpPtnrContract update(BpPtnrContract found) {
 		return ejb.update(found);
 	}
 
-	public BpCtgryDscnt deleteById(String id) {
+	public BpPtnrContract deleteById(String id) {
 		return ejb.deleteById(id);
 	}
 

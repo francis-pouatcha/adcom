@@ -5,29 +5,28 @@
             <div class="control-group" ng-class="{error: BpPtnrCtgryDtlsForm.langIso2.$invalid}">
                 <label for="langIso2" class="control-label">{{bpPtnrCtgryDtlsUtils.translations['BpPtnrCtgryDtls_langIso2_description.title']}}</label>
                 <div id="langIso2Controls" class="controls">
-		            <select class="form-control" name="langIso2" ng-model="bpPtnrCtgryDtls.langIso2" ng-show="formCreate"
+		            <select class="form-control" name="langIso2" id="langIso2" ng-model="bpPtnrCtgryDtls.langIso2" ng-show="formCreate"
 		                    ng-options="baseLanguage.enumKey as bpPtnrCtgryDtlsUtils.translations[baseLanguage.translKey] 
 		                    	for baseLanguage in bpPtnrCtgryDtlsUtils.baseLanguages" required>
 		                    <option value=""/>
 					</select>
-	                <input value="{{bpPtnrCtgryDtlsUtils.languageI18nMsgTitleValue(bpPtnrCtgryDtls.langIso2)}}" type="text" name="langIso2" class="form-control" disabled ng-show="formEdit">
+	                <input value="{{bpPtnrCtgryDtlsUtils.languageI18nMsgTitleValue(bpPtnrCtgryDtls.langIso2)}}" type="text" name="langIso2ro" class="form-control" disabled ng-show="formEdit">
                     <span class="help-inline" ng-show="BpPtnrCtgryDtlsForm.langIso2.$error.required">{{bpPtnrCtgryDtlsUtils.translations['Entity_required.title']}}</span>
                 </div>
             </div>
             <div class="control-group" ng-class="{error: BpPtnrCtgryDtlsForm.name.$invalid}">
                 <label for="name" class="control-label">{{bpPtnrCtgryDtlsUtils.translations['BpPtnrCtgryDtls_name_description.title']}}</label>
                 <div id="nameControls" class="controls">
-                    <input type="text" ng-model="bpPtnrCtgryDtls.name" name="name" class="form-control" required>
+                    <input type="text" ng-model="bpPtnrCtgryDtls.name" name="name" id="name" class="form-control" required>
                     <span class="help-inline" ng-show="BpPtnrCtgryDtlsForm.name.$error.required">{{bpPtnrCtgryDtlsUtils.translations['Entity_required.title']}}</span>
                 </div>
             </div>
-            <div class="control-group" ng-class="{error: BpPtnrCtgryDtlsForm.description.$invalid}">
+            <div class="control-group">
                 <label for="description" class="control-label">{{bpPtnrCtgryDtlsUtils.translations['BpPtnrCtgryDtls_description_description.title']}}</label>
                 <div id="descriptionControls" class="controls">
                 	<textarea rows="3" id="description" name="description" class="form-control" 
                 		ng-model="bpPtnrCtgryDtls.description" maxlength="256">
                 	</textarea>
-                    <span class="help-inline" ng-show="BpPtnrCtgryDtlsForm.description.$error.required">{{bpPtnrCtgryDtlsUtils.translations['Entity_required.title']}}</span>
                 </div>
             </div>
             <div class="control-group">

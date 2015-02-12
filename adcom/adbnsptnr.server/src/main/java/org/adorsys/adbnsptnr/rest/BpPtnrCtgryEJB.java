@@ -8,7 +8,7 @@ import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adbase.security.SecurityUtil;
-import org.adorsys.adbnsptnr.jpa.BpCtgryDscnt;
+import org.adorsys.adbnsptnr.jpa.BpPtnrContract;
 import org.adorsys.adbnsptnr.jpa.BpPtnrCtgry;
 import org.adorsys.adbnsptnr.jpa.BpPtnrCtgryDtls;
 import org.adorsys.adbnsptnr.repo.BpPtnrCtgryRepository;
@@ -26,7 +26,7 @@ public class BpPtnrCtgryEJB {
 	@Inject
 	private BpPtnrCtgryDtlsEJB ctgryDtlsEJB;
 	@Inject
-	private BpCtgryDscntEJB ctgryDscntEJB;
+	private BpPtnrContractEJB ptnrContractJB;
 
 	public BpPtnrCtgry create(BpPtnrCtgry entity) {
 		BpPtnrCtgryDtls ctgryDtls = entity.getCtgryDtls();
@@ -63,12 +63,12 @@ public class BpPtnrCtgryEJB {
 			List<BpPtnrCtgryDtls> ctgyDtls = ctgryDtlsEJB
 					.findByCtgryCode(ctgryCode);
 			for (BpPtnrCtgryDtls bpPtnrCtgryDtls : ctgyDtls) {
-				ctgryDscntEJB.deleteById(bpPtnrCtgryDtls.getId());
+				ctgryDtlsEJB.deleteById(bpPtnrCtgryDtls.getId());
 			}
-			List<BpCtgryDscnt> ctgryDscnts = ctgryDscntEJB
-					.findByCtgryCode(ctgryCode);
-			for (BpCtgryDscnt bpCtgryDscnt : ctgryDscnts) {
-				ctgryDscntEJB.deleteById(bpCtgryDscnt.getId());
+			List<BpPtnrContract> ctgryDscnts = ptnrContractJB
+					.findByHolderIdentif(ctgryCode);
+			for (BpPtnrContract bpCtgryDscnt : ctgryDscnts) {
+				ptnrContractJB.deleteById(bpCtgryDscnt.getId());
 			}
 		}
 		return entity;
