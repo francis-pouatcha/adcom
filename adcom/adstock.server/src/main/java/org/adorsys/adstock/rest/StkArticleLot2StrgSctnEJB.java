@@ -82,4 +82,11 @@ public class StkArticleLot2StrgSctnEJB
 	   return repository.findByArtPicAndLotPic(artPic, lotPic);
    }
    
+   public List<StkArticleLot2StrgSctn> findByArtPicAndStrgSection(String artPic, String strgSection) {
+	   return repository.findByArtPicAndStrgSection(artPic, strgSection);
+   }
+	
+	public List<StkArticleLot2StrgSctn> findByStrgSection(String strgSection) {
+		return repository.findByStrgSection(strgSection);
+	}
 }

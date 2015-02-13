@@ -14,7 +14,7 @@ import org.adorsys.adstock.jpa.StkArticleLotSearchInput;
  * @author boriswaguia
  *
  */
-public class StkArticleLotSearchResult {
+public class ArticleLotSearchResult {
 	/**
 	 * The articleLotSearchInput field.
 	 */
@@ -31,6 +31,19 @@ public class StkArticleLotSearchResult {
 	 * The articleLot2StrgSctns field.
 	 */
 	private List<StkArticleLot2StrgSctn> articleLot2StrgSctns;
+	
+	private Long count;
+	private ArtLotSearchInput searchInput;
+	
+	public ArticleLotSearchResult(Long count, List<StkArticleLot> resultList,  List<StkArticleLot2Ou> articleLot2Ous,
+			ArtLotSearchInput searchInput)
+	{
+		super();
+		this.count = count;
+		this.articleLots = resultList;
+		this.articleLot2Ous = articleLot2Ous;
+		this.searchInput = searchInput;
+	}
 	public StkArticleLotSearchInput getArticleLotSearchInput() {
 		return articleLotSearchInput;
 	}
@@ -57,6 +70,19 @@ public class StkArticleLotSearchResult {
 			List<StkArticleLot2StrgSctn> articleLot2StrgSctns) {
 		this.articleLot2StrgSctns = articleLot2StrgSctns;
 	}
+	
+	public Long getCount() {
+		return count;
+	}
+	public void setCount(Long count) {
+		this.count = count;
+	}
+	public ArtLotSearchInput getSearchInput() {
+		return searchInput;
+	}
+	public void setSearchInput(ArtLotSearchInput searchInput) {
+		this.searchInput = searchInput;
+	}
 	@Override
 	public String toString() {
 		return "StkArticleLotSearchResult [articleLotSearchInput="
@@ -64,5 +90,5 @@ public class StkArticleLotSearchResult {
 				+ ", articleLot2Ous=" + articleLot2Ous
 				+ ", articleLot2StrgSctns=" + articleLot2StrgSctns + "]";
 	}
-		
+
 }

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('AdInvtry').controller('invInvtryShowCtlr',['$scope','invtryResource','catalArticleResource','$routeParams','$location','$q',function($scope,invtryResource,catalArticleResource,$routeParams,$location,$q){
+angular.module('AdInvtry').controller('invInvtryShowCtlr',['$scope','invtryResource','catalArticleResource','$routeParams','$location','$q','stkArtResource',function($scope,invtryResource,catalArticleResource,$routeParams,$location,$q,stkArtResource){
     var self = this ;
     $scope.invInvtryShowCtlr = self;
     self.invInvtry = {};
@@ -79,11 +79,20 @@ angular.module('AdInvtry').controller('invInvtryShowCtlr',['$scope','invtryResou
     
     function findStkByArtPic(articles) {
         var deferred = $q.defer();
-        stkArtResource.findStkByArtPic(articles).success(function(data){
-            deferred.resolve(data.resultList);
-        }).error(function(error){
-            deferred.reject("No Article");
-        });
+        if(angular.isDefined(articles)) {
+            var artPics = [];
+            angular.forEach(articles, function(article){
+               artPics.push(article.pic) 
+            });
+            var searchInput = {};
+            searchInput.artPics = artPics;
+            searchInput.applyLike = true;
+            stkArtResource.findStkByArtPic(searchInput).success(function(data){
+                deferred.resolve(data.resultList);
+            }).error(function(error){
+                deferred.reject("No Article");
+            });
+        }
         return deferred.promise;
     }
 

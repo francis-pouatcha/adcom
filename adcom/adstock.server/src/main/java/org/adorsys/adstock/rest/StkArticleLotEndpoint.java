@@ -25,6 +25,9 @@ import org.adorsys.adstock.jpa.StkArticleLot;
 import org.adorsys.adstock.jpa.StkArticleLotSearchInput;
 import org.adorsys.adstock.jpa.StkArticleLotSearchResult;
 import org.adorsys.adstock.jpa.StkArticleLot_;
+import org.adorsys.adstock.rest.extension.invtry.ArtLotSearchInput;
+import org.adorsys.adstock.rest.extension.invtry.ArticleLotSearchResult;
+import org.adorsys.adstock.rest.extension.invtry.StkArticleInvtryIntegrationEJB;
 
 /**
  * 
@@ -38,6 +41,12 @@ public class StkArticleLotEndpoint
    @Inject
    private StkArticleLotEJB ejb;
 
+   /**
+    * The articleInvtryIntegrationEJB field.
+    */
+   @Inject
+   private StkArticleInvtryIntegrationEJB articleInvtryIntegrationEJB;
+   
    @POST
    @Consumes({ "application/json", "application/xml" })
    @Produces({ "application/json", "application/xml" })
@@ -143,6 +152,13 @@ public class StkArticleLotEndpoint
       return ejb.countByLike(searchInput.getEntity(), attributes);
    }
 
+   @POST
+   @Path("/findStkByArtPic")
+   @Produces({ "application/json", "application/xml" })
+   @Consumes({ "application/json", "application/xml" })
+   public ArticleLotSearchResult findArticleLotByProductscip(ArtLotSearchInput searchInput) {
+	   return articleInvtryIntegrationEJB.searchArtStkArtLot(searchInput);
+   }
    @SuppressWarnings("unchecked")
    private SingularAttribute<StkArticleLot, ?>[] readSeachAttributes(
          StkArticleLotSearchInput searchInput)

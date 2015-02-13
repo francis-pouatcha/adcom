@@ -15,7 +15,6 @@ import org.adorsys.adbase.security.SecurityUtil;
 import org.adorsys.adstock.jpa.StkArticleLot;
 import org.adorsys.adstock.jpa.StkArticleLot2Ou;
 import org.adorsys.adstock.rest.StkArticleLot2OuEJB;
-import org.adorsys.adstock.rest.StkArticleLot2StrgSctnEJB;
 import org.adorsys.adstock.rest.StkArticleLotEJB;
 import org.apache.commons.lang3.StringUtils;
 
@@ -31,9 +30,6 @@ public class StkArticleInvtryIntegrationEJB {
 	
 	@Inject
 	private StkArticleLot2OuEJB articleLot2OuEJB;
-	
-	@Inject
-	private StkArticleLot2StrgSctnEJB articleLot2StrgSctn;
 	
 	@Inject
 	private SecurityUtil securityUtil;
@@ -101,5 +97,15 @@ public class StkArticleInvtryIntegrationEJB {
 			map.put(stkArticleLot2Ou.getIdentif(), stkArticleLot2Ou);
 		}
 		return map;
+	}
+	
+	public ArticleLotSearchResult searchArtStkArtLot(ArtLotSearchInput searchInput) {
+		if(searchInput == null) throw new IllegalArgumentException("searchInput should not be null");
+		List<String> artPics = searchInput.getArtPics();
+		List<StkArticleLot2Ou> artLot2Ous = findArtLot2Ou(artPics);
+		List<StkArticleLot> lotByArticlePics = findArtLotByArticlePic(artPics);
+		
+		ArticleLotSearchResult lotSearchResult = new ArticleLotSearchResult(Long.valueOf(artLot2Ous.size()), lotByArticlePics,artLot2Ous, searchInput);
+		return lotSearchResult;
 	}
 }
