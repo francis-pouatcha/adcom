@@ -52,7 +52,10 @@ angular.module('AdInvtry').controller('invInvtryShowCtlr',['$scope','invtryResou
             searchInput.entity.features.langIso2='fr';
         }
         return findCustomArticle(searchInput).then(function(entitySearchResult){
-            return entitySearchResult.resultList;
+            var articles = entitySearchResult.resultList;
+            return findStkByArtPic(articles).then(function(result){
+                return result;
+            });
         });
     }
 
