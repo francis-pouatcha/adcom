@@ -51,6 +51,12 @@ public class InvInvtry extends AbstractIdentifData {
 	@Enumerated(EnumType.ORDINAL)
 	@NotNull
 	private InvInvtryStatus invtryStatus;
+	
+	@Column
+	@Description("InvInvtry_invInvtryType_description")
+	@Enumerated(EnumType.ORDINAL)
+	@NotNull
+	private InvInvtryType invInvtryType;
 
 	@Column
 	@Description("InvInvtry_descptn_description")

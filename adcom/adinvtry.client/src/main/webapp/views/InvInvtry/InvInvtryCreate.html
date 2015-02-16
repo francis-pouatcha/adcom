@@ -38,12 +38,24 @@
                             <input type="text" ng-model="invtryCreateCtlr.invtry.descptn" id="descptn" name="dlvrySlipNbr" class="form-control" required >
                             <p ng-show="InvInvtry.descptn.$error.required" class="help-block">{{"InvInvtry_descptn_description.title"| translate}}</p>
                         </div>
+                        <label class="col-lg-3 ">{{"InvInvtry_invInvtryType_description.title"| translate}} :</label>
+                        <div class="col-lg-3" ng-class="{ 'has-error' : InvInvtry.invMode.$invalid }" >
+                            <select ng-model="invtryCreateCtlr.invtry.invMode" ng-change="invtryCreateCtlr.selectedAction()" ng-options="invMode for invMode in invtryCreateCtlr.invModes"  id="invMode" name="invMode" class="form-control">
+                            </select>
+                        </div>
                         
-                        <label class="col-lg-3 ">{{"InvInvtry_invtryDt_description.title"| translate}} :</label>
+                        <div id="test" ng-show="invtryCreateCtlr.selectedSection" ng-hide="invtryCreateCtlr.defaultParam" >
+                            <label class="col-lg-3 ">test</label>
+                            <div class="col-lg-3" ng-class="{ 'has-error' : InvInvtry.invMode.$invalid }" >
+                              <input type="text" name="test">
+                            </div>
+                        </div>
+                        
+                        <!--<label class="col-lg-3 ">{{"InvInvtry_invtryDt_description.title"| translate}} :</label>
                         <div class="col-lg-3" ng-class="{ 'has-error' : InvInvtry.invtryDt.$invalid }" >
                             <input type="datetime" date-time  view="date" min-view="date" views="['date']" dismiss="true" format="dd-MM-yyyy"
                                    ng-model="invtryCreateCtlr.invtry.invtryDt" id="invtryDt" name="invtryDt" class="form-control"  >
-                        </div>
+                        </div>-->
                     </div>
                     <hr/>
                     <div class="form-group">

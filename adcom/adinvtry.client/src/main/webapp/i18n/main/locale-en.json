@@ -19,6 +19,8 @@
 "InvInvtry_invtryNbr_description.title":"Inventory Number",
 "InvInvtry_invtryStatus_description.text":"The status of this inventory.",
 "InvInvtry_invtryStatus_description.title":"Inventory Status",
+"InvInvtry_invInvtryType_description.text":"The Mode of this inventory",
+"InvInvtry_invInvtryType_description.title":"Inventory Mode",
 
 "InvInvtryItem_acsngDt_description.text":"The recording date of this inventory item.",
 "InvInvtryItem_acsngDt_description.title":"Inventory Date",

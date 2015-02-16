@@ -80,10 +80,36 @@ angular.module('AdInvtry')
     self.invtry = {
         invtryStatus:"ONGOING",
         gapSaleAmtHT:"0.0",
-        gapPurchAmtHT:"0.0"
+        gapPurchAmtHT:"0.0",
     };
     self.create = create;
     self.error = "";
+    self.defaultParam=true;
+    self.invModes = ['BY_SECTION','ALPHABETICAL_ORDER_RANGE','FREE_INV'];
+    self.selectedAction = selectedAction;
+    self.selectedSection=false;
+    self.selectedOrderRange=false;
+    self.selectedFreeInv=false;
+    
+    function selectedAction(){
+    	console.log(self.invtry.invMode);
+    	if(self.invtry.invMode=="BY_SECTION") {
+    		self.selectedSection=true;
+    	}else {
+    		self.selectedSection=false;
+		}
+    	if(self.invtry.invMode=="ALPHABETICAL_ORDER_RANGE"){
+    		self.selectedOrderRange=true;
+    	}else {
+    		self.selectedOrderRange=false;
+		}
+    	if(self.invtry.invMode=="FREE_INV") {
+    		self.selectedFreeInv=true;
+    	}else {
+    		self.selectedFreeInv=false;
+		}
+    }
+   
 
     function create(){
     	invtryResource.create(self.invtry)
