@@ -12,10 +12,15 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import org.adorsys.adbase.security.SecurityUtil;
+import org.adorsys.adstock.jpa.StkArtStockQty;
 import org.adorsys.adstock.jpa.StkArticleLot;
 import org.adorsys.adstock.jpa.StkArticleLot2Ou;
+import org.adorsys.adstock.jpa.StkLotStockQty;
+import org.adorsys.adstock.rest.StkArtStockQtyEJB;
 import org.adorsys.adstock.rest.StkArticleLot2OuEJB;
+import org.adorsys.adstock.rest.StkArticleLot2StrgSctnEJB;
 import org.adorsys.adstock.rest.StkArticleLotEJB;
+import org.adorsys.adstock.rest.StkLotStockQtyEJB;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -32,9 +37,18 @@ public class StkArticleInvtryIntegrationEJB {
 	private StkArticleLot2OuEJB articleLot2OuEJB;
 	
 	@Inject
+	private StkArticleLot2StrgSctnEJB articleLot2StrgSctnEJB;
+	
+	@Inject
 	private SecurityUtil securityUtil;
 	
-	public List<StkArticleLot> findArtLotByArticlePic(List<String> artPics) {
+	@Inject
+	private StkLotStockQtyEJB lotStockQtyEJB;
+	
+	@Inject
+	private StkArtStockQtyEJB artStockQtyEJB;
+	
+	public Map<String, StkArticleLot> findArtLotByArticlePic(List<String> artPics) {
 		if(artPics == null) artPics = new ArrayList<String>();
 		Map<String,StkArticleLot> results = new HashMap<String, StkArticleLot> ();
 		
@@ -42,7 +56,7 @@ public class StkArticleInvtryIntegrationEJB {
 			Map<String, StkArticleLot> artLotByArtPicMap = findArtLotByArtPicLike(artPic);
 			results.putAll(artLotByArtPicMap);
 		}
-		return new ArrayList<StkArticleLot>(results.values());
+		return results;
 	}
 
 	private Map<String, StkArticleLot> findArtLotByArtPicLike(String artPic) {
@@ -56,11 +70,11 @@ public class StkArticleInvtryIntegrationEJB {
 			List<StkArticleLot> artPicLike) {
 		HashMap<String,StkArticleLot> map = new HashMap<String, StkArticleLot>(artPicLike.size());
 		for (StkArticleLot stkArticleLot : artPicLike) {
-			map.put(stkArticleLot.getIdentif(), stkArticleLot);
+			map.put(stkArticleLot.getArtPic(), stkArticleLot);
 		}
 		return map;
 	}
-	public List<StkArticleLot2Ou> findArtLot2Ou(List<String> artPics) {
+	public Map<String, StkArticleLot2Ou> findArtLot2Ou(List<String> artPics) {
 		if(artPics == null) artPics = new ArrayList<String>();
 		Map<String,StkArticleLot2Ou> artLot2Ous = new HashMap<String, StkArticleLot2Ou>();
 		String ouId = securityUtil.getCurrentOrgUnit().getIdentif();
@@ -68,7 +82,7 @@ public class StkArticleInvtryIntegrationEJB {
 			Map<String, StkArticleLot2Ou> resultMap = findArtLot2OuByArtPic(artPic,ouId);
 			artLot2Ous.putAll(resultMap);
 		}
-		return new ArrayList<StkArticleLot2Ou>(artLot2Ous.values());
+		return artLot2Ous;
 	}
 
 	/**
@@ -83,6 +97,50 @@ public class StkArticleInvtryIntegrationEJB {
 		List<StkArticleLot2Ou> stkArticleLot2Ous = articleLot2OuEJB.findByArtPicLikeAndOuLike(artPic, ouId);
 		return transformStkArticleLot2OusToMap(stkArticleLot2Ous);
 	}
+	
+	public Map<String, List<StkArtStockQty>> findArtStockQtys(List<String> artPics) {
+		if(artPics == null) artPics = new ArrayList<String>();
+		Map<String, List<StkArtStockQty>> allArtStkQtys=  new HashMap<String, List<StkArtStockQty>>();
+		for (String artPic : artPics) {
+			List<StkArtStockQty> artStkQtys =  findArtStockQty(artPic);
+			allArtStkQtys.put(artPic, artStkQtys);
+		}
+		return allArtStkQtys;
+	}
+	
+
+	/**
+	 * findArtStockQty.
+	 *
+	 * @param artPic
+	 * @return
+	 */
+	private List<StkArtStockQty> findArtStockQty(String artPic) {
+		List<StkArtStockQty> artStockQtys = artStockQtyEJB.findByArtPic(artPic);
+		return artStockQtys;
+	}
+	
+	public Map<String, List<StkLotStockQty>> findArtLotQtys(List<String> artPics) {
+		if(artPics == null) artPics = new ArrayList<String>();
+		Map<String, List<StkLotStockQty>> allArtStkQtys=  new HashMap<String, List<StkLotStockQty>>();
+		for (String artPic : artPics) {
+			List<StkLotStockQty> artStkQtys =  findArtLotQty(artPic);
+			allArtStkQtys.put(artPic, artStkQtys);
+		}
+		return allArtStkQtys;
+	}
+	
+	
+	/**
+	 * findArtLotQty.
+	 *
+	 * @param artPic
+	 * @return
+	 */
+	private List<StkLotStockQty> findArtLotQty(String artPic) {
+		List<StkLotStockQty> artLotQtys = lotStockQtyEJB.findByArtPic(artPic);
+		return artLotQtys;
+	}
 
 	/**
 	 * transformStkArticleLot2OusToMap.
@@ -94,7 +152,7 @@ public class StkArticleInvtryIntegrationEJB {
 			List<StkArticleLot2Ou> stkArticleLot2Ous) {
 		HashMap<String,StkArticleLot2Ou> map = new HashMap<String, StkArticleLot2Ou>(stkArticleLot2Ous.size());
 		for (StkArticleLot2Ou stkArticleLot2Ou : stkArticleLot2Ous) {
-			map.put(stkArticleLot2Ou.getIdentif(), stkArticleLot2Ou);
+			map.put(stkArticleLot2Ou.getArtPic(), stkArticleLot2Ou);
 		}
 		return map;
 	}
@@ -102,10 +160,30 @@ public class StkArticleInvtryIntegrationEJB {
 	public ArticleLotSearchResult searchArtStkArtLot(ArtLotSearchInput searchInput) {
 		if(searchInput == null) throw new IllegalArgumentException("searchInput should not be null");
 		List<String> artPics = searchInput.getArtPics();
-		List<StkArticleLot2Ou> artLot2Ous = findArtLot2Ou(artPics);
-		List<StkArticleLot> lotByArticlePics = findArtLotByArticlePic(artPics);
+		Map<String, StkArticleLot2Ou> artLot2Ous = findArtLot2Ou(artPics);
+		Map<String, StkArticleLot> lotByArticlePics = findArtLotByArticlePic(artPics);
+		Map<String, List<StkArtStockQty>> stockQtys = findArtStockQtys(artPics);
+		Map<String, List<StkLotStockQty>> artLotQtys = findArtLotQtys(artPics);
 		
-		ArticleLotSearchResult lotSearchResult = new ArticleLotSearchResult(Long.valueOf(artLot2Ous.size()), lotByArticlePics,artLot2Ous, searchInput);
+		List<StkArticleLotDTO> resultList = new ArrayList<StkArticleLotDTO>(artPics.size());
+		for (String artPic : artPics) {
+			StkArticleLotDTO articleLotDTO = new StkArticleLotDTO();
+			StkArticleLot2Ou articleLot2Ou = artLot2Ous.get(artPic);
+			StkArticleLot stkArticleLot = lotByArticlePics.get(artPic);
+			List<StkArtStockQty> artStokQtys = stockQtys.get(artPic);
+			List<StkLotStockQty> stkLotStkQtys = artLotQtys.get(artPic);
+			
+
+			articleLotDTO.setArtPic(artPic);
+			articleLotDTO.setArticleLot2Ou(articleLot2Ou);
+			articleLotDTO.setStkArticleLot(stkArticleLot);
+			articleLotDTO.setArtStokQtys(artStokQtys);
+			articleLotDTO.setStkLotStkQtys(stkLotStkQtys);
+			
+			resultList.add(articleLotDTO);
+		}
+		
+		ArticleLotSearchResult lotSearchResult = new ArticleLotSearchResult(Long.valueOf(artLot2Ous.size()), resultList, searchInput);
 		return lotSearchResult;
 	}
 }

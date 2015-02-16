@@ -78,4 +78,12 @@ public class StkLotStockQtyEJB
 
       return entity;
    }
+   
+   public List<StkLotStockQty> findByArtPicAndLotPic(String artPic,String lotPic) {
+	   return repository.findByArtPicAndLotPic(artPic, lotPic);
+   }
+   
+   public List<StkLotStockQty> findByArtPic(String artPic) {
+	   return repository.findByArtPic(artPic);
+   }
 }
