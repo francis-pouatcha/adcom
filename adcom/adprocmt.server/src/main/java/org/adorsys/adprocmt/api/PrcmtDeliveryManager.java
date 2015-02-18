@@ -105,10 +105,12 @@ public class PrcmtDeliveryManager {
 							itemModified = true;
 						}
 					} else {
+						dlvryItem.evlte();//evaluate different amount before save
 						dlvryItem = dlvryItemEJB.create(dlvryItem);
 						itemModified = true;
 					}
 				} else {
+					dlvryItem.evlte();//evaluate different amount before save
 					dlvryItem = dlvryItemEJB.create(dlvryItem);
 					itemModified = true;
 				}

@@ -100,7 +100,7 @@ angular.module('AdProcmt').controller('prcmtDeliveryShowCtlr',['$scope','prcmtDe
 
     function onSelect(item,model,label){
         self.prcmtDeliveryItemHolder.dlvryItem.artPic = item.pic;
-        self.prcmtDeliveryItemHolder.dlvryItem.artName  = item.features.artName;
+        self.prcmtDeliveryItemHolder.dlvryItem.artName = item.features.artName;
         self.taux = "";
     }
 
@@ -118,7 +118,6 @@ angular.module('AdProcmt').controller('prcmtDeliveryShowCtlr',['$scope','prcmtDe
     }
 
     function addItem(){
-        //self.prcmtDeliveryItemHolder.dlvryItem.grossPPPreTax = self.prcmtDeliveryItemHolder.dlvryItem.pppuPreTax * self.prcmtDeliveryItemHolder.dlvryItem.qtyDlvrd;
         self.prcmtDeliveryItemHolders.push(self.prcmtDeliveryItemHolder);
         self.prcmtDeliveryItemHolder = {dlvryItem:{}};
         self.taux = "";
