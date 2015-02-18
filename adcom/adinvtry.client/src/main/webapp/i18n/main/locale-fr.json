@@ -19,6 +19,8 @@
 "InvInvtry_invtryNbr_description.title":"Numéro d Inventaire",
 "InvInvtry_invtryStatus_description.text":"L état de cet inventaire.",
 "InvInvtry_invtryStatus_description.title":"\u00C9tat d Inventaire",
+"InvInvtry_invInvtryType_description.text":"Mode de l'inventaire",
+"InvInvtry_invInvtryType_description.title":"Mode d'inventaire",
 
 "InvInvtryItem_acsngDt_description.text":"La date de saisie de cette ligne inventaire.",
 "InvInvtryItem_acsngDt_description.title":"Date Inventaire",

@@ -84,4 +84,10 @@ public class StkArtStockQtyEJB
 	   if(resultList.isEmpty()) return null;
 	   return resultList.iterator().next();
    }
+
+   public List<StkArtStockQty> findByArtPic(String artPic){
+	   List<StkArtStockQty> resultList = repository.findByArtPic(artPic).getResultList();
+	   return resultList;
+   }
+
 }
