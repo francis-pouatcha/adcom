@@ -15,7 +15,6 @@ import org.adorsys.adprocmt.jpa.PrcmtDlvryItem2OuEvtData;
 import org.adorsys.adprocmt.jpa.PrcmtDlvryItem2StrgSctnEvtData;
 import org.adorsys.adprocmt.jpa.PrcmtDlvryItemEvtData;
 import org.adorsys.adprocmt.rest.PrcmtDeliveryEvtDataEJB;
-import org.adorsys.adprocmt.rest.PrcmtDeliveryEvtEJB;
 import org.adorsys.adprocmt.rest.PrcmtDlvryItemEvtDataEJB;
 import org.adorsys.adstock.jpa.StkArtStockQty;
 import org.adorsys.adstock.jpa.StkArticleLot;

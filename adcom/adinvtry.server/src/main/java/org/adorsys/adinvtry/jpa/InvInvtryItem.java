@@ -221,4 +221,23 @@ public class InvInvtryItem extends AbstractIdentifData {
 		return invtryNbr + "_" + lotPic + "_" + artPic + "_" + section + "_"
 				+ orgUnit;
 	}
+	
+	public void copyTo(InvInvtryItem target) {
+		target.setAcsngDt(acsngDt);
+		target.setAcsngUser(acsngUser);
+		target.setArtPic(artPic);
+		target.setAsseccedQty(asseccedQty);
+		target.setExpectedQty(expectedQty);
+		target.setGap(gap);
+		target.setGapTotalPpPT(gapTotalPpPT);
+		target.setGapTotalSpPT(gapTotalSpPT);
+		target.setInvtryNbr(invtryNbr);
+		target.setLotPic(lotPic);
+		target.setOrgUnit(orgUnit);
+		target.setPppuCur(pppuCur);
+		target.setPppuPT(pppuPT);
+		target.setSection(section);
+		target.setSppuCur(sppuCur);
+		target.setSppuPT(sppuPT);
+	}
 }

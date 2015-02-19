@@ -30,6 +30,12 @@ public class FinancialOps {
 		if(subtrahend==null)subtrahend = BigDecimal.ZERO;
 		return base.subtract(subtrahend);
 	}
+	
+	public static BigDecimal substract(BigDecimal base, BigDecimal subtrahend){
+		if(base==null)base = BigDecimal.ZERO;
+		if(subtrahend==null)subtrahend = BigDecimal.ZERO;
+		return base.subtract(subtrahend);
+	}
 
 	public static BigDecimal add(BigDecimal base, BigDecimal augend,String curr) {
 		if(base==null)base = BigDecimal.ZERO;

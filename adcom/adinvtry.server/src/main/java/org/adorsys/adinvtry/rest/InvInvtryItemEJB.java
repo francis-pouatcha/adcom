@@ -78,4 +78,7 @@ public class InvInvtryItemEJB
 
       return entity;
    }
+   public List<InvInvtryItem> findByInvtryNbr(String invtryNbr) {
+	   return repository.findByInvtryNbr(invtryNbr);
+   }
 }
