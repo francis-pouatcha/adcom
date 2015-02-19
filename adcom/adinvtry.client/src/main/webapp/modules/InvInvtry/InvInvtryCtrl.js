@@ -2,7 +2,7 @@
     
 angular.module('AdInvtry')
 
-.controller('invtryCtrl',['$scope','invtryResource',function($scope,invtryResource){
+.controller('invtryCtrl',['$scope','invtryResource',function($scope, invtryResource){
 	
     var self = this ;
     $scope.invtryCtrl = self;
@@ -39,12 +39,12 @@ angular.module('AdInvtry')
         }
         findByLike(self.searchInput);
     }
-
+    
     function findByLike(searchInput){
     	invtryResource.findInvInvtrys(searchInput)
     		.success(function(entitySearchResult) {
 	            self.invtrys = entitySearchResult.resultList;
-	            self.totalItems = entitySearchResult.count ;
+	            self.totalItems = entitySearchResult.count;
     		});
     }
 
@@ -74,7 +74,7 @@ angular.module('AdInvtry')
 	}
     
 }])
-.controller('invtryCreateCtlr',['$scope','$location','invtryResource',function($scope,$location,invtryResource){
+.controller('invtryCreateCtlr',['$scope','$location','$http','invtryResource',function($scope,$location,$http,invtryResource){
 	var self = this ;
     $scope.invtryCreateCtlr = self;
     self.invtry = {
@@ -82,6 +82,7 @@ angular.module('AdInvtry')
         gapSaleAmtHT:"0.0",
         gapPurchAmtHT:"0.0",
     };
+    self.invstkSections = [];
     self.create = create;
     self.error = "";
     self.defaultParam=true;
@@ -90,6 +91,7 @@ angular.module('AdInvtry')
     self.selectedSection=false;
     self.selectedOrderRange=false;
     self.selectedFreeInv=false;
+    findAllSections();
     
     function selectedAction(){
     	console.log(self.invtry.invMode);
@@ -108,6 +110,17 @@ angular.module('AdInvtry')
     	}else {
     		self.selectedFreeInv=false;
 		}
+    }
+    
+    function findAllSections(){
+       var responsePromise= $http.get('/adstock.server/rest/stksections')
+        .success(function(data, status, headers, config){
+            console.log('Success'+data);
+            self.invstkSections= data;
+        })
+        .error(function(data, status, headers, config){
+            console.log('Error');
+        });
     }
    
 

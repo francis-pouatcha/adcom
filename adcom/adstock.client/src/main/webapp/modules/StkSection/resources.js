@@ -1,8 +1,7 @@
 'use strict';
 
-angular.module('AdStock').factory('stkSectionResource',['$http', function($http){
-    var service = {};
-    var urlBase = '/adstock.server/rest/stksections',
+angular.module('AdStock').factory('stkSectionResource', ['$http', function ($http) {
+    var service = {}, urlBase = '/adstock.server/rest/stksections',
     searchInput = {
         entity:{},
         start:0,
