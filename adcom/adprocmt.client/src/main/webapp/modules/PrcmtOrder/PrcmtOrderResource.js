@@ -1,7 +1,8 @@
 'use strict';
 
-angular.module('AdStock').factory('stkSectionResource', ['$http', function ($http) {
-    var service = {}, urlBase = '/adstock.server/rest/stksections',
+angular.module('AdProcmt').factory('prcmtOrderResource',['$http', function($http){
+    var service = {};
+    var urlBase = '/adprocmt.server/rest/prcmtorders',
     searchInput = {
         entity:{},
         start:0,
@@ -22,11 +23,16 @@ angular.module('AdStock').factory('stkSectionResource', ['$http', function ($htt
         return $http.post(urlBase+'/findBy',entitySearchInput);
     };
 
+    service.findCustom = function(entitySearchInput){
+        return $http.post(urlBase+'/findCustom',entitySearchInput);
+    };
+
     service.findByLike = function(entitySearchInput){
         return $http.post(urlBase+'/findByLike',entitySearchInput);
     };
-    service.findById = function(entityId){
-        return $http.get(urlBase+'/'+entityId);
+    
+    service.findByIdentif = function(identif){
+        return $http.get(urlBase+'/'+identif);
     };
 
     service.deleteById = function(entityId){

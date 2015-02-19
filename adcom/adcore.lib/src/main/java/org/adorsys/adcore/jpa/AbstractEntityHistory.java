@@ -1,6 +1,7 @@
 package org.adorsys.adcore.jpa;
 
 import java.util.Date;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -12,7 +13,7 @@ import javax.validation.constraints.Size;
 
 import org.adorsys.javaext.description.Description;
 import org.apache.commons.lang3.StringUtils;
-import org.jgroups.util.UUID;
+//import org.jgroups.util.UUID;
 
 @MappedSuperclass
 public abstract class AbstractEntityHistory extends AbstractEntity {

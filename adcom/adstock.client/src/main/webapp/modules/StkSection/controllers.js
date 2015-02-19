@@ -1,8 +1,6 @@
 ﻿'use strict';
     
-angular.module('AdStock')
-
-.controller('stkSectionCtrl',['$scope','stkSectionService',function($scope,stkSectionService){
+angular.module('AdStock').controller('stkSectionCtrl',['$scope','$location','stkSectionService',function($scope,$location,stkSectionService){
 	
     var self = this ;
     $scope.stkSectionCtrl = self;
@@ -74,7 +72,7 @@ angular.module('AdStock')
 	}
     
 }])
-.controller('stkSectionCreateCtrl',['$scope','stkSectionService',function($scope,stkSectionService){
+.controller('stkSectionCreateCtrl',['$scope','$location','stkSectionService',function($scope,$location,stkSectionService){
 	var self = this ;
     $scope.stkSectionCreateCtrl = self;
     self.stkSection = {};
@@ -83,7 +81,6 @@ angular.module('AdStock')
 
     function create(){
     	stkSectionService.create(self.stkSection).then(function(result){
-
             $location.path('/StkSections/show/'+result.identif);
         },function(error){
             self.error = error;

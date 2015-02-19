@@ -19,6 +19,7 @@ import org.adorsys.adcore.jpa.CurrencyEnum;
 import org.adorsys.adcore.utils.BigDecimalUtils;
 import org.adorsys.adcore.utils.CalendarUtil;
 import org.adorsys.adcore.utils.FinancialOps;
+import org.adorsys.adcore.utils.SequenceGenerator;
 import org.adorsys.javaext.description.Description;
 import org.adorsys.javaext.format.DateFormatPattern;
 import org.apache.commons.lang3.ObjectUtils;
@@ -119,7 +120,7 @@ public abstract class PrcmtAbstractDlvryItem extends AbstractMvmtData {
 	 */
 	@Column
 	@Description("PrcmtDlvryItem_qtyBilled_description")
-	@NotNull
+	//@NotNull
 	private BigDecimal qtyBilled;
 	
 	@Column
@@ -137,7 +138,7 @@ public abstract class PrcmtAbstractDlvryItem extends AbstractMvmtData {
 	
 	@Column
 	@Description("PrcmtDlvryItem_rebateType_description")
-	@NotNull
+	//@NotNull
 	@Enumerated(EnumType.STRING)
 	private AmtOrPct rebateType;
 	
@@ -199,7 +200,7 @@ public abstract class PrcmtAbstractDlvryItem extends AbstractMvmtData {
 
 	@Column
 	@Description("PrcmtDlvryItem_creatingUsr_description")
-	@NotNull
+	//@NotNull
 	private String creatingUsr;
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -209,6 +210,9 @@ public abstract class PrcmtAbstractDlvryItem extends AbstractMvmtData {
 
 	@PrePersist
 	public void prePersist() {
+		if(StringUtils.isBlank(dlvryItemNbr)){
+			dlvryItemNbr = SequenceGenerator.getSequence(dlvryNbr);
+		}
 		setId(dlvryItemNbr);
 	}
 
@@ -266,6 +270,14 @@ public abstract class PrcmtAbstractDlvryItem extends AbstractMvmtData {
 
 	public void setQtyDlvrd(final BigDecimal qtyDlvrd) {
 		this.qtyDlvrd = qtyDlvrd;
+	}
+
+	public String getArtName() {
+		return artName;
+	}
+
+	public void setArtName(String artName) {
+		this.artName = artName;
 	}
 
 	public BigDecimal getFreeQty() {
