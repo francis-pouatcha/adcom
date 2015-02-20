@@ -137,5 +137,17 @@ public abstract class InvAbstractInvtry extends AbstractIdentifData {
 	protected String makeIdentif() {
 		return invtryNbr;
 	}
+	
+	public void copyTo(InvAbstractInvtry target) {
+		target.invtryNbr = invtryNbr;
+		target.acsngUser = acsngUser;
+		target.acsngDt = acsngDt;
+		target.gapSaleAmtHT = gapSaleAmtHT;
+		target.gapPurchAmtHT = gapPurchAmtHT;
+		target.invtryStatus = invtryStatus;
+		target.invInvtryType = invInvtryType;
+		target.descptn = descptn;
+		target.invtryDt = invtryDt;
+	}
 
 }

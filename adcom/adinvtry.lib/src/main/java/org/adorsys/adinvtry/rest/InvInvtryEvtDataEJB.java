@@ -6,7 +6,9 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
 
+import org.adorsys.adcore.utils.Contract;
 import org.adorsys.adinvtry.jpa.InvInvtryEvtData;
+import org.adorsys.adinvtry.jpa.InvInvtryItemEvtData;
 import org.adorsys.adinvtry.repo.InvInvtryEvtDataRepository;
 import org.apache.deltaspike.data.api.QueryResult;
 
@@ -17,7 +19,9 @@ public class InvInvtryEvtDataEJB
    @Inject
    private InvInvtryEvtDataRepository repository;
    
-
+   @Inject
+   private InvInvtryItemEvtDataEJB itemEvtDataEJB;
+   
    public InvInvtryEvtData create(InvInvtryEvtData entity)
    {   
       return repository.save(attach(entity));
@@ -29,9 +33,24 @@ public class InvInvtryEvtDataEJB
       if (entity != null)
       {
          repository.remove(entity);
+         removeInvtryEvtDataItems(entity);
       }
       return entity;
    }
+   /**
+	 * removeInvtryEvtDataItems.
+	 *
+	 * @param invtryEvtData
+	 */
+	private void removeInvtryEvtDataItems(InvInvtryEvtData invtryEvtData) {
+		Contract.checkIllegalArgumentException(invtryEvtData);
+		String invtryNbr = invtryEvtData.getInvtryNbr();
+		
+		List<InvInvtryItemEvtData> invtryItemEvtDatas = itemEvtDataEJB.findByInvtryNbr(invtryNbr);
+		for (InvInvtryItemEvtData itemEvtData : invtryItemEvtDatas) {
+			itemEvtDataEJB.deleteById(itemEvtData.getId());
+		}
+	}
 
    public InvInvtryEvtData update(InvInvtryEvtData entity)
    {
