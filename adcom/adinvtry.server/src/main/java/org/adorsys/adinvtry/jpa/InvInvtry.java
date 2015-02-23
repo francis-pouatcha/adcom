@@ -12,5 +12,4 @@ public class InvInvtry extends InvAbstractInvtry {
 	 * The serialVersionUID field.
 	 */
 	private static final long serialVersionUID = 5756400826965683731L;
-
 }

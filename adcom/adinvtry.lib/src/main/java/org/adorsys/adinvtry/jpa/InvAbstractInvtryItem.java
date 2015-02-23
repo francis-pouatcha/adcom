@@ -10,8 +10,11 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 import org.adorsys.adcore.jpa.AbstractIdentifData;
+import org.adorsys.adcore.utils.BigDecimalUtils;
+import org.adorsys.adcore.utils.CalendarUtil;
 import org.adorsys.javaext.description.Description;
 import org.adorsys.javaext.format.DateFormatPattern;
+import org.apache.commons.lang3.StringUtils;
 
 @MappedSuperclass
 @Description("InvInvtryItem_description")
@@ -34,6 +37,11 @@ public abstract class InvAbstractInvtryItem extends AbstractIdentifData {
 	@NotNull
 	private String artPic;
 
+	@Column
+	@Description("InvInvtryItem_artName_description")
+	@NotNull
+	private String artName;
+	
 	@Column
 	@Description("InvInvtryItem_section_description")
 	private String section;
@@ -216,6 +224,14 @@ public abstract class InvAbstractInvtryItem extends AbstractIdentifData {
 		this.acsngUser = acsngUser;
 	}
 
+	public String getArtName() {
+		return artName;
+	}
+
+	public void setArtName(String artName) {
+		this.artName = artName;
+	}
+
 	@Override
 	protected String makeIdentif() {
 		return invtryNbr + "_" + lotPic + "_" + artPic + "_" + section + "_"
@@ -239,5 +255,37 @@ public abstract class InvAbstractInvtryItem extends AbstractIdentifData {
 		target.setSection(section);
 		target.setSppuCur(sppuCur);
 		target.setSppuPT(sppuPT);
+		target.setArtName(artName);
 	}
+	
+	public boolean contentEquals(InvAbstractInvtryItem target) {
+		if(!CalendarUtil.isSameDay(target.acsngDt,acsngDt)) return false;
+		if(!StringUtils.equals(target.acsngUser,acsngUser)) return false;
+		if(!StringUtils.equals(target.artPic,artPic)) return false;
+		if(!StringUtils.equals(target.artName,artName)) return false;
+		if(!BigDecimalUtils.numericEquals(target.asseccedQty,asseccedQty)) return false;
+		if(!BigDecimalUtils.numericEquals(target.expectedQty,expectedQty)) return false;
+		if(!BigDecimalUtils.numericEquals(target.gap,gap)) return false;
+		if(!BigDecimalUtils.numericEquals(target.gapTotalPpPT,gapTotalPpPT)) return false;
+		if(!BigDecimalUtils.numericEquals(target.gapTotalSpPT,gapTotalSpPT)) return false;
+		if(!StringUtils.equals(target.invtryNbr,invtryNbr)) return false;
+		if(!StringUtils.equals(target.lotPic,lotPic)) return false;
+		if(!StringUtils.equals(target.orgUnit,orgUnit)) return false;
+		if(!StringUtils.equals(target.pppuCur,pppuCur)) return false;
+		if(!BigDecimalUtils.numericEquals(target.pppuPT,pppuPT)) return false;
+		if(!StringUtils.equals(target.section,section)) return false;
+		if(!StringUtils.equals(target.sppuCur,sppuCur)) return false;
+		if(!BigDecimalUtils.numericEquals(target.sppuPT,sppuPT)) return false;
+		return true;
+	}
+
+	public void evlte() {
+		if(this.asseccedQty==null) this.asseccedQty=BigDecimal.ZERO;
+		if(this.expectedQty==null) this.expectedQty=BigDecimal.ZERO;
+		this.gap = this.expectedQty.subtract(this.asseccedQty);
+		if(this.pppuPT==null) this.pppuPT=BigDecimal.ZERO;
+		this.gapTotalPpPT = gap.multiply(this.pppuPT);
+		if(this.sppuPT==null) this.sppuPT=BigDecimal.ZERO;
+		this.gapTotalSpPT = gap.multiply(this.sppuPT);
+	}	
 }

@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.adorsys.adcore.jpa.AbstractIdentifData;
@@ -36,6 +37,9 @@ public class StkArticleLot2StrgSctn extends AbstractIdentifData {
 	@Description("StkArticleLot2StrgSctn_qty_description")
 	@NotNull
 	private BigDecimal qty;
+	
+	@Transient
+	private StkSection stkSection;
 
 	public String getStrgSection() {
 		return strgSection;
@@ -75,6 +79,14 @@ public class StkArticleLot2StrgSctn extends AbstractIdentifData {
 
 	public void setQty(BigDecimal qty) {
 		this.qty = qty;
+	}
+	
+	public StkSection getStkSection() {
+		return stkSection;
+	}
+
+	public void setStkSection(StkSection stkSection) {
+		this.stkSection = stkSection;
 	}
 
 	public void copyTo(StkArticleLot2StrgSctn target){

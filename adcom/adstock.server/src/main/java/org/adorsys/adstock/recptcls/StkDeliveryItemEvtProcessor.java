@@ -16,6 +16,7 @@ import org.adorsys.adprocmt.jpa.PrcmtDlvryItem2StrgSctnEvtData;
 import org.adorsys.adprocmt.jpa.PrcmtDlvryItemEvtData;
 import org.adorsys.adprocmt.rest.PrcmtDeliveryEvtDataEJB;
 import org.adorsys.adprocmt.rest.PrcmtDlvryItemEvtDataEJB;
+import org.adorsys.adstock.jpa.StkAbstractArticleLot;
 import org.adorsys.adstock.jpa.StkArtStockQty;
 import org.adorsys.adstock.jpa.StkArticleLot;
 import org.adorsys.adstock.jpa.StkArticleLot2Ou;
@@ -61,7 +62,7 @@ public class StkDeliveryItemEvtProcessor {
 		
 		String artPic = itemEvtData.getArtPic();
 		String lotPic = itemEvtData.getLotPic();
-		StkArticleLot articleLot = articleLotEJB.findByIdentif(StkArticleLot.toId(artPic, lotPic));
+		StkArticleLot articleLot = articleLotEJB.findByIdentif(StkAbstractArticleLot.toId(artPic, lotPic));
 		if(articleLot!=null)return;
 		
 		StkArticleLot stkArticleLot = new StkArticleLot();

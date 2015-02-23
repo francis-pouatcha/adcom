@@ -48,13 +48,13 @@ public abstract class InvAbstractInvtry extends AbstractIdentifData {
 
 	@Column
 	@Description("InvInvtry_invtryStatus_description")
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
 	@NotNull
 	private InvInvtryStatus invtryStatus;
 	
 	@Column
 	@Description("InvInvtry_invInvtryType_description")
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
 	@NotNull
 	private InvInvtryType invInvtryType;
 
@@ -150,4 +150,18 @@ public abstract class InvAbstractInvtry extends AbstractIdentifData {
 		target.invtryDt = invtryDt;
 	}
 
+	public void clearAmts() {
+		this.gapSaleAmtHT=BigDecimal.ZERO;
+		this.gapPurchAmtHT = BigDecimal.ZERO;
+	}
+
+	public void addGapSaleAmtHT(BigDecimal gapSaleAmtHT) {
+		if(this.gapSaleAmtHT==null)this.gapSaleAmtHT=BigDecimal.ZERO;
+		this.gapSaleAmtHT = this.gapSaleAmtHT.add(gapSaleAmtHT);
+	}
+
+	public void addGapPurchAmtHT(BigDecimal gapPurchAmtHT) {
+		if(this.gapPurchAmtHT==null)this.gapPurchAmtHT=BigDecimal.ZERO;
+		this.gapPurchAmtHT = this.gapPurchAmtHT.add(gapPurchAmtHT);
+	}
 }

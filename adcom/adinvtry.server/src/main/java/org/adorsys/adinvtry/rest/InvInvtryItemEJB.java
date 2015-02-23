@@ -91,7 +91,16 @@ public class InvInvtryItemEJB
 
 		return entity;
 	}
-	public List<InvInvtryItem> findByInvtryNbr(String invtryNbr) {
-		return repository.findByInvtryNbr(invtryNbr);
+	public List<InvInvtryItem> findByInvtryNbr(String invtryNbr, int start, int max) {
+		return repository.findByInvtryNbr(invtryNbr).firstResult(start).maxResults(max).getResultList();
 	}
+
+	public Long countByInvtryNbr(String invtryNbr) {
+		return repository.countByInvtryNbr(invtryNbr);
+	}
+	
+	public void removeByInvtryNbr(String invtryNbr) {
+		repository.removeByInvtryNbr(invtryNbr);
+	}
+	
 }

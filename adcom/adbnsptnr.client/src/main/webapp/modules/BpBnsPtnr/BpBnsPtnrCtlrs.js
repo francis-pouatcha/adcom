@@ -102,7 +102,8 @@ angular.module('AdBnsptnr')
         };
         if(countryName){
             searchInput.entity.name = countryName+'%';
-            searchInput.fieldNames.push('name');
+            if(searchInput.fieldNames.indexOf('name')==-1)
+            	searchInput.fieldNames.push('name');
         }
         var deferred = $q.defer();
         genericResource.findByLike(service.countryNamesUrlBase, searchInput)
@@ -131,8 +132,10 @@ angular.module('AdBnsptnr')
         if(insuranceName){
             searchInput.entity.fullName = insuranceName+'%';
             searchInput.entity.whenInRole = 'INSURANCE';
-            searchInput.fieldNames.push('fullName');
-            searchInput.fieldNames.push('whenInRole');
+            if(searchInput.fieldNames.indexOf('fullName')==-1)
+            	searchInput.fieldNames.push('fullName');
+            if(searchInput.fieldNames.indexOf('whenInRole')==-1)
+            	searchInput.fieldNames.push('whenInRole');
         }
         var deferred = $q.defer();
         genericResource.findByLike(service.bpctgryofptnrsUrlBase, searchInput)
@@ -160,7 +163,8 @@ angular.module('AdBnsptnr')
         };
         if(ctgryName){
             searchInput.entity.name = ctgryName+'%';
-            searchInput.fieldNames.push('name');
+            if(searchInput.fieldNames.indexOf('name')==-1)
+            	searchInput.fieldNames.push('name');
         }
         var deferred = $q.defer();
         genericResource.findByLike(service.bpptnrctgrydtlssUrlBase, searchInput)

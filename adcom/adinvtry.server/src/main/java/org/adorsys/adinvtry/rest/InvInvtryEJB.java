@@ -12,7 +12,6 @@ import org.adorsys.adcore.utils.Contract;
 import org.adorsys.adcore.utils.SequenceGenerator;
 import org.adorsys.adinvtry.jpa.InvInvtry;
 import org.adorsys.adinvtry.jpa.InvInvtryEvtData;
-import org.adorsys.adinvtry.jpa.InvInvtryItem;
 import org.adorsys.adinvtry.jpa.InvInvtrySearchInput;
 import org.adorsys.adinvtry.repo.InvInvtryRepository;
 import org.apache.commons.lang3.time.DateUtils;
@@ -75,11 +74,7 @@ public class InvInvtryEJB
 	 */
 	private void removeIntryItems(InvInvtry entity) {
 		Contract.checkIllegalArgumentException(entity);
-		String invtryNbr = entity.getInvtryNbr();
-		List<InvInvtryItem> invtryItems = itemEJB.findByInvtryNbr(invtryNbr);
-		for (InvInvtryItem invtryItem : invtryItems) {
-			itemEJB.deleteById(invtryItem.getId());
-		}
+		itemEJB.removeByInvtryNbr(entity.getInvtryNbr());
 	}
 
 	public InvInvtry update(InvInvtry entity)

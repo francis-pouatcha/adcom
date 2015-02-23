@@ -83,7 +83,7 @@ public class CatalArticleEndpoint
    @GET
    @Path("/{identif}")
    @Produces({ "application/json", "application/xml" })
-   public Response findByIdentif(@PathParam("identif") String identif)
+   public Response findById(@PathParam("identif") String identif)
    {
       CatalArticle found = ejb.findByIdentif(identif);
       if (found == null)
@@ -91,6 +91,17 @@ public class CatalArticleEndpoint
       return Response.ok(detach(found)).build();
    }
 
+   @GET
+   @Path("/findByIdentif/{identif}")
+   @Produces({ "application/json", "application/xml" })
+   public Response findByIdentif(@PathParam("identif") String identif)
+   {
+      CatalArticle found = ejb.findByIdentif(identif);
+      if (found == null)
+         return Response.status(Status.NOT_FOUND).build();
+      return Response.ok(detach(found)).build();
+   }
+   
    @GET
    @Produces({ "application/json", "application/xml" })
    public CatalArticleSearchResult listAll(@QueryParam("start") int start,
@@ -189,6 +200,8 @@ public class CatalArticleEndpoint
    @Consumes({ "application/json", "application/xml" })
    public CatalArticleSearchResult findCustom(CatalArticleSearchInput searchInput)
    {
+	   if(StringUtils.isNotBlank(searchInput.getCodesAndNames())) return findByCodesAndName(searchInput);
+	   
 	   if(searchInput.getFieldNames().isEmpty()) return findByLike(searchInput);
 	   
 	   CatalArticle entity = searchInput.getEntity();
@@ -206,7 +219,21 @@ public class CatalArticleEndpoint
 	   }
    }
    
-   @SuppressWarnings("unchecked")
+   private CatalArticleSearchResult findByCodesAndName(
+		CatalArticleSearchInput searchInput) {
+	   String codesAndNames = searchInput.getCodesAndNames();
+	   // IF the String matches codes criteria, we make the cide search.
+	   if(StringUtils.isNumeric(codesAndNames)){
+		   searchInput.getEntity().setPic(codesAndNames);
+		   return findByPicLike(searchInput);
+	   } else {
+		   searchInput.getEntity().getFeatures().setArtName(codesAndNames);
+		   return findByNameLike(searchInput);
+		   // else we make the name search.
+	   }
+   }
+
+@SuppressWarnings("unchecked")
    @POST
    @Path("/findByNameLike")
    @Produces({ "application/json", "application/xml" })
