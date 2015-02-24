@@ -25,4 +25,11 @@ public class BigDecimalUtils {
 		}
 		return result;
 	}
+	
+	public static BigDecimal subs(BigDecimal base,BigDecimal ... substracts) {
+		for (BigDecimal bigDecimal : substracts) {
+			base = FinancialOps.substract(base, bigDecimal);
+		}
+		return base;
+	}
 }

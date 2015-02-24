@@ -91,7 +91,7 @@ angular.module('AdInvtry').controller('invInvtryShowCtlr',['$scope','invtryResou
             searchInput.artPics = artPics;
             searchInput.applyLike = true;
             stkArtResource.findStkByArtPic(searchInput).success(function(data){
-                deferred.resolve(data.articleLots);
+                deferred.resolve(data.resultList);
             }).error(function(error){
                 deferred.reject("No Article");
             });

@@ -11,6 +11,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
+import org.adorsys.adstock.jpa.StkSection;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 @Startup
@@ -24,7 +25,7 @@ public class BaseLoaderRegistration {
 	
 	@PostConstruct
 	public void postConstruct(){
-		dataSheetLoader.registerLoader(StkSectionLoader.class.getSimpleName(), stkSectionLoader);
+		dataSheetLoader.registerLoader(StkSection.class.getSimpleName(), stkSectionLoader);
 		createTemplate();
 	}
 

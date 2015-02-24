@@ -20,14 +20,15 @@ angular.module('AdInvtry', [
 .config(['$routeProvider', '$httpProvider','$translateProvider','$translatePartialLoaderProvider',
          function($routeProvider,$httpProvider,$translateProvider,$translatePartialLoaderProvider) {
     $routeProvider
-    .when('/',{templateUrl:'views/InvInvtry/InvInvtrys.html',controller:'invtryCtrl'})
-    .when('/InvInvtrys',{templateUrl:'views/InvInvtry/InvInvtrys.html',controller:'invtryCtrl'})
-    .when('/InvInvtrys/new',{templateUrl:'views/InvInvtry/InvInvtryCreate.html',controller:'invtryCreateCtlr'})
+    .when('/',{templateUrl:'views/InvInvtry/InvInvtrys.html',controller:'invInvtrysCtlr'})
+    .when('/InvInvtrys',{templateUrl:'views/InvInvtry/InvInvtrys.html',controller:'invInvtrysCtlr'})
+    .when('/InvInvtrys/new',{templateUrl:'views/InvInvtry/InvInvtryCreate.html',controller:'invInvtryCreateCtlr'})
+    .when('/InvInvtrys/show/',{templateUrl:'views/InvInvtry/InvInvtryShow.html',controller:'invInvtryShowCtlr'})
     .when('/InvInvtrys/show/:identif',{templateUrl:'views/InvInvtry/InvInvtryShow.html',controller:'invInvtryShowCtlr'})
-    .when('/InvInvtrys/edit/:identif',{templateUrl:'views/InvInvtry/InvInvtryEdit.html',controller:'invtryEditCtlr'})
-    .when('/InvInvtryItems',{templateUrl:'views/InvInvtryItem/search.html',controller:'SearchInvInvtryItemController'})
-    .when('/InvInvtryItems/new',{templateUrl:'views/InvInvtryItem/detail.html',controller:'NewInvInvtryItemController'})
-    .when('/InvInvtryItems/edit/:InvInvtryItemId',{templateUrl:'views/InvInvtryItem/detail.html',controller:'EditInvInvtryItemController'})
+    .when('/InvInvtrys/edit/:identif',{templateUrl:'views/InvInvtry/InvInvtryEdit.html',controller:'invInvtryEditCtlr'})
+//    .when('/InvInvtryItems',{templateUrl:'views/InvInvtryItem/search.html',controller:'SearchInvInvtryItemController'})
+//    .when('/InvInvtryItems/new',{templateUrl:'views/InvInvtryItem/detail.html',controller:'NewInvInvtryItemController'})
+//    .when('/InvInvtryItems/edit/:InvInvtryItemId',{templateUrl:'views/InvInvtryItem/detail.html',controller:'EditInvInvtryItemController'})
     .otherwise({redirectTo: '/'});
     
     $httpProvider.defaults.withCredentials = true;

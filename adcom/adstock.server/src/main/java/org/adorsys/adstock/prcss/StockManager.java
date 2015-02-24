@@ -1,6 +1,6 @@
 package org.adorsys.adstock.prcss;
 
-import org.adorsys.adstock.jpa.StkArticleLot;
+import org.adorsys.adstock.jpa.StkAbstractArticleLot;
 import org.adorsys.adstock.jpa.StkMvnt;
 import org.adorsys.adstock.jpa.StkRsrvtn;
 
@@ -44,7 +44,7 @@ public class StockManager {
 	 * 
 	 * @param lotData
 	 */
-	public void registerLot(StkArticleLot lotData, String origDocNbrs){
+	public void registerLot(StkAbstractArticleLot lotData, String origDocNbrs){
 		
 	}
 	

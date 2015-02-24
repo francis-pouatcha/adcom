@@ -1,9 +1,7 @@
 'use strict';
 
 angular.module('AdStock')
-.factory('stkSectionService',
-    ['stkSectionResource','$cookieStore','sessionManager','$q',
-    function (stkSectionResource,$cookieStore,sessionManager,$q) {
+.factory('stkSectionService', ['stkSectionResource','$cookieStore','sessionManager','$q', function (stkSectionResource,$cookieStore,sessionManager,$q) {
         var service = {};
 
         service.list = function(){
