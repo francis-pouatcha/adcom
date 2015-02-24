@@ -298,4 +298,10 @@ public class PrcmtDlvryItemEJB {
 	public Long countByDlvryNbr(String dlvryNbr){
 		return repository.countByDlvryNbr(dlvryNbr);
 	}
+
+	public PrcmtDlvryItem findByIdentif(String identif) {
+		List<PrcmtDlvryItem> resultList = repository.findByIdentif(identif).maxResults(1).getResultList();
+		if(resultList.isEmpty()) return null;
+		return resultList.iterator().next();
+	}
 }

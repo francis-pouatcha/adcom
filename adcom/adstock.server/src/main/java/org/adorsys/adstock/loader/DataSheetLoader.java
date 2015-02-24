@@ -32,7 +32,7 @@ public class DataSheetLoader extends AbstractLoader {
 		try {
 			HSSFWorkbook workbook = new HSSFWorkbook(fis);
 			int numberOfSheets = workbook.getNumberOfSheets();
-			for (int i = 0; i < numberOfSheets-1; i++) {
+			for (int i = 0; i < numberOfSheets; i++) {
 				HSSFSheet sheet = workbook.getSheetAt(i);
 				if(sheet==null) continue;
 				String sheetName = sheet.getSheetName();

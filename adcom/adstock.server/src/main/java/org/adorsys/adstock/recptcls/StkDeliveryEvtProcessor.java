@@ -53,10 +53,10 @@ public class StkDeliveryEvtProcessor {
 			List<PrcmtDlvryItemEvtData> list = itemEvtDataEJB.findByDlvryNbr(dlvryNbr, start, max);
 			start +=max;
 			for (PrcmtDlvryItemEvtData itemEvtData : list) {
-				String artPic = itemEvtData.getArtPic();
+//				String artPic = itemEvtData.getArtPic();
 				String lotPic = itemEvtData.getLotPic();
 				// Check if this lot exists.
-				StkAbstractArticleLot articleLot = articleLotEJB.findByIdentif(StkAbstractArticleLot.toId(artPic, lotPic));
+				StkAbstractArticleLot articleLot = articleLotEJB.findByIdentif(StkAbstractArticleLot.toId(lotPic));
 				if(articleLot==null){
 					itemEventDataToProcess.add(itemEvtData);
 				}

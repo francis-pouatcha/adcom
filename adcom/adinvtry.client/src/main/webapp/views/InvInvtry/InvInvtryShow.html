@@ -15,59 +15,53 @@
         <div class="panel-heading"><b> {{invInvtryUtils.translations['Entity_add.title']}} {{invInvtryUtils.translations['InvInvtryItem_description.title']}} </b> </div>
         <div class="panel-body">
             <form name="invInvtryItemForm" id="invInvtryItemForm" novalidate >
-            <table class="table table-bordered" >
-                <thead>
-                <tr>
-                    <th class="clo-lg-2">{{invInvtryUtils.translations['InvInvtryItem_section_description.title']}}</th>
-                    <th class="clo-lg-1">{{invInvtryUtils.translations['InvInvtryItem_lotPic_description.title']}}</th>
-                    <th class="clo-lg-1">{{invInvtryUtils.translations['InvInvtryItem_artPic_description.title']}}</th>
-                    <th class="col-lg-5">{{invInvtryUtils.translations['InvInvtryItem_artName_description.title']}}</th>
-                    <th class="col-lg-2">{{invInvtryUtils.translations['InvInvtryItem_asseccedQty_description.title']}}</th>
-                    <th class="col-lg-1"></th>
-                </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                    	<td>
-                            <div ng-class="{ 'has-error' : invInvtryItemForm.section.$invalid }" >
-                    		     <input type="text" ng-model="invInvtryItemHolder.invtryItem.section" id="section" name="section" class="form-control"
-	                                   autocomplete="off" typeahead="stkSection as stkSection.name for stkSection in invInvtryUtils.loadSections($viewValue)"
-	                                   typeahead-loading="loading" typeahead-on-select='onSectionSelected($item, $model, $label)'>
-                            </div>
-                    	</td>
-                        <td>
-                            <div ng-class="{ 'has-error' : invInvtryItemForm.lotPic.$invalid }" >
-                                <input type="text" ng- class="form-control" name="lotPic" id="lotPic" required autocomplete="off" 
-                                	ng-model="invInvtryItemHolder.invtryItem.lotPic"
-                                   typeahead="articleLot as articleLot.pic for articleLot in invInvtryUtils.loadArticleLotsByPic($viewValue)"
-                                   typeahead-loading="loading" typeahead-on-select='onArticleLotSelected($item, $model, $label)' >
-                            </div>
-                        </td>
-                        <td>
-                            <div ng-class="{ 'has-error' : invInvtryItemForm.artPic.$invalid }" >
-                                <input type="text" ng- class="form-control" name="artPic" id="artPic" required autocomplete="off" 
-                                	ng-model="invInvtryItemHolder.invtryItem.artPic"
-                                   typeahead="article as article.pic for article in invInvtryUtils.loadArticlesByPic($viewValue)"
-                                   typeahead-loading="loading" typeahead-on-select='onArticleSelected($item, $model, $label)' >
-                            </div>
-                        </td>
-                        <td>
-                            <div ng-class="{ 'has-error' : invInvtryItemForm.artName.$invalid }" >
-                                <input type="text" class="form-control" required id="artName" autocomplete="off" 
-                                	ng-model="invInvtryItemHolder.invtryItem.artName"
-                                   typeahead="article as article.features.artName for article in invInvtryUtils.loadArticlesByName($viewValue)"
-                                   typeahead-loading="loading" typeahead-on-select='onArticleSelected($item, $model, $label)' name="artName" >
-                            </div>
-                        </td>
-                       <td>
-                           <div ng-class="{ 'has-error' : invInvtryItemForm.asseccedQty.$invalid }" >
-                               <input type="text" class="form-control" required name="asseccedQty" id="asseccedQty" ng-model="invInvtryItemHolder.invtryItem.asseccedQty" >
-                           </div>
-                       </td>
-                       <td><button class="btn btn-default" ng-disabled="invInvtryItemForm.$invalid" ng-click="addItem()" ><i class="glyphicon glyphicon-plus"></i> {{invInvtryUtils.translations['Entity_add.title']}}</button></td>
-                    </tr>
-                </tbody>
-            </table>
+                <div class="row" >
+                   <div class="form-group col-lg-3">
+                       <label class=" control-label" for="section">{{invInvtryUtils.translations['InvInvtryItem_section_description.title']}}</label>
+                       <div ng-class="{ 'has-error' : invInvtryItemForm.section.$invalid }" >
+               		     <input type="text" ng-model="invInvtryItemHolder.invtryItem.section" id="section" name="section" class="form-control"
+                               autocomplete="off" typeahead="stkSection as stkSection.name for stkSection in invInvtryUtils.loadSections($viewValue)"
+                               typeahead-loading="loading" typeahead-on-select='onSectionSelected($item, $model, $label)'>
+                       </div>
+                   </div>
+                   <div class="form-group col-lg-3">
+                       <label class=" control-label" for="lotPic">{{invInvtryUtils.translations['InvInvtryItem_lotPic_description.title']}}</label>
+                       <div ng-class="{ 'has-error' : invInvtryItemForm.lotPic.$invalid }" >
+                           <input type="text" ng- class="form-control" name="lotPic" id="lotPic" required autocomplete="off" 
+                           	ng-model="invInvtryItemHolder.invtryItem.lotPic"
+                              typeahead="articleLot as articleLot.pic for articleLot in invInvtryUtils.loadArticleLotsByPic($viewValue)"
+                              typeahead-loading="loading" typeahead-on-select='onArticleLotSelected($item, $model, $label)' >
+                       </div>
+                   </div>
+                   <div class="form-group col-lg-3">
+                       <label class=" control-label" for="artPic">{{invInvtryUtils.translations['InvInvtryItem_artPic_description.title']}}</label>
+                       <div ng-class="{ 'has-error' : invInvtryItemForm.artPic.$invalid }" >
+                           <input type="text" ng- class="form-control" name="artPic" id="artPic" required autocomplete="off" 
+                           	ng-model="invInvtryItemHolder.invtryItem.artPic"
+                              typeahead="article as article.pic for article in invInvtryUtils.loadArticlesByPic($viewValue)"
+                              typeahead-loading="loading" typeahead-on-select='onArticleSelected($item, $model, $label)' >
+                       </div>
+                   </div>
+                   <div class="form-group col-lg-3">
+                       <label class=" control-label" for="artName">{{invInvtryUtils.translations['InvInvtryItem_artName_description.title']}}</label>
+                       <div ng-class="{ 'has-error' : invInvtryItemForm.artName.$invalid }" >
+                           <input type="text" class="form-control" required id="artName" autocomplete="off" 
+                           	ng-model="invInvtryItemHolder.invtryItem.artName"
+                              typeahead="article as article.features.artName for article in invInvtryUtils.loadArticlesByName($viewValue)"
+                              typeahead-loading="loading" typeahead-on-select='onArticleSelected($item, $model, $label)' name="artName" >
+                       </div>
+                   </div>
+                   <div class="form-group col-lg-3">
+                       <label class=" control-label" for="asseccedQty">{{invInvtryUtils.translations['InvInvtryItem_asseccedQty_description.title']}}</label>
+                       <div ng-class="{ 'has-error' : invInvtryItemForm.asseccedQty.$invalid }" >
+                           <input type="text" class="form-control" required name="asseccedQty" id="asseccedQty" ng-model="invInvtryItemHolder.invtryItem.asseccedQty" >
+                       </div>
+                   </div>
+                   <div class="form-group col-lg-3">
+                       <label class=" control-label" for="asseccedQty">{{invInvtryUtils.translations['InvInvtryItem_asseccedQty_description.title']}}</label>
+                       <button class="btn btn-default" ng-disabled="invInvtryItemForm.$invalid" ng-click="addItem()" ><i class="glyphicon glyphicon-plus"></i> {{invInvtryUtils.translations['Entity_add.title']}}</button>
+                   </div>
+	            </div>
           </form>
         </div>
     </div>

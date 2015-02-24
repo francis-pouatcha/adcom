@@ -106,6 +106,7 @@ public class PrcmtDeliveryManager {
 						}
 					} else {
 						dlvryItem.evlte();//evaluate different amount before save
+						dlvryItem.setDlvryNbr(delivery.getDlvryNbr());
 						dlvryItem = dlvryItemEJB.create(dlvryItem);
 						itemModified = true;
 					}
@@ -322,6 +323,7 @@ public class PrcmtDeliveryManager {
 		if(StringUtils.isBlank(delivery.getId())){
 			delivery.setCreatingUsr(currentLoginName);
 			delivery.setCreationDt(now);
+			if(delivery.getDlvryDt()==null) delivery.setDlvryDt(now);
 			delivery.setDlvryStatus(BaseProcessStatusEnum.ONGOING.name());
 			delivery = deliveryEJB.create(delivery);
 			createInitialDeliveryHistory(delivery);

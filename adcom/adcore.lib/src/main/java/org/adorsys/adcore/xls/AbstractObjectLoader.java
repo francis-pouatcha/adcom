@@ -51,6 +51,13 @@ public abstract class AbstractObjectLoader<T extends AbstractIdentifData> {
 		}
 	}
 	
+	/*
+	 * Allows the release of resources.
+	 */
+	protected void done(){
+		// noop
+	}
+	
 	protected void update(Row row, List<PropertyDesc> fields, CellParser cellParser) {
 		T newObject = newObject();
 		for (PropertyDesc propertyDesc : fields) {
