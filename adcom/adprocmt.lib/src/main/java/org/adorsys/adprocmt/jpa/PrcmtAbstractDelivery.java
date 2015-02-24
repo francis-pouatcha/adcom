@@ -111,7 +111,7 @@ public class PrcmtAbstractDelivery extends AbstractIdentifData {
 
 	@Column
 	@Description("PrcmtDelivery_dlvryStatus_description")
-	//@NotNull
+	@NotNull
 	private String dlvryStatus;
 
 	@Column

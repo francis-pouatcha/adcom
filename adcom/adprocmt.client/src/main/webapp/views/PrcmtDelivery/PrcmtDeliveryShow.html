@@ -1,109 +1,125 @@
-<div>
-    <div class="well">
-        <h4>
-            <a>{{prcmtDeliveryShowCtlr.prcmtDelivery.dlvryNbr}}</a> of {{prcmtDeliveryShowCtlr.prcmtDelivery.orderDt | date:'dd-MM-yyyy'}},
-            <b>Delivery Slip No: </b>{{prcmtDeliveryShowCtlr.prcmtDelivery.dlvrySlipNbr}},
-            <b>Amount Ht:</b> {{prcmtDeliveryShowCtlr.prcmtDelivery.netPPTaxIncl}} cfa,
-            <b>Amount Entered:</b> {{prcmtDeliveryShowCtlr.totalAmountEntered}} cfa
-            <p class="pull-right">
-                <a class=" btn btn-default" href="#/"  type="button">Cancel</a>
-                <button class=" btn btn-primary" ng-click="prcmtDeliveryShowCtlr.save()" type="button">Save</button>
-                <button class=" btn btn-primary" ng-click="prcmtDeliveryShowCtlr.close()" type="button">Save and Close</button>
-            </p>
-        </h4>
-    </div>
-    <div class="panel panel-default">
-        <div class="panel-heading"><b>Add Procurement Delivery Item</b> </div>
-        <div class="panel-body">
-            <form name="prcmtDeliveryItemForm" id="prcmtDeliveryItemForm" novalidate >
-            <table class="table table-bordered" >
-                <thead>
-                <tr>
-                    <th class="clo-lg-2">CIP</th>
-                    <th class="col-lg-3">Designation</th>
-                    <th>Qte Stock</th>
-                    <th>Qte</th>
-                    <th>Qte Gratuite</th>
-                    <th>prix Achat</th>
-                    <th>Prix Vente</th>
-                    <th>Taux Mul</th>
-                    <th>Date P</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                            <input type="hidden" value="{{prcmtDeliveryShowCtlr.prcmtDelivery.dlvryNbr}}" ng-model="prcmtDeliveryShowCtlr.prcmtDeliveryItemHolder.dlvryItem.dlvryNbr" >
-                            <td>
-                                <div ng-class="{ 'has-error' : prcmtDeliveryItemForm.artPic.$invalid }" >
-                                    <input type="text" ng- class="form-control" select-on-click name="artPic" id="artPic" required autocomplete="off" ng-model="prcmtDeliveryShowCtlr.prcmtDeliveryItemHolder.dlvryItem.artPic"
-                                       typeahead="article as article.pic for article in prcmtDeliveryShowCtlr.loadArticlesByCipLike($viewValue)"
-                                       typeahead-loading="loading" typeahead-template-url="views/PrcmtDelivery/CatalTypeaheadTemplate.html" typeahead-on-select='prcmtDeliveryShowCtlr.onSelect($item, $model, $label)' >
-                                </div>
-                            </td>
-                            <td>
-                                <div ng-class="{ 'has-error' : prcmtDeliveryItemForm.artName.$invalid }" >
-                                    <input type="text" class="form-control" select-on-click focus required id="artName" autocomplete="off" ng-model="prcmtDeliveryShowCtlr.prcmtDeliveryItemHolder.dlvryItem.artName"
-                                       typeahead="article as article.features.artName for article in prcmtDeliveryShowCtlr.loadArticlesByNameLike($viewValue)"
-                                       typeahead-loading="loading" typeahead-on-select='prcmtDeliveryShowCtlr.onSelect($item, $model, $label)' name="artName" >
-                                </div>
-                            </td>
-                            <td><input type="text" class="form-control" disabled ></td>
-                            <td>
-                                <div ng-class="{ 'has-error' : prcmtDeliveryItemForm.qtyDlvrd.$invalid }" >
-                                    <input type="text" class="form-control" required name="qtyDlvrd" id="qtyDlvrd" ng-model="prcmtDeliveryShowCtlr.prcmtDeliveryItemHolder.dlvryItem.qtyDlvrd" >
-                                </div>
-                            </td>
-                            <td><input type="text" class="form-control" ng-model="prcmtDeliveryShowCtlr.prcmtDeliveryItemHolder.dlvryItem.freeQty" ></td>
-                            <td>
-                                <div ng-class="{ 'has-error' : prcmtDeliveryItemForm.pppuPreTax.$invalid }" >
-                                    <input type="text" class="form-control" required name="pppuPreTax" ng-model="prcmtDeliveryShowCtlr.prcmtDeliveryItemHolder.dlvryItem.pppuPreTax" >
-                                </div>
-                            </td>
-                            <td><input type="text" class="form-control" ng-model="prcmtDeliveryShowCtlr.prcmtDeliveryItemHolder.dlvryItem.sppuPreTax" ></td>
-                            <td><input type="text" class="form-control" ng-model="prcmtDeliveryShowCtlr.taux" ng-change="prcmtDeliveryShowCtlr.tauxMultiplicateur()" ></td>
-                            <td><input type="text" class="form-control" ng-model="prcmtDeliveryShowCtlr.prcmtDeliveryItemHolder.dlvryItem.expirDt" placeholder="MMYY" ></td>
-                            <td><button class="btn btn-default" ng-enter="prcmtDeliveryShowCtlr.addItem()" ng-disabled="prcmtDeliveryItemForm.$invalid" ng-click="prcmtDeliveryShowCtlr.addItem()" ><i class="glyphicon glyphicon-plus"></i> Add</button></td>
+<div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading"><b>{{ "Entity_create.title"| translate}}</b> </div>
+            <div class="panel-body">
+                <label class="error col-lg-offset-3 alert-danger" >{{prcmtDeliveryCreateCtlr.error}} </label>
+                <form  name="PrcmtDeliveryForm" id="PrcmtDeliveryForm" class="form-horizontal" novalidate="">
+                    <div class="form-group">
+                        <label class="col-lg-3 ">{{"PrcmtDelivery_dlvrySlipNbr_description.title"| translate}} :</label>
+                        <div class="col-lg-3" ng-class="{ 'has-error' : PrcmtDeliveryForm.dlvrySlipNbr.$invalid }" >
+                            <input type="text" ng-model="prcmtDeliveryCreateCtlr.prcmtDelivery.dlvrySlipNbr" id="dlvrySlipNbr" name="dlvrySlipNbr" class="form-control" required >
+                            <p  class="help-block">{{"PrcmtDelivery_dlvrySlipNbr_description.text"| translate}}</p>
+                        </div>
+                        <label class="col-lg-3">{{"PrcmtDelivery_netPPPreTax_description.title"| translate}} :</label>
+                        <div class="col-lg-3" >
+                            <input type="text" ng-model="prcmtDeliveryCreateCtlr.prcmtDelivery.netPPPreTax" id="netPPPreTax" name="netPPPreTax" class="form-control">
+                            <p class="help-block">{{"PrcmtDelivery_netPPPreTax_description.text"| translate}}</p>
+                        </div>
+                    </div>
 
-                    </tr>
-                </tbody>
-            </table>
-          </form>
+                    <div class="form-group">
+                        <label class="col-lg-3 ">{{"PrcmtDelivery_supplier_description.title"| translate}} :</label>
+                        <div class="col-lg-3" >
+                            <input type="text" ng-model="prcmtDeliveryCreateCtlr.prcmtDelivery.supplier" id="supplier" name="supplier" class="form-control"
+                                   autocomplete="off" typeahead="businessPartner.ptnrNbr as businessPartner.cpnyName for businessPartner in prcmtDeliveryCreateCtlr.loadBusinessPartner($viewValue)"
+                                   typeahead-loading="loading" placeholder="find a Supplier/Manufacturer">
+                            <p class="help-block">{{"PrcmtDelivery_supplier_description.text"| translate}}</p>
+                        </div>
+                        <label class="col-lg-3 ">{{"PrcmtDelivery_netPPTaxIncl_description.text"| translate}} :</label>
+                        <div class="col-lg-3" >
+                            <input type="text" ng-model="prcmtDeliveryCreateCtlr.prcmtDelivery.netPPTaxIncl" id="netPPTaxIncl" name="netPPTaxIncl" class="form-control" >
+                            <p class="help-block">{{"PrcmtDelivery_netPPTaxIncl_description.text"| translate}}</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 ">{{"PrcmtDelivery_rcvngOrgUnit_description.title"| translate}} :</label>
+                        <div class="col-lg-3" >
+                            <input type="text" ng-model="prcmtDeliveryCreateCtlr.prcmtDelivery.rcvngOrgUnit" id="rcvngOrgUnit" name="rcvngOrgUnit" class="form-control"
+                                   typeahead="orgUnit.identif as orgUnit.fullName for orgUnit in prcmtDeliveryCreateCtlr.loadOrgUnit($viewValue)"
+                                   typeahead-loading="loading" placeholder="find an organisation" >
+                            <p class="help-block">{{"PrcmtDelivery_rcvngOrgUnit_description.text"| translate}}</p>
+                        </div>
+                        <label class="col-lg-3 ">{{"PrcmtDelivery_netAmtToPay_description.title"| translate}} :</label>
+                        <div class="col-lg-3" >
+                            <input type="text" ng-model="prcmtDeliveryCreateCtlr.prcmtDelivery.netAmtToPay" id="netAmtToPay" name="netAmtToPay" class="form-control"  >
+                            <p class="help-block">{{"PrcmtDelivery_netAmtToPay_description.title"| translate}}</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 ">{{"PrcmtDelivery_dlvryDt_description.title"| translate}} :</label>
+                        <div class="col-lg-3" ng-class="{ 'has-error' : PrcmtDeliveryForm.dlvryDt.$invalid }" >
+                            <input type="datetime" date-time  view="date" min-view="date" views="['date']" dismiss="true" format="dd-MM-yyyy" required
+                                   ng-model="prcmtDeliveryCreateCtlr.prcmtDelivery.dlvryDt" id="dlvryDt" name="dlvryDt" class="form-control"  >
+                            <p  class="help-block">{{"PrcmtDelivery_dlvryDt_description.text"| translate}}</p>
+                        </div>
+                        <label class="col-lg-3 ">{{"PrcmtDelivery_netPurchAmt_description.title"| translate}} :</label>
+                        <div class="col-lg-3">
+                            <input type="text" ng-model="prcmtDeliveryCreateCtlr.prcmtDelivery.netPurchAmt" id="netPurchAmt" name="netPurchAmt" class="form-control" >
+                            <p  class="help-block">{{"PrcmtDelivery_netPurchAmt_description.text"| translate}}</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 ">{{"PrcmtDelivery_dtOnDlvrySlip_description.title"| translate}} :</label>
+                        <div class="col-lg-3" ng-class="{ 'has-error' : PrcmtDeliveryForm.dtOnDlvrySlip.$invalid }" >
+                            <input type="datetime" date-time  view="date" min-view="date" views="['date']" dismiss="true" format="dd-MM-yyyy" required
+                                   ng-model="prcmtDeliveryCreateCtlr.prcmtDelivery.dtOnDlvrySlip" id="dtOnDlvrySlip" name="dtOnDlvrySlip" class="form-control" >
+                            <p  class="help-block">{{"PrcmtDelivery_dtOnDlvrySlip_description.text"| translate}}</p>
+                        </div>
+                        <label class="col-lg-3 ">{{"PrcmtDelivery_grossPPPreTax_description.title"| translate}} :</label>
+                        <div class="col-lg-3" >
+                            <input type="text" ng-model="prcmtDeliveryCreateCtlr.prcmtDelivery.grossPPPreTax" id="grossPPPreTax" name="grossPPPreTax" class="form-control"  >
+                            <p  class="help-block">{{"PrcmtDelivery_grossPPPreTax_description.text"| translate}}</p>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 ">{{"PrcmtDelivery_rebate_description.title"| translate}} :</label>
+                        <div class="col-lg-3" >
+                            <input type="text" ng-model="prcmtDeliveryCreateCtlr.prcmtDelivery.rebate" id="rebate" name="rebate" class="form-control"  >
+                            <p  class="help-block">{{"PrcmtDelivery_rebate_description.text"| translate}}</p>
+                        </div>
+                        <label class="col-lg-3 ">{{"PrcmtDelivery_rdngDscntAmt_description.title"| translate}} :</label>
+                        <div class="col-lg-3" >
+                            <input type="text" ng-model="prcmtDeliveryCreateCtlr.prcmtDelivery.rdngDscntAmt" id="rdngDscntAmt" name="rdngDscntAmt" class="form-control"  >
+                            <p  class="help-block">{{"PrcmtDelivery_rdngDscntAmt_description.text"| translate}}</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 ">{{"PrcmtDelivery_vatAmount_description.title"| translate}} :</label>
+                        <div class="col-lg-3" >
+                            <input type="text" ng-model="prcmtDeliveryCreateCtlr.prcmtDelivery.vatAmount" id="vatAmount" name="vatAmount" class="form-control"  >
+                            <p  class="help-block">{{"PrcmtDelivery_vatAmount_description.text"| translate}}</p>
+                        </div>
+                        <label class="col-lg-3 ">{{"PrcmtDelivery_pymtDscntPct_description.title"| translate}} :</label>
+                        <div class="col-lg-3" >
+                            <input type="text" ng-model="prcmtDeliveryCreateCtlr.prcmtDelivery.pymtDscntPct" id="pymtDscntPct" name="pymtDscntPct" class="form-control"  >
+                            <p  class="help-block">{{"PrcmtDelivery_pymtDscntPct_description.text"| translate}}</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 ">{{"PrcmtDelivery_pymtDscntAmt_description.title"| translate}} :</label>
+                        <div class="col-lg-3" >
+                            <input type="text" ng-model="prcmtDeliveryCreateCtlr.prcmtDelivery.pymtDscntAmt" id="pymtDscntAmt" name="vatAmount" class="form-control"  >
+                            <p  class="help-block">{{"PrcmtDelivery_pymtDscntAmt_description.text"| translate}}</p>
+                        </div>
+                        <label class="col-lg-3 ">{{"PrcmtDelivery_dlvryCur_description.title"| translate}} :</label>
+                        <div class="col-lg-3" >
+                            <select ng-options="currency for currency in prcmtDeliveryCreateCtlr.currencys" ng-model="prcmtDeliveryCreateCtlr.prcmtDelivery.dlvryCur" id="dlvryCur" name="dlvryCur" class="form-control" ></select>
+                            <p  class="help-block">{{"PrcmtDelivery_dlvryCur_description.text"| translate}}</p>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="form-group">
+                        <label class="col-lg-3"  > </label>
+                        <div class="col-lg-8" >
+                            <a class="btn-danger btn" href="#/"><i class="glyphicon glyphicon-remove" ></i> {{"Entity_cancel.title" | translate }}</a>
+                            <button ng-click="prcmtDeliveryCreateCtlr.create();" ng-disabled="PrcmtDeliveryForm.$invalid" class="btn-success btn"  ><i class="glyphicon glyphicon-save"></i>  {{"Entity_save.title" | translate }}</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
         </div>
-    </div>
-    <div class="panel panel-default">
-        <div class="panel-heading"><b>List Procurement Delivery Item</b> </div>
-        <div class="panel-body">
-            <table class="table table-bordered  table-striped" >
-                <thead>
-                <tr>
-                    <th class="col-lg-2" >CIP</th>
-                    <th class="col-lg-3" >Designation</th>
-                    <th>Qte Stock</th>
-                    <th>Qte</th>
-                    <th>Qte Gratuite</th>
-                    <th>prix Achat</th>
-                    <th>Prix Vente</th>
-                    <th>Date P</th>
-                    <th></th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="prcmtDeliveryItemHolder in prcmtDeliveryShowCtlr.prcmtDeliveryItemHolders"  >
-                        <td>{{prcmtDeliveryItemHolder.dlvryItem.artPic}}</td>
-                        <td>{{prcmtDeliveryItemHolder.dlvryItem.artName}}</td>
-                        <td></td>
-                        <td>{{prcmtDeliveryItemHolder.dlvryItem.qtyDlvrd}}</td>
-                        <td>{{prcmtDeliveryItemHolder.dlvryItem.freeQty}}</td>
-                        <td>{{prcmtDeliveryItemHolder.dlvryItem.pppuPreTax}}</td>
-                        <td>{{prcmtDeliveryItemHolder.dlvryItem.sppuPreTax}}</td>
-                        <td>{{prcmtDeliveryItemHolder.dlvryItem.expirDt}}</td>
-                        <td><a ng-click="prcmtDeliveryShowCtlr.editItem($index)" class=""><i class="glyphicon glyphicon-edit"></i></a></td>
-                        <td><a ng-click="prcmtDeliveryShowCtlr.deleteItem($index)" class=""><i class="glyphicon glyphicon-trash"></i></a></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
+  </div>

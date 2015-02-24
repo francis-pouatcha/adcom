@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('AdProcmt').controller('prcmtDeliveryShowCtlr',['$scope','prcmtDeliveryResource','catalArticleResource','prcmtDeliveryManagerResource','$routeParams','$location','$q',function($scope,prcmtDeliveryResource,catalArticleResource,prcmtDeliveryManagerResource,$routeParams,$location,$q){
+angular.module('AdProcmt').controller('prcmtDeliveryAddItemCtlr',['$scope','$routeParams','$location','$q','ProcmtUtils','genericResource',function($scope,$routeParams,$location,$q,ProcmtUtils,genericResource){
     var self = this ;
-    $scope.prcmtDeliveryShowCtlr = self;
+    $scope.prcmtDeliveryAddItemCtlr = self;
     self.prcmtDelivery = {};
     self.prcmtDeliveryItemHolder = {
         dlvryItem:{}
@@ -28,12 +28,12 @@ angular.module('AdProcmt').controller('prcmtDeliveryShowCtlr',['$scope','prcmtDe
 
     function load(){
         var identif = $routeParams.identif;
-        prcmtDeliveryResource.findByIdentif(identif)
+        genericResource.findById(ProcmtUtils.urlBase,identif)
             .success(function(data){
                 self.prcmtDelivery = data;
             })
             .error(function(error){
-                self.error = error;
+                self.error = "No procurement delivery";
             });
     };
 
@@ -76,7 +76,7 @@ angular.module('AdProcmt').controller('prcmtDeliveryShowCtlr',['$scope','prcmtDe
 
     function findByNameStartWith (searchInput) {
         var deferred = $q.defer();
-        catalArticleResource.findByNameStartWith(searchInput)
+        genericResource.find(ProcmtUtils.catalarticles+'/findByNameStartWith',searchInput)
             .success(function(entitySearchResult) {
                 deferred.resolve(entitySearchResult);
             })
@@ -88,7 +88,7 @@ angular.module('AdProcmt').controller('prcmtDeliveryShowCtlr',['$scope','prcmtDe
 
     function findByPicLike (searchInput) {
         var deferred = $q.defer();
-        catalArticleResource.findByPicLike(searchInput)
+        genericResource.find(ProcmtUtils.catalarticles+'/findByPicLike',searchInput)
             .success(function(entitySearchResult) {
                 deferred.resolve(entitySearchResult);
             })
@@ -108,7 +108,7 @@ angular.module('AdProcmt').controller('prcmtDeliveryShowCtlr',['$scope','prcmtDe
         var prcmtDeliveryHolder = {};
         prcmtDeliveryHolder.delivery = self.prcmtDelivery;
         prcmtDeliveryHolder.deliveryItems = self.prcmtDeliveryItemHolders;
-        prcmtDeliveryManagerResource.update(prcmtDeliveryHolder).success(function(){
+        genericResource.find(ProcmtUtils.urlManagerDelivery+'/update',prcmtDeliveryHolder).success(function(){
             //update succes
         });
     }
