@@ -195,4 +195,10 @@ public class PrcmtDeliveryEJB {
 	public List<PrcmtDlvry2Ou> listOrgUnits(String dlvryNbr) {
 		return dlvry2OuRepository.findByDlvryNbr(dlvryNbr);
 	}
+
+	public PrcmtDelivery findByIdentif(String identif) {
+		List<PrcmtDelivery> resultList = repository.findByIdentif(identif).maxResults(1).getResultList();
+		if(resultList.isEmpty()) return null;
+		return resultList.iterator().next();
+	}
 }

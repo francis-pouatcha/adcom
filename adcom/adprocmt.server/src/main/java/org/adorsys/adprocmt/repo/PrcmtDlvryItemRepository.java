@@ -20,4 +20,8 @@ public interface PrcmtDlvryItemRepository extends EntityRepository<PrcmtDlvryIte
 
 	@Query("SELECT COUNT(p) FROM PrcmtDlvryItem AS p WHERE p.dlvryNbr = ?1")
 	public Long countByDlvryNbr(String dlvryNbr);
+
+
+	@Query("SELECT e FROM PrcmtDlvryItem AS e WHERE e.identif = ?1")
+	public QueryResult<PrcmtDlvryItem> findByIdentif(String identif);
 }

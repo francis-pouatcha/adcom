@@ -1,4 +1,4 @@
-package org.adorsys.adbase.loader;
+package org.adorsys.adprocmt.loader;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -21,7 +21,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 @Startup
 public class DataSheetLoader extends AbstractLoader {
 
-	String dataDir = "adcom/adbase/data";
+	String dataDir = "adcom/adprocmt/data";
 	String processedSuffix = ".processed";
 	
 	@SuppressWarnings("rawtypes")
@@ -63,7 +63,7 @@ public class DataSheetLoader extends AbstractLoader {
 
 	@Override
 	public String getFileName() {
-		return "adbase.tpl.xls";
+		return "adprocmt.tpl.xls";
 	}
 
 }

@@ -2,11 +2,13 @@ package org.adorsys.adstock.jpa;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.adorsys.adcore.jpa.AbstractIdentifData;
@@ -84,7 +86,14 @@ public abstract class StkAbstractArticleLot extends AbstractIdentifData {
 	@Column
 	@Description("StkArticleLot_purchRtrnDays_description")
 	private BigDecimal purchRtrnDays;
-
+	
+	// Date of the closing of this article lot. This is generally done
+	// after an inventory where we can state that there is none
+	// of the articles of this lot remaining in stock.
+	@Temporal(TemporalType.TIMESTAMP)
+	@Description("StkArticleLot_closedDt_description")
+	private Date closedDt;
+	
 	public String getLotPic() {
 		return this.lotPic;
 	}
@@ -215,10 +224,18 @@ public abstract class StkAbstractArticleLot extends AbstractIdentifData {
 
 	@Override
 	protected String makeIdentif() {
-		return toId(artPic, lotPic);
+		return toId(lotPic);
 	}
 	
-	public static String toId(String artPic, String lotPic){
-		return artPic +"_"+lotPic;
+	public static String toId(String lotPic){
+		return lotPic;
+	}
+
+	public Date getClosedDt() {
+		return closedDt;
+	}
+
+	public void setClosedDt(Date closedDt) {
+		this.closedDt = closedDt;
 	}
 }

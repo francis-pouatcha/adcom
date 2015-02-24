@@ -143,7 +143,6 @@ angular.module('AdInvtry')
         });
         return deferred.promise;
     }    
-
     
     service.loadArticles = function(val){
         return loadArticlesPromise(val).then(function(entitySearchResult){
@@ -162,6 +161,36 @@ angular.module('AdInvtry')
         };
 
         searchInput.codeAndNames = val;
+        var deferred = $q.defer();
+        genericResource.findByLike(service.catalarticlesUrlBase, searchInput)
+		.success(function(entitySearchResult) {
+        	deferred.resolve(entitySearchResult);
+		})
+        .error(function(){
+            deferred.reject(service.translations['InvInvtry_NoArticleFound_description.title']);
+        });
+        return deferred.promise;
+    }    
+
+    service.loadArticleLots = function(lotPic){
+    	if(!lotPic || lotPic.length<5) return;
+        return loadArticleLotsPromise(lotPic).then(function(entitySearchResult){
+            return entitySearchResult.resultList;
+        });
+    };
+
+    function loadArticleLotsPromise(lotPic){
+    	if(!lotPic) return;
+        var searchInput = {entity:{},fieldNames:[],start: 0,max: 30};
+        searchInput.entity.lotPic = lotPic;
+        if(searchInput.fieldNames.indexOf('lotPic')==-1)
+        	searchInput.fieldNames.push('lotPic');
+        // closed date must be null;
+        if(searchInput.fieldNames.indexOf('closedDt')==-1)
+        	searchInput.fieldNames.push('closedDt');
+        // also load storage section
+        searchInput.entity.withStrgSection=true;
+
         var deferred = $q.defer();
         genericResource.findByLike(service.catalarticlesUrlBase, searchInput)
 		.success(function(entitySearchResult) {
@@ -219,7 +248,7 @@ angular.module('AdInvtry')
     };
 
     // The search state.
-    // The current list of business partners.
+    // The current list of inventory objects
     var invInvtrysVar=[];
     service.hasInvtrys = function(){
         return invInvtrysVar && invInvtrysVar.length>0;
@@ -370,11 +399,12 @@ angular.module('AdInvtry')
         return service.invInvtry();
     };
     
-    var stkSection = {};
+    var stkSectionVar = {};
     service.stkSection = function(stkSectionIn){
-    	if(stkSectionIn) stkSection = stkSectionIn;
-    	return stkSection;
-    }
+    	if(stkSectionIn) stkSectionVar = stkSectionIn;
+    	return stkSectionVar;
+    };
+
     return service;
 
 }])
@@ -566,35 +596,66 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
     	// read the article name
     	genericResource.findByIdentif(invInvtryUtils.catalarticlesUrlBase,item.artPic)
     	.success(function(catalArticle){
-    		$scope.invInvtryItemHolder.invtryItem.artPic=item.features.artName;
+    		$scope.invInvtryItemHolder.invtryItem.artName=catalArticle.features.artName;
     	})
     	.error(function(error){
     		$scope.error=error;
     	});
-    	// Select the section
-        var strgsctnSearchInput = {
-            entity:{},
-            fieldNames:[],
-            start: 0,
-            max: 10
-        };
-        strgsctnSearchInput.entity.lotPic=item.lotPic;
-        strgsctnSearchInput.entity.artPic=item.artPic;
-        if(strgsctnSearchInput.fieldNames.indexOf('lotPic')==-1)
-        	strgsctnSearchInput.fieldNames.push('lotPic');
-        if(strgsctnSearchInput.fieldNames.indexOf('artPic')==-1)
-        	strgsctnSearchInput.fieldNames.push('artPic');
-    	genericResource.findByLike(invInvtryUtils.stkarticlelot2strgsctnsUrlBase,strgsctnSearchInput)
-    	.success(function(strgsctnSearchResult){
-    		if(strgsctnSearchResult.resultList.length==1){
-    			var stkSection = strgsctnSearchResult.resultList[0].stkSection;
-    			if(stkSection)
-    				$scope.invInvtryItemHolder.invtryItem.section=stkSection.sectionCode;    				
-    		}
-    	})
-    	.error(function(error){$scope.error=error;});
-    }
+    	if(!$scope.invInvtryItemHolder.invtryItem.section || 
+    			$scope.invInvtryItemHolder.invtryItem.section==''){
+    		var strgSctns = item.strgSctns;
+    		// Select the section
+			if(strgSctns){
+				if(strgSctns.length==1){
+					var stkSection = strgSctns[0].stkSection;
+					if(stkSection)
+						$scope.invInvtryItemHolder.invtryItem.section=stkSection.sectionCode;    				
+//				} else if(strgSctns.length>1){
+//					
+				}
+			}
+    	}
+    };
     
+    $scope.onArticleSelected = function(item,model,label){
+    	$scope.invInvtryItemHolder.invtryItem.artPic=item.pic;
+		$scope.invInvtryItemHolder.invtryItem.artName=item.features.artName;
+
+		// find article lots
+        var lotSearchInput = {entity:{},fieldNames:[],start: 0,max: 10};
+        lotSearchInput.entity.artPic = item.artPic;
+        if(lotSearchInput.fieldNames.indexOf('artPic')==-1)
+        	lotSearchInput.fieldNames.push('artPic');
+        // closed date must be null;
+        if(lotSearchInput.fieldNames.indexOf('closedDt')==-1)
+        	lotSearchInput.fieldNames.push('closedDt');
+        genericResource.findBy(invInvtryUtils.stkarticlelotsUrlBase, lotSearchInput)
+		.success(function(entitySearchResult) {
+			$scope.invInvtryItemHolder.candidateLots=entitySearchResult.resultList;
+			if($scope.invInvtryItemHolder.candidateLots && $scope.invInvtryItemHolder.candidateLots.length==1){
+		    	$scope.invInvtryItemHolder.invtryItem.lotPic=$scope.invInvtryItemHolder.candidateLots[0].lotPic;
+			} else if ($scope.invInvtryItemHolder.candidateLots && $scope.invInvtryItemHolder.candidateLots.length>1){
+				if($scope.invInvtryItemHolder.invtryItem.section){
+					var candidateLots = $scope.invInvtryItemHolder.candidateLots;
+					boolean found = false;
+					for (var int = 0; int < candidateLots.length; int++) {
+						var candidateLot = candidateLots[i];
+						var strgSctns = candidateLot.strgSctns;
+						for (var int2 = 0; int2 < strgSctns.length; int2++) {
+							var strgSctn = strgSctns[int2];
+							if($scope.invInvtryItemHolder.invtryItem.section==strgSctn.strgSection){
+								$scope.invInvtryItemHolder.invtryItem.lotPic = candidateLot.lotPic;
+								found =true;
+								break;
+							}
+						}
+						if(found) break;
+					}
+				}
+			}
+		})
+		.error(function(error){$scope.error=error;});
+    };
     
     $scope.edit =function(){
         $location.path('/InvInvtrys/edit/');
