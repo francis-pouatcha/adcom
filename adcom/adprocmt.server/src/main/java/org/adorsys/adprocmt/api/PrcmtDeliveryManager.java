@@ -281,8 +281,8 @@ public class PrcmtDeliveryManager {
 						deliveryEJB.deleteOrgUnit(dlvry2Ou.getId());
 						orgUnitToRemove.add(ouHolder);
 						modified = true;
-						continue;
 					}
+					continue;
 				}
 				if(dlvry2Ou==null){
 					dlvry2Ou = deliveryEJB.addOrgUnit(delivery, ouHolder.getRcvngOrgUnit().getRcvngOrgUnit(), ouHolder.getRcvngOrgUnit().getQtyPct());
@@ -300,10 +300,13 @@ public class PrcmtDeliveryManager {
 				}
 			}
 		} else if(StringUtils.isNotBlank(deliveryHolder.getDelivery().getRcvngOrgUnit())){
-			PrcmtDlvry2Ou dlvry2Ou = deliveryEJB.addOrgUnit(deliveryHolder.getDelivery(), deliveryHolder.getDelivery().getRcvngOrgUnit(), new BigDecimal("100"));
-			PrcmtDlvryRcvngOrgUnitHolder ouHolder =new PrcmtDlvryRcvngOrgUnitHolder();
-			ouHolder.setRcvngOrgUnit(dlvry2Ou);
-			rcvngOrgUnits.add(ouHolder);
+			PrcmtDlvry2Ou foundOrgUnit = deliveryEJB.findOrgUnit(deliveryHolder.getDelivery().getDlvryNbr(), deliveryHolder.getDelivery().getRcvngOrgUnit());
+			if(foundOrgUnit==null){
+				PrcmtDlvry2Ou dlvry2Ou = deliveryEJB.addOrgUnit(deliveryHolder.getDelivery(), deliveryHolder.getDelivery().getRcvngOrgUnit(), new BigDecimal("100"));
+				PrcmtDlvryRcvngOrgUnitHolder ouHolder =new PrcmtDlvryRcvngOrgUnitHolder();
+				ouHolder.setRcvngOrgUnit(dlvry2Ou);
+				rcvngOrgUnits.add(ouHolder);
+			}
 		}
 		rcvngOrgUnits.removeAll(orgUnitToRemove);
 		return modified;
