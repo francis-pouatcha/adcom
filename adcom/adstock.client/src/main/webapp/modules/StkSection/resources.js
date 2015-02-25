@@ -26,6 +26,7 @@ angular.module('AdStock').factory('stkSectionResource', ['$http', function ($htt
         return $http.post(urlBase+'/findByLike',entitySearchInput);
     };
     service.findById = function(entityId){
+        console.log('URI: '+urlBase+'/'+entityId)
         return $http.get(urlBase+'/'+entityId);
     };
 

@@ -74,27 +74,36 @@ angular.module('AdInvtry')
 	}
     
 }])
-.controller('invtryCreateCtlr',['$scope','$location','$http','invtryResource',function($scope,$location,$http,invtryResource){
+.controller('invtryCreateCtlr',['$scope','$location','$http', '$q', 'invtryResource',function($scope,$location,$http,$q,invtryResource){
 	var self = this ;
     $scope.invtryCreateCtlr = self;
+    self.searchInput = {
+            entity:{
+            },
+            fieldNames:[],
+            start:0,
+            max:-1,
+        }
     self.invtry = {
         invtryStatus:"ONGOING",
         gapSaleAmtHT:"0.0",
         gapPurchAmtHT:"0.0"
     };
-    self.invstkSections = [];
+    
     self.create = create;
     self.error = "";
     self.defaultParam=true;
-    self.invModes = ['BY_SECTION','ALPHABETICAL_ORDER_RANGE','FREE_INV'];
+//    self.invModes = ['BY_SECTION','ALPHABETICAL_ORDER_RANGE','FREE_INV'];
+    self.invModes = [{id: "BY_SECTION", name: "Par Rayon"}, {id: "ALPHABETICAL_ORDER_RANGE", name: "Par Ordre Alphabetique"}, {id: "FREE_INV", name: "Simple"}];
     self.selectedAction = selectedAction;
     self.selectedSection=false;
     self.selectedOrderRange=false;
     self.selectedFreeInv=false;
-    findAllSections();
+    self.invStkSections=[];
+    findAllSections(self.searchInput);
+    
     
     function selectedAction(){
-    	console.log(self.invtry.invMode);
     	if(self.invtry.invMode=="BY_SECTION") {
     		self.selectedSection=true;
     	}else {
@@ -102,6 +111,7 @@ angular.module('AdInvtry')
 		}
     	if(self.invtry.invMode=="ALPHABETICAL_ORDER_RANGE"){
     		self.selectedOrderRange=true;
+    		self.selectedSection=true;
     	}else {
     		self.selectedOrderRange=false;
 		}
@@ -112,15 +122,17 @@ angular.module('AdInvtry')
 		}
     }
     
-    function findAllSections(){
-       var responsePromise= $http.get('/adstock.server/rest/stksections')
-        .success(function(data, status, headers, config){
-            console.log('Success'+data);
-            self.invstkSections= data;
+    
+    
+    function findAllSections(searchInput){
+       var response= $http.get('/adstock.server/rest/stksections', {params: {start: searchInput.start,max: searchInput.max}});
+       response.success(function(entitySearchResult){
+    	   self.invStkSections=entitySearchResult.resultList;
         })
-        .error(function(data, status, headers, config){
-            console.log('Error');
+        .error(function(error){
+        	self.error = error;
         });
+        
     }
    
 

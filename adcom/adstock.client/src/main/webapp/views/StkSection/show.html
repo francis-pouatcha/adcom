@@ -1,0 +1,51 @@
+<div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading"><b>{{ "Entity_show.title"| translate}} {{ "StkSection_description.title"| translate}}</b> </div>
+            <div class="panel-body">
+                <label class="error col-lg-offset-3 alert-danger" >{{stkSectionShowCtrl.error}} </label>
+                <form  name="stkSectionForm" class="form-horizontal" novalidate="">
+                    <div class="form-group">
+                        <label class="col-lg-4 ">{{"StkSection_parentCode_description.title"| translate}} :</label>
+                        <div class="col-lg-8" >
+                            <input type="text" ng-model="stkSectionShowCtrl.stkSection.parentCode" name="parentCode" class="form-control" disabled >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-4 ">{{"StkSection_sectionCode_description.title"| translate}} :</label>
+                        <div class="col-lg-8" >
+                            <input type="text" ng-model="stkSectionShowCtrl.stkSection.sectionCode" name="sectionCode" class="form-control" disabled >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-4 ">{{"StkSection_name_description.title"| translate}} :</label>
+                        <div class="col-lg-8" >
+                            <input type="text" ng-model="stkSectionShowCtrl.stkSection.name" name="name" class="form-control" disabled >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-4 ">{{"StkSection_wharehouse_description.title"| translate}} :</label>
+                        <div class="col-lg-8" >
+                            <input type="text" ng-model="stkSectionShowCtrl.stkSection.wharehouse" name="wharehouse" class="form-control" disabled >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-4 ">{{"StkSection_position_description.title"| translate}} :</label>
+                        <div class="col-lg-8" >
+                            <input type="text" ng-model="stkSectionShowCtrl.stkSection.position" name="position" class="form-control" disabled >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-4 ">{{"StkSection_geoCode_description.title"| translate}} :</label>
+                        <div class="col-lg-8" >
+                            <input type="text" ng-model="stkSectionShowCtrl.stkSection.geoCode" name="geoCode" class="form-control" disabled >
+                        </div>
+                    </div>
+            </div>
+            <hr/>
+            <div class="row">
+                <div class="col-lg-3">
+                        <a class="btn-danger btn" href="#/StkSections" ><i class="" ></i> {{'List' | translate}}</a>
+                 </div>
+            </div>    
+        </div>
+</div>
