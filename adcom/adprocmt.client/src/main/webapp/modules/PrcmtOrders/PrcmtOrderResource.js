@@ -2,7 +2,7 @@
 
 angular.module('AdProcmt').factory('prcmtOrderResource',['$http', function($http){
     var service = {};
-    var urlBase = '/adprocmt.server/rest/prcmtorders',
+    var urlBase = '/adprocmt.server/rest/prcmtprocorders',
     searchInput = {
         entity:{},
         start:0,

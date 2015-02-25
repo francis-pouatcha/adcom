@@ -40,11 +40,16 @@ public class PrcmtDeliveryEJB {
 			entity.setDlvryNbr(SequenceGenerator
 					.getSequence(SequenceGenerator.DELIVERY_SEQUENCE_PREFIXE));
 		}
+
+		entity.setId(entity.getDlvryNbr());
+		entity.setIdentif(entity.getDlvryNbr());
+
 		PrcmtDeliveryEvtData evtData = new PrcmtDeliveryEvtData();
 		entity = repository.save(attach(entity));
 		entity.copyTo(evtData);
 		evtData.setId(entity.getId());
 		evtData.setIdentif(entity.getIdentif());
+
 		evtDataEJB.create(evtData);
 		return entity;
 	}

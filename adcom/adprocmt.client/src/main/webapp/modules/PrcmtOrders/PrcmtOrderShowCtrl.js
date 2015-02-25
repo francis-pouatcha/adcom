@@ -1,13 +1,13 @@
 'use strict';
 
-angular.module('AdProcmt').controller('prcmtDeliveryShowCtlr',['$scope','prcmtDeliveryResource','catalArticleResource','prcmtDeliveryManagerResource','$routeParams','$location','$q',function($scope,prcmtDeliveryResource,catalArticleResource,prcmtDeliveryManagerResource,$routeParams,$location,$q){
+angular.module('AdProcmt').controller('prcmtOrderShowCtlr',['$scope','prcmtOrderResource','catalArticleResource','$routeParams','$location','$q',function($scope,prcmtOrderResource,catalArticleResource,$routeParams,$location,$q){
     var self = this ;
-    $scope.prcmtDeliveryShowCtlr = self;
-    self.prcmtDelivery = {};
-    self.prcmtDeliveryItemHolder = {
+    $scope.prcmtOrderShowCtlr = self;
+    self.prcmtOrder = {};
+    self.prcmtOrderItemHolder = {
         dlvryItem:{}
     };
-    self.prcmtDeliveryItemHolders = [];
+    self.prcmtOrderItemHolders = [];
     self.error = "";
     self.loadArticlesByNameLike = loadArticlesByNameLike;
     self.loadArticlesByCipLike = loadArticlesByCipLike;
@@ -20,17 +20,15 @@ angular.module('AdProcmt').controller('prcmtDeliveryShowCtlr',['$scope','prcmtDe
     self.deleteItem = deleteItem;
     self.selectedIndex;
     self.selectedItem;
-    self.taux;
-    self.tauxMultiplicateur = tauxMultiplicateur;
     self.totalAmountEntered = 0;
 
     load();
 
     function load(){
         var identif = $routeParams.identif;
-        prcmtDeliveryResource.findByIdentif(identif)
+        prcmtOrderResource.findByIdentif(identif)
             .success(function(data){
-                self.prcmtDelivery = data;
+                self.prcmtOrder = data;
             })
             .error(function(error){
                 self.error = error;
@@ -99,18 +97,16 @@ angular.module('AdProcmt').controller('prcmtDeliveryShowCtlr',['$scope','prcmtDe
     }
 
     function onSelect(item,model,label){
-        self.prcmtDeliveryItemHolder.dlvryItem.artPic = item.pic;
-        self.prcmtDeliveryItemHolder.dlvryItem.artName  = item.features.artName;
+        self.prcmtOrderItemHolder.dlvryItem.artPic = item.pic;
+        self.prcmtOrderItemHolder.dlvryItem.artName = item.features.artName;
         self.taux = "";
     }
 
     function save(){
-        var prcmtDeliveryHolder = {};
-        prcmtDeliveryHolder.delivery = self.prcmtDelivery;
-        prcmtDeliveryHolder.deliveryItems = self.prcmtDeliveryItemHolders;
-        prcmtDeliveryManagerResource.update(prcmtDeliveryHolder).success(function(){
-            //update succes
-        });
+        var prcmtOrderHolder = {};
+        prcmtOrderHolder.Order = self.prcmtOrder;
+        prcmtOrderHolder.OrderItems = self.prcmtOrderItemHolders;
+
     }
 
     function close () {
@@ -118,33 +114,26 @@ angular.module('AdProcmt').controller('prcmtDeliveryShowCtlr',['$scope','prcmtDe
     }
 
     function addItem(){
-        //self.prcmtDeliveryItemHolder.dlvryItem.grossPPPreTax = self.prcmtDeliveryItemHolder.dlvryItem.pppuPreTax * self.prcmtDeliveryItemHolder.dlvryItem.qtyDlvrd;
-        self.prcmtDeliveryItemHolders.push(self.prcmtDeliveryItemHolder);
-        self.prcmtDeliveryItemHolder = {dlvryItem:{}};
+        self.prcmtOrderItemHolders.push(self.prcmtOrderItemHolder);
+        self.prcmtOrderItemHolder = {dlvryItem:{}};
         self.taux = "";
         calculTotalAmountEntered();
         $('#artName').focus();
     }
     function deleteItem(index){
-        self.prcmtDeliveryItemHolders.splice(index);
+        self.prcmtOrderItemHolders.splice(index);
         calculTotalAmountEntered();
     }
     function editItem(index){
         self.taux = "";
-        angular.copy(self.prcmtDeliveryItemHolders[index],self.prcmtDeliveryItemHolder) ;
+        angular.copy(self.prcmtOrderItemHolders[index],self.prcmtOrderItemHolder) ;
         deleteItem(index);
-    }
-
-    function tauxMultiplicateur(){
-        if(self.prcmtDeliveryItemHolder.dlvryItem.pppuPreTax && self.taux){
-            self.prcmtDeliveryItemHolder.dlvryItem.sppuPreTax = 1 * self.prcmtDeliveryItemHolder.dlvryItem.pppuPreTax + (self.prcmtDeliveryItemHolder.dlvryItem.pppuPreTax * (self.taux / 100)) ;
-        }
     }
 
     function calculTotalAmountEntered(){
         self.totalAmountEntered = 0;
-        for(var i=0;i<self.prcmtDeliveryItemHolders.length;i++){
-            self.totalAmountEntered = self.totalAmountEntered + (self.prcmtDeliveryItemHolders[i].dlvryItem.pppuPreTax * self.prcmtDeliveryItemHolders[i].dlvryItem.qtyDlvrd);
+        for(var i=0;i<self.prcmtOrderItemHolders.length;i++){
+            self.totalAmountEntered = self.totalAmountEntered + (self.prcmtOrderItemHolders[i].dlvryItem.pppuPreTax * self.prcmtOrderItemHolders[i].dlvryItem.qtyDlvrd);
         }
 
     }

@@ -130,15 +130,17 @@ angular.module('AdProcmt')
             var deferred = $q.defer();
             orgUnitsResource.findByLike(searchInput).success(function (entitySearchResult) {
                 deferred.resolve(entitySearchResult);
-            }).error(function(){
+                console.log(entitySearchResult);
+            }).error(function(err){
                 deferred.reject("No organisation unit");
+                console.log(err);
             });
             return deferred.promise;
         }
 
     function create(){
         self.prcmtOrder.supplier = self.prcmtOrder.supplier.ptnrNbr;
-        self.prcmtOrder.rcvngOrgUnit = self.prcmtOrder.rcvngOrgUnit.identif;
+        self.prcmtOrder.ordrngOrgUnit = self.prcmtOrder.ordrngOrgUnit.identif;
     	prcmtOrderResource.create(self.prcmtOrder)
     	.success(function(data){
     		$location.path('/PrcmtOrders/show/'+data.id);

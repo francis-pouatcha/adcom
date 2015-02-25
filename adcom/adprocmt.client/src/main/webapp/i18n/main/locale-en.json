@@ -223,6 +223,7 @@
 "ProcmtPOType_SPECIAL_description.text":"Special procurement order",
 "ProcmtPOType_SPECIAL_description.title":"Special",
 "ProcmtPOType_description.text":"Procurement order type",
-"ProcmtPOType_description.title":"Procurement Order Type"
-
+"ProcmtPOType_description.title":"Procurement Order Type",
+ "From":"From",
+ "To":"To"
 }

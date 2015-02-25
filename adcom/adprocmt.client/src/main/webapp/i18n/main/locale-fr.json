@@ -157,7 +157,7 @@
 "PrcmtProcOrder_netPurchAmt_description.text":"Montant Net Achat",
 "PrcmtProcOrder_netPurchAmt_description.title":"Montant Net Achat",
 "PrcmtProcOrder_orderDt_description.text":"Date de soumission de la commande au fournisseur crée \u00E0 partir du module d Ubipharm",
-"PrcmtProcOrder_orderDt_description.title":"Date de Soumission",
+"PrcmtProcOrder_orderDt_description.title":"Date d Ordre",
 "PrcmtProcOrder_ordrngOrgUnit_description.text":"Departement Receptrice",
 "PrcmtProcOrder_ordrngOrgUnit_description.title":"Departement Receptrice",
 "PrcmtProcOrder_poCur_description.text":"Dévise de la Commande Fournisseur",
@@ -223,6 +223,8 @@
 "ProcmtPOType_SPECIAL_description.text":"Commande fournisseur spéciale",
 "ProcmtPOType_SPECIAL_description.title":"Spéciale",
 "ProcmtPOType_description.text":"Type commande fournisseur",
-"ProcmtPOType_description.title":"Type Commande Fournisseur"
+"ProcmtPOType_description.title":"Type Commande Fournisseur",
 
+ "From":"Du",
+  "To":"Au"
 }
