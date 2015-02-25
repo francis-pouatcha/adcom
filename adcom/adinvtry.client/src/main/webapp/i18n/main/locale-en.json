@@ -22,7 +22,9 @@
 "InvInvtry_invInvtryType_description.text":"The Mode of this inventory",
 "InvInvtry_invInvtryType_description.title":"Inventory Mode",
 "InvInvtry_section_description.text":"The Section",
-"InvInvtry_section_description.title":"Section",
+"InvInvtry_param_section_description.title":"Section",
+"InvInvtry_param_startRange_description.title":"Start with",
+"InvInvtry_param_endRange_description.title":"End with",
 
 "InvInvtryItem_acsngDt_description.text":"The recording date of this inventory item.",
 "InvInvtryItem_acsngDt_description.title":"Inventory Date",

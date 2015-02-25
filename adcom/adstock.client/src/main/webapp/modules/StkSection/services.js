@@ -29,6 +29,7 @@ angular.module('AdStock')
         service.create = function(entity){
             var deferred = $q.defer();
             stkSectionResource.create(entity).success(function(data){
+            	console.log("Stock Section successfully created...");
                 deferred.resolve(data);
             }).error(function(error){
                 deferred.reject("Can not create, be sure that the login name is unique!")

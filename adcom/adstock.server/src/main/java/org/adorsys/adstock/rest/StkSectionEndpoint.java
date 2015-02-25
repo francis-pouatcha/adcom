@@ -2,6 +2,7 @@ package org.adorsys.adstock.rest;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -66,7 +67,7 @@ public class StkSectionEndpoint
       return detach(ejb.update(entity));
    }
 
-   @GET
+   @GET	
    @Path("/{id}")
    @Produces({ "application/json", "application/xml" })
    public Response findById(@PathParam("id") String id)
@@ -76,6 +77,18 @@ public class StkSectionEndpoint
          return Response.status(Status.NOT_FOUND).build();
       return Response.ok(detach(found)).build();
    }
+   
+   @GET
+   @Path("/{identif}")
+   @Produces({ "application/json", "application/xml" })
+   public Response findByIdentif(@PathParam("identif") String identif)
+   {
+      StkSection found = ejb.findByIdentif(identif, new Date());
+      if (found == null)
+         return Response.status(Status.NOT_FOUND).build();
+      return Response.ok(detach(found)).build();
+   }
+
 
    @GET
    @Produces({ "application/json", "application/xml" })

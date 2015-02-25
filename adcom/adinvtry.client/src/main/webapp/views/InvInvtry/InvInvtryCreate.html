@@ -40,26 +40,47 @@
                         </div>
                         <label class="col-lg-3 ">{{"InvInvtry_invInvtryType_description.title"| translate}} :</label>
                         <div class="col-lg-3" ng-class="{ 'has-error' : InvInvtry.invMode.$invalid }" >
-                            <select ng-model="invtryCreateCtlr.invtry.invMode" ng-change="invtryCreateCtlr.selectedAction()" ng-options="invMode for invMode in invtryCreateCtlr.invModes"  id="invMode" name="invMode" class="form-control">
+                            <select ng-model="invtryCreateCtlr.invtry.invMode" ng-change="invtryCreateCtlr.selectedAction()" ng-options="invMode.id as invMode.name for invMode in invtryCreateCtlr.invModes"  id="invMode" name="invMode" class="form-control">
                             </select>
                         </div>
                     </div>
                     
                     <div class="form-group" ng-show="invtryCreateCtlr.selectedSection" ng-hide="invtryCreateCtlr.defaultParam">
-                            <label class="col-lg-3">{{"InvInvtry_section_description.title"| translate}}</label>
+                            <label class="col-lg-3">{{"InvInvtry_param_section_description.title"| translate}}</label>
                             <div class="col-lg-3" ng-class="{ 'has-error' : InvInvtry.invSection.$invalid }" >
-                              <select ng-model="invtryCreateCtlr.invtry.section" ng-options="invSection for invSection in invtryCreateCtlr.invstkSections" id="invSection" name="invSection" class="form-control">
-                            </select>
+                              <select ng-model="invtryCreateCtlr.invtry.section" ng-options="invSection.id as invSection.name for invSection in invtryCreateCtlr.invStkSections" id="invSection" name="invSection" class="form-control">
+                              </select>
                             </div>
-                            <div class="col-lg-6">
+                            <div ng-show="invtryCreateCtlr.selectedSection" ng-hide="invtryCreateCtlr.defaultParam" class="col-lg-6">
                                <!-- Empty space -->
                             </div>
+                        
+                            <div class="col-lg-3" ng-show="invtryCreateCtlr.selectedOrderRange" ng-hide="invtryCreateCtlr.defaultParam" ng-class="{ 'has-error' : InvInvtry.invtrystartRange.$invalid }" >
+                              <input type="text" placeholder="{{'InvInvtry_param_startRange_description.title'| translate}}" ng-model="invtryCreateCtlr.invtry.startRange" id="invtrystartRange" name="invtrystartRange" class="form-control">
+                            </div>
+                        
+                            <div class="col-lg-3" ng-show="invtryCreateCtlr.selectedOrderRange" ng-hide="invtryCreateCtlr.defaultParam" ng-class="{ 'has-error' : InvInvtry.invtryendRange.$invalid }" >
+                              <input type="text" placeholder="{{'InvInvtry_param_endRange_description.title'| translate}}" ng-model="invtryCreateCtlr.invtry.endRange" id="invtryendRange" name="invtryendRange" class="form-control">
+                            </div>
+                            
                     </div>
+                    
+                    <!--<div class="form-group" ng-show="invtryCreateCtlr.selectedOrderRange" ng-hide="invtryCreateCtlr.defaultParam">
+                            <label class="col-lg-3">{{"InvInvtry_param_startRange_description.title"| translate}}</label>
+                            <div class="col-lg-3" ng-class="{ 'has-error' : InvInvtry.invtrystartRange.$invalid }" >
+                              <input type="text" ng-model="invtryCreateCtlr.invtry.startRange" id="invtrystartRange" name="invtrystartRange" class="form-control">
+                            </div>
+                            <label class="col-lg-3">{{"InvInvtry_param_endRange_description.title"| translate}}</label>
+                            <div class="col-lg-3" ng-class="{ 'has-error' : InvInvtry.invtryendRange.$invalid }" >
+                              <input type="text" ng-model="invtryCreateCtlr.invtry.endRange" id="invtryendRange" name="invtryendRange" class="form-control">
+                            </div>
+                    </div>-->
+                    
                     
                     
                     <hr/>
                     <div class="form-group">
-                        <label class="col-lg-3"  > </label>
+                        <label class="col-lg-3"> </label>
                         <div class="col-lg-8" >
                             <a class="btn-danger btn" href="#/InvInvtrys"><i class="glyphicon glyphicon-remove" ></i> {{"Entity_cancel.title" | translate }}</a>
                             <button ng-click="invtryCreateCtlr.create();" ng-disabled="catalArticleForm.$invalid" class="btn-success btn"  ><i class="glyphicon glyphicon-save"></i>  {{"Entity_save.title" | translate }}</button>

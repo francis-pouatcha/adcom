@@ -22,7 +22,9 @@
 "InvInvtry_invInvtryType_description.text":"Mode de l'inventaire",
 "InvInvtry_invInvtryType_description.title":"Mode d'inventaire",
 "InvInvtry_section_description.text":"Le rayon",
-"InvInvtry_section_description.title":"Rayon",
+"InvInvtry_param_section_description.title":"Rayon",
+"InvInvtry_param_startRange_description.title":"Commencant Par",
+"InvInvtry_param_endRange_description.title":"Terminant par",
 
 
 "InvInvtryItem_acsngDt_description.text":"La date de saisie de cette ligne inventaire.",
