@@ -31,6 +31,8 @@ public class ProcmtDlvryManagerClient {
 	public void saveDelivery(PrcmtDeliveryExcel deliveryExcel){
 		PrcmtDelivery delivery = new PrcmtDelivery();
 		deliveryExcel.copyTo(delivery);
+		// New Holder
+		this.deliveryHolder = new PrcmtDeliveryHolder();
 		this.deliveryHolder.setDelivery(delivery);
 		// PRocess org units.
 	}

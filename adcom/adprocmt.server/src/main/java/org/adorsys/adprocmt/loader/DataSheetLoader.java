@@ -9,7 +9,11 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
 
+import org.adorsys.adbase.security.SecurityUtil;
+import org.adorsys.adcore.auth.AdSystem;
+import org.adorsys.adcore.auth.TermWsUserPrincipal;
 import org.adorsys.adcore.xls.AbstractLoader;
 import org.adorsys.adcore.xls.AbstractObjectLoader;
 import org.apache.commons.io.IOUtils;
@@ -21,11 +25,23 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 @Startup
 public class DataSheetLoader extends AbstractLoader {
 
+	@Inject
+	private SecurityUtil securityUtil;
+
 	String dataDir = "adcom/adprocmt/data";
 	String processedSuffix = ".processed";
 	
 	@SuppressWarnings("rawtypes")
 	private Map<String, AbstractObjectLoader> loaders = new HashMap<String, AbstractObjectLoader>();
+
+	
+	@AdSystem
+	@Override
+	public void process() throws Exception {
+		TermWsUserPrincipal callerPrincipal = securityUtil.getCallerPrincipal();
+		if(callerPrincipal!=null)
+			super.process();
+	}
 
 	@Override
 	public void loadFile(FileInputStream fis) {

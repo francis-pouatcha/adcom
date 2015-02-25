@@ -16,6 +16,7 @@ import org.adorsys.adprocmt.jpa.PrcmtDlvryItem2POItemEvtData;
 import org.adorsys.adprocmt.jpa.PrcmtDlvryItem2StrgSctn;
 import org.adorsys.adprocmt.jpa.PrcmtDlvryItem2StrgSctnEvtData;
 import org.adorsys.adprocmt.jpa.PrcmtDlvryItemEvtData;
+import org.adorsys.adprocmt.jpa.PrcmtDlvryItem_;
 import org.adorsys.adprocmt.repo.PrcmtDlvryItem2OuRepository;
 import org.adorsys.adprocmt.repo.PrcmtDlvryItem2POItemRepository;
 import org.adorsys.adprocmt.repo.PrcmtDlvryItem2StrgSctnRepository;
@@ -54,10 +55,11 @@ public class PrcmtDlvryItemEJB {
 	private PrcmtDlvryItem2StrgSctnRepository strgSctnRepository;
 
 	public PrcmtDlvryItem create(PrcmtDlvryItem entity) {
-		PrcmtDlvryItemEvtData evtData = new PrcmtDlvryItemEvtData();
 		entity = repository.save(attach(entity));
+		PrcmtDlvryItemEvtData evtData = new PrcmtDlvryItemEvtData();
 		entity.copyTo(evtData);
 		evtData.setId(entity.getId());
+		evtData.setIdentif(entity.getIdentif());
 		evtDataEJB.create(evtData);
 		
 		// CHeck and create the article processing synchronization object
@@ -295,8 +297,11 @@ public class PrcmtDlvryItemEJB {
 		return repository.findByDlvryNbr(dlvryNbr).firstResult(start).maxResults(max).getResultList();
 	}
 
+	@SuppressWarnings("unchecked")
 	public Long countByDlvryNbr(String dlvryNbr){
-		return repository.countByDlvryNbr(dlvryNbr);
+		PrcmtDlvryItem dlvryItem = new PrcmtDlvryItem();
+		dlvryItem.setDlvryNbr(dlvryNbr);
+		return repository.count(dlvryItem, new SingularAttribute[]{PrcmtDlvryItem_.dlvryNbr});
 	}
 
 	public PrcmtDlvryItem findByIdentif(String identif) {

@@ -310,6 +310,7 @@ public class PrcmtAbstractDelivery extends AbstractIdentifData {
 		target.dlvryCur = dlvryCur;
 		target.dlvryDt = dlvryDt;
 		target.dlvryNbr = dlvryNbr;
+		target.identif = identif;
 		target.dlvrySlipNbr = dlvrySlipNbr;
 		target.dlvryStatus = dlvryStatus;
 		target.dtOnDlvrySlip = dtOnDlvrySlip;

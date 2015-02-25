@@ -12,4 +12,7 @@ public interface PrcmtDeliveryRepository extends EntityRepository<PrcmtDelivery,
 
 	@Query("SELECT e FROM PrcmtDelivery AS e WHERE e.identif = ?1")
 	public QueryResult<PrcmtDelivery> findByIdentif(String identif);
+
+	@Query("SELECT e.id FROM PrcmtDelivery AS e WHERE e.dlvryStatus = ?1")
+	public QueryResult<String> findByDlvryStatus(String status);
 }

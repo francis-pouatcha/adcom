@@ -21,10 +21,9 @@ import org.adorsys.adcore.utils.CalendarUtil;
 import org.adorsys.adcore.utils.SequenceGenerator;
 import org.adorsys.adprocmt.jpa.PrcmtDlvryArtPrcssng;
 import org.adorsys.adprocmt.jpa.PrcmtDlvryItem;
-import org.adorsys.adprocmt.rest.PrcmtDeliveryEJB;
 import org.adorsys.adprocmt.rest.PrcmtDlvryArtPrcssngEJB;
 import org.adorsys.adprocmt.rest.PrcmtDlvryItemEJB;
-import org.adorsys.adprocmt.rest.PrcmtPOItemEJB;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 
 @Stateless
@@ -34,13 +33,9 @@ public class PrcmtDlvryArtProcessor {
 	private PrcmtDlvryArtPrcssngEJB artPrcssngEJB;
 	@Inject
 	private PrcmtDlvryItemEJB dlvryItemEJB;
-	@Inject
-	private PrcmtPOItemEJB poItemEJB;
-	@Inject
-	private PrcmtDeliveryEJB deliveryEJB;
 
 	@Asynchronous
-	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public void process(String artPrcssngId){
 		String myId = UUID.randomUUID().toString();
 		PrcmtDlvryArtPrcssng artPrcssng = artPrcssngEJB.findById(artPrcssngId);
@@ -53,11 +48,12 @@ public class PrcmtDlvryArtProcessor {
 			if(endTme!=null && endTme.after(now)) return;
 		}
 		artPrcssng.setPrcssngAgent(myId);
-		artPrcssng.setPrcssngEndTme(DateUtils.addMinutes(now, 3));
+		artPrcssng.setPrcssngEndTme(DateUtils.addMinutes(now, 10));
 		try {
-			artPrcssng = artPrcssngEJB.lock(artPrcssng);
+			if(!artPrcssngEJB.lock(artPrcssng)) return;
 		} catch(OptimisticLockException ex){
 			// noop, somebody else had the lock.
+			return;
 		}
 		
 		// Now process the article.
@@ -70,14 +66,17 @@ public class PrcmtDlvryArtProcessor {
 		// Now each list will have the same lot identification code.
 		flattenLotPics(byExpirAndPppu);
 				
+		PrcmtDlvryArtPrcssng found = artPrcssngEJB.findById(artPrcssngId);
+		if(found!=null && StringUtils.equals(found.getPrcssngAgent(), myId)){
+			artPrcssngEJB.deleteById(found.getId());
+		}  else {
+			throw new IllegalStateException("Current thread not owner.");
+		}
 		// Save items.
 		for (PrcmtDlvryItem dlvryItem : dlvryItems) {
 			dlvryItemEJB.update(dlvryItem);
 		}
 		
-		artPrcssngEJB.unlock(artPrcssng);
-		
-		artPrcssngEJB.deleteById(artPrcssng.getId());
 	}
 
 	private void flattenLotPics(
@@ -117,7 +116,6 @@ public class PrcmtDlvryArtProcessor {
 		}
 		return result ;
 	}
-
 
 	public static final String DEFAULT_DATE = "DEFAULT_DATE";
 	private Map<String, List<PrcmtDlvryItem>> sortByExpirDate(

@@ -9,6 +9,7 @@ import org.apache.deltaspike.data.api.Repository;
 @Repository(forEntity = PrcmtDlvryItemEvtData.class)
 public interface PrcmtDlvryItemEvtDataRepository extends EntityRepository<PrcmtDlvryItemEvtData, String>
 {
+	@Query("SELECT count(e.id) FROM PrcmtDlvryItemEvtData AS e WHERE e.dlvryNbr = ?1")
 	public Long countByDlvryNbr(String dlvryNbr);
 
 	@Query("SELECT e FROM PrcmtDlvryItemEvtData AS e WHERE e.dlvryNbr = ?1")
