@@ -7,6 +7,7 @@ import javax.validation.constraints.NotNull;
 
 import org.adorsys.adcore.jpa.AbstractTimedData;
 import org.adorsys.javaext.description.Description;
+import org.apache.commons.lang3.StringUtils;
 
 @Entity 
 @Table(name="BaseUserWorkspace")
@@ -55,5 +56,10 @@ public class UserWorkspace extends AbstractTimedData {
 	protected String makeIdentif() {
 		return ouWsIdentif+"_"+loginName;
 	}
-
+	
+	public static UserWorkspace toUserWorkspace(String identif){
+		String[] split = StringUtils.split(identif, "_");
+		if(split.length<2) return null;
+		return new UserWorkspace(split[0], split[1]);
+	}
 }

@@ -87,7 +87,7 @@ angular.module('AdInvtry')
     self.invtry = {
         invtryStatus:"ONGOING",
         gapSaleAmtHT:"0.0",
-        gapPurchAmtHT:"0.0",
+        gapPurchAmtHT:"0.0"
     };
     
     self.create = create;

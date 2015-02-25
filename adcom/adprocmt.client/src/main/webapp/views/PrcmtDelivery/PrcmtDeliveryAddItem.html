@@ -1,0 +1,109 @@
+<div>
+    <div class="well">
+        <h4>
+            <a>{{prcmtDeliveryShowCtlr.prcmtDelivery.dlvryNbr}}</a> of {{prcmtDeliveryShowCtlr.prcmtDelivery.orderDt | date:'dd-MM-yyyy'}},
+            <b>Delivery Slip No: </b>{{prcmtDeliveryShowCtlr.prcmtDelivery.dlvrySlipNbr}},
+            <b>Amount Ht:</b> {{prcmtDeliveryShowCtlr.prcmtDelivery.netPPTaxIncl}} cfa,
+            <b>Amount Entered:</b> {{prcmtDeliveryShowCtlr.totalAmountEntered}} cfa
+            <p class="pull-right">
+                <a class=" btn btn-default" href="#/"  type="button">Cancel</a>
+                <button class=" btn btn-primary" ng-click="prcmtDeliveryShowCtlr.save()" type="button">Save</button>
+                <button class=" btn btn-primary" ng-click="prcmtDeliveryShowCtlr.close()" type="button">Save and Close</button>
+            </p>
+        </h4>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading"><b>Add Procurement Delivery Item</b> </div>
+        <div class="panel-body">
+            <form name="prcmtDeliveryItemForm" id="prcmtDeliveryItemForm" novalidate >
+            <table class="table table-bordered" >
+                <thead>
+                <tr>
+                    <th class="clo-lg-2">CIP</th>
+                    <th class="col-lg-3">Designation</th>
+                    <th>Qte Stock</th>
+                    <th>Qte</th>
+                    <th>Qte Gratuite</th>
+                    <th>prix Achat</th>
+                    <th>Prix Vente</th>
+                    <th>Taux Mul</th>
+                    <th>Date P</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                            <input type="hidden" value="{{prcmtDeliveryShowCtlr.prcmtDelivery.dlvryNbr}}" ng-model="prcmtDeliveryShowCtlr.prcmtDeliveryItemHolder.dlvryItem.dlvryNbr" >
+                            <td>
+                                <div ng-class="{ 'has-error' : prcmtDeliveryItemForm.artPic.$invalid }" >
+                                    <input type="text" ng- class="form-control" select-on-click name="artPic" id="artPic" required autocomplete="off" ng-model="prcmtDeliveryShowCtlr.prcmtDeliveryItemHolder.dlvryItem.artPic"
+                                       typeahead="article as article.pic for article in prcmtDeliveryShowCtlr.loadArticlesByCipLike($viewValue)"
+                                       typeahead-loading="loading" typeahead-template-url="views/PrcmtDelivery/CatalTypeaheadTemplate.html" typeahead-on-select='prcmtDeliveryShowCtlr.onSelect($item, $model, $label)' >
+                                </div>
+                            </td>
+                            <td>
+                                <div ng-class="{ 'has-error' : prcmtDeliveryItemForm.artName.$invalid }" >
+                                    <input type="text" class="form-control" select-on-click focus required id="artName" autocomplete="off" ng-model="prcmtDeliveryShowCtlr.prcmtDeliveryItemHolder.dlvryItem.artName"
+                                       typeahead="article as article.features.artName for article in prcmtDeliveryShowCtlr.loadArticlesByNameLike($viewValue)"
+                                       typeahead-loading="loading" typeahead-on-select='prcmtDeliveryShowCtlr.onSelect($item, $model, $label)' name="artName" >
+                                </div>
+                            </td>
+                            <td><input type="text" class="form-control" disabled ></td>
+                            <td>
+                                <div ng-class="{ 'has-error' : prcmtDeliveryItemForm.qtyDlvrd.$invalid }" >
+                                    <input type="text" class="form-control" required name="qtyDlvrd" id="qtyDlvrd" ng-model="prcmtDeliveryShowCtlr.prcmtDeliveryItemHolder.dlvryItem.qtyDlvrd" >
+                                </div>
+                            </td>
+                            <td><input type="text" class="form-control" ng-model="prcmtDeliveryShowCtlr.prcmtDeliveryItemHolder.dlvryItem.freeQty" ></td>
+                            <td>
+                                <div ng-class="{ 'has-error' : prcmtDeliveryItemForm.pppuPreTax.$invalid }" >
+                                    <input type="text" class="form-control" required name="pppuPreTax" ng-model="prcmtDeliveryShowCtlr.prcmtDeliveryItemHolder.dlvryItem.pppuPreTax" >
+                                </div>
+                            </td>
+                            <td><input type="text" class="form-control" ng-model="prcmtDeliveryShowCtlr.prcmtDeliveryItemHolder.dlvryItem.sppuPreTax" ></td>
+                            <td><input type="text" class="form-control" ng-model="prcmtDeliveryShowCtlr.taux" ng-change="prcmtDeliveryShowCtlr.tauxMultiplicateur()" ></td>
+                            <td><input type="text" class="form-control" ng-model="prcmtDeliveryShowCtlr.prcmtDeliveryItemHolder.dlvryItem.expirDt" placeholder="MMYY" ></td>
+                            <td><button class="btn btn-default" ng-enter="prcmtDeliveryShowCtlr.addItem()" ng-disabled="prcmtDeliveryItemForm.$invalid" ng-click="prcmtDeliveryShowCtlr.addItem()" ><i class="glyphicon glyphicon-plus"></i> Add</button></td>
+
+                    </tr>
+                </tbody>
+            </table>
+          </form>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading"><b>List Procurement Delivery Item</b> </div>
+        <div class="panel-body">
+            <table class="table table-bordered  table-striped" >
+                <thead>
+                <tr>
+                    <th class="col-lg-2" >CIP</th>
+                    <th class="col-lg-3" >Designation</th>
+                    <th>Qte Stock</th>
+                    <th>Qte</th>
+                    <th>Qte Gratuite</th>
+                    <th>prix Achat</th>
+                    <th>Prix Vente</th>
+                    <th>Date P</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="prcmtDeliveryItemHolder in prcmtDeliveryShowCtlr.prcmtDeliveryItemHolders"  >
+                        <td>{{prcmtDeliveryItemHolder.dlvryItem.artPic}}</td>
+                        <td>{{prcmtDeliveryItemHolder.dlvryItem.artName}}</td>
+                        <td></td>
+                        <td>{{prcmtDeliveryItemHolder.dlvryItem.qtyDlvrd}}</td>
+                        <td>{{prcmtDeliveryItemHolder.dlvryItem.freeQty}}</td>
+                        <td>{{prcmtDeliveryItemHolder.dlvryItem.pppuPreTax}}</td>
+                        <td>{{prcmtDeliveryItemHolder.dlvryItem.sppuPreTax}}</td>
+                        <td>{{prcmtDeliveryItemHolder.dlvryItem.expirDt}}</td>
+                        <td><a ng-click="prcmtDeliveryShowCtlr.editItem($index)" class=""><i class="glyphicon glyphicon-edit"></i></a></td>
+                        <td><a ng-click="prcmtDeliveryShowCtlr.deleteItem($index)" class=""><i class="glyphicon glyphicon-trash"></i></a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

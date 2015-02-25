@@ -22,10 +22,9 @@ import org.adorsys.javaext.description.Description;
  */
 @MappedSuperclass
 @Description("StkRsrvtn_description")
-public class StkAbstractStkRsrvtn extends AbstractMvmtData {
+public abstract class StkAbstractStkRsrvtn extends AbstractMvmtData {
 
 	private static final long serialVersionUID = -7227802995034130322L;
-
 	@Column
 	@Description("StkRsrvtn_lotPic_description")
 	@NotNull

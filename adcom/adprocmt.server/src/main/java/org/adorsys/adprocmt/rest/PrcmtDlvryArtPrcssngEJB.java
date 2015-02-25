@@ -10,6 +10,7 @@ import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adprocmt.jpa.PrcmtDlvryArtPrcssng;
 import org.adorsys.adprocmt.repo.PrcmtDlvryArtPrcssngRepository;
+import org.apache.commons.lang3.StringUtils;
 
 @Stateless
 public class PrcmtDlvryArtPrcssngEJB
@@ -39,8 +40,17 @@ public class PrcmtDlvryArtPrcssngEJB
    }
 
    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-   public PrcmtDlvryArtPrcssng lock(PrcmtDlvryArtPrcssng entity){
-	   return update(entity);
+   public boolean lock(PrcmtDlvryArtPrcssng entity){
+	   PrcmtDlvryArtPrcssng found = findById(entity.getId());
+	   if(found!=null && found.getVersion()==entity.getVersion()){
+		   try {
+			   update(found).getId();
+			   return true;
+		   } catch (Exception e){
+			   return false;
+		   }
+	   }
+	   return false;
    }   
    
    public PrcmtDlvryArtPrcssng unlock(PrcmtDlvryArtPrcssng entity){

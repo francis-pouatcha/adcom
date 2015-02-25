@@ -1,14 +1,51 @@
 package org.adorsys.adcore.auth;
 
 import java.security.AccessController;
+import java.security.Principal;
 import java.security.PrivilegedAction;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
+import java.security.acl.Group;
+import java.util.Enumeration;
+import java.util.Set;
 
+import javax.security.auth.Subject;
+
+import org.apache.commons.lang3.StringUtils;
 import org.jboss.security.SecurityContext;
 import org.jboss.security.SecurityContextAssociation;
-class SecurityActions {
+public class SecurityActions {
 
+	private static final ThreadLocal<Subject> subjectHolder = new ThreadLocal<Subject>();
+	
+	static void set(Subject subject){
+		if(subject==null) {
+			subjectHolder.remove();
+		} else {
+			subjectHolder.set(subject);
+		}
+	}
+	
+	public static TermWsUserPrincipal getCallerPrincipal(){
+		Subject subject = subjectHolder.get();
+		if(subject==null) return null;
+		Set<Principal> principals = subject.getPrincipals();
+		for (Principal principal : principals) {
+			if(principal instanceof TermWsUserPrincipal) return (TermWsUserPrincipal) principal;
+		}
+		for (Principal principal : principals) {
+			if(StringUtils.equals(principal.getName(), "CALLER_PRINCIPAL_GROUP")){
+				Group group = (Group) principal;
+				Enumeration<? extends Principal> members = group.members();
+				while (members.hasMoreElements()) {
+					Principal principal2 = (Principal) members.nextElement();
+					if(principal2 instanceof TermWsUserPrincipal) return (TermWsUserPrincipal) principal2;
+				}
+			}
+		}
+		return null;
+	}
+	
 	/**
 	 * <p>
 	 * Loads the specified class.
@@ -47,4 +84,5 @@ class SecurityActions {
 					}
 				});
 	}
+
 }

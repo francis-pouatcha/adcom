@@ -22,9 +22,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.adorsys.adinvtry.jpa.InvInvtryItem;
+import org.adorsys.adinvtry.jpa.InvInvtryItem_;
 import org.adorsys.adinvtry.jpa.InvInvtryItemSearchInput;
 import org.adorsys.adinvtry.jpa.InvInvtryItemSearchResult;
-import org.adorsys.adinvtry.jpa.InvInvtryItem_;
 
 /**
  * 

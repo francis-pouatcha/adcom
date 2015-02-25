@@ -7,6 +7,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
 
+import org.adorsys.adbase.enums.BaseProcessStatusEnum;
 import org.adorsys.adcore.utils.SequenceGenerator;
 import org.adorsys.adprocmt.jpa.PrcmtDelivery;
 import org.adorsys.adprocmt.jpa.PrcmtDeliveryEvtData;
@@ -39,11 +40,16 @@ public class PrcmtDeliveryEJB {
 			entity.setDlvryNbr(SequenceGenerator
 					.getSequence(SequenceGenerator.DELIVERY_SEQUENCE_PREFIXE));
 		}
+
 		entity.setId(entity.getDlvryNbr());
+		entity.setIdentif(entity.getDlvryNbr());
+
 		PrcmtDeliveryEvtData evtData = new PrcmtDeliveryEvtData();
 		entity = repository.save(attach(entity));
 		entity.copyTo(evtData);
 		evtData.setId(entity.getId());
+		evtData.setIdentif(entity.getIdentif());
+
 		evtDataEJB.create(evtData);
 		return entity;
 	}
@@ -73,9 +79,10 @@ public class PrcmtDeliveryEJB {
 
 		PrcmtDeliveryEvtData evtData = evtDataEJB.findById(entity.getId());
 		PrcmtDlvry2OuEvtData ouEvtData = new PrcmtDlvry2OuEvtData();
-		ouEvtData.setDlvryNbr(entity.getDlvryNbr());
-		ouEvtData.setRcvngOrgUnit(rcvngOrgUnit);
-		ouEvtData.setQtyPct(qtyPct);
+		dlvry2Ou.copyTo(ouEvtData);
+//		ouEvtData.setDlvryNbr(entity.getDlvryNbr());
+//		ouEvtData.setRcvngOrgUnit(rcvngOrgUnit);
+//		ouEvtData.setQtyPct(qtyPct);
 		evtDataEJB.addDlvry2OuEvtData(evtData, ouEvtData);
 
 		return dlvry2Ou;
@@ -133,7 +140,7 @@ public class PrcmtDeliveryEJB {
 	public PrcmtDlvry2Ou updateOrgUnit(PrcmtDlvry2Ou ou) {
 		ou = dlvry2OuRepository.save(ou);
 		PrcmtDlvry2OuEvtData ouEvtData = evtDataEJB.findDlvry2OuEvtData(ou.getDlvryNbr(), ou.getRcvngOrgUnit());
-		if(ou.contentEquals(ouEvtData)){
+		if(!	ou.contentEquals(ouEvtData)){
 			ou.copyTo(ouEvtData);
 			evtDataEJB.updateOrgUnit(ouEvtData);
 		}
@@ -194,5 +201,15 @@ public class PrcmtDeliveryEJB {
 
 	public List<PrcmtDlvry2Ou> listOrgUnits(String dlvryNbr) {
 		return dlvry2OuRepository.findByDlvryNbr(dlvryNbr);
+	}
+
+	public PrcmtDelivery findByIdentif(String identif) {
+		List<PrcmtDelivery> resultList = repository.findByIdentif(identif).maxResults(1).getResultList();
+		if(resultList.isEmpty()) return null;
+		return resultList.iterator().next();
+	}
+
+	public List<String> findClosingDeliveries(int qty) {
+		return repository.findByDlvryStatus(BaseProcessStatusEnum.CLOSING.name()).maxResults(qty).getResultList();
 	}
 }

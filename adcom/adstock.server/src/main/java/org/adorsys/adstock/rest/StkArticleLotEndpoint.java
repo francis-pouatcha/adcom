@@ -2,7 +2,9 @@ package org.adorsys.adstock.rest;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -22,12 +24,14 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.adorsys.adstock.jpa.StkArticleLot;
+import org.adorsys.adstock.jpa.StkArticleLot2StrgSctn;
 import org.adorsys.adstock.jpa.StkArticleLotSearchInput;
 import org.adorsys.adstock.jpa.StkArticleLotSearchResult;
 import org.adorsys.adstock.jpa.StkArticleLot_;
 import org.adorsys.adstock.rest.extension.invtry.ArtLotSearchInput;
 import org.adorsys.adstock.rest.extension.invtry.ArticleLotSearchResult;
 import org.adorsys.adstock.rest.extension.invtry.StkArticleInvtryIntegrationEJB;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 
@@ -106,6 +110,9 @@ public class StkArticleLotEndpoint
       return ejb.count();
    }
 
+   @Inject
+   private StkArticleLot2StrgSctnEJB strgSctnEJB;
+   
    @POST
    @Path("/findBy")
    @Produces({ "application/json", "application/xml" })
@@ -116,8 +123,40 @@ public class StkArticleLotEndpoint
       Long count = ejb.countBy(searchInput.getEntity(), attributes);
       List<StkArticleLot> resultList = ejb.findBy(searchInput.getEntity(),
             searchInput.getStart(), searchInput.getMax(), attributes);
-      return new StkArticleLotSearchResult(count, detach(resultList),
-            detach(searchInput));
+      StkArticleLotSearchResult searchResult = new StkArticleLotSearchResult(count, detach(resultList),
+              detach(searchInput));
+      return processSearchResult(searchInput, searchResult);
+   }
+   
+   private StkArticleLotSearchResult processSearchResult(StkArticleLotSearchInput searchInput,
+		   StkArticleLotSearchResult searchResult){
+	   	List<StkArticleLot> resultList = searchResult.getResultList();
+	    Map<String, StkArticleLot2StrgSctn> foundCache = new HashMap<String, StkArticleLot2StrgSctn>();
+		if(StringUtils.isNotBlank(searchInput.getSectionCode())){
+	          for (StkArticleLot stkArticleLot : resultList) {
+	        	  List<StkArticleLot2StrgSctn> sctns = strgSctnEJB.findByStrgSectionAndLotPicAndArtPic(searchInput.getSectionCode(), stkArticleLot.getLotPic(), stkArticleLot.getArtPic());
+	        	  putAndCache(foundCache, sctns, stkArticleLot);
+	          }
+	      } else if(searchInput.isWithStrgSection()){
+	          for (StkArticleLot stkArticleLot : resultList) {
+	        	  List<StkArticleLot2StrgSctn> sctns = strgSctnEJB.findByArtPicAndLotPic(stkArticleLot.getArtPic(),stkArticleLot.getLotPic());
+	        	  putAndCache(foundCache, sctns, stkArticleLot);
+	          }
+	      }
+	      return searchResult;
+   }
+   
+   private void putAndCache(Map<String, StkArticleLot2StrgSctn> foundCache, List<StkArticleLot2StrgSctn> sctns, StkArticleLot stkArticleLot){
+ 	  for (StkArticleLot2StrgSctn strgSctn : sctns) {
+		  if(!foundCache.containsKey(strgSctn.getId())){
+			  foundCache.put(strgSctn.getId(), strgSctn);
+			  stkArticleLot.getStrgSctns().add(strgSctn);
+		  } else {
+			  if(!stkArticleLot.getStrgSctns().contains(strgSctn)){
+				  stkArticleLot.getStrgSctns().add(strgSctn);
+			  }
+		  }
+	  }
    }
 
    @POST
@@ -139,8 +178,9 @@ public class StkArticleLotEndpoint
       Long countLike = ejb.countByLike(searchInput.getEntity(), attributes);
       List<StkArticleLot> resultList = ejb.findByLike(searchInput.getEntity(),
             searchInput.getStart(), searchInput.getMax(), attributes);
-      return new StkArticleLotSearchResult(countLike, detach(resultList),
-            detach(searchInput));
+      StkArticleLotSearchResult searchResult =  new StkArticleLotSearchResult(countLike, detach(resultList),
+              detach(searchInput));
+      return processSearchResult(searchInput, searchResult);
    }
 
    @POST

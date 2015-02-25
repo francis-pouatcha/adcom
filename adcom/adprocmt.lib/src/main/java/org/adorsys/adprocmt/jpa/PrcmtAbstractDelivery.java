@@ -11,7 +11,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
-import org.adorsys.adcore.jpa.AbstractMvmtData;
+import org.adorsys.adcore.jpa.AbstractIdentifData;
 import org.adorsys.adcore.jpa.AmtOrPct;
 import org.adorsys.adcore.jpa.CurrencyEnum;
 import org.adorsys.adcore.utils.FinancialOps;
@@ -22,13 +22,13 @@ import org.adorsys.javaext.format.NumberType;
 
 @MappedSuperclass
 @Description("PrcmtDelivery_description")
-public class PrcmtAbstractDelivery extends AbstractMvmtData {
+public class PrcmtAbstractDelivery extends AbstractIdentifData {
 
 	private static final long serialVersionUID = -7543043082815267044L;
 
 	@Column
 	@Description("PrcmtDelivery_dlvryNbr_description")
-	//@NotNull
+	@NotNull
 	private String dlvryNbr;
 
 	@Column
@@ -47,7 +47,7 @@ public class PrcmtAbstractDelivery extends AbstractMvmtData {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Description("PrcmtDelivery_dlvryDt_description")
-	//@NotNull
+	@NotNull
 	private Date dlvryDt;
 
 	@Column
@@ -111,7 +111,7 @@ public class PrcmtAbstractDelivery extends AbstractMvmtData {
 
 	@Column
 	@Description("PrcmtDelivery_dlvryStatus_description")
-	//@NotNull
+	@NotNull
 	private String dlvryStatus;
 
 	@Column
@@ -310,6 +310,7 @@ public class PrcmtAbstractDelivery extends AbstractMvmtData {
 		target.dlvryCur = dlvryCur;
 		target.dlvryDt = dlvryDt;
 		target.dlvryNbr = dlvryNbr;
+		target.identif = identif;
 		target.dlvrySlipNbr = dlvrySlipNbr;
 		target.dlvryStatus = dlvryStatus;
 		target.dtOnDlvrySlip = dtOnDlvrySlip;
@@ -372,6 +373,11 @@ public class PrcmtAbstractDelivery extends AbstractMvmtData {
 	public void addNetPPTaxIncl(BigDecimal netPPTaxIncl) {
 		if(this.netPPTaxIncl==null)this.netPPTaxIncl=BigDecimal.ZERO;
 		this.netPPTaxIncl=this.netPPTaxIncl.add(netPPTaxIncl);
+	}
+
+	@Override
+	protected String makeIdentif() {
+		return dlvryNbr;
 	}
 	
 }

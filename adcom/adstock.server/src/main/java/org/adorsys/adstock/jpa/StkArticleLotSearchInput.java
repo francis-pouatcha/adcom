@@ -6,73 +6,85 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Holds an entity and corresponding field descriptions 
- * for a search by example call.
+ * Holds an entity and corresponding field descriptions for a search by example
+ * call.
  * 
  * @author francis pouatcha
  *
  */
 @XmlRootElement
-public class StkArticleLotSearchInput
-{
+public class StkArticleLotSearchInput {
 
-   /**
-    * The entity holding search inputs.
-    */
-   private StkArticleLot entity;
+	/**
+	 * The entity holding search inputs.
+	 */
+	private StkArticleLot entity;
 
-   /**
-    * The start cursor
-    */
-   private int start = -1;
+	/**
+	 * The start cursor
+	 */
+	private int start = -1;
 
-   /**
-    * The max number of records to return.
-    */
-   private int max = -1;
+	/**
+	 * The max number of records to return.
+	 */
+	private int max = -1;
 
-   /**
-    * The field names to be included in the search.
-    */
-   private List<String> fieldNames = new ArrayList<String>();
+	/**
+	 * The field names to be included in the search.
+	 */
+	private List<String> fieldNames = new ArrayList<String>();
 
-   public StkArticleLot getEntity()
-   {
-      return entity;
-   }
+	private boolean withStrgSection;
 
-   public void setEntity(StkArticleLot entity)
-   {
-      this.entity = entity;
-   }
+	private String sectionCode;
 
-   public List<String> getFieldNames()
-   {
-      return fieldNames;
-   }
+	public StkArticleLot getEntity() {
+		return entity;
+	}
 
-   public void setFieldNames(List<String> fieldNames)
-   {
-      this.fieldNames = fieldNames;
-   }
+	public void setEntity(StkArticleLot entity) {
+		this.entity = entity;
+	}
 
-   public int getStart()
-   {
-      return start;
-   }
+	public List<String> getFieldNames() {
+		return fieldNames;
+	}
 
-   public void setStart(int start)
-   {
-      this.start = start;
-   }
+	public void setFieldNames(List<String> fieldNames) {
+		this.fieldNames = fieldNames;
+	}
 
-   public int getMax()
-   {
-      return max;
-   }
+	public int getStart() {
+		return start;
+	}
 
-   public void setMax(int max)
-   {
-      this.max = max;
-   }
+	public void setStart(int start) {
+		this.start = start;
+	}
+
+	public int getMax() {
+		return max;
+	}
+
+	public void setMax(int max) {
+		this.max = max;
+	}
+
+	public boolean isWithStrgSection() {
+		return withStrgSection;
+	}
+
+	public void setWithStrgSection(boolean withStrgSection) {
+		this.withStrgSection = withStrgSection;
+	}
+
+	public String getSectionCode() {
+		return sectionCode;
+	}
+
+	public void setSectionCode(String sectionCode) {
+		this.sectionCode = sectionCode;
+	}
+
 }

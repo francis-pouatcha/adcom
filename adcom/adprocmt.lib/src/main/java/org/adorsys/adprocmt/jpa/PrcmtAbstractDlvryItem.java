@@ -13,7 +13,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
-import org.adorsys.adcore.jpa.AbstractMvmtData;
+import org.adorsys.adcore.jpa.AbstractIdentifData;
 import org.adorsys.adcore.jpa.AmtOrPct;
 import org.adorsys.adcore.jpa.CurrencyEnum;
 import org.adorsys.adcore.utils.BigDecimalUtils;
@@ -27,7 +27,7 @@ import org.apache.commons.lang3.StringUtils;
 
 @MappedSuperclass
 @Description("PrcmtDlvryItem_description")
-public abstract class PrcmtAbstractDlvryItem extends AbstractMvmtData {
+public abstract class PrcmtAbstractDlvryItem extends AbstractIdentifData {
 
 	private static final long serialVersionUID = 8446377222696584731L;
 
@@ -213,6 +213,7 @@ public abstract class PrcmtAbstractDlvryItem extends AbstractMvmtData {
 		if(StringUtils.isBlank(dlvryItemNbr)){
 			dlvryItemNbr = SequenceGenerator.getSequence(dlvryNbr);
 		}
+		setIdentif(dlvryItemNbr);
 		setId(dlvryItemNbr);
 	}
 
@@ -466,6 +467,7 @@ public abstract class PrcmtAbstractDlvryItem extends AbstractMvmtData {
 
 	public void copyTo(PrcmtAbstractDlvryItem target){
 		target.dlvryItemNbr=dlvryItemNbr;
+		target.identif = identif;
 		target.dlvryNbr=dlvryNbr;
 		target.lotPic=lotPic;
 		target.artPic=artPic;
@@ -587,4 +589,10 @@ public abstract class PrcmtAbstractDlvryItem extends AbstractMvmtData {
 		}
 		this.netPPTaxIncl = FinancialOps.add(this.netPPPreTax, this.vatAmt, this.pppuCur);
 	}
+
+	@Override
+	protected String makeIdentif() {
+		return dlvryItemNbr;
+	}
+	
 }

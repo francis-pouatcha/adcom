@@ -34,6 +34,7 @@
     <module>adcom.configuration</module>
     <module>adstock.lib</module>
     <module>adprocmt.lib</module>
+    <module>adinvtry.lib</module>
   </modules>
   <scm>
     <connection>scm:git:https://github.com/francis-pouatcha/adcom.git</connection>

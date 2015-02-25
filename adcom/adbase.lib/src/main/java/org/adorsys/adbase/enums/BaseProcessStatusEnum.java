@@ -6,8 +6,13 @@ import org.adorsys.javaext.description.Description;
 public enum BaseProcessStatusEnum
 {
    @Description("BaseProcessStatusEnum_SUSPENDED_description")
-   SUSPENDED, @Description("BaseProcessStatusEnum_ONGOING_description")
-   ONGOING, @Description("BaseProcessStatusEnum_RESUMED_description")
-   RESUMED, @Description("BaseProcessStatusEnum_CLOSED_description")
+   SUSPENDED, 
+   @Description("BaseProcessStatusEnum_ONGOING_description")
+   ONGOING, 
+   @Description("BaseProcessStatusEnum_RESUMED_description")
+   RESUMED, 
+   @Description("BaseProcessStatusEnum_CLOSING_description")
+   CLOSING,
+   @Description("BaseProcessStatusEnum_CLOSED_description")
    CLOSED
 }

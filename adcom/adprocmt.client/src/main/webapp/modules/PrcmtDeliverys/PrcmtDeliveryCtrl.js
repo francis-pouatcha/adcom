@@ -1,8 +1,19 @@
 ﻿'use strict';
     
 angular.module('AdProcmt')
+.factory('ProcmtUtils',['genericResource','$q',function(genericResource,$q){
+        var service = {};
 
-.controller('prcmtDeliveryCtrl',['$scope','prcmtDeliveryResource',function($scope,prcmtDeliveryResource){
+        service.urlBase='/adprocmt.server/rest/prcmtdeliverys';
+        service.urlManagerDelivery='/adprocmt.server/rest/prcmtdeliverys';
+        service.adbnsptnr='/adbnsptnr.server/rest/bplegalptnrids';
+        service.catalarticles='/adcatal.server/rest/catalarticles';
+        service.orgunits='/adbase.server/rest/orgunits';
+
+        return service;
+}])
+
+.controller('prcmtDeliveryCtrl',['$scope','ProcmtUtils','genericResource',function($scope,ProcmtUtils,genericResource){
 	
     var self = this ;
     $scope.prcmtDeliveryCtrl = self;
@@ -41,7 +52,7 @@ angular.module('AdProcmt')
     }
 
     function findByLike(searchInput){
-    	prcmtDeliveryResource.findByLike(searchInput)
+        genericResource.findByLike(ProcmtUtils.urlBase,searchInput)
     		.success(function(entitySearchResult) {
 	            self.prcmtDeliverys = entitySearchResult.resultList;
 	            self.totalItems = entitySearchResult.count ;
@@ -74,7 +85,7 @@ angular.module('AdProcmt')
 	}
     
 }])
-.controller('prcmtDeliveryCreateCtlr',['$scope','$location','$q','prcmtDeliveryResource','bplegalptnridsResource','orgUnitsResource',function($scope,$location,$q,prcmtDeliveryResource,bplegalptnridsResource,orgUnitsResource){
+.controller('prcmtDeliveryCreateCtlr',['$scope','$location','$q','ProcmtUtils','genericResource',function($scope,$location,$q,ProcmtUtils,genericResource){
 	var self = this ;
     $scope.prcmtDeliveryCreateCtlr = self;
     self.prcmtDelivery = {};
@@ -102,7 +113,7 @@ angular.module('AdProcmt')
                 searchInput.fieldNames.push('cpnyName');
             }
             var deferred = $q.defer();
-            bplegalptnridsResource.findByLike(searchInput).success(function (entitySearchResult) {
+            genericResource.findByLike(ProcmtUtils.adbnsptnr,searchInput).success(function (entitySearchResult) {
                 deferred.resolve(entitySearchResult);
             }).error(function(){
                 deferred.reject("No Manufacturer/Supplier");
@@ -128,7 +139,7 @@ angular.module('AdProcmt')
                 searchInput.fieldNames.push('fullName');
             }
             var deferred = $q.defer();
-            orgUnitsResource.findByLike(searchInput).success(function (entitySearchResult) {
+            genericResource.findByLike(ProcmtUtils.orgunits,searchInput).success(function (entitySearchResult) {
                 deferred.resolve(entitySearchResult);
             }).error(function(){
                 deferred.reject("No organisation unit");
@@ -137,9 +148,8 @@ angular.module('AdProcmt')
         }
 
     function create(){
-        self.prcmtDelivery.supplier = self.prcmtDelivery.supplier.ptnrNbr;
-        self.prcmtDelivery.rcvngOrgUnit = self.prcmtDelivery.rcvngOrgUnit.identif;
-    	prcmtDeliveryResource.create(self.prcmtDelivery)
+        self.prcmtDelivery.dlvryStatus = 'ONGOING';
+        genericResource.create(ProcmtUtils.urlBase ,self.prcmtDelivery)
     	.success(function(data){
     		$location.path('/PrcmtDeliverys/show/'+data.id);
     	})
@@ -149,7 +159,7 @@ angular.module('AdProcmt')
     };
 	
 }])
-.controller('prcmtDeliveryEditCtlr',['$scope','prcmtDeliveryResource','$routeParams','$location',function($scope,prcmtDeliveryResource,$routeParams,$location){
+.controller('prcmtDeliveryEditCtlr',['$scope','ProcmtUtils','genericResource','$routeParams','$location',function($scope ,ProcmtUtils,genericResource,$routeParams,$location){
     var self = this ;
     $scope.prcmtDeliveryEditCtlr = self;
     self.prcmtDelivery = {};
@@ -157,7 +167,7 @@ angular.module('AdProcmt')
     self.error = "";
 
     function update(){
-    	prcmtDeliveryResource.update(self.prcmtDelivery)
+        genericResource.update(ProcmtUtils.urlBase,self.prcmtDelivery)
     	.success(function(data){
             $location.path('/PrcmtDeliverys/show/'+data.id);
         })
@@ -174,7 +184,7 @@ angular.module('AdProcmt')
 
     function load(){
         var identif = $routeParams.identif;
-        prcmtDeliveryResource.findByIdentif(identif)
+        genericResource.findByIdentif(ProcmtUtils.urlBase,identif)
         .success(function(data){
             self.prcmtDelivery = data;
         })

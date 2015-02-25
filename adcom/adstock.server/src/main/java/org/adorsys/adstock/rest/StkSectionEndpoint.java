@@ -26,6 +26,7 @@ import org.adorsys.adstock.jpa.StkSection;
 import org.adorsys.adstock.jpa.StkSectionSearchInput;
 import org.adorsys.adstock.jpa.StkSectionSearchResult;
 import org.adorsys.adstock.jpa.StkSection_;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 
@@ -147,6 +148,26 @@ public class StkSectionEndpoint
             detach(searchInput));
    }
 
+   @POST
+   @Path("/findCustom")
+   @Produces({ "application/json", "application/xml" })
+   @Consumes({ "application/json", "application/xml" })
+   public StkSectionSearchResult findCustom(StkSectionSearchInput searchInput)
+   {
+	   if(StringUtils.isNotBlank(searchInput.getCodeOrName())){
+		   String codeOrName = searchInput.getCodeOrName();
+		   searchInput.getFieldNames().clear();
+		   if (StringUtils.isNumeric(searchInput.getCodeOrName())){
+			   searchInput.getFieldNames().add("sectionCode");
+			   searchInput.getEntity().setSectionCode(codeOrName);
+		   } else {
+			   searchInput.getFieldNames().add("name");
+			   searchInput.getEntity().setName(codeOrName);
+		   }
+	   }
+	   return findByLike(searchInput);
+   }
+   
    @POST
    @Path("/countByLike")
    @Consumes({ "application/json", "application/xml" })

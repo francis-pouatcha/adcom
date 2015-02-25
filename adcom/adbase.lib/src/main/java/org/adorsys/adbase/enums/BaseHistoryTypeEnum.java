@@ -30,5 +30,6 @@ public enum BaseHistoryTypeEnum
    REVERSED, @Description("BaseHistoryTypeEnum_FAILED_REVERSE_description")
    FAILED_REVERSE, @Description("BaseHistoryTypeEnum_RECALL_description")
    RECALL, @Description("BaseHistoryTypeEnum_FAILED_RECALL_description")
-   FAILED_RECALL
+   FAILED_RECALL, @Description("BaseHistoryTypeEnum_CLOSING_RECALL_description")
+   CLOSING
 }

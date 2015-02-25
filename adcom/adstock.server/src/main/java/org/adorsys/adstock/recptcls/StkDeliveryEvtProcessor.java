@@ -12,7 +12,7 @@ import org.adorsys.adprocmt.jpa.PrcmtDlvryItemEvtData;
 import org.adorsys.adprocmt.rest.PrcmtDeliveryEvtDataEJB;
 import org.adorsys.adprocmt.rest.PrcmtDeliveryEvtEJB;
 import org.adorsys.adprocmt.rest.PrcmtDlvryItemEvtDataEJB;
-import org.adorsys.adstock.jpa.StkArticleLot;
+import org.adorsys.adstock.jpa.StkAbstractArticleLot;
 import org.adorsys.adstock.rest.StkArticleLotEJB;
 
 /**
@@ -53,10 +53,10 @@ public class StkDeliveryEvtProcessor {
 			List<PrcmtDlvryItemEvtData> list = itemEvtDataEJB.findByDlvryNbr(dlvryNbr, start, max);
 			start +=max;
 			for (PrcmtDlvryItemEvtData itemEvtData : list) {
-				String artPic = itemEvtData.getArtPic();
+//				String artPic = itemEvtData.getArtPic();
 				String lotPic = itemEvtData.getLotPic();
 				// Check if this lot exists.
-				StkArticleLot articleLot = articleLotEJB.findByIdentif(StkArticleLot.toId(artPic, lotPic));
+				StkAbstractArticleLot articleLot = articleLotEJB.findByIdentif(StkAbstractArticleLot.toId(lotPic));
 				if(articleLot==null){
 					itemEventDataToProcess.add(itemEvtData);
 				}
