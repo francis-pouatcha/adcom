@@ -77,6 +77,10 @@ angular.module('AdInvtry')
     	            'InvInvtry_section_description.text',
     	            'InvInvtry_invtryNbr_description.title',
     	            'InvInvtry_invtryNbr_description.text',
+    	            'InvInvtry_startRange_description.text',
+    	            'InvInvtry_startRange_description.title',
+    	            'InvInvtry_endRange_description.text',
+    	            'InvInvtry_endRange_description.title',
 
     	            'InvInvtryItem_description.title',
 
@@ -237,7 +241,11 @@ angular.module('AdInvtry')
     
     service.isInvtryBySection = function(invInvtry){
     	return invInvtry && invInvtry.invInvtryType && invInvtry.invInvtryType=='BY_SECTION';
-    }
+    };
+    
+    service.isInvtryByOrderAlphabeticRange = function(invInvtry){
+    	return invInvtry && invInvtry.invInvtryType && invInvtry.invInvtryType=='ALPHABETICAL_ORDER_RANGE';
+    };
 
     
     return service;
@@ -637,7 +645,7 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
 			} else if ($scope.invInvtryItemHolder.candidateLots && $scope.invInvtryItemHolder.candidateLots.length>1){
 				if($scope.invInvtryItemHolder.invtryItem.section){
 					var candidateLots = $scope.invInvtryItemHolder.candidateLots;
-					boolean found = false;
+					var found = false;
 					for (var int = 0; int < candidateLots.length; int++) {
 						var candidateLot = candidateLots[i];
 						var strgSctns = candidateLot.strgSctns;
