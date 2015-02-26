@@ -7,6 +7,7 @@ import javax.validation.constraints.NotNull;
 
 import org.adorsys.adcore.jpa.AbstractTimedData;
 import org.adorsys.javaext.description.Description;
+import org.apache.commons.lang3.StringUtils;
 
 @Entity 
 @Table(name="BaseOuWorkspace")
@@ -29,6 +30,18 @@ public class OuWorkspace extends AbstractTimedData {
 	@Description("OuWorkspace_targetOuIdentif_description")
 	@NotNull
 	private String targetOuIdentif;
+
+	public OuWorkspace() {
+		super();
+	}
+
+	public OuWorkspace(String ownerOuIdentif, String wsIdentif,
+			String targetOuIdentif) {
+		super();
+		this.ownerOuIdentif = ownerOuIdentif;
+		this.wsIdentif = wsIdentif;
+		this.targetOuIdentif = targetOuIdentif;
+	}
 
 	public String getOwnerOuIdentif() {
 		return this.ownerOuIdentif;
@@ -59,4 +72,9 @@ public class OuWorkspace extends AbstractTimedData {
 		return ownerOuIdentif + "_" + wsIdentif + "_" + targetOuIdentif;
 	}
 
+	public static OuWorkspace toOuWorkspace(String identif){
+		String[] split = StringUtils.split(identif, "_");
+		if(split.length<3) return null;
+		return new OuWorkspace(split[0], split[1], split[2]);
+	}
 }

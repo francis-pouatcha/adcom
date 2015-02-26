@@ -23,6 +23,10 @@
 "InvInvtry_invInvtryType_description.title":"Inventory Mode",
 "InvInvtry_section_description.text":"The Section",
 "InvInvtry_section_description.title":"Section",
+"InvInvtry_startRange_description.text":"Product name Start with",
+"InvInvtry_startRange_description.title":"Start with",
+"InvInvtry_endRange_description.text":"Product name End with",
+"InvInvtry_endRange_description.title":"End with",
 "InvInvtry_invtryDtFrom_description.title":"Inventory Date After",
 "InvInvtry_invtryDtTo_description.title":"Inventory Date Before",
 

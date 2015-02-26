@@ -89,6 +89,7 @@ public class AdcomLoginModule implements LoginModule {
 		try {
 			request = (HttpServletRequest) PolicyContext
 					.getContext(HttpServletRequest.class.getName());
+			if(request==null) return false;
 		} catch (PolicyContextException e) {
 			throw new IllegalStateException(e);
 		}

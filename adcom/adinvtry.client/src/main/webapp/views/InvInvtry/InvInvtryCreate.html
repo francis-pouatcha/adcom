@@ -4,34 +4,44 @@
             <div class="panel-body">
                 <label class="error col-lg-offset-3 alert-danger" >{{error}} </label>
                 <form  name="invInvtryForm" id="invInvtryForm" class="form-horizontal" novalidate="">
-                    <div class="form-group">
+                
+                     <div class="form-group">
+                        <label class="col-lg-2">{{invInvtryUtils.translations['InvInvtry_descptn_description.title']}} :</label>
+                        <div class="col-lg-5">
+		                	<textarea rows="3" id="descptn name="descptn" class="form-control" ng-model="invInvtry.descptn" maxlength="256">
+		                	</textarea>
+                        </div>
+                   
                         <label class="col-lg-2 ">{{invInvtryUtils.translations['InvInvtry_invInvtryType_description.title']}} :</label>
-                        <div class="col-lg-4" ng-class="{ 'has-error' : invInvtryForm.invMode.$invalid }" >
+                        <div class="col-lg-3" ng-class="{ 'has-error' : invInvtryForm.invMode.$invalid }" >
 				            <select class="form-control" name="invInvtryType" id="invInvtryType" ng-model="invInvtry.invInvtryType"
 				                    ng-options="invInvtryType.enumKey as invInvtryUtils.translations[invInvtryType.translKey]
 				                    	for invInvtryType in invInvtryUtils.invInvtryTypes" >
 				                    <option value=""/>
 							</select>
                         </div>
-	                    <div ng-show="invInvtryUtils.isInvtryBySection(invInvtry)">
-	                         <label class="col-lg-2">{{invInvtryUtils.translations['InvInvtry_section_description.title']}}</label>
-	                         <div class="col-lg-4" >
-	                            <input type="text" ng-model="stkSection" id="stkSection" name="stkSection" class="form-control"
-	                                   autocomplete="off" typeahead="stkSection as stkSection.name for stkSection in invInvtryUtils.loadSections($viewValue)"
-	                                   typeahead-loading="loading">
-	                         </div>
-	                    </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-lg-2">{{invInvtryUtils.translations['InvInvtry_descptn_description.title']}} :</label>
-                        <div class="col-lg-10">
-		                	<textarea rows="3" id="descptn name="descptn" class="form-control" 
-		                		ng-model="invInvtry.descptn" maxlength="256">
-		                	</textarea>
-                        </div>
-                    </div>
-                    
-                    
+                     </div>
+                     <div class="form-group">  
+		                    <div ng-show="invInvtryUtils.isInvtryBySection(invInvtry);">
+		                         <label class="col-lg-2">{{invInvtryUtils.translations['InvInvtry_section_description.title']}}</label>
+		                         <div class="col-lg-4" >
+		                            <input type="text" ng-model="invInvtry.stkSection" id="stkSection" name="stkSection" class="form-control"
+		                                   autocomplete="off" typeahead="stkSection as stkSection.name for stkSection in invInvtryUtils.loadSections($viewValue)"
+		                                   typeahead-loading="loading">
+		                         </div>
+		                    </div>
+		                    <div ng-show="invInvtryUtils.isInvtryByOrderAlphabeticRange(invInvtry);">
+		                         <div class="col-lg-3">
+		                            <input type="text" placeholder="{{invInvtryUtils.translations['InvInvtry_startRange_description.text']}}" 
+		                            ng-model="startRange" id="startRange" name="startRange" class="form-control">
+		                         </div>
+		                         <div class="col-lg-3">
+		                            <input type="text" placeholder="{{invInvtryUtils.translations['InvInvtry_endRange_description.text']}}" 
+		                            ng-model="endRange" id="endRange" name="endRange" class="form-control">
+		                         </div>
+		                    </div>
+		              </div>
+                      
                     <hr/>
                     <div class="form-group">
                     	<span class="col-lg-1"></span>
@@ -46,8 +56,8 @@
                         </div>
                     	<span class="col-lg-1"></span>
                     </div>
+                    
                 </form>
-
             </div>
         </div>
   </div>

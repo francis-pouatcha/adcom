@@ -213,6 +213,7 @@ public abstract class PrcmtAbstractDlvryItem extends AbstractIdentifData {
 		if(StringUtils.isBlank(dlvryItemNbr)){
 			dlvryItemNbr = SequenceGenerator.getSequence(dlvryNbr);
 		}
+		setIdentif(dlvryItemNbr);
 		setId(dlvryItemNbr);
 	}
 
@@ -466,6 +467,7 @@ public abstract class PrcmtAbstractDlvryItem extends AbstractIdentifData {
 
 	public void copyTo(PrcmtAbstractDlvryItem target){
 		target.dlvryItemNbr=dlvryItemNbr;
+		target.identif = identif;
 		target.dlvryNbr=dlvryNbr;
 		target.lotPic=lotPic;
 		target.artPic=artPic;

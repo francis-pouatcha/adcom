@@ -49,6 +49,7 @@ public abstract class AbstractObjectLoader<T extends AbstractIdentifData> {
 			Row row = rowIterator.next();
 			update(row, fields, cellParser);
 		}
+		done();
 	}
 	
 	/*

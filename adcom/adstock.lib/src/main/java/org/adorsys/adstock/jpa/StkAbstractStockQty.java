@@ -25,12 +25,12 @@ public abstract class StkAbstractStockQty extends AbstractMvmtData {
 	@Column
 	@Description("StkArtStockQty_stockQty_description")
 	@NotNull
-	private BigDecimal stockQty;
+	private BigDecimal stockQty = BigDecimal.ZERO;
 
 	@Column
 	@Description("StkArtStockQty_rsrvdQty_description")
 	@NotNull
-	private BigDecimal rsrvdQty;
+	private BigDecimal rsrvdQty = BigDecimal.ZERO;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Description("StkArtStockQty_qtyDt_description")

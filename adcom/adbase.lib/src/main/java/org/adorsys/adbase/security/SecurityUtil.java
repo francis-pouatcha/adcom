@@ -12,10 +12,11 @@ import javax.inject.Inject;
 
 import org.adorsys.adbase.jpa.Login;
 import org.adorsys.adbase.jpa.OrgUnit;
-import org.adorsys.adbase.jpa.SecUserSession;
+import org.adorsys.adbase.jpa.OuWorkspace;
 import org.adorsys.adbase.repo.LoginRepository;
 import org.adorsys.adbase.rest.OrgUnitEJB;
 import org.adorsys.adbase.rest.SecUserSessionEJB;
+import org.adorsys.adcore.auth.SecurityActions;
 import org.adorsys.adcore.auth.TermWsUserPrincipal;
 
 @Stateless
@@ -35,8 +36,12 @@ public class SecurityUtil {
 	
 	public TermWsUserPrincipal getCallerPrincipal(){
 		Principal callerPrincipal = sessionContext.getCallerPrincipal();
-		if(callerPrincipal==null || !(callerPrincipal instanceof TermWsUserPrincipal)) return null;
-		return (TermWsUserPrincipal) callerPrincipal;
+		if(callerPrincipal!=null && (callerPrincipal instanceof TermWsUserPrincipal))return (TermWsUserPrincipal) callerPrincipal;
+		
+		callerPrincipal = SecurityActions.getCallerPrincipal();
+		if(callerPrincipal!=null && (callerPrincipal instanceof TermWsUserPrincipal))return (TermWsUserPrincipal) callerPrincipal;
+		
+		return null;
 	}
 	
 	public String getCurrentLoginName() {
@@ -53,20 +58,23 @@ public class SecurityUtil {
 		return resultList.iterator().next();
 	}
 	
-	public SecUserSession getCurrentSecUserSession() {
-		TermWsUserPrincipal userPrincipal = getCallerPrincipal();
-		String workspaceId = userPrincipal.getWorkspaceId();
-		SecUserSession secUserSession = secUsrSessEjb.findOneByWorkspaceId(workspaceId, new Date());
-		if(secUserSession == null) {
-			throw new IllegalStateException("The current security session should not be null");
-		}
-		return secUserSession;
-	}
+//	public SecUserSession getCurrentSecUserSession() {
+//		TermWsUserPrincipal userPrincipal = getCallerPrincipal();
+//		String workspaceId = userPrincipal.getWorkspaceId();
+//		SecUserSession secUserSession = secUsrSessEjb.findOneByWorkspaceId(workspaceId, new Date());
+//		if(secUserSession == null) {
+//			throw new IllegalStateException("The current security session should not be null");
+//		}
+//		return secUserSession;
+//	}
 	
 	public OrgUnit getCurrentOrgUnit() {
-		SecUserSession currentSecUserSession = getCurrentSecUserSession();
-		String ouId = currentSecUserSession.getOuId();
-		OrgUnit orgUnit = orgUnitEJB.findByIdentif(ouId, new Date());
+//		SecUserSession currentSecUserSession = getCurrentSecUserSession();
+//		String ouId = currentSecUserSession.getOuId();
+		TermWsUserPrincipal callerPrincipal = getCallerPrincipal();
+		String workspaceId = callerPrincipal.getWorkspaceId();
+		OuWorkspace ouWorkspace = OuWorkspace.toOuWorkspace(workspaceId);
+		OrgUnit orgUnit = orgUnitEJB.findByIdentif(ouWorkspace.getTargetOuIdentif(), new Date());
 		if(orgUnit == null) {
 			throw new IllegalStateException("The orgUnit should not be null");
 		}

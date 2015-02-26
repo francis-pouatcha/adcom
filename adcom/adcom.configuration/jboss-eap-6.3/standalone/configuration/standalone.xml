@@ -288,7 +288,8 @@
                 </security-domain>
                 <security-domain name="adcom" cache-type="default">
                     <authentication>
-                        <login-module code="org.adorsys.adbase.auth.AdcomLoginModule" flag="required"/>
+                        <login-module code="org.adorsys.adbase.auth.SystemLoginModule" flag="sufficient"/>
+                        <login-module code="org.adorsys.adbase.auth.AdcomLoginModule" flag="sufficient"/>
                     </authentication>
                 </security-domain>
             </security-domains>

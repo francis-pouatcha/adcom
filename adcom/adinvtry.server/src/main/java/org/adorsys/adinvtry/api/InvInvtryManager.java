@@ -9,8 +9,8 @@ import javax.inject.Inject;
 
 import org.adorsys.adbase.enums.BaseHistoryTypeEnum;
 import org.adorsys.adbase.enums.BaseProcStepEnum;
-import org.adorsys.adbase.jpa.SecUserSession;
 import org.adorsys.adbase.security.SecurityUtil;
+import org.adorsys.adcore.auth.TermWsUserPrincipal;
 import org.adorsys.adinvtry.jpa.InvInvtry;
 import org.adorsys.adinvtry.jpa.InvInvtryHstry;
 import org.adorsys.adinvtry.jpa.InvInvtryItem;
@@ -172,7 +172,7 @@ public class InvInvtryManager {
 	}
 	
 	private void createClosingInventoryHistory(InvInvtry invtry){
-		SecUserSession secUserSession = securityUtil.getCurrentSecUserSession();
+		TermWsUserPrincipal callerPrincipal = securityUtil.getCallerPrincipal();
 		InvInvtryHstry invtryHstry = new InvInvtryHstry();
 		invtryHstry.setAddtnlInfo(InventoryInfo.prinInfo(invtry));
 		invtryHstry.setComment(BaseHistoryTypeEnum.CLOSED.name());
@@ -181,14 +181,14 @@ public class InvInvtryManager {
 		invtryHstry.setHstryDt(new Date());
 		invtryHstry.setHstryType(BaseHistoryTypeEnum.CLOSED.name());
 		
-		invtryHstry.setOrignLogin(secUserSession.getLoginName());
-		invtryHstry.setOrignWrkspc(secUserSession.getWorkspaceId());
+		invtryHstry.setOrignLogin(callerPrincipal.getName());
+		invtryHstry.setOrignWrkspc(callerPrincipal.getWorkspaceId());
 		invtryHstry.setProcStep(BaseProcStepEnum.CLOSING.name());
 		invtryHstryEJB.create(invtryHstry);
 	}
 
 	private void createInitialInventoryHistory(InvInvtry invtry){
-		SecUserSession secUserSession = securityUtil.getCurrentSecUserSession();
+		TermWsUserPrincipal callerPrincipal = securityUtil.getCallerPrincipal();
 		InvInvtryHstry invtryHstry = new InvInvtryHstry();
 		invtryHstry.setComment(BaseHistoryTypeEnum.INITIATED.name());
 		invtryHstry.setAddtnlInfo(InventoryInfo.prinInfo(invtry));
@@ -197,14 +197,14 @@ public class InvInvtryManager {
 		invtryHstry.setHstryDt(new Date());
 		invtryHstry.setHstryType(BaseHistoryTypeEnum.INITIATED.name());
 		
-		invtryHstry.setOrignLogin(secUserSession.getLoginName());
-		invtryHstry.setOrignWrkspc(secUserSession.getWorkspaceId());
+		invtryHstry.setOrignLogin(callerPrincipal.getName());
+		invtryHstry.setOrignWrkspc(callerPrincipal.getWorkspaceId());
 		invtryHstry.setProcStep(BaseProcStepEnum.INITIATING.name());
 		invtryHstryEJB.create(invtryHstry);
 	}
 
 	private void createModifiedInventoryHistory(InvInvtry invtry){
-		SecUserSession secUserSession = securityUtil.getCurrentSecUserSession();
+		TermWsUserPrincipal callerPrincipal = securityUtil.getCallerPrincipal();
 		InvInvtryHstry deliveryHstry = new InvInvtryHstry();
 		deliveryHstry.setComment(BaseHistoryTypeEnum.MODIFIED.name());
 		deliveryHstry.setAddtnlInfo(InventoryInfo.prinInfo(invtry));
@@ -213,8 +213,8 @@ public class InvInvtryManager {
 		deliveryHstry.setHstryDt(new Date());
 		deliveryHstry.setHstryType(BaseHistoryTypeEnum.MODIFIED.name());
 		
-		deliveryHstry.setOrignLogin(secUserSession.getLoginName());
-		deliveryHstry.setOrignWrkspc(secUserSession.getWorkspaceId());
+		deliveryHstry.setOrignLogin(callerPrincipal.getName());
+		deliveryHstry.setOrignWrkspc(callerPrincipal.getWorkspaceId());
 		deliveryHstry.setProcStep(BaseProcStepEnum.MODIFYING.name());
 		invtryHstryEJB.create(deliveryHstry);
 	}
