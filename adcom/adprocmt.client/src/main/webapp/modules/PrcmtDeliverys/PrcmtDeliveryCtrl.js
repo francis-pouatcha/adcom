@@ -5,10 +5,11 @@ angular.module('AdProcmt')
         var service = {};
 
         service.urlBase='/adprocmt.server/rest/prcmtdeliverys';
-        service.urlManagerDelivery='/adprocmt.server/rest/prcmtdeliverys';
+        service.urlManagerDelivery='/adprocmt.server/rest/delivery';
         service.adbnsptnr='/adbnsptnr.server/rest/bplegalptnrids';
         service.catalarticles='/adcatal.server/rest/catalarticles';
         service.orgunits='/adbase.server/rest/orgunits';
+        service.stkSection = '/adstock.server/rest/stksections';
 
         return service;
 }])
@@ -135,6 +136,7 @@ angular.module('AdProcmt')
                 max: 10
             };
             if(val){
+                searchInput.entity.identif='hs';
                 searchInput.entity.fullName = val+'%';
                 searchInput.fieldNames.push('fullName');
             }
@@ -159,12 +161,13 @@ angular.module('AdProcmt')
     };
 	
 }])
-.controller('prcmtDeliveryEditCtlr',['$scope','ProcmtUtils','genericResource','$routeParams','$location',function($scope ,ProcmtUtils,genericResource,$routeParams,$location){
+.controller('prcmtDeliveryEditCtlr',['$scope','ProcmtUtils','$q','genericResource','$routeParams','$location',function($scope ,ProcmtUtils,$q,genericResource,$routeParams,$location){
     var self = this ;
     $scope.prcmtDeliveryEditCtlr = self;
     self.prcmtDelivery = {};
     self.update = update;
     self.error = "";
+    self.loadBusinessPartner = loadBusinessPartner;
 
     function update(){
         genericResource.update(ProcmtUtils.urlBase,self.prcmtDelivery)
@@ -172,9 +175,35 @@ angular.module('AdProcmt')
             $location.path('/PrcmtDeliverys/show/'+data.id);
         })
     	.error(function(error){
-            self.error = error;
+            self.error = "Delivery no fount";
         });
     };
+
+        function loadBusinessPartner(val){
+            return loadBusinessPartnerPromise(val).then(function(entitySearchResult){
+                return entitySearchResult.resultList;
+            })
+        }
+
+        function loadBusinessPartnerPromise(businessPartnerName){
+            var searchInput = {
+                entity:{},
+                fieldNames:[],
+                start: 0,
+                max: 10
+            };
+            if(businessPartnerName){
+                searchInput.entity.cpnyName = businessPartnerName+'%';
+                searchInput.fieldNames.push('cpnyName');
+            }
+            var deferred = $q.defer();
+            genericResource.findByLike(ProcmtUtils.adbnsptnr,searchInput).success(function (entitySearchResult) {
+                deferred.resolve(entitySearchResult);
+            }).error(function(){
+                deferred.reject("No Manufacturer/Supplier");
+            });
+            return deferred.promise;
+        }
 
     init();
 
@@ -184,12 +213,12 @@ angular.module('AdProcmt')
 
     function load(){
         var identif = $routeParams.identif;
-        genericResource.findByIdentif(ProcmtUtils.urlBase,identif)
+        genericResource.findById(ProcmtUtils.urlBase,identif)
         .success(function(data){
             self.prcmtDelivery = data;
         })
         .error(function(error){
-            self.error = error;
+            self.error = "Delivery no fount";
         });
     };
 

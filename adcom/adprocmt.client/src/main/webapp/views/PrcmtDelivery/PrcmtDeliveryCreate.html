@@ -37,7 +37,7 @@
                         <div class="col-lg-3" >
                             <input type="text" ng-model="prcmtDeliveryCreateCtlr.prcmtDelivery.rcvngOrgUnit" id="rcvngOrgUnit" name="rcvngOrgUnit" class="form-control"
                                    typeahead="orgUnit.identif as orgUnit.fullName for orgUnit in prcmtDeliveryCreateCtlr.loadOrgUnit($viewValue)"
-                                   typeahead-loading="loading" placeholder="find an organisation" >
+                                   typeahead-loading="loading" placeholder="find an organisation" autocomplete="false" >
                             <p class="help-block">{{"PrcmtDelivery_rcvngOrgUnit_description.text"| translate}}</p>
                         </div>
                         <label class="col-lg-3 ">{{"PrcmtDelivery_netAmtToPay_description.title"| translate}} :</label>

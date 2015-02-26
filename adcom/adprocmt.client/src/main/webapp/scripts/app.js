@@ -24,7 +24,6 @@ angular.module('AdProcmt', [
     .when('/PrcmtDeliverys',{templateUrl:'views/PrcmtDelivery/PrcmtDeliverys.html',controller:'prcmtDeliveryCtrl'})
     .when('/PrcmtDeliverys/new',{templateUrl:'views/PrcmtDelivery/PrcmtDeliveryCreate.html',controller:'prcmtDeliveryCreateCtlr'})
     .when('/PrcmtDeliverys/edit/:identif',{templateUrl:'views/PrcmtDelivery/PrcmtDeliveryEdit.html',controller:'prcmtDeliveryEditCtlr'})
-    .when('/PrcmtDeliverys/show/:identif',{templateUrl:'views/PrcmtDelivery/PrcmtDeliveryShow.html',controller:'prcmtDeliveryShowCtlr'})
     .when('/PrcmtDeliverys/addItem/:identif',{templateUrl:'views/PrcmtDelivery/PrcmtDeliveryAddItem.html',controller:'prcmtDeliveryAddItemCtlr'})
 
         .when('/PrcmtOrders',{templateUrl:'views/PrcmtOrder/PrcmtOrders.html',controller:'prcmtOrderCtrl'})
