@@ -5,7 +5,9 @@ angular.module('AdProcmt').controller('prcmtDeliveryAddItemCtlr',['$scope','$rou
     $scope.prcmtDeliveryAddItemCtlr = self;
     self.prcmtDelivery = {};
     self.prcmtDeliveryItemHolder = {
-        dlvryItem:{}
+        dlvryItem:{},
+        recvngOus:[],
+        strgSctns:[]
     };
     self.prcmtDeliveryItemHolders = [];
     self.error = "";
@@ -23,6 +25,12 @@ angular.module('AdProcmt').controller('prcmtDeliveryAddItemCtlr',['$scope','$rou
     self.taux;
     self.tauxMultiplicateur = tauxMultiplicateur;
     self.totalAmountEntered = 0;
+    self.show = false;
+    self.showMore = showMore;
+    self.showLess = showLess;
+    self.loadBusinessPartner = loadBusinessPartner;
+    self.loadOrgUnit = loadOrgUnit;
+    self.loadstkSection = loadstkSection;
 
     load();
 
@@ -85,7 +93,6 @@ angular.module('AdProcmt').controller('prcmtDeliveryAddItemCtlr',['$scope','$rou
             });
         return deferred.promise;
     }
-
     function findByPicLike (searchInput) {
         var deferred = $q.defer();
         genericResource.find(ProcmtUtils.catalarticles+'/findByPicLike',searchInput)
@@ -95,6 +102,78 @@ angular.module('AdProcmt').controller('prcmtDeliveryAddItemCtlr',['$scope','$rou
             .error(function(){
                 deferred.reject("No Article");
             });
+        return deferred.promise;
+    }
+
+    function loadBusinessPartner(val){
+        return loadBusinessPartnerPromise(val).then(function(entitySearchResult){
+            return entitySearchResult.resultList;
+        })
+    }
+    function loadBusinessPartnerPromise(businessPartnerName){
+        var searchInput = {
+            entity:{},
+            fieldNames:[],
+            start: 0,
+            max: 10
+        };
+        if(businessPartnerName){
+            searchInput.entity.cpnyName = businessPartnerName+'%';
+            searchInput.fieldNames.push('cpnyName');
+        }
+        var deferred = $q.defer();
+        genericResource.findByLike(ProcmtUtils.adbnsptnr,searchInput).success(function (entitySearchResult) {
+            deferred.resolve(entitySearchResult);
+        }).error(function(){
+            deferred.reject("No Manufacturer/Supplier");
+        });
+        return deferred.promise;
+    }
+
+    function loadOrgUnit(val){
+        return loadOrgUnitPromise(val).then(function(entitySearchResult){
+            return entitySearchResult.resultList;
+        })
+    }
+    function loadOrgUnitPromise(val){
+        var searchInput = {
+            entity:{},
+            fieldNames:[],
+            start: 0,
+            max: 10
+        };
+        if(val){
+            searchInput.entity.identif='hs';
+            searchInput.entity.fullName = val+'%';
+            searchInput.fieldNames.push('fullName');
+        }
+        var deferred = $q.defer();
+        genericResource.findByLike(ProcmtUtils.orgunits,searchInput).success(function (entitySearchResult) {
+            deferred.resolve(entitySearchResult);
+        }).error(function(){
+            deferred.reject("No organisation unit");
+        });
+        return deferred.promise;
+    }
+
+    function loadstkSection(val){
+        return loadstkSectionPromise(val).then(function(entitySearchResult){
+            return entitySearchResult.resultList;
+        })
+    }
+    function loadstkSectionPromise(val){
+        var searchInput = {
+            entity:{},
+            fieldNames:[],
+            start: 0,
+            max: 10
+        };
+        var deferred = $q.defer();
+        genericResource.findByLike(ProcmtUtils.stkSection,searchInput).success(function (entitySearchResult) {
+            deferred.resolve(entitySearchResult);
+        }).error(function(){
+            deferred.reject("No section unit");
+        });
         return deferred.promise;
     }
 
@@ -118,10 +197,14 @@ angular.module('AdProcmt').controller('prcmtDeliveryAddItemCtlr',['$scope','$rou
     }
 
     function addItem(){
+        self.prcmtDeliveryItemHolder.recvngOus[0].rcvngOrgUnit.qtyDlvrd = self.prcmtDeliveryItemHolder.dlvryItem.qtyDlvrd;
+        self.prcmtDeliveryItemHolder.recvngOus[0].rcvngOrgUnit.freeQty = self.prcmtDeliveryItemHolder.dlvryItem.freeQty;
+        self.prcmtDeliveryItemHolder.strgSctns[0].strgSctn.qtyStrd = self.prcmtDeliveryItemHolder.dlvryItem.freeQty;
         //self.prcmtDeliveryItemHolder.dlvryItem.grossPPPreTax = self.prcmtDeliveryItemHolder.dlvryItem.pppuPreTax * self.prcmtDeliveryItemHolder.dlvryItem.qtyDlvrd;
         self.prcmtDeliveryItemHolders.push(self.prcmtDeliveryItemHolder);
         self.prcmtDeliveryItemHolder = {dlvryItem:{}};
         self.taux = "";
+
         calculTotalAmountEntered();
         $('#artName').focus();
     }
@@ -147,6 +230,14 @@ angular.module('AdProcmt').controller('prcmtDeliveryAddItemCtlr',['$scope','$rou
             self.totalAmountEntered = self.totalAmountEntered + (self.prcmtDeliveryItemHolders[i].dlvryItem.pppuPreTax * self.prcmtDeliveryItemHolders[i].dlvryItem.qtyDlvrd);
         }
 
+    }
+
+    function showMore(){
+        self.show = true;
+    }
+
+    function showLess(){
+        self.show = false;
     }
 
 }]);
