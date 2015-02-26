@@ -1,7 +1,5 @@
 package org.adorsys.adstock.recptcls;
 
-import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Asynchronous;
@@ -17,12 +15,10 @@ import org.adorsys.adprocmt.jpa.PrcmtDlvryItemEvtData;
 import org.adorsys.adprocmt.rest.PrcmtDeliveryEvtDataEJB;
 import org.adorsys.adprocmt.rest.PrcmtDlvryItemEvtDataEJB;
 import org.adorsys.adstock.jpa.StkAbstractArticleLot;
-import org.adorsys.adstock.jpa.StkArtStockQty;
 import org.adorsys.adstock.jpa.StkArticleLot;
 import org.adorsys.adstock.jpa.StkArticleLot2Ou;
 import org.adorsys.adstock.jpa.StkArticleLot2StrgSctn;
 import org.adorsys.adstock.jpa.StkLotStockQty;
-import org.adorsys.adstock.rest.StkArtStockQtyEJB;
 import org.adorsys.adstock.rest.StkArticleLot2OuEJB;
 import org.adorsys.adstock.rest.StkArticleLot2StrgSctnEJB;
 import org.adorsys.adstock.rest.StkArticleLotEJB;
@@ -45,8 +41,6 @@ public class StkDeliveryItemEvtProcessor {
 	private StkArticleLotEJB articleLotEJB;
 	@Inject
 	private StkLotStockQtyEJB lotStockQtyEJB;
-	@Inject
-	private StkArtStockQtyEJB artStockQtyEJB;
 	@Inject
 	private StkArticleLot2OuEJB articleLot2OuEJB;
 	@Inject
@@ -93,21 +87,7 @@ public class StkDeliveryItemEvtProcessor {
 		lotStockQty.setStockQty(itemEvtData.getQtyDlvrd());
 		lotStockQtyEJB.create(lotStockQty);
 		
-		// Art Stock 
-		StkArtStockQty oldestArtStockQty = artStockQtyEJB.findOldest(artPic);
-		StkArtStockQty artStockQty = new StkArtStockQty();
-		artStockQty.setArtPic(artPic);
-		artStockQty.setQtyDt(new Date());
-		BigDecimal stockQty = BigDecimal.ZERO;
-		int seqNbr = 0;
-		if(oldestArtStockQty!=null){
-			stockQty = oldestArtStockQty.getStockQty()==null?BigDecimal.ZERO:oldestArtStockQty.getStockQty();
-			seqNbr = oldestArtStockQty.getSeqNbr()==null?0:oldestArtStockQty.getSeqNbr();
-		}
-		artStockQty.setStockQty(stockQty.add(itemEvtData.getQtyDlvrd()));
-		artStockQty.setSeqNbr(seqNbr+1);
-		artStockQtyEJB.create(artStockQty);
-		
+
 		List<PrcmtDlvryItem2OuEvtData> ouEvtDataList = itemEvtDataEJB.listDlvryItem2OuEvtData(itemEvtData.getDlvryItemNbr());
 		for (PrcmtDlvryItem2OuEvtData evtData : ouEvtDataList) {
 			StkArticleLot2Ou ou = new StkArticleLot2Ou();

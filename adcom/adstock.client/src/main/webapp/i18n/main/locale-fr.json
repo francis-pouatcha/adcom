@@ -34,6 +34,13 @@
 "StkArticleLot_vatSalesPct_description.text":"The taux de TVA en pourcent.",
 "StkArticleLot_vatSalesPct_description.title":"Taux TVA",
 
+"StkSectionArticleLot_artName_description.title":"Nom de l'Article",
+"StkSectionArticleLot_stockQty_description.title":"Quantité dans ce Rayon",
+"StkSectionArticleLot_stockQtyDt_description.title":"Au",
+"StkSectionArticleLot_lotQty_description.title":"Quantité Totale du Lot",
+"StkSectionArticleLot_lotQtyDt_description.title":"Au",
+"StkSectionArticleLot_salesPrice_description.title":"Prix de Vente TTC",
+
 "StkArtLotSection_artPic_description.text":"Code article",
 "StkArtLotSection_artPic_description.title":"CIP Article",
 "StkArtLotSection_description.text":"Lot article par rayon.",
@@ -117,6 +124,8 @@
 "StkSection_sectionCode_required.text":"Code du rayon requis",
 "StkSection_sectionCode_required.title":"Code du rayon requis",
 "StkSection_wharehouse_description.text":"Magasin",
-"StkSection_wharehouse_description.title":"Magasin"
+"StkSection_wharehouse_description.title":"Magasin",
+"StkSection_stkSubSection_description.title":"Sous Rayons",
+"StkSection_stkArticleLot_description.title":"Lots d'Article"
 
 }

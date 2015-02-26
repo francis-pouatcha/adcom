@@ -16,4 +16,7 @@ public interface StkArticleLotRepository extends EntityRepository<StkArticleLot,
 	
 	@Query("SELECT e FROM StkArticleLot AS e WHERE LOWER(e.artPic) LIKE(LOWER(?1))")
 	public List<StkArticleLot> findByArtPicLike(String artPick);
+
+	@Query("SELECT e.lotPic FROM StkArticleLot AS e WHERE e.artPic=?1")
+	public List<String> findLotPicByArtPic(String artPic);
 }

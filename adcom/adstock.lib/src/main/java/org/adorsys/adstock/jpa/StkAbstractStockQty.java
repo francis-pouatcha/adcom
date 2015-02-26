@@ -96,4 +96,44 @@ public abstract class StkAbstractStockQty extends AbstractMvmtData {
 		this.seqNbr = seqNbr;
 	}
 
+	public BigDecimal getRsrvdQty() {
+		return rsrvdQty;
+	}
+
+	public void setRsrvdQty(BigDecimal rsrvdQty) {
+		this.rsrvdQty = rsrvdQty;
+	}
+
+	public String getOrigProcs() {
+		return origProcs;
+	}
+
+	public void setOrigProcs(String origProcs) {
+		this.origProcs = origProcs;
+	}
+
+	public String getOrigProcsNbr() {
+		return origProcsNbr;
+	}
+
+	public void setOrigProcsNbr(String origProcsNbr) {
+		this.origProcsNbr = origProcsNbr;
+	}
+
+	public String getParentRcrd() {
+		return parentRcrd;
+	}
+
+	public void setParentRcrd(String parentRcrd) {
+		this.parentRcrd = parentRcrd;
+	}
+
+	public Boolean getCnsldtd() {
+		return cnsldtd;
+	}
+
+	public void setCnsldtd(Boolean cnsldtd) {
+		this.cnsldtd = cnsldtd;
+	}
+
 }

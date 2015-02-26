@@ -2,13 +2,14 @@
 <html ng-app="AdStock">
 <head>
     <meta charset="utf-8" />
-    <title>AngularJS Basic HTTP Authentication Example</title>
+    <title>AD Stock</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="stylesheet" type="text/css" href="/adres.client/vendors/bootstrap/css/bootstrap.min.css">
-     <link rel="stylesheet" type="text/css" href="/adres.client/styles/custom.css">
-    <script src="scripts/vendor/modernizr-2.6.2.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/adres.client/vendors/angular-datepicker/datepicker.css">
+    <link rel="stylesheet" type="text/css" href="/adres.client/styles/custom.css">
+    <script src="/adres.client/vendors/modernizr/modernizr-2.6.2.min.js"></script>
     <script src="/adres.client/vendors/jquery/jquery-2.1.1.min.js"></script>
     <script src="/adres.client/vendors/bootstrap/js/bootstrap.js"></script>
 </head>
@@ -29,51 +30,24 @@
     <script src="/adres.client/vendors/angular/angular.js"></script>
     <script src="/adres.client/vendors/angular/angular-sanitize.js"></script>
     <script src="/adres.client/vendors/angular/angular-route.js"></script>
-    <script src="scripts/vendor/angular-resource.js"></script>
+    <script src="/adres.client/vendors/angular/angular-resource.js"></script>
     <script src="/adres.client/vendors/angular/angular-cookies.js"></script>
     <script src="/adres.client/vendors/angular-translate/angular-translate.js"></script>
     <script src="/adres.client/vendors/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
     <script src="/adres.client/vendors/angular-translate-loader-partial/angular-translate-loader-partial.js"></script>
+    <script src="/adres.client/vendors/angular/ui-bootstrap-tpls-0.12.0.js" ></script>
+    <script src="/adres.client/vendors/angular-datepicker/datepicker.js"></script>
     <script src="/adres.client/vendors/base64/base64.js"></script>
     <script src="/adres.client/services/ADUtils.js"></script>
     <script src="/adres.client/services/SessionManager.js"></script>
     <script src="/adres.client/services/AuthInterceptor.js"></script>
     <script src="/adres.client/modules/NavBar.js"></script>
+    <script src="/adres.client/modules/CountryNames.js"></script>
+    <script src="/adres.client/directives/datetimepicker.js"></script>
+
     <script src="scripts/app.js"></script>
-    <script src="scripts/directives/datetimepicker.js"></script>
-    <script src="scripts/filters/startFromFilter.js"></script>
-    <script src="scripts/filters/genericSearchFilter.js"></script>
-    <script src="scripts/services/locationParser.js"></script>
 
-    <script src="modules/StkSection/resources.js"></script>
-    <script src="modules/StkSection/services.js"></script>
-    <script src="modules/StkSection/controllers.js"></script>
-
-    <script src="scripts/services/StkArtLotSectionFactory.js"></script>
-    <script src="scripts/controllers/newStkArtLotSectionController.js"></script>
-    <script src="scripts/controllers/searchStkArtLotSectionController.js"></script>
-    <script src="scripts/controllers/editStkArtLotSectionController.js"></script>
-    <script src="scripts/services/StkArtStockQtyFactory.js"></script>
-    <script src="scripts/controllers/newStkArtStockQtyController.js"></script>
-    <script src="scripts/controllers/searchStkArtStockQtyController.js"></script>
-    <script src="scripts/controllers/editStkArtStockQtyController.js"></script>
-    <script src="scripts/services/StkArticleLotFactory.js"></script>
-    <script src="scripts/controllers/newStkArticleLotController.js"></script>
-    <script src="scripts/controllers/searchStkArticleLotController.js"></script>
-    <script src="scripts/controllers/editStkArticleLotController.js"></script>
-    <script src="scripts/services/StkLotStockQtyFactory.js"></script>
-    <script src="scripts/controllers/newStkLotStockQtyController.js"></script>
-    <script src="scripts/controllers/searchStkLotStockQtyController.js"></script>
-    <script src="scripts/controllers/editStkLotStockQtyController.js"></script>
-    <script src="scripts/services/StkMvntFactory.js"></script>
-    <script src="scripts/controllers/newStkMvntController.js"></script>
-    <script src="scripts/controllers/searchStkMvntController.js"></script>
-    <script src="scripts/controllers/editStkMvntController.js"></script>
-    
-    <!-- Stock section generated script -->
-   <!--   <script src="scripts/services/StkSectionFactory.js"></script>
-    <script src="scripts/controllers/newStkSectionController.js"></script>
-    <script src="scripts/controllers/searchStkSectionController.js"></script>
-    <script src="scripts/controllers/editStkSectionController.js"></script> -->
+    <script src="modules/StkSection/StkSectionRoute.js"></script>
+    <script src="modules/StkSection/StkSectionCtlrs.js"></script>
 </body>
 </html>

@@ -24,4 +24,8 @@ public class StkLotStockQty extends StkAbstractStockQty {
 	public void setLotPic(String lotPic) {
 		this.lotPic = lotPic;
 	}
+	
+	public String artAndLotPic(){
+		return getArtPic() + "_" + getLotPic();
+	}
 }

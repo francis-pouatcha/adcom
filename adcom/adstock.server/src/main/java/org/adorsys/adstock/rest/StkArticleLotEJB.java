@@ -86,4 +86,7 @@ public class StkArticleLotEJB
    public List<StkArticleLot> findByArtPicLike(String artPick) {
 	   return repository.findByArtPicLike(artPick);
    }
+   public List<String> findLotPicByArtPic(String artPic){
+	   return repository.findLotPicByArtPic(artPic);
+   }
 }
