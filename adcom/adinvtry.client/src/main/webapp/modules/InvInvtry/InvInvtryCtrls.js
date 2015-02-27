@@ -1,4 +1,4 @@
-﻿'use strict';
+'use strict';
     
 angular.module('AdInvtry')
 
@@ -164,7 +164,7 @@ angular.module('AdInvtry')
             max: 10
         };
 
-        searchInput.codeAndNames = val;
+        searchInput.codesAndNames = val;
         var deferred = $q.defer();
         genericResource.findByLike(service.catalarticlesUrlBase, searchInput)
 		.success(function(entitySearchResult) {
@@ -177,14 +177,17 @@ angular.module('AdInvtry')
     }    
 
     service.loadArticleLots = function(lotPic){
-    	if(!lotPic || lotPic.length<5) return;
         return loadArticleLotsPromise(lotPic).then(function(entitySearchResult){
             return entitySearchResult.resultList;
         });
     };
 
     function loadArticleLotsPromise(lotPic){
-    	if(!lotPic) return;
+        var deferred = $q.defer();
+        if(!lotPic || lotPic.length<5) {
+            deferred.reject("");
+            return deferred.promise;
+        }
         var searchInput = {entity:{},fieldNames:[],start: 0,max: 30};
         searchInput.entity.lotPic = lotPic;
         if(searchInput.fieldNames.indexOf('lotPic')==-1)
@@ -193,10 +196,8 @@ angular.module('AdInvtry')
         if(searchInput.fieldNames.indexOf('closedDt')==-1)
         	searchInput.fieldNames.push('closedDt');
         // also load storage section
-        searchInput.entity.withStrgSection=true;
-
-        var deferred = $q.defer();
-        genericResource.findByLike(service.catalarticlesUrlBase, searchInput)
+        searchInput.withStrgSection=true;
+        genericResource.findByLike(service.stkarticlelotsUrlBase, searchInput)
 		.success(function(entitySearchResult) {
         	deferred.resolve(entitySearchResult);
 		})
@@ -539,9 +540,8 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
     $scope.invInvtry = invInvtryState.invInvtry();
     $scope.error = "";
     $scope.invInvtryUtils=invInvtryUtils;
-    $scope.invInvtryItemHolder = {
-    	invtryItem:{}
-    };
+    $scope.invInvtryItemHolder = emptyItemHolder();
+    
     $scope.invInvtryItemHolders = [];
 
     function init(){
@@ -668,5 +668,14 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
     $scope.edit =function(){
         $location.path('/InvInvtrys/edit/');
     };
-
+    $scope.addItem = function() {
+        $scope.invInvtryItemHolders.push($scope.invInvtryItemHolder);
+        $scope.invInvtryItemHolder = emptyItemHolder();
+        
+    };
+    function emptyItemHolder () {
+        $scope.invInvtryItemHolder = {
+          invtryItem : {}  
+        };
+    }
 }]);
