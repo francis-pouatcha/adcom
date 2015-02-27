@@ -498,8 +498,8 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
     $scope.invInvtryUtils=invInvtryUtils;
 
     function create(){
-    	$scope.invInvtry.invtryDt=Date();
-    	$scope.invInvtry.invInvntrStatus='ONGOING';
+//    	$scope.invInvtry.invtryDt=Date(); lets set it to the server
+    	$scope.invInvtry.invtryStatus='ONGOING';
     	if($scope.stkSection){
     		invInvtryState.stkSection($scope.stkSection);
     	}
@@ -639,10 +639,11 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
         	lotSearchInput.fieldNames.push('closedDt');
         genericResource.findBy(invInvtryUtils.stkarticlelotsUrlBase, lotSearchInput)
 		.success(function(entitySearchResult) {
-			$scope.invInvtryItemHolder.candidateLots=entitySearchResult.resultList;
-			if($scope.invInvtryItemHolder.candidateLots && $scope.invInvtryItemHolder.candidateLots.length==1){
-		    	$scope.invInvtryItemHolder.invtryItem.lotPic=$scope.invInvtryItemHolder.candidateLots[0].lotPic;
-			} else if ($scope.invInvtryItemHolder.candidateLots && $scope.invInvtryItemHolder.candidateLots.length>1){
+//			$scope.invInvtryItemHolder.candidateLots=entitySearchResult.resultList;
+            var candidateLots=entitySearchResult.resultList;
+			if(candidateLots && candidateLots.length==1){
+		    	$scope.invInvtryItemHolder.invtryItem.lotPic=candidateLots[0].lotPic;
+			} else if (candidateLots && candidateLots.length>1){
 				if($scope.invInvtryItemHolder.invtryItem.section){
 					var candidateLots = $scope.invInvtryItemHolder.candidateLots;
 					var found = false;
@@ -665,16 +666,27 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
 		.error(function(error){$scope.error=error;});
     };
     
-    $scope.edit =function(){
-        $location.path('/InvInvtrys/edit/');
+    $scope.editItem =function(index){
+        if(index &&
+            (0 <= index <=$scope.invInvtryItemHolders.length)) {
+            var itemHolder = $scope.invInvtryItemHolders[index];
+            $location.path('/InvInvtrys/edit/'+itemHolder.invtryItem.identif);   
+        }
     };
     $scope.addItem = function() {
+        if(!$scope.invInvtryItemHolder) return;
         $scope.invInvtryItemHolders.push($scope.invInvtryItemHolder);
         $scope.invInvtryItemHolder = emptyItemHolder();
-        
+    };
+                                     
+    $scope.deleteItem = function(index) {
+//          if(!index) return;
+          try {
+              $scope.invInvtryItemHolders.splice(index,1);
+          }finally {}
     };
     function emptyItemHolder () {
-        $scope.invInvtryItemHolder = {
+        return {
           invtryItem : {}  
         };
     }

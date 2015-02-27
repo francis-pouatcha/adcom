@@ -19,12 +19,13 @@ public class InvInvtryItemEJB
 
 	@Inject
 	private InvInvtryItemEvtDataEJB itemEvtDataEJB;
-
+	
 	public InvInvtryItem create(InvInvtryItem entity)
 	{
 		InvInvtryItem invtryItem = repository.save(attach(entity));
 		InvInvtryItemEvtData itemEvtData = new InvInvtryItemEvtData();
 		invtryItem.copyTo(itemEvtData);
+		itemEvtData.setIdentif(invtryItem.getIdentif());
 		itemEvtDataEJB.create(itemEvtData);
 		return invtryItem;
 	}

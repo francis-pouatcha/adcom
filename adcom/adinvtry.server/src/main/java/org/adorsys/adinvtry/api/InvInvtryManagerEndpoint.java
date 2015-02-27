@@ -5,7 +5,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
@@ -18,7 +18,7 @@ public class InvInvtryManagerEndpoint
    @Inject
    private InvInvtryManager invtryManager; 
 
-   @POST
+   @PUT
    @Path("/update")
    @Consumes({ "application/json", "application/xml" })
    @Produces({ "application/json", "application/xml" })
@@ -26,7 +26,7 @@ public class InvInvtryManagerEndpoint
       return invtryManager.updateInventory(invtryHolder);
    }
 
-   @POST
+   @PUT
    @Path("/close")
    @Consumes({ "application/json", "application/xml" })
    @Produces({ "application/json", "application/xml" })

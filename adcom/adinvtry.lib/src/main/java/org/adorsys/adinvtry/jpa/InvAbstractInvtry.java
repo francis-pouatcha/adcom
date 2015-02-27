@@ -133,6 +133,14 @@ public abstract class InvAbstractInvtry extends AbstractIdentifData {
 		this.invtryStatus = invtryStatus;
 	}
 
+	public InvInvtryType getInvInvtryType() {
+		return invInvtryType;
+	}
+
+	public void setInvInvtryType(InvInvtryType invInvtryType) {
+		this.invInvtryType = invInvtryType;
+	}
+
 	@Override
 	protected String makeIdentif() {
 		return invtryNbr;

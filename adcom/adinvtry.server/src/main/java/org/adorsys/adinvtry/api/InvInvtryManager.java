@@ -59,7 +59,7 @@ public class InvInvtryManager {
 		
 		for (InvInvtryItemHolder itemHolder : invInvtryItemHolders) {
 			InvInvtryItem invInvtryItem = itemHolder.getInvtryItem();
-
+			invInvtryItem.setAcsngUser(securityUtil.getCurrentLoginName());
 			if(StringUtils.isBlank(invInvtryItem.getInvtryNbr()))
 				invInvtryItem.setInvtryNbr(invtry.getInvtryNbr());
 			// check presence of the article pic
@@ -137,6 +137,7 @@ public class InvInvtryManager {
 			inventory.setAcsngUser(currentLoginName);
 			inventory.setAcsngDt(now);
 			inventory.setInvtryStatus(InvInvtryStatus.ONGOING);
+			inventory.setInvtryDt(new Date());
 			inventory = inventoryEJB.create(inventory);
 			createInitialInventoryHistory(inventory);
 		}
