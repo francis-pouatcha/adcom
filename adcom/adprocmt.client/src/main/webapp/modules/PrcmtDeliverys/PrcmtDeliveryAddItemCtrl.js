@@ -8,6 +8,7 @@ angular.module('AdProcmt').controller('prcmtDeliveryAddItemCtlr',['$scope','$rou
         dlvryItem:{},
         recvngOus:[],
         strgSctns:[]
+
     };
     self.prcmtDeliveryItemHolders = [];
     self.error = "";
@@ -187,28 +188,48 @@ angular.module('AdProcmt').controller('prcmtDeliveryAddItemCtlr',['$scope','$rou
         var prcmtDeliveryHolder = {};
         prcmtDeliveryHolder.delivery = self.prcmtDelivery;
         prcmtDeliveryHolder.deliveryItems = self.prcmtDeliveryItemHolders;
-        genericResource.find(ProcmtUtils.urlManagerDelivery+'/update',prcmtDeliveryHolder).success(function(){
+        genericResource.customMethod(ProcmtUtils.urlManagerDelivery+'/update',prcmtDeliveryHolder).success(function(){
             //update succes
         });
     }
 
     function close () {
-
+        var prcmtDeliveryHolder = {};
+        prcmtDeliveryHolder.delivery = self.prcmtDelivery;
+        prcmtDeliveryHolder.deliveryItems = self.prcmtDeliveryItemHolders;
+        genericResource.customMethod(ProcmtUtils.urlManagerDelivery+'/close',prcmtDeliveryHolder).success(function(){
+            //update succes
+        });
     }
 
     function addItem(){
-        self.prcmtDeliveryItemHolder.recvngOus[0].rcvngOrgUnit.qtyDlvrd = self.prcmtDeliveryItemHolder.dlvryItem.qtyDlvrd;
-        self.prcmtDeliveryItemHolder.recvngOus[0].rcvngOrgUnit.freeQty = self.prcmtDeliveryItemHolder.dlvryItem.freeQty;
-        self.prcmtDeliveryItemHolder.strgSctns[0].strgSctn.qtyStrd = self.prcmtDeliveryItemHolder.dlvryItem.freeQty;
-        //self.prcmtDeliveryItemHolder.dlvryItem.grossPPPreTax = self.prcmtDeliveryItemHolder.dlvryItem.pppuPreTax * self.prcmtDeliveryItemHolder.dlvryItem.qtyDlvrd;
+        if(self.rcvngOrgUnit){
+            var rcvngOrgUnitHolder = {rcvngOrgUnit:{}};
+            rcvngOrgUnitHolder.rcvngOrgUnit.rcvngOrgUnit = self.rcvngOrgUnit;
+            rcvngOrgUnitHolder.rcvngOrgUnit.qtyDlvrd = self.prcmtDeliveryItemHolder.dlvryItem.qtyDlvrd;
+            rcvngOrgUnitHolder.rcvngOrgUnit.freeQty = self.prcmtDeliveryItemHolder.dlvryItem.freeQty;
+            self.prcmtDeliveryItemHolder.recvngOus = [];
+             self.prcmtDeliveryItemHolder.recvngOus.push(rcvngOrgUnitHolder);
+        }
+        if(self.strgSection){
+            var strgSctnHolder = {strgSctn:{}};
+            strgSctnHolder.strgSctn.strgSection = self.strgSection;
+            strgSctnHolder.strgSctn.qtyStrd = self.prcmtDeliveryItemHolder.dlvryItem.qtyDlvrd;
+            self.prcmtDeliveryItemHolder.strgSctns = [];
+            self.prcmtDeliveryItemHolder.strgSctns.push(strgSctnHolder);
+        }
         self.prcmtDeliveryItemHolders.push(self.prcmtDeliveryItemHolder);
-        self.prcmtDeliveryItemHolder = {dlvryItem:{}};
+        //CLEAR
+        self.prcmtDeliveryItemHolder = {dlvryItem:{},recvngOus:[],strgSctns:[]};
         self.taux = "";
+        self.rcvngOrgUnit = "";
+        self.strgSection = "";
 
         calculTotalAmountEntered();
         $('#artName').focus();
     }
     function deleteItem(index){
+        console.log(index);
         self.prcmtDeliveryItemHolders.splice(index);
         calculTotalAmountEntered();
     }
@@ -216,6 +237,14 @@ angular.module('AdProcmt').controller('prcmtDeliveryAddItemCtlr',['$scope','$rou
         self.taux = "";
         angular.copy(self.prcmtDeliveryItemHolders[index],self.prcmtDeliveryItemHolder) ;
         deleteItem(index);
+        console.log(self.prcmtDeliveryItemHolder);
+
+        if(self.prcmtDeliveryItemHolder.recvngOus[0]){
+            self.rcvngOrgUnit = self.prcmtDeliveryItemHolder.recvngOus[0].rcvngOrgUnit.rcvngOrgUnit;
+        }
+        if(self.prcmtDeliveryItemHolder.strgSctns[0]){
+            self.strgSection = self.prcmtDeliveryItemHolder.strgSctns[0].strgSctn.strgSection;
+        }
     }
 
     function tauxMultiplicateur(){

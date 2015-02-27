@@ -26,8 +26,8 @@
       <file leaf-file-name="PrcmtDeliveryAddItem.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/adprocmt.client/src/main/webapp/views/PrcmtDelivery/PrcmtDeliveryAddItem.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-8.75" vertical-offset="1965" max-vertical-offset="2955">
-              <caret line="145" column="127" selection-start-line="145" selection-start-column="127" selection-end-line="145" selection-end-column="127" />
+            <state vertical-scroll-proportion="-7.375" vertical-offset="1998" max-vertical-offset="2955">
+              <caret line="145" column="82" selection-start-line="145" selection-start-column="82" selection-end-line="145" selection-end-column="82" />
               <folding />
             </state>
           </provider>
@@ -36,8 +36,8 @@
       <file leaf-file-name="PrcmtDeliveryAddItemCtrl.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/PrcmtDeliveryAddItemCtrl.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.3928036" vertical-offset="2753" max-vertical-offset="3735">
-              <caret line="201" column="58" selection-start-line="201" selection-start-column="58" selection-end-line="201" selection-end-column="58" />
+            <state vertical-scroll-proportion="1.0675676" vertical-offset="3354" max-vertical-offset="4170">
+              <caret line="271" column="4" selection-start-line="271" selection-start-column="4" selection-end-line="271" selection-end-column="4" />
               <folding />
             </state>
           </provider>
@@ -46,8 +46,8 @@
       <file leaf-file-name="ADUtils.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/adres.client/src/main/webapp/services/ADUtils.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1165" max-vertical-offset="1950">
-              <caret line="102" column="20" selection-start-line="102" selection-start-column="12" selection-end-line="102" selection-end-column="20" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1305" max-vertical-offset="1995">
+              <caret line="116" column="28" selection-start-line="116" selection-start-column="16" selection-end-line="116" selection-end-column="28" />
               <folding />
             </state>
           </provider>
@@ -56,9 +56,16 @@
       <file leaf-file-name="InvInvtryCtrl.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/adinvtry.client/src/main/webapp/modules/InvInvtry/InvInvtryCtrl.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1315" max-vertical-offset="2655">
-              <caret line="115" column="39" selection-start-line="115" selection-start-column="39" selection-end-line="115" selection-end-column="71" />
-              <folding />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1495" max-vertical-offset="2835">
+              <caret line="127" column="39" selection-start-line="127" selection-start-column="39" selection-end-line="127" selection-end-column="39" />
+              <folding>
+                <marker date="1424962109000" expanded="true" signature="2950:3329" placeholder="{...}" />
+                <marker date="1424962109000" expanded="true" signature="3016:3102" placeholder="{...}" />
+                <marker date="1424962109000" expanded="true" signature="3193:3232" placeholder="{...}" />
+                <marker date="1424962109000" expanded="true" signature="3303:3315" placeholder="{...}" />
+                <marker date="1424962109000" expanded="true" signature="3320:3322" placeholder="{...}" />
+                <marker date="1424962109000" expanded="true" signature="3560:3637" placeholder="{...}" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -66,8 +73,8 @@
       <file leaf-file-name="InvInvtryCtrls.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/adinvtry.client/src/main/webapp/modules/InvInvtry/InvInvtryCtrls.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="10050">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="60" max-vertical-offset="10170">
+              <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -174,7 +181,6 @@
         <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtOrders/PrcmtOrderCtrl.js" />
         <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtOrders/PrcmtOrderResource.js" />
         <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/index.html" />
-        <option value="$PROJECT_DIR$/adres.client/src/main/webapp/services/ADUtils.js" />
         <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/ProcmtUtils.js" />
         <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/PrcmtDeliveryShowCtrl.js" />
         <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/views/PrcmtDelivery/PrcmtDeliveryEdit.html" />
@@ -183,6 +189,7 @@
         <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/views/PrcmtDelivery/PrcmtDeliveryCreate.html" />
         <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/PrcmtDeliveryCtrl.js" />
         <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/views/PrcmtDelivery/PrcmtDeliveryAddItem.html" />
+        <option value="$PROJECT_DIR$/adres.client/src/main/webapp/services/ADUtils.js" />
         <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/PrcmtDeliveryAddItemCtrl.js" />
       </list>
     </option>
@@ -190,7 +197,7 @@
   <component name="ProjectFrameBounds">
     <option name="y" value="22" />
     <option name="width" value="1440" />
-    <option name="height" value="823" />
+    <option name="height" value="822" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -863,7 +870,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="22" width="1440" height="823" extended-state="6" />
+    <frame x="0" y="22" width="1440" height="822" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -1250,17 +1257,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/adinvtry.client/src/main/webapp/modules/InvInvtry/InvInvtryCtrls.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="10050">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="60" max-vertical-offset="10170">
+          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/adinvtry.client/src/main/webapp/modules/InvInvtry/InvInvtryCtrl.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1315" max-vertical-offset="2655">
-          <caret line="115" column="39" selection-start-line="115" selection-start-column="39" selection-end-line="115" selection-end-column="71" />
-          <folding />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1495" max-vertical-offset="2835">
+          <caret line="127" column="39" selection-start-line="127" selection-start-column="39" selection-end-line="127" selection-end-column="39" />
+          <folding>
+            <marker date="1424962109000" expanded="true" signature="2950:3329" placeholder="{...}" />
+            <marker date="1424962109000" expanded="true" signature="3016:3102" placeholder="{...}" />
+            <marker date="1424962109000" expanded="true" signature="3193:3232" placeholder="{...}" />
+            <marker date="1424962109000" expanded="true" signature="3303:3315" placeholder="{...}" />
+            <marker date="1424962109000" expanded="true" signature="3320:3322" placeholder="{...}" />
+            <marker date="1424962109000" expanded="true" signature="3560:3637" placeholder="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1268,14 +1282,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-12.5" vertical-offset="270" max-vertical-offset="1950">
           <caret line="38" column="93" selection-start-line="38" selection-start-column="46" selection-end-line="38" selection-end-column="93" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/adres.client/src/main/webapp/services/ADUtils.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1165" max-vertical-offset="1950">
-          <caret line="102" column="20" selection-start-line="102" selection-start-column="12" selection-end-line="102" selection-end-column="20" />
           <folding />
         </state>
       </provider>
@@ -1296,18 +1302,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/adres.client/src/main/webapp/services/ADUtils.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1305" max-vertical-offset="1995">
+          <caret line="116" column="28" selection-start-line="116" selection-start-column="16" selection-end-line="116" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/adprocmt.client/src/main/webapp/views/PrcmtDelivery/PrcmtDeliveryAddItem.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.75" vertical-offset="1965" max-vertical-offset="2955">
-          <caret line="145" column="127" selection-start-line="145" selection-start-column="127" selection-end-line="145" selection-end-column="127" />
+        <state vertical-scroll-proportion="-7.375" vertical-offset="1998" max-vertical-offset="2955">
+          <caret line="145" column="82" selection-start-line="145" selection-start-column="82" selection-end-line="145" selection-end-column="82" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/PrcmtDeliveryAddItemCtrl.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3928036" vertical-offset="2753" max-vertical-offset="3735">
-          <caret line="201" column="58" selection-start-line="201" selection-start-column="58" selection-end-line="201" selection-end-column="58" />
+        <state vertical-scroll-proportion="1.0675676" vertical-offset="3354" max-vertical-offset="4170">
+          <caret line="271" column="4" selection-start-line="271" selection-start-column="4" selection-end-line="271" selection-end-column="4" />
           <folding />
         </state>
       </provider>

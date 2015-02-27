@@ -348,6 +348,9 @@ public class PrcmtDeliveryManager {
 			delivery.setDlvryStatus(BaseProcessStatusEnum.ONGOING.name());
 			delivery = deliveryEJB.create(delivery);
 			createInitialDeliveryHistory(delivery);
+		}else{
+			//flush the delivery
+			 delivery = deliveryEJB.findById(delivery.getId());
 		}
 		return delivery;
 	}
