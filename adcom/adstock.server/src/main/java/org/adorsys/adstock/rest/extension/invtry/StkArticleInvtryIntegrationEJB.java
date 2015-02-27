@@ -12,11 +12,9 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import org.adorsys.adbase.security.SecurityUtil;
-import org.adorsys.adstock.jpa.StkArtStockQty;
 import org.adorsys.adstock.jpa.StkArticleLot;
 import org.adorsys.adstock.jpa.StkArticleLot2Ou;
 import org.adorsys.adstock.jpa.StkLotStockQty;
-import org.adorsys.adstock.rest.StkArtStockQtyEJB;
 import org.adorsys.adstock.rest.StkArticleLot2OuEJB;
 import org.adorsys.adstock.rest.StkArticleLot2StrgSctnEJB;
 import org.adorsys.adstock.rest.StkArticleLotEJB;
@@ -44,10 +42,7 @@ public class StkArticleInvtryIntegrationEJB {
 	
 	@Inject
 	private StkLotStockQtyEJB lotStockQtyEJB;
-	
-	@Inject
-	private StkArtStockQtyEJB artStockQtyEJB;
-	
+
 	public Map<String, StkArticleLot> findArtLotByArticlePic(List<String> artPics) {
 		if(artPics == null) artPics = new ArrayList<String>();
 		Map<String,StkArticleLot> results = new HashMap<String, StkArticleLot> ();
@@ -97,29 +92,7 @@ public class StkArticleInvtryIntegrationEJB {
 		List<StkArticleLot2Ou> stkArticleLot2Ous = articleLot2OuEJB.findByArtPicLikeAndOuLike(artPic, ouId);
 		return transformStkArticleLot2OusToMap(stkArticleLot2Ous);
 	}
-	
-	public Map<String, List<StkArtStockQty>> findArtStockQtys(List<String> artPics) {
-		if(artPics == null) artPics = new ArrayList<String>();
-		Map<String, List<StkArtStockQty>> allArtStkQtys=  new HashMap<String, List<StkArtStockQty>>();
-		for (String artPic : artPics) {
-			List<StkArtStockQty> artStkQtys =  findArtStockQty(artPic);
-			allArtStkQtys.put(artPic, artStkQtys);
-		}
-		return allArtStkQtys;
-	}
-	
 
-	/**
-	 * findArtStockQty.
-	 *
-	 * @param artPic
-	 * @return
-	 */
-	private List<StkArtStockQty> findArtStockQty(String artPic) {
-		List<StkArtStockQty> artStockQtys = artStockQtyEJB.findByArtPic(artPic);
-		return artStockQtys;
-	}
-	
 	public Map<String, List<StkLotStockQty>> findArtLotQtys(List<String> artPics) {
 		if(artPics == null) artPics = new ArrayList<String>();
 		Map<String, List<StkLotStockQty>> allArtStkQtys=  new HashMap<String, List<StkLotStockQty>>();
@@ -162,7 +135,6 @@ public class StkArticleInvtryIntegrationEJB {
 		List<String> artPics = searchInput.getArtPics();
 		Map<String, StkArticleLot2Ou> artLot2Ous = findArtLot2Ou(artPics);
 		Map<String, StkArticleLot> lotByArticlePics = findArtLotByArticlePic(artPics);
-		Map<String, List<StkArtStockQty>> stockQtys = findArtStockQtys(artPics);
 		Map<String, List<StkLotStockQty>> artLotQtys = findArtLotQtys(artPics);
 		
 		List<StkArticleLotDTO> resultList = new ArrayList<StkArticleLotDTO>(artPics.size());
@@ -170,14 +142,12 @@ public class StkArticleInvtryIntegrationEJB {
 			StkArticleLotDTO articleLotDTO = new StkArticleLotDTO();
 			StkArticleLot2Ou articleLot2Ou = artLot2Ous.get(artPic);
 			StkArticleLot stkArticleLot = lotByArticlePics.get(artPic);
-			List<StkArtStockQty> artStokQtys = stockQtys.get(artPic);
 			List<StkLotStockQty> stkLotStkQtys = artLotQtys.get(artPic);
 			
 
 			articleLotDTO.setArtPic(artPic);
 			articleLotDTO.setArticleLot2Ou(articleLot2Ou);
 			articleLotDTO.setStkArticleLot(stkArticleLot);
-			articleLotDTO.setArtStokQtys(artStokQtys);
 			articleLotDTO.setStkLotStkQtys(stkLotStkQtys);
 			
 			resultList.add(articleLotDTO);

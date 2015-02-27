@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 
 import org.adorsys.adcore.jpa.AbstractIdentifData;
 import org.adorsys.adcore.utils.BigDecimalUtils;
+import org.adorsys.adstock.rest.StkSectionArticleLot;
 import org.adorsys.javaext.description.Description;
 import org.apache.commons.lang3.StringUtils;
 
@@ -40,6 +41,9 @@ public class StkArticleLot2StrgSctn extends AbstractIdentifData {
 	
 	@Transient
 	private StkSection stkSection;
+	
+	@Transient
+	private StkSectionArticleLot sectionArticleLot;
 
 	public String getStrgSection() {
 		return strgSection;
@@ -87,6 +91,14 @@ public class StkArticleLot2StrgSctn extends AbstractIdentifData {
 
 	public void setStkSection(StkSection stkSection) {
 		this.stkSection = stkSection;
+	}
+	
+	public StkSectionArticleLot getSectionArticleLot() {
+		return sectionArticleLot;
+	}
+
+	public void setSectionArticleLot(StkSectionArticleLot sectionArticleLot) {
+		this.sectionArticleLot = sectionArticleLot;
 	}
 
 	public void copyTo(StkArticleLot2StrgSctn target){

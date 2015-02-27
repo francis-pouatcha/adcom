@@ -1,6 +1,8 @@
 package org.adorsys.adstock.rest;
 
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,11 +25,13 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.adorsys.adcore.utils.BigDecimalUtils;
 import org.adorsys.adstock.jpa.StkArticleLot;
 import org.adorsys.adstock.jpa.StkArticleLot2StrgSctn;
 import org.adorsys.adstock.jpa.StkArticleLotSearchInput;
 import org.adorsys.adstock.jpa.StkArticleLotSearchResult;
 import org.adorsys.adstock.jpa.StkArticleLot_;
+import org.adorsys.adstock.jpa.StkLotStockQty;
 import org.adorsys.adstock.rest.extension.invtry.ArtLotSearchInput;
 import org.adorsys.adstock.rest.extension.invtry.ArticleLotSearchResult;
 import org.adorsys.adstock.rest.extension.invtry.StkArticleInvtryIntegrationEJB;
@@ -128,37 +132,6 @@ public class StkArticleLotEndpoint
       return processSearchResult(searchInput, searchResult);
    }
    
-   private StkArticleLotSearchResult processSearchResult(StkArticleLotSearchInput searchInput,
-		   StkArticleLotSearchResult searchResult){
-	   	List<StkArticleLot> resultList = searchResult.getResultList();
-	    Map<String, StkArticleLot2StrgSctn> foundCache = new HashMap<String, StkArticleLot2StrgSctn>();
-		if(StringUtils.isNotBlank(searchInput.getSectionCode())){
-	          for (StkArticleLot stkArticleLot : resultList) {
-	        	  List<StkArticleLot2StrgSctn> sctns = strgSctnEJB.findByStrgSectionAndLotPicAndArtPic(searchInput.getSectionCode(), stkArticleLot.getLotPic(), stkArticleLot.getArtPic());
-	        	  putAndCache(foundCache, sctns, stkArticleLot);
-	          }
-	      } else if(searchInput.isWithStrgSection()){
-	          for (StkArticleLot stkArticleLot : resultList) {
-	        	  List<StkArticleLot2StrgSctn> sctns = strgSctnEJB.findByArtPicAndLotPic(stkArticleLot.getArtPic(),stkArticleLot.getLotPic());
-	        	  putAndCache(foundCache, sctns, stkArticleLot);
-	          }
-	      }
-	      return searchResult;
-   }
-   
-   private void putAndCache(Map<String, StkArticleLot2StrgSctn> foundCache, List<StkArticleLot2StrgSctn> sctns, StkArticleLot stkArticleLot){
- 	  for (StkArticleLot2StrgSctn strgSctn : sctns) {
-		  if(!foundCache.containsKey(strgSctn.getId())){
-			  foundCache.put(strgSctn.getId(), strgSctn);
-			  stkArticleLot.getStrgSctns().add(strgSctn);
-		  } else {
-			  if(!stkArticleLot.getStrgSctns().contains(strgSctn)){
-				  stkArticleLot.getStrgSctns().add(strgSctn);
-			  }
-		  }
-	  }
-   }
-
    @POST
    @Path("/countBy")
    @Consumes({ "application/json", "application/xml" })
@@ -231,12 +204,26 @@ public class StkArticleLotEndpoint
    }
 
    
+   @Inject
+   private StkLotStockQtyEJB lotStockQtyEJB;
 
    private StkArticleLot detach(StkArticleLot entity)
    {
       if (entity == null)
          return null;
-
+      
+      BigDecimal vatSalesPct = entity.getVatSalesPct();
+      BigDecimal sppuHT = entity.getSppuHT();
+      BigDecimal vat = BigDecimalUtils.basePercentOfRatePct(vatSalesPct, sppuHT, RoundingMode.HALF_EVEN);
+      BigDecimal sppuTaxIncl = BigDecimalUtils.sum(sppuHT, vat);
+      entity.setSppuTaxIncl(sppuTaxIncl);
+      entity.setSalesVatAmt(vat);
+      
+      List<String> lotPics = ejb.findLotPicByArtPic(entity.getArtPic());
+      List<StkLotStockQty> artQties = lotStockQtyEJB.findLatestArtStockQuantities(entity.getArtPic(), lotPics);
+      entity.setArtQties(artQties);
+//      entity.setArtName(artName);
+      
       return entity;
    }
 
@@ -257,4 +244,36 @@ public class StkArticleLotEndpoint
       searchInput.setEntity(detach(searchInput.getEntity()));
       return searchInput;
    }
+
+   private StkArticleLotSearchResult processSearchResult(StkArticleLotSearchInput searchInput,
+		   StkArticleLotSearchResult searchResult){
+	   	List<StkArticleLot> resultList = searchResult.getResultList();
+	    Map<String, StkArticleLot2StrgSctn> foundCache = new HashMap<String, StkArticleLot2StrgSctn>();
+		if(StringUtils.isNotBlank(searchInput.getSectionCode())){
+	          for (StkArticleLot stkArticleLot : resultList) {
+	        	  List<StkArticleLot2StrgSctn> sctns = strgSctnEJB.findByStrgSectionAndLotPicAndArtPic(searchInput.getSectionCode(), stkArticleLot.getLotPic(), stkArticleLot.getArtPic());
+	        	  putAndCache(foundCache, sctns, stkArticleLot);
+	          }
+	      } else if(searchInput.isWithStrgSection()){
+	          for (StkArticleLot stkArticleLot : resultList) {
+	        	  List<StkArticleLot2StrgSctn> sctns = strgSctnEJB.findByArtPicAndLotPic(stkArticleLot.getArtPic(),stkArticleLot.getLotPic());
+	        	  putAndCache(foundCache, sctns, stkArticleLot);
+	          }
+	      }
+	      return searchResult;
+   }
+   
+   private void putAndCache(Map<String, StkArticleLot2StrgSctn> foundCache, List<StkArticleLot2StrgSctn> sctns, StkArticleLot stkArticleLot){
+ 	  for (StkArticleLot2StrgSctn strgSctn : sctns) {
+		  if(!foundCache.containsKey(strgSctn.getId())){
+			  foundCache.put(strgSctn.getId(), strgSctn);
+			  stkArticleLot.getStrgSctns().add(strgSctn);
+		  } else {
+			  if(!stkArticleLot.getStrgSctns().contains(strgSctn)){
+				  stkArticleLot.getStrgSctns().add(strgSctn);
+			  }
+		  }
+	  }
+   }
+
 }

@@ -48,6 +48,8 @@
     "Entity_required.title":"Required",
     "Entity_list.title":"List",
     "Entity_type_to_select.title":"Type to select",
+    "Entity_notfound.title":"Nothing found",
+    
     
     "BaseCountryName_isoCode_description.title":"Country Code",
     "BaseCountryName_iso2_description.title":"Country Code Iso 2",

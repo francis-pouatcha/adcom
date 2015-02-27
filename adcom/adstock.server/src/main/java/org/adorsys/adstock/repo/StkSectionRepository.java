@@ -1,6 +1,7 @@
 package org.adorsys.adstock.repo;
 
 import java.util.Date;
+import java.util.List;
 
 import org.adorsys.adstock.jpa.StkSection;
 import org.apache.deltaspike.data.api.EntityRepository;
@@ -13,4 +14,6 @@ public interface StkSectionRepository extends EntityRepository<StkSection, Strin
 {
 	@Query("SELECT e FROM StkSection AS e WHERE e.identif = ?1 AND e.validFrom <= ?2 AND (e.validTo IS NULL OR e.validTo > ?2)")
 	public QueryResult<StkSection> findByIdentif(String identif, Date validOn);
+
+	public List<StkSection> findByParentCode(String parentCode);
 }

@@ -26,6 +26,7 @@ import org.adorsys.adstock.jpa.StkArticleLot2StrgSctn;
 import org.adorsys.adstock.jpa.StkArticleLot2StrgSctnSearchInput;
 import org.adorsys.adstock.jpa.StkArticleLot2StrgSctnSearchResult;
 import org.adorsys.adstock.jpa.StkArticleLot2StrgSctn_;
+import org.adorsys.adstock.jpa.StkLotStockQty;
 import org.adorsys.adstock.jpa.StkSection;
 import org.apache.commons.lang3.StringUtils;
 
@@ -180,6 +181,8 @@ public class StkArticleLot2StrgSctnEndpoint
    
    @Inject
    private StkSectionEJB stkSectionEJB;
+   @Inject
+   private StkLotStockQtyEJB lotStockQtyEJB;
    
    private StkArticleLot2StrgSctn detach(StkArticleLot2StrgSctn entity)
    {
@@ -191,6 +194,9 @@ public class StkArticleLot2StrgSctnEndpoint
     	  StkSection stkSection = stkSectionEJB.findByIdentif(strgSection, new Date());
     	  if(stkSection!=null)entity.setStkSection(stkSection);
       }
+      
+      StkLotStockQty latestQty = lotStockQtyEJB.findLatestQty(entity.getArtPic(), entity.getLotPic());
+      
       return entity;
    }
 
@@ -205,7 +211,7 @@ public class StkArticleLot2StrgSctnEndpoint
       }
       return result;
    }
-
+   
    private StkArticleLot2StrgSctnSearchInput detach(StkArticleLot2StrgSctnSearchInput searchInput)
    {
       searchInput.setEntity(detach(searchInput.getEntity()));

@@ -2,7 +2,7 @@
 <html ng-app="AdBnsptnr">
 <head>
     <meta charset="utf-8" />
-    <title>AngularJS Basic HTTP Authentication Example</title>
+    <title>AD Business Partners</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -16,7 +16,7 @@
 <body class="theme-blue">
 	<div ng-include="'/adres.client/views/navbar.html'"></div>
     <div class="container">
-        <div class="col-xs-offset-2 col-xs-8" ng-show="sessionManager.hasAuthErrors()">
+        <div ng-show="sessionManager.hasAuthErrors()">
             <div class="has-error">
             	<ul ng-repeat="error in sessionManager.authErrors()">
             		<li>{{error}}</li>

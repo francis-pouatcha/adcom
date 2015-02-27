@@ -62,6 +62,11 @@ public class BigDecimalUtils {
 		return result;
 	}
 	
+	public static BigDecimal amountWithTax(BigDecimal amtHT, BigDecimal vatRatePct){
+		BigDecimal vat = basePercentOfRatePct(vatRatePct, amtHT, RoundingMode.HALF_EVEN);
+		return sum(amtHT, vat);
+	}
+	
 	public Map<String, BigDecimal> share(BigDecimal base, Map<String, BigDecimal> perctgs){
 		int size = perctgs.size();
 		Map<String, BigDecimal> result = new HashMap<String, BigDecimal>(size);

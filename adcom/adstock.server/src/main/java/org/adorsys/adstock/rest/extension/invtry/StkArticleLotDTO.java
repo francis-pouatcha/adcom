@@ -5,7 +5,6 @@ package org.adorsys.adstock.rest.extension.invtry;
 
 import java.util.List;
 
-import org.adorsys.adstock.jpa.StkArtStockQty;
 import org.adorsys.adstock.jpa.StkAbstractArticleLot;
 import org.adorsys.adstock.jpa.StkArticleLot2Ou;
 import org.adorsys.adstock.jpa.StkLotStockQty;
@@ -29,10 +28,7 @@ public class StkArticleLotDTO {
 	 * The stkArticleLot field.
 	 */
 	private StkAbstractArticleLot stkArticleLot;
-	/**
-	 * The artStokQtys field.
-	 */
-	private List<StkArtStockQty> artStokQtys;
+
 	/**
 	 * The stkLotStkQtys field.
 	 */
@@ -56,12 +52,7 @@ public class StkArticleLotDTO {
 	public void setStkArticleLot(StkAbstractArticleLot stkArticleLot) {
 		this.stkArticleLot = stkArticleLot;
 	}
-	public List<StkArtStockQty> getArtStokQtys() {
-		return artStokQtys;
-	}
-	public void setArtStokQtys(List<StkArtStockQty> artStokQtys) {
-		this.artStokQtys = artStokQtys;
-	}
+
 	public List<StkLotStockQty> getStkLotStkQtys() {
 		return stkLotStkQtys;
 	}

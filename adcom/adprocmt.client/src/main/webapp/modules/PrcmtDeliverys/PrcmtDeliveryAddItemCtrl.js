@@ -229,15 +229,13 @@ angular.module('AdProcmt').controller('prcmtDeliveryAddItemCtlr',['$scope','$rou
         $('#artName').focus();
     }
     function deleteItem(index){
-        console.log(index);
-        self.prcmtDeliveryItemHolders.splice(index);
+        self.prcmtDeliveryItemHolders.splice(index,1);
         calculTotalAmountEntered();
     }
     function editItem(index){
         self.taux = "";
         angular.copy(self.prcmtDeliveryItemHolders[index],self.prcmtDeliveryItemHolder) ;
         deleteItem(index);
-        console.log(self.prcmtDeliveryItemHolder);
 
         if(self.prcmtDeliveryItemHolder.recvngOus[0]){
             self.rcvngOrgUnit = self.prcmtDeliveryItemHolder.recvngOus[0].rcvngOrgUnit.rcvngOrgUnit;

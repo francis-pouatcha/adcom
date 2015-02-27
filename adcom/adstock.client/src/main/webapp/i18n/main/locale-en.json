@@ -34,6 +34,13 @@
 "StkArticleLot_vatSalesPct_description.text":"The VAT rate in percent.",
 "StkArticleLot_vatSalesPct_description.title":"VAT Rate",
 
+"StkSectionArticleLot_artName_description.title":"Article Name",
+"StkSectionArticleLot_stockQty_description.title":"Quantity in this Section",
+"StkSectionArticleLot_stockQtyDt_description.title":"On Date",
+"StkSectionArticleLot_lotQty_description.title":"Total Quantity of Lot",
+"StkSectionArticleLot_lotQtyDt_description.title":"On Date",
+"StkSectionArticleLot_salesPrice_description.title":"Sales Price Tax Included",
+
 "StkArtLotSection_artPic_description.text":"The article code",
 "StkArtLotSection_artPic_description.title":"Article PIC",
 "StkArtLotSection_description.text":"The article Lot section.",
@@ -117,7 +124,11 @@
 "StkSection_sectionCode_required.text":"The section code is required",
 "StkSection_sectionCode_required.title":"Section Code Required.",
 "StkSection_wharehouse_description.text":"Warehouse",
-"StkSection_wharehouse_description..title":"Warehouse"
+"StkSection_wharehouse_description..title":"Warehouse",
+"StkSection_stkSubSection_description.title":"SubSections",
+"StkSection_stkArticleLot_description.title":"Article Lots"
+
+
 
 
 }

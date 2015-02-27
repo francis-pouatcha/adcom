@@ -29,7 +29,7 @@
                        <div ng-class="{ 'has-error' : invInvtryItemForm.lotPic.$invalid }" >
                            <input type="text" ng- class="form-control" name="lotPic" id="lotPic" required autocomplete="off" 
                            	ng-model="invInvtryItemHolder.invtryItem.lotPic"
-                              typeahead="articleLot as articleLot.pic for articleLot in invInvtryUtils.loadArticleLotsByPic($viewValue)"
+                              typeahead="articleLot as articleLot.pic for articleLot in invInvtryUtils.loadArticleLots($viewValue)"
                               typeahead-loading="loading" typeahead-on-select='onArticleLotSelected($item, $model, $label)' >
                        </div>
                    </div>
@@ -38,7 +38,7 @@
                        <div ng-class="{ 'has-error' : invInvtryItemForm.artPic.$invalid }" >
                            <input type="text" ng- class="form-control" name="artPic" id="artPic" required autocomplete="off" 
                            	ng-model="invInvtryItemHolder.invtryItem.artPic"
-                              typeahead="article as article.pic for article in invInvtryUtils.loadArticlesByPic($viewValue)"
+                              typeahead="article as article.pic for article in invInvtryUtils.loadArticles($viewValue)"
                               typeahead-loading="loading" typeahead-on-select='onArticleSelected($item, $model, $label)' >
                        </div>
                    </div>
@@ -47,7 +47,7 @@
                        <div ng-class="{ 'has-error' : invInvtryItemForm.artName.$invalid }" >
                            <input type="text" class="form-control" required id="artName" autocomplete="off" 
                            	ng-model="invInvtryItemHolder.invtryItem.artName"
-                              typeahead="article as article.features.artName for article in invInvtryUtils.loadArticlesByName($viewValue)"
+                              typeahead="article as article.features.artName for article in invInvtryUtils.loadArticles($viewValue)"
                               typeahead-loading="loading" typeahead-on-select='onArticleSelected($item, $model, $label)' name="artName" >
                        </div>
                    </div>
