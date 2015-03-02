@@ -122,7 +122,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="invtry in invInvtrys" >
+                            <tr ng-repeat="invtry in invInvtrys" ng-dblclick="editItem" >
                                 <td>{{invtry.invtryNbr}}</td>
                                 <td>{{invtry.acsngUser}}</td>
                                 <td>{{invtry.acsngDt | date:'yyyy-MM-dd HH:mm'}}</td>

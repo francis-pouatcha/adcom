@@ -418,11 +418,11 @@ angular.module('AdInvtry')
         return service.invInvtry();
     };
     
-    service.getByInvtryNbr = function(invtryNbr) {
-        if(!invtryNbr || !invInvtrysVar) return;
+    service.getByIdentif = function(identif) {
+        if(!identif || !invInvtrysVar) return;
         var result ;
          angular.forEach(invInvtrysVar, function(invInvtry){
-            if(invInvtry.invtryNbr && invInvtry.invtryNbr == invtryNbr) {
+            if(invInvtry.identif && invInvtry.identif == identif) {
                 result = invInvtry
             }
         });
@@ -570,15 +570,15 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
     	if(invInvtryUtils.isInvtryBySection($scope.invInvtry) && stkSection){
     		$scope.invInvtryItemHolder.invtryItem.section=stkSection.sectionCode;
     	}
-        var invtryNbr = $routeParams.invtryNbr;
-        if(invtryNbr) {
-            loadInvInvtryItems(invtryNbr);   
+        var identif = $routeParams.identif;
+        if(identif) {
+            loadInvInvtryItems(identif);   
         }
     }
-    function loadInvInvtryItems(invtryNbr) {
-        $scope.invInvtry = invInvtryState.getByInvtryNbr(invtryNbr);
+    function loadInvInvtryItems(identif) {
+        $scope.invInvtry = invInvtryState.getByIdentif(identif);
         var invInvtryItemSearchResult  = {entity : {}};
-        invInvtryItemSearchResult.entity.invtryNbr=invtryNbr;
+        invInvtryItemSearchResult.entity.identif=identif;
         
         genericResource.findByLike(invInvtryUtils.invinvtrysUrlBase,invInvtryItemSearchResult)
         .success(function(searchResult){
@@ -709,11 +709,12 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
 		.error(function(error){$scope.error=error;});
     };
     
-    $scope.editItem =function(index){
+    $scope.editItem = function(index){
         if(index &&
-            (0 <= index <=$scope.invInvtryItemHolders.length)) {
+            (0 <= index && index <=$scope.invInvtryItemHolders.length)) {
             var itemHolder = $scope.invInvtryItemHolders[index];
-            $location.path('/InvInvtrys/edit/'+itemHolder.invtryItem.identif);   
+//            $location.path('/InvInvtrys/edit/'+itemHolder.invtryItem.identif);   
+            $scope.invInvtryItemHolder = itemHolder;
         }
     };
     $scope.addItem = function() {

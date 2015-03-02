@@ -93,7 +93,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="itemHolder in invInvtryItemHolders">
+                    <tr ng-repeat="itemHolder in invInvtryItemHolders" ng-dblclick="editItem($index)">
                         <td>{{itemHolder.invtryItem.section}}</td>
                         <td>{{itemHolder.invtryItem.lotPic}}</td>
                         <td>{{itemHolder.invtryItem.artPic}}</td>
