@@ -3,7 +3,7 @@
         <h4>
             <a>{{invInvtry.invtryNbr}}</a> {{invInvtryUtils.translations['Entity_Of.title']}} {{invInvtry.invtryDt | date:'dd-MM-yyyy'}},
             <b> {{invInvtryUtils.translations['Entity_By.title']}} : </b>{{invInvtry.acsngUser}},
-            <b>{{invInvtryUtils.translations['InvInvtry_invtryStatus_description.title']}} :</b> {{invInvtryUtils.invInvtryTypeI18nMsgTitleValue(invInvtry.invtryStatus)}}
+            <b>{{invInvtryUtils.translations['InvInvtry_invtryStatus_description.title']}} :</b> {{invInvtryUtils.invInvtryStatusI18nMsgTitleValue(invInvtry.invtryStatus)}}
             <p class="pull-right">
                 <a class=" btn btn-default" href="#/"  type="button">Cancel</a>
                 <button class=" btn btn-primary" ng-click="save()" type="button">{{invInvtryUtils.translations['Entity_save.title']}} </button>
@@ -11,7 +11,7 @@
             </p>
         </h4>
     </div>
-    <div class="panel panel-default">
+    <div class="panel panel-default" ng-show="invInvtryUtils.isInvInvtryEditable(invInvtry)">
         <div class="panel-heading"><b> {{invInvtryUtils.translations['Entity_add.title']}} {{invInvtryUtils.translations['InvInvtryItem_description.title']}} </b> </div>
         <div class="panel-body">
             <form name="invInvtryItemForm" id="invInvtryItemForm" novalidate >
@@ -75,8 +75,8 @@
                     <th class="clo-lg-1">{{invInvtryUtils.translations['InvInvtryItem_lotPic_description.title']}}</th>
                     <th class="clo-lg-1">{{invInvtryUtils.translations['InvInvtryItem_artPic_description.title']}}</th>
                     <th class="col-lg-5">{{invInvtryUtils.translations['InvInvtryItem_artName_description.title']}}</th>
-                    <th class="col-lg-2">{{invInvtryUtils.translations['InvInvtryItem_asseccedQty_description.title']}}</th>
-                    <th class="col-lg-1"></th>
+                    <th class="col-lg-2" ng-show="invInvtryUtils.isInvInvtryEditable(invInvtry)">{{invInvtryUtils.translations['InvInvtryItem_asseccedQty_description.title']}}</th>
+                    <th class="col-lg-1" ng-show="invInvtryUtils.isInvInvtryEditable(invInvtry)"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -86,8 +86,8 @@
                         <td>{{itemHolder.invtryItem.artPic}}</td>
                         <td>{{itemHolder.invtryItem.artName}}</td>
                         <td>{{itemHolder.invtryItem.asseccedQty}}</td>
-                        <td><a ng-click="editItem($index)" class=""><i class="glyphicon glyphicon-edit"></i></a></td>
-                        <td><a ng-click="deleteItem($index)" class=""><i class="glyphicon glyphicon-trash"></i></a></td>
+                        <td ng-show="invInvtryUtils.isInvInvtryEditable(invInvtry)"><a ng-click="editItem($index)" class=""><i class="glyphicon glyphicon-edit"></i></a></td>
+                        <td ng-show="invInvtryUtils.isInvInvtryEditable(invInvtry)"><a ng-click="deleteItem($index)" class=""><i class="glyphicon glyphicon-trash"></i></a></td>
                     </tr>
                 </tbody>
             </table>
