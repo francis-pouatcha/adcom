@@ -296,6 +296,9 @@ public class PrcmtDlvryItemEJB {
 	public List<PrcmtDlvryItem> findByDlvryNbr(String dlvryNbr, int start, int max){
 		return repository.findByDlvryNbr(dlvryNbr).firstResult(start).maxResults(max).getResultList();
 	}
+	public List<PrcmtDlvryItem> findByDlvryNbr(String dlvryNbr){
+		return repository.findByDlvryNbr(dlvryNbr).getResultList();
+	}
 
 	@SuppressWarnings("unchecked")
 	public Long countByDlvryNbr(String dlvryNbr){
