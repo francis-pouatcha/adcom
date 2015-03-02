@@ -1,12 +1,14 @@
 package org.adorsys.adprocmt.rest;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
 
+import org.adorsys.adbase.security.SecurityUtil;
 import org.adorsys.adprocmt.jpa.PrcmtDlvryArtPrcssng;
 import org.adorsys.adprocmt.jpa.PrcmtDlvryItem;
 import org.adorsys.adprocmt.jpa.PrcmtDlvryItem2Ou;
@@ -53,8 +55,17 @@ public class PrcmtDlvryItemEJB {
 	
 	@Inject
 	private PrcmtDlvryItem2StrgSctnRepository strgSctnRepository;
+	
+	@Inject
+	private SecurityUtil securityUtil;
 
 	public PrcmtDlvryItem create(PrcmtDlvryItem entity) {
+		
+		String currentLoginName = securityUtil.getCurrentLoginName();
+		Date now = new Date();
+		entity.setCreatingUsr(currentLoginName);
+		entity.setCreationDt(now);
+		
 		entity = repository.save(attach(entity));
 		PrcmtDlvryItemEvtData evtData = new PrcmtDlvryItemEvtData();
 		entity.copyTo(evtData);

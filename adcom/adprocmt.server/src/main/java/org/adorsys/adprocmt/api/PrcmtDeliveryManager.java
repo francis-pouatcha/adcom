@@ -19,7 +19,6 @@ import org.adorsys.adprocmt.jpa.PrcmtAbstractDlvry2PO;
 import org.adorsys.adprocmt.jpa.PrcmtDelivery;
 import org.adorsys.adprocmt.jpa.PrcmtDeliveryHstry;
 import org.adorsys.adprocmt.jpa.PrcmtDlvry2Ou;
-import org.adorsys.adprocmt.jpa.PrcmtDlvry2PO;
 import org.adorsys.adprocmt.jpa.PrcmtDlvryItem;
 import org.adorsys.adprocmt.jpa.PrcmtDlvryItem2Ou;
 import org.adorsys.adprocmt.jpa.PrcmtDlvryItem2POItem;
