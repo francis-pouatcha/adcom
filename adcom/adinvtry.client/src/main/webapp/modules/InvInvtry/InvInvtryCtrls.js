@@ -455,6 +455,7 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
 		.success(function(entitySearchResult) {
 			// store search
 			invInvtryState.consumeSearchResult(searchInput,entitySearchResult);
+            $scope.invInvtrys = invInvtryState.invInvtrys();
 		})
         .error(function(error){
             $scope.error=error;
