@@ -89,6 +89,7 @@
 
 "InvInvtry_NoSectionFound_description.title":"No Section Found",
 "InvInvtry_NoArticleFound_description":"No Article Found",
+"InvInvtry_NoUserFound_description":"No User Found",
 "InvInvtry_gapPurchAmtHTFrom_description.title":"Gap in Purchase Amount above",
 "InvInvtry_gapPurchAmtHTTo_description.title":"Gap in Purchase Amount below"
 
