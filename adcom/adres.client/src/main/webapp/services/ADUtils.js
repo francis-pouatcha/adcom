@@ -114,6 +114,9 @@ angular.module('ADUtils',[])
         service.find = function(urlBase, entitySearchInput){
             return $http.post(urlBase,entitySearchInput);
         };
+        service.customMethod = function(urlBase, entitySearchInput){
+            return $http.post(urlBase,entitySearchInput);
+        };
     service.deleteById = function(urlBase, entityId){
         return $http.delete(urlBase+'/'+entityId);
     };

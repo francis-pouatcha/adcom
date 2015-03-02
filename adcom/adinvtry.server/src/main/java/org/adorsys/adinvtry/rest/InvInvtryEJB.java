@@ -51,6 +51,7 @@ public class InvInvtryEJB
 		InvInvtryEvtData invtryEvtData = new InvInvtryEvtData();
 		save.copyTo(invtryEvtData);
 		invtryEvtData.setId(save.getId());
+		invtryEvtData.setIdentif(save.getIdentif());
 		invtryEvtDataEJB.create(invtryEvtData);
 		return save;
 	}

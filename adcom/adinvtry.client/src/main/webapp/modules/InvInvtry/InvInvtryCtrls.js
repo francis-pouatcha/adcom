@@ -1,4 +1,4 @@
-﻿'use strict';
+'use strict';
     
 angular.module('AdInvtry')
 
@@ -167,7 +167,7 @@ angular.module('AdInvtry')
             max: 10
         };
 
-        searchInput.codeAndNames = val;
+        searchInput.codesAndNames = val;
         var deferred = $q.defer();
         genericResource.findByLike(service.catalarticlesUrlBase, searchInput)
 		.success(function(entitySearchResult) {
@@ -180,14 +180,17 @@ angular.module('AdInvtry')
     }    
 
     service.loadArticleLots = function(lotPic){
-    	if(!lotPic || lotPic.length<5) return;
         return loadArticleLotsPromise(lotPic).then(function(entitySearchResult){
             return entitySearchResult.resultList;
         });
     };
 
     function loadArticleLotsPromise(lotPic){
-    	if(!lotPic) return;
+        var deferred = $q.defer();
+        if(!lotPic || lotPic.length<5) {
+            deferred.reject("");
+            return deferred.promise;
+        }
         var searchInput = {entity:{},fieldNames:[],start: 0,max: 30};
         searchInput.entity.lotPic = lotPic;
         if(searchInput.fieldNames.indexOf('lotPic')==-1)
@@ -196,10 +199,8 @@ angular.module('AdInvtry')
         if(searchInput.fieldNames.indexOf('closedDt')==-1)
         	searchInput.fieldNames.push('closedDt');
         // also load storage section
-        searchInput.entity.withStrgSection=true;
-
-        var deferred = $q.defer();
-        genericResource.findByLike(service.catalarticlesUrlBase, searchInput)
+        searchInput.withStrgSection=true;
+        genericResource.findByLike(service.stkarticlelotsUrlBase, searchInput)
 		.success(function(entitySearchResult) {
         	deferred.resolve(entitySearchResult);
 		})
@@ -457,6 +458,7 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
 		.success(function(entitySearchResult) {
 			// store search
 			invInvtryState.consumeSearchResult(searchInput,entitySearchResult);
+            $scope.invInvtrys = invInvtryState.invInvtrys();
 		})
         .error(function(error){
             $scope.error=error;
@@ -543,9 +545,8 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
     $scope.invInvtry.acsngUser = invInvtryUtils.currentWsUser.userFullName;
     $scope.error = "";
     $scope.invInvtryUtils=invInvtryUtils;
-    $scope.invInvtryItemHolder = {
-    	invtryItem:{}
-    };
+    $scope.invInvtryItemHolder = emptyItemHolder();
+    
     $scope.invInvtryItemHolders = [];
 
     function init(){
@@ -643,10 +644,11 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
         	lotSearchInput.fieldNames.push('closedDt');
         genericResource.findBy(invInvtryUtils.stkarticlelotsUrlBase, lotSearchInput)
 		.success(function(entitySearchResult) {
-			$scope.invInvtryItemHolder.candidateLots=entitySearchResult.resultList;
-			if($scope.invInvtryItemHolder.candidateLots && $scope.invInvtryItemHolder.candidateLots.length==1){
-		    	$scope.invInvtryItemHolder.invtryItem.lotPic=$scope.invInvtryItemHolder.candidateLots[0].lotPic;
-			} else if ($scope.invInvtryItemHolder.candidateLots && $scope.invInvtryItemHolder.candidateLots.length>1){
+//			$scope.invInvtryItemHolder.candidateLots=entitySearchResult.resultList;
+            var candidateLots=entitySearchResult.resultList;
+			if(candidateLots && candidateLots.length==1){
+		    	$scope.invInvtryItemHolder.invtryItem.lotPic=candidateLots[0].lotPic;
+			} else if (candidateLots && candidateLots.length>1){
 				if($scope.invInvtryItemHolder.invtryItem.section){
 					var candidateLots = $scope.invInvtryItemHolder.candidateLots;
 					var found = false;
@@ -669,8 +671,28 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
 		.error(function(error){$scope.error=error;});
     };
     
-    $scope.edit =function(){
-        $location.path('/InvInvtrys/edit/');
+    $scope.editItem =function(index){
+        if(index &&
+            (0 <= index <=$scope.invInvtryItemHolders.length)) {
+            var itemHolder = $scope.invInvtryItemHolders[index];
+            $location.path('/InvInvtrys/edit/'+itemHolder.invtryItem.identif);   
+        }
     };
-
+    $scope.addItem = function() {
+        if(!$scope.invInvtryItemHolder) return;
+        $scope.invInvtryItemHolders.push($scope.invInvtryItemHolder);
+        $scope.invInvtryItemHolder = emptyItemHolder();
+    };
+                                     
+    $scope.deleteItem = function(index) {
+//          if(!index) return;
+          try {
+              $scope.invInvtryItemHolders.splice(index,1);
+          }finally {}
+    };
+    function emptyItemHolder () {
+        return {
+          invtryItem : {}  
+        };
+    }
 }]);

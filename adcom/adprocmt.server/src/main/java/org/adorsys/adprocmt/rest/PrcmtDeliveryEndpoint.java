@@ -43,7 +43,7 @@ public class PrcmtDeliveryEndpoint
    @Produces({ "application/json", "application/xml" })
    public PrcmtDelivery create(PrcmtDelivery entity)
    {
-      return detach(ejb.create(entity));
+      return detach(ejb.createCustom(entity));
    }
 
    @DELETE

@@ -301,7 +301,8 @@ public class PrcmtDlvryItemEJB {
 	public Long countByDlvryNbr(String dlvryNbr){
 		PrcmtDlvryItem dlvryItem = new PrcmtDlvryItem();
 		dlvryItem.setDlvryNbr(dlvryNbr);
-		return repository.count(dlvryItem, new SingularAttribute[]{PrcmtDlvryItem_.dlvryNbr});
+		//return repository.count(dlvryItem, new SingularAttribute[]{PrcmtDlvryItem_.dlvryNbr});
+		return repository.findByDlvryNbr(dlvryNbr).count();
 	}
 
 	public PrcmtDlvryItem findByIdentif(String identif) {
