@@ -39,8 +39,8 @@ angular.module('AdInvtry')
     service.invInvntrStatusI18nMsgTitleKey = function(enumKey){
     	return "InvInvntrStatus_"+enumKey+"_description.title";
     };
-    service.invInvtryTypeI18nMsgTitleValue = function(enumKey){
-    	return service.translations[service.invInvtryTypeI18nMsgTitleKey(enumKey)];
+    service.invInvntrStatusI18nMsgTitleValue = function(enumKey){
+    	return service.translations[service.invInvntrStatusI18nMsgTitleKey(enumKey)];
     };
     
     service.invInvntrStati = [
@@ -51,6 +51,8 @@ angular.module('AdInvtry')
     ];
 
     service.language=sessionManager.language;
+    
+    service.currentWsUser=sessionManager.userWsData();
     
     service.translate = function(){
     	$translate(['InvInvtryType_BY_SECTION_description.title',
@@ -73,6 +75,7 @@ angular.module('AdInvtry')
     	            'InvInvtry_descptn_description.title',
     	            'InvInvtry_descptn_description.text',
     	            'InvInvtry_invInvtryType_description.title',
+    	            'InvInvtry_invtryDt_description.title',
     	            'InvInvtry_section_description.title',
     	            'InvInvtry_section_description.text',
     	            'InvInvtry_invtryNbr_description.title',
@@ -233,7 +236,7 @@ angular.module('AdInvtry')
         	deferred.resolve(entitySearchResult);
 		})
         .error(function(){
-            deferred.reject(service.translations['InvInvtry_NoArticleFound_description.title']);
+            deferred.reject(service.translations['InvInvtry_NoUserFound_description.title']);
         });
         return deferred.promise;
     }    
@@ -499,8 +502,8 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
     $scope.invInvtryUtils=invInvtryUtils;
 
     function create(){
-//    	$scope.invInvtry.invtryDt=Date(); lets set it to the server
-    	$scope.invInvtry.invtryStatus='ONGOING';
+    	$scope.invInvtry.invtryDt=new Date();
+    	$scope.invInvtry.invInvntrStatus='ONGOING';
     	if($scope.stkSection){
     		invInvtryState.stkSection($scope.stkSection);
     	}
@@ -539,6 +542,7 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
 .controller('invInvtryShowCtlr',['$scope','invInvtryManagerResource','$location','invInvtryUtils','invInvtryState','$rootScope','genericResource',
                                  function($scope,invInvtryManagerResource,$location,invInvtryUtils,invInvtryState,$rootScope,genericResource){
     $scope.invInvtry = invInvtryState.invInvtry();
+    $scope.invInvtry.acsngUser = invInvtryUtils.currentWsUser.userFullName;
     $scope.error = "";
     $scope.invInvtryUtils=invInvtryUtils;
     $scope.invInvtryItemHolder = emptyItemHolder();
