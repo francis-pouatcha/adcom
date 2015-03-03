@@ -208,7 +208,9 @@ angular.module('AdInvtry')
             deferred.reject(service.translations['InvInvtry_NoArticleFound_description.title']);
         });
         return deferred.promise;
-    }    
+    }
+    
+  
 
     service.loadUsers = function(val){
         return loadUsersPromise(val).then(function(entitySearchResult){
