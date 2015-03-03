@@ -11,9 +11,9 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.adorsys.adcore.utils.FormatedValidFrom;
 import org.adorsys.javaext.description.Description;
 import org.apache.commons.lang3.StringUtils;
-//import org.jgroups.util.UUID;
 
 @MappedSuperclass
 public abstract class AbstractEntityHistory extends AbstractEntity {
@@ -141,6 +141,14 @@ public abstract class AbstractEntityHistory extends AbstractEntity {
 
 	public void setAddtnlInfo(final String addtnlInfo) {
 		this.addtnlInfo = addtnlInfo;
+	}
+	
+	public void makeHistoryId(boolean unique){
+		if(unique){
+			setId(getEntIdentif() +"_"+ getHstryType());
+		} else {
+			setId(getEntIdentif() +"_"+ getHstryType() + "_" + FormatedValidFrom.format(getHstryDt()));
+		}
 	}
 	
 	public void copyTo(AbstractEntityHistory target){

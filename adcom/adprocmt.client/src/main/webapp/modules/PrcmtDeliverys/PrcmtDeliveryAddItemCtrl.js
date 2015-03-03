@@ -10,6 +10,7 @@ angular.module('AdProcmt').controller('prcmtDeliveryAddItemCtlr',['$scope','$rou
         strgSctns:[]
 
     };
+    self.close = true;
     self.prcmtDeliveryItemHolders = [];
     self.error = "";
     self.loadArticlesByNameLike = loadArticlesByNameLike;
@@ -37,9 +38,10 @@ angular.module('AdProcmt').controller('prcmtDeliveryAddItemCtlr',['$scope','$rou
 
     function load(){
         var identif = $routeParams.identif;
-        genericResource.findById(ProcmtUtils.urlBase,identif)
+        genericResource.findById(ProcmtUtils.urlManagerDelivery,identif)
             .success(function(data){
-                self.prcmtDelivery = data;
+                self.prcmtDelivery = data.delivery;
+                self.prcmtDeliveryItemHolders = data.deliveryItems;
             })
             .error(function(error){
                 self.error = "No procurement delivery";
@@ -198,7 +200,7 @@ angular.module('AdProcmt').controller('prcmtDeliveryAddItemCtlr',['$scope','$rou
         prcmtDeliveryHolder.delivery = self.prcmtDelivery;
         prcmtDeliveryHolder.deliveryItems = self.prcmtDeliveryItemHolders;
         genericResource.customMethod(ProcmtUtils.urlManagerDelivery+'/close',prcmtDeliveryHolder).success(function(){
-            //update succes
+            self.close = false;
         });
     }
 

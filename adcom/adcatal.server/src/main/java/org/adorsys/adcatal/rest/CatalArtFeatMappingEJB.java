@@ -9,7 +9,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adcatal.jpa.CatalArtFeatMapping;
-import org.adorsys.adcatal.repo.CatalArtFeatMappingRepository;
+import org.adorsys.adcatal.repository.CatalArtFeatMappingRepository;
 
 @Stateless
 public class CatalArtFeatMappingEJB {

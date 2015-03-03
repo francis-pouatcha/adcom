@@ -94,10 +94,10 @@ angular.module('AdStock')
         return stkSubSectionActiveVar;
     };
 
-    var stkArticleLotActiveVar=false;
-    service.stkArticleLotActive=function(stkArticleLotActiveIn){
-        if(stkArticleLotActiveIn)stkArticleLotActiveVar=stkArticleLotActiveIn;
-        return stkArticleLotActiveVar;
+    var stkSectionArticleLotActiveVar=false;
+    service.stkSectionArticleLotActive=function(stkSectionArticleLotActiveIn){
+        if(stkSectionArticleLotActiveIn)stkSectionArticleLotActiveVar=stkSectionArticleLotActiveIn;
+        return stkSectionArticleLotActiveVar;
     };
 
     // A cache of dependents by ptnrNbr
@@ -229,7 +229,7 @@ angular.module('AdStock')
         if(tabName){
             activeTabVar=tabName;
             stkSubSectionActiveVar= tabName=='stkSubSection';
-            stkArticleLotActiveVar= tabName=='stkArticleLot';
+            stkSectionArticleLotActiveVar= tabName=='stkSectionArticleLot';
         }
         $rootScope.$broadcast('StkSectionsSelected', {tabName:activeTabVar,stkSection:service.stkSection()});
     };
@@ -381,7 +381,7 @@ function($scope,genericResource,stkSectionUtils,stkSectionState,$location,$rootS
     $scope.error = "";
     $scope.stkSectionUtils=stkSectionUtils;
     $scope.stkSubSectionActive=stkSectionState.stkSubSectionActive();
-    $scope.stkArticleLotActive=stkSectionState.stkArticleLotActive();
+    $scope.stkSectionArticleLotActive=stkSectionState.stkSectionArticleLotActive();
     
     $scope.previous = function (){
         var ent = stkSectionState.previous();

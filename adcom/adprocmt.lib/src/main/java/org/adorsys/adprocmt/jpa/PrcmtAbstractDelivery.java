@@ -379,5 +379,4 @@ public class PrcmtAbstractDelivery extends AbstractIdentifData {
 	protected String makeIdentif() {
 		return dlvryNbr;
 	}
-	
 }

@@ -410,6 +410,7 @@ public class PrcmtDeliveryManager {
 		deliveryHstry.setOrignLogin(callerPrincipal.getName());
 		deliveryHstry.setOrignWrkspc(callerPrincipal.getWorkspaceId());
 		deliveryHstry.setProcStep(BaseProcStepEnum.CLOSING.name());
+		deliveryHstry.makeHistoryId(true);
 		deliveryHstryEJB.create(deliveryHstry);
 	}
 
@@ -426,6 +427,7 @@ public class PrcmtDeliveryManager {
 		deliveryHstry.setOrignLogin(callerPrincipal.getName());
 		deliveryHstry.setOrignWrkspc(callerPrincipal.getWorkspaceId());
 		deliveryHstry.setProcStep(BaseProcStepEnum.INITIATING.name());
+		deliveryHstry.makeHistoryId(true);
 		deliveryHstryEJB.create(deliveryHstry);
 	}
 
@@ -442,6 +444,7 @@ public class PrcmtDeliveryManager {
 		deliveryHstry.setOrignLogin(callerPrincipal.getName());
 		deliveryHstry.setOrignWrkspc(callerPrincipal.getWorkspaceId());
 		deliveryHstry.setProcStep(BaseProcStepEnum.MODIFYING.name());
+		deliveryHstry.makeHistoryId(false);
 		deliveryHstryEJB.create(deliveryHstry);
 	}
 	
@@ -458,7 +461,50 @@ public class PrcmtDeliveryManager {
 		deliveryHstry.setOrignLogin(callerPrincipal.getName());
 		deliveryHstry.setOrignWrkspc(callerPrincipal.getWorkspaceId());
 		deliveryHstry.setProcStep(BaseProcStepEnum.CLOSING.name());
+		deliveryHstry.makeHistoryId(true);
 		deliveryHstryEJB.create(deliveryHstry);
+	}
+
+	public PrcmtDeliveryHolder findDelivery(String id) {
+		
+		PrcmtDeliveryHolder prcmtDeliveryHolder = new PrcmtDeliveryHolder();
+		PrcmtDelivery delivery = deliveryEJB.findById(id);
+		prcmtDeliveryHolder.setDelivery(delivery);
+		List<PrcmtDlvry2Ou> listOrgUnits = deliveryEJB.listOrgUnits(delivery.getDlvryNbr());
+		for(PrcmtDlvry2Ou prcmtDlvry2Ou:listOrgUnits){
+			PrcmtDlvryRcvngOrgUnitHolder prcmtDlvryRcvngOrgUnitHolder = new PrcmtDlvryRcvngOrgUnitHolder();
+			prcmtDlvryRcvngOrgUnitHolder.setRcvngOrgUnit(prcmtDlvry2Ou);
+			prcmtDeliveryHolder.getRcvngOrgUnits().add(prcmtDlvryRcvngOrgUnitHolder);
+		}
+			
+		List<PrcmtDlvryItem> deliveryItems = dlvryItemEJB.findByDlvryNbr(delivery.getDlvryNbr());
+		for(PrcmtDlvryItem deliveryItem:deliveryItems){
+			PrcmtDeliveryItemHolder prcmtDeliveryItemHolder = new PrcmtDeliveryItemHolder();
+			prcmtDeliveryItemHolder.setDlvryItem(deliveryItem);
+			
+			List<PrcmtDlvryItem2Ou> listDlvryItem2Ou = dlvryItemEJB.listDlvryItem2Ou(deliveryItem.getDlvryNbr());
+			for(PrcmtDlvryItem2Ou prcmtDlvryItem2Ou:listDlvryItem2Ou){		
+				PrcmtDlvryItem2RcvngOrgUnitHolder prcmtDlvryItem2RcvngOrgUnitHolder = new PrcmtDlvryItem2RcvngOrgUnitHolder();
+				prcmtDlvryItem2RcvngOrgUnitHolder.setRcvngOrgUnit(prcmtDlvryItem2Ou);
+				prcmtDeliveryItemHolder.getRecvngOus().add(prcmtDlvryItem2RcvngOrgUnitHolder);
+			}				
+			List<PrcmtDlvryItem2POItem> listDlvryItem2POItem = dlvryItemEJB.listDlvryItem2POItem(deliveryItem.getDlvryNbr());
+			for(PrcmtDlvryItem2POItem prcmtDlvryItem2POItem:listDlvryItem2POItem){
+				PrcmtDlvryItem2PoItemHolder prcmtDlvryItem2PoItemHolder = new PrcmtDlvryItem2PoItemHolder();
+				prcmtDlvryItem2PoItemHolder.setPoItem(prcmtDlvryItem2POItem);
+				prcmtDeliveryItemHolder.getPoItems().add(prcmtDlvryItem2PoItemHolder);
+			}
+			List<PrcmtDlvryItem2StrgSctn> listDlvryItem2StrgSctn = dlvryItemEJB.listDlvryItem2StrgSctn(deliveryItem.getDlvryNbr());
+			for(PrcmtDlvryItem2StrgSctn prcmtDlvryItem2StrgSctn:listDlvryItem2StrgSctn){
+				PrcmtDlvryItem2StrgSctnHolder prcmtDlvryItem2StrgSctnHolder = new PrcmtDlvryItem2StrgSctnHolder();
+				prcmtDlvryItem2StrgSctnHolder.setStrgSctn(prcmtDlvryItem2StrgSctn);
+				prcmtDeliveryItemHolder.getStrgSctns().add(prcmtDlvryItem2StrgSctnHolder);
+			}
+			
+			prcmtDeliveryHolder.getDeliveryItems().add(prcmtDeliveryItemHolder);
+		}
+			
+		return prcmtDeliveryHolder;
 	}
 	
 }

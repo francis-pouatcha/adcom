@@ -1,14 +1,18 @@
 package org.adorsys.adprocmt.rest;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
 
+import org.adorsys.adcore.jpa.StandardCstr;
 import org.adorsys.adprocmt.jpa.PrcmtDeliveryEvtData;
+import org.adorsys.adprocmt.jpa.PrcmtDeliveryEvtDataCstr;
 import org.adorsys.adprocmt.jpa.PrcmtDlvry2OuEvtData;
 import org.adorsys.adprocmt.jpa.PrcmtDlvry2POEvtData;
+import org.adorsys.adprocmt.repo.PrcmtDeliveryEvtDataCstrRepository;
 import org.adorsys.adprocmt.repo.PrcmtDeliveryEvtDataRepository;
 import org.adorsys.adprocmt.repo.PrcmtDlvry2OuEvtDataRepository;
 import org.adorsys.adprocmt.repo.PrcmtDlvry2POEvtDataRepository;
@@ -18,6 +22,9 @@ public class PrcmtDeliveryEvtDataEJB {
 
 	@Inject
 	private PrcmtDeliveryEvtDataRepository repository;
+	@Inject
+	private PrcmtDeliveryEvtDataCstrRepository cstrRepo;
+
 	@Inject
 	private PrcmtDlvry2OuEvtDataRepository ouEvtDataRepository;
 	@Inject
@@ -53,9 +60,29 @@ public class PrcmtDeliveryEvtDataEJB {
 			for (PrcmtDlvry2POEvtData poEvtData : pos) {
 				poEvtDataRepository.remove(poEvtData);
 			}
+			
+			// Create the deleted constraint so items can be deleted iteratively.
+			List<PrcmtDeliveryEvtDataCstr> list = cstrRepo.findByEntIdentifAndCstrType(entity.getIdentif(), StandardCstr.DELETED.name()).maxResults(1).getResultList();
+			Date now = new Date();
+			if(list.isEmpty()){
+				PrcmtDeliveryEvtDataCstr deliveryEvtDataCstr = new PrcmtDeliveryEvtDataCstr();
+				deliveryEvtDataCstr.setCreationDt(now);
+				deliveryEvtDataCstr.setCstrDt(now);
+				deliveryEvtDataCstr.setCstrType(StandardCstr.DELETED.name());
+				deliveryEvtDataCstr.setCstrValue(entity.getIdentif());
+				deliveryEvtDataCstr.setEntIdentif(entity.getIdentif());
+				deliveryEvtDataCstr.makeId(true);
+				cstrRepo.save(deliveryEvtDataCstr);
+			}
 		}
 		return entity;
 	}
+	
+	public List<PrcmtDeliveryEvtDataCstr> listDeleted(Date cstrDt, int max){
+		return cstrRepo.findDeleted(StandardCstr.DELETED.name(), cstrDt).maxResults(max).getResultList();
+	}
+	
+	
 
 	public PrcmtDlvry2POEvtData deleteByProcOrder(String id) {
 		PrcmtDlvry2POEvtData po = poEvtDataRepository.findBy(id);
@@ -138,4 +165,10 @@ public class PrcmtDeliveryEvtDataEJB {
 
 		return entity;
 	}
+
+	public void deleteCstr(String id) {
+		PrcmtDeliveryEvtDataCstr found = cstrRepo.findBy(id);
+		if(found!=null) cstrRepo.remove(found);
+	}
+	
 }

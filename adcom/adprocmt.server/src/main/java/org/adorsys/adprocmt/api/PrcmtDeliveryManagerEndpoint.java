@@ -5,8 +5,10 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
 @Stateless
@@ -32,5 +34,13 @@ public class PrcmtDeliveryManagerEndpoint
    @Produces({ "application/json", "application/xml" })
    public PrcmtDeliveryHolder closeDelivery(PrcmtDeliveryHolder deliveryHolder){
       return deliveryManager.closeDelivery(deliveryHolder);
+   }
+   
+   @GET
+   @Path("/{id}")
+   @Produces({ "application/json", "application/xml" })
+   public PrcmtDeliveryHolder findDelivery(@PathParam("id") String id)
+   {
+	   return deliveryManager.findDelivery(id);
    }
 }

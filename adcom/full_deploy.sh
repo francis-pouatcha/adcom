@@ -34,6 +34,7 @@ cd $JBOSS_HOME/adcom/adbase/data/ && rm ad*
 cd $JBOSS_HOME/adcom/adcatal/data/ && rm ad*
 cd $JBOSS_HOME/adcom/adstock/data/ && rm ad*
 cd $JBOSS_HOME/adcom/adbnsptnr/data/ && rm ad*
+cd $JBOSS_HOME/adcom/adprocmt/data/ && rm ad*
 
 echo 'starting jboss'
 cd $JBOSS_HOME
