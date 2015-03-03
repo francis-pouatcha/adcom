@@ -46,7 +46,6 @@ angular.module('AdProcmt').controller('prcmtDeliveryAddItemCtlr',['$scope','$rou
                 if(self.prcmtDelivery.dlvryStatus=='ONGOING'){
                     self.closeStatus = true;
                 }
-                console.log(self.closeStatus);
             })
             .error(function(error){
                 self.error = "No procurement delivery";
