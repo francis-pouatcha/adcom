@@ -8,7 +8,7 @@
             <p class="pull-right">
                 <a class=" btn btn-default" href="#/"  type="button">Cancel</a>
                 <button class=" btn btn-primary" ng-click="prcmtDeliveryAddItemCtlr.save()" type="button">Save</button>
-                <button class=" btn btn-primary" ng-click="prcmtDeliveryAddItemCtlr.close()" type="button">Save and Close</button>
+                <button class=" btn btn-primary" ng-click="prcmtDeliveryAddItemCtlr.close()" ng-show="prcmtDeliveryAddItemCtlr.close" type="button">Save and Close</button>
             </p>
         </h4>
     </div>
@@ -138,12 +138,12 @@
                         <td><input type="text" class="form-control" ng-model="prcmtDeliveryAddItemCtlr.prcmtDeliveryItemHolder.dlvryItem.purchRtrnDays" ></td>
                         <td><input type="text" class="form-control" ng-model="prcmtDeliveryAddItemCtlr.prcmtDeliveryItemHolder.dlvryItem.salesWrntyDys"></td>
                         <td><input type="text" class="form-control" ng-model="prcmtDeliveryAddItemCtlr.prcmtDeliveryItemHolder.dlvryItem.salesRtrnDays" ></td>
-                        <td><input type="text" ng-model="prcmtDeliveryAddItemCtlr.prcmtDeliveryItemHolder.recvngOus[0].rcvngOrgUnit.rcvngOrgUnit"  class="form-control"
+                        <td><input type="text" ng-model="prcmtDeliveryAddItemCtlr.rcvngOrgUnit"  class="form-control"
                                autocomplete="off" typeahead="orgUnit.identif as orgUnit.fullName for orgUnit in prcmtDeliveryAddItemCtlr.loadOrgUnit($viewValue)"
                                typeahead-loading="loading" placeholder="find an organisation unit" value="{{prcmtDeliveryAddItemCtlr.prcmtDelivery.rcvngOrgUnit}}" >
                         </td>
                         <td>
-                            <input type="text" ng-model="prcmtDeliveryAddItemCtlr.prcmtDeliveryItemHolder.strgSctns[0].strgSctn.strgSection"  class="form-control"
+                            <input type="text" ng-model="prcmtDeliveryAddItemCtlr.strgSection"  class="form-control"
                                    autocomplete="off" typeahead="section.identif as section.name for section in prcmtDeliveryAddItemCtlr.loadstkSection($viewValue)"
                                    typeahead-loading="loading" placeholder="find a section" >
                         </td>

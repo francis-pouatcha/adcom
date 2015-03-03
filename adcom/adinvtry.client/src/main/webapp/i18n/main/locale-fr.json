@@ -90,6 +90,7 @@
 
 "InvInvtry_NoSectionFound_description.title":"Pas de Rayon Trouvé",
 "InvInvtry_NoArticleFound_description":"Pas d'Article Trouvé",
+"InvInvtry_NoUserFound_description":"Aucun utilisateur Trouvé",
 "InvInvtry_gapPurchAmtHTFrom_description.title":"Menquant en Prix d'Achat supérieur à",
 "InvInvtry_gapPurchAmtHTTo_description.title":"Menquant en Prix d'Achat inférieur à"
 
