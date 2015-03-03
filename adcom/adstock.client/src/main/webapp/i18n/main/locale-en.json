@@ -40,6 +40,11 @@
 "StkSectionArticleLot_lotQty_description.title":"Total Quantity of Lot",
 "StkSectionArticleLot_lotQtyDt_description.title":"On Date",
 "StkSectionArticleLot_salesPrice_description.title":"Sales Price Tax Included",
+"StkSectionArticleLot_lotPic_description.text":"The identifier of this lot. Might be printet as a bar code and put on each article of this lot.",
+"StkSectionArticleLot_lotPic_description.title":"Lot Identifier",
+"StkSectionArticleLot_artPic_description.text":"The article code",
+"StkSectionArticleLot_artPic_description.title":"Article Identifier",
+"StkSectionArticleLot_sppuTaxIncl_description.title":"Sales Price Tax Included",
 
 "StkArtLotSection_artPic_description.text":"The article code",
 "StkArtLotSection_artPic_description.title":"Article PIC",
@@ -127,8 +132,6 @@
 "StkSection_wharehouse_description..title":"Warehouse",
 "StkSection_stkSubSection_description.title":"Subsections",
 "StkSection_stkArticleLot_description.title":"Article Lots"
-
-
 
 
 }

@@ -11,14 +11,16 @@ angular.module('AdStock')
     service.language=sessionManager.language;
     
     service.translate = function(){
-    	$translate(['StkSectionArticleLot_lotPic_description.title',
-    	            'StkSectionArticleLot_artPic_description.title',
+    	$translate([
     	            'StkSectionArticleLot_artName_description.title',
     	            'StkSectionArticleLot_stockQty_description.title',
     	            'StkSectionArticleLot_stockQtyDt_description.title',
     	            'StkSectionArticleLot_lotQty_description.title',
     	            'StkSectionArticleLot_lotQtyDt_description.title',
     	            'StkSectionArticleLot_salesPrice_description.title',
+    	            'StkSectionArticleLot_lotPic_description.title',
+    	            'StkSectionArticleLot_artPic_description.title',
+    	            'StkSectionArticleLot_sppuTaxIncl_description.title',
 
     	            'Entity_show.title',
     	            'Entity_previous.title',
@@ -146,7 +148,9 @@ angular.module('AdStock')
     	findBy($scope.searchInput);
     };
     $scope.stkSectionArticleLots = function(){
-    	return stkSectionArticleLotsState.searchResult().resultList;
+    	if(stkSectionArticleLotsState.searchResult())
+    		return stkSectionArticleLotsState.searchResult().resultList;
+    	return [];
     };
     loadStkSectionArticleLots();
     function loadStkSectionArticleLots (){
