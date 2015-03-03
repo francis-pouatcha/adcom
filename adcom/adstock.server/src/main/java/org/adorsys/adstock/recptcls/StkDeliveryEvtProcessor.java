@@ -5,10 +5,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import javax.ejb.Asynchronous;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
-import org.adorsys.adbase.enums.BaseProcessStatusEnum;
 import org.adorsys.adprocmt.jpa.PrcmtDeliveryEvt;
 import org.adorsys.adprocmt.jpa.PrcmtDeliveryEvtData;
 import org.adorsys.adprocmt.jpa.PrcmtDeliveryEvtLease;
@@ -17,6 +19,7 @@ import org.adorsys.adprocmt.rest.PrcmtDeliveryEvtDataEJB;
 import org.adorsys.adprocmt.rest.PrcmtDeliveryEvtLeaseEJB;
 import org.adorsys.adprocmt.rest.PrcmtDlvryItemEvtDataEJB;
 import org.adorsys.adstock.rest.StkArticleLotEJB;
+import org.apache.commons.lang3.time.DateUtils;
 
 /**
  * Check for the incoming of delivery closed event and 
@@ -39,6 +42,8 @@ public class StkDeliveryEvtProcessor {
 	@Inject
 	private PrcmtDeliveryEvtLeaseEJB evtLeaseEJB;
 	
+	@Asynchronous
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public void process(PrcmtDeliveryEvt deliveryEvt) {
 		// This identifies a run.
 		String processId = UUID.randomUUID().toString();
@@ -61,7 +66,7 @@ public class StkDeliveryEvtProcessor {
 			PrcmtDeliveryEvtLease lease = leases.iterator().next();
 			// look if lease expired.
 			if(lease.expired(now)){
-				leaseId = recover(processId, lease);
+				leaseId = evtLeaseEJB.recover(processId, lease.getId());
 			}
 		}
 		if(leaseId==null) return;
@@ -69,55 +74,36 @@ public class StkDeliveryEvtProcessor {
 		String entIdentif = deliveryEvt.getEntIdentif();
 		PrcmtDeliveryEvtData deliveryEvtData = evtDataEJB.findById(entIdentif);
 		if(deliveryEvtData==null) {
-			PrcmtDeliveryEvtLease lease = evtLeaseEJB.findById(leaseId);
-			lease.setValidTo(now);
-			lease.setProcessingStatus(BaseProcessStatusEnum.CLOSED.name());
-			evtLeaseEJB.update(lease);
+			evtLeaseEJB.close(processId, leaseId);
 			return;
 		}
 		
 		String dlvryNbr = deliveryEvtData.getDlvryNbr();
 		Long evtDataCount = itemEvtDataEJB.countByDlvryNbr(dlvryNbr);
-		Long articleLotCount = articleLotEJB.countByDlvryNbr(dlvryNbr);
-		// By checking the number of processed items, we know if there is still some to process 
-		if(evtDataCount==articleLotCount) {
-			// event is processed.
-			PrcmtDeliveryEvtLease lease = evtLeaseEJB.findById(leaseId);
-			lease.setValidTo(now);
-			lease.setProcessingStatus(BaseProcessStatusEnum.CLOSED.name());
-			evtLeaseEJB.update(lease);
-			return;
-		}
 		
 		int start = 0;
 		int max = 100;
-		List<PrcmtDlvryItemEvtData> itemEventDataToProcess = new ArrayList<PrcmtDlvryItemEvtData>();
+		List<String> itemEventDataToProcess = new ArrayList<String>();
 		while(start<=evtDataCount){
 			List<PrcmtDlvryItemEvtData> list = itemEvtDataEJB.findByDlvryNbr(dlvryNbr, start, max);
 			start +=max;
 			for (PrcmtDlvryItemEvtData itemEvtData : list) {
 				List<String> found = articleLotEJB.findIdByDlvryItemNbr(itemEvtData.getDlvryItemNbr());
 				if(!found.isEmpty()) continue;
-				itemEventDataToProcess.add(itemEvtData);
+				itemEventDataToProcess.add(itemEvtData.getId());
 			}
 		}
 		if(itemEventDataToProcess.isEmpty()) {
-			// event is processed.
-			PrcmtDeliveryEvtLease lease = evtLeaseEJB.findById(leaseId);
-			lease.setValidTo(now);
-			lease.setProcessingStatus(BaseProcessStatusEnum.CLOSED.name());
-			evtLeaseEJB.update(lease);
+			evtLeaseEJB.close(processId, leaseId);
 			return;
 		}
-		for (PrcmtDlvryItemEvtData itemEvtDataId : itemEventDataToProcess) {
+		Date time = new Date();
+		for (String itemEvtDataId : itemEventDataToProcess) {
 			itemEvtProcessor.process(itemEvtDataId, deliveryEvt);
+			if(DateUtils.addMinutes(new Date(), 1).before(time)){
+				evtLeaseEJB.recover(processId, leaseId);
+			}
 		}
-	}
-
-	private String recover(String processOwner, PrcmtDeliveryEvtLease lease) {
-		lease.extend(processOwner);
-		PrcmtDeliveryEvtLease recovered = evtLeaseEJB.recover(lease);
-		return recovered.getId();
 	}
 
 	private String getHandlerName(){

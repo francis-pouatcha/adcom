@@ -2,7 +2,6 @@ package org.adorsys.adstock.recptcls;
 
 import java.util.List;
 
-import javax.ejb.Asynchronous;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
@@ -46,12 +45,11 @@ public class StkDeliveryItemEvtProcessor {
 	@Inject
 	private StkArticleLot2StrgSctnEJB articleLot2StrgSctnEJB;
 
-	@Asynchronous
-	public void process(PrcmtDlvryItemEvtData evtRef, PrcmtDeliveryEvt deliveryEvt) {
-		PrcmtDlvryItemEvtData itemEvtData = itemEvtDataEJB.findById(evtRef.getDlvryItemNbr());
+	public void process(String itemEvtDataId, PrcmtDeliveryEvt deliveryEvt) {
+		PrcmtDlvryItemEvtData itemEvtData = itemEvtDataEJB.findById(itemEvtDataId);
 		if(itemEvtData==null) return;
 
-		PrcmtDeliveryEvtData deliveryEvtData = evtDataEJB.findById(evtRef.getDlvryNbr());
+		PrcmtDeliveryEvtData deliveryEvtData = evtDataEJB.findById(itemEvtData.getDlvryNbr());
 		if(deliveryEvtData==null) return;
 		
 		String artPic = itemEvtData.getArtPic();
@@ -89,7 +87,6 @@ public class StkDeliveryItemEvtProcessor {
 		lotStockQty.setStockQty(itemEvtData.getQtyDlvrd());
 		lotStockQtyEJB.create(lotStockQty);
 		
-
 		List<PrcmtDlvryItem2OuEvtData> ouEvtDataList = itemEvtDataEJB.listDlvryItem2OuEvtData(itemEvtData.getDlvryItemNbr());
 		for (PrcmtDlvryItem2OuEvtData evtData : ouEvtDataList) {
 			StkArticleLot2Ou ou = new StkArticleLot2Ou();
