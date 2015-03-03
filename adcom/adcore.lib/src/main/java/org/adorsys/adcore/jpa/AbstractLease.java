@@ -3,6 +3,7 @@ package org.adorsys.adcore.jpa;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 import javax.validation.constraints.NotNull;
 
@@ -18,6 +19,7 @@ import org.apache.commons.lang3.time.DateUtils;
  * @author francis
  *
  */
+@MappedSuperclass
 public abstract class AbstractLease extends AbstractTimedData {
 
 	private static final long serialVersionUID = -3518962027500923774L;

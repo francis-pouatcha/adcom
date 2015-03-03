@@ -53,7 +53,7 @@ angular.module('AdStock')
     service.searchResult = function(){
     	var stkSection = stkSectionState.stkSection();
     	if(!stkSection) return;
-    	var strgSection = stkSection.strgSection;
+    	var strgSection = stkSection.sectionCode;
         if(strgSection && searchResultsVar[strgSection]) 
         	return searchResultsVar[strgSection];
     };
@@ -144,6 +144,9 @@ angular.module('AdStock')
     $scope.paginate = function(){
         $scope.searchInput = stkSectionArticleLotsState.paginate($scope.currentPage);
     	findBy($scope.searchInput);
+    };
+    $scope.stkSectionArticleLots = function(){
+    	return stkSectionArticleLotsState.searchResult().resultList;
     };
     loadStkSectionArticleLots();
     function loadStkSectionArticleLots (){

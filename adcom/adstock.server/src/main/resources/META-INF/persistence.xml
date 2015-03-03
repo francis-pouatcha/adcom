@@ -51,6 +51,7 @@
     <class>org.adorsys.adprocmt.jpa.PrcmtAbstractProcOrder</class>
     <class>org.adorsys.adprocmt.jpa.PrcmtDeliveryEvt</class>
     <class>org.adorsys.adprocmt.jpa.PrcmtDeliveryEvtData</class>
+    <class>org.adorsys.adprocmt.jpa.PrcmtDeliveryEvtLease</class>
     <class>org.adorsys.adprocmt.jpa.PrcmtDlvry2OuEvtData</class>
     <class>org.adorsys.adprocmt.jpa.PrcmtDlvry2POEvtData</class>
     <class>org.adorsys.adprocmt.jpa.PrcmtDlvryItem2OuEvtData</class>
@@ -60,6 +61,9 @@
     <class>org.adorsys.adprocmt.jpa.PrcmtPOItemEvtData</class>
     <class>org.adorsys.adprocmt.jpa.PrcmtPrcmtEvt</class>
     <class>org.adorsys.adprocmt.jpa.PrcmtProcOrderEvtData</class>
+    
+	<class>org.adorsys.adcatal.jpa.CatalAbstractFeatMapping</class>
+	<class>org.adorsys.adcatal.jpa.CatalArtFeatMapping</class>
     
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
