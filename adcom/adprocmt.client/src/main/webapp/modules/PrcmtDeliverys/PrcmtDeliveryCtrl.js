@@ -76,7 +76,7 @@ angular.module('AdProcmt')
 	}
 
         function showEdit(val){
-            if(val == 'INITIATED'){
+            if(val == 'ONGOING'){
                 return true;
             }else{
                 return false;
