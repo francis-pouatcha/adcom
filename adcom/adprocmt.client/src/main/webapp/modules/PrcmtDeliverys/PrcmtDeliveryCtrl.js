@@ -38,6 +38,7 @@ angular.module('AdProcmt')
     self.handlePrintRequestEvent = handlePrintRequestEvent;
     self.paginate = paginate;
     self.error = "";
+    self.showEdit = showEdit;
     
     init();
 
@@ -73,7 +74,14 @@ angular.module('AdProcmt')
 
 	function handlePrintRequestEvent(){		
 	}
-    
+
+        function showEdit(val){
+            if(val == 'INITIATED'){
+                return true;
+            }else{
+                return false;
+            }
+        }
 }])
 .controller('prcmtDeliveryCreateCtlr',['$scope','$location','$q','ProcmtUtils','genericResource',function($scope,$location,$q,ProcmtUtils,genericResource){
 	var self = this ;

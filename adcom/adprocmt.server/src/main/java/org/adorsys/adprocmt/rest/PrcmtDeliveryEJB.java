@@ -267,22 +267,27 @@ public class PrcmtDeliveryEJB {
 	public PrcmtDeliverySearchResult findCustom(PrcmtDeliverySearchInput searchInput) {
 		
 		StringBuilder sb = new StringBuilder();
-		sb.append("SELECT p FROM PrcmtDelivery AS p WHERE p.creationDt <=:dateMax AND p.creationDt >:dateMin");
-		
-		
+		sb.append("SELECT p FROM PrcmtDelivery AS p WHERE 1=1 ");
+			
 		if(StringUtils.isNotBlank(searchInput.getEntity().getDlvrySlipNbr())){
-
 			sb.append("AND LOWER(p.dlvrySlipNbr) LIKE LOWER(:dlvrySlipNbr) ");
 		}
-
-		String query = sb.toString();
+		if(searchInput.getDateMin() != null){
+			sb.append("AND p.creationDt<=:dateMax ");
+		}
+		if(searchInput.getDateMax() != null){
+			sb.append("AND p.creationDt>=:dateMin");
+		}
 		
+		String query = sb.toString();	
 		Query createQuery = em.createQuery(query);
-		createQuery.setParameter("dateMax", searchInput.getDateMax());
-		createQuery.setParameter("dateMin", searchInput.getDateMin());
-
+		if(searchInput.getDateMin() != null){
+			createQuery.setParameter("dateMin", searchInput.getDateMin());
+		}
+		if(searchInput.getDateMax() != null){
+			createQuery.setParameter("dateMax", searchInput.getDateMax());
+		}
 		if(StringUtils.isNotBlank(searchInput.getEntity().getDlvrySlipNbr())){
-
 			String dlvrySlipNbr = searchInput.getEntity().getDlvrySlipNbr()+"%";
 			createQuery.setParameter("dlvrySlipNbr", dlvrySlipNbr);
 		}
