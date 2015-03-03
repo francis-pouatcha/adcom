@@ -23,6 +23,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.adorsys.adcom</groupId>
+			<artifactId>adcatal.lib</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.adorsys.adcom</groupId>
 			<artifactId>adprocmt.lib</artifactId>
 			<version>${project.version}</version>
 		</dependency>

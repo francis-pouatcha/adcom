@@ -19,4 +19,13 @@ public interface StkArticleLotRepository extends EntityRepository<StkArticleLot,
 
 	@Query("SELECT e.lotPic FROM StkArticleLot AS e WHERE e.artPic=?1")
 	public List<String> findLotPicByArtPic(String artPic);
+
+	@Query("SELECT e.id FROM StkArticleLot AS e WHERE e.dlvryNbr=?1")
+	public List<String> findIdByDlvryNbr(String dlvryNbr);
+
+	@Query("SELECT count(e.id) FROM StkArticleLot AS e WHERE e.dlvryNbr=?1")
+	public Long countByDlvryNbr(String dlvryNbr);
+
+	@Query("SELECT e.id FROM StkArticleLot AS e WHERE e.dlvryItemNbr=?1")
+	public List<String> findIdByDlvryItemNbr(String dlvryItemNbr);
 }

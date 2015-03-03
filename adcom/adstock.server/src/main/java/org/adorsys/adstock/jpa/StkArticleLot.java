@@ -2,11 +2,13 @@ package org.adorsys.adstock.jpa;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Transient;
 
+import org.adorsys.adcatal.jpa.CatalArtFeatMapping;
 import org.adorsys.javaext.description.Description;
 
 @Entity
@@ -28,12 +30,18 @@ public class StkArticleLot extends StkAbstractArticleLot {
 	 */
 	@Transient
 	private List<StkLotStockQty> artQties = new ArrayList<StkLotStockQty>();
-
+	
+	@Transient
+	private BigDecimal lotQty;
+	
+	@Transient
+	private Date lotQtyDt;
+	
 	/*
 	 * The name of this article in the language of the user.
 	 */
 	@Transient
-	private String artName;
+	private CatalArtFeatMapping artFeatures;
 	
 	public List<StkArticleLot2StrgSctn> getStrgSctns() {
 		return strgSctns;
@@ -59,20 +67,36 @@ public class StkArticleLot extends StkAbstractArticleLot {
 		this.artQties = artQties;
 	}
 
-	public String getArtName() {
-		return artName;
-	}
-
-	public void setArtName(String artName) {
-		this.artName = artName;
-	}
-
 	public BigDecimal getSalesVatAmt() {
 		return salesVatAmt;
 	}
 
 	public void setSalesVatAmt(BigDecimal salesVatAmt) {
 		this.salesVatAmt = salesVatAmt;
+	}
+
+	public CatalArtFeatMapping getArtFeatures() {
+		return artFeatures;
+	}
+
+	public void setArtFeatures(CatalArtFeatMapping artFeatures) {
+		this.artFeatures = artFeatures;
+	}
+
+	public BigDecimal getLotQty() {
+		return lotQty;
+	}
+
+	public void setLotQty(BigDecimal lotQty) {
+		this.lotQty = lotQty;
+	}
+
+	public Date getLotQtyDt() {
+		return lotQtyDt;
+	}
+
+	public void setLotQtyDt(Date lotQtyDt) {
+		this.lotQtyDt = lotQtyDt;
 	}
 
 }

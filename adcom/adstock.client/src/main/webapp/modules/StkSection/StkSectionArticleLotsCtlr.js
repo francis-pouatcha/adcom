@@ -2,7 +2,8 @@
     
 angular.module('AdStock')
 
-.factory('stkSectionAticleLotsUtils',['sessionManager','$translate','genericResource','$q',function(sessionManager,$translate,genericResource,$q){
+.factory('stkSectionArticleLotsUtils',['sessionManager','$translate','genericResource','$q',
+                                      function(sessionManager,$translate,genericResource,$q){
     var service = {};
 
     service.urlBase='/adstock.server/rest/stkarticlelot2strgsctns';
@@ -42,7 +43,7 @@ angular.module('AdStock')
     
     return service;
 }])
-.factory('stkSectionAticleLotsState',['stkSectionState',function(stkSectionState){
+.factory('stkSectionArticleLotsState',['stkSectionState',function(stkSectionState){
 	
 	var service = {
 	};
@@ -101,7 +102,7 @@ angular.module('AdStock')
     	return (searchResultsVar[strgSection] && searchResultsVar[strgSection].resultList);
     };
 
-	service.stkSectionAticleLotActive= stkSectionState.stkSectionAticleLotActive;
+	service.stkSectionArticleLotActive= stkSectionState.stkSectionArticleLotActive;
 
     service.searchInputChanged = function(searchInputIn){
         return angular.equals(service.searchInput(), searchInputIn);
@@ -120,39 +121,39 @@ angular.module('AdStock')
 	return service;
 
 }])
-.controller('stkSectionAticleLotsCtlr',['$scope','genericResource','$modal','$routeParams',
-                                  'stkSectionAticleLotsUtils','stkSectionAticleLotsState','$rootScope',
+.controller('stkSectionArticleLotsCtlr',['$scope','genericResource','$modal','$routeParams',
+                                  'stkSectionArticleLotsUtils','stkSectionArticleLotsState','$rootScope',
                      function($scope,genericResource,$modal,$routeParams,
-                    		 stkSectionAticleLotsUtils,stkSectionAticleLotsState,$rootScope){
+                    		 stkSectionArticleLotsUtils,stkSectionArticleLotsState,$rootScope){
 
-    $scope.stkSectionAticleLots=stkSectionAticleLotsState.stkSectionAticleLots;
+    $scope.stkSectionArticleLots=stkSectionArticleLotsState.stkSectionArticleLots;
     $scope.error = "";
-    $scope.stkSectionAticleLotsUtils=stkSectionAticleLotsUtils;
-    $scope.itemPerPage=stkSectionAticleLotsState.itemPerPage;
-    $scope.totalItems=stkSectionAticleLotsState.totalItems;
-    $scope.currentPage=stkSectionAticleLotsState.currentPage();
+    $scope.stkSectionArticleLotsUtils=stkSectionArticleLotsUtils;
+    $scope.itemPerPage=stkSectionArticleLotsState.itemPerPage;
+    $scope.totalItems=stkSectionArticleLotsState.totalItems;
+    $scope.currentPage=stkSectionArticleLotsState.currentPage();
 
-    var sctnSelectedUnregisterHdl = $rootScope.$on('StkSectionAticleLotSelected', function(event, data){
-        var stkSection = stkSectionAticleLotsState.stkSection();
+    var sctnSelectedUnregisterHdl = $rootScope.$on('StkSectionArticleLotSelected', function(event, data){
+        var stkSection = stkSectionArticleLotsState.stkSection();
         if(!stkSection || !data || !data.stkSection || stkSection.sectionCode!=data.stkSection.sectionCode) return;
-        loadStkSectionAticleLots();
+        loadStkSectionArticleLots();
     });
     $scope.$on('$destroy', function () {
     	sctnSelectedUnregisterHdl();
     });
     $scope.paginate = function(){
-        $scope.searchInput = stkSectionAticleLotsState.paginate($scope.currentPage);
+        $scope.searchInput = stkSectionArticleLotsState.paginate($scope.currentPage);
     	findBy($scope.searchInput);
     };
-    loadStkSectionAticleLots();
-    function loadStkSectionAticleLots (){
-    	if(!stkSectionAticleLotsState.stkSectionAticleLotActive()) return;
-        var stkSection = stkSectionAticleLotsState.stkSection();
+    loadStkSectionArticleLots();
+    function loadStkSectionArticleLots (){
+    	if(!stkSectionArticleLotsState.stkSectionArticleLotActive()) return;
+        var stkSection = stkSectionArticleLotsState.stkSection();
         if(!stkSection) return;
-        if(!stkSectionAticleLotsState.hasSearchResult(stkSection.sectionCode)) {
-        	var searchInput = stkSectionAticleLotsState.searchInput();
+        if(!stkSectionArticleLotsState.hasSearchResult(stkSection.sectionCode)) {
+        	var searchInput = stkSectionArticleLotsState.searchInput();
         	if(!searchInput){
-        		searchInput = stkSectionAticleLotsState.nakedSearchInput();
+        		searchInput = stkSectionArticleLotsState.nakedSearchInput();
         		searchInput.entity.strgSection=stkSection.sectionCode;
         		searchInput.fieldNames.push('strgSection');
         	}
@@ -161,9 +162,9 @@ angular.module('AdStock')
     }
 
     function findBy(searchInput){
-    	genericResource.findBy(stkSectionAticleLotsUtils.urlBase, searchInput)
+    	genericResource.findBy(stkSectionArticleLotsUtils.urlBase, searchInput)
     	.success(function(entitySearchResult) {
-            stkSectionAticleLotsState.consumeSearchResult(entitySearchResult);
+            stkSectionArticleLotsState.consumeSearchResult(entitySearchResult);
         })
     	.error(function(error){
     		$scope.error = error;

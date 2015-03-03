@@ -53,14 +53,12 @@
     <class>org.adorsys.adprocmt.jpa.PrcmtDeliveryEvtData</class>
     <class>org.adorsys.adprocmt.jpa.PrcmtDlvry2OuEvtData</class>
     <class>org.adorsys.adprocmt.jpa.PrcmtDlvry2POEvtData</class>
-    <class>org.adorsys.adprocmt.jpa.PrcmtDlvryEvtLstnr</class>
     <class>org.adorsys.adprocmt.jpa.PrcmtDlvryItem2OuEvtData</class>
     <class>org.adorsys.adprocmt.jpa.PrcmtDlvryItem2POItemEvtData</class>
     <class>org.adorsys.adprocmt.jpa.PrcmtDlvryItem2StrgSctnEvtData</class>
     <class>org.adorsys.adprocmt.jpa.PrcmtDlvryItemEvtData</class>
     <class>org.adorsys.adprocmt.jpa.PrcmtPOItemEvtData</class>
     <class>org.adorsys.adprocmt.jpa.PrcmtPrcmtEvt</class>
-    <class>org.adorsys.adprocmt.jpa.PrcmtPrcmtEvtLstnr</class>
     <class>org.adorsys.adprocmt.jpa.PrcmtProcOrderEvtData</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>

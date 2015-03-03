@@ -76,6 +76,8 @@ public class StkDeliveryItemEvtProcessor {
 		stkArticleLot.setSupplierPic(itemEvtData.getSupplierPic());
 		stkArticleLot.setVatPurchPct(itemEvtData.getVatPct());
 		stkArticleLot.setVatSalesPct(itemEvtData.getVatSalesPct());
+		stkArticleLot.setDlvryItemNbr(itemEvtData.getDlvryItemNbr());
+		stkArticleLot.setDlvryNbr(itemEvtData.getDlvryNbr());
 		articleLotEJB.create(stkArticleLot);
 		
 		// Lot Stock Qty

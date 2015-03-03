@@ -9,5 +9,5 @@ import org.apache.deltaspike.data.api.Repository;
 @Repository(forEntity = PrcmtDeliveryEvt.class)
 public interface PrcmtDeliveryEvtRepository extends EntityRepository<PrcmtDeliveryEvt, String>
 {
-	public List<PrcmtDeliveryEvt> findByLstnrNameAndEvtName(String lstnrName,String evtName);
+	public List<PrcmtDeliveryEvt> findByEvtName(String evtName);
 }
