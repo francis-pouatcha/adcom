@@ -10,8 +10,9 @@ angular.module('AdProcmt').controller('prcmtDeliveryAddItemCtlr',['$scope','$rou
         strgSctns:[]
 
     };
-    self.close = true;
+    self.closeStatus = false;
     self.prcmtDeliveryItemHolders = [];
+    self.prcmtDeliveryItemHoldersDeleted = [];
     self.error = "";
     self.loadArticlesByNameLike = loadArticlesByNameLike;
     self.loadArticlesByCipLike = loadArticlesByCipLike;
@@ -42,6 +43,10 @@ angular.module('AdProcmt').controller('prcmtDeliveryAddItemCtlr',['$scope','$rou
             .success(function(data){
                 self.prcmtDelivery = data.delivery;
                 self.prcmtDeliveryItemHolders = data.deliveryItems;
+                if(self.prcmtDelivery.dlvryStatus=='ONGOING'){
+                    self.closeStatus = true;
+                }
+                console.log(self.closeStatus);
             })
             .error(function(error){
                 self.error = "No procurement delivery";
@@ -190,8 +195,12 @@ angular.module('AdProcmt').controller('prcmtDeliveryAddItemCtlr',['$scope','$rou
         var prcmtDeliveryHolder = {};
         prcmtDeliveryHolder.delivery = self.prcmtDelivery;
         prcmtDeliveryHolder.deliveryItems = self.prcmtDeliveryItemHolders;
-        genericResource.customMethod(ProcmtUtils.urlManagerDelivery+'/update',prcmtDeliveryHolder).success(function(){
-            //update succes
+        for(var i=0;i<self.prcmtDeliveryItemHoldersDeleted.length;i++){
+                prcmtDeliveryHolder.deliveryItems.push(self.prcmtDeliveryItemHoldersDeleted[i])
+            }
+        genericResource.customMethod(ProcmtUtils.urlManagerDelivery+'/update',prcmtDeliveryHolder).success(function(data){
+            self.prcmtDelivery = data.delivery;
+            self.prcmtDeliveryItemHolders = data.deliveryItems;
         });
     }
 
@@ -199,8 +208,10 @@ angular.module('AdProcmt').controller('prcmtDeliveryAddItemCtlr',['$scope','$rou
         var prcmtDeliveryHolder = {};
         prcmtDeliveryHolder.delivery = self.prcmtDelivery;
         prcmtDeliveryHolder.deliveryItems = self.prcmtDeliveryItemHolders;
-        genericResource.customMethod(ProcmtUtils.urlManagerDelivery+'/close',prcmtDeliveryHolder).success(function(){
-            self.close = false;
+        genericResource.customMethod(ProcmtUtils.urlManagerDelivery+'/close',prcmtDeliveryHolder).success(function(data){
+            self.closeStatus = false;
+            self.prcmtDelivery = data.delivery;
+            self.prcmtDeliveryItemHolders = data.deliveryItems;
         });
     }
 
@@ -210,6 +221,9 @@ angular.module('AdProcmt').controller('prcmtDeliveryAddItemCtlr',['$scope','$rou
             rcvngOrgUnitHolder.rcvngOrgUnit.rcvngOrgUnit = self.rcvngOrgUnit;
             rcvngOrgUnitHolder.rcvngOrgUnit.qtyDlvrd = self.prcmtDeliveryItemHolder.dlvryItem.qtyDlvrd;
             rcvngOrgUnitHolder.rcvngOrgUnit.freeQty = self.prcmtDeliveryItemHolder.dlvryItem.freeQty;
+            if(self.prcmtDeliveryItemHolder.dlvryItem.dlvryItemNbr){
+                rcvngOrgUnitHolder.rcvngOrgUnit.dlvryItemNbr = self.prcmtDeliveryItemHolder.dlvryItem.dlvryItemNbr;
+            }
             self.prcmtDeliveryItemHolder.recvngOus = [];
              self.prcmtDeliveryItemHolder.recvngOus.push(rcvngOrgUnitHolder);
         }
@@ -217,10 +231,13 @@ angular.module('AdProcmt').controller('prcmtDeliveryAddItemCtlr',['$scope','$rou
             var strgSctnHolder = {strgSctn:{}};
             strgSctnHolder.strgSctn.strgSection = self.strgSection;
             strgSctnHolder.strgSctn.qtyStrd = self.prcmtDeliveryItemHolder.dlvryItem.qtyDlvrd;
+            if(self.prcmtDeliveryItemHolder.dlvryItem.dlvryItemNbr){
+                strgSctnHolder.strgSctn.dlvryItemNbr = self.prcmtDeliveryItemHolder.dlvryItem.dlvryItemNbr;
+            }
             self.prcmtDeliveryItemHolder.strgSctns = [];
             self.prcmtDeliveryItemHolder.strgSctns.push(strgSctnHolder);
         }
-        self.prcmtDeliveryItemHolders.push(self.prcmtDeliveryItemHolder);
+        self.prcmtDeliveryItemHolders.unshift(self.prcmtDeliveryItemHolder);
         //CLEAR
         self.prcmtDeliveryItemHolder = {dlvryItem:{},recvngOus:[],strgSctns:[]};
         self.taux = "";
@@ -231,13 +248,20 @@ angular.module('AdProcmt').controller('prcmtDeliveryAddItemCtlr',['$scope','$rou
         $('#artName').focus();
     }
     function deleteItem(index){
+        var prcmtDeliveryItemHolderDeleted = {};
+        angular.copy(self.prcmtDeliveryItemHolders[index],prcmtDeliveryItemHolderDeleted) ;
         self.prcmtDeliveryItemHolders.splice(index,1);
+        if(prcmtDeliveryItemHolderDeleted.dlvryItem && prcmtDeliveryItemHolderDeleted.dlvryItem.id){
+            prcmtDeliveryItemHolderDeleted.deleted = true;
+            self.prcmtDeliveryItemHoldersDeleted.push(prcmtDeliveryItemHolderDeleted);
+        }
         calculTotalAmountEntered();
     }
     function editItem(index){
         self.taux = "";
         angular.copy(self.prcmtDeliveryItemHolders[index],self.prcmtDeliveryItemHolder) ;
-        deleteItem(index);
+        self.prcmtDeliveryItemHolders.splice(index,1);
+        calculTotalAmountEntered();
 
         if(self.prcmtDeliveryItemHolder.recvngOus[0]){
             self.rcvngOrgUnit = self.prcmtDeliveryItemHolder.recvngOus[0].rcvngOrgUnit.rcvngOrgUnit;
