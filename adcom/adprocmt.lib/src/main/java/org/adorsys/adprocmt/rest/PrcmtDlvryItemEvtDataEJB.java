@@ -195,4 +195,16 @@ public class PrcmtDlvryItemEvtDataEJB {
 				.maxResults(max).getResultList();
 	}
 
+	public List<String> findIdByDlvryNbr(String dlvryNbr,
+			int start, int max) {
+		return repository.findIdByDlvryNbr(dlvryNbr).firstResult(start)
+				.maxResults(max).getResultList();
+	}
+
+	public void deleteByDlvryNbr(String dlvryNbr, int max) {
+		List<String> dlvryNbrs = findIdByDlvryNbr(dlvryNbr, 0, max);
+		for (String dlvryItemId : dlvryNbrs) {
+			deleteById(dlvryItemId);
+		}
+	}
 }

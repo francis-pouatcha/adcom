@@ -1,4 +1,4 @@
-package org.adorsys.adcatal.repo;
+package org.adorsys.adcatal.repository;
 
 import java.util.List;
 

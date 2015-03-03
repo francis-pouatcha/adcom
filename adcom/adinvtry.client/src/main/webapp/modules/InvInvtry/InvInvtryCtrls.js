@@ -17,6 +17,7 @@ angular.module('AdInvtry')
     var service = {};
 
     service.urlBase='/adinvtry.server/rest/invinvtrys';
+    service.invinvtrysUrlBase='/adinvtry.server/rest/invinvtryitems';
     service.stksectionsUrlBase='/adstock.server/rest/stksections';
     service.stkarticlelotsUrlBase='/adstock.server/rest/stkarticlelots';
     service.catalarticlesUrlBase='/adcatal.server/rest/catalarticles';
@@ -43,6 +44,9 @@ angular.module('AdInvtry')
     	return service.translations[service.invInvntrStatusI18nMsgTitleKey(enumKey)];
     };
     
+    service.invInvtryStatusI18nMsgTitleValue = function(enumKey){
+    	return service.translations[service.invInvntrStatusI18nMsgTitleKey(enumKey)];
+    };
     service.invInvntrStati = [
       {enumKey:'SUSPENDED', translKey:'InvInvntrStatus_SUSPENDED_description.title'},
       {enumKey:'ONGOING', translKey:'InvInvntrStatus_ONGOING_description.title'},
@@ -208,7 +212,9 @@ angular.module('AdInvtry')
             deferred.reject(service.translations['InvInvtry_NoArticleFound_description.title']);
         });
         return deferred.promise;
-    }    
+    }
+    
+  
 
     service.loadUsers = function(val){
         return loadUsersPromise(val).then(function(entitySearchResult){
@@ -251,7 +257,10 @@ angular.module('AdInvtry')
     	return invInvtry && invInvtry.invInvtryType && invInvtry.invInvtryType=='ALPHABETICAL_ORDER_RANGE';
     };
 
-    
+    service.isInvInvtryEditable = function (invInvtry) {
+        if(invInvtry && "CLOSED" != invInvtry.invtryStatus) return true;
+        return false;
+    }
     return service;
 }])
 .factory('invInvtryState',['$rootScope',function($rootScope){
@@ -411,12 +420,21 @@ angular.module('AdInvtry')
         return service.invInvtry();
     };
     
+    service.getByIdentif = function(identif) {
+        if(!identif || !invInvtrysVar) return;
+        var result ;
+         angular.forEach(invInvtrysVar, function(invInvtry){
+            if(invInvtry.identif && invInvtry.identif == identif) {
+                result = invInvtry
+            }
+        });
+        return result;
+    }
     var stkSectionVar = {};
     service.stkSection = function(stkSectionIn){
     	if(stkSectionIn) stkSectionVar = stkSectionIn;
     	return stkSectionVar;
     };
-
     return service;
 
 }])
@@ -449,7 +467,7 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
     init();
 
     function init(){
-        if(invInvtryState.hasInvtrys())return;
+//        if(invInvtryState.hasInvtrys())return;
         findCustom($scope.searchInput);
     }
 
@@ -503,7 +521,7 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
 
     function create(){
     	$scope.invInvtry.invtryDt=new Date();
-    	$scope.invInvtry.invInvntrStatus='ONGOING';
+    	$scope.invInvtry.invtryStatus='ONGOING';
     	if($scope.stkSection){
     		invInvtryState.stkSection($scope.stkSection);
     	}
@@ -539,21 +557,43 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
         });
     };
 }])
-.controller('invInvtryShowCtlr',['$scope','invInvtryManagerResource','$location','invInvtryUtils','invInvtryState','$rootScope','genericResource',
-                                 function($scope,invInvtryManagerResource,$location,invInvtryUtils,invInvtryState,$rootScope,genericResource){
+.controller('invInvtryShowCtlr',['$scope','invInvtryManagerResource','$location','invInvtryUtils','invInvtryState','$rootScope','genericResource','$routeParams',
+                                 function($scope,invInvtryManagerResource,$location,invInvtryUtils,invInvtryState,$rootScope,genericResource,$routeParams){
     $scope.invInvtry = invInvtryState.invInvtry();
-    $scope.invInvtry.acsngUser = invInvtryUtils.currentWsUser.userFullName;
     $scope.error = "";
     $scope.invInvtryUtils=invInvtryUtils;
     $scope.invInvtryItemHolder = emptyItemHolder();
-    
     $scope.invInvtryItemHolders = [];
-
+    if($scope.invInvtry) {
+        $scope.invInvtry.acsngUser = invInvtryUtils.currentWsUser.userFullName;
+    };
     function init(){
     	var stkSection =invInvtryState.stkSection();
     	if(invInvtryUtils.isInvtryBySection($scope.invInvtry) && stkSection){
     		$scope.invInvtryItemHolder.invtryItem.section=stkSection.sectionCode;
     	}
+        var identif = $routeParams.identif;
+        if(identif) {
+            loadInvInvtryItems(identif);   
+        }
+    }
+    function loadInvInvtryItems(identif) {
+        $scope.invInvtry = invInvtryState.getByIdentif(identif);
+        var invInvtryItemSearchResult  = {entity : {}};
+        invInvtryItemSearchResult.entity.identif=identif;
+        
+        genericResource.findByLike(invInvtryUtils.invinvtrysUrlBase,invInvtryItemSearchResult)
+        .success(function(searchResult){
+    		var invInvtryItems = searchResult.resultList;
+            angular.forEach(invInvtryItems, function(invInvtryItem){
+                var invInvtryItemHolder = emptyItemHolder();
+                invInvtryItemHolder.invtryItem = invInvtryItem;
+                $scope.invInvtryItemHolders.push(invInvtryItemHolder);
+            });
+    	})
+    	.error(function(error){
+    		$scope.error=error;
+    	});
     }
     init();
     
@@ -671,11 +711,12 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
 		.error(function(error){$scope.error=error;});
     };
     
-    $scope.editItem =function(index){
+    $scope.editItem = function(index){
         if(index &&
-            (0 <= index <=$scope.invInvtryItemHolders.length)) {
+            (0 <= index && index <=$scope.invInvtryItemHolders.length)) {
             var itemHolder = $scope.invInvtryItemHolders[index];
-            $location.path('/InvInvtrys/edit/'+itemHolder.invtryItem.identif);   
+//            $location.path('/InvInvtrys/edit/'+itemHolder.invtryItem.identif);   
+            $scope.invInvtryItemHolder = itemHolder;
         }
     };
     $scope.addItem = function() {

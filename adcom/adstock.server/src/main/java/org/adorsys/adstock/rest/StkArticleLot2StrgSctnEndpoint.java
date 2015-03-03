@@ -22,11 +22,11 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.adorsys.adstock.jpa.StkArticleLot;
 import org.adorsys.adstock.jpa.StkArticleLot2StrgSctn;
 import org.adorsys.adstock.jpa.StkArticleLot2StrgSctnSearchInput;
 import org.adorsys.adstock.jpa.StkArticleLot2StrgSctnSearchResult;
 import org.adorsys.adstock.jpa.StkArticleLot2StrgSctn_;
-import org.adorsys.adstock.jpa.StkLotStockQty;
 import org.adorsys.adstock.jpa.StkSection;
 import org.apache.commons.lang3.StringUtils;
 
@@ -182,8 +182,9 @@ public class StkArticleLot2StrgSctnEndpoint
    @Inject
    private StkSectionEJB stkSectionEJB;
    @Inject
-   private StkLotStockQtyEJB lotStockQtyEJB;
-   
+   private StkArticleLotEJB articleLotEJB;
+   @Inject
+   private StkArticleLotDetachHelper articleLotDetachHelper;
    private StkArticleLot2StrgSctn detach(StkArticleLot2StrgSctn entity)
    {
       if (entity == null)
@@ -194,9 +195,9 @@ public class StkArticleLot2StrgSctnEndpoint
     	  StkSection stkSection = stkSectionEJB.findByIdentif(strgSection, new Date());
     	  if(stkSection!=null)entity.setStkSection(stkSection);
       }
-      
-      StkLotStockQty latestQty = lotStockQtyEJB.findLatestQty(entity.getArtPic(), entity.getLotPic());
-      
+      StkArticleLot stkArticleLot = articleLotEJB.findByIdentif(StkArticleLot.toId(entity.getLotPic()));
+      if(articleLotEJB!=null)stkArticleLot = articleLotDetachHelper.detach(stkArticleLot);
+      entity.setSectionArticleLot(stkArticleLot);
       return entity;
    }
 

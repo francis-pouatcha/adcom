@@ -103,7 +103,7 @@ public class ProcmtDlvryManagerClient {
 	
 	Random rdn = new Random();
 	private String randomSectionNbr(){
-		return "RAY-"+ StringUtils.leftPad((""+rdn.nextInt(150)+1), 4) ;
+		return "RAY-"+ StringUtils.leftPad((""+(rdn.nextInt(150)+1)), 4, '0') ;
 	}
 
 	private List<PrcmtDlvryItem2RcvngOrgUnitHolder> parseRecvngOus(String recvngOus){

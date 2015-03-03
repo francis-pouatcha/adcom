@@ -107,15 +107,19 @@ public class StkLotStockQtyEJB
 		   seqNbr = stockQty.getSeqNbr();
 	   }
 	   List<StkLotStockQty> resultList2 = repository.findByArtPicAndLotPicAndSeq(artPic, lotPic, seqNbr).orderDesc("seqNbr").getResultList();
-	   StkLotStockQty oldest = resultList2.iterator().next();
+	   
+	   StkLotStockQty oldest = null;
+	   if(!resultList2.isEmpty()) oldest = resultList2.iterator().next();
 	   for (StkLotStockQty s : resultList2) {
 		   base = base.add(s.getStockQty());
 	   }
 	   StkLotStockQty stkLotStockQty = new StkLotStockQty();
 	   stkLotStockQty.setArtPic(artPic);
 	   stkLotStockQty.setLotPic(lotPic);
-	   stkLotStockQty.setParentRcrd(oldest.getId());
-	   stkLotStockQty.setSeqNbr(oldest.getSeqNbr()+1);
+	   if(oldest!=null){
+		   stkLotStockQty.setParentRcrd(oldest.getId());
+		   stkLotStockQty.setSeqNbr(oldest.getSeqNbr()+1);
+	   }
 	   stkLotStockQty.setQtyDt(new Date());
 	   stkLotStockQty.setStockQty(base);
 	   return stkLotStockQty;

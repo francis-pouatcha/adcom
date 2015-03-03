@@ -14,4 +14,7 @@ public interface PrcmtDlvryItemEvtDataRepository extends EntityRepository<PrcmtD
 
 	@Query("SELECT e FROM PrcmtDlvryItemEvtData AS e WHERE e.dlvryNbr = ?1")
 	public QueryResult<PrcmtDlvryItemEvtData> findByDlvryNbr(String dlvryNbr);
+
+	@Query("SELECT e.id FROM PrcmtDlvryItemEvtData AS e WHERE e.dlvryNbr = ?1")
+	public QueryResult<String> findIdByDlvryNbr(String dlvryNbr);
 }

@@ -12,6 +12,8 @@ public abstract class AbstractEvtLstnr extends AbstractMvmtData {
 
 	private static final long serialVersionUID = 1474296137695915462L;
 
+	public static final String DEFAULT_LISTENER_NAME="default";
+	
 	@Column
 	@NotNull
 	private String lstnrName;

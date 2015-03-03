@@ -410,6 +410,7 @@ public class PrcmtDeliveryManager {
 		deliveryHstry.setOrignLogin(callerPrincipal.getName());
 		deliveryHstry.setOrignWrkspc(callerPrincipal.getWorkspaceId());
 		deliveryHstry.setProcStep(BaseProcStepEnum.CLOSING.name());
+		deliveryHstry.makeHistoryId(true);
 		deliveryHstryEJB.create(deliveryHstry);
 	}
 
@@ -426,6 +427,7 @@ public class PrcmtDeliveryManager {
 		deliveryHstry.setOrignLogin(callerPrincipal.getName());
 		deliveryHstry.setOrignWrkspc(callerPrincipal.getWorkspaceId());
 		deliveryHstry.setProcStep(BaseProcStepEnum.INITIATING.name());
+		deliveryHstry.makeHistoryId(true);
 		deliveryHstryEJB.create(deliveryHstry);
 	}
 
@@ -442,6 +444,7 @@ public class PrcmtDeliveryManager {
 		deliveryHstry.setOrignLogin(callerPrincipal.getName());
 		deliveryHstry.setOrignWrkspc(callerPrincipal.getWorkspaceId());
 		deliveryHstry.setProcStep(BaseProcStepEnum.MODIFYING.name());
+		deliveryHstry.makeHistoryId(false);
 		deliveryHstryEJB.create(deliveryHstry);
 	}
 	
@@ -458,6 +461,7 @@ public class PrcmtDeliveryManager {
 		deliveryHstry.setOrignLogin(callerPrincipal.getName());
 		deliveryHstry.setOrignWrkspc(callerPrincipal.getWorkspaceId());
 		deliveryHstry.setProcStep(BaseProcStepEnum.CLOSING.name());
+		deliveryHstry.makeHistoryId(true);
 		deliveryHstryEJB.create(deliveryHstry);
 	}
 
