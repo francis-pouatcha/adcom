@@ -1,16 +1,29 @@
 package org.adorsys.adprocmt.rest;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.metamodel.SingularAttribute;
 
+import org.adorsys.adbase.enums.BaseHistoryTypeEnum;
+import org.adorsys.adbase.enums.BaseProcStepEnum;
 import org.adorsys.adbase.enums.BaseProcessStatusEnum;
+import org.adorsys.adbase.jpa.Locality;
+import org.adorsys.adbase.jpa.LocalitySearchResult;
+import org.adorsys.adbase.security.SecurityUtil;
+import org.adorsys.adcore.auth.TermWsUserPrincipal;
 import org.adorsys.adcore.utils.SequenceGenerator;
+import org.adorsys.adprocmt.api.DeliveryInfo;
 import org.adorsys.adprocmt.jpa.PrcmtDelivery;
 import org.adorsys.adprocmt.jpa.PrcmtDeliveryEvtData;
+import org.adorsys.adprocmt.jpa.PrcmtDeliveryHstry;
+import org.adorsys.adprocmt.jpa.PrcmtDeliverySearchInput;
+import org.adorsys.adprocmt.jpa.PrcmtDeliverySearchResult;
 import org.adorsys.adprocmt.jpa.PrcmtDlvry2Ou;
 import org.adorsys.adprocmt.jpa.PrcmtDlvry2OuEvtData;
 import org.adorsys.adprocmt.jpa.PrcmtDlvry2PO;
@@ -34,6 +47,16 @@ public class PrcmtDeliveryEJB {
 
 	@Inject
 	private PrcmtDlvry2OuRepository dlvry2OuRepository;
+	
+	@Inject
+	private SecurityUtil securityUtil;
+	
+	@Inject
+	private PrcmtDeliveryHstryEJB deliveryHstryEJB;
+	
+	@Inject
+	private EntityManager em ;
+	
 
 	public PrcmtDelivery create(PrcmtDelivery entity) {
 		if (StringUtils.isBlank(entity.getDlvryNbr())) {
@@ -52,6 +75,34 @@ public class PrcmtDeliveryEJB {
 
 		evtDataEJB.create(evtData);
 		return entity;
+	}
+	
+	public PrcmtDelivery createCustom(PrcmtDelivery entity) {
+		String currentLoginName = securityUtil.getCurrentLoginName();
+		Date now = new Date();
+		entity.setCreatingUsr(currentLoginName);
+		entity.setCreationDt(now);
+		if(entity.getDlvryDt()==null) entity.setDlvryDt(now);
+		entity.setDlvryStatus(BaseProcessStatusEnum.ONGOING.name());
+		entity = create(entity);
+		createInitialDeliveryHistory(entity);
+		return entity;
+	}
+	
+	private void createInitialDeliveryHistory(PrcmtDelivery delivery){
+		TermWsUserPrincipal callerPrincipal = securityUtil.getCallerPrincipal();
+		PrcmtDeliveryHstry deliveryHstry = new PrcmtDeliveryHstry();
+		deliveryHstry.setComment(BaseHistoryTypeEnum.INITIATED.name());
+		deliveryHstry.setAddtnlInfo(DeliveryInfo.prinInfo(delivery));
+		deliveryHstry.setEntIdentif(delivery.getId());
+		deliveryHstry.setEntStatus(delivery.getDlvryStatus());
+		deliveryHstry.setHstryDt(new Date());
+		deliveryHstry.setHstryType(BaseHistoryTypeEnum.INITIATED.name());
+		
+		deliveryHstry.setOrignLogin(callerPrincipal.getName());
+		deliveryHstry.setOrignWrkspc(callerPrincipal.getWorkspaceId());
+		deliveryHstry.setProcStep(BaseProcStepEnum.INITIATING.name());
+		deliveryHstryEJB.create(deliveryHstry);
 	}
 
 	public PrcmtDlvry2PO addProcOrder(PrcmtDelivery entity, String poNbr) {
@@ -212,4 +263,48 @@ public class PrcmtDeliveryEJB {
 	public List<String> findClosingDeliveries(int qty) {
 		return repository.findByDlvryStatus(BaseProcessStatusEnum.CLOSING.name()).maxResults(qty).getResultList();
 	}
+
+	public PrcmtDeliverySearchResult findCustom(PrcmtDeliverySearchInput searchInput) {
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("SELECT p FROM PrcmtDelivery AS p WHERE p.creationDt <=:dateMax AND p.creationDt >:dateMin");
+		
+		
+		if(StringUtils.isNotBlank(searchInput.getEntity().getDlvrySlipNbr())){
+
+			sb.append("AND LOWER(p.dlvrySlipNbr) LIKE LOWER(:dlvrySlipNbr) ");
+		}
+
+		String query = sb.toString();
+		
+		Query createQuery = em.createQuery(query);
+		createQuery.setParameter("dateMax", searchInput.getDateMax());
+		createQuery.setParameter("dateMin", searchInput.getDateMin());
+
+		if(StringUtils.isNotBlank(searchInput.getEntity().getDlvrySlipNbr())){
+
+			String dlvrySlipNbr = searchInput.getEntity().getDlvrySlipNbr()+"%";
+			createQuery.setParameter("dlvrySlipNbr", dlvrySlipNbr);
+		}
+
+		@SuppressWarnings("unchecked")
+		List<Locality> resultList = createQuery.getResultList();
+		
+		if(searchInput.getStart() >= 0){
+			createQuery.setFirstResult(searchInput.getStart());
+		}
+		if(searchInput.getMax() > 0){
+			createQuery.setMaxResults(searchInput.getMax());
+		}
+		List resultList2 = createQuery.getResultList();
+
+		PrcmtDeliverySearchResult prcmtDeliverySearchResult = new PrcmtDeliverySearchResult();
+		prcmtDeliverySearchResult.setCount(Long.valueOf(resultList.size()));
+		prcmtDeliverySearchResult.setSearchInput(searchInput);
+		prcmtDeliverySearchResult.setResultList(resultList2);
+
+		return  prcmtDeliverySearchResult;	
+	}
+
+	
 }

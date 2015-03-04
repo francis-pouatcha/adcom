@@ -10,9 +10,7 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
-
 import org.adorsys.adcore.jpa.AbstractIdentifData;
 import org.adorsys.adcore.jpa.AmtOrPct;
 import org.adorsys.adcore.jpa.CurrencyEnum;
@@ -67,7 +65,6 @@ public abstract class PrcmtAbstractDlvryItem extends AbstractIdentifData {
 	 */
 	@Column
 	@Description("PrcmtDlvryItem_artName_description")
-	@Transient
 	private String artName;
 
 	/*
@@ -471,6 +468,7 @@ public abstract class PrcmtAbstractDlvryItem extends AbstractIdentifData {
 		target.dlvryNbr=dlvryNbr;
 		target.lotPic=lotPic;
 		target.artPic=artPic;
+		target.artName=artName;
 		target.supplier=supplier;
 		target.supplierPic=supplierPic;
 		target.expirDt=expirDt;

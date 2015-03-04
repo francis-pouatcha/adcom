@@ -120,12 +120,12 @@ public class PrcmtAbstractDelivery extends AbstractIdentifData {
 
 	@Column
 	@Description("PrcmtDelivery_creatingUsr_description")
-	//@NotNull
+	@NotNull
 	private String creatingUsr;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Description("PrcmtDelivery_creationDt_description")
-	//@NotNull
+	@NotNull
 	private Date creationDt;
 
 	public String getDlvryNbr() {
@@ -379,5 +379,4 @@ public class PrcmtAbstractDelivery extends AbstractIdentifData {
 	protected String makeIdentif() {
 		return dlvryNbr;
 	}
-	
 }

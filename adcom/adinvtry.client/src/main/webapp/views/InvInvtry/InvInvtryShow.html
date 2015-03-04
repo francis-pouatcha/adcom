@@ -1,17 +1,30 @@
 <div ng-cloak>
-    <div class="well">
-        <h4>
-            <a>{{invInvtry.invtryNbr}}</a> {{invInvtryUtils.translations['Entity_Of.title']}} {{invInvtry.invtryDt | date:'dd-MM-yyyy'}},
-            <b> {{invInvtryUtils.translations['Entity_By.title']}} : </b>{{invInvtry.acsngUser}},
-            <b>{{invInvtryUtils.translations['InvInvtry_invtryStatus_description.title']}} :</b> {{invInvtryUtils.invInvtryTypeI18nMsgTitleValue(invInvtry.invtryStatus)}}
+    <div class="well" ng-show="invInvtryUtils.isInvInvtryEditable(invInvtry)">
+        <h5 style="height: 130px;">
+            <p class="pull-left">
+                <span><b>{{invInvtryUtils.translations['InvInvtry_invtryDt_description.title']}} :</b> 
+                    {{invInvtry.invtryDt | date:'dd MMM yyyy'}}
+                </span><br><br>
+                <span><b>{{invInvtryUtils.translations['Entity_By.title']}} :</b>
+                    {{invInvtry.acsngUser}}
+                </span><br><br>
+                <span><b>{{invInvtryUtils.translations['InvInvtry_invtryStatus_description.title']}} :</b>    {{invInvtryUtils.invInvntrStatusI18nMsgTitleValue(invInvtry.invInvntrStatus)}} 
+                </span><br><br>
+                <span><b>{{invInvtryUtils.translations['InvInvtry_invInvtryType_description.title']}} :</b> {{invInvtryUtils.invInvtryStatusI18nMsgTitleValue(invInvtry.invtryStatus)}}
+                </span><br><br>
+                <span><b>{{invInvtryUtils.translations['InvInvtry_descptn_description.title']}} :</b> 
+                    {{invInvtry.descptn}}
+                </span>
+            
+            </p>
             <p class="pull-right">
                 <a class=" btn btn-default" href="#/"  type="button">Cancel</a>
                 <button class=" btn btn-primary" ng-click="save()" type="button">{{invInvtryUtils.translations['Entity_save.title']}} </button>
                 <button class=" btn btn-primary" ng-click="close()" type="button">{{invInvtryUtils.translations['Entity_saveleave.title']}} </button>
             </p>
-        </h4>
+        </h5>
     </div>
-    <div class="panel panel-default">
+    <div class="panel panel-default" ng-show="invInvtryUtils.isInvInvtryEditable(invInvtry)">
         <div class="panel-heading"><b> {{invInvtryUtils.translations['Entity_add.title']}} {{invInvtryUtils.translations['InvInvtryItem_description.title']}} </b> </div>
         <div class="panel-body">
             <form name="invInvtryItemForm" id="invInvtryItemForm" novalidate >
@@ -75,19 +88,19 @@
                     <th class="clo-lg-1">{{invInvtryUtils.translations['InvInvtryItem_lotPic_description.title']}}</th>
                     <th class="clo-lg-1">{{invInvtryUtils.translations['InvInvtryItem_artPic_description.title']}}</th>
                     <th class="col-lg-5">{{invInvtryUtils.translations['InvInvtryItem_artName_description.title']}}</th>
-                    <th class="col-lg-2">{{invInvtryUtils.translations['InvInvtryItem_asseccedQty_description.title']}}</th>
-                    <th class="col-lg-1"></th>
+                    <th class="col-lg-2" ng-show="invInvtryUtils.isInvInvtryEditable(invInvtry)">{{invInvtryUtils.translations['InvInvtryItem_asseccedQty_description.title']}}</th>
+                    <th class="col-lg-1" ng-show="invInvtryUtils.isInvInvtryEditable(invInvtry)"></th>
                 </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="itemHolder in invInvtryItemHolders">
+                    <tr ng-repeat="itemHolder in invInvtryItemHolders" ng-dblclick="editItem($index)">
                         <td>{{itemHolder.invtryItem.section}}</td>
                         <td>{{itemHolder.invtryItem.lotPic}}</td>
                         <td>{{itemHolder.invtryItem.artPic}}</td>
                         <td>{{itemHolder.invtryItem.artName}}</td>
                         <td>{{itemHolder.invtryItem.asseccedQty}}</td>
-                        <td><a ng-click="editItem($index)" class=""><i class="glyphicon glyphicon-edit"></i></a></td>
-                        <td><a ng-click="deleteItem($index)" class=""><i class="glyphicon glyphicon-trash"></i></a></td>
+                        <td ng-show="invInvtryUtils.isInvInvtryEditable(invInvtry)"><a ng-click="editItem($index)" class=""><i class="glyphicon glyphicon-edit"></i></a></td>
+                        <td ng-show="invInvtryUtils.isInvInvtryEditable(invInvtry)"><a ng-click="deleteItem($index)" class=""><i class="glyphicon glyphicon-trash"></i></a></td>
                     </tr>
                 </tbody>
             </table>

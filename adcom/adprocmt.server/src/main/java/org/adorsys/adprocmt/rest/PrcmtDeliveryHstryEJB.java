@@ -7,10 +7,10 @@ import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
 
+import org.adorsys.adbase.enums.BaseHistoryTypeEnum;
+import org.adorsys.adprocmt.event.PrcmtDeliveryClosedEvent;
 import org.adorsys.adprocmt.event.PrcmtDeliveryClosingEvent;
-import org.adorsys.adprocmt.jpa.PrcmtDeliveryEvt;
 import org.adorsys.adprocmt.jpa.PrcmtDeliveryHstry;
-import org.adorsys.adprocmt.jpa.PrcmtDlvryEvtLstnr;
 import org.adorsys.adprocmt.repo.PrcmtDeliveryHstryRepository;
 
 @Stateless
@@ -20,28 +20,20 @@ public class PrcmtDeliveryHstryEJB {
 	private PrcmtDeliveryHstryRepository repository;
 	
 	@Inject
-	private PrcmtDlvryEvtLstnrEJB evtLstnrEJB;
-	
-	@Inject
-	private PrcmtDeliveryEvtEJB evtEJB;
-	
-	@Inject
 	@PrcmtDeliveryClosingEvent
 	private Event<PrcmtDeliveryHstry> deliveryClosingEvent;
 
+	@Inject
+	@PrcmtDeliveryClosedEvent
+	private Event<PrcmtDeliveryHstry> deliveryClosedEvent;
+	
 	public PrcmtDeliveryHstry create(PrcmtDeliveryHstry entity) {
 		PrcmtDeliveryHstry deliveryHstry = repository.save(attach(entity));
-		String evtName = deliveryHstry.getHstryType();
-		List<PrcmtDlvryEvtLstnr> found = evtLstnrEJB.findByEvtName(evtName);
-		for (PrcmtDlvryEvtLstnr evtLstnr : found) {
-			PrcmtDeliveryEvt evt = new PrcmtDeliveryEvt();
-			deliveryHstry.copyTo(evt);
-			evt.setEvtName(evtName);
-			evt.setLstnrName(evtLstnr.getLstnrName());
-			evt.setId(deliveryHstry.getId() + "_" + evtLstnr.getId());
-			evtEJB.create(evt);
+		if(BaseHistoryTypeEnum.CLOSING.name().equals(deliveryHstry.getHstryType())){
+			deliveryClosingEvent.fire(deliveryHstry);
+		} else if (BaseHistoryTypeEnum.CLOSED.name().equals(deliveryHstry.getHstryType())){
+			deliveryClosedEvent.fire(deliveryHstry);
 		}
-		deliveryClosingEvent.fire(deliveryHstry);
 		return deliveryHstry;
 	}
 

@@ -9,7 +9,6 @@ import javax.validation.constraints.NotNull;
 
 import org.adorsys.adcore.jpa.AbstractIdentifData;
 import org.adorsys.adcore.utils.BigDecimalUtils;
-import org.adorsys.adstock.rest.StkSectionArticleLot;
 import org.adorsys.javaext.description.Description;
 import org.apache.commons.lang3.StringUtils;
 
@@ -43,7 +42,7 @@ public class StkArticleLot2StrgSctn extends AbstractIdentifData {
 	private StkSection stkSection;
 	
 	@Transient
-	private StkSectionArticleLot sectionArticleLot;
+	private StkArticleLot sectionArticleLot;
 
 	public String getStrgSection() {
 		return strgSection;
@@ -92,12 +91,12 @@ public class StkArticleLot2StrgSctn extends AbstractIdentifData {
 	public void setStkSection(StkSection stkSection) {
 		this.stkSection = stkSection;
 	}
-	
-	public StkSectionArticleLot getSectionArticleLot() {
+
+	public StkArticleLot getSectionArticleLot() {
 		return sectionArticleLot;
 	}
 
-	public void setSectionArticleLot(StkSectionArticleLot sectionArticleLot) {
+	public void setSectionArticleLot(StkArticleLot sectionArticleLot) {
 		this.sectionArticleLot = sectionArticleLot;
 	}
 
@@ -106,6 +105,8 @@ public class StkArticleLot2StrgSctn extends AbstractIdentifData {
 		target.lotPic = lotPic;
 		target.strgSection=strgSection;
 		target.qty = qty;
+		target.stkSection = stkSection;
+		target.sectionArticleLot=sectionArticleLot;
 	}
 	
 	public boolean contentEquals(StkArticleLot2StrgSctn target){
@@ -115,5 +116,4 @@ public class StkArticleLot2StrgSctn extends AbstractIdentifData {
 		if(!StringUtils.equals(target.artPic, artPic)) return false;
 		return true;
 	}
-	
 }

@@ -40,6 +40,11 @@
 "StkSectionArticleLot_lotQty_description.title":"Quantité Totale du Lot",
 "StkSectionArticleLot_lotQtyDt_description.title":"Au",
 "StkSectionArticleLot_salesPrice_description.title":"Prix de Vente TTC",
+"StkSectionArticleLot_lotPic_description.text":"Le code identifiant ce lot. Pourait etre imprimé comme code bar et posé su chaque produit de ce lot.",
+"StkSectionArticleLot_lotPic_description.title":"Identifiant du Lot",
+"StkSectionArticleLot_artPic_description.text":"Code article",
+"StkSectionArticleLot_artPic_description.title":"Identifiant Article",
+"StkSectionArticleLot_sppuTaxIncl_description.title":"Prix de Vente TTC",
 
 "StkArtLotSection_artPic_description.text":"Code article",
 "StkArtLotSection_artPic_description.title":"CIP Article",
@@ -127,5 +132,4 @@
 "StkSection_wharehouse_description.title":"Magasin",
 "StkSection_stkSubSection_description.title":"Sous Rayons",
 "StkSection_stkArticleLot_description.title":"Lots d'Article"
-
 }

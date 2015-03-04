@@ -43,7 +43,7 @@ public class PrcmtDeliveryEndpoint
    @Produces({ "application/json", "application/xml" })
    public PrcmtDelivery create(PrcmtDelivery entity)
    {
-      return detach(ejb.create(entity));
+      return detach(ejb.createCustom(entity));
    }
 
    @DELETE
@@ -89,6 +89,8 @@ public class PrcmtDeliveryEndpoint
       return new PrcmtDeliverySearchResult((long) resultList.size(),
             detach(resultList), detach(searchInput));
    }
+   
+  
 
    @GET
    @Path("/count")
@@ -109,6 +111,15 @@ public class PrcmtDeliveryEndpoint
             searchInput.getStart(), searchInput.getMax(), attributes);
       return new PrcmtDeliverySearchResult(count, detach(resultList),
             detach(searchInput));
+   }
+   
+   @POST
+   @Path("/findCustom")
+   @Produces({ "application/json", "application/xml" })
+   @Consumes({ "application/json", "application/xml" })
+   public PrcmtDeliverySearchResult findCustom(PrcmtDeliverySearchInput searchInput)
+   {
+      return ejb.findCustom(searchInput);
    }
 
    @POST

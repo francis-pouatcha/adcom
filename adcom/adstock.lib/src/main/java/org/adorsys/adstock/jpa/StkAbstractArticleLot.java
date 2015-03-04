@@ -28,6 +28,22 @@ public abstract class StkAbstractArticleLot extends AbstractIdentifData {
 	@NotNull
 	private String artPic;
 
+	/*
+	 * The delivery item number. Used to retrace the corresponding delivery.
+	 */
+	@Column
+	@Description("StkArticleLot_dlvryItemNbr_description")
+	@NotNull
+	private String dlvryItemNbr;
+	
+	/*
+	 * The delivery number.
+	 */
+	@Column
+	@Description("StkArticleLot_dlvryNbr_description")
+	@NotNull
+	private String dlvryNbr;
+	
 	@Column
 	@Description("StkArticleLot_supplierPic_description")
 	private String supplierPic;
@@ -235,5 +251,21 @@ public abstract class StkAbstractArticleLot extends AbstractIdentifData {
 
 	public void setClosedDt(Date closedDt) {
 		this.closedDt = closedDt;
+	}
+
+	public String getDlvryItemNbr() {
+		return dlvryItemNbr;
+	}
+
+	public void setDlvryItemNbr(String dlvryItemNbr) {
+		this.dlvryItemNbr = dlvryItemNbr;
+	}
+
+	public String getDlvryNbr() {
+		return dlvryNbr;
+	}
+
+	public void setDlvryNbr(String dlvryNbr) {
+		this.dlvryNbr = dlvryNbr;
 	}
 }

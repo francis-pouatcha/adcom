@@ -12,9 +12,9 @@ public interface InvInvtryItemRepository extends EntityRepository<InvInvtryItem,
 	
 	@Query("SELECT e FROM InvInvtryItem AS e WHERE e.invtryNbr = ?1")
 	public QueryResult<InvInvtryItem> findByInvtryNbr(String invtryNbr);
-
+/*
 	@Query("SELECT COUNT(e) FROM InvInvtryItem AS e WHERE e.invtryNbr = ?1")
-	public Long countByInvtryNbr(String invtryNbr);
+	public Long countByInvtryNbr(String invtryNbr);*/
 
 	@Modifying
 	@Query("DELETE e FROM InvInvtryItem AS e WHERE e.invtryNbr = ?1")
