@@ -14,7 +14,6 @@ import org.adorsys.adbase.enums.BaseHistoryTypeEnum;
 import org.adorsys.adbase.enums.BaseProcStepEnum;
 import org.adorsys.adbase.enums.BaseProcessStatusEnum;
 import org.adorsys.adbase.jpa.Locality;
-import org.adorsys.adbase.jpa.LocalitySearchResult;
 import org.adorsys.adbase.security.SecurityUtil;
 import org.adorsys.adcore.auth.TermWsUserPrincipal;
 import org.adorsys.adcore.utils.SequenceGenerator;

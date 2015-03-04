@@ -88,20 +88,13 @@ public class ProcmtPOTriggerModeEJB {
 	private List<ProcmtPOTriggerMode> processI18n(List<ProcmtPOTriggerMode> procmtPOTriggerModes){
 		String langIso2 = securityUtil.getUserLange();
 		List<String> listLangIso2 = securityUtil.getUserLangePrefs();
-		
+		if(StringUtils.isBlank(langIso2)){
+			langIso2 = listLangIso2.get(0);
+		}	
 		List<ProcmtPOTriggerMode> listTriggerI18n = new ArrayList<ProcmtPOTriggerMode>();
 		for(ProcmtPOTriggerMode trigger:procmtPOTriggerModes){
 			if(StringUtils.equals(langIso2,trigger.getLangIso2())){
 				listTriggerI18n.add(trigger);
-			}else{
-				for (String lg : listLangIso2) {
-					if (StringUtils.equals(lg, langIso2))
-						continue;
-					if(StringUtils.equals(lg,trigger.getLangIso2())){
-						listTriggerI18n.add(trigger);
-						break;
-					}
-				}
 			}
 		}
 		return listTriggerI18n;

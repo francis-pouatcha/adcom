@@ -24,6 +24,7 @@ import javax.ws.rs.core.Response.Status;
 import org.adorsys.adprocmt.jpa.PrcmtProcOrder;
 import org.adorsys.adprocmt.jpa.PrcmtProcOrderSearchInput;
 import org.adorsys.adprocmt.jpa.PrcmtProcOrderSearchResult;
+import org.adorsys.adprocmt.jpa.PrcmtProcOrder_;
 import org.adorsys.adprocmt.jpa.ProcmtPOTriggerMode;
 import org.adorsys.adprocmt.jpa.ProcmtPOType;
 

@@ -88,20 +88,13 @@ public class ProcmtPOTypeEJB {
 	private List<ProcmtPOType> processI18n(List<ProcmtPOType> procmtPOTypes){
 		String langIso2 = securityUtil.getUserLange();
 		List<String> listLangIso2 = securityUtil.getUserLangePrefs();
-		
+		if(StringUtils.isBlank(langIso2)){
+			langIso2 = listLangIso2.get(0);
+		}	
 		List<ProcmtPOType> listPOTypeI18n = new ArrayList<ProcmtPOType>();
 		for(ProcmtPOType pOType:procmtPOTypes){
 			if(StringUtils.equals(langIso2,pOType.getLangIso2())){
 				listPOTypeI18n.add(pOType);
-			}else{
-				for (String lg : listLangIso2) {
-					if (StringUtils.equals(lg, langIso2))
-						continue;
-					if(StringUtils.equals(lg,pOType.getLangIso2())){
-						listPOTypeI18n.add(pOType);
-						break;
-					}
-				}
 			}
 		}
 		return listPOTypeI18n;

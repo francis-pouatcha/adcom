@@ -72,10 +72,22 @@ angular.module('AdProcmt')
     self.loadBusinessPartner = loadBusinessPartner;
     self.loadOrgUnit = loadOrgUnit;
     self.currencys = ['XAF','EUR','NGN','USD'];
-    self.triggerMode = [];
-    self.orderType = [];
+    self.triggerModes = [];
+    self.orderTypes = [];
 
+        loadTriggerMode();
+        loadOrderType();
 
+        function loadTriggerMode(){
+            genericResource.listAll(ProcmtUtils.urlPrcmtOrder+'/listAllTriggerMode').success(function(data){
+                self.triggerModes = data;
+            })
+        }
+        function loadOrderType(){
+            genericResource.listAll(ProcmtUtils.urlPrcmtOrder+'/listAllPOType').success(function(data){
+                self.orderTypes = data;
+            })
+        }
 
         function loadBusinessPartner(val){
             return loadBusinessPartnerPromise(val).then(function(entitySearchResult){
