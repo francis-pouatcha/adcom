@@ -36,6 +36,7 @@
     <module>adterm.server</module>
     <module>adcom.all</module>
     <module>adcom.configuration</module>
+    <module>adcom.test</module>
   </modules>
   <scm>
     <connection>scm:git:https://github.com/francis-pouatcha/adcom.git</connection>
@@ -137,11 +138,11 @@
         <scope>provided</scope>
       </dependency>
       <dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.10</version>
-			<scope>test</scope>
-		</dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.10</version>
+        <scope>test</scope>
+      </dependency>
     </dependencies>
   </dependencyManagement>
   <repositories>

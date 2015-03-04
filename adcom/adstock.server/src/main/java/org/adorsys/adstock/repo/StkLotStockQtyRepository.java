@@ -20,6 +20,6 @@ public interface StkLotStockQtyRepository extends EntityRepository<StkLotStockQt
 	@Query("SELECT e FROM StkLotStockQty AS e WHERE e.artPic = ?1 AND e.lotPic = ?2 AND e.cnsldtd=?3")
 	public QueryResult<StkLotStockQty> findByArtPicAndLotPicAndCnsldtd(String artPic,String lotPic, Boolean cnsldtd);
 
-	@Query("SELECT e FROM StkLotStockQty AS e WHERE e.artPic = ?1 AND e.lotPic = ?2 AND e.seqNbr > ?3")
+	@Query("SELECT e FROM StkLotStockQty AS e WHERE e.artPic = ?1 AND e.lotPic = ?2 AND e.seqNbr >= ?3")
 	public QueryResult<StkLotStockQty> findByArtPicAndLotPicAndSeq(String artPic,String lotPic, int seqNbr);
 }

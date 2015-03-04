@@ -72,7 +72,7 @@ public class RegistrationFilter implements Filter {
 			return;			
 		}
 
-		Cookie cookie = new SecureTermCookieUtils().setSecureCookie(cookieStr, request.getServerName(), 60*60*24);
+		Cookie cookie = new SecureTermCookieUtils().setSecureCookie(cookieStr, request.getServerName(), 60*60*24*365);
 		response.addCookie(cookie);
 		response.sendRedirect("/adlogin.client");
 	}

@@ -25,7 +25,7 @@
    				<li class="dropdown" ng-show="userSession()"><a class="dropdown-toggle glyphicon glyphicon-user" data-toggle="dropdown" href=""><b  ng-bind="loginName()"></b></a>
    					<ul class="dropdown-menu">
    						<li><a href="{{workspaceLink()}}" ng-click="workspaces()" class="pointer-element">{{navbar_ouWsIdentif}}</a></li>
-   						<li><a href="#" ng-click="logout();" class="pointer-element">{{navbar_logOut}}</a></li>
+   						<li><a id="logout" href="#" ng-click="logout();" class="pointer-element">{{navbar_logOut}}</a></li>
    						<li ng-show="switchTo('en')"><a href="#" ng-click="changeLanguage('en')" class="pointer-element">English</a></li>
    						<li ng-show="switchTo('fr')"><a href="#" ng-click="changeLanguage('fr')" class="pointer-element">Francais</a></li>
    					</ul>
