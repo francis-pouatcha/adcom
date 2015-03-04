@@ -24,7 +24,8 @@ import javax.ws.rs.core.Response.Status;
 import org.adorsys.adprocmt.jpa.PrcmtProcOrder;
 import org.adorsys.adprocmt.jpa.PrcmtProcOrderSearchInput;
 import org.adorsys.adprocmt.jpa.PrcmtProcOrderSearchResult;
-import org.adorsys.adprocmt.jpa.PrcmtProcOrder_;
+import org.adorsys.adprocmt.jpa.ProcmtPOTriggerMode;
+import org.adorsys.adprocmt.jpa.ProcmtPOType;
 
 /**
  * 
@@ -37,6 +38,10 @@ public class PrcmtProcOrderEndpoint
 
    @Inject
    private PrcmtProcOrderEJB ejb;
+   @Inject
+   private ProcmtPOTriggerModeEJB triggerModeEJB;
+   @Inject
+   private ProcmtPOTypeEJB procmtPOTypeEJB;
 
    @POST
    @Consumes({ "application/json", "application/xml" })
@@ -89,6 +94,23 @@ public class PrcmtProcOrderEndpoint
       return new PrcmtProcOrderSearchResult((long) resultList.size(),
             detach(resultList), detach(searchInput));
    }
+   
+   @GET
+   @Path("/listAllTriggerMode")
+   @Produces({ "application/json", "application/xml" })
+   public List<ProcmtPOTriggerMode> listAllTriggerMode()
+   {
+      return triggerModeEJB.listAll();
+   }
+   
+   @GET
+   @Path("/listAllPOType")
+   @Produces({ "application/json", "application/xml" })
+   public List<ProcmtPOType> listAllPOType()
+   {
+      return procmtPOTypeEJB.listAll();
+   }
+
 
    @GET
    @Path("/count")
