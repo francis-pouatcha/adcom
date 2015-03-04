@@ -214,7 +214,6 @@ angular.module('AdInvtry')
         return deferred.promise;
     }
     
-  
 
     service.loadUsers = function(val){
         return loadUsersPromise(val).then(function(entitySearchResult){
@@ -326,6 +325,7 @@ angular.module('AdInvtry')
         searchInputVar=angular.copy(searchInputIn);
         return searchInputIn;
     };
+            
     service.searchInputChanged = function(searchInputIn){
         return angular.equals(searchInputVar, searchInputIn);
     };
@@ -518,27 +518,46 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
     $scope.create = create;
     $scope.error = "";
     $scope.invInvtryUtils=invInvtryUtils;
+    var searchInputArtLots = {
+            entity:{},
+            fieldNames:[],
+            start:0,
+            max:-1
+        };
 
     function create(){
     	$scope.invInvtry.invtryDt=new Date();
     	$scope.invInvtry.invtryStatus='ONGOING';
     	if($scope.stkSection){
     		invInvtryState.stkSection($scope.stkSection);
+    		loadStkSectionArticleLots($scope.stkSection);
     	}
 		if(invInvtryState.push($scope.invInvtry)){
 			$location.path('/InvInvtrys/show/');
 		}
-//    	
-//    	genericResource.create(invInvtryUtils.urlBase, $scope.invInvtry)
-//    	.success(function(invInvtry){
-//    		if(invInvtryState.push(invInvtry)){
-//    			$location.path('/InvInvtrys/show/');
-//    		}
-//    	})
-//    	.error(function(error){
-//    		$scope.error = error;
-//    	});
     };
+    
+    // Load ArticlesLots from StkSection
+    function loadStkSectionArticleLots(stkSection){
+      var stkSection = invInvtryState.stkSection($scope.stkSection);
+      if(!stkSection) return;
+      	var searchInput = invInvtryState.searchInput(searchInputArtLots);
+  		searchInput.sectionCode=stkSection.sectionCode;
+  		searchInput.withStrgSection= true;
+      	findBy(searchInput);
+  }
+
+  function findBy(searchInput){
+  	genericResource.findBy(invInvtryUtils.stkarticlelotsUrlBase, searchInput)
+  	.success(function(entitySearchResult) {
+//  		invInvtryState.consumeSearchResult(entitySearchResult);
+  		console.log('Nbre de references: '+entitySearchResult.count);
+      })
+  	.error(function(error){
+  		$scope.error = error;
+  	});
+  }
+  
 }])
 .controller('invInvtryEditCtlr',['$scope','genericResource','$location','invInvtryUtils','invInvtryState',
                                  function($scope,genericResource,$location,invInvtryUtils,invInvtryState){
