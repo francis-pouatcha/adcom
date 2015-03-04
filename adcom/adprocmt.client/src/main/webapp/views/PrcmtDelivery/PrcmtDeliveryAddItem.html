@@ -7,8 +7,8 @@
             <b>Amount Entered:</b> {{prcmtDeliveryAddItemCtlr.totalAmountEntered}} cfa
             <p class="pull-right">
                 <a class=" btn btn-default" href="#/"  type="button">Cancel</a>
-                <button class=" btn btn-primary" ng-click="prcmtDeliveryAddItemCtlr.save()" type="button">Save</button>
-                <button class=" btn btn-primary" ng-click="prcmtDeliveryAddItemCtlr.close()" ng-show="prcmtDeliveryAddItemCtlr.close" type="button">Save and Close</button>
+                <button class=" btn btn-primary" ng-click="prcmtDeliveryAddItemCtlr.save()" ng-show="prcmtDeliveryAddItemCtlr.closeStatus" type="button">Save</button>
+                <button class=" btn btn-primary" ng-click="prcmtDeliveryAddItemCtlr.close()" ng-show="prcmtDeliveryAddItemCtlr.closeStatus" type="button">Save and Close</button>
             </p>
         </h4>
     </div>
@@ -182,8 +182,8 @@
                         <td>{{prcmtDeliveryItemHolder.dlvryItem.pppuPreTax}}</td>
                         <td>{{prcmtDeliveryItemHolder.dlvryItem.sppuPreTax}}</td>
                         <td>{{prcmtDeliveryItemHolder.dlvryItem.expirDt}}</td>
-                        <td><a ng-click="prcmtDeliveryAddItemCtlr.editItem($index)" class=""><i class="glyphicon glyphicon-edit"></i></a></td>
-                        <td><a ng-click="prcmtDeliveryAddItemCtlr.deleteItem($index)" class=""><i class="glyphicon glyphicon-trash"></i></a></td>
+                        <td><a ng-show="prcmtDeliveryAddItemCtlr.closeStatus" ng-click="prcmtDeliveryAddItemCtlr.editItem($index)" class=""><i class="glyphicon glyphicon-edit"></i></a></td>
+                        <td><a ng-show="prcmtDeliveryAddItemCtlr.closeStatus" ng-click="prcmtDeliveryAddItemCtlr.deleteItem($index)" class=""><i class="glyphicon glyphicon-trash"></i></a></td>
                     </tr>
                 </tbody>
             </table>

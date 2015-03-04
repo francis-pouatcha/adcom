@@ -43,7 +43,7 @@ cd $JBOSS_HOME && bin/standalone.sh >/dev/null &
 echo 'switching to projet directory'
 cd $ADCOM_HOME
 echo 'cleanning the projet'
-mvn clean install
+mvn clean install -DskipTests
 
 echo 'deploying new artifacts'
 cp adbase.server/target/adbase.server.war $JBOSS_HOME/standalone/deployments/

@@ -53,26 +53,15 @@ angular.module('AdProcmt')
     }
 
     function findByLike(searchInput){
-        genericResource.findByLike(ProcmtUtils.urlBase,searchInput)
+        genericResource.findCustom(ProcmtUtils.urlBase,searchInput)
     		.success(function(entitySearchResult) {
 	            self.prcmtDeliverys = entitySearchResult.resultList;
 	            self.totalItems = entitySearchResult.count ;
     		});
     }
 
-    function processSearchInput(){
-        var fieldNames = [];
-        if(self.searchInput.entity.dateMin){
-        	//fieldNames.push('dateMin') ;
-        	//self.searchInput.entity.dateMin='fr';
-        }
-
-        self.searchInput.fieldNames = fieldNames ;
-        return self.searchInput ;
-    };
 
     function  handleSearchRequestEvent(){
-    	processSearchInput();
         findByLike(self.searchInput);
     };
 

@@ -1,6 +1,6 @@
 <div ng-cloak>
     <div class="well" ng-show="invInvtryUtils.isInvInvtryEditable(invInvtry)">
-        <h6 style="height: 150px;">
+        <h5 style="height: 130px;">
             <p class="pull-left">
                 <span><b>{{invInvtryUtils.translations['InvInvtry_invtryDt_description.title']}} :</b> 
                     {{invInvtry.invtryDt | date:'dd MMM yyyy'}}
@@ -8,9 +8,9 @@
                 <span><b>{{invInvtryUtils.translations['Entity_By.title']}} :</b>
                     {{invInvtry.acsngUser}}
                 </span><br><br>
-                <span><b>{{invInvtryUtils.translations['InvInvtry_invtryStatus_description.title']}} :</b>    {{invInvtryUtils.invInvntrStatusI18nMsgTitleValue(invInvtry.invInvntrStatus)}} 
+                <span><b>{{invInvtryUtils.translations['InvInvtry_invtryStatus_description.title']}} :</b>    {{invInvtryUtils.invInvntrStatusI18nMsgTitleValue(invInvtry.invtryStatus)}} 
                 </span><br><br>
-                <span><b>{{invInvtryUtils.translations['InvInvtry_invInvtryType_description.title']}} :</b> {{invInvtryUtils.invInvtryStatusI18nMsgTitleValue(invInvtry.invtryStatus)}}
+                <span><b>{{invInvtryUtils.translations['InvInvtry_invInvtryType_description.title']}} :</b> {{invInvtryUtils.invInvtryTypeI18nMsgTitleValue(invInvtry.invInvtryType)}}
                 </span><br><br>
                 <span><b>{{invInvtryUtils.translations['InvInvtry_descptn_description.title']}} :</b> 
                     {{invInvtry.descptn}}
@@ -22,7 +22,7 @@
                 <button class=" btn btn-primary" ng-click="save()" type="button">{{invInvtryUtils.translations['Entity_save.title']}} </button>
                 <button class=" btn btn-primary" ng-click="close()" type="button">{{invInvtryUtils.translations['Entity_saveleave.title']}} </button>
             </p>
-        </h6>
+        </h5>
     </div>
     <div class="panel panel-default" ng-show="invInvtryUtils.isInvInvtryEditable(invInvtry)">
         <div class="panel-heading"><b> {{invInvtryUtils.translations['Entity_add.title']}} {{invInvtryUtils.translations['InvInvtryItem_description.title']}} </b> </div>
