@@ -637,12 +637,12 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
                 entity:{},
                 fieldNames:[],
                 start: 0,
-                max: 10
+                max: -1
             };
             var range = invInvtryState.range;
             searchInput.startRange = range.startRange;
             searchInput.endRange = range.endRange;
-            invInvtryUtils.loadArticleWithSearchInput(searchInput).then(function(searchResult){
+            genericResource.findCustom(invInvtryUtils.catalarticlesUrlBase ,searchInput).success(function(searchResult){
                 var articles = searchResult.resultList;
                 var artPics = [];
                 angular.forEach(articles,function(article){
@@ -665,7 +665,7 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
                     });
                 })
                 .error(function(error){$scope.error=error;});
-            },function(error){
+            }).error(function(error){
                 $scope.error = error;
             });
     }

@@ -245,8 +245,14 @@ public class CatalArticleEndpoint
 	   for (int i = 0; i < charRange.length; i++) {
 		   char c = charRange[i];
 		   String temp = String.valueOf(c);
-		   searchInput.setCodesAndNames(temp);
-		   CatalArticleSearchResult result = findByCodesAndName(searchInput);
+		   CatalArticleSearchInput tempSearchInput = new CatalArticleSearchInput();
+		   CatalArticle entity = new CatalArticle();
+		   CatalArtFeatMapping featMapping = new CatalArtFeatMapping();
+		   featMapping.setArtName(temp);
+		   entity.setFeatures(featMapping);
+		   tempSearchInput.setStart(0);
+		   tempSearchInput.setEntity(entity);
+		   CatalArticleSearchResult result = findByNameStartWith(tempSearchInput);
 		   List<CatalArticle> articles = result.getResultList();
 		   resultList.addAll(articles);
 	   }
