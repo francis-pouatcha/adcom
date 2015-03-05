@@ -2,7 +2,7 @@
     
 angular.module('AdProcmt')
 
-.controller('prcmtOrderCtrl',['$scope','prcmtOrderResource',function($scope,prcmtOrderResource){
+.controller('prcmtOrderCtrl',['$scope','ProcmtUtils','genericResource',function($scope,ProcmtUtils,genericResource){
 	
     var self = this ;
     $scope.prcmtOrderCtrl = self;
@@ -41,26 +41,15 @@ angular.module('AdProcmt')
     }
 
     function findByLike(searchInput){
-    	prcmtOrderResource.findByLike(searchInput)
+        genericResource.findByLike(ProcmtUtils.urlPrcmtOrder,searchInput)
     		.success(function(entitySearchResult) {
 	            self.prcmtOrders = entitySearchResult.resultList;
 	            self.totalItems = entitySearchResult.count ;
     		});
     }
 
-    function processSearchInput(){
-        var fieldNames = [];
-        if(self.searchInput.entity.dateMin){
-        	//fieldNames.push('dateMin') ;
-        	//self.searchInput.entity.dateMin='fr';
-        }
-
-        self.searchInput.fieldNames = fieldNames ;
-        return self.searchInput ;
-    };
 
     function  handleSearchRequestEvent(){
-    	processSearchInput();
         findByLike(self.searchInput);
     };
 
@@ -74,7 +63,7 @@ angular.module('AdProcmt')
 	}
     
 }])
-.controller('prcmtOrderCreateCtlr',['$scope','$location','$q','prcmtOrderResource','bplegalptnridsResource','orgUnitsResource',function($scope,$location,$q,prcmtOrderResource,bplegalptnridsResource,orgUnitsResource){
+.controller('prcmtOrderCreateCtlr',['$scope','$location','$q','ProcmtUtils','genericResource',function($scope,$location,$q,ProcmtUtils,genericResource){
 	var self = this ;
     $scope.prcmtOrderCreateCtlr = self;
     self.prcmtOrder = {};
@@ -83,6 +72,22 @@ angular.module('AdProcmt')
     self.loadBusinessPartner = loadBusinessPartner;
     self.loadOrgUnit = loadOrgUnit;
     self.currencys = ['XAF','EUR','NGN','USD'];
+    self.triggerModes = [];
+    self.orderTypes = [];
+
+        loadTriggerMode();
+        loadOrderType();
+
+        function loadTriggerMode(){
+            genericResource.listAll(ProcmtUtils.urlPrcmtOrder+'/listAllTriggerMode').success(function(data){
+                self.triggerModes = data;
+            })
+        }
+        function loadOrderType(){
+            genericResource.listAll(ProcmtUtils.urlPrcmtOrder+'/listAllPOType').success(function(data){
+                self.orderTypes = data;
+            })
+        }
 
         function loadBusinessPartner(val){
             return loadBusinessPartnerPromise(val).then(function(entitySearchResult){
@@ -102,7 +107,7 @@ angular.module('AdProcmt')
                 searchInput.fieldNames.push('cpnyName');
             }
             var deferred = $q.defer();
-            bplegalptnridsResource.findByLike(searchInput).success(function (entitySearchResult) {
+            genericResource.findByLike(ProcmtUtils.adbnsptnr,searchInput).success(function (entitySearchResult) {
                 deferred.resolve(entitySearchResult);
             }).error(function(){
                 deferred.reject("No Manufacturer/Supplier");
@@ -124,16 +129,15 @@ angular.module('AdProcmt')
                 max: 10
             };
             if(val){
+                searchInput.entity.identif='hs';
                 searchInput.entity.fullName = val+'%';
                 searchInput.fieldNames.push('fullName');
             }
             var deferred = $q.defer();
-            orgUnitsResource.findByLike(searchInput).success(function (entitySearchResult) {
+            genericResource.findByLike(ProcmtUtils.orgunits,searchInput).success(function (entitySearchResult) {
                 deferred.resolve(entitySearchResult);
-                console.log(entitySearchResult);
-            }).error(function(err){
+            }).error(function(){
                 deferred.reject("No organisation unit");
-                console.log(err);
             });
             return deferred.promise;
         }
@@ -141,7 +145,7 @@ angular.module('AdProcmt')
     function create(){
         self.prcmtOrder.supplier = self.prcmtOrder.supplier.ptnrNbr;
         self.prcmtOrder.ordrngOrgUnit = self.prcmtOrder.ordrngOrgUnit.identif;
-    	prcmtOrderResource.create(self.prcmtOrder)
+        genericResource.create(ProcmtUtils.urlPrcmtOrder,self.prcmtOrder)
     	.success(function(data){
     		$location.path('/PrcmtOrders/show/'+data.id);
     	})
@@ -151,15 +155,20 @@ angular.module('AdProcmt')
     };
 	
 }])
-.controller('prcmtOrderEditCtlr',['$scope','prcmtOrderResource','$routeParams','$location',function($scope,prcmtOrderResource,$routeParams,$location){
+.controller('prcmtOrderEditCtlr',['$scope','$routeParams','$location','ProcmtUtils','genericResource',function($scope,$routeParams,$location,ProcmtUtils,genericResource){
     var self = this ;
     $scope.prcmtOrderEditCtlr = self;
     self.prcmtOrder = {};
     self.update = update;
     self.error = "";
+        self.loadBusinessPartner = loadBusinessPartner;
+        self.loadOrgUnit = loadOrgUnit;
+        self.currencys = ['XAF','EUR','NGN','USD'];
+        self.triggerModes = [];
+        self.orderTypes = [];
 
     function update(){
-    	prcmtOrderResource.update(self.prcmtOrder)
+        genericResource.update(ProcmtUtils.urlPrcmtOrder,self.prcmtOrder)
     	.success(function(data){
             $location.path('/PrcmtOrders/show/'+data.id);
         })
@@ -173,10 +182,9 @@ angular.module('AdProcmt')
     function init(){
         load();
     }
-
     function load(){
         var identif = $routeParams.identif;
-        prcmtOrderResource.findByIdentif(identif)
+        genericResource.findById(ProcmtUtils.urlPrcmtOrder,identif)
         .success(function(data){
             self.prcmtOrder = data;
         })
@@ -185,4 +193,71 @@ angular.module('AdProcmt')
         });
     };
 
-}]);
+        loadTriggerMode();
+        loadOrderType();
+
+        function loadTriggerMode(){
+            genericResource.listAll(ProcmtUtils.urlPrcmtOrder+'/listAllTriggerMode').success(function(data){
+                self.triggerModes = data;
+            })
+        }
+        function loadOrderType(){
+            genericResource.listAll(ProcmtUtils.urlPrcmtOrder+'/listAllPOType').success(function(data){
+                self.orderTypes = data;
+            })
+        }
+
+        function loadBusinessPartner(val){
+            return loadBusinessPartnerPromise(val).then(function(entitySearchResult){
+                return entitySearchResult.resultList;
+            })
+        }
+
+        function loadBusinessPartnerPromise(businessPartnerName){
+            var searchInput = {
+                entity:{},
+                fieldNames:[],
+                start: 0,
+                max: 10
+            };
+            if(businessPartnerName){
+                searchInput.entity.cpnyName = businessPartnerName+'%';
+                searchInput.fieldNames.push('cpnyName');
+            }
+            var deferred = $q.defer();
+            genericResource.findByLike(ProcmtUtils.adbnsptnr,searchInput).success(function (entitySearchResult) {
+                deferred.resolve(entitySearchResult);
+            }).error(function(){
+                deferred.reject("No Manufacturer/Supplier");
+            });
+            return deferred.promise;
+        }
+
+        function loadOrgUnit(val){
+            return loadOrgUnitPromise(val).then(function(entitySearchResult){
+                return entitySearchResult.resultList;
+            })
+        }
+
+        function loadOrgUnitPromise(val){
+            var searchInput = {
+                entity:{},
+                fieldNames:[],
+                start: 0,
+                max: 10
+            };
+            if(val){
+                searchInput.entity.identif='hs';
+                searchInput.entity.fullName = val+'%';
+                searchInput.fieldNames.push('fullName');
+            }
+            var deferred = $q.defer();
+            genericResource.findByLike(ProcmtUtils.orgunits,searchInput).success(function (entitySearchResult) {
+                deferred.resolve(entitySearchResult);
+            }).error(function(){
+                deferred.reject("No organisation unit");
+            });
+            return deferred.promise;
+        }
+
+    }]);

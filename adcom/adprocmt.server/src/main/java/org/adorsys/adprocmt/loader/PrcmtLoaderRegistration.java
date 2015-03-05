@@ -13,7 +13,7 @@ import javax.inject.Inject;
 
 @Startup
 @Singleton
-public class BaseLoaderRegistration {
+public class PrcmtLoaderRegistration {
 
 	@Inject
 	private DataSheetLoader dataSheetLoader;

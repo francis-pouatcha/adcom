@@ -178,11 +178,11 @@ public class CatalArticleEJB {
 	}
 
 	public List<CatalArticle> findPrevious(String pic) {
-		return repository.findPrevious(pic).maxResults(2).getResultList();
+		return processI18n(repository.findPrevious(pic).maxResults(2).getResultList(), new Date());
 	}
 
 	public List<CatalArticle> findNext(String pic) {
-		return repository.findNext(pic).maxResults(2).getResultList();
+		return processI18n(repository.findNext(pic).maxResults(2).getResultList(), new Date());
 	}
 
 }

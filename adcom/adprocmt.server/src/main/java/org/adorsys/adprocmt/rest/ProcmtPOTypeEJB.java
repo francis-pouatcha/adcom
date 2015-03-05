@@ -1,18 +1,25 @@
 package org.adorsys.adprocmt.rest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
 
+import org.adorsys.adbase.security.SecurityUtil;
+import org.adorsys.adprocmt.jpa.ProcmtPOTriggerMode;
 import org.adorsys.adprocmt.jpa.ProcmtPOType;
 import org.adorsys.adprocmt.repo.ProcmtPOTypeRepository;
+import org.apache.commons.lang3.StringUtils;
 
 @Stateless
 public class ProcmtPOTypeEJB {
 	@Inject
 	private ProcmtPOTypeRepository repository;
+	@Inject
+	private SecurityUtil securityUtil;
+
 
 
 	public ProcmtPOType create(ProcmtPOType entity) {
@@ -37,6 +44,10 @@ public class ProcmtPOTypeEJB {
 
 	public List<ProcmtPOType> listAll(int start, int max) {
 		return repository.findAll(start, max);
+	}
+	
+	public List<ProcmtPOType> listAll() {
+		return processI18n(repository.findAll());
 	}
 
 	public Long count() {
@@ -72,5 +83,20 @@ public class ProcmtPOTypeEJB {
 	
 	public ProcmtPOType findByIdentif(String identif) {
 		return findById(identif);
+	}
+	
+	private List<ProcmtPOType> processI18n(List<ProcmtPOType> procmtPOTypes){
+		String langIso2 = securityUtil.getUserLange();
+		List<String> listLangIso2 = securityUtil.getUserLangePrefs();
+		if(StringUtils.isBlank(langIso2)){
+			langIso2 = listLangIso2.get(0);
+		}	
+		List<ProcmtPOType> listPOTypeI18n = new ArrayList<ProcmtPOType>();
+		for(ProcmtPOType pOType:procmtPOTypes){
+			if(StringUtils.equals(langIso2,pOType.getLangIso2())){
+				listPOTypeI18n.add(pOType);
+			}
+		}
+		return listPOTypeI18n;
 	}
 }

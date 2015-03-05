@@ -99,12 +99,14 @@ public class StkLotStockQtyEJB
 
    public StkLotStockQty findLatestQty(String artPic,String lotPic) {
 	   BigDecimal base = BigDecimal.ZERO;
+	   Date qtyDate = null;
 	   int seqNbr = 0;
 	   List<StkLotStockQty> rl = repository.findByArtPicAndLotPicAndCnsldtd(artPic, lotPic, Boolean.TRUE).getResultList();
 	   if(!rl.isEmpty()){
 		   StkLotStockQty stockQty = rl.iterator().next();
 		   base = stockQty.getStockQty();
 		   seqNbr = stockQty.getSeqNbr();
+		   qtyDate = stockQty.getQtyDt();
 	   }
 	   List<StkLotStockQty> resultList2 = repository.findByArtPicAndLotPicAndSeq(artPic, lotPic, seqNbr).orderDesc("seqNbr").getResultList();
 	   
@@ -112,6 +114,7 @@ public class StkLotStockQtyEJB
 	   if(!resultList2.isEmpty()) oldest = resultList2.iterator().next();
 	   for (StkLotStockQty s : resultList2) {
 		   base = base.add(s.getStockQty());
+		   qtyDate = s.getQtyDt();
 	   }
 	   StkLotStockQty stkLotStockQty = new StkLotStockQty();
 	   stkLotStockQty.setArtPic(artPic);
@@ -120,7 +123,8 @@ public class StkLotStockQtyEJB
 		   stkLotStockQty.setParentRcrd(oldest.getId());
 		   stkLotStockQty.setSeqNbr(oldest.getSeqNbr()+1);
 	   }
-	   stkLotStockQty.setQtyDt(new Date());
+	   
+	   stkLotStockQty.setQtyDt(qtyDate!=null?qtyDate:new Date());
 	   stkLotStockQty.setStockQty(base);
 	   return stkLotStockQty;
    }

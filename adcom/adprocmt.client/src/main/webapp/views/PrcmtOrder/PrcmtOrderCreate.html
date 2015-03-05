@@ -33,11 +33,13 @@
                     <div class="form-group">
                         <label class="col-lg-3 ">{{"PrcmtProcOrder_poType_description.title"| translate}} :</label>
                         <div class="col-lg-3" >
-                            <input type="text" ng-model="prcmtOrderCreateCtlr.prcmtOrder.poType" id="poType" name="poType" class="form-control"  >
+                            <select ng-options="orderType.enumKey as orderType.name for orderType in prcmtOrderCreateCtlr.orderTypes"
+                                    ng-model="prcmtOrderCreateCtlr.prcmtOrder.poType" id="poType" name="poType" class="form-control" ></select>
                         </div>
                         <label class="col-lg-3 ">{{"PrcmtProcOrder_poTriggerMode_description.title"| translate}} :</label>
                         <div class="col-lg-3"  >
-                            <input type="text" ng-model="prcmtOrderCreateCtlr.prcmtOrder.poTriggerMode" id="poTriggerMode" name="poTriggerMode" class="form-control"  >
+                            <select ng-options="triggerMode.enumKey as triggerMode.name for triggerMode in prcmtOrderCreateCtlr.triggerModes"
+                                    ng-model="prcmtOrderCreateCtlr.prcmtOrder.poTriggerMode" id="poTriggerMode" name="poTriggerMode" class="form-control" ></select>
                         </div>
                     </div>
                     <div class="form-group">

@@ -1,5 +1,6 @@
 package org.adorsys.adprocmt.rest;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -23,8 +24,20 @@ public class PrcmtDeliveryEvtLeaseEJB {
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-	public PrcmtDeliveryEvtLease recover(PrcmtDeliveryEvtLease entity) {
-		return repository.save(attach(entity));
+	public String recover(String processOwner, String leaseId) {
+		PrcmtDeliveryEvtLease lease = findById(leaseId);
+		if(lease==null) return null;
+		lease.extend(processOwner);
+		return repository.save(attach(lease)).getId();
+	}
+
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+	public String close(String processOwner, String leaseId) {
+		PrcmtDeliveryEvtLease lease = findById(leaseId);
+		if(lease==null) return null;
+		if(lease.expired(new Date())) return null;
+		lease.setValidTo(new Date());;
+		return repository.save(attach(lease)).getId();
 	}
 	
 	public PrcmtDeliveryEvtLease deleteById(String id) {

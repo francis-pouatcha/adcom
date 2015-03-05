@@ -135,7 +135,7 @@ angular.module('AdStock')
     $scope.totalItems=stkSectionArticleLotsState.totalItems;
     $scope.currentPage=stkSectionArticleLotsState.currentPage();
 
-    var sctnSelectedUnregisterHdl = $rootScope.$on('StkSectionArticleLotSelected', function(event, data){
+    var sctnSelectedUnregisterHdl = $rootScope.$on('StkSectionsSelected', function(event, data){
         var stkSection = stkSectionArticleLotsState.stkSection();
         if(!stkSection || !data || !data.stkSection || stkSection.sectionCode!=data.stkSection.sectionCode) return;
         loadStkSectionArticleLots();
