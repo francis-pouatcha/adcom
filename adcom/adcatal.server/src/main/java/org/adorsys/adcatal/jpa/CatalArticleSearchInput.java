@@ -41,6 +41,9 @@ public class CatalArticleSearchInput {
 	 */
 	private List<String> fieldNames = new ArrayList<String>();
 
+	private String startRange;
+	private String endRange;
+	
 	public CatalArticle getEntity() {
 		return entity;
 	}
@@ -81,4 +84,20 @@ public class CatalArticleSearchInput {
 		this.codesAndNames = codesAndNames;
 	}
 
+	public String getStartRange() {
+		return startRange;
+	}
+
+	public void setStartRange(String startRange) {
+		this.startRange = startRange;
+	}
+
+	public String getEndRange() {
+		return endRange;
+	}
+
+	public void setEndRange(String endRange) {
+		this.endRange = endRange;
+	}
+	
 }

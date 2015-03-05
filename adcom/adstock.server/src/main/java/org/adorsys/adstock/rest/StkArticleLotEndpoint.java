@@ -115,6 +115,9 @@ public class StkArticleLotEndpoint
    @Consumes({ "application/json", "application/xml" })
    public StkArticleLotSearchResult findBy(StkArticleLotSearchInput searchInput)
    {
+	   if(searchInput.isFindByNameRange()) {
+		   return findArticleLotProducts(searchInput);
+	   }
       SingularAttribute<StkArticleLot, ?>[] attributes = readSeachAttributes(searchInput);
       Long count = ejb.countBy(searchInput.getEntity(), attributes);
       List<StkArticleLot> resultList = ejb.findBy(searchInput.getEntity(),
@@ -123,6 +126,38 @@ public class StkArticleLotEndpoint
               detach(searchInput));
       return processSearchResult(searchInput, searchResult);
    }
+	
+	private StkArticleLotSearchResult findArticleLotProducts(StkArticleLotSearchInput searchInput) {
+		List<String> artPics = searchInput.getArtPics();
+		   List<StkArticleLotSearchResult> searchResults = new ArrayList<StkArticleLotSearchResult>(artPics.size());
+		   for (String artPic : artPics) {
+			   StkArticleLotSearchInput tempSearchInput = new StkArticleLotSearchInput();
+			   StkArticleLot entity = new StkArticleLot();
+			   entity.setArtPic(artPic);
+			   tempSearchInput.setEntity(entity);
+			   List<String> fieldNames = new ArrayList<String>();
+			   fieldNames.add("artPic");
+			   tempSearchInput.setFieldNames(fieldNames);
+			   SingularAttribute<StkArticleLot,?>[] attributes = readSeachAttributes(tempSearchInput);
+			   Long count = ejb.countBy(searchInput.getEntity(), attributes);
+			   List<StkArticleLot> resultList = ejb.findBy(searchInput.getEntity(),
+					   searchInput.getStart(), searchInput.getMax(), attributes);
+			   StkArticleLotSearchResult sr = new StkArticleLotSearchResult(count, detach(resultList),
+					   detach(searchInput));
+			   StkArticleLotSearchResult tempSearchResult = processSearchResult(searchInput, sr);
+			   searchResults.add(tempSearchResult);
+		   }
+		   StkArticleLotSearchResult searchResult = new StkArticleLotSearchResult();
+		   Long total = 0l;
+		   List<StkArticleLot> resultList = new ArrayList<StkArticleLot>();
+		   for (StkArticleLotSearchResult sr : searchResults) {
+			   total = total + sr.getCount();
+			   resultList.addAll(sr.getResultList());
+		   }
+		   searchResult.setCount(total);
+		   searchResult.setResultList(resultList);
+		   return searchResult;
+	}
    
    @POST
    @Path("/countBy")
