@@ -98,7 +98,7 @@
                         <td>{{itemHolder.invtryItem.lotPic}}</td>
                         <td>{{itemHolder.invtryItem.artPic}}</td>
                         <td>{{itemHolder.invtryItem.artName}}</td>
-                        <td>{{itemHolder.invtryItem.asseccedQty}}</td>
+                        <td>{{itemHolder.invtryItem.asseccedQty | number:0}}</td>
                         <td ng-show="invInvtryUtils.isInvInvtryEditable(invInvtry)"><a ng-click="editItem($index)" class=""><i class="glyphicon glyphicon-edit"></i></a></td>
                         <td ng-show="invInvtryUtils.isInvInvtryEditable(invInvtry)"><a ng-click="deleteItem($index)" class=""><i class="glyphicon glyphicon-trash"></i></a></td>
                     </tr>

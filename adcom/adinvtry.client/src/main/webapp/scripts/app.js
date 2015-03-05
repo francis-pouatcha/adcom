@@ -37,8 +37,6 @@ angular.module('AdInvtry', [
     $translateProvider.useLoader('$translatePartialLoader', {
         urlTemplate: '{part}/locale-{lang}.json'
     });
-
-	
     
 }])
 
