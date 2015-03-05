@@ -197,7 +197,6 @@ angular.module('AdInvtry')
             deferred.reject(service.translations['InvInvtry_NoArticleFound_description.title']);
         });
         return deferred.promise;
-<<<<<<< HEAD
     }    
     
     service.loadStkSectionArticleLots = function(stkSection){
@@ -225,11 +224,7 @@ angular.module('AdInvtry')
                 deferred.reject('No articles from StockSection');
             });
         return deferred.promise;
-       }
-
-=======
-    } 
->>>>>>> a0afaeda5bbab6be7cd62869d32fdb60b5884536
+    }
 
     service.loadArticleLots = function(lotPic){
         return loadArticleLotsPromise(lotPic).then(function(entitySearchResult){
