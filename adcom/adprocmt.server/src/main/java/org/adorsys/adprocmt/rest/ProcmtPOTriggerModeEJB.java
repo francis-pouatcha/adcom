@@ -1,18 +1,24 @@
 package org.adorsys.adprocmt.rest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
 
+import org.adorsys.adbase.security.SecurityUtil;
 import org.adorsys.adprocmt.jpa.ProcmtPOTriggerMode;
 import org.adorsys.adprocmt.repo.ProcmtPOTriggerModeRepository;
+import org.apache.commons.lang3.StringUtils;
 
 @Stateless
 public class ProcmtPOTriggerModeEJB {
 	@Inject
 	private ProcmtPOTriggerModeRepository repository;
+	
+	@Inject
+	private SecurityUtil securityUtil;
 
 
 	public ProcmtPOTriggerMode create(ProcmtPOTriggerMode entity) {
@@ -36,7 +42,11 @@ public class ProcmtPOTriggerModeEJB {
 	}
 
 	public List<ProcmtPOTriggerMode> listAll(int start, int max) {
-		return repository.findAll(start, max);
+		return processI18n(repository.findAll(start, max));
+	}
+	
+	public List<ProcmtPOTriggerMode> listAll() {
+		return processI18n(repository.findAll());
 	}
 
 	public Long count() {
@@ -45,7 +55,7 @@ public class ProcmtPOTriggerModeEJB {
 
 	public List<ProcmtPOTriggerMode> findBy(ProcmtPOTriggerMode entity, int start,
 			int max, SingularAttribute<ProcmtPOTriggerMode, ?>[] attributes) {
-		return repository.findBy(entity, start, max, attributes);
+		return processI18n(repository.findBy(entity, start, max, attributes));
 	}
 
 	public Long countBy(ProcmtPOTriggerMode entity,
@@ -55,7 +65,7 @@ public class ProcmtPOTriggerModeEJB {
 
 	public List<ProcmtPOTriggerMode> findByLike(ProcmtPOTriggerMode entity, int start,
 			int max, SingularAttribute<ProcmtPOTriggerMode, ?>[] attributes) {
-		return repository.findByLike(entity, start, max, attributes);
+		return processI18n(repository.findByLike(entity, start, max, attributes));
 	}
 
 	public Long countByLike(ProcmtPOTriggerMode entity,
@@ -72,5 +82,21 @@ public class ProcmtPOTriggerModeEJB {
 	
 	public ProcmtPOTriggerMode findByIdentif(String identif) {
 		return findById(identif);
+	}
+	
+	
+	private List<ProcmtPOTriggerMode> processI18n(List<ProcmtPOTriggerMode> procmtPOTriggerModes){
+		String langIso2 = securityUtil.getUserLange();
+		List<String> listLangIso2 = securityUtil.getUserLangePrefs();
+		if(StringUtils.isBlank(langIso2)){
+			langIso2 = listLangIso2.get(0);
+		}	
+		List<ProcmtPOTriggerMode> listTriggerI18n = new ArrayList<ProcmtPOTriggerMode>();
+		for(ProcmtPOTriggerMode trigger:procmtPOTriggerModes){
+			if(StringUtils.equals(langIso2,trigger.getLangIso2())){
+				listTriggerI18n.add(trigger);
+			}
+		}
+		return listTriggerI18n;
 	}
 }
