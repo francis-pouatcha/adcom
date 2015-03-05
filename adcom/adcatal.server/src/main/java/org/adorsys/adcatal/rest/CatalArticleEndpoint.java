@@ -201,6 +201,10 @@ public class CatalArticleEndpoint
    public CatalArticleSearchResult findCustom(CatalArticleSearchInput searchInput)
    {
 	   if(StringUtils.isNotBlank(searchInput.getCodesAndNames())) return findByCodesAndName(searchInput);
+
+	   if(StringUtils.isNotBlank(searchInput.getStartRange()) && StringUtils.isNotBlank(searchInput.getEndRange())) {
+		   return findByNameStartingWithCharRange(searchInput);
+	   }
 	   
 	   if(searchInput.getFieldNames().isEmpty()) return findByLike(searchInput);
 	   
@@ -233,6 +237,28 @@ public class CatalArticleEndpoint
 	   }
    }
 
+   private CatalArticleSearchResult findByNameStartingWithCharRange(CatalArticleSearchInput searchInput) {
+	   String startRange = searchInput.getStartRange();
+	   String endRange = searchInput.getEndRange();
+	   char[] charRange = AlphabetUtil.extractToChar(startRange, endRange);
+	   List<CatalArticle> resultList = new ArrayList<CatalArticle>();
+	   for (int i = 0; i < charRange.length; i++) {
+		   char c = charRange[i];
+		   String temp = String.valueOf(c);
+		   CatalArticleSearchInput tempSearchInput = new CatalArticleSearchInput();
+		   CatalArticle entity = new CatalArticle();
+		   CatalArtFeatMapping featMapping = new CatalArtFeatMapping();
+		   featMapping.setArtName(temp);
+		   entity.setFeatures(featMapping);
+		   tempSearchInput.setStart(0);
+		   tempSearchInput.setEntity(entity);
+		   CatalArticleSearchResult result = findByNameStartWith(tempSearchInput);
+		   List<CatalArticle> articles = result.getResultList();
+		   resultList.addAll(articles);
+	   }
+	   CatalArticleSearchResult searchResult = new CatalArticleSearchResult(Long.valueOf(resultList.size()), resultList, searchInput);
+	   return searchResult;
+   }
 @SuppressWarnings("unchecked")
    @POST
    @Path("/findByNameLike")

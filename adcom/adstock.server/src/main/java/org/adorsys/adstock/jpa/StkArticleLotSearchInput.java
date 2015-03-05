@@ -39,6 +39,11 @@ public class StkArticleLotSearchInput {
 
 	private String sectionCode;
 
+	/**
+	 * The articles pics. if filled, it means the user want articleslot for all theses pics.
+	 */
+	private List<String> artPics;
+	
 	public StkArticleLot getEntity() {
 		return entity;
 	}
@@ -87,4 +92,21 @@ public class StkArticleLotSearchInput {
 		this.sectionCode = sectionCode;
 	}
 
+	public List<String> getArtPics() {
+		return artPics;
+	}
+
+	public void setArtPics(List<String> artPics) {
+		this.artPics = artPics;
+	}
+
+
+	/**
+	 * isFindByNameRange.
+	 *
+	 * @return
+	 */
+	public boolean isFindByNameRange() {
+		return artPics != null && !artPics.isEmpty();
+	}
 }
