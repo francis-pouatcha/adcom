@@ -49,7 +49,7 @@ public class PrcmtProcOrderEndpoint
    @Produces({ "application/json", "application/xml" })
    public PrcmtProcOrder create(PrcmtProcOrder entity)
    {
-      return detach(ejb.create(entity));
+      return detach(ejb.createCustom(entity));
    }
 
    @DELETE

@@ -161,6 +161,11 @@ angular.module('AdProcmt')
     self.prcmtOrder = {};
     self.update = update;
     self.error = "";
+        self.loadBusinessPartner = loadBusinessPartner;
+        self.loadOrgUnit = loadOrgUnit;
+        self.currencys = ['XAF','EUR','NGN','USD'];
+        self.triggerModes = [];
+        self.orderTypes = [];
 
     function update(){
         genericResource.update(ProcmtUtils.urlPrcmtOrder,self.prcmtOrder)
@@ -177,10 +182,9 @@ angular.module('AdProcmt')
     function init(){
         load();
     }
-
     function load(){
         var identif = $routeParams.identif;
-        genericResource.findByIdentif(ProcmtUtils.urlPrcmtOrder,identif)
+        genericResource.findById(ProcmtUtils.urlPrcmtOrder,identif)
         .success(function(data){
             self.prcmtOrder = data;
         })
@@ -189,4 +193,71 @@ angular.module('AdProcmt')
         });
     };
 
-}]);
+        loadTriggerMode();
+        loadOrderType();
+
+        function loadTriggerMode(){
+            genericResource.listAll(ProcmtUtils.urlPrcmtOrder+'/listAllTriggerMode').success(function(data){
+                self.triggerModes = data;
+            })
+        }
+        function loadOrderType(){
+            genericResource.listAll(ProcmtUtils.urlPrcmtOrder+'/listAllPOType').success(function(data){
+                self.orderTypes = data;
+            })
+        }
+
+        function loadBusinessPartner(val){
+            return loadBusinessPartnerPromise(val).then(function(entitySearchResult){
+                return entitySearchResult.resultList;
+            })
+        }
+
+        function loadBusinessPartnerPromise(businessPartnerName){
+            var searchInput = {
+                entity:{},
+                fieldNames:[],
+                start: 0,
+                max: 10
+            };
+            if(businessPartnerName){
+                searchInput.entity.cpnyName = businessPartnerName+'%';
+                searchInput.fieldNames.push('cpnyName');
+            }
+            var deferred = $q.defer();
+            genericResource.findByLike(ProcmtUtils.adbnsptnr,searchInput).success(function (entitySearchResult) {
+                deferred.resolve(entitySearchResult);
+            }).error(function(){
+                deferred.reject("No Manufacturer/Supplier");
+            });
+            return deferred.promise;
+        }
+
+        function loadOrgUnit(val){
+            return loadOrgUnitPromise(val).then(function(entitySearchResult){
+                return entitySearchResult.resultList;
+            })
+        }
+
+        function loadOrgUnitPromise(val){
+            var searchInput = {
+                entity:{},
+                fieldNames:[],
+                start: 0,
+                max: 10
+            };
+            if(val){
+                searchInput.entity.identif='hs';
+                searchInput.entity.fullName = val+'%';
+                searchInput.fieldNames.push('fullName');
+            }
+            var deferred = $q.defer();
+            genericResource.findByLike(ProcmtUtils.orgunits,searchInput).success(function (entitySearchResult) {
+                deferred.resolve(entitySearchResult);
+            }).error(function(){
+                deferred.reject("No organisation unit");
+            });
+            return deferred.promise;
+        }
+
+    }]);

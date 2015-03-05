@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('AdProcmt').controller('prcmtOrderShowCtlr',['$scope','prcmtOrderResource','catalArticleResource','$routeParams','$location','$q',function($scope,prcmtOrderResource,catalArticleResource,$routeParams,$location,$q){
+angular.module('AdProcmt').controller('prcmtOrderShowCtlr',['$scope','ProcmtUtils','genericResource','$routeParams','$location','$q',function($scope,ProcmtUtils,genericResource,$routeParams,$location,$q){
     var self = this ;
     $scope.prcmtOrderShowCtlr = self;
     self.prcmtOrder = {};
@@ -26,7 +26,7 @@ angular.module('AdProcmt').controller('prcmtOrderShowCtlr',['$scope','prcmtOrder
 
     function load(){
         var identif = $routeParams.identif;
-        prcmtOrderResource.findByIdentif(identif)
+        genericResource.findById(ProcmtUtils.urlPrcmtOrder,identif)
             .success(function(data){
                 self.prcmtOrder = data;
             })
@@ -74,7 +74,7 @@ angular.module('AdProcmt').controller('prcmtOrderShowCtlr',['$scope','prcmtOrder
 
     function findByNameStartWith (searchInput) {
         var deferred = $q.defer();
-        catalArticleResource.findByNameStartWith(searchInput)
+        genericResource.find(ProcmtUtils.catalarticles+'/findByNameStartWith',searchInput)
             .success(function(entitySearchResult) {
                 deferred.resolve(entitySearchResult);
             })
@@ -86,7 +86,7 @@ angular.module('AdProcmt').controller('prcmtOrderShowCtlr',['$scope','prcmtOrder
 
     function findByPicLike (searchInput) {
         var deferred = $q.defer();
-        catalArticleResource.findByPicLike(searchInput)
+        genericResource.find(ProcmtUtils.catalarticles+'/findByPicLike',searchInput)
             .success(function(entitySearchResult) {
                 deferred.resolve(entitySearchResult);
             })

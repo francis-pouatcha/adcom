@@ -79,7 +79,7 @@
                             <tbody>
                             <tr ng-repeat="prcmtOrder in prcmtOrderCtrl.prcmtOrders" >
                                 <td>{{prcmtOrder.poNbr}}</td>
-                                <td>{{prcmtOrder.dlvryDt| date:'yyyy-MM-dd HH:mm:ss Z'}}</td>
+                                <td>{{prcmtOrder.orderDt| date:'yyyy-MM-dd HH:mm:ss Z'}}</td>
                                 <td>{{prcmtOrder.supplier}}</td>
                                 <td>{{prcmtOrder.poCur}}</td>
                                 <td>{{prcmtOrder.netPPTaxIncl}}</td>
