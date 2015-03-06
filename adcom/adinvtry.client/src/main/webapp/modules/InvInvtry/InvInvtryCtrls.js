@@ -23,6 +23,7 @@ angular.module('AdInvtry')
     service.catalarticlesUrlBase='/adcatal.server/rest/catalarticles';
     service.loginnamessUrlBase='/adbase.server/rest/loginnamess';
     service.stkarticlelot2strgsctnsUrlBase='/adstock.server/rest/stkarticlelot2strgsctns';
+    service.alphabet = "abcdefghijklmnopqrstuvwxyz";
     
     service.invInvtryTypeI18nMsgTitleKey = function(enumKey){
     	return "InvInvtryType_"+enumKey+"_description.title";
@@ -294,9 +295,6 @@ angular.module('AdInvtry')
     service.isInvtryBySection = function(invInvtry){
     	return invInvtry && invInvtry.invInvtryType && invInvtry.invInvtryType=='BY_SECTION';
     };
-    service.isInvtryBySection = function(invInvtry){
-    	return invInvtry && invInvtry.invInvtryType && invInvtry.invInvtryType=='BY_SECTION';
-    };
     
     service.isInvtryByOrderAlphabeticRange = function(invInvtry){
     	return invInvtry && invInvtry.invInvtryType && invInvtry.invInvtryType=='ALPHABETICAL_ORDER_RANGE';
@@ -305,6 +303,17 @@ angular.module('AdInvtry')
     service.isInvInvtryEditable = function (invInvtry) {
         if(invInvtry && "CLOSED" != invInvtry.invtryStatus) return true;
         return false;
+    }
+    service.startWithIgnCase =  function startWithIgnCase(str,  item) {
+        return str && str.toLowerCase().indexOf(item) === 0;
+    }       
+    service.extractRange =  function extractRange(base,rangeStart,rangeEnd) {
+        if(angular.isUndefined(base)) return;
+        if(angular.isUndefined(rangeStart))
+            rangeStart = base.slice(0,1)//get the firt character
+        if(angular.isUndefined(rangeEnd))
+            rangeEnd = base.slice(-1); //get the last range.        
+        return base.slice(base.lastIndexOf(rangeStart),base.lastIndexOf(rangeEnd)+1);
     }
     return service;
 }])
@@ -633,17 +642,7 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
     	}
         
     	if(!identif && invInvtryUtils.isInvtryByOrderAlphabeticRange($scope.invInvtry)){
-           loadInvInvtryItemByProductNameRange();
-            return;
-    	}
-        
-        if(angular.isDefined(identif)) {
-            loadInvInvtryItems(identif);   
-        }
-    }
-    
-    function loadInvInvtryItemByProductNameRange () {
-         var searchInput = {
+            var searchInput = {
                 entity:{},
                 fieldNames:[],
                 start: 0,
@@ -652,6 +651,51 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
             var range = invInvtryState.range;
             searchInput.startRange = range.startRange;
             searchInput.endRange = range.endRange;
+           if(stkSection) {
+                loadInvInvtryItemByProductNameRangeAndStkSection(stkSection,searchInput);    
+           }else {
+               loadInvInvtryItemByProductNameRange(searchInput);
+           }
+           return;
+    	}
+        
+        if(angular.isDefined(identif)) {
+            loadInvInvtryItems(identif);   
+        }
+    }
+    
+    function loadInvInvtryItemByProductNameRangeAndStkSection(stkSection,searchInput) {
+        
+        if(!stkSection || !searchInput.startRange ) return;
+        
+        $scope.invInvtryUtils.loadStkSectionArticleLots(stkSection).then(function(entitySearchResult){
+            var articleLots= entitySearchResult.resultList;
+            var alphabet = invInvtryUtils.alphabet;
+            var nameRange = invInvtryUtils.extractRange(alphabet,searchInput.startRange,searchInput.endRange);
+            var nameRangeArray = [];
+            if(nameRange) {
+                nameRangeArray = nameRange.split("");
+            }
+            var retainedArtLots = [];
+            
+            angular.forEach(articleLots,function(articleLot){
+               var artName = articleLot.artFeatures.artName;
+               angular.forEach(nameRangeArray,function(rangeItem){
+                   if(invInvtryUtils.startWithIgnCase(artName,rangeItem)) {
+                        var invInvtryItemHolder = emptyItemHolder();
+                        invInvtryItemHolder.invtryItem.lotPic= articleLot.lotPic;
+                        invInvtryItemHolder.invtryItem.artPic= articleLot.artPic;
+                        invInvtryItemHolder.invtryItem.artName= articleLot.artFeatures.artName;
+                        invInvtryItemHolder.invtryItem.asseccedQty= articleLot.lotQty;
+                        $scope.invInvtryItemHolders.push(invInvtryItemHolder);  
+                    }
+               })
+            });
+        }); 
+    }
+    
+    function loadInvInvtryItemByProductNameRange (searchInput) {
+        if(!searchInput) return;
             genericResource.findCustom(invInvtryUtils.catalarticlesUrlBase ,searchInput).success(function(searchResult){
                 var articles = searchResult.resultList;
                 var artPics = [];
