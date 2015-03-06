@@ -9,7 +9,8 @@ angular.module('AdInvtry', [
       'ngSanitize',
       'pascalprecht.translate',
       'NavBar',
-      'datePicker'
+      'datePicker',
+      'httpProgress'
 ])
 .constant('APP_CONFIG',{
 	'appName':'Inventory Management',
@@ -33,6 +34,7 @@ angular.module('AdInvtry', [
     
     $httpProvider.defaults.withCredentials = true;
     $httpProvider.interceptors.push('authInterceptor');
+    $httpProvider.interceptors.push('httpProgressInterceptor')
     
     $translateProvider.useLoader('$translatePartialLoader', {
         urlTemplate: '{part}/locale-{lang}.json'
