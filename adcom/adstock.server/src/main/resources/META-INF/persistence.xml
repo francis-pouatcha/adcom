@@ -65,6 +65,10 @@
 	<class>org.adorsys.adcatal.jpa.CatalAbstractFeatMapping</class>
 	<class>org.adorsys.adcatal.jpa.CatalArtFeatMapping</class>
     
+	<class>org.adorsys.adinvtry.jpa.InvInvtryEvtData</class>
+	<class>org.adorsys.adinvtry.jpa.InvInvtryItemEvtData</class>
+	<class>org.adorsys.adinvtry.jpa.InvInvtryEvt</class>
+    
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.hbm2ddl.auto" value="update"/>

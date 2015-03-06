@@ -41,27 +41,29 @@ public class StkStockQtyCtrlWkr {
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public void cleaup(StkLotStockQty lotStockQty){
 		if(lotStockQty.getQtyDt()==null) return;
-		String artAndLotPic = lotStockQty.artAndLotPic();
-		if(!cache.containsKey(artAndLotPic))cache.put(artAndLotPic, lotStockQty);
+		String key = lotStockQty.artPicAndLotPicAndSection();
+		if(!cache.containsKey(key))cache.put(key, lotStockQty);
 		
-		process(artAndLotPic);
+		process(key);
 	}
 
-	private void process(String artAndLotPic) {
-		StkLotStockQty lotStockQty = cache.get(artAndLotPic);
+	private void process(String artAndLotPicAndSection) {
+		StkLotStockQty lotStockQty = cache.get(artAndLotPicAndSection);
 		if(DateUtils.addMinutes(new Date(), -3).after(lotStockQty.getQtyDt())) return;
-		consolidate(artAndLotPic);
+		consolidate(artAndLotPicAndSection);
 	}
 	
-	private void consolidate(String artAndLotPic) {
-		StkLotStockQty lotStockQty = cache.get(artAndLotPic);
+	private void consolidate(String artAndLotPicAndSection) {
+		StkLotStockQty lotStockQty = cache.get(artAndLotPicAndSection);
 		if(lotStockQty==null) return;
 		String artPic = lotStockQty.getArtPic();
 		String lotPic = lotStockQty.getLotPic();
-		StkLotStockQty base = lotStockQtyEJB.findBase(artPic, lotPic);
+		String section = lotStockQty.getSection();
+		
+		StkLotStockQty base = lotStockQtyEJB.findBase(artPic, lotPic, section);
 		if(base==null) return;
 		Integer seqNbr = base.getSeqNbr();
-		List<StkLotStockQty> picAndSeq = lotStockQtyEJB.findByArtPicAndLotPicAndSeq(artPic, lotPic, seqNbr);
+		List<StkLotStockQty> picAndSeq = lotStockQtyEJB.findByArtPicAndLotPicAndSectionAndSeq(artPic, lotPic, section, seqNbr);
 		BigDecimal baseQty = base.getStockQty();
 		for (StkLotStockQty lsq : picAndSeq) {
 			baseQty = baseQty.add(lsq.getStockQty());

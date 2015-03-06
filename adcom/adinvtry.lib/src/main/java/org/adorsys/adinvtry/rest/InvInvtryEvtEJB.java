@@ -79,7 +79,7 @@ public class InvInvtryEvtEJB
       return entity;
    }
    
-   public List<InvInvtryEvt> findByLstnrNameAndEvtName(String lstnrName, String evtName){
-	   return repository.findByLstnrNameAndEvtName(lstnrName, evtName);
+   public List<InvInvtryEvt> findByEvtName(String evtName){
+	   return repository.findByEvtName(evtName);
    }
 }

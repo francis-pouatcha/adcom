@@ -1,14 +1,11 @@
 package org.adorsys.adstock.jpa;
 
-import java.math.BigDecimal;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.adorsys.adcore.jpa.AbstractIdentifData;
-import org.adorsys.adcore.utils.BigDecimalUtils;
 import org.adorsys.javaext.description.Description;
 import org.apache.commons.lang3.StringUtils;
 
@@ -33,11 +30,6 @@ public class StkArticleLot2StrgSctn extends AbstractIdentifData {
 	@NotNull
 	private String strgSection;
 
-	@Column
-	@Description("StkArticleLot2StrgSctn_qty_description")
-	@NotNull
-	private BigDecimal qty;
-	
 	@Transient
 	private StkSection stkSection;
 	
@@ -76,14 +68,6 @@ public class StkArticleLot2StrgSctn extends AbstractIdentifData {
 		this.artPic = artPic;
 	}
 
-	public BigDecimal getQty() {
-		return qty;
-	}
-
-	public void setQty(BigDecimal qty) {
-		this.qty = qty;
-	}
-	
 	public StkSection getStkSection() {
 		return stkSection;
 	}
@@ -104,13 +88,11 @@ public class StkArticleLot2StrgSctn extends AbstractIdentifData {
 		target.artPic = artPic;
 		target.lotPic = lotPic;
 		target.strgSection=strgSection;
-		target.qty = qty;
 		target.stkSection = stkSection;
 		target.sectionArticleLot=sectionArticleLot;
 	}
 	
 	public boolean contentEquals(StkArticleLot2StrgSctn target){
-		if(!BigDecimalUtils.numericEquals(target.qty,qty)) return false;
 		if(!StringUtils.equals(target.strgSection,strgSection)) return false;
 		if(!StringUtils.equals(target.lotPic, lotPic)) return false;
 		if(!StringUtils.equals(target.artPic, artPic)) return false;

@@ -151,7 +151,7 @@ public class InvInvtryManager {
 		invtry.setInvtryStatus(InvInvtryStatus.CLOSED);
 		invtry = inventoryEJB.update(invtry);
 		inventoryHolder.setInvtry(invtry);
-		createClosingInventoryHistory(invtry);// Status closed
+		createClosedInventoryHistory(invtry);// Status closed
 		return inventoryHolder;
 	}	
 	
@@ -172,7 +172,7 @@ public class InvInvtryManager {
 		}
 	}
 	
-	private void createClosingInventoryHistory(InvInvtry invtry){
+	private void createClosedInventoryHistory(InvInvtry invtry){
 		TermWsUserPrincipal callerPrincipal = securityUtil.getCallerPrincipal();
 		InvInvtryHstry invtryHstry = new InvInvtryHstry();
 		invtryHstry.setAddtnlInfo(InventoryInfo.prinInfo(invtry));

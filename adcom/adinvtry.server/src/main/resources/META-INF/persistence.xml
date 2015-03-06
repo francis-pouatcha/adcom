@@ -37,10 +37,11 @@
 	<class>org.adorsys.adbase.jpa.BaseRoleInProcess</class>    
 	<class>org.adorsys.adbase.jpa.BaseSttlmtOp</class>    
 	<class>org.adorsys.adbase.jpa.BaseCountryName</class>
+
 	<class>org.adorsys.adinvtry.jpa.InvInvtryEvtData</class>
 	<class>org.adorsys.adinvtry.jpa.InvInvtryItemEvtData</class>
 	<class>org.adorsys.adinvtry.jpa.InvInvtryEvt</class>
-	<class>org.adorsys.adinvtry.jpa.InvInvtryEvtLstnr</class>
+
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.hbm2ddl.auto" value="update"/>

@@ -78,6 +78,7 @@ public class StkArticleLot2StrgSctnEJB
 
       return entity;
    }
+   
    public List<StkArticleLot2StrgSctn> findByArtPicAndLotPic(String artPic, String lotPic){
 	   return repository.findByArtPicAndLotPic(artPic, lotPic);
    }
@@ -90,7 +91,8 @@ public class StkArticleLot2StrgSctnEJB
 		return repository.findByStrgSection(strgSection);
 	}
 	
-	public List<StkArticleLot2StrgSctn> findByStrgSectionAndLotPicAndArtPic(String strgSection, String lotPic, String artPic){
-		return repository.findByStrgSectionAndLotPicAndArtPic(strgSection, lotPic, artPic);
+	public StkArticleLot2StrgSctn findByStrgSectionAndLotPicAndArtPic(String strgSection, String lotPic, String artPic){
+		String primaryKey = StkArticleLot2StrgSctn.toId(artPic, lotPic, strgSection);
+		return repository.findBy(primaryKey);
 	}
 }

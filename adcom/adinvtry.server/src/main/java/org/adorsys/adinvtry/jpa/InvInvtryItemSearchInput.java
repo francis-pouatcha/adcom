@@ -128,6 +128,4 @@ public class InvInvtryItemSearchInput {
 	public void setGapPurchAmtHTTo(BigDecimal gapPurchAmtHTTo) {
 		this.gapPurchAmtHTTo = gapPurchAmtHTTo;
 	}
-	
-
 }

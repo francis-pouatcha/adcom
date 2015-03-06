@@ -234,8 +234,7 @@ public abstract class InvAbstractInvtryItem extends AbstractIdentifData {
 
 	@Override
 	protected String makeIdentif() {
-		return invtryNbr + "_" + lotPic + "_" + artPic + "_" + section + "_"
-				+ orgUnit;
+		return invtryNbr + "_" + lotPic + "_" + artPic + "_" + section;
 	}
 	
 	public void copyTo(InvAbstractInvtryItem target) {

@@ -17,6 +17,4 @@ public interface StkArticleLot2StrgSctnRepository extends EntityRepository<StkAr
 	
 	@Query("SELECT e FROM StkArticleLot2StrgSctn AS e WHERE LOWER(e.strgSection) LIKE(LOWER(?1))")
 	public List<StkArticleLot2StrgSctn> findByStrgSection(String sec);
-
-	public List<StkArticleLot2StrgSctn> findByStrgSectionAndLotPicAndArtPic(String strgSection, String lotPic, String artPic);
 }
