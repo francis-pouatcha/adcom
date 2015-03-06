@@ -363,7 +363,7 @@ public class PrcmtDeliveryManager {
 		delivery.setDlvryStatus(BaseProcessStatusEnum.CLOSING.name());
 		delivery = deliveryEJB.update(delivery);
 		deliveryHolder.setDelivery(delivery);
-		createClosingDeliveryHistory(delivery);// Status closed
+		createClosingDeliveryHistory(delivery);// Status closing
 
 		return deliveryHolder;
 	}	

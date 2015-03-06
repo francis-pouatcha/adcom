@@ -147,7 +147,7 @@ public abstract class AbstractEntityHistory extends AbstractEntity {
 		if(unique){
 			setId(getEntIdentif() +"_"+ getHstryType());
 		} else {
-			setId(getEntIdentif() +"_"+ getHstryType() + "_" + FormatedValidFrom.format(getHstryDt()));
+			setId(getEntIdentif() +"_"+ getHstryType() + "_" + UUID.randomUUID().toString());
 		}
 	}
 	

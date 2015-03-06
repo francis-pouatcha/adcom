@@ -23,9 +23,9 @@ public interface StkLotStockQtyRepository extends EntityRepository<StkLotStockQt
 	@Query("SELECT e FROM StkLotStockQty AS e WHERE e.artPic = ?1 AND e.lotPic = ?2 AND e.section=?3")
 	public QueryResult<StkLotStockQty> findByArtPicAndLotPicAndSection(String artPic,String lotPic, String section);
 
-	@Query("SELECT e FROM StkLotStockQty AS e WHERE e.artPic = ?1 AND e.lotPic = ?2 AND e.sesction=?3 AND e.cnsldtd=?4")
-	public QueryResult<StkLotStockQty> findByArtPicAndLotPicAndSectionAndCnsldtd(String artPic,String lotPic,String sesction,Boolean cnsldtd);
+	@Query("SELECT e FROM StkLotStockQty AS e WHERE e.artPic = ?1 AND e.lotPic = ?2 AND e.section=?3 AND e.cnsldtd=?4")
+	public QueryResult<StkLotStockQty> findByArtPicAndLotPicAndSectionAndCnsldtd(String artPic,String lotPic,String section,Boolean cnsldtd);
 	
-	@Query("SELECT e FROM StkLotStockQty AS e WHERE e.artPic = ?1 AND e.lotPic = ?2 AND e.sesction=?3 AND e.seqNbr >= ?4")
-	public QueryResult<StkLotStockQty> findByArtPicAndLotPicAndSectionAndSeq(String artPic,String lotPic, String sesction, int seqNbr);
+	@Query("SELECT e FROM StkLotStockQty AS e WHERE e.artPic = ?1 AND e.lotPic = ?2 AND e.section=?3 AND e.seqNbr >= ?4")
+	public QueryResult<StkLotStockQty> findByArtPicAndLotPicAndSectionAndSeq(String artPic,String lotPic, String section, int seqNbr);
 }
