@@ -69,7 +69,9 @@ public class CatalArtFeatMappingEJB {
 		String queryStr = "SELECT e FROM CatalArtFeatMapping AS e WHERE LOWER(e.artName) LIKE (LOWER(:artName))";
 		TypedQuery<CatalArtFeatMapping> query = em.createQuery(queryStr, CatalArtFeatMapping.class);
 		query.setParameter("artName", artName+"%");
-		return query.setFirstResult(start).setMaxResults(max).getResultList();
+		query.setFirstResult(start);
+		if(max >= 0) {query.setMaxResults(max);}
+		return query.getResultList();
 	}
 	public Long countByArtNameStartsWith(String artName) {
 		String queryStr = "SELECT count(e) FROM CatalArtFeatMapping AS e WHERE LOWER(e.artName) LIKE (LOWER(:artName))";

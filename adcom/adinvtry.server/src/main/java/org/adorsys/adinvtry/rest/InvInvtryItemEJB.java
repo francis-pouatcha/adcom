@@ -98,8 +98,7 @@ public class InvInvtryItemEJB
 	}
 
 	public Long countByInvtryNbr(String invtryNbr) {
-		QueryResult<InvInvtryItem> queryResult = repository.findByInvtryNbr(invtryNbr);
-		return queryResult.count();
+		return repository.countByInvtryNbr(invtryNbr);
 
 	}
 	

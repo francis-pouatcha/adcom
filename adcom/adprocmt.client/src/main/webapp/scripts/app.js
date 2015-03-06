@@ -9,7 +9,8 @@ angular.module('AdProcmt', [
       'ngSanitize',
       'pascalprecht.translate',
       'NavBar',
-      'datePicker'
+      'datePicker',
+      'httpProgress'
 ])
 .constant('APP_CONFIG',{
 	'appName':'Procurement',
@@ -44,6 +45,7 @@ angular.module('AdProcmt', [
     
     $httpProvider.defaults.withCredentials = true;
     $httpProvider.interceptors.push('authInterceptor');
+    $httpProvider.interceptors.push('httpProgressInterceptor');
     
     $translateProvider.useLoader('$translatePartialLoader', {
         urlTemplate: '{part}/locale-{lang}.json'
