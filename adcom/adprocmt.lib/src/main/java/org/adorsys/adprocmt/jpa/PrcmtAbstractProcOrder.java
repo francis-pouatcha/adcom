@@ -119,6 +119,30 @@ public abstract class PrcmtAbstractProcOrder extends AbstractMvmtData {
 			setId(poNbr);
 	}
 	
+	public void copyTo(PrcmtAbstractProcOrder target){
+		target.creatingUsr = creatingUsr;
+		target.createdDt = createdDt;
+		target.poCur = poCur;
+		target.poNbr = poNbr;
+		target.poStatus = poStatus;
+		target.grossPPPreTax = grossPPPreTax;
+		target.netAmtToPay = netAmtToPay;
+		target.netPPPreTax = netPPPreTax;
+		target.netPPTaxIncl = netPPTaxIncl;
+		target.netPurchAmt = netPurchAmt;
+		target.orderDt = orderDt;
+		target.pymtDscntAmt = pymtDscntAmt;
+		target.pymtDscntPct = pymtDscntPct;
+		target.poType = poType;
+		target.poTriggerMode = poTriggerMode;
+		target.rdngDscntAmt = rdngDscntAmt;
+		target.rebate = rebate;
+		target.supplier = supplier;
+		target.vatAmount = vatAmount;
+		target.submitedDt = submitedDt;
+		target.ordrngOrgUnit = ordrngOrgUnit;
+	}
+	
 	public Date getOrderDt() {
 		return this.orderDt;
 	}

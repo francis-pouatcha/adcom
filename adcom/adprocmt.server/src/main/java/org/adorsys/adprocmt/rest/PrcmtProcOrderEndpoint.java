@@ -82,6 +82,15 @@ public class PrcmtProcOrderEndpoint
          return Response.status(Status.NOT_FOUND).build();
       return Response.ok(detach(found)).build();
    }
+   
+   @POST
+   @Path("/findCustom")
+   @Produces({ "application/json", "application/xml" })
+   @Consumes({ "application/json", "application/xml" })
+   public PrcmtProcOrderSearchResult findCustom(PrcmtProcOrderSearchInput searchInput)
+   {
+      return ejb.findCustom(searchInput);
+   }
 
    @GET
    @Produces({ "application/json", "application/xml" })
