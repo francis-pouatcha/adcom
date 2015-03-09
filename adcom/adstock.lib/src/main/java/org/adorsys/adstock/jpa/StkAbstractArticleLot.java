@@ -14,7 +14,7 @@ import org.adorsys.javaext.description.Description;
 
 @MappedSuperclass
 @Description("StkArticleLot_description")
-public abstract class StkAbstractArticleLot extends AbstractIdentifData {
+public class StkAbstractArticleLot extends AbstractIdentifData {
 
 	private static final long serialVersionUID = 6790628013825127916L;
 
@@ -27,26 +27,14 @@ public abstract class StkAbstractArticleLot extends AbstractIdentifData {
 	@Description("StkArticleLot_artPic_description")
 	@NotNull
 	private String artPic;
-//
-//	/*
-//	 * The delivery item number. Used to retrace the corresponding delivery.
-//	 */
-//	@Column
-//	@Description("StkArticleLot_dlvryItemNbr_description")
-//	@NotNull
-//	private String dlvryItemNbr;
-//	
-//	/*
-//	 * The delivery number.
-//	 */
-//	@Column
-//	@Description("StkArticleLot_dlvryNbr_description")
-//	@NotNull
-//	private String dlvryNbr;
 	
 	@Column
 	@Description("StkArticleLot_supplierPic_description")
 	private String supplierPic;
+
+	@Column
+	@Description("StkArticleLot_supplier_description")
+	private String supplier;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Description("StkArticleLot_stkgDt_description")
@@ -132,6 +120,14 @@ public abstract class StkAbstractArticleLot extends AbstractIdentifData {
 		this.supplierPic = supplierPic;
 	}
 
+	public String getSupplier() {
+		return this.supplier;
+	}
+
+	public void setSupplier(final String supplier) {
+		this.supplier = supplier;
+	}
+	
 	public Date getStkgDt() {
 		return this.stkgDt;
 	}
@@ -252,20 +248,4 @@ public abstract class StkAbstractArticleLot extends AbstractIdentifData {
 	public void setClosedDt(Date closedDt) {
 		this.closedDt = closedDt;
 	}
-//
-//	public String getDlvryItemNbr() {
-//		return dlvryItemNbr;
-//	}
-//
-//	public void setDlvryItemNbr(String dlvryItemNbr) {
-//		this.dlvryItemNbr = dlvryItemNbr;
-//	}
-//
-//	public String getDlvryNbr() {
-//		return dlvryNbr;
-//	}
-//
-//	public void setDlvryNbr(String dlvryNbr) {
-//		this.dlvryNbr = dlvryNbr;
-//	}
 }

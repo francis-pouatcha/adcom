@@ -9,7 +9,7 @@ import org.adorsys.javaext.description.Description;
 
 @MappedSuperclass
 @Description("StkSection_description")
-public abstract class StkAbstractSection extends AbstractTimedData {
+public class StkAbstractSection extends AbstractTimedData {
 
 	private static final long serialVersionUID = 1441848160823566249L;
 

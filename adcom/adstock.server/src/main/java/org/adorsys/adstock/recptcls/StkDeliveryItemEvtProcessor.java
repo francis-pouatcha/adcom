@@ -79,6 +79,7 @@ public class StkDeliveryItemEvtProcessor {
 			stkArticleLot.setSppuHT(itemEvtData.getSppuPreTax());
 			stkArticleLot.setStkgDt(deliveryEvt.getHstryDt());
 			stkArticleLot.setSupplierPic(itemEvtData.getSupplierPic());
+			stkArticleLot.setSupplier(itemEvtData.getSupplier());
 			stkArticleLot.setVatPurchPct(itemEvtData.getVatPct());
 			stkArticleLot.setVatSalesPct(itemEvtData.getVatSalesPct());
 			stkArticleLot = articleLotEJB.create(stkArticleLot);
@@ -94,6 +95,7 @@ public class StkDeliveryItemEvtProcessor {
 			stkArticleLot.setSppuHT(itemEvtData.getSppuPreTax());
 			stkArticleLot.setStkgDt(deliveryEvt.getHstryDt());
 			stkArticleLot.setSupplierPic(itemEvtData.getSupplierPic());
+			stkArticleLot.setSupplier(itemEvtData.getSupplier());
 			stkArticleLot.setVatPurchPct(itemEvtData.getVatPct());
 			stkArticleLot.setVatSalesPct(itemEvtData.getVatSalesPct());
 			stkArticleLot = articleLotEJB.update(stkArticleLot);

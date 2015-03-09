@@ -9,10 +9,13 @@ import org.adorsys.adinvtry.jpa.InvInvtryEvtData;
 import org.adorsys.adinvtry.jpa.InvInvtryItemEvtData;
 import org.adorsys.adinvtry.rest.InvInvtryEvtDataEJB;
 import org.adorsys.adinvtry.rest.InvInvtryItemEvtDataEJB;
+import org.adorsys.adstock.jpa.StkAbstractArticleLot;
+import org.adorsys.adstock.jpa.StkArticleLot;
 import org.adorsys.adstock.jpa.StkArticleLot2StrgSctn;
 import org.adorsys.adstock.jpa.StkInvtryItemHstry;
 import org.adorsys.adstock.jpa.StkLotStockQty;
 import org.adorsys.adstock.rest.StkArticleLot2StrgSctnEJB;
+import org.adorsys.adstock.rest.StkArticleLotEJB;
 import org.adorsys.adstock.rest.StkInvtryItemHstryEJB;
 import org.adorsys.adstock.rest.StkLotStockQtyEJB;
 
@@ -35,6 +38,8 @@ public class StkInvtryItemEvtProcessor {
 	private StkArticleLot2StrgSctnEJB articleLot2StrgSctnEJB;
 	@Inject
 	private StkInvtryItemHstryEJB invtryItemHstryEJB;
+	@Inject
+	private StkArticleLotEJB articleLotEJB;
 
 	public void process(String itemEvtDataId, InvInvtryEvt invtryEvt) {
 		InvInvtryItemEvtData itemEvtData = itemEvtDataEJB.findById(itemEvtDataId);
@@ -49,6 +54,45 @@ public class StkInvtryItemEvtProcessor {
 		String artPic = itemEvtData.getArtPic();
 		String lotPic = itemEvtData.getLotPic();
 		String section = itemEvtData.getSection();
+		
+		StkArticleLot stkArticleLot = articleLotEJB.findByIdentif(StkAbstractArticleLot.toId(lotPic));
+		if(stkArticleLot==null){
+			stkArticleLot = new StkArticleLot();
+			stkArticleLot.setArtPic(artPic);
+			stkArticleLot.setExpirDt(itemEvtData.getExpirDt());
+			stkArticleLot.setLotPic(lotPic);
+			stkArticleLot.setMinSppuHT(itemEvtData.getMinSppuHT());
+			stkArticleLot.setPppuCur(itemEvtData.getPppuCur());
+			stkArticleLot.setPppuHT(itemEvtData.getPppuPT());
+			stkArticleLot.setPurchRtrnDays(itemEvtData.getPurchRtrnDays());
+			stkArticleLot.setPurchWrntyDys(itemEvtData.getPurchWrntyDys());
+			stkArticleLot.setSalesRtrnDays(itemEvtData.getSalesRtrnDays());
+			stkArticleLot.setSalesWrntyDys(itemEvtData.getSalesWrntyDys());
+			stkArticleLot.setSppuCur(itemEvtData.getSppuCur());
+			stkArticleLot.setSppuHT(itemEvtData.getSppuPT());
+			stkArticleLot.setStkgDt(invtryEvt.getHstryDt());
+			stkArticleLot.setSupplierPic(itemEvtData.getSupplierPic());
+			stkArticleLot.setSupplier(itemEvtData.getSupplier());
+			stkArticleLot.setVatPurchPct(itemEvtData.getVatPurchPct());
+			stkArticleLot.setVatSalesPct(itemEvtData.getVatSalesPct());
+			stkArticleLot = articleLotEJB.create(stkArticleLot);
+		} else {
+			stkArticleLot.setMinSppuHT(itemEvtData.getMinSppuHT());
+			stkArticleLot.setPppuCur(itemEvtData.getPppuCur());
+			stkArticleLot.setPppuHT(itemEvtData.getPppuPT());
+			stkArticleLot.setPurchRtrnDays(itemEvtData.getPurchRtrnDays());
+			stkArticleLot.setPurchWrntyDys(itemEvtData.getPurchWrntyDys());
+			stkArticleLot.setSalesRtrnDays(itemEvtData.getSalesRtrnDays());
+			stkArticleLot.setSalesWrntyDys(itemEvtData.getSalesWrntyDys());
+			stkArticleLot.setSppuCur(itemEvtData.getSppuCur());
+			stkArticleLot.setSppuHT(itemEvtData.getSppuPT());
+			stkArticleLot.setStkgDt(invtryEvt.getHstryDt());
+			stkArticleLot.setSupplierPic(itemEvtData.getSupplierPic());
+			stkArticleLot.setSupplier(itemEvtData.getSupplier());
+			stkArticleLot.setVatPurchPct(itemEvtData.getVatPurchPct());
+			stkArticleLot.setVatSalesPct(itemEvtData.getVatSalesPct());
+			stkArticleLot = articleLotEJB.update(stkArticleLot);
+		}		
 		
 		StkArticleLot2StrgSctn strgSctn = articleLot2StrgSctnEJB.findByStrgSectionAndLotPicAndArtPic(section, lotPic, artPic);
 		if(strgSctn==null){

@@ -117,7 +117,27 @@ public abstract class InvAbstractInvtryItem extends AbstractIdentifData {
 	@DateFormatPattern(pattern = "dd-MM-yyyy HH:mm")
 	private Date expirDt;
 	
+	@Column
+	@Description("InvInvtryItem_purchWrntyDys_description")
+	private BigDecimal purchWrntyDys;
 
+	@Column
+	@Description("InvInvtryItem_purchRtrnDays_description")
+	private BigDecimal purchRtrnDays;
+
+	@Column
+	@Description("InvInvtryItem_minSppuHT_description")
+	private BigDecimal minSppuHT;
+
+
+	@Column
+	@Description("InvInvtryItem_salesWrntyDys_description")
+	private BigDecimal salesWrntyDys;
+
+	@Column
+	@Description("InvInvtryItem_salesRtrnDays_description")
+	private BigDecimal salesRtrnDays;
+	
 	public String getInvtryNbr() {
 		return this.invtryNbr;
 	}
@@ -292,6 +312,46 @@ public abstract class InvAbstractInvtryItem extends AbstractIdentifData {
 
 	public void setExpirDt(Date expirDt) {
 		this.expirDt = expirDt;
+	}
+
+	public BigDecimal getPurchWrntyDys() {
+		return purchWrntyDys;
+	}
+
+	public void setPurchWrntyDys(BigDecimal purchWrntyDys) {
+		this.purchWrntyDys = purchWrntyDys;
+	}
+
+	public BigDecimal getPurchRtrnDays() {
+		return purchRtrnDays;
+	}
+
+	public void setPurchRtrnDays(BigDecimal purchRtrnDays) {
+		this.purchRtrnDays = purchRtrnDays;
+	}
+
+	public BigDecimal getMinSppuHT() {
+		return minSppuHT;
+	}
+
+	public void setMinSppuHT(BigDecimal minSppuHT) {
+		this.minSppuHT = minSppuHT;
+	}
+
+	public BigDecimal getSalesWrntyDys() {
+		return salesWrntyDys;
+	}
+
+	public void setSalesWrntyDys(BigDecimal salesWrntyDys) {
+		this.salesWrntyDys = salesWrntyDys;
+	}
+
+	public BigDecimal getSalesRtrnDays() {
+		return salesRtrnDays;
+	}
+
+	public void setSalesRtrnDays(BigDecimal salesRtrnDays) {
+		this.salesRtrnDays = salesRtrnDays;
 	}
 
 	@Override
