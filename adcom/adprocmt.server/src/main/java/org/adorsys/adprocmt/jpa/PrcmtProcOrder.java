@@ -14,4 +14,5 @@ public class PrcmtProcOrder extends PrcmtAbstractProcOrder {
 	public void prePersist() {
 		setId(getPoNbr());
 	}
+
 }

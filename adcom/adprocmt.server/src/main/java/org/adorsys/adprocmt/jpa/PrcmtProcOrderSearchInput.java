@@ -1,6 +1,7 @@
 package org.adorsys.adprocmt.jpa;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -30,8 +31,28 @@ public class PrcmtProcOrderSearchInput
     * The max number of records to return.
     */
    private int max = -1;
+   
+   private Date dateMin;
+   
+   private Date dateMax;
 
-   /**
+   public Date getDateMin() {
+	return dateMin;
+}
+
+public void setDateMin(Date dateMin) {
+	this.dateMin = dateMin;
+}
+
+public Date getDateMax() {
+	return dateMax;
+}
+
+public void setDateMax(Date dateMax) {
+	this.dateMax = dateMax;
+}
+
+/**
     * The field names to be included in the search.
     */
    private List<String> fieldNames = new ArrayList<String>();

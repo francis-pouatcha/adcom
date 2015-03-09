@@ -13,7 +13,6 @@ import javax.persistence.metamodel.SingularAttribute;
 import org.adorsys.adbase.enums.BaseHistoryTypeEnum;
 import org.adorsys.adbase.enums.BaseProcStepEnum;
 import org.adorsys.adbase.enums.BaseProcessStatusEnum;
-import org.adorsys.adbase.jpa.Locality;
 import org.adorsys.adbase.security.SecurityUtil;
 import org.adorsys.adcore.auth.TermWsUserPrincipal;
 import org.adorsys.adcore.utils.SequenceGenerator;
@@ -292,7 +291,7 @@ public class PrcmtDeliveryEJB {
 		}
 
 		@SuppressWarnings("unchecked")
-		List<Locality> resultList = createQuery.getResultList();
+		List<PrcmtDelivery> resultList = createQuery.getResultList();
 		
 		if(searchInput.getStart() >= 0){
 			createQuery.setFirstResult(searchInput.getStart());

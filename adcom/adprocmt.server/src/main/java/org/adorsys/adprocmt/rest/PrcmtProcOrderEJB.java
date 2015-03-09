@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adbase.enums.BaseHistoryTypeEnum;
@@ -15,8 +17,12 @@ import org.adorsys.adcore.auth.TermWsUserPrincipal;
 import org.adorsys.adcore.utils.SequenceGenerator;
 import org.adorsys.adprocmt.api.ProcOrderInfo;
 import org.adorsys.adprocmt.jpa.PrcmtProcOrder;
+import org.adorsys.adprocmt.jpa.PrcmtProcOrderEvtData;
 import org.adorsys.adprocmt.jpa.PrcmtProcOrderHstry;
+import org.adorsys.adprocmt.jpa.PrcmtProcOrderSearchInput;
+import org.adorsys.adprocmt.jpa.PrcmtProcOrderSearchResult;
 import org.adorsys.adprocmt.repo.PrcmtProcOrderRepository;
+import org.adorsys.adprocmt.trigger.TriggerModeHandlerFactoryProducer;
 import org.apache.commons.lang3.StringUtils;
 
 @Stateless
@@ -29,6 +35,10 @@ public class PrcmtProcOrderEJB
    private SecurityUtil securityUtil;
    @Inject
    private PrcmtProcOrderHstryEJB orderHstryEJB;
+   @Inject
+   private EntityManager em ;
+   @Inject
+   private PrcmtProcOrderEvtDataEJB evtDataEJB;
    
    public PrcmtProcOrder createCustom(PrcmtProcOrder entity) {
 		String currentLoginName = securityUtil.getCurrentLoginName();
@@ -41,7 +51,14 @@ public class PrcmtProcOrderEJB
 			entity.setPoNbr(SequenceGenerator.getSequence(SequenceGenerator.PRCMT_ORDER_SEQUENCE_PREFIXE));
 		}
 		entity.setId(entity.getPoNbr());
-		entity = create(entity);
+		entity = repository.save(attach(entity));
+		
+		PrcmtProcOrderEvtData evtData = new PrcmtProcOrderEvtData();
+		entity = repository.save(attach(entity));
+		entity.copyTo(evtData);
+		evtData.setId(entity.getId());
+		evtDataEJB.create(evtData);
+		
 		createInitialDeliveryHistory(entity);
 		return entity;
 	}
@@ -130,5 +147,52 @@ public class PrcmtProcOrderEJB
    {
       return repository.findBy(poNbr);
    }
+   
+   public PrcmtProcOrderSearchResult findCustom(PrcmtProcOrderSearchInput searchInput) {
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("SELECT p FROM PrcmtProcOrder AS p WHERE 1=1 ");
+			
+		if(StringUtils.isNotBlank(searchInput.getEntity().getPoNbr())){
+			sb.append("AND LOWER(p.poNbr) LIKE LOWER(:poNbr) ");
+		}
+		if(searchInput.getDateMin() != null){
+			sb.append("AND p.createdDt<=:dateMax ");
+		}
+		if(searchInput.getDateMax() != null){
+			sb.append("AND p.createdDt>=:dateMin");
+		}
+		
+		String query = sb.toString();	
+		Query createQuery = em.createQuery(query);
+		if(searchInput.getDateMin() != null){
+			createQuery.setParameter("dateMin", searchInput.getDateMin());
+		}
+		if(searchInput.getDateMax() != null){
+			createQuery.setParameter("dateMax", searchInput.getDateMax());
+		}
+		if(StringUtils.isNotBlank(searchInput.getEntity().getPoNbr())){
+			String poNbr = searchInput.getEntity().getPoNbr()+"%";
+			createQuery.setParameter("poNbr", poNbr);
+		}
+
+		@SuppressWarnings("unchecked")
+		List<PrcmtProcOrder> resultList = createQuery.getResultList();
+		
+		if(searchInput.getStart() >= 0){
+			createQuery.setFirstResult(searchInput.getStart());
+		}
+		if(searchInput.getMax() > 0){
+			createQuery.setMaxResults(searchInput.getMax());
+		}
+		List resultList2 = createQuery.getResultList();
+
+		PrcmtProcOrderSearchResult prcmtProcOrderSearchResult = new PrcmtProcOrderSearchResult();
+		prcmtProcOrderSearchResult.setCount(Long.valueOf(resultList.size()));
+		prcmtProcOrderSearchResult.setSearchInput(searchInput);
+		prcmtProcOrderSearchResult.setResultList(resultList2);
+
+		return  prcmtProcOrderSearchResult;	
+	}
    
 }
