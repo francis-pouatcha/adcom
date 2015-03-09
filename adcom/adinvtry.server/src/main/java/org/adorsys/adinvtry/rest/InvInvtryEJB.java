@@ -13,6 +13,8 @@ import org.adorsys.adcore.utils.SequenceGenerator;
 import org.adorsys.adinvtry.jpa.InvInvtry;
 import org.adorsys.adinvtry.jpa.InvInvtryEvtData;
 import org.adorsys.adinvtry.jpa.InvInvtrySearchInput;
+import org.adorsys.adinvtry.jpa.InvInvtryStatus;
+import org.adorsys.adinvtry.jpa.InvInvtryType;
 import org.adorsys.adinvtry.repo.InvInvtryRepository;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.deltaspike.data.api.QueryResult;
@@ -37,15 +39,22 @@ public class InvInvtryEJB
 	{
 		String sequence = SequenceGenerator.getSequence(SequenceGenerator.INVENTORY_SEQUENCE_PREFIXE);
 		entity.setInvtryNbr(sequence);
-		String loginName = securityUtil.getCurrentLoginName();
 		Date currentDate = new Date();
-		if(entity.getAcsngDt() == null ) {
+		
+		if(entity.getAcsngDt() == null ) 
 			entity.setAcsngDt(currentDate);
-		}
-		if(entity.getInvtryDt() == null) {
+		
+		if(entity.getInvtryDt() == null) 
 			entity.setInvtryDt(currentDate);
-		}
+		
+		String loginName = securityUtil.getCurrentLoginName();
 		entity.setAcsngUser(loginName);
+		
+		if(entity.getInvtryStatus()==null)
+			entity.setInvtryStatus(InvInvtryStatus.ONGOING);
+		
+		if(entity.getInvInvtryType()==null)
+			entity.setInvInvtryType(InvInvtryType.FREE_INV);
 
 		InvInvtry save = repository.save(attach(entity));
 		InvInvtryEvtData invtryEvtData = new InvInvtryEvtData();

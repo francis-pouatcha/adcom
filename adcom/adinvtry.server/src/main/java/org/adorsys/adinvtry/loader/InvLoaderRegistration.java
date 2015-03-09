@@ -1,6 +1,5 @@
-package org.adorsys.adprocmt.loader;
+package org.adorsys.adinvtry.loader;
 
-import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
@@ -12,36 +11,28 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
-import org.apache.commons.lang3.time.DateUtils;
-
 @Startup
 @Singleton
-public class PrcmtLoaderRegistration {
+public class InvLoaderRegistration {
 
 	@Inject
 	private DataSheetLoader dataSheetLoader;
 	@Inject
-	private PrcmtDeliveryLoader prcmtDeliveryLoader;
+	private InvInvtryLoader intInvInvtryLoader;
 	@Inject
-	private PrcmtDlvryItemLoader prcmtDlvryItemLoader;
-	
-	private Date firstCall = new Date();
+	private InvInvtryItemLoader invInvtryItemLoader;
 	
 	@PostConstruct
 	public void postConstruct(){
-		dataSheetLoader.registerLoader(PrcmtDeliveryExcel.class.getSimpleName(), prcmtDeliveryLoader);
-		dataSheetLoader.registerLoader(PrcmtDlvryItemExcel.class.getSimpleName(), prcmtDlvryItemLoader);
+		dataSheetLoader.registerLoader(InvInvtryExcel.class.getSimpleName(), intInvInvtryLoader);
+		dataSheetLoader.registerLoader(InvInvtryItemExcel.class.getSimpleName(), invInvtryItemLoader);
 		createTemplate();
 	}
 
-	@Schedule(minute = "*", second="1/35" ,hour="*", persistent=false)
+	@Schedule(minute = "*", second="3/33" ,hour="*", persistent=false)
 	@AccessTimeout(unit=TimeUnit.MINUTES, value=10)
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public void process() throws Exception {
-		// only start 5 mins after server start.
-		Date now = new Date();
-		if(now.after(DateUtils.addMinutes(firstCall, 5))) return;
-		
 		dataSheetLoader.process();
 	}
 	

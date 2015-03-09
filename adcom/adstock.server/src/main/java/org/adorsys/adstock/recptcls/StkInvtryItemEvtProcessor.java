@@ -66,7 +66,7 @@ public class StkInvtryItemEvtProcessor {
 		lotStockQty.setSection(section);
 		lotStockQty.setQtyDt(invtryEvt.getHstryDt());
 		if(latestQty!=null){
-			lotStockQty.setSeqNbr(latestQty.getSeqNbr()+1);
+			lotStockQty.setSeqNbr(latestQty.getSeqNbr()==null?1:latestQty.getSeqNbr()+1);
 		} else {
 			lotStockQty.setSeqNbr(0);
 		}

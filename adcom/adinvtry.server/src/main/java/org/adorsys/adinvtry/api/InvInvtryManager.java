@@ -113,6 +113,23 @@ public class InvInvtryManager {
 		return invtryHolder;
 	}
 	
+	/**
+	 * Closing an existing invetory.
+	 * 
+	 * @param inventoryHolder
+	 * @return
+	 */
+	public InvInvtryHolder closeInventory(InvInvtryHolder inventoryHolder){
+		inventoryHolder = updateInventory(inventoryHolder);
+		InvInvtry invtry = inventoryHolder.getInvtry();
+		recomputeInventory(invtry);
+		invtry.setInvtryStatus(InvInvtryStatus.CLOSED);
+		invtry = inventoryEJB.update(invtry);
+		inventoryHolder.setInvtry(invtry);
+		createClosedInventoryHistory(invtry);// Status closed
+		return inventoryHolder;
+	}	
+	
 	private boolean deleteHolders(InvInvtryHolder invtryHolder){
 		List<InvInvtryItemHolder> invtryItemHolders = invtryHolder.getInvtryItemHolders();
 		List<InvInvtryItemHolder> diToRemove = new ArrayList<InvInvtryItemHolder>();
@@ -143,17 +160,6 @@ public class InvInvtryManager {
 		}
 		return inventory;
 	}
-	
-	public InvInvtryHolder closeInventory(InvInvtryHolder inventoryHolder){
-		inventoryHolder = updateInventory(inventoryHolder);
-		InvInvtry invtry = inventoryHolder.getInvtry();
-		recomputeInventory(invtry);
-		invtry.setInvtryStatus(InvInvtryStatus.CLOSED);
-		invtry = inventoryEJB.update(invtry);
-		inventoryHolder.setInvtry(invtry);
-		createClosedInventoryHistory(invtry);// Status closed
-		return inventoryHolder;
-	}	
 	
 	private void recomputeInventory(final InvInvtry invInvtry){
 		// update delivery object.

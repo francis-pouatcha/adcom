@@ -68,6 +68,7 @@
 	<class>org.adorsys.adinvtry.jpa.InvInvtryEvtData</class>
 	<class>org.adorsys.adinvtry.jpa.InvInvtryItemEvtData</class>
 	<class>org.adorsys.adinvtry.jpa.InvInvtryEvt</class>
+	<class>org.adorsys.adinvtry.jpa.InvInvtryEvtLease</class>
     
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
