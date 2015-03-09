@@ -92,7 +92,10 @@
 "InvInvtry_NoArticleFound_description":"Pas d'Article Trouvé",
 "InvInvtry_NoUserFound_description":"Aucun utilisateur Trouvé",
 "InvInvtry_gapPurchAmtHTFrom_description.title":"Menquant en Prix d'Achat supérieur à",
-"InvInvtry_gapPurchAmtHTTo_description.title":"Menquant en Prix d'Achat inférieur à"
+"InvInvtry_gapPurchAmtHTTo_description.title":"Menquant en Prix d'Achat inférieur à",
+
+"InvInvtry_longPdctJsonArr_exception.title":"Le nombre de produits a charger est élevé, veuillez definir des marge de nom tres proche.",
+"InvInvtry_longPdctJsonArr_exception.text":"Le nombre de produits a charger est élevé, veuillez definir des marge de nom tres proche."
 
 
 }

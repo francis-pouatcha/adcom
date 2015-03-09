@@ -30,6 +30,14 @@ public abstract class PrcmtAbstractPOItem extends AbstractMvmtData {
 	@Description("PrcmtPOItem_artPic_description")
 	@NotNull
 	private String artPic;
+	
+	/*
+	 * this field is use to carry article name
+	 */
+	@Column
+	@Description("PrcmtDlvryItem_artName_description")
+	private String artName;
+
 
 	@Column
 	@Description("PrcmtPOItem_supplier_description")
@@ -126,6 +134,14 @@ public abstract class PrcmtAbstractPOItem extends AbstractMvmtData {
 
 	public String getArtPic() {
 		return this.artPic;
+	}
+
+	public String getArtName() {
+		return artName;
+	}
+
+	public void setArtName(String artName) {
+		this.artName = artName;
 	}
 
 	public void setArtPic(final String artPic) {

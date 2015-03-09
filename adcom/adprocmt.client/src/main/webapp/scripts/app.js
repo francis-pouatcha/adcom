@@ -30,7 +30,7 @@ angular.module('AdProcmt', [
         .when('/PrcmtOrders',{templateUrl:'views/PrcmtOrder/PrcmtOrders.html',controller:'prcmtOrderCtrl'})
         .when('/PrcmtOrders/new',{templateUrl:'views/PrcmtOrder/PrcmtOrderCreate.html',controller:'prcmtOrderCreateCtlr'})
         .when('/PrcmtOrders/edit/:identif',{templateUrl:'views/PrcmtOrder/PrcmtOrderEdit.html',controller:'prcmtOrderEditCtlr'})
-        .when('/PrcmtOrders/show/:identif',{templateUrl:'views/PrcmtOrder/PrcmtOrderShow.html',controller:'prcmtOrderShowCtlr'})
+        .when('/PrcmtOrders/show',{templateUrl:'views/PrcmtOrder/PrcmtOrderShow.html',controller:'prcmtOrderShowCtlr'})
 
     .when('/PrcmtDlvryItems',{templateUrl:'views/PrcmtDlvryItem/search.html',controller:'SearchPrcmtDlvryItemController'})
     .when('/PrcmtDlvryItems/new',{templateUrl:'views/PrcmtDlvryItem/detail.html',controller:'NewPrcmtDlvryItemController'})

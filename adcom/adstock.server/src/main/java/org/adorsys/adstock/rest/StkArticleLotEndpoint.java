@@ -139,12 +139,12 @@ public class StkArticleLotEndpoint
 			   fieldNames.add("artPic");
 			   tempSearchInput.setFieldNames(fieldNames);
 			   SingularAttribute<StkArticleLot,?>[] attributes = readSeachAttributes(tempSearchInput);
-			   Long count = ejb.countBy(searchInput.getEntity(), attributes);
-			   List<StkArticleLot> resultList = ejb.findBy(searchInput.getEntity(),
-					   searchInput.getStart(), searchInput.getMax(), attributes);
+			   Long count = ejb.countBy(tempSearchInput.getEntity(), attributes);
+			   List<StkArticleLot> resultList = ejb.findBy(tempSearchInput.getEntity(),
+					   tempSearchInput.getStart(), tempSearchInput.getMax(), attributes);
 			   StkArticleLotSearchResult sr = new StkArticleLotSearchResult(count, detach(resultList),
-					   detach(searchInput));
-			   StkArticleLotSearchResult tempSearchResult = processSearchResult(searchInput, sr);
+					   detach(tempSearchInput));
+			   StkArticleLotSearchResult tempSearchResult = processSearchResult(tempSearchInput, sr);
 			   searchResults.add(tempSearchResult);
 		   }
 		   StkArticleLotSearchResult searchResult = new StkArticleLotSearchResult();
