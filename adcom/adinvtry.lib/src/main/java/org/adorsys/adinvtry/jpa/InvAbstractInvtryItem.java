@@ -76,6 +76,10 @@ public abstract class InvAbstractInvtryItem extends AbstractIdentifData {
 	private String sppuCur;
 
 	@Column
+	@Description("InvInvtryItem_vatSalesPct_description")
+	private BigDecimal vatSalesPct;
+	
+	@Column
 	@Description("InvInvtryItem_gapTotalSpPT_description")
 	private BigDecimal gapTotalSpPT;
 
@@ -92,9 +96,27 @@ public abstract class InvAbstractInvtryItem extends AbstractIdentifData {
 	private BigDecimal gapTotalPpPT;
 
 	@Column
+	@Description("InvInvtryItem_vatPurchPct_description")
+	private BigDecimal vatPurchPct;
+	
+	@Column
 	@Description("InvInvtryItem_acsngUser_description")
 	@NotNull
 	private String acsngUser;
+	
+	@Column
+	@Description("InvInvtryItem_supplier_description")
+	private String supplier;
+	
+	@Column
+	@Description("InvInvtryItem_supplierPic_description")
+	private String supplierPic;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Description("InvInvtryItem_expirDt_description")
+	@DateFormatPattern(pattern = "dd-MM-yyyy HH:mm")
+	private Date expirDt;
+	
 
 	public String getInvtryNbr() {
 		return this.invtryNbr;
@@ -232,29 +254,74 @@ public abstract class InvAbstractInvtryItem extends AbstractIdentifData {
 		this.artName = artName;
 	}
 
+	public BigDecimal getVatSalesPct() {
+		return vatSalesPct;
+	}
+
+	public void setVatSalesPct(BigDecimal vatSalesPct) {
+		this.vatSalesPct = vatSalesPct;
+	}
+
+	public BigDecimal getVatPurchPct() {
+		return vatPurchPct;
+	}
+
+	public void setVatPurchPct(BigDecimal vatPurchPct) {
+		this.vatPurchPct = vatPurchPct;
+	}
+
+	public String getSupplier() {
+		return supplier;
+	}
+
+	public void setSupplier(String supplier) {
+		this.supplier = supplier;
+	}
+
+	public String getSupplierPic() {
+		return supplierPic;
+	}
+
+	public void setSupplierPic(String supplierPic) {
+		this.supplierPic = supplierPic;
+	}
+
+	public Date getExpirDt() {
+		return expirDt;
+	}
+
+	public void setExpirDt(Date expirDt) {
+		this.expirDt = expirDt;
+	}
+
 	@Override
 	protected String makeIdentif() {
 		return invtryNbr + "_" + lotPic + "_" + artPic + "_" + section;
 	}
 	
 	public void copyTo(InvAbstractInvtryItem target) {
-		target.setAcsngDt(acsngDt);
-		target.setAcsngUser(acsngUser);
-		target.setArtPic(artPic);
-		target.setAsseccedQty(asseccedQty);
-		target.setExpectedQty(expectedQty);
-		target.setGap(gap);
-		target.setGapTotalPpPT(gapTotalPpPT);
-		target.setGapTotalSpPT(gapTotalSpPT);
-		target.setInvtryNbr(invtryNbr);
-		target.setLotPic(lotPic);
-		target.setOrgUnit(orgUnit);
-		target.setPppuCur(pppuCur);
-		target.setPppuPT(pppuPT);
-		target.setSection(section);
-		target.setSppuCur(sppuCur);
-		target.setSppuPT(sppuPT);
-		target.setArtName(artName);
+		target.acsngDt = acsngDt;
+		target.acsngUser=acsngUser;
+		target.artName = artName;
+		target.artPic = artPic;
+		target.asseccedQty = asseccedQty;
+		target.expectedQty = expectedQty;
+		target.expirDt = expirDt;
+		target.gap = gap;
+		target.gapTotalPpPT = gapTotalPpPT;
+		target.gapTotalSpPT = gapTotalSpPT;
+		target.invtryNbr = invtryNbr;
+		target.lotPic = lotPic;
+		target.orgUnit = orgUnit;
+		target.pppuCur = pppuCur;
+		target.pppuPT = pppuPT;
+		target.section = section;
+		target.sppuCur = sppuCur;
+		target.sppuPT = sppuPT;
+		target.supplier = supplier;
+		target.supplierPic = supplierPic;
+		target.vatPurchPct = vatPurchPct;
+		target.vatSalesPct = vatSalesPct;
 	}
 	
 	public boolean contentEquals(InvAbstractInvtryItem target) {
@@ -264,6 +331,7 @@ public abstract class InvAbstractInvtryItem extends AbstractIdentifData {
 		if(!StringUtils.equals(target.artName,artName)) return false;
 		if(!BigDecimalUtils.numericEquals(target.asseccedQty,asseccedQty)) return false;
 		if(!BigDecimalUtils.numericEquals(target.expectedQty,expectedQty)) return false;
+		if(!CalendarUtil.isSameDay(target.expirDt,expirDt)) return false;
 		if(!BigDecimalUtils.numericEquals(target.gap,gap)) return false;
 		if(!BigDecimalUtils.numericEquals(target.gapTotalPpPT,gapTotalPpPT)) return false;
 		if(!BigDecimalUtils.numericEquals(target.gapTotalSpPT,gapTotalSpPT)) return false;
@@ -275,6 +343,10 @@ public abstract class InvAbstractInvtryItem extends AbstractIdentifData {
 		if(!StringUtils.equals(target.section,section)) return false;
 		if(!StringUtils.equals(target.sppuCur,sppuCur)) return false;
 		if(!BigDecimalUtils.numericEquals(target.sppuPT,sppuPT)) return false;
+		if(!StringUtils.equals(target.supplier,supplier)) return false;
+		if(!StringUtils.equals(target.supplierPic,supplierPic)) return false;
+		if(!BigDecimalUtils.numericEquals(target.vatPurchPct,vatPurchPct)) return false;
+		if(!BigDecimalUtils.numericEquals(target.vatSalesPct,vatSalesPct)) return false;
 		return true;
 	}
 

@@ -11,7 +11,6 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.adorsys.adcore.utils.FormatedValidFrom;
 import org.adorsys.javaext.description.Description;
 import org.apache.commons.lang3.StringUtils;
 

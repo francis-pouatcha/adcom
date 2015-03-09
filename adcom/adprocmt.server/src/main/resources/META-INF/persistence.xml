@@ -61,6 +61,9 @@
     <class>org.adorsys.adprocmt.jpa.PrcmtPOItemEvtData</class>
     <class>org.adorsys.adprocmt.jpa.PrcmtPrcmtEvt</class>
     <class>org.adorsys.adprocmt.jpa.PrcmtProcOrderEvtData</class>
+    
+	<class>org.adorsys.adstock.jpa.StkArticleLot2StrgSctn</class>
+    
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.hbm2ddl.auto" value="update"/>

@@ -35,6 +35,7 @@ cd $JBOSS_HOME/adcom/adcatal/data/ && rm ad*
 cd $JBOSS_HOME/adcom/adstock/data/ && rm ad*
 cd $JBOSS_HOME/adcom/adbnsptnr/data/ && rm ad*
 cd $JBOSS_HOME/adcom/adprocmt/data/ && rm ad*
+cd $JBOSS_HOME/adcom/adinvtry/data/ && rm ad*
 
 echo 'starting jboss'
 cd $JBOSS_HOME
@@ -75,6 +76,7 @@ cp adcom.configuration/jboss-eap-6.3/adcom/adcatal/data/adcatal.xls $JBOSS_HOME/
 cp adcom.configuration/jboss-eap-6.3/adcom/adstock/data/adstock.xls $JBOSS_HOME/adcom/adstock/data/
 cp adcom.configuration/jboss-eap-6.3/adcom/adbnsptnr/data/adbnsptnr.xls $JBOSS_HOME/adcom/adbnsptnr/data/
 cp adcom.configuration/jboss-eap-6.3/adcom/adprocmt/data/adprocmt.xls $JBOSS_HOME/adcom/adprocmt/data/
+cp adcom.configuration/jboss-eap-6.3/adcom/adinvtry/data/adinvtry.xls $JBOSS_HOME/adcom/adinvtry/data/
 
 echo 'back to adcom home'
 cd $ADCOM_HOME
