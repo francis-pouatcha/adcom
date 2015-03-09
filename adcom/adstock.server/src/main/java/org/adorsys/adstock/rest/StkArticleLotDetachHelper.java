@@ -98,7 +98,8 @@ public class StkArticleLotDetachHelper {
 			for (StkArticleLot stkArticleLot : resultList) {
 				StkArticleLot2StrgSctn sctn = strgSctnEJB.findByStrgSectionAndLotPicAndArtPic(
 						searchInput.getSectionCode(), stkArticleLot.getLotPic(),stkArticleLot.getArtPic());
-				putAndCache(foundCache, Arrays.asList(sctn), stkArticleLot);
+				if(sctn != null)
+					putAndCache(foundCache, Arrays.asList(sctn), stkArticleLot);
 			}
 		} else if (searchInput.isWithStrgSection()) {
 			for (StkArticleLot stkArticleLot : resultList) {

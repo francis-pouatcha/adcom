@@ -312,10 +312,12 @@ angular.module('AdInvtry')
     }       
     service.extractRange =  function extractRange(base,rangeStart,rangeEnd) {
         if(!base) return;
-        if(angular.isUndefined(rangeStart))
+        if(!rangeStart) {
             rangeStart = base.slice(0,1)//get the firt character
-        if(angular.isUndefined(rangeEnd))
+        }
+        if(!rangeEnd) {
             rangeEnd = base.slice(-1); //get the last range.        
+        }
         return base.slice(base.lastIndexOf(rangeStart),base.lastIndexOf(rangeEnd)+1);
     }
     return service;
@@ -493,11 +495,6 @@ angular.module('AdInvtry')
     }
     service.range = {};
     
-    service.saveRange = function(startRange,endRange) {
-        service.range.startRange = startRange;
-        service.range.endRange = endRange;
-    };
-    
     var stkSectionVar;
     service.stkSection = function(stkSectionIn){
     	if(stkSectionIn) stkSectionVar = stkSectionIn;
@@ -598,9 +595,9 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
     	if($scope.stkSection){
     		invInvtryState.stkSection($scope.stkSection);
     	}
-        if($scope.startRange && $scope.endRange) {
-            invInvtryState.saveRange($scope.startRange,$scope.endRange);
-        }
+        if($scope.startRange)  invInvtryState.range.startRange = $scope.startRange;
+        if($scope.endRange) invInvtryState.range.endRange = $scope.endRange;
+        
 		if(invInvtryState.push($scope.invInvtry)){
 			$location.path('/InvInvtrys/show/');
 		}
