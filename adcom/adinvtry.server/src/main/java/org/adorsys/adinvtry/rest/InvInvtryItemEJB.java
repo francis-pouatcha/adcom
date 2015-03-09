@@ -9,7 +9,6 @@ import javax.persistence.metamodel.SingularAttribute;
 import org.adorsys.adinvtry.jpa.InvInvtryItem;
 import org.adorsys.adinvtry.jpa.InvInvtryItemEvtData;
 import org.adorsys.adinvtry.repo.InvInvtryItemRepository;
-import org.apache.deltaspike.data.api.QueryResult;
 
 @Stateless
 public class InvInvtryItemEJB

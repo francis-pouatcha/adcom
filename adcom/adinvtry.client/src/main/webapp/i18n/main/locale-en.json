@@ -91,7 +91,9 @@
 "InvInvtry_NoArticleFound_description":"No Article Found",
 "InvInvtry_NoUserFound_description":"No User Found",
 "InvInvtry_gapPurchAmtHTFrom_description.title":"Gap in Purchase Amount above",
-"InvInvtry_gapPurchAmtHTTo_description.title":"Gap in Purchase Amount below"
+"InvInvtry_gapPurchAmtHTTo_description.title":"Gap in Purchase Amount below",
+"InvInvtry_longPdctJsonArr_exception.title":"The much products loadings error, please chose, very close product ranges.",
+"InvInvtry_longPdctJsonArr_exception.text":"The much products loadings error, please chose, very close product ranges."
 
 
 }
