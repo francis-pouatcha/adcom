@@ -3,6 +3,7 @@ package org.adorsys.adstock.recptcls;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
+import org.adorsys.adcore.utils.BigDecimalUtils;
 import org.adorsys.adinvtry.jpa.InvInvtryEvt;
 import org.adorsys.adinvtry.jpa.InvInvtryEvtData;
 import org.adorsys.adinvtry.jpa.InvInvtryItemEvtData;
@@ -70,7 +71,7 @@ public class StkInvtryItemEvtProcessor {
 		} else {
 			lotStockQty.setSeqNbr(0);
 		}
-		lotStockQty.setStockQty(itemEvtData.getGap());
+		lotStockQty.setStockQty(BigDecimalUtils.negate(itemEvtData.getGap()));
 		lotStockQty = lotStockQtyEJB.create(lotStockQty);
 		
 		hstry = new StkInvtryItemHstry();

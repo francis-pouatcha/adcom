@@ -38,9 +38,9 @@ public class PrcmtLoaderRegistration {
 	@AccessTimeout(unit=TimeUnit.MINUTES, value=10)
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public void process() throws Exception {
-		// only start 5 mins after server start.
+		// only start 7 mins after server start.
 		Date now = new Date();
-		if(now.after(DateUtils.addMinutes(firstCall, 5))) return;
+		if(now.before(DateUtils.addMinutes(firstCall, 7))) return;
 		
 		dataSheetLoader.process();
 	}

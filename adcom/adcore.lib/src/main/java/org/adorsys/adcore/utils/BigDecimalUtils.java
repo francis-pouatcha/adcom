@@ -10,6 +10,8 @@ import java.util.Set;
 public class BigDecimalUtils {
 	
 	public static final BigDecimal HUNDRED = new BigDecimal("100");
+	public static final BigDecimal MINUS_ONE = new BigDecimal("-1");
+	
 	public static boolean isNullOrZero(BigDecimal bigDecimal){
 		return bigDecimal==null || bigDecimal.compareTo(BigDecimal.ZERO)==0;
 	}
@@ -77,5 +79,11 @@ public class BigDecimalUtils {
 			result.put(entry.getKey(), value);
 		}
 		return result ;
+	}
+	
+	public static BigDecimal negate(BigDecimal in){
+		if(in==null) return BigDecimal.ZERO;
+		if(BigDecimal.ZERO.compareTo(in)==0) return in;
+		return MINUS_ONE.multiply(in);
 	}
 }

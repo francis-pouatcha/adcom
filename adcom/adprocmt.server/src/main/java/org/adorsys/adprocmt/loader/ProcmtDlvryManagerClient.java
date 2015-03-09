@@ -18,6 +18,8 @@ import org.adorsys.adprocmt.jpa.PrcmtDelivery;
 import org.adorsys.adprocmt.jpa.PrcmtDlvryItem;
 import org.adorsys.adprocmt.jpa.PrcmtDlvryItem2Ou;
 import org.adorsys.adprocmt.jpa.PrcmtDlvryItem2StrgSctn;
+import org.adorsys.adstock.jpa.StkArticleLot2StrgSctn;
+import org.adorsys.adstock.rest.StkArticleLot2StrgSctnLookup;
 import org.apache.commons.lang3.StringUtils;
 
 @Singleton
@@ -43,8 +45,12 @@ public class ProcmtDlvryManagerClient {
 		PrcmtDeliveryItemHolder dlvryItemHolder = new PrcmtDeliveryItemHolder();
 		dlvryItemHolder.setDlvryItem(dlvryItem);
 
+		// parse the section provided by the excel file.
 		String strgSctns = dlvryItemExcel.getStrgSctns();
 		List<PrcmtDlvryItem2StrgSctnHolder> parseStrgSctns = parseStrgSctns(strgSctns);
+		// Lookup the same section for an article in the storage.
+		if(parseStrgSctns.isEmpty()) parseStrgSctns=lookupSection(dlvryItem);
+		// Take a random storage.
 		if(parseStrgSctns.isEmpty()) parseStrgSctns=randomStrgSctns(dlvryItem);
 		
 		dlvryItemHolder.setStrgSctns(parseStrgSctns);
@@ -87,6 +93,24 @@ public class ProcmtDlvryManagerClient {
 			holder.setStrgSctn(item2StrgSctn);
 			result.add(holder);
 		}
+		return result;
+	}
+	
+	@Inject
+	private StkArticleLot2StrgSctnLookup articleLot2StrgSctnLookup;
+	
+	private List<PrcmtDlvryItem2StrgSctnHolder> lookupSection(PrcmtDlvryItem dlvryItem){
+		List<StkArticleLot2StrgSctn> sections = articleLot2StrgSctnLookup.findByArtPic(dlvryItem.getArtPic(), 0, 1);
+		if(sections.isEmpty()) return Collections.emptyList(); 
+
+		StkArticleLot2StrgSctn strgSctn = sections.iterator().next();
+		List<PrcmtDlvryItem2StrgSctnHolder> result = new ArrayList<PrcmtDlvryItem2StrgSctnHolder>();
+		PrcmtDlvryItem2StrgSctnHolder holder = new PrcmtDlvryItem2StrgSctnHolder();
+		PrcmtDlvryItem2StrgSctn item2StrgSctn = new PrcmtDlvryItem2StrgSctn();
+		item2StrgSctn.setStrgSection(strgSctn.getStrgSection());
+		item2StrgSctn.setQtyStrd(dlvryItem.getQtyDlvrd());
+		holder.setStrgSctn(item2StrgSctn);
+		result.add(holder);
 		return result;
 	}
 	

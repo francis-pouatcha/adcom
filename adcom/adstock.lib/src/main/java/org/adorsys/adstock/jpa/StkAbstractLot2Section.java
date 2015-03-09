@@ -1,7 +1,7 @@
 package org.adorsys.adstock.jpa;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
@@ -9,33 +9,32 @@ import org.adorsys.adcore.jpa.AbstractIdentifData;
 import org.adorsys.javaext.description.Description;
 import org.apache.commons.lang3.StringUtils;
 
-@Entity
-@Description("StkArticleLot2StrgSctn_description")
-public class StkArticleLot2StrgSctn extends AbstractIdentifData {
+@MappedSuperclass
+public class StkAbstractLot2Section extends AbstractIdentifData {
 
-	private static final long serialVersionUID = -8793130123326839851L;
+	private static final long serialVersionUID = -8174913096678489715L;
 
 	@Column
-	@Description("StkArticleLot2StrgSctn_lotPic_description")
+	@Description("StkAbstractLot2Section_lotPic_description")
 	@NotNull
 	private String lotPic;
 
 	@Column
-	@Description("StkArticleLot2StrgSctn_artPic_description")
+	@Description("StkAbstractLot2Section_artPic_description")
 	@NotNull
 	private String artPic;
 
 	@Column
-	@Description("StkArticleLot2StrgSctn_strgSection_description")
+	@Description("StkAbstractLot2Section_strgSection_description")
 	@NotNull
 	private String strgSection;
 
 	@Transient
-	private StkSection stkSection;
+	private StkAbstractSection stkSection;
 	
 	@Transient
-	private StkArticleLot sectionArticleLot;
-
+	private StkAbstractArticleLot sectionArticleLot;
+	
 	public String getStrgSection() {
 		return strgSection;
 	}
@@ -68,34 +67,35 @@ public class StkArticleLot2StrgSctn extends AbstractIdentifData {
 		this.artPic = artPic;
 	}
 
-	public StkSection getStkSection() {
-		return stkSection;
-	}
-
-	public void setStkSection(StkSection stkSection) {
-		this.stkSection = stkSection;
-	}
-
-	public StkArticleLot getSectionArticleLot() {
-		return sectionArticleLot;
-	}
-
-	public void setSectionArticleLot(StkArticleLot sectionArticleLot) {
-		this.sectionArticleLot = sectionArticleLot;
-	}
-
-	public void copyTo(StkArticleLot2StrgSctn target){
+	public void copyTo(StkAbstractLot2Section target){
 		target.artPic = artPic;
 		target.lotPic = lotPic;
 		target.strgSection=strgSection;
 		target.stkSection = stkSection;
-		target.sectionArticleLot=sectionArticleLot;
+		target.sectionArticleLot =sectionArticleLot;
 	}
 	
-	public boolean contentEquals(StkArticleLot2StrgSctn target){
+	public boolean contentEquals(StkAbstractLot2Section target){
 		if(!StringUtils.equals(target.strgSection,strgSection)) return false;
 		if(!StringUtils.equals(target.lotPic, lotPic)) return false;
 		if(!StringUtils.equals(target.artPic, artPic)) return false;
 		return true;
 	}
+	
+	public StkAbstractSection getStkSection() {
+		return stkSection;
+	}
+
+	public void setStkSection(StkAbstractSection stkSection) {
+		this.stkSection = stkSection;
+	}
+
+	public StkAbstractArticleLot getSectionArticleLot() {
+		return sectionArticleLot;
+	}
+
+	public void setSectionArticleLot(StkAbstractArticleLot sectionArticleLot) {
+		this.sectionArticleLot = sectionArticleLot;
+	}
+	
 }
