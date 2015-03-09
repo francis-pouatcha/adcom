@@ -1,12 +1,12 @@
 'use strict';
 
-angular.module('AdProcmt').controller('prcmtOrderShowCtlr',['$scope','ProcmtUtils','genericResource','$routeParams','$location','$q',function($scope,ProcmtUtils,genericResource,$routeParams,$location,$q){
+angular.module('AdProcmt').controller('prcmtOrderShowCtlr',['$scope','ProcmtUtils','PrcmtOrderState','genericResource','$routeParams','$location','$q',function($scope,ProcmtUtils,PrcmtOrderState,genericResource,$routeParams,$location,$q){
     var self = this ;
     $scope.prcmtOrderShowCtlr = self;
-    self.prcmtOrder = {};
-    self.prcmtOrderItemHolder = {
-        dlvryItem:{}
-    };
+    self.prcmtOrderHolder = {
+        prcmtOrder:{},
+        prcmtOrderItemHolders:[]
+    }
     self.prcmtOrderItemHolders = [];
     self.error = "";
     self.loadArticlesByNameLike = loadArticlesByNameLike;
@@ -25,14 +25,7 @@ angular.module('AdProcmt').controller('prcmtOrderShowCtlr',['$scope','ProcmtUtil
     load();
 
     function load(){
-        var identif = $routeParams.identif;
-        genericResource.findById(ProcmtUtils.urlPrcmtOrder,identif)
-            .success(function(data){
-                self.prcmtOrder = data;
-            })
-            .error(function(error){
-                self.error = error;
-            });
+        self.prcmtOrderHolder = PrcmtOrderState.getOrderHolder();
     };
 
     function loadArticlesByNameLike(name){

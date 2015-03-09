@@ -23,6 +23,14 @@ public class PrcmtOrderManagerEndpoint
    private PrcmtOrderManager OrderManager; 
 
    @POST
+   @Path("/create")
+   @Consumes({ "application/json", "application/xml" })
+   @Produces({ "application/json", "application/xml" })
+   public PrcmtOrderHolder createOrder(PrcmtProcOrder prcmtProcOrder){
+      return OrderManager.createOrder(prcmtProcOrder);
+   }
+   
+   @POST
    @Path("/update")
    @Consumes({ "application/json", "application/xml" })
    @Produces({ "application/json", "application/xml" })
@@ -50,7 +58,7 @@ public class PrcmtOrderManagerEndpoint
    @Path("/transform")
    @Consumes({ "application/json", "application/xml" })
    @Produces({ "application/json", "application/xml" })
-   public PrcmtOrderHolder Order2Delivery(PrcmtOrderHolder prcmtOrderHolder){
-      return OrderManager.closeOrder(prcmtOrderHolder);
+   public PrcmtDeliveryHolder order2Delivery(PrcmtOrderHolder prcmtOrderHolder){
+      return OrderManager.order2Delivery(prcmtOrderHolder);
    }
 }

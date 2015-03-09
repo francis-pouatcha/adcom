@@ -12,6 +12,7 @@ angular.module('AdProcmt')
         service.stkSection = '/adstock.server/rest/stksections';
 
         service.urlPrcmtOrder='/adprocmt.server/rest/prcmtprocorders';
+        service.urlManageOrder='/adprocmt.server/rest/order';
 
         return service;
 }])

@@ -22,7 +22,7 @@ import org.adorsys.adprocmt.jpa.PrcmtProcOrderHstry;
 import org.adorsys.adprocmt.jpa.PrcmtProcOrderSearchInput;
 import org.adorsys.adprocmt.jpa.PrcmtProcOrderSearchResult;
 import org.adorsys.adprocmt.repo.PrcmtProcOrderRepository;
-import org.adorsys.adprocmt.trigger.TriggerModeHandlerFactoryProducer;
+import org.adorsys.adprocmt.spi.dflt.ProcmtPOTriggerModeEnum;
 import org.apache.commons.lang3.StringUtils;
 
 @Stateless
@@ -45,7 +45,9 @@ public class PrcmtProcOrderEJB
 		Date now = new Date();
 		entity.setCreatingUsr(currentLoginName);
 		entity.setCreatedDt(now);
+		entity.setSubmitedDt(now);
 		if(entity.getOrderDt()==null) entity.setOrderDt(now);
+		if(entity.getPoTriggerMode() == null) entity.setPoTriggerMode(ProcmtPOTriggerModeEnum.MANUAL.name());// default trigger
 		entity.setPoStatus(BaseProcessStatusEnum.ONGOING.name());
 		if (StringUtils.isBlank(entity.getPoNbr())) {
 			entity.setPoNbr(SequenceGenerator.getSequence(SequenceGenerator.PRCMT_ORDER_SEQUENCE_PREFIXE));
