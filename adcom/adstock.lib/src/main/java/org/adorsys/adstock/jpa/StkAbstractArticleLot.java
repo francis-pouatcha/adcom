@@ -5,12 +5,15 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 import org.adorsys.adcore.jpa.AbstractIdentifData;
 import org.adorsys.javaext.description.Description;
+import org.apache.commons.lang3.time.DateUtils;
 
 @MappedSuperclass
 @Description("StkArticleLot_description")
@@ -85,9 +88,17 @@ public class StkAbstractArticleLot extends AbstractIdentifData {
 	@Description("StkArticleLot_purchWrntyDys_description")
 	private BigDecimal purchWrntyDys;
 
+	@Temporal(TemporalType.TIMESTAMP)
+	@Description("StkArticleLot_purchWrntyDt_description")
+	private Date purchWrntyDt;
+
 	@Column
 	@Description("StkArticleLot_purchRtrnDays_description")
 	private BigDecimal purchRtrnDays;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Description("StkArticleLot_purchRtrnDt_description")
+	private Date purchRtrnDt;
 	
 	// Date of the closing of this article lot. This is generally done
 	// after an inventory where we can state that there is none
@@ -95,6 +106,25 @@ public class StkAbstractArticleLot extends AbstractIdentifData {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Description("StkArticleLot_closedDt_description")
 	private Date closedDt;
+	
+	@PrePersist
+	public void prePersist() {
+		super.prePersist();
+		if(stkgDt!=null && purchWrntyDys!=null)
+			purchWrntyDt = DateUtils.addDays(stkgDt, purchRtrnDays.intValue());
+
+		if(stkgDt!=null && purchRtrnDays!=null)
+			purchRtrnDt = DateUtils.addDays(stkgDt, purchRtrnDays.intValue());
+	}
+
+	@PreUpdate
+	public void preUpdate() {
+		if(stkgDt!=null && purchWrntyDys!=null)
+			purchWrntyDt = DateUtils.addDays(stkgDt, purchRtrnDays.intValue());
+
+		if(stkgDt!=null && purchRtrnDays!=null)
+			purchRtrnDt = DateUtils.addDays(stkgDt, purchRtrnDays.intValue());
+	}
 	
 	public String getLotPic() {
 		return this.lotPic;
@@ -230,6 +260,22 @@ public class StkAbstractArticleLot extends AbstractIdentifData {
 
 	public void setPurchRtrnDays(final BigDecimal purchRtrnDays) {
 		this.purchRtrnDays = purchRtrnDays;
+	}
+
+	public Date getPurchWrntyDt() {
+		return purchWrntyDt;
+	}
+
+	public void setPurchWrntyDt(Date purchWrntyDt) {
+		this.purchWrntyDt = purchWrntyDt;
+	}
+
+	public Date getPurchRtrnDt() {
+		return purchRtrnDt;
+	}
+
+	public void setPurchRtrnDt(Date purchRtrnDt) {
+		this.purchRtrnDt = purchRtrnDt;
 	}
 
 	@Override
