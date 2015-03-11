@@ -11,6 +11,8 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 import org.adorsys.adcore.jpa.AbstractMvmtData;
+import org.adorsys.adcore.jpa.AmtOrPct;
+import org.adorsys.adcore.utils.FinancialOps;
 import org.adorsys.javaext.description.Description;
 import org.adorsys.javaext.format.DateFormatPattern;
 
@@ -141,6 +143,53 @@ public abstract class PrcmtAbstractProcOrder extends AbstractMvmtData {
 		target.vatAmount = vatAmount;
 		target.submitedDt = submitedDt;
 		target.ordrngOrgUnit = ordrngOrgUnit;
+	}
+	
+	public void evlte() {
+		
+		if(this.pymtDscntPct==null){
+			this.pymtDscntPct = BigDecimal.ZERO;
+			this.pymtDscntAmt = FinancialOps.amtFromPrct(this.netPPTaxIncl, this.pymtDscntPct, this.poCur);
+		}
+		if(this.pymtDscntAmt==null) this.pymtDscntAmt=BigDecimal.ZERO;
+		
+		this.netPurchAmt = FinancialOps.substract(this.netPPTaxIncl, this.pymtDscntAmt, this.poCur);
+		
+		if(this.rdngDscntAmt==null) this.rdngDscntAmt=BigDecimal.ZERO;
+		this.netAmtToPay = FinancialOps.substract(this.netPurchAmt, this.rdngDscntAmt, this.poCur);
+	}
+	
+	public void clearAmts() {
+		this.grossPPPreTax=BigDecimal.ZERO;
+		this.rebate = BigDecimal.ZERO;
+		this.netPPPreTax=BigDecimal.ZERO;
+		this.vatAmount=BigDecimal.ZERO;
+		this.netPPTaxIncl=BigDecimal.ZERO;
+	}
+
+	public void addGrossPPPreTax(BigDecimal grossPPPreTax) {
+		if(this.grossPPPreTax==null)this.grossPPPreTax=BigDecimal.ZERO;
+		this.grossPPPreTax = this.grossPPPreTax.add(grossPPPreTax);
+	}
+
+	public void addRebate(BigDecimal rebate) {
+		if(this.rebate==null) this.rebate = BigDecimal.ZERO;
+		this.rebate=this.rebate.add(rebate);
+	}
+
+	public void addNetPPPreTax(BigDecimal netPPPreTax) {
+		if(this.netPPPreTax==null) this.netPPPreTax=BigDecimal.ZERO;
+		this.netPPPreTax = this.netPPPreTax.add(netPPPreTax);
+	}
+
+	public void addVatAmount(BigDecimal vatAmt) {
+		if(this.vatAmount==null)this.vatAmount=BigDecimal.ZERO;
+		this.vatAmount = this.vatAmount.add(vatAmt);
+	}
+
+	public void addNetPPTaxIncl(BigDecimal netPPTaxIncl) {
+		if(this.netPPTaxIncl==null)this.netPPTaxIncl=BigDecimal.ZERO;
+		this.netPPTaxIncl=this.netPPTaxIncl.add(netPPTaxIncl);
 	}
 	
 	public Date getOrderDt() {

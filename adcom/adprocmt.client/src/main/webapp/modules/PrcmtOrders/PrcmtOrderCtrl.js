@@ -73,13 +73,11 @@ angular.module('AdProcmt')
     };
 
         function show(prcmtOrder) {
-            var prcmtOrderHolder = {
-                prcmtProcOrder:{},
-                prcmtOrderItemHolders:[]
-            };
-            prcmtOrderHolder.prcmtProcOrder = prcmtOrder;
-            PrcmtOrderState.setOrderHolder(prcmtOrderHolder);
-            $location.path('/PrcmtOrders/show');
+            genericResource.findById(ProcmtUtils.urlManageOrder,prcmtOrder.id)
+                .success(function(data){
+                    PrcmtOrderState.setOrderHolder(data);
+                    $location.path('/PrcmtOrders/show');
+                })
         }
 
 	function handlePrintRequestEvent(){		

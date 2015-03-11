@@ -7,7 +7,8 @@
             <b>{{"PrcmtProcOrder_creatingUsr_description.title" | translate}}: </b> {{prcmtOrderShowCtlr.prcmtOrderHolder.prcmtProcOrder.creatingUsr}}
         </h4>
         <p class="">
-            <a class=" btn btn-default" href="#/"  type="button">Cancel</a>
+            <a class=" btn btn-default" href="#/PrcmtOrders"  type="button">Cancel</a>
+            <button class=" btn btn-primary" ng-click="prcmtOrderShowCtlr.transform()" ng-show="!prcmtOrderShowCtlr.closeStatus" type="button">Transform to Delivery</button>
             <button class=" btn btn-primary" ng-click="prcmtOrderShowCtlr.save()" ng-show="prcmtOrderShowCtlr.closeStatus" type="button">Save</button>
             <button class=" btn btn-primary" ng-click="prcmtOrderShowCtlr.close()" ng-show="prcmtOrderShowCtlr.closeStatus" type="button">Save and Close</button>
         </p>
@@ -124,11 +125,11 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="orderItemHolder in prcmtOrderShowCtlr.prcmtOrderHolder.prcmtOrderItemHolders" >
+                <tr ng-repeat="orderItemHolder in prcmtOrderShowCtlr.prcmtOrderHolder.poItems" >
                     <td>{{orderItemHolder.prcmtPOItem.artPic}}</td>
                     <td>{{orderItemHolder.prcmtPOItem.artName}}</td>
                     <td></td>
-                    <td>{{orderItemHolder.prcmtPOItem.qtyDlvrd}}</td>
+                    <td>{{orderItemHolder.prcmtPOItem.qtyOrdered}}</td>
                     <td>{{orderItemHolder.prcmtPOItem.freeQty}}</td>
                     <td>{{orderItemHolder.prcmtPOItem.pppuPreTax}}</td>
                     <td>{{orderItemHolder.prcmtPOItem.supplier}}</td>

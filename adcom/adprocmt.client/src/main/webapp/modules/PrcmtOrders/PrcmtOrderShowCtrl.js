@@ -5,7 +5,7 @@ angular.module('AdProcmt').controller('prcmtOrderShowCtlr',['$scope','ProcmtUtil
     $scope.prcmtOrderShowCtlr = self;
     self.prcmtOrderHolder = {
         prcmtProcOrder:{},
-        prcmtOrderItemHolders:[]
+        poItems:[]
     };
     self.prcmtOrderItemHolder = {};
     self.error = "";
@@ -28,7 +28,8 @@ angular.module('AdProcmt').controller('prcmtOrderShowCtlr',['$scope','ProcmtUtil
     self.loadstkSection = loadstkSection;
     self.loadOrgUnit = loadOrgUnit;
     self.loadBusinessPartner = loadBusinessPartner;
-    self.prcmtOrderItemHoldersDeleted = [];
+    self.poItemsDeleted = [];
+    self.transform = transform;
 
     load();
 
@@ -181,9 +182,8 @@ angular.module('AdProcmt').controller('prcmtOrderShowCtlr',['$scope','ProcmtUtil
     }
 
     function save(){
-
-        for(var i=0;i<self.prcmtOrderItemHoldersDeleted.length;i++){
-            self.prcmtOrderHolder.prcmtOrderItemHolders.push(self.prcmtOrderItemHoldersDeleted[i])
+        for(var i=0;i<self.poItemsDeleted.length;i++){
+            self.prcmtOrderHolder.poItems.push(self.poItemsDeleted[i])
         }
         genericResource.customMethod(ProcmtUtils.urlManageOrder+'/update',self.prcmtOrderHolder).success(function(data){
             self.prcmtOrderHolder = data;
@@ -192,26 +192,38 @@ angular.module('AdProcmt').controller('prcmtOrderShowCtlr',['$scope','ProcmtUtil
     }
 
     function close () {
+        for(var i=0;i<self.poItemsDeleted.length;i++){
+            self.prcmtOrderHolder.poItems.push(self.poItemsDeleted[i])
+        }
+        genericResource.customMethod(ProcmtUtils.urlManageOrder+'/close',self.prcmtOrderHolder).success(function(data){
+            self.prcmtOrderHolder = data;
+            self.closeStatus = false;
+        });
+    }
 
+    function transform () {
+        genericResource.customMethod(ProcmtUtils.urlManageOrder+'/transform',self.prcmtOrderHolder).success(function(data){
+            self.prcmtOrderHolder = data;
+        });
     }
 
     function addItem(){
-        self.prcmtOrderHolder.prcmtOrderItemHolders.unshift(self.prcmtOrderItemHolder);
+        self.prcmtOrderHolder.poItems.unshift(self.prcmtOrderItemHolder);
         self.prcmtOrderItemHolder = {};
         $('#artName').focus();
     }
     function deleteItem(index){
         var prcmtOrderItemHolderDeleted = {};
-        angular.copy(self.prcmtOrderHolder.prcmtOrderItemHolders[index],prcmtOrderItemHolderDeleted) ;
-        self.prcmtOrderHolder.prcmtOrderItemHolders.splice(index,1);
+        angular.copy(self.prcmtOrderHolder.poItems[index],prcmtOrderItemHolderDeleted) ;
+        self.prcmtOrderHolder.poItems.splice(index,1);
         if(prcmtOrderItemHolderDeleted.prcmtPOItem && prcmtOrderItemHolderDeleted.prcmtPOItem.id) {
             prcmtOrderItemHolderDeleted.deleted = true;
-            self.prcmtOrderItemHoldersDeleted.push(prcmtOrderItemHolderDeleted);
+            self.poItemsDeleted.push(prcmtOrderItemHolderDeleted);
         }
     }
     function editItem(index){
-        angular.copy(self.prcmtOrderHolder.prcmtOrderItemHolders[index],self.prcmtOrderItemHolder) ;
-        self.prcmtOrderHolder.prcmtOrderItemHolders.splice(index,1);
+        angular.copy(self.prcmtOrderHolder.poItems[index],self.prcmtOrderItemHolder) ;
+        self.prcmtOrderHolder.poItems.splice(index,1);
     }
 
     function showMore(){

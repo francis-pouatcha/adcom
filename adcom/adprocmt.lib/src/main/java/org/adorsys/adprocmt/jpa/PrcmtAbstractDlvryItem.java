@@ -484,7 +484,7 @@ public abstract class PrcmtAbstractDlvryItem extends AbstractIdentifData {
 		target.netPPPreTax=netPPPreTax;
 		target.vatPct=vatPct;
 		target.vatAmt=vatAmt;
-		target.netPPTaxIncl=netPPPreTax;
+		target.netPPTaxIncl=netPPTaxIncl;
 		target.sppuPreTax=sppuPreTax;
 		target.purchWrntyDys=purchWrntyDys;
 		target.purchRtrnDays=purchRtrnDays;
@@ -512,7 +512,7 @@ public abstract class PrcmtAbstractDlvryItem extends AbstractIdentifData {
 		if(!BigDecimalUtils.numericEquals(target.netPPPreTax,netPPPreTax)) return false;
 		if(!BigDecimalUtils.numericEquals(target.vatPct,vatPct)) return false;
 		if(!BigDecimalUtils.numericEquals(target.vatAmt,vatAmt)) return false;
-		if(!BigDecimalUtils.numericEquals(target.netPPTaxIncl,netPPPreTax)) return false;
+		if(!BigDecimalUtils.numericEquals(target.netPPTaxIncl,netPPTaxIncl)) return false;
 		if(!BigDecimalUtils.numericEquals(target.sppuPreTax,sppuPreTax)) return false;
 		if(!BigDecimalUtils.numericEquals(target.purchWrntyDys,purchWrntyDys)) return false;
 		if(!BigDecimalUtils.numericEquals(target.purchRtrnDays,purchRtrnDays)) return false;
@@ -528,6 +528,7 @@ public abstract class PrcmtAbstractDlvryItem extends AbstractIdentifData {
 		if(!StringUtils.equals(target.dlvryNbr,dlvryNbr)) return false;
 		if(!StringUtils.equals(target.lotPic,lotPic)) return false;
 		if(!StringUtils.equals(target.artPic,artPic)) return false;
+		if(!StringUtils.equals(target.artName,artName)) return false;
 		if(!StringUtils.equals(target.supplier,supplier)) return false;
 		if(!StringUtils.equals(target.supplierPic,supplierPic)) return false;
 		return true;
