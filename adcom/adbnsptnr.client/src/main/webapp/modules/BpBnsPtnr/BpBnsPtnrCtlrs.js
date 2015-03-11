@@ -181,204 +181,40 @@ angular.module('AdBnsptnr')
     
     return service;
 }])
-.factory('bpBnsPtnrState',['$rootScope',function($rootScope){
+.factory('bpBnsPtnrState',['$rootScope','searchResultHandler','dependentTabManager',function($rootScope,searchResultHandler,dependentTabManager){
 
     var service = {
     };
-    var activeTabVar="bpPtnrContact";
+    service.resultHandler = searchResultHandler.newResultHandler(
+		function(bpBnsPtnrA, bpBnsPtnrB){
+			if(!bpBnsPtnrA && !bpBnsPtnrB) return true;
+			if(!bpBnsPtnrB) return false;
+			return bpBnsPtnrA.ptnrNbr==bpBnsPtnrB.ptnrNbr;
+		}
+    );
 
-    var bpPtnrContactActiveVar=true;
-    service.bpPtnrContactActive=function(bpPtnrContactActiveIn){
-        if(bpPtnrContactActiveIn)bpPtnrContactActiveVar=bpPtnrContactActiveIn;
-        return bpPtnrContactActiveVar;
-    };
-
-    var bpPtnrIdDtlsActiveVar=false;
-    service.bpPtnrIdDtlsActive=function(bpPtnrIdDtlsActiveIn){
-        if(bpPtnrIdDtlsActiveIn)bpPtnrIdDtlsActiveVar=bpPtnrIdDtlsActiveIn;
-        return bpPtnrIdDtlsActiveVar;
-    };
-
-    var bpInsurranceActiveVar=false;
-    service.bpInsurranceActive=function(bpInsurranceActiveIn){
-        if(bpInsurranceActiveIn)bpInsurranceActiveVar=bpInsurranceActiveIn;
-        return bpInsurranceActiveVar;
-    };
-    
-    // A cache of dependents by ptnrNbr
-    var depCacheVar = {};
-
-    // The search state.
-    // The current list of business partners.
-    var bpBnsPtnrsVar=[];
-    service.hasBnsPtnrs = function(){
-        return bpBnsPtnrsVar && bpBnsPtnrsVar.length>0;
-    };
-    service.bpBnsPtnrs = function(bpBnsPtnrsIn){
-        if(bpBnsPtnrsIn){
-            var length = bpBnsPtnrsVar.length;
-            for	(var index = 0; index < length; index++) {
-                bpBnsPtnrsVar.pop();
-            }
-            length = bpBnsPtnrsIn.length;
-            for	(var index1 = 0; index1 < length; index1++) {
-                bpBnsPtnrsVar.push(bpBnsPtnrsIn[index1]);
-            }
-        }
-        return bpBnsPtnrsVar;
-    };
-
-    var selectedIndexVar=-1;
-    service.selectedIndex= function(selectedIndexIn){
-        if(selectedIndexIn)selectedIndexVar=selectedIndexIn;
-        return selectedIndexVar;
-    };
-
-    var totalItemsVar=0;
-    service.totalItems = function(totalItemsIn){
-        if(totalItemsIn)totalItemsVar=totalItemsIn;
-        return totalItemsVar;
-    };
-
-    var currentPageVar = 0;
-    service.currentPage = function(currentPageIn){
-        if(currentPageIn) currentPageVar=currentPageIn;
-        return currentPageVar;
-    };
-
-    var maxSizeVar = 5;
-    service.maxSize = function(maxSizeIn) {
-        if(maxSizeIn) maxSizeVar=maxSizeIn;
-        return maxSizeVar;
-    };
-
-    var itemPerPageVar = 25;
-    var searchInputVar = {
-        entity:{},
-        fieldNames:[],
-        start:0,
-        max:itemPerPageVar
-    };
-    service.searchInput = function(searchInputIn){
-        if(!searchInputIn)
-            return angular.copy(searchInputVar);
-
-        searchInputVar=angular.copy(searchInputIn);
-        return searchInputIn;
-    };
-    service.searchInputChanged = function(searchInputIn){
-        return angular.equals(searchInputVar, searchInputIn);
-    };
-    service.itemPerPage = function(itemPerPageIn){
-        if(itemPerPageIn)itemPerPageVar=itemPerPageIn;
-        return itemPerPageVar;
-    };
-
-    //
-    service.consumeSearchResult = function(searchInput, entitySearchResult) {
-        // store search
-        service.searchInput(searchInput);
-        // Store result
-        service.bpBnsPtnrs(entitySearchResult.resultList);
-        service.totalItems(entitySearchResult.count);
-        service.selectedIndex(-1);
-        depCacheVar={};
-    };
-
-    service.paginate = function(){
-        searchInputVar.start = ((currentPageVar - 1)  * itemPerPageVar);
-        searchInputVar.max = itemPerPageVar;
-        return service.searchInput();
-    };
-
-
-    // returns sets and returns the business partner at the passed index or
-    // if not set the business partner at the currently selected index.
-    service.bpBnsPtnr = function(index){
-        if(index>=0 && index<bpBnsPtnrsVar.length)selectedIndexVar=index;
-        if(selectedIndexVar<0 || selectedIndexVar>=bpBnsPtnrsVar.length) return;
-        return bpBnsPtnrsVar[selectedIndexVar];
-    };
-
-    // replace the current partner after a change.
-    service.replace = function(bpBnsPtnr){
-        if(!bpBnsPtnrsVar || !bpBnsPtnr) return;
-        var currentBp = service.bpBnsPtnr();
-        if(currentBp && currentBp.ptnrNbr==bpBnsPtnr.ptnrNbr){
-            bpBnsPtnrsVar[selectedIndexVar]=bpBnsPtnr;
-        } else {
-            for (var index in bpBnsPtnrsVar) {
-                if(bpBnsPtnrsVar[index].ptnrNbr==bpBnsPtnr.ptnrNbr){
-                    bpBnsPtnrsVar[index]=bpBnsPtnr;
-                    selectedIndexVar=index;
-                    break;
-                }
-            }
-        }
-    };
-
-    // CHeck if the business partner to be displayed is at the correct index.
-    service.peek = function(bpBnsPtnr, index){
-        if(!bpBnsPtnrsVar || !bpBnsPtnr) return false;
-        if(index>=0 && index<bpBnsPtnrsVar.length){
-            selectedIndexVar=index;
-            return true;
-        }
-        return false;
-    };
-
-    service.push = function(bpBnsPtnr){
-        if(!bpBnsPtnrsVar || !bpBnsPtnr) return false;
-        var length = bpBnsPtnrsVar.push(bpBnsPtnr);
-        selectedIndexVar=length-1;
-        return true;
-    };
-
+    // TBA FUNCTIONS 
+    service.bpPtnrContactTabName = 'bpPtnrContact';
+    service.bpPtnrIdDtlsTabName='bpPtnrIdDtls';
+    service.bpInsurranceTabName='bpInsurrance';
+    service.tabManager = dependentTabManager.newTabManager([service.bpPtnrContactTabName,service.bpPtnrIdDtlsTabName,service.bpInsurranceTabName]);
     service.tabSelected=function(tabName){
-        if(tabName){
-            activeTabVar=tabName;
-            bpPtnrContactActiveVar= tabName=='bpPtnrContact';
-            bpPtnrIdDtlsActiveVar= tabName=='bpPtnrIdDtls';
-        }
-        $rootScope.$broadcast('BpBnsPtnrsSelected', {tabName:activeTabVar,bpBnsPtnr:service.bpBnsPtnr()});
+    	var activeTabName = service.tabManager.activeTab(tabName);
+        $rootScope.$broadcast('BpBnsPtnrsSelected', {tabName:activeTabName,bpBnsPtnr:service.resultHandler.entity()});
     };
-
-    service.previous = function (){
-    	if(bpBnsPtnrsVar.length<=0) return;
-
-        if(selectedIndexVar<=0){
-            selectedIndexVar=bpBnsPtnrsVar.length-1;
-        } else {
-            selectedIndexVar-=1;
-        }
-        return service.bpBnsPtnr();
-    };
-
-    service.next = function(){
-    	if(bpBnsPtnrsVar.length<=0) return;
-    	
-    	if(selectedIndexVar>=bpBnsPtnrsVar.length-1 || selectedIndexVar<0){
-    		selectedIndexVar=0;
-    	} else {
-            selectedIndexVar+=1;
-    	}
-
-        return service.bpBnsPtnr();
-    };
-
     return service;
 
 }])
 .controller('bpBnsPtnrsCtlr',['$scope','genericResource','bpBnsPtnrUtils','bpBnsPtnrState','$location','$rootScope',
 function($scope,genericResource,bpBnsPtnrUtils,bpBnsPtnrState,$location,$rootScope){
 
-    $scope.searchInput = bpBnsPtnrState.searchInput();
-    $scope.itemPerPage=bpBnsPtnrState.itemPerPage;
-    $scope.totalItems=bpBnsPtnrState.totalItems;
-    $scope.currentPage=bpBnsPtnrState.currentPage();
-    $scope.maxSize =bpBnsPtnrState.maxSize;
-    $scope.bpBnsPtnrs =bpBnsPtnrState.bpBnsPtnrs;
-    $scope.selectedIndex=bpBnsPtnrState.selectedIndex;
+    $scope.searchInput = bpBnsPtnrState.resultHandler.searchInput();
+    $scope.itemPerPage=bpBnsPtnrState.resultHandler.itemPerPage;
+    $scope.totalItems=bpBnsPtnrState.resultHandler.totalItems;
+    $scope.currentPage=bpBnsPtnrState.resultHandler.currentPage();
+    $scope.maxSize =bpBnsPtnrState.resultHandler.maxResult;
+    $scope.bpBnsPtnrs =bpBnsPtnrState.resultHandler.entities;
+    $scope.selectedIndex=bpBnsPtnrState.resultHandler.selectedIndex;
     $scope.handleSearchRequestEvent = handleSearchRequestEvent;
     $scope.handlePrintRequestEvent = handlePrintRequestEvent;
     $scope.paginate = paginate;
@@ -398,7 +234,7 @@ function($scope,genericResource,bpBnsPtnrUtils,bpBnsPtnrState,$location,$rootSco
     init();
 
     function init(){
-        if(bpBnsPtnrState.hasBnsPtnrs())return;
+        if(bpBnsPtnrState.resultHandler.hasEntities())return;
         findByLike($scope.searchInput);
     }
 
@@ -406,7 +242,7 @@ function($scope,genericResource,bpBnsPtnrUtils,bpBnsPtnrState,$location,$rootSco
 		genericResource.findByLike(bpBnsPtnrUtils.urlBase, searchInput)
 		.success(function(entitySearchResult) {
 			// store search
-			bpBnsPtnrState.consumeSearchResult(searchInput,entitySearchResult);
+			bpBnsPtnrState.resultHandler.searchResult(entitySearchResult);
 		})
         .error(function(error){
             $scope.error=error;
@@ -437,7 +273,8 @@ function($scope,genericResource,bpBnsPtnrUtils,bpBnsPtnrState,$location,$rootSco
     };
 
     function paginate(){
-        $scope.searchInput = bpBnsPtnrState.paginate();
+    	bpBnsPtnrState.resultHandler.currentPage($scope.currentPage);
+        $scope.searchInput = bpBnsPtnrState.resultHandler.paginate();
     	findByLike($scope.searchInput);
     };
 
@@ -445,20 +282,20 @@ function($scope,genericResource,bpBnsPtnrUtils,bpBnsPtnrState,$location,$rootSco
 	}
 	
 	function show(bpBnsPtnr, index){
-		if(bpBnsPtnrState.peek(bpBnsPtnr, index)){
+		if(bpBnsPtnrState.resultHandler.selectedObject(bpBnsPtnr)){
 			$location.path('/BpBnsPtnrs/show/');
 		}
 	}
 
 	function edit(bpBnsPtnr, index){
-		if(bpBnsPtnrState.peek(bpBnsPtnr, index)){
+		if(bpBnsPtnrState.resultHandler.selectedObject(bpBnsPtnr)){
 			$location.path('/BpBnsPtnrs/edit/');
 		}
 	}
 }])
 .controller('bpBnsPtnrCreateCtlr',['$scope','bpBnsPtnrUtils','$translate','genericResource','$location','bpBnsPtnrState',
         function($scope,bpBnsPtnrUtils,$translate,genericResource,$location,bpBnsPtnrState){
-    $scope.bpBnsPtnr = bpBnsPtnrState.bpBnsPtnr();
+    $scope.bpBnsPtnr = bpBnsPtnrState.resultHandler.entity();
     $scope.create = create;
     $scope.error = "";
     $scope.bpBnsPtnrUtils=bpBnsPtnrUtils;
@@ -467,7 +304,8 @@ function($scope,genericResource,bpBnsPtnrUtils,bpBnsPtnrState,$location,$rootSco
     function create(){
     	genericResource.create(bpBnsPtnrUtils.urlBase, $scope.bpBnsPtnr)
     	.success(function(bpBnsPtnr){
-    		if(bpBnsPtnrState.push(bpBnsPtnr)){
+    		var index = bpBnsPtnrState.resultHandler.push(bpBnsPtnr);
+    		if(bpBnsPtnrState.resultHandler.selectedIndex(index)){
     			$location.path('/BpBnsPtnrs/show/');
     		}
     	})
@@ -478,14 +316,15 @@ function($scope,genericResource,bpBnsPtnrUtils,bpBnsPtnrState,$location,$rootSco
 }])
 .controller('bpBnsPtnrEditCtlr',['$scope','genericResource','$location','bpBnsPtnrUtils','bpBnsPtnrState',
                                  function($scope,genericResource,$location,bpBnsPtnrUtils,bpBnsPtnrState){
-    $scope.bpBnsPtnr = bpBnsPtnrState.bpBnsPtnr();
+    $scope.bpBnsPtnr = bpBnsPtnrState.resultHandler.entity();
     $scope.error = "";
     $scope.bpBnsPtnrUtils=bpBnsPtnrUtils;
     $scope.loadCountryNames=bpBnsPtnrUtils.loadCountryNames;
     $scope.update = function (){
     	genericResource.update(bpBnsPtnrUtils.urlBase, $scope.bpBnsPtnr)
     	.success(function(bpBnsPtnr){
-    		if(bpBnsPtnrState.replace(bpBnsPtnr)){
+    		var index = bpBnsPtnrState.resultHandler.replace(bpBnsPtnr);
+    		if(index && bpBnsPtnrState.resultHandler.selectedIndex(index)){
     			$location.path('/BpBnsPtnrs/show/');
     		}
         })
@@ -496,15 +335,18 @@ function($scope,genericResource,bpBnsPtnrUtils,bpBnsPtnrState,$location,$rootSco
 }])
 .controller('bpBnsPtnrShowCtlr',['$scope','genericResource','$location','bpBnsPtnrUtils','bpBnsPtnrState','$rootScope',
                                  function($scope,genericResource,$location,bpBnsPtnrUtils,bpBnsPtnrState,$rootScope){
-    $scope.bpBnsPtnr = bpBnsPtnrState.bpBnsPtnr();
+    $scope.bpBnsPtnr = bpBnsPtnrState.resultHandler.entity();
     $scope.error = "";
     $scope.bpBnsPtnrUtils=bpBnsPtnrUtils;
-    $scope.bpPtnrContactActive=bpBnsPtnrState.bpPtnrContactActive();
-    $scope.bpPtnrIdDtlsActive=bpBnsPtnrState.bpPtnrIdDtlsActive();
-    $scope.bpInsurranceActive=bpBnsPtnrState.bpInsurranceActive();
+    $scope.bpPtnrContactTabName = bpBnsPtnrState.bpPtnrContactTabName;
+    $scope.bpPtnrIdDtlsTabName=bpBnsPtnrState.bpPtnrIdDtlsTabName;
+    $scope.bpInsurranceTabName=bpBnsPtnrState.bpInsurranceTabName;
+    $scope.bpPtnrContactActive=bpBnsPtnrState.tabManager.isActive($scope.bpPtnrContactTabName);
+    $scope.bpPtnrIdDtlsActive=bpBnsPtnrState.tabManager.isActive($scope.bpPtnrIdDtlsTabName);
+    $scope.bpInsurranceActive=bpBnsPtnrState.tabManager.isActive($scope.bpInsurranceTabName);
     
     $scope.previous = function (){
-        var bp = bpBnsPtnrState.previous();
+        var bp = bpBnsPtnrState.resultHandler.previous();
         if(bp){
             $scope.bpBnsPtnr=bp;
             bpBnsPtnrState.tabSelected();
@@ -512,7 +354,7 @@ function($scope,genericResource,bpBnsPtnrUtils,bpBnsPtnrState,$location,$rootSco
     }
 
     $scope.next =  function (){
-        var bp = bpBnsPtnrState.next();
+        var bp = bpBnsPtnrState.resultHandler.next();
         if(bp){
             $scope.bpBnsPtnr=bp;
             bpBnsPtnrState.tabSelected();

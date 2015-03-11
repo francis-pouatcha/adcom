@@ -70,7 +70,7 @@ angular.module('AdBnsptnr')
 	var service = {
 	};
 	
-	service.bpBnsPtnr = bpBnsPtnrState.bpBnsPtnr;
+	service.bpBnsPtnr = bpBnsPtnrState.resultHandler.entity;
     var searchResultsVar = {};
 
     // The search state.
@@ -78,7 +78,7 @@ angular.module('AdBnsptnr')
     service.bpCtgryOfPtnrs = function(ptnrNbr){
         var nbr = ptnrNbr;
         if(!ptnrNbr) {
-            var bpBnsPtnr = bpBnsPtnrState.bpBnsPtnr();
+            var bpBnsPtnr = bpBnsPtnrState.resultHandler.entity();
             if(bpBnsPtnr)
                 nbr = bpBnsPtnr.ptnrNbr;
         }

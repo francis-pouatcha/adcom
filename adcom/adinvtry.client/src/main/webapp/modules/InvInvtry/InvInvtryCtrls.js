@@ -371,7 +371,7 @@ angular.module('AdInvtry')
         return maxSizeVar;
     };
 
-    var itemPerPageVar = 25;
+    var itemPerPageVar = 10;
     var searchInputVar = {
         entity:{},
         fieldNames:[],
@@ -385,9 +385,6 @@ angular.module('AdInvtry')
         searchInputVar=angular.copy(searchInputIn);
         return searchInputIn;
     };
-    
-    
-            
     service.searchInputChanged = function(searchInputIn){
         return angular.equals(searchInputVar, searchInputIn);
     };
@@ -396,7 +393,6 @@ angular.module('AdInvtry')
         return itemPerPageVar;
     };
 
-    //
     service.consumeSearchResult = function(searchInput, entitySearchResult) {
         // store search
         service.searchInput(searchInput);

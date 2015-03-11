@@ -126,5 +126,191 @@ angular.module('ADUtils',[])
     
     return service;
     
+}])
+.factory('searchResultHandler',[function(){
+    var service = {};
+    service.newResultHandler = function(equalsFnct){
+    	return new ResultHandler(equalsFnct); 
+    };
+
+    var ResultHandler = function(equalsFnctIn){
+        var handler = this;
+        var itemPerPageVar = 10;
+        var currentPageVar = 1;
+        var equalsFnct = equalsFnctIn;
+        var searchResultVar = {
+	    	count:0,resultList:[],
+	    	searchInput:{
+	    		entity:{},
+	    		start:0, max:itemPerPageVar,
+	    		fieldNames:[]
+	    	},
+	    	// not exposed to the server environment.
+	    	currentPage:currentPageVar,itemPerPage:itemPerPageVar,selectedIndex:-1,
+        };
+        this.searchResult = function(searchResultIn){
+        	if(searchResultVar===searchResultIn) return;
+        	if(!searchResultIn) return;
+        	
+    		searchResultVar.count = searchResultIn.count;
+    		
+    		angular.copy(searchResultIn.resultList, searchResultVar.resultList);
+    		
+    		angular.copy(searchResultIn.searchInput, searchResultVar.searchInput);
+
+    		if(searchResultIn.currentPage){
+    			searchResultVar.currentPage=searchResultIn.currentPage;
+    		} else {
+    			searchResultVar.currentPage=currentPageVar;
+    		}
+
+    		if(searchResultIn.itemPerPage){
+    			searchResultVar.itemPerPage=searchResultIn.itemPerPage;
+    		} else {
+    			searchResultVar.itemPerPage=itemPerPageVar;
+    		}
+    		
+    		if(searchResultIn.selectedIndex){
+    			searchResultVar.selectedIndex=searchResultIn.selectedIndex;
+    		} else {
+    			searchResultVar.selectedIndex=-1;
+    		}
+        };
+        this.hasEntities = function(){
+            return searchResultVar.resultList && searchResultVar.resultList.length>0;
+        };
+        this.entities = function(){
+        	return searchResultVar.resultList;
+        };
+        this.selectedIndex= function(selectedIndexIn){
+            if(selectedIndexIn && !searchResultVar.resultList[selectedIndexIn]){
+            	searchResultVar.selectedIndex=selectedIndexIn;
+            }
+            return searchResultVar.selectedIndex;
+        };
+        this.selectedObject= function(selectedIn){
+        	if(!selectedIn)return searchResultVar.selectedIndex; 
+    		var length = searchResultVar.resultList.length;
+    		for	(var index = 0; index < length; index++) {
+    			if(!equalsFnct(selectedIn, searchResultVar.resultList[index])) continue;
+    			searchResultVar.selectedIndex = index;
+    			return searchResultVar.selectedIndex; 
+    		}
+    		length = searchResultVar.resultList.push(selectedIn);
+    		searchResultVar.count +=1;
+    		searchResultVar.selectedIndex = length -1;
+            return searchResultVar.selectedIndex;
+        };
+        this.entity = function(){
+        	if(!searchResultVar.selectedIndex) return;
+        	if(!searchResultVar.resultList[searchResultVar.selectedIndex]) return;
+        	return searchResultVar.resultList[searchResultVar.selectedIndex];
+        };
+        this.totalItems = function(){
+            return searchResultVar.count;
+        };
+        this.currentPage = function(currentPageIn){
+            if(currentPageIn) searchResultVar.currentPage=currentPageIn;
+            return searchResultVar.currentPage;
+        };
+        this.maxResult = function(maxResultIn) {
+            if(maxResultIn) searchResultVar.searchInput.max=maxResultIn;
+            return searchResultVar.searchInput.max;
+        };
+        this.itemPerPage = function(itemPerPageIn){
+            if(itemPerPageIn)searchResultVar.itemPerPage=itemPerPageIn;
+            return searchResultVar.itemPerPage;
+        };
+        this.searchInput = function(searchInputIn){
+            if(!searchInputIn)
+                return angular.copy(searchResultVar.searchInput);
+
+    		angular.copy(searchInputIn, searchResultVar.searchInput);
+            return searchInputIn;
+        };
+        this.searchInputChanged = function(searchInputIn){
+            return angular.equals(searchResultVar.searchInput, searchInputIn);
+        };
+        this.paginate = function(){
+        	searchResultVar.searchInput.start = ((searchResultVar.currentPage - 1)  * searchResultVar.itemPerPage);
+        	searchResultVar.searchInput.max = searchResultVar.itemPerPage;
+            return handler.searchInput();
+        };
+        this.replace = function(entity){
+        	if(!entity) return;
+
+    		var length = searchResultVar.resultList.length;
+    		for	(var index = 0; index < length; index++) {
+    			if(!equalsFnct(entity, searchResultVar.resultList[index])) continue;
+    			searchResultVar.resultList[index];
+    			return index; 
+    		}
+    		length = searchResultVar.resultList.push(entity);
+    		searchResultVar.count +=1;
+    		return length -1;
+        };
+        this.push = function(entity){
+        	if(!entity) return;
+            var length = searchResultVar.resultList.push(entity);
+    		searchResultVar.count +=1;
+    		return length -1;
+        };
+        this.previous = function (){
+        	if(searchResultVar.resultList.length<=0) return;
+
+            if(searchResultVar.selectedIndex<=0){
+            	searchResultVar.selectedIndex=searchResultVar.resultList.length-1;
+            } else {
+            	searchResultVar.selectedIndex-=1;
+            }
+            return handler.entity();
+        };
+        this.next = function(){
+        	if(searchResultVar.resultList.length<=0) return;
+        	
+        	if(searchResultVar.selectedIndex>=searchResultVar.resultList.length-1 || searchResultVar.selectedIndex<0){
+        		searchResultVar.selectedIndex=0;
+        	} else {
+        		searchResultVar.selectedIndex+=1;
+        	}
+
+            return handler.entity();
+        };
+    };
+    
+    return service;
+	
+}])
+.factory('dependentTabManager',[function(){
+    var service = {};
+    
+    // Instantiates a new TabManager
+    service.newTabManager = function(tabNameList){
+    	return new TabManager(tabNameList); 
+    };
+
+    // Create a new tab manager with a tab name list.
+    var TabManager = function(tabNameListIn){
+    	if(!angular.isArray(tabNameListIn) || tabNameListIn.length<1)
+    		throw "Tab manager expecting an array of string, with tab name.";
+    	var tabNameList = tabNameListIn;
+        var activeTabNameVar= tabNameList[0];
+        
+        this.activeTab=function(activeTabNameIn){
+        	if(angular.isDefined(activeTabNameIn) && tabNameList.indexOf(activeTabNameIn)>-1)
+        		activeTabNameVar=activeTabNameIn;
+        	return activeTabNameVar;
+        };
+        
+        this.isActive = function(tabName){
+        	if(angular.isDefined(tabName) && tabNameList.indexOf(tabName)>-1)
+        		return angular.equals(activeTabNameVar,tabName);
+
+        	return false;
+        };
+    };
+    
+    return service;
+	
 }]);
 
