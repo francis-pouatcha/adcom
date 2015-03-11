@@ -92,7 +92,7 @@ public class PrcmtDeliveryManager {
 				}
 			} else {
 				if (StringUtils.isNotBlank(dlvryItem.getDlvryItemNbr())) {
-					PrcmtDlvryItem persDi = dlvryItemEJB.findById(dlvryItem.getId());
+					PrcmtDlvryItem persDi = dlvryItemEJB.findById(dlvryItem.getDlvryItemNbr());
 					if(persDi!=null){
 						if(!dlvryItem.contentEquals(persDi)){
 							dlvryItem.copyTo(persDi);

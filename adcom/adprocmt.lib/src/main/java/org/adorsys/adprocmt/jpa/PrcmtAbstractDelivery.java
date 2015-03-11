@@ -375,6 +375,8 @@ public class PrcmtAbstractDelivery extends AbstractIdentifData {
 		this.netPPTaxIncl=this.netPPTaxIncl.add(netPPTaxIncl);
 	}
 
+	
+	
 	@Override
 	protected String makeIdentif() {
 		return dlvryNbr;

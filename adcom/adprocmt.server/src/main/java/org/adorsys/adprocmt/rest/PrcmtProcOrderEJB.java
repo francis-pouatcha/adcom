@@ -16,6 +16,7 @@ import org.adorsys.adbase.security.SecurityUtil;
 import org.adorsys.adcore.auth.TermWsUserPrincipal;
 import org.adorsys.adcore.utils.SequenceGenerator;
 import org.adorsys.adprocmt.api.ProcOrderInfo;
+import org.adorsys.adprocmt.jpa.PrcmtPOItemEvtData;
 import org.adorsys.adprocmt.jpa.PrcmtProcOrder;
 import org.adorsys.adprocmt.jpa.PrcmtProcOrderEvtData;
 import org.adorsys.adprocmt.jpa.PrcmtProcOrderHstry;
@@ -99,7 +100,13 @@ public class PrcmtProcOrderEJB
 
    public PrcmtProcOrder update(PrcmtProcOrder entity)
    {
-      return repository.save(attach(entity));
+	   entity = repository.save(attach(entity));
+		  PrcmtProcOrderEvtData eventData = evtDataEJB.findById(entity.getId());
+		if (eventData != null) {
+			entity.copyTo(eventData);
+			evtDataEJB.update(eventData);
+		}
+		return entity;
    }
 
    public PrcmtProcOrder findById(String id)

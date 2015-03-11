@@ -38,7 +38,7 @@ angular.module('AdProcmt')
     self.handlePrintRequestEvent = handlePrintRequestEvent;
     self.paginate = paginate;
     self.error = "";
-    self.show = show;
+    self.showPage = show;
     
     init();
 
@@ -73,8 +73,11 @@ angular.module('AdProcmt')
     };
 
         function show(prcmtOrder) {
-            PrcmtOrderState.setOrderHolder(prcmtOrder);
-            $location.path('/PrcmtOrders/show');
+            genericResource.findById(ProcmtUtils.urlManageOrder,prcmtOrder.id)
+                .success(function(data){
+                    PrcmtOrderState.setOrderHolder(data);
+                    $location.path('/PrcmtOrders/show');
+                })
         }
 
 	function handlePrintRequestEvent(){		
