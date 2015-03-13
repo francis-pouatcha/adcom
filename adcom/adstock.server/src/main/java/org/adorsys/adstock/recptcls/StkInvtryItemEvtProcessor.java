@@ -100,6 +100,7 @@ public class StkInvtryItemEvtProcessor {
 			strgSctn.setArtPic(artPic);
 			strgSctn.setLotPic(lotPic);
 			strgSctn.setStrgSection(section);
+			strgSctn.setArtName(itemEvtData.getArtName());
 			strgSctn = articleLot2StrgSctnEJB.create(strgSctn);
 		}
 
@@ -110,6 +111,8 @@ public class StkInvtryItemEvtProcessor {
 		lotStockQty.setLotPic(lotPic);
 		lotStockQty.setSection(section);
 		lotStockQty.setQtyDt(invtryEvt.getHstryDt());
+		lotStockQty.setOrigProcs(invtryEvt.getClass().getSimpleName());
+		lotStockQty.setOrigProcsNbr(itemEvtData.getInvtryNbr());
 		if(latestQty!=null){
 			lotStockQty.setSeqNbr(latestQty.getSeqNbr()==null?1:latestQty.getSeqNbr()+1);
 		} else {

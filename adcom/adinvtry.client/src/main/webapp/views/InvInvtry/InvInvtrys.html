@@ -93,7 +93,6 @@
                     </form>
                 </div>
             </div>
-
         </div>
 
         <div class="panel panel-default ">
@@ -122,7 +121,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="invtry in invInvtrys" ng-dblclick="editItem" >
+                            <tr ng-repeat="invtry in invInvtrys()" ng-dblclick="editItem" >
                                 <td>{{invtry.invtryNbr}}</td>
                                 <td>{{invtry.acsngUser}}</td>
                                 <td>{{invtry.acsngDt | date:'yyyy-MM-dd HH:mm'}}</td>
@@ -131,8 +130,8 @@
                                 <td>{{invtry.invtryStatus}}</td>
                                 <td>{{invtry.descptn}}</td>
                                 <td>{{invtry.invtryDt | date:'yyyy-MM-dd HH:mm'}}</td>
-                                <td><a href="#/InvInvtrys/show/{{invtry.id}}" ><i class="glyphicon glyphicon-eye-open"></i></a></td>
-                                <td><a href="#/InvInvtrys/edit/{{invtry.id}}" ><i class="glyphicon glyphicon-edit"></i></a></td>
+                                <td><a href="" ng-click="show(invtry, $index)"><i class="glyphicon glyphicon-eye-open"></i></a></td>
+                                <td><a href="" ng-click="edit(invtry, $index)"><i class="glyphicon glyphicon-edit"></i></a></td>
                             </tr>
                             </tbody>
                         </table>

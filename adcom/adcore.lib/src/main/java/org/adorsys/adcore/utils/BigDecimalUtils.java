@@ -26,6 +26,10 @@ public class BigDecimalUtils {
 		if(isNullOrZero(b)) return false;
 		return a.compareTo(b)==0;
 	}
+	public static boolean greaterZero(BigDecimal a){
+		if(isNullOrZero(a)) return false;
+		return a.compareTo(BigDecimal.ZERO)>0;
+	}
 	
 	public static BigDecimal sum(BigDecimal... sumands){
 		BigDecimal result = BigDecimal.ZERO;

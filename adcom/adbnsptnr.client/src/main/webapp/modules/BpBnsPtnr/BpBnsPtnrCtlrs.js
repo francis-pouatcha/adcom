@@ -185,13 +185,7 @@ angular.module('AdBnsptnr')
 
     var service = {
     };
-    service.resultHandler = searchResultHandler.newResultHandler(
-		function(bpBnsPtnrA, bpBnsPtnrB){
-			if(!bpBnsPtnrA && !bpBnsPtnrB) return true;
-			if(!bpBnsPtnrB) return false;
-			return bpBnsPtnrA.ptnrNbr==bpBnsPtnrB.ptnrNbr;
-		}
-    );
+    service.resultHandler = searchResultHandler.newResultHandler('ptnrNbr');
 
     // TBA FUNCTIONS 
     service.bpPtnrContactTabName = 'bpPtnrContact';
