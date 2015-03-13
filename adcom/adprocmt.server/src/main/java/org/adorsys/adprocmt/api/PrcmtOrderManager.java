@@ -15,11 +15,13 @@ import org.adorsys.adcore.auth.TermWsUserPrincipal;
 import org.adorsys.adprocmt.jpa.PrcmtDelivery;
 import org.adorsys.adprocmt.jpa.PrcmtDlvryItem;
 import org.adorsys.adprocmt.jpa.PrcmtDlvryItem2Ou;
+import org.adorsys.adprocmt.jpa.PrcmtDlvryItem2POItem;
 import org.adorsys.adprocmt.jpa.PrcmtDlvryItem2StrgSctn;
 import org.adorsys.adprocmt.jpa.PrcmtPOItem;
 import org.adorsys.adprocmt.jpa.PrcmtProcOrder;
 import org.adorsys.adprocmt.jpa.PrcmtProcOrderHstry;
 import org.adorsys.adprocmt.rest.PrcmtDeliveryEJB;
+import org.adorsys.adprocmt.rest.PrcmtDlvryItemEJB;
 import org.adorsys.adprocmt.rest.PrcmtPOItemEJB;
 import org.adorsys.adprocmt.rest.PrcmtProcOrderEJB;
 import org.adorsys.adprocmt.rest.PrcmtProcOrderHstryEJB;
@@ -39,6 +41,8 @@ public class PrcmtOrderManager {
 	private PrcmtDeliveryEJB deliveryEJB;
 	@Inject
 	private SecurityUtil securityUtil;
+	@Inject
+	private PrcmtDlvryItemEJB dlvryItemEJB;
 	@Inject
 	private TriggerModeHandlerFactoryProducer triggerModeHandlerFactoryProducer;
 	
@@ -87,13 +91,13 @@ public class PrcmtOrderManager {
 							itemModified = true;
 						}
 					} else {
-						orderItem.evlte();//evaluate different amount before save
+						orderItem.evlte();
 						orderItem.setPoNbr(prcmtOrder.getPoNbr());
 						orderItem = prcmtPOItemEJB.create(orderItem);
 						itemModified = true;
 					}
 				} else {
-					orderItem.evlte();//evaluate different amount before save
+					orderItem.evlte();
 					orderItem = prcmtPOItemEJB.create(orderItem);
 					itemModified = true;
 				}
@@ -230,23 +234,30 @@ public class PrcmtOrderManager {
 			PrcmtPOItem prcmtPOItem = poItemHolder.getPrcmtPOItem();
 			PrcmtDlvryItem dlvryItem = new PrcmtDlvryItem();
 			dlvryItem.fillDataFromOrderItem(prcmtPOItem);
+			dlvryItem.evlte();
+			dlvryItem.setDlvryNbr(delivery.getDlvryNbr());
+			dlvryItem = dlvryItemEJB.create(dlvryItem);
+			
+			PrcmtDlvryItem2POItem dlvryItem2POItem = dlvryItemEJB.addDlvryItem2POItem(dlvryItem, prcmtPOItem.getPoNbr(), prcmtPOItem.getQtyOrdered(), dlvryItem.getQtyDlvrd(), dlvryItem.getFreeQty());
+			PrcmtDlvryItem2PoItemHolder prcmtDlvryItem2PoItemHolder = new PrcmtDlvryItem2PoItemHolder();
+			prcmtDlvryItem2PoItemHolder.setPoItem(dlvryItem2POItem);
+			
 			PrcmtDeliveryItemHolder deliveryItemHolder = new PrcmtDeliveryItemHolder();
 			deliveryItemHolder.setDlvryItem(dlvryItem);
+			deliveryItemHolder.getPoItems().add(prcmtDlvryItem2PoItemHolder);
 			
 			
 			if(StringUtils.isNotBlank(prcmtPOItem.getRcvngOrgUnit())){
-				PrcmtDlvryItem2Ou prcmtDlvryItem2Ou = new PrcmtDlvryItem2Ou();
-				prcmtDlvryItem2Ou.setRcvngOrgUnit(prcmtPOItem.getRcvngOrgUnit());
+				PrcmtDlvryItem2Ou dlvryItem2Ou = dlvryItemEJB.addDlvryItem2Ou(dlvryItem, prcmtPOItem.getRcvngOrgUnit(), dlvryItem.getQtyDlvrd(), dlvryItem.getFreeQty());
 				PrcmtDlvryItem2RcvngOrgUnitHolder prcmtDlvryItem2RcvngOrgUnitHolder = new PrcmtDlvryItem2RcvngOrgUnitHolder();
-				prcmtDlvryItem2RcvngOrgUnitHolder.setRcvngOrgUnit(prcmtDlvryItem2Ou);
+				prcmtDlvryItem2RcvngOrgUnitHolder.setRcvngOrgUnit(dlvryItem2Ou);
 				deliveryItemHolder.getRecvngOus().add(prcmtDlvryItem2RcvngOrgUnitHolder);
 			}
 			
 			if(StringUtils.isNotBlank(prcmtPOItem.getStrgSection())){
-				PrcmtDlvryItem2StrgSctn prcmtDlvryItem2StrgSctn = new PrcmtDlvryItem2StrgSctn();
-				prcmtDlvryItem2StrgSctn.setStrgSection(prcmtPOItem.getStrgSection());
+				PrcmtDlvryItem2StrgSctn addDlvryItem2StrgSctn = dlvryItemEJB.addDlvryItem2StrgSctn(dlvryItem, prcmtPOItem.getStrgSection(), prcmtPOItem.getStkQtyPreOrder(), dlvryItem.getQtyDlvrd());
 				PrcmtDlvryItem2StrgSctnHolder prcmtDlvryItem2StrgSctnHolder = new PrcmtDlvryItem2StrgSctnHolder();
-				prcmtDlvryItem2StrgSctnHolder.setStrgSctn(prcmtDlvryItem2StrgSctn);
+				prcmtDlvryItem2StrgSctnHolder.setStrgSctn(addDlvryItem2StrgSctn);
 				deliveryItemHolder.getStrgSctns().add(prcmtDlvryItem2StrgSctnHolder);
 			}
 			

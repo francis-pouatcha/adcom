@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('AdProcmt').controller('prcmtOrderShowCtlr',['$scope','ProcmtUtils','PrcmtOrderState','genericResource','$routeParams','$location','$q',function($scope,ProcmtUtils,PrcmtOrderState,genericResource,$routeParams,$location,$q){
+angular.module('AdProcmt').controller('prcmtOrderShowCtlr',['$scope','ProcmtUtils','PrcmtOrderState','PrcmtDeliveryState','genericResource','$routeParams','$location','$q',function($scope,ProcmtUtils,PrcmtOrderState,PrcmtDeliveryState,genericResource,$routeParams,$location,$q){
     var self = this ;
     $scope.prcmtOrderShowCtlr = self;
     self.prcmtOrderHolder = {
@@ -203,7 +203,8 @@ angular.module('AdProcmt').controller('prcmtOrderShowCtlr',['$scope','ProcmtUtil
 
     function transform () {
         genericResource.customMethod(ProcmtUtils.urlManageOrder+'/transform',self.prcmtOrderHolder).success(function(data){
-            self.prcmtOrderHolder = data;
+            PrcmtDeliveryState.setDeliveryHolder(data);
+            $location.path('/PrcmtDeliverys/addItem');
         });
     }
 
