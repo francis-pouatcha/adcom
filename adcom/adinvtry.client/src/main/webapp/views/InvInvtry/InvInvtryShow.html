@@ -96,20 +96,19 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="itemHolder in invInvtryItemHolders" ng-dblclick="editItem($index)">
-                        <td>{{itemHolder.invtryItem.section}}</td>
-                        <td>{{itemHolder.invtryItem.lotPic}}</td>
-                        <td>{{itemHolder.invtryItem.artPic}}</td>
-                        <td>{{itemHolder.invtryItem.artName}}</td>
-                        <td>{{itemHolder.invtryItem.asseccedQty | number:0}}</td>
+                    <tr ng-repeat="invtryItem in invInvtryItems()" ng-dblclick="editItem($index)">
+                        <td>{{invtryItem.section}}</td>
+                        <td>{{invtryItem.lotPic}}</td>
+                        <td>{{invtryItem.artPic}}</td>
+                        <td>{{invtryItem.artName}}</td>
+                        <td>{{invtryItem.asseccedQty | number:0}}</td>
                         <td ng-show="invInvtryUtils.isInvInvtryEditable(invInvtry)"><a ng-click="editItem($index)" class=""><i class="glyphicon glyphicon-edit"></i></a></td>
                         <td ng-show="invInvtryUtils.isInvInvtryEditable(invInvtry)"><a ng-click="deleteItem($index)" class=""><i class="glyphicon glyphicon-trash"></i></a></td>
                     </tr>
                 </tbody>
             </table>
             <ul  class="pull-right">
-                <pagination  total-items="totalItems" max-size="maxSize" boundary-links="true" items-per-page="itemPerPage"  class="pagination-sm" ng-model="currentPage" ng-change="paginate()">
-                </pagination>
+                <pagination  total-items="totalItems()" items-per-page="itemPerPage()"  class="pagination-sm" ng-model="currentPage" ng-change="paginate()"></pagination>
             </ul>
         </div>
     </div>

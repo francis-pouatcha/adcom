@@ -68,7 +68,7 @@ public class StkArticleLot2StrgSctnLookup
    }
 	
 	public List<StkArticleLot2StrgSctn> findByStrgSection(String strgSection) {
-		return repository.findByStrgSection(strgSection);
+		return repository.findByStrgSection(strgSection).getResultList();
 	}
 	
 	public StkArticleLot2StrgSctn findByStrgSectionAndLotPicAndArtPic(String strgSection, String lotPic, String artPic){

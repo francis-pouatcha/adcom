@@ -88,11 +88,16 @@ public class StkArticleLot2StrgSctnEJB
    }
 	
 	public List<StkArticleLot2StrgSctn> findByStrgSection(String strgSection) {
-		return repository.findByStrgSection(strgSection);
+		return repository.findByStrgSection(strgSection).getResultList();
 	}
 	
 	public StkArticleLot2StrgSctn findByStrgSectionAndLotPicAndArtPic(String strgSection, String lotPic, String artPic){
 		String primaryKey = StkArticleLot2StrgSctn.toId(artPic, lotPic, strgSection);
 		return repository.findBy(primaryKey);
+	}
+
+	public void outofStock(String artPic, String lotPic, String section) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -21,6 +21,11 @@ angular.module('ADUtils',[])
     	$location.url('trm',null);
     	$location.url('usr',null);
     };
+    service.greaterThan = function(a,b){
+    	if(typeof a === 'undefined') return false;
+    	if(typeof b === 'undefined') return a>-1;
+    	return a>b;
+    };
     return service;
 }])
 .factory('commonTranslations',['$translate',function($translate){
@@ -111,20 +116,280 @@ angular.module('ADUtils',[])
     service.findCustom = function(urlBase, entitySearchInput){
         return $http.post(urlBase+'/findCustom',entitySearchInput);
     };
-        service.find = function(urlBase, entitySearchInput){
-            return $http.post(urlBase,entitySearchInput);
-        };
-        service.customMethod = function(urlBase, entitySearchInput){
-            return $http.post(urlBase,entitySearchInput);
-        };
-        service.listAll = function(urlBase){
-            return $http.get(urlBase);
-        };
+
+    service.find = function(urlBase, entitySearchInput){
+        return $http.post(urlBase,entitySearchInput);
+    };
+    service.customMethod = function(urlBase, entitySearchInput){
+        return $http.post(urlBase,entitySearchInput);
+    };
+    service.listAll = function(urlBase){
+        return $http.get(urlBase);
+    };
     service.deleteById = function(urlBase, entityId){
         return $http.delete(urlBase+'/'+entityId);
     };
     
     return service;
     
+}])
+.factory('searchResultHandler',['adUtils',function(adUtils){
+    var service = {};
+    service.newResultHandler = function(keyField){
+    	return new ResultHandler(keyField); 
+    };
+
+    var ResultHandler = function(keyFieldIn){
+        var handler = this;
+        var itemPerPageVar = 10;
+        var currentPageVar = 1;
+        var searchResultVar = {
+	    	count:0,resultList:[],
+	    	searchInput:{
+	    		entity:{},
+	    		start:0, max:itemPerPageVar,
+	    		fieldNames:[]
+	    	},
+	    	// not exposed to the server environment.
+	    	currentPage:currentPageVar,itemPerPage:itemPerPageVar,selectedIndex:-1,
+        };
+        var keyField = keyFieldIn;
+        var equalsFnct = function(entityA, entityB){
+			if(!entityA && !entityB) return true;
+			if(!entityB) return false;
+			return entityA[keyField]==entityB[keyField];
+        };
+        var dependents = {};
+        function setSelectedIndex(selectedIndexIn){
+        	searchResultVar.selectedIndex=selectedIndexIn;
+        	dependents = {};
+        }
+        this.searchResult = function(searchResultIn){
+        	if(searchResultVar===searchResultIn) return;
+        	if(angular.isUndefined(searchResultIn)) return;
+        	
+    		searchResultVar.count = searchResultIn.count;
+    		
+    		angular.copy(searchResultIn.resultList, searchResultVar.resultList);
+    		
+    		angular.copy(searchResultIn.searchInput, searchResultVar.searchInput);
+
+    		if(angular.isDefined(searchResultIn.currentPage)){
+    			searchResultVar.currentPage=searchResultIn.currentPage;
+    		} else {
+    			searchResultVar.currentPage=currentPageVar;
+    		}
+
+    		if(angular.isDefined(searchResultIn.itemPerPage)){
+    			searchResultVar.itemPerPage=searchResultIn.itemPerPage;
+    		} else {
+    			searchResultVar.itemPerPage=itemPerPageVar;
+    		}
+    		
+    		if(angular.isDefined(searchResultIn.selectedIndex)){
+    			setSelectedIndex(searchResultIn.selectedIndex);
+    		} else {
+    			setSelectedIndex(-1);
+    		}
+        };
+        this.hasEntities = function(){
+            return searchResultVar.resultList && searchResultVar.resultList.length>0;
+        };
+        this.entities = function(){
+        	return searchResultVar.resultList;
+        };
+        this.selectedIndex= function(selectedIndexIn){
+            if(adUtils.greaterThan(selectedIndexIn) && angular.isDefined(searchResultVar.resultList[selectedIndexIn])){
+            	setSelectedIndex(selectedIndexIn);
+            }
+            return searchResultVar.selectedIndex;
+        };
+        this.selectedObject= function(selectedIn){
+        	if(angular.isUndefined(selectedIn))return searchResultVar.selectedIndex; 
+    		var length = searchResultVar.resultList.length;
+    		for	(var index = 0; index < length; index++) {
+    			if(!equalsFnct(selectedIn, searchResultVar.resultList[index])) continue;
+    			searchResultVar.selectedIndex = index;
+    			return searchResultVar.selectedIndex; 
+    		}
+    		length = searchResultVar.resultList.push(selectedIn);
+    		searchResultVar.count +=1;
+    		searchResultVar.selectedIndex = length -1;
+            return searchResultVar.selectedIndex;
+        };
+        this.entity = function(){
+        	if(!adUtils.greaterThan(searchResultVar.selectedIndex)) return;
+        	if(angular.isUndefined(searchResultVar.resultList[searchResultVar.selectedIndex])) return;
+        	return searchResultVar.resultList[searchResultVar.selectedIndex];
+        };
+        this.totalItems = function(){
+            return searchResultVar.count;
+        };
+        this.currentPage = function(currentPageIn){
+            if(adUtils.greaterThan(currentPageIn,-1)) searchResultVar.currentPage=currentPageIn;
+            return searchResultVar.currentPage;
+        };
+        this.maxResult = function(maxResultIn) {
+            if(adUtils.greaterThan(maxResultIn,-1)) searchResultVar.searchInput.max=maxResultIn;
+            return searchResultVar.searchInput.max;
+        };
+        this.itemPerPage = function(itemPerPageIn){
+            if(adUtils.greaterThan(itemPerPageIn,-1))searchResultVar.itemPerPage=itemPerPageIn;
+            return searchResultVar.itemPerPage;
+        };
+        this.searchInput = function(searchInputIn){
+            if(angular.isUndefined(searchInputIn))
+                return angular.copy(searchResultVar.searchInput);
+
+    		angular.copy(searchInputIn, searchResultVar.searchInput);
+            return searchInputIn;
+        };
+        this.searchInputChanged = function(searchInputIn){
+            return angular.equals(searchResultVar.searchInput, searchInputIn);
+        };
+        this.paginate = function(){
+        	searchResultVar.searchInput.start = ((searchResultVar.currentPage - 1)  * searchResultVar.itemPerPage);
+        	searchResultVar.searchInput.max = searchResultVar.itemPerPage;
+            return handler.searchInput();
+        };
+        this.replace = function(entity){
+        	if(!entity) return;
+
+    		var length = searchResultVar.resultList.length;
+    		for	(var index = 0; index < length; index++) {
+    			if(!equalsFnct(entity, searchResultVar.resultList[index])) continue;
+    			searchResultVar.resultList[index];
+    			return index; 
+    		}
+    		length = searchResultVar.resultList.push(entity);
+    		searchResultVar.count +=1;
+    		return length -1;
+        };
+        this.push = function(entity){
+        	if(angular.isUndefined(entity)) return;
+            var length = searchResultVar.resultList.push(entity);
+    		searchResultVar.count +=1;
+    		return length -1;
+        };
+        this.previous = function (){
+        	if(searchResultVar.resultList.length<=0) return;
+
+            if(searchResultVar.selectedIndex<=0){
+            	setSelectedIndex(searchResultVar.resultList.length-1);
+            } else {
+            	setSelectedIndex(searchResultVar.selectedIndex-=1);
+            }
+            return handler.entity();
+        };
+        this.next = function(){
+        	if(searchResultVar.resultList.length<=0) return;
+        	
+        	if(searchResultVar.selectedIndex>=searchResultVar.resultList.length-1 || searchResultVar.selectedIndex<0){
+        		setSelectedIndex(0);
+        	} else {
+        		setSelectedIndex(searchResultVar.selectedIndex+=1);
+        	}
+
+            return handler.entity();
+        };
+        this.unsetDependent = function(fieldName){
+        	if(angular.isUndefined(fieldName)) return;
+        	
+        	if(angular.isDefined(dependents[fieldName]))
+        		delete dependents[fieldName];
+        };
+        this.dependent = function(fieldName, dependentIn){
+        	if(angular.isUndefined(fieldName)) return;
+        	
+        	if(angular.isDefined(dependentIn) && dependentIn)
+        		dependents[fieldName] = dependentIn;
+
+        	return dependents[fieldName];
+        };
+    };
+    
+    return service;
+	
+}])
+.factory('dependentTabManager',[function(){
+    var service = {};
+    
+    // Instantiates a new TabManager
+    service.newTabManager = function(tabNameList){
+    	return new TabManager(tabNameList); 
+    };
+
+    // Create a new tab manager with a tab name list.
+    var TabManager = function(tabNameListIn){
+    	if(!angular.isArray(tabNameListIn) || tabNameListIn.length<1)
+    		throw "Tab manager expecting an array of string, with tab name.";
+    	var tabNameList = tabNameListIn;
+        var activeTabNameVar= tabNameList[0];
+        
+        this.activeTab=function(activeTabNameIn){
+        	if(angular.isDefined(activeTabNameIn) && tabNameList.indexOf(activeTabNameIn)>-1)
+        		activeTabNameVar=activeTabNameIn;
+        	return activeTabNameVar;
+        };
+        
+        this.isActive = function(tabName){
+        	if(angular.isDefined(tabName) && tabNameList.indexOf(tabName)>-1)
+        		return angular.equals(activeTabNameVar,tabName);
+
+        	return false;
+        };
+    };
+    
+    return service;
+}])
+.factory('entityPreLoaderFactory',['searchResultHandler','$cacheFactory',
+                            function(searchResultHandler,$cacheFactory){
+    var service = {};
+    service.newEntityPreLoader = function(cacheIdIn, keyField, serviceUrlPrefix, seachMethod){
+    	return new EntityPreLoader(cacheIdIn, keyField, serviceUrlPrefix, seachMethod); 
+    };
+
+    var EntityPreLoader = function(cacheIdIn, keyFieldIn, serviceUrlPrefixIn, seachMethodIn){
+    	var cacheId = cacheIdIn;
+    	var keyField = keyFieldIn;
+    	var serviceUrlPrefix = serviceUrlPrefixIn;
+    	var seachMethod = seachMethodIn;
+    	var sampleResultHandler = searchResultHandler.newResultHandler(keyField);
+    	var resultHandlerCache = $cacheFactory(cacheId, {capacity:20});
+    	
+    	var preLoader = this;
+        this.searchInput = function(){
+        	return sampleResultHandler.searchInput();
+        }
+        this.load = function(searchInput, cacheKey, successFnct){
+        	var resultHandler = resultHandlerCache.get(cacheKey);
+        	if(angular.isDefined(resultHandler)){
+        		successFnct(resultHandler);
+        	} else {
+        		seachMethod(serviceUrlPrefix,searchInput)
+        		.success(function(searchResult){
+        			resultHandler = searchResultHandler.newResultHandler(keyField);
+        			resultHandler.searchResult(searchResult);
+        			resultHandlerCache.put(cacheKey,resultHandler);
+            		successFnct(resultHandler);
+        		});
+        	}
+        };
+        this.select = function(resultList,searchString, valueFnct){
+        	if(angular.isUndefined(searchString)) return resultList;
+        	var lowerSearchStr = searchString.toLowerCase();
+        	var result = [];
+            for (var int = 0; int < resultList.length; int++) {
+    			var entity = resultList[i];
+    			var containerStr = valueFnct(entity);
+    			if(angular.isUndefined(containerStr)) continue;
+    			if(containerStr.toLowerCase().indexOf(lowerSearchStr)) result.push(entity);
+    		}
+            return result;
+        };
+    };
+    
+    return service;
+	
 }]);
 

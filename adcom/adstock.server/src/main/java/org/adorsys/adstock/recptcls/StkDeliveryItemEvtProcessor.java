@@ -118,6 +118,7 @@ public class StkDeliveryItemEvtProcessor {
 			strgSctn.setArtPic(stkArticleLot.getArtPic());
 			strgSctn.setLotPic(stkArticleLot.getLotPic());
 			strgSctn.setStrgSection(strgSctnEvtData.getStrgSection());
+			strgSctn.setArtName(itemEvtData.getArtName());
 			articleLot2StrgSctnEJB.create(strgSctn);
 
 			// Lot Stock Qty
@@ -128,6 +129,8 @@ public class StkDeliveryItemEvtProcessor {
 			lotStockQty.setQtyDt(deliveryEvt.getHstryDt());
 			lotStockQty.setSeqNbr(0);
 			lotStockQty.setStockQty(strgSctnEvtData.getQtyStrd());
+			lotStockQty.setOrigProcs(deliveryEvt.getClass().getSimpleName());
+			lotStockQty.setOrigProcsNbr(itemEvtData.getDlvryNbr());
 			stored = BigDecimalUtils.sum(stored, strgSctnEvtData.getQtyStrd());
 			lotStockQtyEJB.create(lotStockQty);
 		}

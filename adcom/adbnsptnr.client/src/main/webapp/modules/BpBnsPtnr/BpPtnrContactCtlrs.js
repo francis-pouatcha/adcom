@@ -82,7 +82,7 @@ angular.module('AdBnsptnr')
 	var service = {
 	};
 	
-	service.bpBnsPtnr = bpBnsPtnrState.bpBnsPtnr;
+	service.bpBnsPtnr = bpBnsPtnrState.resultHandler.entity;
     var searchResultsVar = {};
 
     // The search state.
@@ -90,7 +90,7 @@ angular.module('AdBnsptnr')
     service.bpPtnrContacts = function(ptnrNbr){
         var nbr = ptnrNbr;
         if(!ptnrNbr) {
-            var bpBnsPtnr = bpBnsPtnrState.bpBnsPtnr();
+            var bpBnsPtnr = bpBnsPtnrState.resultHandler.entity();
             if(bpBnsPtnr)
                 nbr = bpBnsPtnr.ptnrNbr;
         }
@@ -154,7 +154,9 @@ angular.module('AdBnsptnr')
         selectedIndexVar = length-1;
     };
 
-	service.bpPtnrContactActive= bpBnsPtnrState.bpPtnrContactActive;
+	service.bpPtnrContactActive = function(){
+		bpBnsPtnrState.tabManager.isActive(bpBnsPtnrState.bpPtnrContactActive);	
+	} 
 
     service.searchInput = {
         entity:{},
