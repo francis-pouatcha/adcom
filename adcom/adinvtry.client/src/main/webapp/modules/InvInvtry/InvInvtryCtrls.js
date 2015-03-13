@@ -203,24 +203,17 @@ angular.module('AdInvtry')
         return deferred.promise;
     }    
     
-    service.loadStkSectionArticleLots = function(stkSection){
-        return loadStkSectionArticleLotsPromise(stkSection);
+    service.loadStkSectionArticleLots = function(stkSection, searchInput){
+        return loadStkSectionArticleLotsPromise(stkSection, searchInput);
     };
     
     // Load ArticlesLots from StkSection
-    function loadStkSectionArticleLotsPromise(stkSection){
+    function loadStkSectionArticleLotsPromise(stkSection, searchInput){
           if(!stkSection) return;
-            
-          var searchInputArtLots = {
-            entity:{},
-            fieldNames:[],
-            start:0,
-            max:-1
-            };
-            searchInputArtLots.sectionCode= stkSection.sectionCode;
-            searchInputArtLots.withStrgSection= true;
+            searchInput.sectionCode= stkSection.sectionCode;
+            searchInput.withStrgSection= true;
             var deferred = $q.defer();
-            genericResource.findBy(service.stkarticlelotsUrlBase, searchInputArtLots)
+            genericResource.findBy(service.stkarticlelotsUrlBase, searchInput)
             .success(function(entitySearchResult) {
                 deferred.resolve(entitySearchResult);
               })
@@ -412,6 +405,12 @@ angular.module('AdInvtry')
         searchInputVar.max = itemPerPageVar;
         return service.searchInput();
     };
+    
+    service.paginateItems = function(searchInput){
+        searchInput.start= ((currentPageVar - 1)  * itemPerPageVar);
+        searchInput.max= itemPerPageVar;
+        return service.searchInput();
+    }
 
     // returns sets and returns the business partner at the passed index or
     // if not set the business partner at the currently selected index.
@@ -626,10 +625,20 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
                                  function($scope,invInvtryManagerResource,$location,invInvtryUtils,invInvtryState,$rootScope,genericResource,$routeParams){
     $scope.invInvtry = invInvtryState.invInvtry();
     $scope.error = "";
+    $scope.maxSize= 10;
     $scope.invInvtryUtils=invInvtryUtils;
+    $scope.itemPerPage=invInvtryState.itemPerPage();
+    $scope.totalItems;
+    $scope.currentPage=invInvtryState.currentPage();
     $scope.invInvtryItemHolder = emptyItemHolder();
     $scope.invInvtryItemHolders = [];
     $scope.articleLots = [];
+    var searchInputArtLots = {
+            entity:{},
+            fieldNames:[],
+            start:0,
+            max:$scope.itemPerPage
+    };
     if($scope.invInvtry) {
         $scope.invInvtry.acsngUser = invInvtryUtils.currentWsUser.userFullName;
     };
@@ -638,7 +647,7 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
         var identif = $routeParams.identif;
     	if(invInvtryUtils.isInvtryBySection($scope.invInvtry) && stkSection){
     		$scope.invInvtryItemHolder.invtryItem.section= stkSection.sectionCode;
-            $scope.invInvtryUtils.loadStkSectionArticleLots(stkSection).then(function(entitySearchResult){
+            $scope.invInvtryUtils.loadStkSectionArticleLots(stkSection, searchInputArtLots).then(function(entitySearchResult){
                 $scope.articleLots= entitySearchResult.resultList;
                 loadInvIvntryItemsFromArtLots($scope.articleLots);
             }); 
@@ -666,6 +675,16 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
             loadInvInvtryItems(identif);   
         }
     }
+                                     
+   $scope.paginate= function(){
+       var stkSection =invInvtryState.stkSection();
+       console.log('StockSection: '+stkSection);
+       invInvtryState.paginateItems(searchInputArtLots);
+       $scope.invInvtryUtils.loadStkSectionArticleLots(stkSection, searchInputArtLots).then(function(entitySearchResult){
+                $scope.articleLots= entitySearchResult.resultList;
+                loadInvIvntryItemsFromArtLots($scope.articleLots);
+       }); 
+   }
     
     function loadInvInvtryItemByProductNameRangeAndStkSection(stkSection,searchInput) {
         
@@ -775,10 +794,13 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
             invInvtryItemHolder.invtryItem.section= $scope.invInvtryItemHolder.invtryItem.section;
             invInvtryItemHolder.invtryItem.lotPic= articleLot.lotPic;
             invInvtryItemHolder.invtryItem.artPic= articleLot.artPic;
-            invInvtryItemHolder.invtryItem.artName= articleLot.artFeatures.artName;
+            if(articleLot.artFeatures){
+                invInvtryItemHolder.invtryItem.artName= articleLot.artFeatures.artName;
+            }
             invInvtryItemHolder.invtryItem.asseccedQty= qty;
             $scope.invInvtryItemHolders.push(invInvtryItemHolder);
         });
+        $scope.totalItems= $scope.invInvtryItemHolders.length;
     }
     
     $scope.save = function(){

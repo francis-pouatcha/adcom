@@ -107,6 +107,10 @@
                     </tr>
                 </tbody>
             </table>
+            <ul  class="pull-right">
+                <pagination  total-items="totalItems" max-size="maxSize" boundary-links="true" items-per-page="itemPerPage"  class="pagination-sm" ng-model="currentPage" ng-change="paginate()">
+                </pagination>
+            </ul>
         </div>
     </div>
 </div>
