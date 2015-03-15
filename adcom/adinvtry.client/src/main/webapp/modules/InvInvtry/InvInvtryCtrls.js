@@ -523,6 +523,15 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
 	$scope.handlePrintRequestEvent = function(){
         // To do
 	}
+	$scope.handleResetRequestEvent = function(){
+		$scope.searchInput = itemsResultHandler.newSearchInput();		
+        loadInvInvtryItems();
+	}
+	$scope.handleAlphabeticRequestEvent = function(){
+		$scope.searchInput = itemsResultHandler.newSearchInput();
+		$scope.searchInput.a2z = true;
+        loadInvInvtryItems();
+	}
 
     $scope.save = function(){
 //        var invInvtryHolder = {};

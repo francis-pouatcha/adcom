@@ -143,7 +143,7 @@ angular.module('ADUtils',[])
         var handler = this;
         var itemPerPageVar = 10;
         var currentPageVar = 1;
-        var searchResultVar = {
+        var nakedSearchResult = {
 	    	count:0,resultList:[],
 	    	searchInput:{
 	    		entity:{},
@@ -153,6 +153,7 @@ angular.module('ADUtils',[])
 	    	// not exposed to the server environment.
 	    	currentPage:currentPageVar,itemPerPage:itemPerPageVar,selectedIndex:-1,
         };
+        var searchResultVar = angular.copy(nakedSearchResult);
         var keyField = keyFieldIn;
         var equalsFnct = function(entityA, entityB){
 			if(!entityA && !entityB) return true;
@@ -246,6 +247,9 @@ angular.module('ADUtils',[])
         };
         this.searchInputChanged = function(searchInputIn){
             return angular.equals(searchResultVar.searchInput, searchInputIn);
+        };
+        this.newSearchInput = function(){
+            return angular.copy(nakedSearchResult.searchInput);
         };
         this.paginate = function(){
         	searchResultVar.searchInput.start = ((searchResultVar.currentPage - 1)  * searchResultVar.itemPerPage);

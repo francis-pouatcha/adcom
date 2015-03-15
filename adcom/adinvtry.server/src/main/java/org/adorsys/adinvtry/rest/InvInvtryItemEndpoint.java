@@ -25,6 +25,7 @@ import org.adorsys.adinvtry.jpa.InvInvtryItem;
 import org.adorsys.adinvtry.jpa.InvInvtryItem_;
 import org.adorsys.adinvtry.jpa.InvInvtryItemSearchInput;
 import org.adorsys.adinvtry.jpa.InvInvtryItemSearchResult;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 
@@ -126,6 +127,12 @@ public class InvInvtryItemEndpoint
    @Consumes({ "application/json", "application/xml" })
    public InvInvtryItemSearchResult findByLike(InvInvtryItemSearchInput searchInput)
    {
+	  if(StringUtils.isNotBlank(searchInput.getEntity().getInvtryNbr()) && Boolean.TRUE.equals(searchInput.getA2z())){
+		  if(StringUtils.isNotBlank(searchInput.getEntity().getSection())){
+			  return findByInvtryNbrAndSectionSorted(searchInput);
+		  }
+		  return findByInvtryNbrSorted(searchInput);
+	  }
       SingularAttribute<InvInvtryItem, ?>[] attributes = readSeachAttributes(searchInput);
       Long countLike = ejb.countByLike(searchInput.getEntity(), attributes);
       List<InvInvtryItem> resultList = ejb.findByLike(searchInput.getEntity(),
@@ -134,6 +141,20 @@ public class InvInvtryItemEndpoint
             detach(searchInput));
    }
 
+   private InvInvtryItemSearchResult findByInvtryNbrSorted(InvInvtryItemSearchInput searchInput){
+	   List<InvInvtryItem> resultList = ejb.findByInvtryNbrSorted(searchInput.getEntity().getInvtryNbr(), searchInput.getStart(), searchInput.getMax());
+	   Long countLike = ejb.countByInvtryNbr(searchInput.getEntity().getInvtryNbr());
+       return new InvInvtryItemSearchResult(countLike, detach(resultList),
+              detach(searchInput));
+   }
+
+   private InvInvtryItemSearchResult findByInvtryNbrAndSectionSorted(InvInvtryItemSearchInput searchInput){
+	   List<InvInvtryItem> resultList = ejb.findByInvtryNbrAndSectionSorted(searchInput.getEntity().getInvtryNbr(), searchInput.getEntity().getSection(), searchInput.getStart(), searchInput.getMax());
+	   Long countLike = ejb.countByInvtryNbrAndSection(searchInput.getEntity().getInvtryNbr(), searchInput.getEntity().getSection());
+       return new InvInvtryItemSearchResult(countLike, detach(resultList),
+              detach(searchInput));
+   }
+   
    @POST
    @Path("/countByLike")
    @Consumes({ "application/json", "application/xml" })

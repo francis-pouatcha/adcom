@@ -19,4 +19,10 @@ public interface InvInvtryItemRepository extends EntityRepository<InvInvtryItem,
 	@Modifying
 	@Query("DELETE e FROM InvInvtryItem AS e WHERE e.invtryNbr = ?1")
 	public Long removeByInvtryNbr(String invtryNbr);
+
+	@Query("SELECT e FROM InvInvtryItem AS e WHERE e.invtryNbr = ?1 AND e.section=?2")
+	public QueryResult<InvInvtryItem> findByInvtryNbrAndSection(String invtryNbr, String section);
+
+	@Query("SELECT COUNT(e.id) FROM InvInvtryItem AS e WHERE e.invtryNbr = ?1 AND e.section=?2")
+	public Long countByInvtryNbrAndSection(String invtryNbr, String section);
 }

@@ -57,7 +57,7 @@
 	        <div class="panel-body">
 	            <form name="invInvtryItemSearchForm" id="invInvtryItemSearchForm" novalidate >
 	                <div class="row" >
-	                   <div class="form-group col-lg-4">
+	                   <div class="form-group col-lg-8">
 	                       <label class=" control-label" for="searchArtName">{{invInvtryUtils.translations['InvInvtryItem_artName_description.title']}}</label>
                            <input type="text" class="form-control" id="searchArtName" autocomplete="off" 
                            	ng-model="searchInput.entity.artName"
@@ -65,7 +65,7 @@
                               typeahead-loading="loading" typeahead-min-length="4" 
                               typeahead-on-select='onArticleSelectedInSearch($item, $model, $label)' name="searchArtName" >
 	                   </div>
-	                   <div class="form-group col-lg-4">
+	                   <div class="form-group col-lg-2">
 	                       <label class=" control-label" for="searchArtPic">{{invInvtryUtils.translations['InvInvtryItem_artPic_description.title']}}</label>
                            <input type="text" ng- class="form-control" name="searchArtPic" id="searchArtPic" required autocomplete="off" 
                            		ng-model="searchInput.entity.artPic"
@@ -73,9 +73,9 @@
                               	typeahead-min-length="7"
                               typeahead-loading="loading" typeahead-on-select='onArticleSelectedInSearch($item, $model, $label)' >
 	                   </div>
-	                   <div class="form-group col-lg-4">
+	                   <div class="form-group col-lg-2">
 	                       <label class=" control-label" for="searchLotPic">{{invInvtryUtils.translations['InvInvtryItem_lotPic_description.title']}}</label>
-                           <input type="text" ng- class="form-control" name="searchLotPic" id="searchLotPic" required autocomplete="off" 
+                           <input type="text" ng- class="form-control" name="searchLotPic" id="searchLotPic" autocomplete="off" 
                            		ng-model="searchInput.entity.lotPic"
                               typeahead="articleLot as articleLot.lotPic for articleLot in invInvtryUtils.loadArticleLots($viewValue)" 
                               	typeahead-min-length="7"
@@ -101,6 +101,12 @@
                            </button>
                            <button  ng-click="handlePrintRequestEvent()" class="btn btn-default " style="margin-top: 23px;" >
                                <i class="glyphicon glyphicon-print"></i>
+                           </button>
+                           <button  ng-click="handleAlphabeticRequestEvent()" class="btn btn-default " style="margin-top: 23px;" >
+                               <i class="glyphicon glyphicon-sort-by-alphabet"></i>
+                           </button>
+                           <button  ng-click="handleResetRequestEvent()" class="btn btn-default " style="margin-top: 23px;" >
+                               <i class="glyphicon glyphicon-flash"></i>
                            </button>
 	                       <button class="btn btn-default" ng-disabled="invInvtryItemForm.$invalid" ng-click="showAddItemPane()" style="margin-top: 23px;" ng-show="invInvtryUtils.isInvInvtryEditable(invInvtry)">
 	                       		<i class="glyphicon glyphicon-plus"></i> {{invInvtryUtils.translations['Entity_add.title']}}

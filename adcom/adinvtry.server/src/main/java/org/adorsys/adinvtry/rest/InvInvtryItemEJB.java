@@ -105,4 +105,18 @@ public class InvInvtryItemEJB
 		repository.removeByInvtryNbr(invtryNbr);
 	}
 	
+	public List<InvInvtryItem> findByInvtryNbrSorted(String invtryNbr, int start, int max) {
+		return repository.findByInvtryNbr(invtryNbr).orderAsc("artName").firstResult(start).maxResults(max).getResultList();
+	}
+
+	public List<InvInvtryItem> findByInvtryNbrAndSectionSorted(
+			String invtryNbr, String section, int start, int max) {
+		return repository.findByInvtryNbrAndSection(invtryNbr, section).orderAsc("artName").firstResult(start).maxResults(max).getResultList();
+	}
+
+	public Long countByInvtryNbrAndSection(String invtryNbr, String section) {
+		return repository.countByInvtryNbrAndSection(invtryNbr, section);
+	}
+
+	
 }
