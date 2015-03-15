@@ -102,7 +102,7 @@
                                 <td>{{prcmtDelivery.dlvryStatus}}</td>
                                 <td>{{prcmtDelivery.rcvngOrgUnit}}</td>
                                 <td><a ng-show="prcmtDeliveryCtrl.showEdit(prcmtDelivery.dlvryStatus)" href="#/PrcmtDeliverys/edit/{{prcmtDelivery.id}}" title="edit" ><i class="glyphicon glyphicon-edit"></i></a></td>
-                                <td><a href="#/PrcmtDeliverys/addItem/{{prcmtDelivery.id}}" title="Add Procurement Item" ><i class="glyphicon glyphicon-list"></i></a></td>
+                                <td><a  ng-click="prcmtDeliveryCtrl.showDelivery(prcmtDelivery)" title="Add Procurement Item" ><i class="glyphicon glyphicon-list"></i></a></td>
                             </tr>
                             </tbody>
                         </table>
