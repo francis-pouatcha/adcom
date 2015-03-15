@@ -25,4 +25,18 @@ public interface InvInvtryItemRepository extends EntityRepository<InvInvtryItem,
 
 	@Query("SELECT COUNT(e.id) FROM InvInvtryItem AS e WHERE e.invtryNbr = ?1 AND e.section=?2")
 	public Long countByInvtryNbrAndSection(String invtryNbr, String section);
+
+	@Query("SELECT e FROM InvInvtryItem AS e WHERE e.invtryNbr = ?1 AND LOWER(SUBSTRING(e.artName,1,1))>=?2 AND LOWER(SUBSTRING(e.artName,0,1))<=?3")
+	public QueryResult<InvInvtryItem> findByInvtryNbrInRange(String invtryNbr, String rangeStart, String rangeEnd);
+
+	@Query("SELECT count(e.id) FROM InvInvtryItem AS e WHERE e.invtryNbr = ?1 AND LOWER(SUBSTRING(e.artName,1,1))>=?2 AND LOWER(SUBSTRING(e.artName,0,1))<=?3")
+	public Long countByInvtryNbrInRange(String invtryNbr, String rangeStart, String rangeEnd);
+
+	@Query("SELECT e FROM InvInvtryItem AS e WHERE e.invtryNbr = ?1 AND e.section=?2 AND LOWER(SUBSTRING(e.artName,1,1))>=?3 AND LOWER(SUBSTRING(e.artName,0,1))<=?4")
+	public QueryResult<InvInvtryItem> findByInvtryNbrAndSection(
+			String invtryNbr, String section, String rangeStart, String rangeEnd);
+
+	@Query("SELECT count(e.id) FROM InvInvtryItem AS e WHERE e.invtryNbr = ?1 AND e.section=?2 AND LOWER(SUBSTRING(e.artName,1,1))<=?3 AND LOWER(SUBSTRING(e.artName,0,1))<=?4")
+	public Long countByInvtryNbrAndSection(String invtryNbr, String section,
+			String rangeStart, String rangeEnd);
 }

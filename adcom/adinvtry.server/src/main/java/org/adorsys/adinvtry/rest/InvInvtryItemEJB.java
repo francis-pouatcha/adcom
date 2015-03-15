@@ -9,6 +9,7 @@ import javax.persistence.metamodel.SingularAttribute;
 import org.adorsys.adinvtry.jpa.InvInvtryItem;
 import org.adorsys.adinvtry.jpa.InvInvtryItemEvtData;
 import org.adorsys.adinvtry.repo.InvInvtryItemRepository;
+import org.apache.commons.lang3.StringUtils;
 
 @Stateless
 public class InvInvtryItemEJB
@@ -116,6 +117,39 @@ public class InvInvtryItemEJB
 
 	public Long countByInvtryNbrAndSection(String invtryNbr, String section) {
 		return repository.countByInvtryNbrAndSection(invtryNbr, section);
+	}
+
+	public List<InvInvtryItem> findByInvtryNbrInRange(String invtryNbr,
+			String rangeStart, String rangeEnd, int start, int max, boolean sorted) {
+		if(StringUtils.isBlank(rangeStart)) rangeStart = "a";
+		if(StringUtils.isBlank(rangeEnd)) rangeEnd = "z";
+		if(sorted){
+			return repository.findByInvtryNbrInRange(invtryNbr,rangeStart,rangeEnd).orderAsc("artName").firstResult(start).maxResults(max).getResultList();
+		} else {
+			return repository.findByInvtryNbrInRange(invtryNbr,rangeStart,rangeEnd).firstResult(start).maxResults(max).getResultList();
+		}
+	}
+
+	public Long countByInvtryNbrInRange(String invtryNbr, String rangeStart,
+			String rangeEnd) {
+		if(StringUtils.isBlank(rangeStart)) rangeStart = "a";
+		if(StringUtils.isBlank(rangeEnd)) rangeEnd = "z";
+		return repository.countByInvtryNbrInRange(invtryNbr,rangeStart,rangeEnd);
+	}
+
+	public List<InvInvtryItem> findByInvtryNbrAndSectionInRange(
+			String invtryNbr, String section, String rangeStart, String rangeEnd, int start,
+			int max, boolean sorted) {
+		if(sorted){
+			return repository.findByInvtryNbrAndSection(invtryNbr, section, rangeStart, rangeEnd).orderAsc("artName").firstResult(start).maxResults(max).getResultList();
+		} else {
+			return repository.findByInvtryNbrAndSection(invtryNbr, section, rangeStart, rangeEnd).firstResult(start).maxResults(max).getResultList();
+		}
+	}
+
+	public Long countByInvtryNbrAndSectionInRange(String invtryNbr, String section,
+			String rangeStart, String rangeEnd) {
+		return repository.countByInvtryNbrAndSection(invtryNbr, section, rangeStart, rangeEnd);
 	}
 
 	

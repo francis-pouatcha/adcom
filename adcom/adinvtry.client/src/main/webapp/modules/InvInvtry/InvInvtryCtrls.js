@@ -106,6 +106,9 @@ angular.module('AdInvtry')
     	            'InvInvtry_startRange_description.title',
     	            'InvInvtry_endRange_description.text',
     	            'InvInvtry_endRange_description.title',
+    	            'InvInvtryItem_sectionName_description.title',
+    	            'InvInvtryItem_artNameStart_description.title',
+    	            'InvInvtryItem_artNameEnd_description.title',
 
     	            'InvInvtryItem_description.title',
 

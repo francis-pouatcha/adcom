@@ -84,23 +84,28 @@
 	               	</div>
 	                <div class="row" >
 	                   <div class="form-group col-lg-4">
-	                       <label class=" control-label" for="searchSectionName">{{invInvtryUtils.translations['InvInvtryItem_section_description.title']}}</label>
+	                       <label class=" control-label" for="searchSectionName">{{invInvtryUtils.translations['InvInvtryItem_sectionName_description.title']}}</label>
                		       <input type="text" ng-model="searchInput.display.sectionName" id="searchSectionName" name="searchSectionName" class="form-control"
                                autocomplete="off" typeahead="stkSection as stkSection.name for stkSection in invInvtryUtils.loadSections($viewValue)"
                                typeahead-loading="loading" typeahead-min-length="4" typeahead-on-select='onSectionSelectedInSearch($item, $model, $label)'>
 	                   </div>
-	                   <div class="form-group col-lg-4">
+	                   <div class="form-group col-lg-2">
 	                       <label class=" control-label" for="searchSectionCode">{{invInvtryUtils.translations['InvInvtryItem_section_description.title']}}</label>
                		       <input type="text" ng-model="searchInput.entity.section" id="searchSectionCode" name="searchSectionCode" class="form-control"
                                autocomplete="off" typeahead="stkSection as stkSection.sectionCode for stkSection in invInvtryUtils.loadSections($viewValue)"
                                typeahead-loading="loading" typeahead-min-length="7" typeahead-on-select='onSectionSelectedInSearch($item, $model, $label)'>
 	                   </div>
+	                   <div class="form-group col-lg-1">
+	                       <label class=" control-label" for="searchRangeStart">{{invInvtryUtils.translations['InvInvtryItem_artNameStart_description.title']}}</label>
+               		       <input type="text" ng-model="searchInput.rangeStart" id="searchRangeStart" name="searchRangeStart" class="form-control">
+	                   </div>
+	                   <div class="form-group col-lg-1">
+	                       <label class=" control-label" for="searchRangeEnd">{{invInvtryUtils.translations['InvInvtryItem_artNameEnd_description.title']}}</label>
+               		       <input type="text" ng-model="searchInput.rangeEnd" id="searchRangeEnd" name="searchRangeEnd" class="form-control">
+	                   </div>
                        <div class="form-group col-lg-4">
                            <button  ng-click="handleSearchRequestEvent()" class="btn btn-default " style="margin-top: 23px;" >
                                <i class="glyphicon glyphicon-search"></i>
-                           </button>
-                           <button  ng-click="handlePrintRequestEvent()" class="btn btn-default " style="margin-top: 23px;" >
-                               <i class="glyphicon glyphicon-print"></i>
                            </button>
                            <button  ng-click="handleAlphabeticRequestEvent()" class="btn btn-default " style="margin-top: 23px;" >
                                <i class="glyphicon glyphicon-sort-by-alphabet"></i>
@@ -111,6 +116,9 @@
 	                       <button class="btn btn-default" ng-disabled="invInvtryItemForm.$invalid" ng-click="showAddItemPane()" style="margin-top: 23px;" ng-show="invInvtryUtils.isInvInvtryEditable(invInvtry)">
 	                       		<i class="glyphicon glyphicon-plus"></i> {{invInvtryUtils.translations['Entity_add.title']}}
 	                       </button>
+                           <button  ng-click="handlePrintRequestEvent()" class="btn btn-default " style="margin-top: 23px;" >
+                               <i class="glyphicon glyphicon-print"></i>
+                           </button>
                        </div>
 		            </div>
 	          </form>
