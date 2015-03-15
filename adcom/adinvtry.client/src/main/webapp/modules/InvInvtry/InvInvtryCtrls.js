@@ -29,8 +29,8 @@ angular.module('AdInvtry')
     };
     return service;
 }])
-.factory('invInvtryUtils',['sessionManager','$translate','genericResource','$q','invInvtryState','entityPreLoaderFactory',
-                           function(sessionManager,$translate,genericResource,$q,invInvtryState,entityPreLoaderFactory){
+.factory('invInvtryUtils',['sessionManager','$translate','genericResource','$q','invInvtryState',
+                           function(sessionManager,$translate,genericResource,$q,invInvtryState){
     var service = {};
 
     service.urlBase='/adinvtry.server/rest/invinvtrys';
@@ -42,18 +42,18 @@ angular.module('AdInvtry')
     service.stkarticlelot2strgsctnsUrlBase='/adstock.server/rest/stkarticlelot2strgsctns';
     service.alphabet = "abcdefghijklmnopqrstuvwxyz";
     
-//    service.invInvtryTypeI18nMsgTitleKey = function(enumKey){
-//    	return "InvInvtryType_"+enumKey+"_description.title";
-//    };
-//    service.invInvtryTypeI18nMsgTitleValue = function(enumKey){
-//    	return service.translations[service.invInvtryTypeI18nMsgTitleKey(enumKey)];
-//    };
-//    
-//    service.invInvtryTypes = [
-//      {enumKey:'BY_SECTION', translKey:'InvInvtryType_BY_SECTION_description.title'},
-//      {enumKey:'ALPHABETICAL_ORDER_RANGE', translKey:'InvInvtryType_ALPHABETICAL_ORDER_RANGE_description.title'},
-//      {enumKey:'FREE_INV', translKey:'InvInvtryType_FREE_INV_description.title'}
-//    ];
+    service.invInvtryTypeI18nMsgTitleKey = function(enumKey){
+    	return "InvInvtryType_"+enumKey+"_description.title";
+    };
+    service.invInvtryTypeI18nMsgTitleValue = function(enumKey){
+    	return service.translations[service.invInvtryTypeI18nMsgTitleKey(enumKey)];
+    };
+    
+    service.invInvtryTypes = [
+      {enumKey:'BY_SECTION', translKey:'InvInvtryType_BY_SECTION_description.title'},
+      {enumKey:'ALPHABETICAL_ORDER_RANGE', translKey:'InvInvtryType_ALPHABETICAL_ORDER_RANGE_description.title'},
+      {enumKey:'FREE_INV', translKey:'InvInvtryType_FREE_INV_description.title'}
+    ];
 
     service.invInvntrStatusI18nMsgTitleKey = function(enumKey){
     	return "InvInvntrStatus_"+enumKey+"_description.title";
@@ -139,52 +139,127 @@ angular.module('AdInvtry')
     	            'Entity_By.title',
     	            'Entity_saveleave.title',
     	            'Entity_add.title',
-    	            'Entity_notfound.title'
-    	            
+    	            'Entity_notfound.title',
+    	            'Entity_Of.title',
+    	            'Entity_info.title'
+
     	            ])
 		 .then(function (translations) {
 			 service.translations = translations;
 	 	 });	
     };
     
-    var sectionPreloader = entityPreLoaderFactory.newEntityPreLoader('sections','sectionCode', service.stksectionsUrlBase, genericResource.findCustom);
     service.loadSections = function(val){
-    	if(angular.isUndefined(val) || !val) return;
-    	var searchInput = sectionPreloader.searchInput();
-    	searchInput.codeOrName = val;
-    	resultHandler = sectionPreloader.load(searchInput, val)
-    	return resultHandler.resultList();
+        return loadSectionsPromise(val).then(function(entitySearchResult){
+            return entitySearchResult.resultList;
+        });
     };
 
-    service.translatePromise = function(array) {
-        return $translate(array);
+    function loadSectionsPromise(val){
+    	if(!val) return;
+    	
+        var searchInput = {
+            entity:{},
+            fieldNames:[],
+            start: 0,
+            max: 10
+        };
+        searchInput.codeOrName = val;
+        var deferred = $q.defer();
+        genericResource.findCustom(service.stksectionsUrlBase, searchInput)
+		.success(function(entitySearchResult) {
+        	deferred.resolve(entitySearchResult);
+		})
+        .error(function(){
+            deferred.reject(service.translations['InvInvtry_NoSectionFound_description.title']);
+        });
+        return deferred.promise;
+    }    
+    
+    service.loadArticles = function(val){
+        return loadArticlesPromise(val).then(function(entitySearchResult){
+            return entitySearchResult.resultList;
+        });
+    };
+
+    function loadArticlesPromise(val){
+        var deferred = $q.defer();
+    	if(!val) {
+            deferred.reject(service.translations['InvInvtry_NoArticleFound_description.title']);
+            return deferred.promise; //we must return a promise   
+        }
+    	
+        var searchInput = {
+            entity:{},
+            fieldNames:[],
+            start: 0,
+            max: 10
+        };
+
+        searchInput.codesAndNames = val;
+        return loadArticlesPromiseUsingSearchInput(searchInput);
+    } 
+    
+    service.loadArticleWithSearchInput = function (searchInput) {
+        return loadArticlesPromiseUsingSearchInput(searchInput);
+    }
+    
+    function loadArticlesPromiseUsingSearchInput(searchInput){
+        var deferred = $q.defer();
+    	if(!searchInput) {
+            deferred.reject(service.translations['InvInvtry_NoArticleFound_description.title']);
+            return deferred.promise; //we must return a promise   
+        }
+        genericResource.findByLike(service.catalarticlesUrlBase, searchInput)
+		.success(function(entitySearchResult) {
+        	deferred.resolve(entitySearchResult);
+		})
+        .error(function(){
+            deferred.reject(service.translations['InvInvtry_NoArticleFound_description.title']);
+        });
+        return deferred.promise;
+    }    
+    
+    service.loadStkSectionArticleLots = function(stkSection){
+        return loadStkSectionArticleLotsPromise(stkSection);
+    };
+    
+    // Load ArticlesLots from StkSection
+    function loadStkSectionArticleLotsPromise(stkSection){
+          if(!stkSection) return;
+            
+          var searchInputArtLots = {
+            entity:{},
+            fieldNames:[],
+            start:0,
+            max:-1
+            };
+            searchInputArtLots.sectionCode= stkSection.sectionCode;
+            searchInputArtLots.withStrgSection= true;
+            var deferred = $q.defer();
+            genericResource.findBy(service.stkarticlelotsUrlBase, searchInputArtLots)
+            .success(function(entitySearchResult) {
+                deferred.resolve(entitySearchResult);
+              })
+            .error(function(error){
+                deferred.reject('No articles from StockSection');
+            });
+        return deferred.promise;
     }
 
-    var artPreloader = entityPreLoaderFactory.newEntityPreLoader('articles','artPic', service.catalarticlesUrlBase, genericResource.findByLike);
-    service.loadArticles = function(val){
-    	if(angular.isUndefined(val) || !val) return;
-    	var searchInput = artPreloader.searchInput();
-    	searchInput.codesAndNames = val;
-    	resultHandler = artPreloader.load(searchInput, val)
-    	return resultHandler.resultList();
-    };
-
-    var sectionArticleLotPreloader = entityPreLoaderFactory.newEntityPreLoader('sectionArticleLots','lotPic', service.stkarticlelotsUrlBase, genericResource.findBy);
-    service.loadStkSectionArticleLots = function(stkSection){
-    	if(angular.isUndefined(stkSection) || !stkSection) return;
-    	var searchInput = sectionArticleLotPreloader.searchInput();
-    	searchInput.sectionCode= stkSection.sectionCode;
-    	searchInput.withStrgSection= true;
-    	resultHandler = sectionArticleLotPreloader.load(searchInput, stkSection.sectionCode);
-    	return resultHandler.resultList();
-    };
-
-
-    var articleLotPreloader = entityPreLoaderFactory.newEntityPreLoader('articleLots','lotPic', service.stkarticlelotsUrlBase, genericResource.findByLike);
     service.loadArticleLots = function(lotPic){
-        if(!lotPic || lotPic.length<5) return;
-    	var searchInput = articleLotPreloader.searchInput();
-    	searchInput.max = 30;
+        return loadArticleLotsPromise(lotPic).then(function(entitySearchResult){
+            return entitySearchResult.resultList;
+        });
+    };
+
+    function loadArticleLotsPromise(lotPic){
+        var deferred = $q.defer();
+        if(!lotPic || lotPic.length<5) {
+            deferred.reject("");
+            return deferred.promise;
+        }
+        var searchInput = {entity:{},fieldNames:[],start: 0,max: 30};
         searchInput.entity.lotPic = lotPic;
         if(searchInput.fieldNames.indexOf('lotPic')==-1)
         	searchInput.fieldNames.push('lotPic');
@@ -193,22 +268,52 @@ angular.module('AdInvtry')
         	searchInput.fieldNames.push('closedDt');
         // also load storage section
         searchInput.withStrgSection=true;
-    	resultHandler = articleLotPreloader.load(searchInput, lotPic);
-    	return resultHandler.resultList();
+        genericResource.findByLike(service.stkarticlelotsUrlBase, searchInput)
+		.success(function(entitySearchResult) {
+        	deferred.resolve(entitySearchResult);
+		})
+        .error(function(){
+            deferred.reject(service.translations['InvInvtry_NoArticleFound_description.title']);
+        });
+        return deferred.promise;
+    }
+    
+
+    service.loadUsers = function(val){
+        return loadUsersPromise(val).then(function(entitySearchResult){
+            return entitySearchResult.resultList;
+        });
     };
 
-    var userPreloader = entityPreLoaderFactory.newEntityPreLoader('users', 'loginName', service.loginnamessUrlBase, genericResource.findByLike);
-    service.loadUsers = function(val){
-    	if(angular.isUndefined(val) || !val) return;
-    	var searchInput = userPreloader.searchInput();
+    function loadUsersPromise(val){
+    	if(!val) return;
+    	
+        var searchInput = {
+            entity:{
+            },
+            fieldNames:[],
+            start: 0,
+            max: 10
+        };
+
         searchInput.entity.fullName = val;
         if(searchInput.fieldNames.indexOf('fullName')==-1)        
         	searchInput.fieldNames.push('fullName');
-    	resultHandler = userPreloader.load(searchInput, val);
-    	return resultHandler.resultList();
-    };
+        var deferred = $q.defer();
+        genericResource.findByLike(service.loginnamessUrlBase, searchInput)
+		.success(function(entitySearchResult) {
+        	deferred.resolve(entitySearchResult);
+		})
+        .error(function(){
+            deferred.reject(service.translations['InvInvtry_NoUserFound_description.title']);
+        });
+        return deferred.promise;
+    }    
 
     service.translate();
+    service.translatePromise = function(array) {
+        return $translate(array);
+    }
     
     service.isInvtryBySection = function(invInvtry){
     	return invInvtry && invInvtry.invInvtryType && invInvtry.invInvtryType=='BY_SECTION';
@@ -379,6 +484,22 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
     	$scope.searchInput.entity.invtryNbr=$scope.invInvtry.invtryNbr;
         if($scope.searchInput.fieldNames.indexOf('invtryNbr')==-1)
         	$scope.searchInput.fieldNames.push('invtryNbr');
+        
+        if(angular.isDefined($scope.searchInput.entity.lotPic)){
+            if($scope.searchInput.fieldNames.indexOf('lotPic')==-1)
+            	$scope.searchInput.fieldNames.push('lotPic');
+        }
+
+        if(angular.isDefined($scope.searchInput.entity.artPic)){
+            if($scope.searchInput.fieldNames.indexOf('artPic')==-1)
+            	$scope.searchInput.fieldNames.push('artPic');
+        }
+
+        if(angular.isDefined($scope.searchInput.entity.section)){
+            if($scope.searchInput.fieldNames.indexOf('section')==-1)
+            	$scope.searchInput.fieldNames.push('section');
+        }
+        
         genericResource.findByLike(invInvtryUtils.invinvtrysUrlBase,$scope.searchInput)
         .success(function(searchResult){
         	itemsResultHandler.searchResult(searchResult);
@@ -390,12 +511,7 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
     loadInvInvtryItems();    
     
     $scope.handleSearchRequestEvent = function(){
-    	if($scope.searchInput.acsngUser){
-    		$scope.searchInput.entity.acsngUser=$scope.searchInput.acsngUser.loginName;
-    	} else {
-    		$scope.searchInput.entity.acsngUser='';
-    	}
-    	findCustom($scope.searchInput);
+    	loadInvInvtryItems();
     };
 
     $scope.paginate = function(){
@@ -450,21 +566,22 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
 //    	});
     };
     
-    $scope.onSectionSelected = function(item,model,label){
-//    	$scope.invInvtryItemHolder.invtryItem.section=stkSection.sectionCode;
+    $scope.onSectionSelectedInSearch = function(item,model,label){
+    	$scope.searchInput.entity.section=item.sectionCode;
+    	$scope.searchInput.display.sectionName=item.name;
     }
 
-    $scope.onArticleLotSelected = function(item,model,label){
-//    	$scope.invInvtryItemHolder.invtryItem.lotPic=item.lotPic;
-//    	$scope.invInvtryItemHolder.invtryItem.artPic=item.artPic;
+    $scope.onArticleLotSelectedInSearch = function(item,model,label){
+    	$scope.searchInput.entity.lotPic=item.lotPic;
+    	$scope.searchInput.entity.artPic=item.artPic;
 //    	// read the article name
-//    	genericResource.findByIdentif(invInvtryUtils.catalarticlesUrlBase,item.artPic)
-//    	.success(function(catalArticle){
-//    		$scope.invInvtryItemHolder.invtryItem.artName=catalArticle.features.artName;
-//    	})
-//    	.error(function(error){
-//    		$scope.error=error;
-//    	});
+    	genericResource.findByIdentif(invInvtryUtils.catalarticlesUrlBase,item.artPic)
+    	.success(function(catalArticle){
+    		$scope.searchInput.entity.artName=catalArticle.features.artName;
+    	})
+    	.error(function(error){
+    		$scope.error=error;
+    	});
 //    	if(!$scope.invInvtryItemHolder.invtryItem.section || 
 //    			$scope.invInvtryItemHolder.invtryItem.section==''){
 //    		var strgSctns = item.strgSctns;
@@ -479,10 +596,10 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
 //    	}
     };
     
-    $scope.onArticleSelected = function(item,model,label){
-//    	$scope.invInvtryItemHolder.invtryItem.artPic=item.pic;
-//		$scope.invInvtryItemHolder.invtryItem.artName=item.features.artName;
-//
+    $scope.onArticleSelectedInSearch = function(item,model,label){
+    	$scope.searchInput.entity.artPic=item.pic;
+    	$scope.searchInput.entity.artName=item.features.artName;
+
 //		// find article lots
 //        var lotSearchInput = {entity:{},fieldNames:[],start: 0,max: 10};
 //        lotSearchInput.entity.artPic = item.artPic;
