@@ -86,7 +86,7 @@ angular.module('ADUtils',[])
     return service;
 	
 }])
-.factory('genericResource',['$http', function($http){
+.factory('genericResource',['$http','$q', function($http,$q){
     var service = {};
 
     service.create = function(urlBase, entity){
@@ -100,10 +100,35 @@ angular.module('ADUtils',[])
     service.findBy = function(urlBase, entitySearchInput){
         return $http.post(urlBase+'/findBy',entitySearchInput);
     };
-
+    
     service.findByLike = function(urlBase, entitySearchInput){
         return $http.post(urlBase+'/findByLike',entitySearchInput);
     };
+
+    service.findByLikePromissed = function (urlBase, fieldName, fieldValue){
+    	if(angular.isUndefined(urlBase) || !urlBase ||
+    		angular.isUndefined(fieldName) || !fieldName || 
+    		angular.isUndefined(fieldValue) || !fieldValue) return;
+          
+        var searchInput = {
+          entity:{},
+          fieldNames:[],
+          start:0,
+          max:10
+          };
+        searchInput.entity[fieldName]= fieldValue;
+        if(searchInput.fieldNames.indexOf(fieldName)==-1)
+        	searchInput.fieldNames.push(fieldName);
+          var deferred = $q.defer();
+          service.findByLike(urlBase, searchInput)
+          .success(function(entitySearchResult) {
+              deferred.resolve(entitySearchResult);
+            })
+          .error(function(error){
+              deferred.reject('No entity found');
+          });
+      return deferred.promise;
+    }
 
     service.findById = function(urlBase, entityId){
         return $http.get(urlBase+'/'+entityId);

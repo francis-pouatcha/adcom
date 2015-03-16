@@ -152,6 +152,62 @@ angular.module('AdInvtry')
 	 	 });	
     };
     
+    service.loadSectionsBySectionCode = function(sectionCode){
+        return loadSectionsBySectionCodePromise(sectionCode).then(function(entitySearchResult){
+            return entitySearchResult.resultList;
+        });
+    };
+    function loadSectionsBySectionCodePromise(sectionCode){
+    	if(!sectionCode) return;
+    	
+        var searchInput = {
+            entity:{},
+            fieldNames:[],
+            start: 0,
+            max: 10
+        };
+        searchInput.entity.sectionCode = sectionCode;
+        if(searchInput.fieldNames.indexOf('sectionCode')==-1)
+        	searchInput.fieldNames.push('sectionCode');
+        var deferred = $q.defer();
+        genericResource.findByLike(service.stksectionsUrlBase, searchInput)
+		.success(function(entitySearchResult) {
+        	deferred.resolve(entitySearchResult);
+		})
+        .error(function(){
+            deferred.reject(service.translations['InvInvtry_NoSectionFound_description.title']);
+        });
+        return deferred.promise;
+    }    
+
+    service.loadSectionsBySectionName = function(sectionName){
+        return loadSectionsBySectionNamePromise(sectionName).then(function(entitySearchResult){
+            return entitySearchResult.resultList;
+        });
+    };
+    function loadSectionsBySectionNamePromise(sectionName){
+    	if(!sectionName) return;
+    	
+        var searchInput = {
+            entity:{},
+            fieldNames:[],
+            start: 0,
+            max: 10
+        };
+        searchInput.entity.name = sectionName;
+        if(searchInput.fieldNames.indexOf('name')==-1)
+        	searchInput.fieldNames.push('name');
+        var deferred = $q.defer();
+        genericResource.findByLike(service.stksectionsUrlBase, searchInput)
+		.success(function(entitySearchResult) {
+        	deferred.resolve(entitySearchResult);
+		})
+        .error(function(){
+            deferred.reject(service.translations['InvInvtry_NoSectionFound_description.title']);
+        });
+        return deferred.promise;
+    }    
+    
     service.loadSections = function(val){
         return loadSectionsPromise(val).then(function(entitySearchResult){
             return entitySearchResult.resultList;
@@ -223,33 +279,22 @@ angular.module('AdInvtry')
         return deferred.promise;
     }    
     
-    service.loadStkSectionArticleLots = function(stkSection){
-        return loadStkSectionArticleLotsPromise(stkSection);
+    service.loadStkSectionArticleLots = function(strgSection){
+        return genericResource.findByLikePromissed(service.stkarticlelot2strgsctnsUrlBase, 'strgSection', strgSection)
+        .then(function(entitySearchResult){
+            return entitySearchResult.resultList;
+        });
+    };
+
+    service.loadStkSectionArticleLotsByName = function(sectionName){
+        return genericResource.findByLikePromissed(service.stkarticlelot2strgsctnsUrlBase, 'sectionName', sectionName)
+        .then(function(entitySearchResult){
+            return entitySearchResult.resultList;
+        });
     };
     
     // Load ArticlesLots from StkSection
-    function loadStkSectionArticleLotsPromise(stkSection){
-          if(!stkSection) return;
-            
-          var searchInputArtLots = {
-            entity:{},
-            fieldNames:[],
-            start:0,
-            max:-1
-            };
-            searchInputArtLots.sectionCode= stkSection.sectionCode;
-            searchInputArtLots.withStrgSection= true;
-            var deferred = $q.defer();
-            genericResource.findBy(service.stkarticlelotsUrlBase, searchInputArtLots)
-            .success(function(entitySearchResult) {
-                deferred.resolve(entitySearchResult);
-              })
-            .error(function(error){
-                deferred.reject('No articles from StockSection');
-            });
-        return deferred.promise;
-    }
-
+    
     service.loadArticleLots = function(lotPic){
         return loadArticleLotsPromise(lotPic).then(function(entitySearchResult){
             return entitySearchResult.resultList;
@@ -460,6 +505,7 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
     $scope.maxSize =itemsResultHandler.maxResult;
     $scope.invInvtryItems =itemsResultHandler.entities;
     $scope.selectedIndex=itemsResultHandler.selectedIndex;
+    $scope.display = {};
 
     if($scope.invInvtry) {
         $scope.invInvtry.acsngUser = invInvtryUtils.currentWsUser.userFullName;
@@ -482,22 +528,21 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
 
     function loadInvInvtryItems() {
     	$scope.searchInput.entity.invtryNbr=$scope.invInvtry.invtryNbr;
-        if($scope.searchInput.fieldNames.indexOf('invtryNbr')==-1)
-        	$scope.searchInput.fieldNames.push('invtryNbr');
+    	$scope.searchInput.fieldNames = [];
+    	if(angular.isDefined($scope.searchInput.entity.invtryNbr) && $scope.searchInput.entity.invtryNbr){
+            $scope.searchInput.fieldNames.push('invtryNbr');
+    	}
         
-        if(angular.isDefined($scope.searchInput.entity.lotPic)){
-            if($scope.searchInput.fieldNames.indexOf('lotPic')==-1)
-            	$scope.searchInput.fieldNames.push('lotPic');
+        if(angular.isDefined($scope.searchInput.entity.lotPic) && $scope.searchInput.entity.lotPic){
+            $scope.searchInput.fieldNames.push('lotPic');
         }
 
-        if(angular.isDefined($scope.searchInput.entity.artPic)){
-            if($scope.searchInput.fieldNames.indexOf('artPic')==-1)
-            	$scope.searchInput.fieldNames.push('artPic');
+        if(angular.isDefined($scope.searchInput.entity.artPic) && $scope.searchInput.entity.artPic){
+            $scope.searchInput.fieldNames.push('artPic');
         }
 
-        if(angular.isDefined($scope.searchInput.entity.section)){
-            if($scope.searchInput.fieldNames.indexOf('section')==-1)
-            	$scope.searchInput.fieldNames.push('section');
+        if(angular.isDefined($scope.searchInput.entity.section) && $scope.searchInput.entity.section){
+            $scope.searchInput.fieldNames.push('section');
         }
         
         genericResource.findByLike(invInvtryUtils.invinvtrysUrlBase,$scope.searchInput)
@@ -576,8 +621,8 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
     };
     
     $scope.onSectionSelectedInSearch = function(item,model,label){
-    	$scope.searchInput.entity.section=item.sectionCode;
-    	$scope.searchInput.display.sectionName=item.name;
+    	$scope.searchInput.entity.section=item.strgSection;
+    	$scope.display.sectionName=item.sectionName;
     }
     $scope.onArticleLotChangedInSearch = function(){
     	if($scope.searchInput.entity.lotPic && $scope.searchInput.entity.lotPic.length<9) return;

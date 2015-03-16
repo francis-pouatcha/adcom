@@ -30,16 +30,28 @@ public class StkAbstractLot2Section extends AbstractIdentifData {
 
 	/*
 	 * The name of the article is store here to simplify search.
+	 * In the language of the creator of this item.
 	 */
 	@Column
 	@Description("StkAbstractLot2Section_artName_description")
 	@NotNull
 	private String artName;
 	
+	/*
+	 * The section code
+	 */
 	@Column
 	@Description("StkAbstractLot2Section_strgSection_description")
 	@NotNull
 	private String strgSection;
+	
+	/*
+	 * The section name
+	 */
+	@Column
+	@Description("StkAbstractLot2Section_artName_description")
+	@NotNull
+	private String sectionName;
 	
 	/*
 	 * Closed at the inventory process. Waiting for cleanup.
@@ -118,10 +130,20 @@ public class StkAbstractLot2Section extends AbstractIdentifData {
 		this.outOfStockDt = outOfStockDt;
 	}
 
+	public String getSectionName() {
+		return sectionName;
+	}
+
+	public void setSectionName(String sectionName) {
+		this.sectionName = sectionName;
+	}
+
 	public void copyTo(StkAbstractLot2Section target){
 		target.artPic = artPic;
 		target.lotPic = lotPic;
 		target.strgSection=strgSection;
+		target.sectionName = sectionName;
+		target.artName = artName;
 		target.stkSection = stkSection;
 		target.sectionArticleLot =sectionArticleLot;
 	}

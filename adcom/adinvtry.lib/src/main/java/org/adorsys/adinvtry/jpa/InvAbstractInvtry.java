@@ -27,11 +27,13 @@ public abstract class InvAbstractInvtry extends AbstractIdentifData {
 	@NotNull
 	private String invtryNbr;
 
+	/*
+	 * The only user that will be allowed to create inventory items.
+	 */
 	@Column
 	@Description("InvInvtry_acsngUser_description")
-	@NotNull
 	private String acsngUser;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Description("InvInvtry_acsngDt_description")
 	@DateFormatPattern(pattern = "dd-MM-yyyy HH:mm")

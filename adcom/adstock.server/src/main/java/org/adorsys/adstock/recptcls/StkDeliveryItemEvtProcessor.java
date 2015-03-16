@@ -1,6 +1,7 @@
 package org.adorsys.adstock.recptcls;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -20,11 +21,13 @@ import org.adorsys.adstock.jpa.StkArticleLot2Ou;
 import org.adorsys.adstock.jpa.StkArticleLot2StrgSctn;
 import org.adorsys.adstock.jpa.StkDlvryItemHstry;
 import org.adorsys.adstock.jpa.StkLotStockQty;
+import org.adorsys.adstock.jpa.StkSection;
 import org.adorsys.adstock.rest.StkArticleLot2OuEJB;
 import org.adorsys.adstock.rest.StkArticleLot2StrgSctnEJB;
 import org.adorsys.adstock.rest.StkArticleLotEJB;
 import org.adorsys.adstock.rest.StkDlvryItemHstryEJB;
 import org.adorsys.adstock.rest.StkLotStockQtyEJB;
+import org.adorsys.adstock.rest.StkSectionEJB;
 
 /**
  * Check for the incoming of delivery closed event and 
@@ -49,6 +52,8 @@ public class StkDeliveryItemEvtProcessor {
 	private StkArticleLot2OuEJB articleLot2OuEJB;
 	@Inject
 	private StkArticleLot2StrgSctnEJB articleLot2StrgSctnEJB;
+	@Inject
+	private StkSectionEJB sectionEJB;
 
 	public void process(String itemEvtDataId, PrcmtDeliveryEvt deliveryEvt) {
 		PrcmtDlvryItemEvtData itemEvtData = itemEvtDataEJB.findById(itemEvtDataId);
@@ -118,6 +123,8 @@ public class StkDeliveryItemEvtProcessor {
 			strgSctn.setArtPic(stkArticleLot.getArtPic());
 			strgSctn.setLotPic(stkArticleLot.getLotPic());
 			strgSctn.setStrgSection(strgSctnEvtData.getStrgSection());
+			StkSection stkSection = sectionEJB.findByIdentif(strgSctnEvtData.getStrgSection(), new Date());
+			strgSctn.setSectionName(stkSection.getName());
 			strgSctn.setArtName(itemEvtData.getArtName());
 			articleLot2StrgSctnEJB.create(strgSctn);
 
