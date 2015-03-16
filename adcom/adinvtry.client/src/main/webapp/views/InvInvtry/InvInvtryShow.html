@@ -76,10 +76,7 @@
 	                   <div class="form-group col-lg-2">
 	                       <label class=" control-label" for="searchLotPic">{{invInvtryUtils.translations['InvInvtryItem_lotPic_description.title']}}</label>
                            <input type="text" ng- class="form-control" name="searchLotPic" id="searchLotPic" autocomplete="off" 
-                           		ng-model="searchInput.entity.lotPic"
-                              typeahead="articleLot as articleLot.lotPic for articleLot in invInvtryUtils.loadArticleLots($viewValue)" 
-                              	typeahead-min-length="7"
-                              typeahead-loading="loading" typeahead-on-select='onArticleLotSelectedInSearch($item, $model, $label)' >
+                           		ng-model="searchInput.entity.lotPic" ng-change="onArticleLotChangedInSearch()" uppercase>
 	                   </div>
 	               	</div>
 	                <div class="row" >
@@ -126,7 +123,9 @@
         </div>
     </div>
     <div class="panel panel-default" ng-show="invInvtryUtils.isInvInvtryEditable(invInvtry)">
-        <div class="panel-heading"><b> {{invInvtryUtils.translations['Entity_add.title']}} {{invInvtryUtils.translations['InvInvtryItem_description.title']}} </b> </div>
+        <div class="panel-heading">
+        	<b> {{invInvtryUtils.translations['Entity_add.title']}} {{invInvtryUtils.translations['InvInvtryItem_description.title']}} </b> 
+        </div>
         <div class="panel-body">
             <form name="invInvtryItemForm" id="invInvtryItemForm" novalidate >
                 <div class="row" >
@@ -180,7 +179,12 @@
         </div>
     </div>
     <div class="panel panel-default">
-        <div class="panel-heading"><b> {{invInvtryUtils.translations['InvInvtryItem_description.title']}} </b> </div>
+        <div class="panel-heading">
+        	<b> {{invInvtryUtils.translations['InvInvtryItem_description.title']}} </b> 
+            <span class="pull-right">
+                <a class="btn-danger btn" href="#/InvIntrys" ><i class="" ></i> {{invInvtryUtils.translations['Entity_list.title']}}</a>
+            </span>
+        </div>
         <div class="panel-body">
             <table class="table table-bordered  table-striped" >
                 <thead>

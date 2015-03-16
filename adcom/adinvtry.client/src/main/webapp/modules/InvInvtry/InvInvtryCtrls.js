@@ -266,9 +266,6 @@ angular.module('AdInvtry')
         searchInput.entity.lotPic = lotPic;
         if(searchInput.fieldNames.indexOf('lotPic')==-1)
         	searchInput.fieldNames.push('lotPic');
-        // closed date must be null;
-        if(searchInput.fieldNames.indexOf('closedDt')==-1)
-        	searchInput.fieldNames.push('closedDt');
         // also load storage section
         searchInput.withStrgSection=true;
         genericResource.findByLike(service.stkarticlelotsUrlBase, searchInput)
@@ -582,7 +579,27 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
     	$scope.searchInput.entity.section=item.sectionCode;
     	$scope.searchInput.display.sectionName=item.name;
     }
+    $scope.onArticleLotChangedInSearch = function(){
+    	if($scope.searchInput.entity.lotPic && $scope.searchInput.entity.lotPic.length<9) return;
+    	
+    	genericResource.findByIdentif(invInvtryUtils.stkarticlelotsUrlBase,$scope.searchInput.entity.lotPic.toUpperCase())
+    	.success(function(articleLot){
+    		$scope.searchInput.entity.artPic=articleLot.artPic;
+        	genericResource.findByIdentif(invInvtryUtils.catalarticlesUrlBase,$scope.searchInput.entity.artPic)
+        	.success(function(catalArticle){
+        		$scope.searchInput.entity.artName=catalArticle.features.artName;
+        	})
+        	.error(function(error){
+        		$scope.error=error;
+        	});
 
+    	})
+    	.error(function(error){
+    		// Ignore
+    	});
+
+    };
+    
     $scope.onArticleLotSelectedInSearch = function(item,model,label){
     	$scope.searchInput.entity.lotPic=item.lotPic;
     	$scope.searchInput.entity.artPic=item.artPic;

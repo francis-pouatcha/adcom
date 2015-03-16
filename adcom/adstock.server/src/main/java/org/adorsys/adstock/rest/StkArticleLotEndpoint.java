@@ -90,6 +90,17 @@ public class StkArticleLotEndpoint
    }
 
    @GET
+   @Path("/findByIdentif/{identif}")
+   @Produces({ "application/json", "application/xml" })
+   public Response findByIdentif(@PathParam("identif") String identif)
+   {
+	   StkArticleLot found = ejb.findByIdentif(identif);
+	   if (found == null)
+		   return Response.status(Status.NOT_FOUND).build();
+	   return Response.ok(detach(found)).build();
+   }
+   
+   @GET
    @Produces({ "application/json", "application/xml" })
    public StkArticleLotSearchResult listAll(@QueryParam("start") int start,
          @QueryParam("max") int max)
