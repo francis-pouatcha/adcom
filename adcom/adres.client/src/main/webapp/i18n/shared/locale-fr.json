@@ -53,6 +53,7 @@
     "Entity_list.title":"Liste",
     "Entity_type_to_select.title":"Saisir pour sélectioner",
     "Entity_notfound.title":"Pas de Résultat",
+    "Entity_info.title":"Info",
     
     "BaseCountryName_isoCode_description.title":"Code Pays",
     "BaseCountryName_iso2_description.title":"Code Pays Iso 2",

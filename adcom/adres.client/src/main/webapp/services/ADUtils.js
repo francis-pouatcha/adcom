@@ -143,7 +143,7 @@ angular.module('ADUtils',[])
         var handler = this;
         var itemPerPageVar = 10;
         var currentPageVar = 1;
-        var searchResultVar = {
+        var nakedSearchResult = {
 	    	count:0,resultList:[],
 	    	searchInput:{
 	    		entity:{},
@@ -153,6 +153,7 @@ angular.module('ADUtils',[])
 	    	// not exposed to the server environment.
 	    	currentPage:currentPageVar,itemPerPage:itemPerPageVar,selectedIndex:-1,
         };
+        var searchResultVar = angular.copy(nakedSearchResult);
         var keyField = keyFieldIn;
         var equalsFnct = function(entityA, entityB){
 			if(!entityA && !entityB) return true;
@@ -246,6 +247,9 @@ angular.module('ADUtils',[])
         };
         this.searchInputChanged = function(searchInputIn){
             return angular.equals(searchResultVar.searchInput, searchInputIn);
+        };
+        this.newSearchInput = function(){
+            return angular.copy(nakedSearchResult.searchInput);
         };
         this.paginate = function(){
         	searchResultVar.searchInput.start = ((searchResultVar.currentPage - 1)  * searchResultVar.itemPerPage);
@@ -341,55 +345,5 @@ angular.module('ADUtils',[])
     };
     
     return service;
-}])
-.factory('entityPreLoaderFactory',['searchResultHandler','$cacheFactory',
-                            function(searchResultHandler,$cacheFactory){
-    var service = {};
-    service.newEntityPreLoader = function(cacheIdIn, keyField, serviceUrlPrefix, seachMethod){
-    	return new EntityPreLoader(cacheIdIn, keyField, serviceUrlPrefix, seachMethod); 
-    };
-
-    var EntityPreLoader = function(cacheIdIn, keyFieldIn, serviceUrlPrefixIn, seachMethodIn){
-    	var cacheId = cacheIdIn;
-    	var keyField = keyFieldIn;
-    	var serviceUrlPrefix = serviceUrlPrefixIn;
-    	var seachMethod = seachMethodIn;
-    	var sampleResultHandler = searchResultHandler.newResultHandler(keyField);
-    	var resultHandlerCache = $cacheFactory(cacheId, {capacity:20});
-    	
-    	var preLoader = this;
-        this.searchInput = function(){
-        	return sampleResultHandler.searchInput();
-        }
-        this.load = function(searchInput, cacheKey, successFnct){
-        	var resultHandler = resultHandlerCache.get(cacheKey);
-        	if(angular.isDefined(resultHandler)){
-        		successFnct(resultHandler);
-        	} else {
-        		seachMethod(serviceUrlPrefix,searchInput)
-        		.success(function(searchResult){
-        			resultHandler = searchResultHandler.newResultHandler(keyField);
-        			resultHandler.searchResult(searchResult);
-        			resultHandlerCache.put(cacheKey,resultHandler);
-            		successFnct(resultHandler);
-        		});
-        	}
-        };
-        this.select = function(resultList,searchString, valueFnct){
-        	if(angular.isUndefined(searchString)) return resultList;
-        	var lowerSearchStr = searchString.toLowerCase();
-        	var result = [];
-            for (var int = 0; int < resultList.length; int++) {
-    			var entity = resultList[i];
-    			var containerStr = valueFnct(entity);
-    			if(angular.isUndefined(containerStr)) continue;
-    			if(containerStr.toLowerCase().indexOf(lowerSearchStr)) result.push(entity);
-    		}
-            return result;
-        };
-    };
-    
-    return service;
-	
 }]);
 
