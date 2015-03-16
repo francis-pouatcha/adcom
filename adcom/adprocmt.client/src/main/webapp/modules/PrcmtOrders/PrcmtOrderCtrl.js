@@ -39,6 +39,7 @@ angular.module('AdProcmt')
     self.paginate = paginate;
     self.error = "";
     self.showPage = show;
+    self.showEdit = showEdit;
     
     init();
 
@@ -80,6 +81,13 @@ angular.module('AdProcmt')
                 })
         }
 
+        function showEdit(val){
+            if(val == 'ONGOING'){
+                return true;
+            }else{
+                return false;
+            }
+        }
 	function handlePrintRequestEvent(){		
 	}
     

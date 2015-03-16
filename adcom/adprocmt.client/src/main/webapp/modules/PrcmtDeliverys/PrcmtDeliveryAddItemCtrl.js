@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('AdProcmt').controller('prcmtDeliveryAddItemCtlr',['$scope','$routeParams','$location','$q','ProcmtUtils','genericResource',function($scope,$routeParams,$location,$q,ProcmtUtils,genericResource){
+angular.module('AdProcmt').controller('prcmtDeliveryAddItemCtlr',['$scope','$routeParams','$location','$q','ProcmtUtils','genericResource','PrcmtDeliveryState',function($scope,$routeParams,$location,$q,ProcmtUtils,genericResource,PrcmtDeliveryState){
     var self = this ;
     $scope.prcmtDeliveryAddItemCtlr = self;
     self.prcmtDelivery = {};
@@ -38,18 +38,13 @@ angular.module('AdProcmt').controller('prcmtDeliveryAddItemCtlr',['$scope','$rou
     load();
 
     function load(){
-        var identif = $routeParams.identif;
-        genericResource.findById(ProcmtUtils.urlManagerDelivery,identif)
-            .success(function(data){
-                self.prcmtDelivery = data.delivery;
-                self.prcmtDeliveryItemHolders = data.deliveryItems;
-                if(self.prcmtDelivery.dlvryStatus=='ONGOING'){
-                    self.closeStatus = true;
-                }
-            })
-            .error(function(error){
-                self.error = "No procurement delivery";
-            });
+        var data = PrcmtDeliveryState.getDeliveryHolder();
+        self.prcmtDelivery = data.delivery;
+        self.prcmtDeliveryItemHolders = data.deliveryItems;
+        if(self.prcmtDelivery.dlvryStatus=='ONGOING'){
+            self.closeStatus = true;
+        }
+
     };
 
     function loadArticlesByNameLike(name){

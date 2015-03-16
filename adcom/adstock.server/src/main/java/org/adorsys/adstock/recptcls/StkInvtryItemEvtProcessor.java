@@ -1,5 +1,7 @@
 package org.adorsys.adstock.recptcls;
 
+import java.util.Date;
+
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
@@ -14,10 +16,12 @@ import org.adorsys.adstock.jpa.StkArticleLot;
 import org.adorsys.adstock.jpa.StkArticleLot2StrgSctn;
 import org.adorsys.adstock.jpa.StkInvtryItemHstry;
 import org.adorsys.adstock.jpa.StkLotStockQty;
+import org.adorsys.adstock.jpa.StkSection;
 import org.adorsys.adstock.rest.StkArticleLot2StrgSctnEJB;
 import org.adorsys.adstock.rest.StkArticleLotEJB;
 import org.adorsys.adstock.rest.StkInvtryItemHstryEJB;
 import org.adorsys.adstock.rest.StkLotStockQtyEJB;
+import org.adorsys.adstock.rest.StkSectionEJB;
 
 /**
  * Check for the incoming of inventory closed event and 
@@ -40,6 +44,8 @@ public class StkInvtryItemEvtProcessor {
 	private StkInvtryItemHstryEJB invtryItemHstryEJB;
 	@Inject
 	private StkArticleLotEJB articleLotEJB;
+	@Inject
+	private StkSectionEJB sectionEJB;
 
 	public void process(String itemEvtDataId, InvInvtryEvt invtryEvt) {
 		InvInvtryItemEvtData itemEvtData = itemEvtDataEJB.findById(itemEvtDataId);
@@ -100,6 +106,9 @@ public class StkInvtryItemEvtProcessor {
 			strgSctn.setArtPic(artPic);
 			strgSctn.setLotPic(lotPic);
 			strgSctn.setStrgSection(section);
+			strgSctn.setArtName(itemEvtData.getArtName());
+			StkSection stkSection = sectionEJB.findByIdentif(section, new Date());
+			strgSctn.setSectionName(stkSection.getName());
 			strgSctn = articleLot2StrgSctnEJB.create(strgSctn);
 		}
 
@@ -110,6 +119,8 @@ public class StkInvtryItemEvtProcessor {
 		lotStockQty.setLotPic(lotPic);
 		lotStockQty.setSection(section);
 		lotStockQty.setQtyDt(invtryEvt.getHstryDt());
+		lotStockQty.setOrigProcs(invtryEvt.getClass().getSimpleName());
+		lotStockQty.setOrigProcsNbr(itemEvtData.getInvtryNbr());
 		if(latestQty!=null){
 			lotStockQty.setSeqNbr(latestQty.getSeqNbr()==null?1:latestQty.getSeqNbr()+1);
 		} else {

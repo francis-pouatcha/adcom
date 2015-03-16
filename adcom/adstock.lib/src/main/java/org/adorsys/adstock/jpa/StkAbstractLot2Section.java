@@ -1,7 +1,11 @@
 package org.adorsys.adstock.jpa;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
@@ -24,11 +28,46 @@ public class StkAbstractLot2Section extends AbstractIdentifData {
 	@NotNull
 	private String artPic;
 
+	/*
+	 * The name of the article is store here to simplify search.
+	 * In the language of the creator of this item.
+	 */
+	@Column
+	@Description("StkAbstractLot2Section_artName_description")
+	@NotNull
+	private String artName;
+	
+	/*
+	 * The section code
+	 */
 	@Column
 	@Description("StkAbstractLot2Section_strgSection_description")
 	@NotNull
 	private String strgSection;
+	
+	/*
+	 * The section name
+	 */
+	@Column
+	@Description("StkAbstractLot2Section_artName_description")
+	@NotNull
+	private String sectionName;
+	
+	/*
+	 * Closed at the inventory process. Waiting for cleanup.
+	 */
+	@Temporal(TemporalType.TIMESTAMP)
+	@Description("StkAbstractLot2Section_closedDt_description")
+	private Date closedDt;	
 
+	/*
+	 * Date from which this article goes out of stock. It set automatically
+	 * by the qty consolidation process.
+	 */
+	@Temporal(TemporalType.TIMESTAMP)
+	@Description("StkAbstractLot2Section_outOfStockDt_description")
+	private Date outOfStockDt;	
+	
 	@Transient
 	private StkAbstractSection stkSection;
 	
@@ -67,10 +106,44 @@ public class StkAbstractLot2Section extends AbstractIdentifData {
 		this.artPic = artPic;
 	}
 
+	public String getArtName() {
+		return artName;
+	}
+
+	public void setArtName(String artName) {
+		this.artName = artName;
+	}
+
+	public Date getClosedDt() {
+		return closedDt;
+	}
+
+	public void setClosedDt(Date closedDt) {
+		this.closedDt = closedDt;
+	}
+
+	public Date getOutOfStockDt() {
+		return outOfStockDt;
+	}
+
+	public void setOutOfStockDt(Date outOfStockDt) {
+		this.outOfStockDt = outOfStockDt;
+	}
+
+	public String getSectionName() {
+		return sectionName;
+	}
+
+	public void setSectionName(String sectionName) {
+		this.sectionName = sectionName;
+	}
+
 	public void copyTo(StkAbstractLot2Section target){
 		target.artPic = artPic;
 		target.lotPic = lotPic;
 		target.strgSection=strgSection;
+		target.sectionName = sectionName;
+		target.artName = artName;
 		target.stkSection = stkSection;
 		target.sectionArticleLot =sectionArticleLot;
 	}

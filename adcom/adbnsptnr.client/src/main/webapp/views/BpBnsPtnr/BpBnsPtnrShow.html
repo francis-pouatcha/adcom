@@ -70,17 +70,17 @@
                 <div  class="row ">
                     <tabset justified="false" >
                         <tab heading="{{bpBnsPtnrUtils.translations['BpPtnrContact_description.title']}}"
-                        	select="tabSelected('bpPtnrContact')" active="bpPtnrContactActive">
+                        	select="tabSelected(bpPtnrContactTabName)" active="bpPtnrContactActive">
                             <br/>
                             <div ng-include="'views/BpBnsPtnr/BpPtnrContacts.html'" />
                         </tab>
                         <tab heading="{{bpBnsPtnrUtils.translations['BpPtnrIdDtls_description.title']}}"
-                        	select="tabSelected('bpPtnrIdDtls')" active="bpPtnrIdDtlsActive">
+                        	select="tabSelected(bpPtnrIdDtlsTabName)" active="bpPtnrIdDtlsActive">
                             <br/>
                             <div ng-include="'views/BpBnsPtnr/BpPtnrIdDtlss.html'" />
                         </tab>
                         <tab heading="{{bpBnsPtnrUtils.translations['BpInsurrance_description.title']}}"
-                        	select="tabSelected('bpInsurrance')" active="bpInsurranceActive">
+                        	select="tabSelected(bpInsurranceTabName)" active="bpInsurranceActive">
                             <br/>
                             <div ng-include="'views/BpBnsPtnr/BpInsurrances.html'" />
                         </tab>

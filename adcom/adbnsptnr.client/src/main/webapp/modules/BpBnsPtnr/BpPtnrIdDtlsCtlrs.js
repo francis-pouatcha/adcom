@@ -65,7 +65,7 @@ angular.module('AdBnsptnr')
 	var service = {
 	};
 	
-	service.bpBnsPtnr = bpBnsPtnrState.bpBnsPtnr;
+	service.bpBnsPtnr = bpBnsPtnrState.resultHandler.entity;
     var searchResultsVar = {};
 
     // The search state.
@@ -73,7 +73,7 @@ angular.module('AdBnsptnr')
     service.bpPtnrIdDtlss = function(ptnrNbr){
         var nbr = ptnrNbr;
         if(!ptnrNbr) {
-            var bpBnsPtnr = bpBnsPtnrState.bpBnsPtnr();
+            var bpBnsPtnr = bpBnsPtnrState.resultHandler.entity();
             if(bpBnsPtnr)
                 nbr = bpBnsPtnr.ptnrNbr;
         }
@@ -137,7 +137,9 @@ angular.module('AdBnsptnr')
         selectedIndexVar = length-1;
     };
 
-	service.bpPtnrIdDtlsActive= bpBnsPtnrState.bpPtnrIdDtlsActive;
+	service.bpPtnrIdDtlsActive = function(){
+		bpBnsPtnrState.tabManager.isActive(bpBnsPtnrState.bpPtnrIdDtlsTabName);	
+	} 
 
     service.searchInput = {
         entity:{},
