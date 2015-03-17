@@ -1,4 +1,4 @@
-﻿'use strict';
+'use strict';
     
 angular.module('AdBnsptnr')
 
@@ -186,7 +186,7 @@ angular.module('AdBnsptnr')
     var service = {
     };
     service.resultHandler = searchResultHandler.newResultHandler('ptnrNbr');
-
+    service.resultHandler.maxResult=10;
     // TBA FUNCTIONS 
     service.bpPtnrContactTabName = 'bpPtnrContact';
     service.bpPtnrIdDtlsTabName='bpPtnrIdDtls';
