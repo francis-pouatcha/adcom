@@ -4,17 +4,18 @@
             <a>{{prcmtOrderShowCtlr.prcmtOrderHolder.prcmtProcOrder.poNbr}}</a> of {{prcmtOrderShowCtlr.prcmtOrderHolder.prcmtProcOrder.orderDt | date:'dd-MM-yyyy'}},
             <b>{{"PrcmtProcOrder_netAmtToPay_description.title" | translate}}:</b> {{prcmtOrderShowCtlr.prcmtOrderHolder.prcmtProcOrder.netAmtToPay}} cfa,
             <b>{{"PrcmtProcOrder_netPPTaxIncl_description.title" | translate}}:</b> {{prcmtOrderShowCtlr.prcmtOrderHolder.prcmtProcOrder.netPPTaxIncl}} cfa,
-            <b>{{"PrcmtProcOrder_creatingUsr_description.title" | translate}}: </b> {{prcmtOrderShowCtlr.prcmtOrderHolder.prcmtProcOrder.creatingUsr}}
+            <b>{{"PrcmtProcOrder_creatingUsr_description.title" | translate}}: </b> {{prcmtOrderShowCtlr.prcmtOrderHolder.prcmtProcOrder.creatingUsr}},
+            <b> Status: </b> <label class="label-primary">{{prcmtOrderShowCtlr.prcmtOrderHolder.prcmtProcOrder.poStatus}}</label>
         </h4>
         <p class="">
             <a class=" btn btn-default" href="#/PrcmtOrders"  type="button">Cancel</a>
-            <button class=" btn btn-primary" ng-click="prcmtOrderShowCtlr.transform()" ng-show="!prcmtOrderShowCtlr.closeStatus" type="button">Transform to Delivery</button>
-            <button class=" btn btn-primary" ng-click="prcmtOrderShowCtlr.save()" ng-show="prcmtOrderShowCtlr.closeStatus" type="button">Save</button>
-            <button class=" btn btn-primary" ng-click="prcmtOrderShowCtlr.close()" ng-show="prcmtOrderShowCtlr.closeStatus" type="button">Save and Close</button>
+            <button class=" btn btn-primary" ng-click="prcmtOrderShowCtlr.transform()" ng-show="!prcmtOrderShowCtlr.closeStatus" type="button">{{'transform_to_delivery' | translate}}</button>
+            <button class=" btn btn-primary" ng-click="prcmtOrderShowCtlr.save()" ng-show="prcmtOrderShowCtlr.closeStatus" type="button">{{'save' | translate}}</button>
+            <button class=" btn btn-primary" ng-click="prcmtOrderShowCtlr.close()" ng-show="prcmtOrderShowCtlr.closeStatus" type="button">{{'save_and_close' | translate}}</button>
         </p>
     </div>
     <div class="panel panel-default" ng-show="prcmtOrderShowCtlr.closeStatus" >
-        <div class="panel-heading"><b>Add Procurement Order Item</b> </div>
+        <div class="panel-heading"><b>{{'Add_Procurement_Order_Item' | translate}}</b> </div>
         <div class="panel-body">
             <form name="PrcmtProcOrderItemForm" id="PrcmtProcOrderItemForm" novalidate >
                 <table class="table-bordered" >
@@ -26,8 +27,8 @@
                         <th>Qte</th>
                         <th>Qte Gratuite</th>
                         <th>prix Achat</th>
-                        <th><a ng-click="prcmtOrderShowCtlr.showMore()" class="pointer-element" ng-show="!prcmtOrderShowCtlr.show" ><i class="glyphicon glyphicon-plus"></i> More</a>
-                            <a ng-click="prcmtOrderShowCtlr.showLess()" class="pointer-element" ng-show="prcmtOrderShowCtlr.show" ><i class="glyphicon glyphicon-minus"></i> Less</a>
+                        <th><a ng-click="prcmtOrderShowCtlr.showMore()" class="pointer-element" ng-show="!prcmtOrderShowCtlr.show" ><i class="glyphicon glyphicon-plus"></i> {{'more' | translate}}</a>
+                            <a ng-click="prcmtOrderShowCtlr.showLess()" class="pointer-element" ng-show="prcmtOrderShowCtlr.show" ><i class="glyphicon glyphicon-minus"></i> {{'less' | translate}}</a>
                         </th>
                     </tr>
                     </thead>
@@ -108,7 +109,7 @@
         </div>
     </div>
     <div class="panel panel-default">
-        <div class="panel-heading"><b>List Procurement Order Item</b> </div>
+        <div class="panel-heading"><b>{{'PrcmtPOItem_description.title' | translate}}</b> </div>
         <div class="panel-body">
             <table class="table table-bordered  table-striped" >
                 <thead>

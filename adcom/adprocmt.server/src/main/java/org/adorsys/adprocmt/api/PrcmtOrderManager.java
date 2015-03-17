@@ -107,19 +107,19 @@ public class PrcmtOrderManager {
 		}
 		
 		if(itemModified){
-			recomputeDelivery(prcmtOrder);
+			recomputeOrder(prcmtOrder);
 			prcmtOrder.setPoStatus(BaseProcessStatusEnum.ONGOING.name());
 			prcmtOrder = prcmtOrderEJB.update(prcmtOrder);
 			prcmtOrderHolder.setPrcmtProcOrder(prcmtOrder);		
 		}
 		if(modified || itemModified){
-			createModifiedDeliveryHistory(prcmtOrder);
+			createModifiedOrderHistory(prcmtOrder);
 		}
 		return prcmtOrderHolder;
 	}
 	
-	private void recomputeDelivery(final PrcmtProcOrder prcmtOrder){
-		// update delivery object.
+	private void recomputeOrder(final PrcmtProcOrder prcmtOrder){
+		// update order object.
 		String poNbr = prcmtOrder.getPoNbr();
 		Long count = prcmtPOItemEJB.countByPoNbr(poNbr);
 		int start = 0;
@@ -139,7 +139,7 @@ public class PrcmtOrderManager {
 		prcmtOrder.evlte();
 	}
 	
-	private void createModifiedDeliveryHistory(PrcmtProcOrder prcmtOrder){
+	private void createModifiedOrderHistory(PrcmtProcOrder prcmtOrder){
 		TermWsUserPrincipal callerPrincipal = securityUtil.getCallerPrincipal();
 		PrcmtProcOrderHstry orderHstry = new PrcmtProcOrderHstry();
 		orderHstry.setComment(BaseHistoryTypeEnum.MODIFIED.name());
@@ -155,7 +155,7 @@ public class PrcmtOrderManager {
 		orderHstryEJB.create(orderHstry);
 	}
 	
-	private void createClosedDeliveryHistory(PrcmtProcOrder prcmtOrder){
+	private void createClosedOrderHistory(PrcmtProcOrder prcmtOrder){
 		TermWsUserPrincipal callerPrincipal = securityUtil.getCallerPrincipal();
 		PrcmtProcOrderHstry orderHstry = new PrcmtProcOrderHstry();
 		orderHstry.setComment(BaseHistoryTypeEnum.CLOSED.name());
@@ -194,11 +194,11 @@ public class PrcmtOrderManager {
 	public PrcmtOrderHolder closeOrder(PrcmtOrderHolder prcmtOrderHolder){
 		prcmtOrderHolder = updateOrder(prcmtOrderHolder);
 		PrcmtProcOrder procOrder = prcmtOrderHolder.getPrcmtProcOrder();
-		recomputeDelivery(procOrder);
+		recomputeOrder(procOrder);
 		procOrder.setPoStatus(BaseProcessStatusEnum.CLOSED.name());
 		procOrder = prcmtOrderEJB.update(procOrder);
 		prcmtOrderHolder.setPrcmtProcOrder(procOrder);
-		createClosedDeliveryHistory(procOrder);// closed, no need processor?
+		createClosedOrderHistory(procOrder);// closed, no need processor?
 
 		return prcmtOrderHolder;
 	}
