@@ -46,6 +46,7 @@
 "PrcmtDelivery_vatAmount_description.text":"Tax amount for this purchase order.",
 "PrcmtDelivery_vatAmount_description.title":"VAT Amount",
 
+"Add_Procurement_Delivery_Item":"Add a delivery order item",
 "PrcmtDlvryItem_artPic_description.text":"The article code",
 "PrcmtDlvryItem_artPic_description.title":"Article PIC",
 "PrcmtDlvryItem_creatingUsr_description.text":"The user creating this delivery order item",
@@ -107,6 +108,7 @@
 "PrcmtDlvryItem_vatSalesPct_description.text":"The VAT rate in percent.",
 "PrcmtDlvryItem_vatSalesPct_description.title":"VAT Rate",
 
+ "Add_Procurement_Order_Item":"Add procurement order item",
 "PrcmtPOItem_artPic_description.text":"The main product identification code used to identify lots during sales.",
 "PrcmtPOItem_artPic_description.title":"Main PIC",
 "PrcmtPOItem_createdDt_description.text":"The creation date",
@@ -225,5 +227,10 @@
 "ProcmtPOType_description.text":"Procurement order type",
 "ProcmtPOType_description.title":"Procurement Order Type",
  "From":"From",
- "To":"To"
+ "To":"To",
+    "save":"Save",
+    "transform_to_delivery":"Transform to delivery",
+    "save_and_close":"Save and close",
+    "more":"more",
+    "less":"less"
 }

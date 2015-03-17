@@ -18,4 +18,7 @@ public interface InvInvtryRepository extends EntityRepository<InvInvtry, String>
 	
 	@Query("SELECT COUNT(e) FROM InvInvtry AS e WHERE e.invtryDt BETWEEN ?1 AND ?2")
 	public Long countByInvtryDtBtw(Date from, Date to);
+
+	@Query("SELECT e FROM InvInvtry AS e WHERE e.preparedDt IS NULL")
+	public QueryResult<InvInvtry> findOpenInvtrys();
 }

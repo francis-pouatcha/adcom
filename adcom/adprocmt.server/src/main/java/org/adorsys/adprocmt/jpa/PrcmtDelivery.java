@@ -4,7 +4,9 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 
+import org.adorsys.adcore.jpa.CurrencyEnum;
 import org.adorsys.javaext.description.Description;
+import org.apache.commons.lang3.StringUtils;
 
 @Entity
 @Description("PrcmtDelivery_description")
@@ -13,7 +15,7 @@ public class PrcmtDelivery extends PrcmtAbstractDelivery {
 
 	public void fillDataFromOrder(PrcmtProcOrder procOrder) {
 	
-		this.setDlvryCur(procOrder.getPoCur());
+		this.setDlvryCur(StringUtils.isNotBlank(procOrder.getPoCur())?procOrder.getPoCur():CurrencyEnum.XAF.name());
 		this.setDlvryDt(new Date());
 		this.setDlvrySlipNbr(procOrder.getPoNbr());
 		this.setGrossPPPreTax(procOrder.getGrossPPPreTax());

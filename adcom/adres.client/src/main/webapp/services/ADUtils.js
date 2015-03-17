@@ -86,7 +86,7 @@ angular.module('ADUtils',[])
     return service;
 	
 }])
-.factory('genericResource',['$http', function($http){
+.factory('genericResource',['$http','$q', function($http,$q){
     var service = {};
 
     service.create = function(urlBase, entity){
@@ -100,10 +100,43 @@ angular.module('ADUtils',[])
     service.findBy = function(urlBase, entitySearchInput){
         return $http.post(urlBase+'/findBy',entitySearchInput);
     };
-
+    
     service.findByLike = function(urlBase, entitySearchInput){
         return $http.post(urlBase+'/findByLike',entitySearchInput);
     };
+
+    service.findByLikePromissed = function (urlBase, fieldName, fieldValue){
+    	if(angular.isUndefined(urlBase) || !urlBase ||
+    		angular.isUndefined(fieldName) || !fieldName || 
+    		angular.isUndefined(fieldValue) || !fieldValue) return;
+          
+        var searchInput = {entity:{},fieldNames:[],start:0,max:10};
+        searchInput.entity[fieldName]= fieldValue;
+        if(searchInput.fieldNames.indexOf(fieldName)==-1)
+        	searchInput.fieldNames.push(fieldName);
+          var deferred = $q.defer();
+          service.findByLike(urlBase, searchInput)
+          .success(function(entitySearchResult) {
+              deferred.resolve(entitySearchResult);
+            })
+          .error(function(error){
+              deferred.reject('No entity found');
+          });
+      return deferred.promise;
+    }
+    service.findByLikeWithSearchInputPromissed = function (urlBase, searchInput){
+    	if(angular.isUndefined(urlBase) || !urlBase ||
+    		angular.isUndefined(searchInput) || !searchInput) return;          
+          var deferred = $q.defer();
+          service.findByLike(urlBase, searchInput)
+          .success(function(entitySearchResult) {
+              deferred.resolve(entitySearchResult);
+            })
+          .error(function(error){
+              deferred.reject('No entity found');
+          });
+      return deferred.promise;
+    }
 
     service.findById = function(urlBase, entityId){
         return $http.get(urlBase+'/'+entityId);
@@ -116,6 +149,38 @@ angular.module('ADUtils',[])
     service.findCustom = function(urlBase, entitySearchInput){
         return $http.post(urlBase+'/findCustom',entitySearchInput);
     };
+    service.findCustomPromissed = function (urlBase, fieldName, fieldValue){
+    	if(angular.isUndefined(urlBase) || !urlBase ||
+    		angular.isUndefined(fieldName) || !fieldName || 
+    		angular.isUndefined(fieldValue) || !fieldValue) return;
+          
+        var searchInput = {entity:{},fieldNames:[],start:0,max:10};
+        searchInput.entity[fieldName]= fieldValue;
+        if(searchInput.fieldNames.indexOf(fieldName)==-1)
+        	searchInput.fieldNames.push(fieldName);
+          var deferred = $q.defer();
+          service.findCustom(urlBase, searchInput)
+          .success(function(entitySearchResult) {
+              deferred.resolve(entitySearchResult);
+            })
+          .error(function(error){
+              deferred.reject('No entity found');
+          });
+      return deferred.promise;
+    }
+    service.findCustomWithSearchInputPromissed = function (urlBase, searchInput){
+    	if(angular.isUndefined(urlBase) || !urlBase ||
+    		angular.isUndefined(searchInput) || !searchInput) return;          
+          var deferred = $q.defer();
+          service.findCustom(urlBase, searchInput)
+          .success(function(entitySearchResult) {
+              deferred.resolve(entitySearchResult);
+            })
+          .error(function(error){
+              deferred.reject('No entity found');
+          });
+      return deferred.promise;
+    }
 
     service.find = function(urlBase, entitySearchInput){
         return $http.post(urlBase,entitySearchInput);
@@ -155,6 +220,7 @@ angular.module('ADUtils',[])
         };
         var searchResultVar = angular.copy(nakedSearchResult);
         var keyField = keyFieldIn;
+        var displayInfoVar = {};
         var equalsFnct = function(entityA, entityB){
 			if(!entityA && !entityB) return true;
 			if(!entityB) return false;
@@ -170,6 +236,8 @@ angular.module('ADUtils',[])
         	if(angular.isUndefined(searchResultIn)) return;
         	
     		searchResultVar.count = searchResultIn.count;
+    		
+//    		displayInfoVar = {};
     		
     		angular.copy(searchResultIn.resultList, searchResultVar.resultList);
     		
@@ -257,7 +325,7 @@ angular.module('ADUtils',[])
             return handler.searchInput();
         };
         this.replace = function(entity){
-        	if(!entity) return;
+        	if(angular.isUndefined(entity) || !entity) return;
 
     		var length = searchResultVar.resultList.length;
     		for	(var index = 0; index < length; index++) {
@@ -309,6 +377,11 @@ angular.module('ADUtils',[])
         		dependents[fieldName] = dependentIn;
 
         	return dependents[fieldName];
+        };
+        this.displayInfo = function(displayInfoIn){
+        	if(angular.isDefined(displayInfoIn) && displayInfoIn)
+        		displayInfoVar = displayInfoIn;
+        	return displayInfoVar;
         };
     };
     

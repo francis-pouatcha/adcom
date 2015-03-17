@@ -152,5 +152,11 @@ public class InvInvtryItemEJB
 		return repository.countByInvtryNbrAndSection(invtryNbr, section, rangeStart, rangeEnd);
 	}
 
+	public InvInvtryItem findByIdentif(String identif) {
+		List<InvInvtryItem> list = repository.findByIdentif(identif);
+		if(list.isEmpty()) return null;
+		return list.iterator().next();
+	}
+
 	
 }

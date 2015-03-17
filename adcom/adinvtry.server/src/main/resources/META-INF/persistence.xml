@@ -44,6 +44,8 @@
 	<class>org.adorsys.adinvtry.jpa.InvInvtryEvtLease</class>
 	<class>org.adorsys.adinvtry.jpa.InvInvtryEvtDataCstr</class>
 
+	<class>org.adorsys.adstock.jpa.StkArticleLot2StrgSctn</class>
+
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.hbm2ddl.auto" value="update"/>

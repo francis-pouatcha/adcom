@@ -37,6 +37,7 @@
     <module>adcom.all</module>
     <module>adcom.configuration</module>
     <module>adcom.test</module>
+    <module>adAptmt.server</module>
   </modules>
   <scm>
     <connection>scm:git:https://github.com/francis-pouatcha/adcom.git</connection>

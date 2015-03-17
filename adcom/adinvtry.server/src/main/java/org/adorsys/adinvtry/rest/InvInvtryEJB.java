@@ -39,17 +39,7 @@ public class InvInvtryEJB
 	{
 		String sequence = SequenceGenerator.getSequence(SequenceGenerator.INVENTORY_SEQUENCE_PREFIXE);
 		entity.setInvtryNbr(sequence);
-		Date currentDate = new Date();
-		
-		if(entity.getAcsngDt() == null ) 
-			entity.setAcsngDt(currentDate);
-		
-		if(entity.getInvtryDt() == null) 
-			entity.setInvtryDt(currentDate);
-		
-		String loginName = securityUtil.getCurrentLoginName();
-		entity.setAcsngUser(loginName);
-		
+
 		if(entity.getInvtryStatus()==null)
 			entity.setInvtryStatus(InvInvtryStatus.ONGOING);
 		
@@ -189,11 +179,16 @@ public class InvInvtryEJB
 		Long count = countByDateBtw(from, to);
 		return count;
 	}
+	
 	private InvInvtry attach(InvInvtry entity)
 	{
 		if (entity == null)
 			return null;
 
 		return entity;
+	}
+
+	public List<InvInvtry> findOpenInvtrys() {
+		return repository.findOpenInvtrys().getResultList();
 	}
 }
