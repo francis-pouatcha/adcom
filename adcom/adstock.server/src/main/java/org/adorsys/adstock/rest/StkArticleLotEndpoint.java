@@ -90,6 +90,17 @@ public class StkArticleLotEndpoint
    }
 
    @GET
+   @Path("/findByIdentif/{identif}")
+   @Produces({ "application/json", "application/xml" })
+   public Response findByIdentif(@PathParam("identif") String identif)
+   {
+	   StkArticleLot found = ejb.findByIdentif(identif);
+	   if (found == null)
+		   return Response.status(Status.NOT_FOUND).build();
+	   return Response.ok(detach(found)).build();
+   }
+   
+   @GET
    @Produces({ "application/json", "application/xml" })
    public StkArticleLotSearchResult listAll(@QueryParam("start") int start,
          @QueryParam("max") int max)
@@ -139,12 +150,12 @@ public class StkArticleLotEndpoint
 			   fieldNames.add("artPic");
 			   tempSearchInput.setFieldNames(fieldNames);
 			   SingularAttribute<StkArticleLot,?>[] attributes = readSeachAttributes(tempSearchInput);
-			   Long count = ejb.countBy(searchInput.getEntity(), attributes);
-			   List<StkArticleLot> resultList = ejb.findBy(searchInput.getEntity(),
-					   searchInput.getStart(), searchInput.getMax(), attributes);
+			   Long count = ejb.countBy(tempSearchInput.getEntity(), attributes);
+			   List<StkArticleLot> resultList = ejb.findBy(tempSearchInput.getEntity(),
+					   tempSearchInput.getStart(), tempSearchInput.getMax(), attributes);
 			   StkArticleLotSearchResult sr = new StkArticleLotSearchResult(count, detach(resultList),
-					   detach(searchInput));
-			   StkArticleLotSearchResult tempSearchResult = processSearchResult(searchInput, sr);
+					   detach(tempSearchInput));
+			   StkArticleLotSearchResult tempSearchResult = processSearchResult(tempSearchInput, sr);
 			   searchResults.add(tempSearchResult);
 		   }
 		   StkArticleLotSearchResult searchResult = new StkArticleLotSearchResult();

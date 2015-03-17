@@ -1,8 +1,9 @@
 {
 "InvInvtry_acsngDt_description.text":"The recording date of this inventory item.",
 "InvInvtry_acsngDt_description.title":"Inventory Date",
-"InvInvtry_acsngUser_description.text":"Autor of the Inventory",
-"InvInvtry_acsngUser_description.title":"Autor",
+"InvInvtry_acsngUser_description.text":"Accessing User",
+"InvInvtry_acsngUser_description.title":"Accessing User",
+"InvInvtry_acsngUserFullName_description.title":"Full Name",
 "InvInvtry_descptn_Size_validation.text":"The description must have less than 256 characters",
 "InvInvtry_descptn_Size_validation.title":"The description must have less than 256 characters",
 "InvInvtry_descptn_description.text":"Description of this inventory.",
@@ -35,7 +36,7 @@
 "InvInvtryItem_acsngUser_description.text":"The user performing the inventory",
 "InvInvtryItem_acsngUser_description.title":"User",
 "InvInvtryItem_artPic_description.text":"The article code",
-"InvInvtryItem_artPic_description.title":"Product Code",
+"InvInvtryItem_artPic_description.title":"Article Code",
 "InvInvtryItem_asseccedQty_description.text":"Actual quantity of products physically counted.",
 "InvInvtryItem_asseccedQty_description.title":"Assessed Quantity",
 "InvInvtryItem_description.text":"An inventory item",
@@ -59,13 +60,16 @@
 "InvInvtryItem_pppuPT_description.text":"The purchase price per unit pre tax",
 "InvInvtryItem_pppuPT_description.title":"Purchase Price per Unit Pre Tax",
 "InvInvtryItem_section_description.text":"The Section",
-"InvInvtryItem_section_description.title":"Section",
+"InvInvtryItem_section_description.title":"Section Code",
+"InvInvtryItem_sectionName_description.title":"Section Name",
 "InvInvtryItem_sppuCur_description.text":"The currency of the sales price",
 "InvInvtryItem_sppuCur_description.title":"Currency of the Sales Price",
 "InvInvtryItem_sppuPT_description.text":"The sales price per unit pre tax",
 "InvInvtryItem_sppuPT_description.title":"Sales Price per Unit Pre Tax",
 "InvInvtryItem_artName_description.text":"Article name",
-"InvInvtryItem_artName_description.title":"Designation",
+"InvInvtryItem_artName_description.title":"Article Name",
+"InvInvtryItem_artNameStart_description.title":"a-z",
+"InvInvtryItem_artNameEnd_description.title":"a-z",
 
 "InvInvntrStatus_CLOSED_description.text":"Closed document",
 "InvInvntrStatus_CLOSED_description.title":"Closed",
@@ -91,7 +95,9 @@
 "InvInvtry_NoArticleFound_description":"No Article Found",
 "InvInvtry_NoUserFound_description":"No User Found",
 "InvInvtry_gapPurchAmtHTFrom_description.title":"Gap in Purchase Amount above",
-"InvInvtry_gapPurchAmtHTTo_description.title":"Gap in Purchase Amount below"
+"InvInvtry_gapPurchAmtHTTo_description.title":"Gap in Purchase Amount below",
+"InvInvtry_longPdctJsonArr_exception.title":"The much products loadings error, please chose, very close product ranges.",
+"InvInvtry_longPdctJsonArr_exception.text":"The much products loadings error, please chose, very close product ranges."
 
 
 }

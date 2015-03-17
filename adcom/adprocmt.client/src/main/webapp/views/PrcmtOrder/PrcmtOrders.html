@@ -11,21 +11,29 @@
                 <div class="">
                     <form role="form" class="">
                         <div class="row" >
-                            <div class="col-lg-4">
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label class=" control-label" for="dateMin">{{"PrcmtProcOrder_poNbr_description.title"|translate}}</label>
+                                    <div class="">
+                                        <input type="text" ng-model="prcmtOrderCtrl.searchInput.entity.poNbr" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
                                 <div class="form-group">
                                     <label class=" control-label" for="dateMin">{{"From"|translate}}</label>
                                     <div class="">
                                         <input type="datetime" date-time  view="date" min-view="date" views="['date']" dismiss="true" format="dd-MM-yyyy"
-                                               id="dateMin" ng-model="prcmtOrderCtrl.searchInput.entity.dateMin" class="form-control">
+                                               id="dateMin" ng-model="prcmtOrderCtrl.searchInput.dateMin" class="form-control">
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-3">
                                 <div class="form-group">
                                     <label class=" control-label" for="dateMax">{{"To"|translate}}</label>
                                     <div class="">
                                         <input type="datetime" date-time  view="date" min-view="date" views="['date']" dismiss="true" format="dd-MM-yyyy"
-                                               id="dateMax" ng-model="prcmtOrderCtrl.searchInput.entity.dateMax" class="form-control">
+                                               id="dateMax" ng-model="prcmtOrderCtrl.searchInput.dateMax" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -87,8 +95,8 @@
                                 <td>{{prcmtOrder.poTriggerMode}}</td>
                                 <td>{{prcmtOrder.poStatus}}</td>
                                 <td>{{prcmtOrder.ordrngOrgUnit}}</td>
-                                <td><a href="#/PrcmtOrders/show/{{prcmtOrder.id}}" ><i class="glyphicon glyphicon-eye-open"></i></a></td>
-                                <td><a href="#/PrcmtOrders/edit/{{prcmtOrder.id}}" ><i class="glyphicon glyphicon-edit"></i></a></td>
+                                <td><a ng-click="prcmtOrderCtrl.showPage(prcmtOrder)" ><i class="glyphicon glyphicon-eye-open"></i></a></td>
+                                <td><a href="#/PrcmtOrders/edit/{{prcmtOrder.id}}" ng-show="prcmtOrderCtrl.showEdit(prcmtOrder.poStatus)" ><i class="glyphicon glyphicon-edit"></i></a></td>
                             </tr>
                             </tbody>
                         </table>

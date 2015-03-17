@@ -3,6 +3,7 @@ package org.adorsys.adstock.rest;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,8 +57,7 @@ public class StkArticleLotDetachHelper {
 		entity.setSalesVatAmt(vat);
 
 		List<String> lotPics = ejb.findLotPicByArtPic(entity.getArtPic());
-		List<StkLotStockQty> artQties = lotStockQtyEJB
-				.findLatestArtStockQuantities(entity.getArtPic(), lotPics);
+		List<StkLotStockQty> artQties = lotStockQtyEJB.findLatestArtStockQuantities(entity.getArtPic(), lotPics);
 		entity.setArtQties(artQties);
 		// Now set the value for the current lot
 		for (StkLotStockQty stkLotStockQty : artQties) {
@@ -96,12 +96,10 @@ public class StkArticleLotDetachHelper {
 		Map<String, StkArticleLot2StrgSctn> foundCache = new HashMap<String, StkArticleLot2StrgSctn>();
 		if (StringUtils.isNotBlank(searchInput.getSectionCode())) {
 			for (StkArticleLot stkArticleLot : resultList) {
-				List<StkArticleLot2StrgSctn> sctns = strgSctnEJB
-						.findByStrgSectionAndLotPicAndArtPic(
-								searchInput.getSectionCode(),
-								stkArticleLot.getLotPic(),
-								stkArticleLot.getArtPic());
-				putAndCache(foundCache, sctns, stkArticleLot);
+				StkArticleLot2StrgSctn sctn = strgSctnEJB.findByStrgSectionAndLotPicAndArtPic(
+						searchInput.getSectionCode(), stkArticleLot.getLotPic(),stkArticleLot.getArtPic());
+				if(sctn != null)
+					putAndCache(foundCache, Arrays.asList(sctn), stkArticleLot);
 			}
 		} else if (searchInput.isWithStrgSection()) {
 			for (StkArticleLot stkArticleLot : resultList) {

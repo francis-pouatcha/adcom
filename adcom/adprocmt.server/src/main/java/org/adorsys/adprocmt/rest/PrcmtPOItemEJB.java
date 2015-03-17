@@ -1,12 +1,15 @@
 package org.adorsys.adprocmt.rest;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
 
+import org.adorsys.adbase.security.SecurityUtil;
 import org.adorsys.adprocmt.jpa.PrcmtPOItem;
+import org.adorsys.adprocmt.jpa.PrcmtPOItemEvtData;
 import org.adorsys.adprocmt.repo.PrcmtPOItemRepository;
 
 @Stateless
@@ -15,10 +18,25 @@ public class PrcmtPOItemEJB
 
    @Inject
    private PrcmtPOItemRepository repository;
+   @Inject
+	private SecurityUtil securityUtil;
+   @Inject
+   private PrcmtPOItemEvtDataEJB evtDataEJB;
+	
 
    public PrcmtPOItem create(PrcmtPOItem entity)
    {
-      return repository.save(attach(entity));
+	   	String currentLoginName = securityUtil.getCurrentLoginName();
+		Date now = new Date();
+		entity.setCreatingUsr(currentLoginName);
+		entity.setCreatedDt(now);
+		
+		entity = repository.save(attach(entity));
+		PrcmtPOItemEvtData evtData = new PrcmtPOItemEvtData();
+		entity.copyTo(evtData);
+		evtData.setId(entity.getId());
+		evtDataEJB.create(evtData);	
+		return entity;
    }
 
    public PrcmtPOItem deleteById(String id)
@@ -33,7 +51,13 @@ public class PrcmtPOItemEJB
 
    public PrcmtPOItem update(PrcmtPOItem entity)
    {
-      return repository.save(attach(entity));
+	   entity = repository.save(attach(entity));
+		 PrcmtPOItemEvtData eventData = evtDataEJB.findById(entity.getId());
+		if (eventData != null) {
+			entity.copyTo(eventData);
+			evtDataEJB.update(eventData);
+		}
+		return entity;
    }
 
    public PrcmtPOItem findById(String id)
@@ -82,6 +106,15 @@ public class PrcmtPOItemEJB
    public List<PrcmtPOItem> findByPoNbrAndArtPic(String poNbr, String artPic){
 	   return repository.findByPoNbrAndArtPic(poNbr, artPic);
    }
+   public List<PrcmtPOItem> findByPoNbr(String poNbr){
+	   return repository.findByPoNbr(poNbr).getResultList();
+   }
+   public Long countByPoNbr(String poNbr){
+	   return repository.findByPoNbr(poNbr).count();
+   }
+   public List<PrcmtPOItem> findByPoNbr(String poNbr, int start, int max){
+		return repository.findByPoNbr(poNbr).firstResult(start).maxResults(max).getResultList();
+	}
    public List<PrcmtPOItem> findByPoNbrAndArtPicAndRcvngOrgUnit(String poNbr, String artPic, String rcvngOrgUnit){
 	   return repository.findByPoNbrAndArtPicAndRcvngOrgUnit(poNbr, artPic, rcvngOrgUnit);
    }

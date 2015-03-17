@@ -49,6 +49,12 @@ public class InvInvtryItemSearchInput {
 
 	private BigDecimal gapPurchAmtHTTo;
 	
+	private Boolean a2z;
+	
+	private String rangeStart;
+	
+	private String rangeEnd;
+	
 	public InvInvtryItem getEntity() {
 		return entity;
 	}
@@ -128,6 +134,28 @@ public class InvInvtryItemSearchInput {
 	public void setGapPurchAmtHTTo(BigDecimal gapPurchAmtHTTo) {
 		this.gapPurchAmtHTTo = gapPurchAmtHTTo;
 	}
-	
 
+	public Boolean getA2z() {
+		return a2z;
+	}
+
+	public void setA2z(Boolean a2z) {
+		this.a2z = a2z;
+	}
+
+	public String getRangeStart() {
+		return rangeStart;
+	}
+
+	public void setRangeStart(String rangeStart) {
+		this.rangeStart = rangeStart;
+	}
+
+	public String getRangeEnd() {
+		return rangeEnd;
+	}
+
+	public void setRangeEnd(String rangeEnd) {
+		this.rangeEnd = rangeEnd;
+	}
 }

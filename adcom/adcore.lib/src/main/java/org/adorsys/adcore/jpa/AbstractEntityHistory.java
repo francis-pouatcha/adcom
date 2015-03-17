@@ -11,7 +11,6 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.adorsys.adcore.utils.FormatedValidFrom;
 import org.adorsys.javaext.description.Description;
 import org.apache.commons.lang3.StringUtils;
 
@@ -147,7 +146,7 @@ public abstract class AbstractEntityHistory extends AbstractEntity {
 		if(unique){
 			setId(getEntIdentif() +"_"+ getHstryType());
 		} else {
-			setId(getEntIdentif() +"_"+ getHstryType() + "_" + FormatedValidFrom.format(getHstryDt()));
+			setId(getEntIdentif() +"_"+ getHstryType() + "_" + UUID.randomUUID().toString());
 		}
 	}
 	

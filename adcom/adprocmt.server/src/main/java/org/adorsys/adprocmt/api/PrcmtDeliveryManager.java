@@ -92,7 +92,7 @@ public class PrcmtDeliveryManager {
 				}
 			} else {
 				if (StringUtils.isNotBlank(dlvryItem.getDlvryItemNbr())) {
-					PrcmtDlvryItem persDi = dlvryItemEJB.findById(dlvryItem.getId());
+					PrcmtDlvryItem persDi = dlvryItemEJB.findById(dlvryItem.getDlvryItemNbr());
 					if(persDi!=null){
 						if(!dlvryItem.contentEquals(persDi)){
 							dlvryItem.copyTo(persDi);
@@ -363,7 +363,7 @@ public class PrcmtDeliveryManager {
 		delivery.setDlvryStatus(BaseProcessStatusEnum.CLOSING.name());
 		delivery = deliveryEJB.update(delivery);
 		deliveryHolder.setDelivery(delivery);
-		createClosingDeliveryHistory(delivery);// Status closed
+		createClosingDeliveryHistory(delivery);// Status closing
 
 		return deliveryHolder;
 	}	

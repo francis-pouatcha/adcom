@@ -18,7 +18,8 @@ import org.adorsys.adprocmt.jpa.PrcmtDlvryItemEvtData;
 import org.adorsys.adprocmt.rest.PrcmtDeliveryEvtDataEJB;
 import org.adorsys.adprocmt.rest.PrcmtDeliveryEvtLeaseEJB;
 import org.adorsys.adprocmt.rest.PrcmtDlvryItemEvtDataEJB;
-import org.adorsys.adstock.rest.StkArticleLotEJB;
+import org.adorsys.adstock.jpa.StkDlvryItemHstry;
+import org.adorsys.adstock.rest.StkDlvryItemHstryEJB;
 import org.apache.commons.lang3.time.DateUtils;
 
 /**
@@ -36,12 +37,12 @@ public class StkDeliveryEvtProcessor {
 	@Inject
 	private PrcmtDlvryItemEvtDataEJB itemEvtDataEJB;
 	@Inject
-	private StkArticleLotEJB articleLotEJB;
-	@Inject
 	private StkDeliveryItemEvtProcessor itemEvtProcessor;
 	@Inject
 	private PrcmtDeliveryEvtLeaseEJB evtLeaseEJB;
-	
+	@Inject
+	private StkDlvryItemHstryEJB dlvryItemHstryEJB;
+
 	@Asynchronous
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public void process(PrcmtDeliveryEvt deliveryEvt) {
@@ -88,8 +89,9 @@ public class StkDeliveryEvtProcessor {
 			List<PrcmtDlvryItemEvtData> list = itemEvtDataEJB.findByDlvryNbr(dlvryNbr, start, max);
 			start +=max;
 			for (PrcmtDlvryItemEvtData itemEvtData : list) {
-				List<String> found = articleLotEJB.findIdByDlvryItemNbr(itemEvtData.getDlvryItemNbr());
-				if(!found.isEmpty()) continue;
+				StkDlvryItemHstry hstry = dlvryItemHstryEJB.findById(itemEvtData.getDlvryItemNbr());
+				if(hstry!=null) continue;
+
 				itemEventDataToProcess.add(itemEvtData.getId());
 			}
 		}
@@ -104,8 +106,7 @@ public class StkDeliveryEvtProcessor {
 				evtLeaseEJB.recover(processId, leaseId);
 			}
 		}
-	}
-
+	}	
 	private String getHandlerName(){
 		return StkDeliveryEvtProcessor.class.getSimpleName();
 	}

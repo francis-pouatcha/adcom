@@ -5,16 +5,19 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 import org.adorsys.adcore.jpa.AbstractIdentifData;
 import org.adorsys.javaext.description.Description;
+import org.apache.commons.lang3.time.DateUtils;
 
 @MappedSuperclass
 @Description("StkArticleLot_description")
-public abstract class StkAbstractArticleLot extends AbstractIdentifData {
+public class StkAbstractArticleLot extends AbstractIdentifData {
 
 	private static final long serialVersionUID = 6790628013825127916L;
 
@@ -27,26 +30,14 @@ public abstract class StkAbstractArticleLot extends AbstractIdentifData {
 	@Description("StkArticleLot_artPic_description")
 	@NotNull
 	private String artPic;
-
-	/*
-	 * The delivery item number. Used to retrace the corresponding delivery.
-	 */
-	@Column
-	@Description("StkArticleLot_dlvryItemNbr_description")
-	@NotNull
-	private String dlvryItemNbr;
-	
-	/*
-	 * The delivery number.
-	 */
-	@Column
-	@Description("StkArticleLot_dlvryNbr_description")
-	@NotNull
-	private String dlvryNbr;
 	
 	@Column
 	@Description("StkArticleLot_supplierPic_description")
 	private String supplierPic;
+
+	@Column
+	@Description("StkArticleLot_supplier_description")
+	private String supplier;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Description("StkArticleLot_stkgDt_description")
@@ -97,9 +88,17 @@ public abstract class StkAbstractArticleLot extends AbstractIdentifData {
 	@Description("StkArticleLot_purchWrntyDys_description")
 	private BigDecimal purchWrntyDys;
 
+	@Temporal(TemporalType.TIMESTAMP)
+	@Description("StkArticleLot_purchWrntyDt_description")
+	private Date purchWrntyDt;
+
 	@Column
 	@Description("StkArticleLot_purchRtrnDays_description")
 	private BigDecimal purchRtrnDays;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Description("StkArticleLot_purchRtrnDt_description")
+	private Date purchRtrnDt;
 	
 	// Date of the closing of this article lot. This is generally done
 	// after an inventory where we can state that there is none
@@ -107,6 +106,25 @@ public abstract class StkAbstractArticleLot extends AbstractIdentifData {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Description("StkArticleLot_closedDt_description")
 	private Date closedDt;
+	
+	@PrePersist
+	public void prePersist() {
+		super.prePersist();
+		if(stkgDt!=null && purchWrntyDys!=null)
+			purchWrntyDt = DateUtils.addDays(stkgDt, purchRtrnDays.intValue());
+
+		if(stkgDt!=null && purchRtrnDays!=null)
+			purchRtrnDt = DateUtils.addDays(stkgDt, purchRtrnDays.intValue());
+	}
+
+	@PreUpdate
+	public void preUpdate() {
+		if(stkgDt!=null && purchWrntyDys!=null)
+			purchWrntyDt = DateUtils.addDays(stkgDt, purchRtrnDays.intValue());
+
+		if(stkgDt!=null && purchRtrnDays!=null)
+			purchRtrnDt = DateUtils.addDays(stkgDt, purchRtrnDays.intValue());
+	}
 	
 	public String getLotPic() {
 		return this.lotPic;
@@ -132,6 +150,14 @@ public abstract class StkAbstractArticleLot extends AbstractIdentifData {
 		this.supplierPic = supplierPic;
 	}
 
+	public String getSupplier() {
+		return this.supplier;
+	}
+
+	public void setSupplier(final String supplier) {
+		this.supplier = supplier;
+	}
+	
 	public Date getStkgDt() {
 		return this.stkgDt;
 	}
@@ -236,6 +262,22 @@ public abstract class StkAbstractArticleLot extends AbstractIdentifData {
 		this.purchRtrnDays = purchRtrnDays;
 	}
 
+	public Date getPurchWrntyDt() {
+		return purchWrntyDt;
+	}
+
+	public void setPurchWrntyDt(Date purchWrntyDt) {
+		this.purchWrntyDt = purchWrntyDt;
+	}
+
+	public Date getPurchRtrnDt() {
+		return purchRtrnDt;
+	}
+
+	public void setPurchRtrnDt(Date purchRtrnDt) {
+		this.purchRtrnDt = purchRtrnDt;
+	}
+
 	@Override
 	protected String makeIdentif() {
 		return toId(lotPic);
@@ -251,21 +293,5 @@ public abstract class StkAbstractArticleLot extends AbstractIdentifData {
 
 	public void setClosedDt(Date closedDt) {
 		this.closedDt = closedDt;
-	}
-
-	public String getDlvryItemNbr() {
-		return dlvryItemNbr;
-	}
-
-	public void setDlvryItemNbr(String dlvryItemNbr) {
-		this.dlvryItemNbr = dlvryItemNbr;
-	}
-
-	public String getDlvryNbr() {
-		return dlvryNbr;
-	}
-
-	public void setDlvryNbr(String dlvryNbr) {
-		this.dlvryNbr = dlvryNbr;
 	}
 }

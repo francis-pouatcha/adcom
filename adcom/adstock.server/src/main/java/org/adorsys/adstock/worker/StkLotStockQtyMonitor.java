@@ -32,14 +32,14 @@ public class StkLotStockQtyMonitor {
 	}
 	
 	private void newEntry(StkLotStockQty lotStockQty){
-		String artAndLotPic = lotStockQty.artAndLotPic();
-		List<StkLotStockQty> list = cache.get(artAndLotPic);
+		String key = lotStockQty.artPicAndLotPicAndSection();
+		List<StkLotStockQty> list = cache.get(key);
 		if(list==null){
 			synchronized (this) {
-				list = cache.get(artAndLotPic);
+				list = cache.get(key);
 				if(list==null){
 					list = new ArrayList<StkLotStockQty>();
-					cache.put(artAndLotPic, list);
+					cache.put(key, list);
 				}
 			}
 		}

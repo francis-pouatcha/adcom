@@ -1,8 +1,20 @@
 ﻿'use strict';
     
 angular.module('AdProcmt')
+.factory('PrcmtOrderState',[function(){
+        var service = {};
+        var prcmtOrderHolder = {};
 
-.controller('prcmtOrderCtrl',['$scope','ProcmtUtils','genericResource',function($scope,ProcmtUtils,genericResource){
+        service.setOrderHolder = function(OrderHolder){
+            prcmtOrderHolder = OrderHolder;
+        }
+        service.getOrderHolder = function(){
+            return prcmtOrderHolder;
+        }
+
+        return service;
+}])
+.controller('prcmtOrderCtrl',['$scope','$location','ProcmtUtils','genericResource','PrcmtOrderState',function($scope,$location,ProcmtUtils,genericResource,PrcmtOrderState){
 	
     var self = this ;
     $scope.prcmtOrderCtrl = self;
@@ -26,6 +38,8 @@ angular.module('AdProcmt')
     self.handlePrintRequestEvent = handlePrintRequestEvent;
     self.paginate = paginate;
     self.error = "";
+    self.showPage = show;
+    self.showEdit = showEdit;
     
     init();
 
@@ -41,7 +55,7 @@ angular.module('AdProcmt')
     }
 
     function findByLike(searchInput){
-        genericResource.findByLike(ProcmtUtils.urlPrcmtOrder,searchInput)
+        genericResource.findCustom(ProcmtUtils.urlPrcmtOrder,searchInput)
     		.success(function(entitySearchResult) {
 	            self.prcmtOrders = entitySearchResult.resultList;
 	            self.totalItems = entitySearchResult.count ;
@@ -59,11 +73,26 @@ angular.module('AdProcmt')
         findByLike(self.searchInput);
     };
 
+        function show(prcmtOrder) {
+            genericResource.findById(ProcmtUtils.urlManageOrder,prcmtOrder.id)
+                .success(function(data){
+                    PrcmtOrderState.setOrderHolder(data);
+                    $location.path('/PrcmtOrders/show');
+                })
+        }
+
+        function showEdit(val){
+            if(val == 'ONGOING'){
+                return true;
+            }else{
+                return false;
+            }
+        }
 	function handlePrintRequestEvent(){		
 	}
     
 }])
-.controller('prcmtOrderCreateCtlr',['$scope','$location','$q','ProcmtUtils','genericResource',function($scope,$location,$q,ProcmtUtils,genericResource){
+.controller('prcmtOrderCreateCtlr',['$scope','$location','$q','ProcmtUtils','genericResource','PrcmtOrderState',function($scope,$location,$q,ProcmtUtils,genericResource,PrcmtOrderState){
 	var self = this ;
     $scope.prcmtOrderCreateCtlr = self;
     self.prcmtOrder = {};
@@ -145,9 +174,10 @@ angular.module('AdProcmt')
     function create(){
         self.prcmtOrder.supplier = self.prcmtOrder.supplier.ptnrNbr;
         self.prcmtOrder.ordrngOrgUnit = self.prcmtOrder.ordrngOrgUnit.identif;
-        genericResource.create(ProcmtUtils.urlPrcmtOrder,self.prcmtOrder)
+        genericResource.customMethod(ProcmtUtils.urlManageOrder+'/create',self.prcmtOrder)
     	.success(function(data){
-    		$location.path('/PrcmtOrders/show/'+data.id);
+            PrcmtOrderState.setOrderHolder(data);
+    		$location.path('/PrcmtOrders/show');
     	})
     	.error(function(error){
     		self.error = error;

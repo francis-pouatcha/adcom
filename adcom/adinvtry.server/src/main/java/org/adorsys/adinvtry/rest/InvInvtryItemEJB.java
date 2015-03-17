@@ -9,7 +9,7 @@ import javax.persistence.metamodel.SingularAttribute;
 import org.adorsys.adinvtry.jpa.InvInvtryItem;
 import org.adorsys.adinvtry.jpa.InvInvtryItemEvtData;
 import org.adorsys.adinvtry.repo.InvInvtryItemRepository;
-import org.apache.deltaspike.data.api.QueryResult;
+import org.apache.commons.lang3.StringUtils;
 
 @Stateless
 public class InvInvtryItemEJB
@@ -98,13 +98,65 @@ public class InvInvtryItemEJB
 	}
 
 	public Long countByInvtryNbr(String invtryNbr) {
-		QueryResult<InvInvtryItem> queryResult = repository.findByInvtryNbr(invtryNbr);
-		return queryResult.count();
+		return repository.countByInvtryNbr(invtryNbr);
 
 	}
 	
 	public void removeByInvtryNbr(String invtryNbr) {
 		repository.removeByInvtryNbr(invtryNbr);
 	}
+	
+	public List<InvInvtryItem> findByInvtryNbrSorted(String invtryNbr, int start, int max) {
+		return repository.findByInvtryNbr(invtryNbr).orderAsc("artName").firstResult(start).maxResults(max).getResultList();
+	}
+
+	public List<InvInvtryItem> findByInvtryNbrAndSectionSorted(
+			String invtryNbr, String section, int start, int max) {
+		return repository.findByInvtryNbrAndSection(invtryNbr, section).orderAsc("artName").firstResult(start).maxResults(max).getResultList();
+	}
+
+	public Long countByInvtryNbrAndSection(String invtryNbr, String section) {
+		return repository.countByInvtryNbrAndSection(invtryNbr, section);
+	}
+
+	public List<InvInvtryItem> findByInvtryNbrInRange(String invtryNbr,
+			String rangeStart, String rangeEnd, int start, int max, boolean sorted) {
+		if(StringUtils.isBlank(rangeStart)) rangeStart = "a";
+		if(StringUtils.isBlank(rangeEnd)) rangeEnd = "z";
+		if(sorted){
+			return repository.findByInvtryNbrInRange(invtryNbr,rangeStart,rangeEnd).orderAsc("artName").firstResult(start).maxResults(max).getResultList();
+		} else {
+			return repository.findByInvtryNbrInRange(invtryNbr,rangeStart,rangeEnd).firstResult(start).maxResults(max).getResultList();
+		}
+	}
+
+	public Long countByInvtryNbrInRange(String invtryNbr, String rangeStart,
+			String rangeEnd) {
+		if(StringUtils.isBlank(rangeStart)) rangeStart = "a";
+		if(StringUtils.isBlank(rangeEnd)) rangeEnd = "z";
+		return repository.countByInvtryNbrInRange(invtryNbr,rangeStart,rangeEnd);
+	}
+
+	public List<InvInvtryItem> findByInvtryNbrAndSectionInRange(
+			String invtryNbr, String section, String rangeStart, String rangeEnd, int start,
+			int max, boolean sorted) {
+		if(sorted){
+			return repository.findByInvtryNbrAndSection(invtryNbr, section, rangeStart, rangeEnd).orderAsc("artName").firstResult(start).maxResults(max).getResultList();
+		} else {
+			return repository.findByInvtryNbrAndSection(invtryNbr, section, rangeStart, rangeEnd).firstResult(start).maxResults(max).getResultList();
+		}
+	}
+
+	public Long countByInvtryNbrAndSectionInRange(String invtryNbr, String section,
+			String rangeStart, String rangeEnd) {
+		return repository.countByInvtryNbrAndSection(invtryNbr, section, rangeStart, rangeEnd);
+	}
+
+	public InvInvtryItem findByIdentif(String identif) {
+		List<InvInvtryItem> list = repository.findByIdentif(identif);
+		if(list.isEmpty()) return null;
+		return list.iterator().next();
+	}
+
 	
 }

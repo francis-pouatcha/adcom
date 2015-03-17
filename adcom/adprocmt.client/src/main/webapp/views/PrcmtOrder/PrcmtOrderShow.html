@@ -1,66 +1,110 @@
 <div>
     <div class="well">
         <h4>
-            <a>{{prcmtOrderShowCtlr.prcmtOrder.dlvryNbr}}</a> of {{prcmtOrderShowCtlr.prcmtOrder.orderDt | date:'dd-MM-yyyy'}},
-            <b>Order No: </b>{{prcmtOrderShowCtlr.prcmtOrder.dlvrySlipNbr}},
-            <b>Amount Ht:</b> {{prcmtOrderShowCtlr.prcmtOrder.netPPTaxIncl}} cfa,
-            <b>Amount Entered:</b> {{prcmtOrderShowCtlr.totalAmountEntered}} cfa
-            <p class="pull-right">
-                <a class=" btn btn-default" href="#/PrcmtOrders"  type="button">Cancel</a>
-                <button class=" btn btn-primary" ng-click="prcmtOrderShowCtlr.save()" type="button">Save</button>
-                <button class=" btn btn-primary" ng-click="prcmtOrderShowCtlr.close()" type="button">Save and Close</button>
-            </p>
+            <a>{{prcmtOrderShowCtlr.prcmtOrderHolder.prcmtProcOrder.poNbr}}</a> of {{prcmtOrderShowCtlr.prcmtOrderHolder.prcmtProcOrder.orderDt | date:'dd-MM-yyyy'}},
+            <b>{{"PrcmtProcOrder_netAmtToPay_description.title" | translate}}:</b> {{prcmtOrderShowCtlr.prcmtOrderHolder.prcmtProcOrder.netAmtToPay}} cfa,
+            <b>{{"PrcmtProcOrder_netPPTaxIncl_description.title" | translate}}:</b> {{prcmtOrderShowCtlr.prcmtOrderHolder.prcmtProcOrder.netPPTaxIncl}} cfa,
+            <b>{{"PrcmtProcOrder_creatingUsr_description.title" | translate}}: </b> {{prcmtOrderShowCtlr.prcmtOrderHolder.prcmtProcOrder.creatingUsr}}
         </h4>
+        <p class="">
+            <a class=" btn btn-default" href="#/PrcmtOrders"  type="button">Cancel</a>
+            <button class=" btn btn-primary" ng-click="prcmtOrderShowCtlr.transform()" ng-show="!prcmtOrderShowCtlr.closeStatus" type="button">Transform to Delivery</button>
+            <button class=" btn btn-primary" ng-click="prcmtOrderShowCtlr.save()" ng-show="prcmtOrderShowCtlr.closeStatus" type="button">Save</button>
+            <button class=" btn btn-primary" ng-click="prcmtOrderShowCtlr.close()" ng-show="prcmtOrderShowCtlr.closeStatus" type="button">Save and Close</button>
+        </p>
     </div>
-    <div class="panel panel-default">
+    <div class="panel panel-default" ng-show="prcmtOrderShowCtlr.closeStatus" >
         <div class="panel-heading"><b>Add Procurement Order Item</b> </div>
         <div class="panel-body">
-            <form name="prcmtOrderItemForm" id="prcmtOrderItemForm" novalidate >
-            <table class="table table-bordered" >
-                <thead>
-                <tr>
-                    <th class="clo-lg-2">CIP</th>
-                    <th class="col-lg-3">Designation</th>
-                    <th>Qte Stock</th>
-                    <th>Qte</th>
-                    <th>Prix Achat</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
+            <form name="PrcmtProcOrderItemForm" id="PrcmtProcOrderItemForm" novalidate >
+                <table class="table-bordered" >
+                    <thead>
                     <tr>
-                            <input type="hidden" value="{{prcmtOrderShowCtlr.prcmtOrder.dlvryNbr}}" ng-model="prcmtOrderShowCtlr.prcmtOrderItemHolder.dlvryItem.dlvryNbr" >
-                            <td>
-                                <div ng-class="{ 'has-error' : prcmtOrderItemForm.artPic.$invalid }" >
-                                    <input type="text" ng- class="form-control" select-on-click name="artPic" id="artPic" required autocomplete="off" ng-model="prcmtOrderShowCtlr.prcmtOrderItemHolder.dlvryItem.artPic"
+                        <th class="clo-lg-2">CIP</th>
+                        <th class="col-lg-3">Designation</th>
+                        <th>Qte Stock</th>
+                        <th>Qte</th>
+                        <th>Qte Gratuite</th>
+                        <th>prix Achat</th>
+                        <th><a ng-click="prcmtOrderShowCtlr.showMore()" class="pointer-element" ng-show="!prcmtOrderShowCtlr.show" ><i class="glyphicon glyphicon-plus"></i> More</a>
+                            <a ng-click="prcmtOrderShowCtlr.showLess()" class="pointer-element" ng-show="prcmtOrderShowCtlr.show" ><i class="glyphicon glyphicon-minus"></i> Less</a>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <input type="hidden" value="{{prcmtOrderShowCtlr.prcmtOrderHolder.prcmtProcOrder.poNbr}}" ng-model="prcmtOrderShowCtlr.prcmtOrderItemHolder.prcmtPOItem.poNbr" >
+                        <td>
+                            <div ng-class="{ 'has-error' : PrcmtProcOrderItemForm.artPic.$invalid }" >
+                                <input type="text" ng- class="form-control" select-on-click name="artPic" id="artPic" required autocomplete="off" ng-model="prcmtOrderShowCtlr.prcmtOrderItemHolder.prcmtPOItem.artPic"
                                        typeahead="article as article.pic for article in prcmtOrderShowCtlr.loadArticlesByCipLike($viewValue)"
-                                       typeahead-loading="loading" typeahead-template-url="views/PrcmtOrder/CatalTypeaheadTemplate.html" typeahead-on-select='prcmtOrderShowCtlr.onSelect($item, $model, $label)' >
-                                </div>
-                            </td>
-                            <td>
-                                <div ng-class="{ 'has-error' : prcmtOrderItemForm.artName.$invalid }" >
-                                    <input type="text" class="form-control" select-on-click focus required id="artName" autocomplete="off" ng-model="prcmtOrderShowCtlr.prcmtOrderItemHolder.dlvryItem.artName"
+                                       typeahead-loading="loading" typeahead-template-url="views/PrcmtDelivery/CatalTypeaheadTemplate.html" typeahead-on-select='prcmtOrderShowCtlr.onSelect($item, $model, $label)' >
+                            </div>
+                        </td>
+                        <td>
+                            <div ng-class="{ 'has-error' : PrcmtProcOrderItemForm.artName.$invalid }" >
+                                <input type="text" class="form-control" select-on-click focus required id="artName" autocomplete="off" ng-model="prcmtOrderShowCtlr.prcmtOrderItemHolder.prcmtPOItem.artName"
                                        typeahead="article as article.features.artName for article in prcmtOrderShowCtlr.loadArticlesByNameLike($viewValue)"
                                        typeahead-loading="loading" typeahead-on-select='prcmtOrderShowCtlr.onSelect($item, $model, $label)' name="artName" >
-                                </div>
-                            </td>
-                            <td><input type="text" class="form-control" disabled ></td>
-                            <td>
-                                <div ng-class="{ 'has-error' : prcmtOrderItemForm.qtyDlvrd.$invalid }" >
-                                    <input type="text" class="form-control" required name="qtyDlvrd" id="qtyDlvrd" ng-model="prcmtOrderShowCtlr.prcmtOrderItemHolder.dlvryItem.qtyDlvrd" >
-                                </div>
-                            </td>
-                            <td>
-                                <div ng-class="{ 'has-error' : prcmtOrderItemForm.pppuPreTax.$invalid }" >
-                                    <input type="text" class="form-control" required name="pppuPreTax" ng-model="prcmtOrderShowCtlr.prcmtOrderItemHolder.dlvryItem.pppuPreTax" >
-                                </div>
-                            </td>
-                            <td><button class="btn btn-default" ng-enter="prcmtOrderShowCtlr.addItem()" ng-disabled="prcmtOrderItemForm.$invalid" ng-click="prcmtOrderShowCtlr.addItem()" ><i class="glyphicon glyphicon-plus"></i> Add</button></td>
+                            </div>
+                        </td>
+                        <td><input type="text" class="form-control" disabled ng-model="prcmtOrderShowCtlr.prcmtOrderItemHolder.prcmtPOItem.stkQtyPreOrder" ></td>
+                        <td>
+                            <div ng-class="{ 'has-error' : PrcmtProcOrderItemForm.qtyDlvrd.$invalid }" >
+                                <input type="text" class="form-control" required name="qtyOrdered" id="qtyOrdered" ng-model="prcmtOrderShowCtlr.prcmtOrderItemHolder.prcmtPOItem.qtyOrdered" >
+                            </div>
+                        </td>
+                        <td><input type="text" class="form-control" ng-model="prcmtOrderShowCtlr.prcmtOrderItemHolder.prcmtPOItem.freeQty" ></td>
+                        <td>
+                            <div >
+                                <input type="text" class="form-control" name="pppuPreTax" ng-model="prcmtOrderShowCtlr.prcmtOrderItemHolder.prcmtPOItem.pppuPreTax" >
+                            </div>
+                        </td>
+                        <td><button class="btn btn-primary" ng-enter="prcmtOrderShowCtlr.addItem()" ng-disabled="PrcmtProcOrderItemForm.$invalid" ng-click="prcmtOrderShowCtlr.addItem()" ><i class="glyphicon glyphicon-plus"></i> Add</button></td>
 
                     </tr>
-                </tbody>
-            </table>
-          </form>
+                    </tbody>
+                </table>
+                <div ng-show="prcmtOrderShowCtlr.show" >
+                    <table class="table-bordered" >
+                        <thead>
+                        <tr>
+                            <th class="">{{'PrcmtPOItem_supplier_description.title' | translate}}</th>
+                            <th>{{'PrcmtPOItem_rebate_description.title' | translate}}</th>
+                            <th>{{'PrcmtPOItem_vatPct_description.title' | translate}}</th>
+                            <th>{{'PrcmtPOItem_vatAmount_description.title' | translate}} Vente</th>
+                            <th>{{'PrcmtDelivery_rcvngOrgUnit_description.title' | translate}}</th>
+                            <th>Section</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <div>
+                                    <input type="text" ng-model="prcmtOrderShowCtlr.prcmtOrderItemHolder.prcmtPOItem.supplier" id="supplier" name="supplier" class="form-control"
+                                           autocomplete="off" typeahead="businessPartner.ptnrNbr as businessPartner.cpnyName for businessPartner in prcmtOrderShowCtlr.loadBusinessPartner($viewValue)"
+                                           typeahead-loading="loading" placeholder="find a Supplier/Manufacturer" value="{{prcmtOrderShowCtlr.prcmtOrderHolder.prcmtProcOrder.supplier}}">
+                                </div>
+                            </td>
+                            <td><input type="text" class="form-control" ng-model="prcmtOrderShowCtlr.prcmtOrderItemHolder.prcmtPOItem.rebateAmt" ></td>
+                             <td><input type="text" class="form-control" ng-model="prcmtOrderShowCtlr.prcmtOrderItemHolder.prcmtPOItem.vatPct"></td>
+                            <td><input type="text" class="form-control" ng-model="prcmtOrderShowCtlr.prcmtOrderItemHolder.prcmtPOItem.vatAmount" ></td>
+                            <td><input type="text" ng-model="prcmtOrderShowCtlr.prcmtOrderItemHolder.prcmtPOItem.rcvngOrgUnit"  class="form-control"
+                                       autocomplete="off" typeahead="orgUnit.identif as orgUnit.fullName for orgUnit in prcmtOrderShowCtlr.loadOrgUnit($viewValue)"
+                                       typeahead-loading="loading" placeholder="find an organisation unit" value="{{prcmtOrderShowCtlr.prcmtOrderHolder.prcmtProcOrder.rcvngOrgUnit}}" >
+                            </td>
+                            <td>
+                                <input type="text" ng-model="prcmtOrderShowCtlr.prcmtOrderItemHolder.prcmtPOItem.strgSection"  class="form-control"
+                                       autocomplete="off" typeahead="section.identif as section.name for section in prcmtOrderShowCtlr.loadstkSection($viewValue)"
+                                       typeahead-loading="loading" placeholder="find a section" >
+                            </td>
+                            <td></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </form>
         </div>
     </div>
     <div class="panel panel-default">
@@ -75,25 +119,23 @@
                     <th>Qte</th>
                     <th>Qte Gratuite</th>
                     <th>prix Achat</th>
-                    <th>Prix Vente</th>
-                    <th>Date P</th>
+                    <th>{{'PrcmtPOItem_supplier_description.title' | translate}}</th>
                     <th></th>
                     <th></th>
                 </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="prcmtOrderItemHolder in prcmtOrderShowCtlr.prcmtOrderItemHolders"  >
-                        <td>{{prcmtOrderItemHolder.dlvryItem.artPic}}</td>
-                        <td>{{prcmtOrderItemHolder.dlvryItem.artName}}</td>
-                        <td></td>
-                        <td>{{prcmtOrderItemHolder.dlvryItem.qtyDlvrd}}</td>
-                        <td>{{prcmtOrderItemHolder.dlvryItem.freeQty}}</td>
-                        <td>{{prcmtOrderItemHolder.dlvryItem.pppuPreTax}}</td>
-                        <td>{{prcmtOrderItemHolder.dlvryItem.sppuPreTax}}</td>
-                        <td>{{prcmtOrderItemHolder.dlvryItem.expirDt}}</td>
-                        <td><a ng-click="prcmtOrderShowCtlr.editItem($index)" class=""><i class="glyphicon glyphicon-edit"></i></a></td>
-                        <td><a ng-click="prcmtOrderShowCtlr.deleteItem($index)" class=""><i class="glyphicon glyphicon-trash"></i></a></td>
-                    </tr>
+                <tr ng-repeat="orderItemHolder in prcmtOrderShowCtlr.prcmtOrderHolder.poItems" >
+                    <td>{{orderItemHolder.prcmtPOItem.artPic}}</td>
+                    <td>{{orderItemHolder.prcmtPOItem.artName}}</td>
+                    <td></td>
+                    <td>{{orderItemHolder.prcmtPOItem.qtyOrdered}}</td>
+                    <td>{{orderItemHolder.prcmtPOItem.freeQty}}</td>
+                    <td>{{orderItemHolder.prcmtPOItem.pppuPreTax}}</td>
+                    <td>{{orderItemHolder.prcmtPOItem.supplier}}</td>
+                    <td><a ng-show="prcmtOrderShowCtlr.closeStatus" ng-click="prcmtOrderShowCtlr.editItem($index)" class=""><i class="glyphicon glyphicon-edit"></i></a></td>
+                    <td><a ng-show="prcmtOrderShowCtlr.closeStatus" ng-click="prcmtOrderShowCtlr.deleteItem($index)" class=""><i class="glyphicon glyphicon-trash"></i></a></td>
+                </tr>
                 </tbody>
             </table>
         </div>

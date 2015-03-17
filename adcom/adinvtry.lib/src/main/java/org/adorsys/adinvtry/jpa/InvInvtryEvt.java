@@ -10,19 +10,7 @@ public class InvInvtryEvt extends InvAbstractInvtryHstry {
 
 	@Column
 	@NotNull
-	private String lstnrName;
-
-	@Column
-	@NotNull
 	private String evtName;
-	
-	public String getLstnrName() {
-		return lstnrName;
-	}
-
-	public void setLstnrName(String lstnrName) {
-		this.lstnrName = lstnrName;
-	}
 
 	public String getEvtName() {
 		return evtName;

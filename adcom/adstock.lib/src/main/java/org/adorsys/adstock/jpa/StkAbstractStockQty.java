@@ -18,50 +18,55 @@ public abstract class StkAbstractStockQty extends AbstractMvmtData {
 	private static final long serialVersionUID = 5437976674412946410L;
 
 	@Column
-	@Description("StkArtStockQty_artPic_description")
+	@Description("StkAbstractStockQty_artPic_description")
 	@NotNull
 	private String artPic;
 
 	@Column
-	@Description("StkArtStockQty_stockQty_description")
+	@Description("StkAbstractStockQty_lotPic_description")
+	@NotNull
+	private String lotPic;
+
+	@Column
+	@Description("StkAbstractStockQty_section_description")
+	@NotNull
+	private String section;
+	
+	@Column
+	@Description("StkAbstractStockQty_stockQty_description")
 	@NotNull
 	private BigDecimal stockQty = BigDecimal.ZERO;
 
-	@Column
-	@Description("StkArtStockQty_rsrvdQty_description")
-	@NotNull
-	private BigDecimal rsrvdQty = BigDecimal.ZERO;
-	
 	@Temporal(TemporalType.TIMESTAMP)
-	@Description("StkArtStockQty_qtyDt_description")
+	@Description("StkAbstractStockQty_qtyDt_description")
 	@NotNull
 	private Date qtyDt;
 	
 	// The originating process. Sales, Inventory, Procurement
 	@Column
-	@Description("StkArtStockQty_origProcs_description")
+	@Description("StkAbstractStockQty_origProcs_description")
 	private String origProcs;
 
 	// The identifier of the origin process.
 	@Column
-	@Description("StkArtStockQty_origProcsNbr_description")
+	@Description("StkAbstractStockQty_origProcsNbr_description")
 	private String origProcsNbr;
 	
 	// The number is incremented every time a new stock quantity
 	// is computed from a parent. The new seqNbr is the sequence
 	// number of the parent increased by one.
 	@NotNull
-	@Description("StkArtStockQty_seqNbr_description")
+	@Description("StkAbstractStockQty_seqNbr_description")
 	private Integer seqNbr;
 	
 	// For any seqNbr > 0, the id of the parent rec must be documented here.
 	// Unless it is a consolidated record.
-	@Description("StkArtStockQty_parentRcrd_description")
+	@Description("StkAbstractStockQty_parentRcrd_description")
 	private String parentRcrd;
 	
 	// Set to true if the record is consolidated. In that case there
 	// will be no prntRecord.
-	@Description("StkArtStockQty_cnsldtd_description")
+	@Description("StkAbstractStockQty_cnsldtd_description")
 	private Boolean cnsldtd;
 
 	public String getArtPic() {
@@ -96,14 +101,6 @@ public abstract class StkAbstractStockQty extends AbstractMvmtData {
 		this.seqNbr = seqNbr;
 	}
 
-	public BigDecimal getRsrvdQty() {
-		return rsrvdQty;
-	}
-
-	public void setRsrvdQty(BigDecimal rsrvdQty) {
-		this.rsrvdQty = rsrvdQty;
-	}
-
 	public String getOrigProcs() {
 		return origProcs;
 	}
@@ -136,4 +133,23 @@ public abstract class StkAbstractStockQty extends AbstractMvmtData {
 		this.cnsldtd = cnsldtd;
 	}
 
+	public String getLotPic() {
+		return lotPic;
+	}
+
+	public void setLotPic(String lotPic) {
+		this.lotPic = lotPic;
+	}
+
+	public String getSection() {
+		return section;
+	}
+
+	public void setSection(String section) {
+		this.section = section;
+	}
+	
+	public String artPicAndLotPicAndSection(){
+		return getArtPic() + "_" + getLotPic() + "_" + getSection();
+	}
 }

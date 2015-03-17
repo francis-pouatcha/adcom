@@ -78,7 +78,27 @@ public class InvInvtryItemEvtDataEJB
 
       return entity;
    }
-   public List<InvInvtryItemEvtData> findByInvtryNbr(String invtryNbr) {
-	   return repository.findByInvtryNbr(invtryNbr);
-   }
+
+	public Long countByInvtryNbr(String invtryNbr) {
+		return repository.countByInvtryNbr(invtryNbr);
+	}
+
+	public List<InvInvtryItemEvtData> findByInvtryNbr(String invtryNbr,
+			int start, int max) {
+		return repository.findByInvtryNbr(invtryNbr).firstResult(start)
+				.maxResults(max).getResultList();
+	}
+
+	public List<String> findIdByInvtryNbr(String invtryNbr,
+			int start, int max) {
+		return repository.findIdByInvtryNbr(invtryNbr).firstResult(start)
+				.maxResults(max).getResultList();
+	}
+
+	public void deleteByInvtryNbr(String invtryNbr, int max) {
+		List<String> invtryNbrs = findIdByInvtryNbr(invtryNbr, 0, max);
+		for (String invtryItemId : invtryNbrs) {
+			deleteById(invtryItemId);
+		}
+	}
 }

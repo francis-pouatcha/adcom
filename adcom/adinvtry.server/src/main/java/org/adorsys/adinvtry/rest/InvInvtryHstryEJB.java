@@ -3,11 +3,12 @@ package org.adorsys.adinvtry.rest;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
 
-import org.adorsys.adinvtry.jpa.InvInvtryEvt;
-import org.adorsys.adinvtry.jpa.InvInvtryEvtLstnr;
+import org.adorsys.adbase.enums.BaseHistoryTypeEnum;
+import org.adorsys.adinvtry.event.InvInvtryClosedEvent;
 import org.adorsys.adinvtry.jpa.InvInvtryHstry;
 import org.adorsys.adinvtry.repo.InvInvtryHstryRepository;
 
@@ -16,26 +17,19 @@ public class InvInvtryHstryEJB {
 
 	@Inject
 	private InvInvtryHstryRepository repository;
-	
+
 	@Inject
-	private InvInvtryEvtLstnrEJB evtLstnrEJB;
-	
-	@Inject
-	private InvInvtryEvtEJB evtEJB;
+	@InvInvtryClosedEvent
+	private Event<InvInvtryHstry> invtryClosedEvent;
 
 	public InvInvtryHstry create(InvInvtryHstry entity) {
-		InvInvtryHstry deliveryHstry = repository.save(attach(entity));
-		String evtName = deliveryHstry.getHstryType();
-		List<InvInvtryEvtLstnr> found = evtLstnrEJB.findByEvtName(evtName);
-		for (InvInvtryEvtLstnr evtLstnr : found) {
-			InvInvtryEvt evt = new InvInvtryEvt();
-			deliveryHstry.copyTo(evt);
-			evt.setEvtName(evtName);
-			evt.setLstnrName(evtLstnr.getLstnrName());
-			evt.setId(deliveryHstry.getId() + "_" + evtLstnr.getId());
-			evtEJB.create(evt);
+		InvInvtryHstry invtryHstry = repository.save(attach(entity));
+
+		if (BaseHistoryTypeEnum.CLOSED.name().equals(invtryHstry.getHstryType())){
+			invtryClosedEvent.fire(invtryHstry);
 		}
-		return deliveryHstry;
+
+		return invtryHstry;
 	}
 
 	public InvInvtryHstry deleteById(String id) {

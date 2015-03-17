@@ -12,11 +12,24 @@ angular.module('AdProcmt')
         service.stkSection = '/adstock.server/rest/stksections';
 
         service.urlPrcmtOrder='/adprocmt.server/rest/prcmtprocorders';
+        service.urlManageOrder='/adprocmt.server/rest/order';
 
         return service;
 }])
+.factory('PrcmtDeliveryState',[function(){
+        var service = {};
+        var prcmtDeliveryHolder = {};
 
-.controller('prcmtDeliveryCtrl',['$scope','ProcmtUtils','genericResource',function($scope,ProcmtUtils,genericResource){
+        service.setDeliveryHolder = function(DeliveryHolder){
+            prcmtDeliveryHolder = DeliveryHolder;
+        }
+        service.getDeliveryHolder = function(){
+            return prcmtDeliveryHolder;
+        }
+
+        return service;
+}])
+.controller('prcmtDeliveryCtrl',['$scope','$location','ProcmtUtils','genericResource','PrcmtDeliveryState',function($scope,$location,ProcmtUtils,genericResource,PrcmtDeliveryState){
 	
     var self = this ;
     $scope.prcmtDeliveryCtrl = self;
@@ -41,6 +54,7 @@ angular.module('AdProcmt')
     self.paginate = paginate;
     self.error = "";
     self.showEdit = showEdit;
+    self.showDelivery = showDelivery;
     
     init();
 
@@ -84,6 +98,14 @@ angular.module('AdProcmt')
                 return false;
             }
         }
+        function showDelivery(prcmtDelivery) {
+            genericResource.findById(ProcmtUtils.urlManagerDelivery,prcmtDelivery.identif)
+                .success(function(data){
+                    PrcmtDeliveryState.setDeliveryHolder(data);
+                    $location.path('/PrcmtDeliverys/addItem');
+                })
+        }
+
 }])
 .controller('prcmtDeliveryCreateCtlr',['$scope','$location','$q','ProcmtUtils','genericResource',function($scope,$location,$q,ProcmtUtils,genericResource){
 	var self = this ;

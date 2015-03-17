@@ -86,15 +86,15 @@ public class StkArticleLotEJB {
 		return repository.findLotPicByArtPic(artPic);
 	}
 
-	public List<String> findIdByDlvryNbr(String dlvryNbr) {
-		return repository.findIdByDlvryNbr(dlvryNbr);
-	}
-
-	public Long countByDlvryNbr(String dlvryNbr) {
-		return repository.countByDlvryNbr(dlvryNbr);
-	}
-
-	public List<String> findIdByDlvryItemNbr(String dlvryItemNbr) {
-		return repository.findIdByDlvryItemNbr(dlvryItemNbr);
-	}
+//	public List<String> findIdByDlvryNbr(String dlvryNbr) {
+//		return repository.findIdByDlvryNbr(dlvryNbr);
+//	}
+//
+//	public Long countByDlvryNbr(String dlvryNbr) {
+//		return repository.countByDlvryNbr(dlvryNbr);
+//	}
+//
+//	public List<String> findIdByDlvryItemNbr(String dlvryItemNbr) {
+//		return repository.findIdByDlvryItemNbr(dlvryItemNbr);
+//	}
 }

@@ -9,5 +9,5 @@ import org.apache.deltaspike.data.api.Repository;
 @Repository(forEntity = InvInvtryEvt.class)
 public interface InvInvtryEvtRepository extends EntityRepository<InvInvtryEvt, String>
 {
-	public List<InvInvtryEvt> findByLstnrNameAndEvtName(String lstnrName,String evtName);
+	public List<InvInvtryEvt> findByEvtName(String evtName);
 }

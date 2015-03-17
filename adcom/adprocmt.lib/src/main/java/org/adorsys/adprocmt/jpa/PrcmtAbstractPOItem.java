@@ -11,8 +11,13 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 import org.adorsys.adcore.jpa.AbstractMvmtData;
+import org.adorsys.adcore.jpa.AmtOrPct;
+import org.adorsys.adcore.utils.BigDecimalUtils;
+import org.adorsys.adcore.utils.CalendarUtil;
+import org.adorsys.adcore.utils.FinancialOps;
 import org.adorsys.javaext.description.Description;
 import org.adorsys.javaext.format.DateFormatPattern;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
 @MappedSuperclass
@@ -30,6 +35,14 @@ public abstract class PrcmtAbstractPOItem extends AbstractMvmtData {
 	@Description("PrcmtPOItem_artPic_description")
 	@NotNull
 	private String artPic;
+	
+	/*
+	 * this field is use to carry article name
+	 */
+	@Column
+	@Description("PrcmtDlvryItem_artName_description")
+	private String artName;
+
 
 	@Column
 	@Description("PrcmtPOItem_supplier_description")
@@ -50,7 +63,7 @@ public abstract class PrcmtAbstractPOItem extends AbstractMvmtData {
 	 */
 	@Column
 	@Description("PrcmtPOItem_rcvngOrgUnit_description")
-	@NotNull
+	//@NotNull
 	private String rcvngOrgUnit;
 
 	/*
@@ -59,12 +72,12 @@ public abstract class PrcmtAbstractPOItem extends AbstractMvmtData {
 	 */
 	@Column
 	@Description("PrcmtPOItem_strgSection_description")
-	@NotNull
+	//@NotNull
 	private String strgSection;
 	
 	@Column
 	@Description("PrcmtPOItem_stkQtyPreOrder_description")
-	@NotNull
+	//@NotNull
 	private BigDecimal stkQtyPreOrder;
 
 	@Column
@@ -126,6 +139,14 @@ public abstract class PrcmtAbstractPOItem extends AbstractMvmtData {
 
 	public String getArtPic() {
 		return this.artPic;
+	}
+
+	public String getArtName() {
+		return artName;
+	}
+
+	public void setArtName(String artName) {
+		this.artName = artName;
 	}
 
 	public void setArtPic(final String artPic) {
@@ -263,4 +284,70 @@ public abstract class PrcmtAbstractPOItem extends AbstractMvmtData {
 	public static String toId(String poNbr, String artPic, String rcvngOrgUnit, String strgSection){
 		return poNbr + "_" + artPic + "_" + rcvngOrgUnit + "_" + strgSection;
 	}
+	
+	public void copyTo(PrcmtAbstractPOItem target){
+		target.poNbr=poNbr;	
+		target.artPic=artPic;
+		target.artName=artName;
+		target.supplier=supplier;	
+		target.qtyOrdered=qtyOrdered;
+		target.freeQty=freeQty;
+		target.stkQtyPreOrder = stkQtyPreOrder;
+		target.pppuPreTax=pppuPreTax;
+		target.pppuCur=pppuCur;
+		target.grossPPPreTax=grossPPPreTax;
+		target.netPPPreTax=netPPPreTax;
+		target.netPPTaxIncl = netPPTaxIncl;
+		target.vatPct=vatPct;
+		target.vatAmount = vatAmount;
+		target.rebate = rebate;
+		target.creatingUsr=creatingUsr;
+		target.createdDt=createdDt;	
+		target.strgSection = strgSection;
+		target.rcvngOrgUnit = rcvngOrgUnit;
+	}
+	
+	public boolean contentEquals(PrcmtAbstractPOItem target){
+		if(!BigDecimalUtils.numericEquals(target.qtyOrdered,qtyOrdered)) return false;
+		if(!BigDecimalUtils.numericEquals(target.freeQty,freeQty)) return false;
+		if(!BigDecimalUtils.numericEquals(target.stkQtyPreOrder,stkQtyPreOrder)) return false;
+		if(!BigDecimalUtils.numericEquals(target.pppuPreTax,pppuPreTax)) return false;
+		if(!StringUtils.equals(target.pppuCur,pppuCur)) return false;
+		if(!BigDecimalUtils.numericEquals(target.grossPPPreTax,grossPPPreTax)) return false;
+		if(!BigDecimalUtils.numericEquals(target.rebate,rebate)) return false;
+		if(!BigDecimalUtils.numericEquals(target.netPPPreTax,netPPPreTax)) return false;
+		if(!BigDecimalUtils.numericEquals(target.vatPct,vatPct)) return false;
+		if(!BigDecimalUtils.numericEquals(target.vatAmount,vatAmount)) return false;
+		if(!BigDecimalUtils.numericEquals(target.netPPTaxIncl,netPPTaxIncl)) return false;
+		if(!StringUtils.equals(target.creatingUsr,creatingUsr)) return false;
+		if(!CalendarUtil.isSameInstant(target.createdDt,createdDt)) return false;
+		if(!StringUtils.equals(target.poNbr,poNbr)) return false;
+		if(!StringUtils.equals(target.artPic,artPic)) return false;
+		if(!StringUtils.equals(target.artName,artName)) return false;
+		if(!StringUtils.equals(target.supplier,supplier)) return false;
+		if(!StringUtils.equals(target.rcvngOrgUnit,rcvngOrgUnit)) return false;
+		if(!StringUtils.equals(target.strgSection,strgSection)) return false;
+		return true;
+	}
+	
+	public void evlte() {
+		if(this.qtyOrdered==null) this.qtyOrdered=BigDecimal.ZERO;
+		if(this.freeQty==null) this.freeQty=BigDecimal.ZERO;
+		BigDecimal qtyOderedNet = this.qtyOrdered.subtract(this.freeQty);
+		if(this.pppuPreTax==null) this.pppuPreTax=BigDecimal.ZERO;
+		this.grossPPPreTax = qtyOderedNet.multiply(this.pppuPreTax);
+		if(this.rebate==null) this.rebate=BigDecimal.ZERO;
+		this.netPPPreTax = FinancialOps.substract(this.grossPPPreTax, this.rebate, this.pppuCur);
+
+		if(this.vatPct==null)this.vatPct=BigDecimal.ZERO;
+		if(this.vatAmount==null)this.vatAmount=BigDecimal.ZERO;
+		if(this.netPPPreTax.compareTo(BigDecimal.ZERO)<=0){
+			this.vatPct = BigDecimal.ZERO;
+			this.vatAmount = BigDecimal.ZERO;
+		} else {
+			this.vatAmount = FinancialOps.amtFromPrct(this.netPPPreTax, this.vatPct, this.pppuCur);
+		}
+		this.netPPTaxIncl = FinancialOps.add(this.netPPPreTax, this.vatAmount, this.pppuCur);
+	}
+	
 }

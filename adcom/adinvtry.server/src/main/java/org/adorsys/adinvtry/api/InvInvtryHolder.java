@@ -3,6 +3,7 @@
  */
 package org.adorsys.adinvtry.api;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.adorsys.adinvtry.jpa.InvInvtry;
@@ -16,7 +17,7 @@ public class InvInvtryHolder {
 	
 	private InvInvtry invtry;
 	
-	private List<InvInvtryItemHolder> invtryItemHolders;
+	private List<InvInvtryItemHolder> invtryItemHolders = new ArrayList<InvInvtryItemHolder>();
 
 	public InvInvtry getInvtry() {
 		return invtry;
