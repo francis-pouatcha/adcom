@@ -3,73 +3,75 @@
        <div class="panel-heading"><b>{{invInvtryUtils.translations['Entity_create.title']}}</b> </div>
        <div class="panel-body">
            <label class="error col-lg-offset-3 alert-danger" >{{error}} </label>
-           <form  name="invInvtryForm" id="invInvtryForm" class="form-horizontal" novalidate="">
+           <form  name="invInvtryForm" id="invInvtryForm" novalidate>
+	           	<div class="row" >
+               		<div class="form-group col-lg-4">
+	                   	<label>{{invInvtryUtils.translations['InvInvtry_invInvtryType_description.title']}} :</label>
+	                   	<div ng-class="{ 'has-error' : invInvtryForm.invMode.$invalid }" >
+	           				<select class="form-control" name="invInvtryType" id="invInvtryType" ng-model="invInvtry.invInvtryType"
+	                   			ng-options="invInvtryType.enumKey as invInvtryUtils.translations[invInvtryType.translKey]
+	                   				for invInvtryType in invInvtryUtils.invInvtryTypes" >
+	                   			<option value=""/>
+							</select>
+	                   </div>
+                   	</div>
+                   <div class="form-group col-lg-4">
+                       <label class=" control-label" for="acsngUser">{{invInvtryUtils.translations['InvInvtry_acsngUser_description.title']}}</label>
+          		       <input type="text" ng-model="invInvtry.acsngUser" id="acsngUser" name="acsngUser" class="form-control"
+                          autocomplete="off" typeahead="loginName as (loginName.loginName + ' : ' + loginName.fullName) for loginName in invInvtryUtils.loadUsers($viewValue)"
+                          typeahead-loading="loading" typeahead-min-length="3" typeahead-on-select='onUserSelectedInCreate($item, $model, $label)'>
+                   </div>
+                   <div class="form-group col-lg-4">
+                       <label class=" control-label" for="acsngUserFullName">{{invInvtryUtils.translations['InvInvtry_acsngUserFullName_description.title']}}</label>
+          		       <input type="text" ng-model="display.acsngUserFullName" id="acsngUserFullName" name="acsngUserFullName" class="form-control"
+                          autocomplete="off" typeahead="loginName as (loginName.loginName + ' : ' + loginName.fullName) for loginName in invInvtryUtils.loadUsersByName($viewValue)"
+                          typeahead-loading="loading" typeahead-min-length="3" typeahead-on-select='onUserSelectedInCreate($item, $model, $label)'>
+                   </div>
+               	</div>
 	           	<div class="row" >
                		<div class="form-group col-lg-12">
                    		<label class=" control-label">{{invInvtryUtils.translations['InvInvtry_descptn_description.title']}} :</label>
 		             	<textarea rows="3" id="descptn" name="descptn" class="form-control" ng-model="invInvtry.descptn" maxlength="256"></textarea>
                    	</div>
                	</div>
-	           	<div class="row" >
-                   <div class="form-group col-lg-4">
-                       <label class=" control-label" for="newSectionName">{{invInvtryUtils.translations['InvInvtryItem_sectionName_description.title']}}</label>
-              		       <input type="text" ng-model="sectionName" id="newSectionName" name="newSectionName" class="form-control"
-                              autocomplete="off" typeahead="stkSection as stkSection.name for stkSection in invInvtryUtils.loadSections($viewValue)"
-                              typeahead-loading="loading" typeahead-min-length="4" typeahead-on-select='onSectionSelectedInNew($item, $model, $label)'>
-                   </div>
+	           	<div class="row">
                    <div class="form-group col-lg-2">
-                       <label class=" control-label" for="searchSectionCode">{{invInvtryUtils.translations['InvInvtryItem_section_description.title']}}</label>
-              		       <input type="text" ng-model="searchInput.entity.section" id="searchSectionCode" name="searchSectionCode" class="form-control"
-                              autocomplete="off" typeahead="stkSection as stkSection.sectionCode for stkSection in invInvtryUtils.loadSectionsBySectionCode($viewValue)"
-                              typeahead-loading="loading" typeahead-min-length="7" typeahead-on-select='onSectionSelectedInNew($item, $model, $label)'>
+                       <label class=" control-label" for="createSectionCode">{{invInvtryUtils.translations['InvInvtryItem_section_description.title']}}</label>
+              		       <input type="text" ng-model="invInvtry.section" id="createSectionCode" name="createSectionCode" class="form-control"
+                              autocomplete="off" typeahead="stkSection as (stkSection.strgSection + ' : ' + stkSection.sectionName) for stkSection in invInvtryUtils.loadStkSectionArticleLots($viewValue)"
+                              typeahead-loading="loading" typeahead-min-length="4" typeahead-on-select='onSectionSelectedInCreate($item, $model, $label)'>
+                   </div>
+                   <div class="form-group col-lg-4">
+                       <label class=" control-label" for="createSectionName">{{invInvtryUtils.translations['InvInvtryItem_sectionName_description.title']}}</label>
+              		       <input type="text" ng-model="display.sectionName" id="createSectionName" name="createSectionName" class="form-control"
+                              autocomplete="off" typeahead="stkSection as (stkSection.strgSection + ' : ' + stkSection.sectionName) for stkSection in invInvtryUtils.loadStkSectionArticleLotsByName($viewValue)"
+                              typeahead-loading="loading" typeahead-min-length="4" typeahead-on-select='onSectionSelectedInCreate($item, $model, $label)'>
+                   </div>
+                   <div class="form-group col-lg-1">
+                       <label class=" control-label" for="createRangeStart">{{invInvtryUtils.translations['InvInvtryItem_artNameStart_description.title']}}</label>
+              		       <input type="text" ng-model="invInvtry.rangeStart" id="searchRangeStart" name="searchRangeStart" class="form-control">
+                   </div>
+                   <div class="form-group col-lg-1">
+                       <label class=" control-label" for="createRangeEnd">{{invInvtryUtils.translations['InvInvtryItem_artNameEnd_description.title']}}</label>
+              		       <input type="text" ng-model="invInvtry.rangeEnd" id="searchRangeEnd" name="searchRangeEnd" class="form-control">
                    </div>
                	</div>
-	           	<div class="row" >
-                   	<label class="form-group col-lg-12">{{invInvtryUtils.translations['InvInvtry_invInvtryType_description.title']}} :</label>
-                   	<div ng-class="{ 'has-error' : invInvtryForm.invMode.$invalid }" >
-           				<select class="form-control" name="invInvtryType" id="invInvtryType" ng-model="invInvtry.invInvtryType"
-                   			ng-options="invInvtryType.enumKey as invInvtryUtils.translations[invInvtryType.translKey]
-                   				for invInvtryType in invInvtryUtils.invInvtryTypes" >
-                   			<option value=""/>
-						</select>
-                   </div>
-                </div>
-                <div class="form-group">  
-                 <div ng-show="invInvtryUtils.isInvtryBySection(invInvtry) || invInvtryUtils.isInvtryByOrderAlphabeticRange(invInvtry);">
-                      <label class="col-lg-2">{{invInvtryUtils.translations['InvInvtry_section_description.title']}}:</label>
-                      <div class="col-lg-4" >
-                         <input type="text" ng-model="stkSection" id="stkSection" name="stkSection" class="form-control"
-                                autocomplete="off" typeahead="stkSection as stkSection.name for stkSection in invInvtryUtils.loadSections($viewValue)"
-                                typeahead-loading="loading">
-                      </div>
-                 </div>
-                 <div ng-show="invInvtryUtils.isInvtryByOrderAlphabeticRange(invInvtry);">
-                      <div class="col-lg-3">
-                         <input type="text" placeholder="{{invInvtryUtils.translations['InvInvtry_startRange_description.text']}}" 
-                         ng-model="startRange" id="startRange" name="startRange" class="form-control">
-                      </div>
-                      <div class="col-lg-3">
-                         <input type="text" placeholder="{{invInvtryUtils.translations['InvInvtry_endRange_description.text']}}" 
-                         ng-model="endRange" id="endRange" name="endRange" class="form-control">
-                      </div>
-                  </div>
-           </div>
-                 
-               <hr/>
-               <div class="form-group">
-               	<span class="col-lg-4"></span>
-                   <div class="col-lg-2">
-                       <a class="btn-danger btn" href="#/InvInvtrys">
-                       	<i class="glyphicon glyphicon-remove" ></i> {{invInvtryUtils.translations['Entity_cancel.title']}}</a>
-                   </div>
-                   <div class="col-lg-2">
-                       <button ng-click="create();" ng-disabled="invInvtryForm.$invalid" class="btn-success btn"  >
-                       	<i class="glyphicon glyphicon-save"></i>  {{invInvtryUtils.translations['Entity_save.title']}}</button>
-                   </div>
-               	<span class="col-lg-4"></span>
-               </div>
-               
+	           	<div class="row">
+		           <div class="form-group">
+		           	<span class="col-lg-4"></span>
+		               <div class="col-lg-2">
+		                   <a class="btn-danger btn" href="#/InvInvtrys">
+		                   	<i class="glyphicon glyphicon-remove" ></i> {{invInvtryUtils.translations['Entity_cancel.title']}}</a>
+		               </div>
+		               <div class="col-lg-2">
+		                   <button ng-click="create();" ng-disabled="invInvtryForm.$invalid" class="btn-success btn"  >
+		                   	<i class="glyphicon glyphicon-save"></i>  {{invInvtryUtils.translations['Entity_save.title']}}</button>
+		               </div>
+		           	<span class="col-lg-4"></span>
+		           </div>
+	           	</div>
            </form>
        </div>
    </div>
 </div>
+

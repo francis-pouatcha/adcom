@@ -1,8 +1,9 @@
 {
 "InvInvtry_acsngDt_description.text":"The recording date of this inventory item.",
 "InvInvtry_acsngDt_description.title":"Inventory Date",
-"InvInvtry_acsngUser_description.text":"Autor of the Inventory",
-"InvInvtry_acsngUser_description.title":"Autor",
+"InvInvtry_acsngUser_description.text":"Accessing User",
+"InvInvtry_acsngUser_description.title":"Accessing User",
+"InvInvtry_acsngUserFullName_description.title":"Full Name",
 "InvInvtry_descptn_Size_validation.text":"The description must have less than 256 characters",
 "InvInvtry_descptn_Size_validation.title":"The description must have less than 256 characters",
 "InvInvtry_descptn_description.text":"Description of this inventory.",
