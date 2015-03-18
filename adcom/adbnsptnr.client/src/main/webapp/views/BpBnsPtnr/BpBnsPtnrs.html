@@ -92,7 +92,7 @@
                         </table>
                     </div>
                     <ul  class="pull-right">
-                        <pagination  total-items="totalItems()" items-per-page="itemPerPage()"  class="pagination-sm" ng-model="currentPage" ng-change="paginate()"></pagination>
+                        <pagination  total-items="totalItems()" max-size="10" boundary-links="true" items-per-page="itemPerPage()"  class="pagination-sm" ng-model="currentPage" ng-change="paginate()"></pagination>
                     </ul>
                 </div>
 

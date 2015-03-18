@@ -1,0 +1,103 @@
+<div class="row">
+        <div class="panel panel-default  ng-scope">
+            <div class="panel-heading no-collapse">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <b>{{slsSalesOrderUtils.translations['Entity_search.title']}}</b>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="">
+                    <form role="form" class="">
+                        <div class="row" >
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label class=" control-label" for="soNbr">{{slsSalesOrderUtils.translations['SlsSalesOrder_soNbr_description.title']}}</label>
+                                    <div class="">
+                                        <input type="text" id="soNbr" ng-model="searchInput.entity.soNbr" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class=" control-label" for="soStatus">{{slsSalesOrderUtils.translations['SlsSalesOrder_soStatus_description.title']}}</label>
+                                    <div class="">
+                                     <input type="text" id="soStatus" ng-model="searchInput.entity.soStatus" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label class=" control-label" for="soCur">{{slsSalesOrderUtils.translations['SlsSalesOrder_soCur_description.title']}}</label>
+                                    <div class="">
+                                     <input type="text" id="soCur" ng-model="searchInput.entity.soCur" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="form-group">
+                                    <button  ng-click="handleSearchRequestEvent()" class="btn btn-default " style="margin-top: 23px;" >
+                                        <i class="glyphicon glyphicon-search"></i>
+                                    </button>
+                                    <button  ng-click="handlePrintRequestEvent()" class="btn btn-default " style="margin-top: 23px;" >
+                                        <i class="glyphicon glyphicon-print"></i>
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default ">
+            <div class="panel-heading no-collapse"><b>{{slsSalesOrderUtils.translations['Entity_Result.title']}}</b></div>
+            <div class="panel-body">
+                <div class="col-lg-12">
+                    <div  class="row">
+                        <a class="btn btn-primary pull-right margBott10" href="#/SlsSalesOrders/new" >
+                            <i class="glyphicon-plus"></i> {{slsSalesOrderUtils.translations['Entity_create.title']}}
+                        </a>
+
+                    </div>
+                    <div class="table-overflow-middle row">
+                        <table class="table table-bordered  table-striped pointer-element" >
+                            <thead>
+                            <tr>
+                                <th class="text-center">{{slsSalesOrderUtils.translations['SlsSalesOrder_soNbr_description.title']}}</th>
+                                <th class="text-center">{{slsSalesOrderUtils.translations['SlsSalesOrder_soStatus_description.title']}}</th>
+                                <th class="text-center">{{slsSalesOrderUtils.translations['SlsSalesOrder_soCur_description.title']}}</th>
+                                <th class="text-center">{{slsSalesOrderUtils.translations['SlsSalesOrder_vatAmount_description.title']}}</th>
+                                <th class="text-center">{{slsSalesOrderUtils.translations['SlsSalesOrder_netSPTaxIncl_description.title']}}</th>
+                                <th class="text-center">{{slsSalesOrderUtils.translations['SlsSalesOrder_netSalesAmt_description.title']}}</th>
+                                <th class="text-center">{{slsSalesOrderUtils.translations['SlsSalesOrder_netAmtToPay_description.title']}}</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="slsSO in slsSalesOrders()" >
+                                <td>{{slsSO.soNbr}}</td>
+                                <td>{{slsSO.soStatus}}</td>
+                                <td>{{slsSO.soCur}}</td>
+                                <td>{{slsSO.vatAmount}}</td>
+                                <td>{{slsSO.netSPTaxIncl}}</td>
+                                <td>{{slsSO.netSalesAmt}}</td>
+                                <td>{{slsSO.netAmtToPay}}</td>
+                                <td><a href="" ng-click="show(slsSO,$index)"><i class="glyphicon glyphicon-eye-open"></i></a></td>
+                                <td><a href="" ng-click="edit(slsSO,$index)"><i class="glyphicon glyphicon-edit"></i></a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                      </div>
+                    <ul  class="pull-right">
+                        <pagination  total-items="totalItems()" max-size="maxSize" boundary-links="true" items-per-page="itemPerPage()"  class="pagination-sm" ng-model="currentPage" ng-change="paginate()"></pagination>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+</div>

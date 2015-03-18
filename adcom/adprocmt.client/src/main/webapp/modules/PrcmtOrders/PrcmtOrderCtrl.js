@@ -172,8 +172,10 @@ angular.module('AdProcmt')
         }
 
     function create(){
-        self.prcmtOrder.supplier = self.prcmtOrder.supplier.ptnrNbr;
-        self.prcmtOrder.ordrngOrgUnit = self.prcmtOrder.ordrngOrgUnit.identif;
+        if(self.prcmtOrder.supplier)
+            self.prcmtOrder.supplier = self.prcmtOrder.supplier.ptnrNbr;
+        if(self.prcmtOrder.ordrngOrgUnit)
+            self.prcmtOrder.ordrngOrgUnit = self.prcmtOrder.ordrngOrgUnit.identif;
         genericResource.customMethod(ProcmtUtils.urlManageOrder+'/create',self.prcmtOrder)
     	.success(function(data){
             PrcmtOrderState.setOrderHolder(data);

@@ -19,7 +19,8 @@ angular.module('AdCatal')
     self.totalItems ;
     self.itemPerPage=25;
     self.currentPage = 1;
-    self.maxSize = 5 ;
+    self.smallnumPages= 10;
+    self.maxSize = 10 ;
     self.catalArticles = [];
     self.searchEntity = {};
     self.selectedItem = {} ;

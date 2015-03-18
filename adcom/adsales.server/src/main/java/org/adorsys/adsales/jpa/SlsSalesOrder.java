@@ -1,13 +1,17 @@
 package org.adorsys.adsales.jpa;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 import org.adorsys.adcore.jpa.AbstractIdentifData;
 import org.adorsys.javaext.description.Description;
+import org.adorsys.javaext.format.DateFormatPattern;
 
 @Entity
 @Description("SlsSalesOrder_description")
@@ -19,6 +23,23 @@ public class SlsSalesOrder extends AbstractIdentifData {
 	@Description("SlsSalesOrder_soNbr_description")
 	@NotNull
 	private String soNbr;
+	
+	@Column
+	@Description("SlsSalesOrder_acsngUser_description")
+	@NotNull
+	private String acsngUser;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Description("SlsSalesOrder_acsngDt_description")
+	@DateFormatPattern(pattern = "dd-MM-yyyy HH:mm")
+	@NotNull
+	private Date acsngDt;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Description("SlsSalesOrder_soDt_description")
+	@DateFormatPattern(pattern = "dd-MM-yyyy HH:mm")
+	@NotNull
+	private Date soDt;
 
 	@Column
 	@Description("SlsSalesOrder_soStatus_description")
@@ -170,6 +191,32 @@ public class SlsSalesOrder extends AbstractIdentifData {
 
 	public void setNetAmtToPay(final BigDecimal netAmtToPay) {
 		this.netAmtToPay = netAmtToPay;
+	}
+	
+	
+
+	public String getAcsngUser() {
+		return acsngUser;
+	}
+
+	public void setAcsngUser(String acsngUser) {
+		this.acsngUser = acsngUser;
+	}
+
+	public Date getAcsngDt() {
+		return acsngDt;
+	}
+
+	public void setAcsngDt(Date acsngDt) {
+		this.acsngDt = acsngDt;
+	}
+
+	public Date getSoDt() {
+		return soDt;
+	}
+
+	public void setSoDt(Date soDt) {
+		this.soDt = soDt;
 	}
 
 	@Override
