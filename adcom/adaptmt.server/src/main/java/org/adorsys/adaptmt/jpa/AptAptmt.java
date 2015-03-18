@@ -1,25 +1,21 @@
 package org.adorsys.adaptmt.jpa;
 
-import javax.persistence.Entity;
-
-import java.io.Serializable;
-
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Column;
-import javax.persistence.Version;
-
-import java.lang.Override;
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.PrePersist;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.adorsys.adcore.jpa.AbstractIdentifData;
 import org.adorsys.javaext.description.Description;
+
 import org.adorsys.adaptmt.jpa.AptmtStatus;
 import javax.validation.constraints.NotNull;
+
+import org.apache.commons.lang3.StringUtils;
+
 
 @Entity
 @Description("AptAptmt_description")
@@ -102,13 +98,6 @@ public class AptAptmt extends AbstractIdentifData
       this.closedUserId = closedUserId;
    }
 
-   @Override
-   protected String makeIdentif()
-   {
-      // TODO Auto-generated method stub
-      return aptmtnNbr;
-   }
-
    public AptmtStatus getStatus()
    {
       return this.status;
@@ -189,4 +178,19 @@ public class AptAptmt extends AbstractIdentifData
          result += ", parentIdentify: " + parentIdentify;
       return result;
    }
+
+   @Override
+   protected String makeIdentif()
+   {
+      // TODO Auto-generated method stub
+      return aptmtnNbr;
+   }
+	
+   @PrePersist
+   public void checkStatus() {
+		if (StringUtils.isBlank(status.toString()))
+			setStatus(AptmtStatus.FORTHCOMMING);
+
+   }
+
 }
