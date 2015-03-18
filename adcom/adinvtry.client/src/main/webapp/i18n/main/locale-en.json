@@ -70,6 +70,7 @@
 "InvInvtryItem_artName_description.title":"Article Name",
 "InvInvtryItem_artNameStart_description.title":"a-z",
 "InvInvtryItem_artNameEnd_description.title":"a-z",
+"InvInvtryItem_expirDt_description.title":"Expiration Date",
 
 "InvInvntrStatus_CLOSED_description.text":"Closed document",
 "InvInvntrStatus_CLOSED_description.title":"Closed",

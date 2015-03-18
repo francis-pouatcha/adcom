@@ -14,6 +14,9 @@ angular.module('AdInvtry')
     service.prepare = function(invtry){
         return $http.put(urlBase+'/prepare',invtry);
     };
+    service.updateItem = function(invtryItem){
+        return $http.put(urlBase+'/updateItem',invtryItem);
+    };
     return service;
 }])
 .factory('invInvtryState',['$rootScope','searchResultHandler',function($rootScope,searchResultHandler){
@@ -129,6 +132,8 @@ angular.module('AdInvtry')
     	            'InvInvtryItem_expectedQty_description.title',
     	            'InvInvtryItem_asseccedQty_description.title',
     	            'InvInvtry_acsngUserFullName_description.title',
+    	            'InvInvtryItem_expirDt_description.title',
+    	            'InvInvtryItem_acsngDt_description.title',
     	            
     	            'Entity_show.title',
     	            'Entity_previous.title',
@@ -349,23 +354,6 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
 
   
 }])
-.controller('invInvtryEditCtlr',['$scope','genericResource','$location','invInvtryUtils','invInvtryState',
-                                 function($scope,genericResource,$location,invInvtryUtils,invInvtryState){
-    $scope.invInvtry = invInvtryState.invInvtry();
-    $scope.error = "";
-    $scope.invInvtryUtils=invInvtryUtils;
-    $scope.update = function (){
-    	genericResource.update(invInvtryUtils.urlBase, $scope.invInvtry)
-    	.success(function(invInvtry){
-    		if(invInvtryState.replace(invInvtry)){
-    			$location.path('/InvInvtrys/show/');
-    		}
-        })
-    	.error(function(error){
-            $scope.error = error;
-        });
-    };
-}])
 .controller('invInvtryShowCtlr',['$scope','invInvtryManagerResource','$location','invInvtryUtils','invInvtryState','$rootScope','genericResource','$routeParams','searchResultHandler',
                                  function($scope,invInvtryManagerResource,$location,invInvtryUtils,invInvtryState,$rootScope,genericResource,$routeParams,searchResultHandler){
     $scope.invInvtry = invInvtryState.resultHandler.entity();
@@ -450,25 +438,18 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
         loadInvInvtryItems();
 	}
 
+    $scope.saveItem = function(invtryItem){
+    	delete invtryItem.editing;
+        invInvtryManagerResource.update(invtryItem)
+    	.success(function(invtryItem){
+    		itemsResultHandler.replace(invtryItem);
+    	})
+    	.error(function(error){
+    		$scope.error = error;
+    	});
+    };
+
     $scope.save = function(){
-//        var invInvtryHolder = {};
-//        invInvtryHolder.invtry = $scope.invInvtry;
-//        invInvtryHolder.invtryItemHolders = $scope.invInvtryItemHolders;
-//        //save
-//    	
-//        invInvtryManagerResource.update(invInvtryHolder)
-//    	.success(function(invInvtryHolder){
-//    		if($scope.invInvtry.invtryNbr){
-//    			invInvtryState.replace(invInvtryHolder.invtry);
-//    		} else {
-//    			invInvtryState.set(invInvtryHolder.invtry);
-//    		}
-//    	    $scope.invInvtry = invInvtryState.invInvtry();
-//    	    $scope.invInvtryItemHolder = {invtryItem:{}};
-//    	})
-//    	.error(function(error){
-//    		$scope.error = error;
-//    	});
     };
 
     $scope.close = function(){
@@ -583,14 +564,10 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
 //		.error(function(error){$scope.error=error;});
     };
     
-    $scope.editItem = function(index){
-//        if(index &&
-//            (0 <= index && index <=$scope.invInvtryItemHolders.length)) {
-//            var itemHolder = $scope.invInvtryItemHolders[index];
-////            $location.path('/InvInvtrys/edit/'+itemHolder.invtryItem.identif);   
-//            $scope.invInvtryItemHolder = itemHolder;
-//        }
+    $scope.editItem = function(invtryItem){
+    	invtryItem.editing = true;
     };
+    
     $scope.addItem = function() {
 //        if(!$scope.invInvtryItemHolder) return;
 //        $scope.invInvtryItemHolders.push($scope.invInvtryItemHolder);

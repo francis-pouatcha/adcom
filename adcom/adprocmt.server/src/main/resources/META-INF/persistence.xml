@@ -63,6 +63,9 @@
     <class>org.adorsys.adprocmt.jpa.PrcmtProcOrderEvtData</class>
     
 	<class>org.adorsys.adstock.jpa.StkArticleLot2StrgSctn</class>
+    <class>org.adorsys.adstock.jpa.StkLotStockQty</class>
+    <class>org.adorsys.adstock.jpa.StkArticleLot</class>
+	<class>org.adorsys.adstock.jpa.StkSection</class>
     
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>

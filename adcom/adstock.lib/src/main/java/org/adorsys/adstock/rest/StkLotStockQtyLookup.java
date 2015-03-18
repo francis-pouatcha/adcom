@@ -6,44 +6,21 @@ import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
-import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
 
-import org.adorsys.adstock.event.StkLotStockQtyEvent;
 import org.adorsys.adstock.jpa.StkArticleLot2StrgSctn;
 import org.adorsys.adstock.jpa.StkLotStockQty;
 import org.adorsys.adstock.repo.StkLotStockQtyRepository;
 
 @Stateless
-public class StkLotStockQtyEJB {
-	@Inject
-	@StkLotStockQtyEvent
-	private Event<StkLotStockQty> qtyEvent;
+public class StkLotStockQtyLookup {
 
 	@Inject
 	private StkLotStockQtyRepository repository;
 	
 	@Inject
-	private StkArticleLot2StrgSctnEJB articleLot2StrgSctnEJB;
-
-	public StkLotStockQty create(StkLotStockQty entity) {
-		entity = repository.save(attach(entity));
-		qtyEvent.fire(entity);
-		return entity;
-	}
-
-	public StkLotStockQty deleteById(String id) {
-		StkLotStockQty entity = repository.findBy(id);
-		if (entity != null) {
-			repository.remove(entity);
-		}
-		return entity;
-	}
-
-	public StkLotStockQty update(StkLotStockQty entity) {
-		return repository.save(attach(entity));
-	}
+	private StkArticleLot2StrgSctnLookup articleLot2StrgSctnLookup;
 
 	public StkLotStockQty findById(String id) {
 		return repository.findBy(id);
@@ -75,13 +52,6 @@ public class StkLotStockQtyEJB {
 	public Long countByLike(StkLotStockQty entity,
 			SingularAttribute<StkLotStockQty, ?>[] attributes) {
 		return repository.countLike(entity, attributes);
-	}
-
-	private StkLotStockQty attach(StkLotStockQty entity) {
-		if (entity == null)
-			return null;
-
-		return entity;
 	}
 
 	public List<StkLotStockQty> findByArtPicAndLotPic(String artPic,
@@ -134,7 +104,7 @@ public class StkLotStockQtyEJB {
 
 	public List<StkLotStockQty> findLatestQties(String artPic, String lotPic) {
 		List<StkLotStockQty> result = new ArrayList<StkLotStockQty>();
-		List<StkArticleLot2StrgSctn> sections = articleLot2StrgSctnEJB.findByArtPicAndLotPic(artPic, lotPic);
+		List<StkArticleLot2StrgSctn> sections = articleLot2StrgSctnLookup.findByArtPicAndLotPic(artPic, lotPic);
 		for (StkArticleLot2StrgSctn section : sections) {
 			StkLotStockQty qty = findLatestQty(artPic, lotPic, section.getStrgSection());
 			if(qty!=null) result.add(qty);

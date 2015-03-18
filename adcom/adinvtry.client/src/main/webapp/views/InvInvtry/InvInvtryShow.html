@@ -192,13 +192,18 @@
             <table class="table table-bordered  table-striped" >
                 <thead>
                 <tr>
-                    <th class="clo-lg-2">{{invInvtryUtils.translations['InvInvtryItem_section_description.title']}}</th>
+                    <th class="clo-lg-1">{{invInvtryUtils.translations['InvInvtryItem_section_description.title']}}</th>
                     <th class="clo-lg-1">{{invInvtryUtils.translations['InvInvtryItem_lotPic_description.title']}}</th>
                     <th class="clo-lg-1">{{invInvtryUtils.translations['InvInvtryItem_artPic_description.title']}}</th>
                     <th class="col-lg-5">{{invInvtryUtils.translations['InvInvtryItem_artName_description.title']}}</th>
+                    <th class="col-lg-1">{{invInvtryUtils.translations['InvInvtryItem_expirDt_description.title']}}</th>
+                    <th class="col-lg-1">{{invInvtryUtils.translations['InvInvtryItem_acsngDt_description.title']}}</th>
                     <th class="col-lg-1">{{invInvtryUtils.translations['InvInvtryItem_asseccedQty_description.title']}}</th>
-                    <th class="col-lg-1" ng-show="invInvtryUtils.isInvInvtryEditable(invInvtry)"></th>
-                    <th class="col-lg-1" ng-show="invInvtryUtils.isInvInvtryEditable(invInvtry)"></th>
+                    <th class="col-lg-1" ng-show="invInvtryUtils.isInvInvtryEditable(invInvtry)">
+                       	<span ng-show="!invInvtry.deleting">
+                        	<a ng-click="invInvtry.deleting=true" class=""><i class="glyphicon glyphicon-trash"></i></a>
+                       	</span>
+                    </th>
                 </tr>
                 </thead>
                 <tbody>
@@ -207,9 +212,32 @@
                         <td>{{invtryItem.lotPic}}</td>
                         <td>{{invtryItem.artPic}}</td>
                         <td>{{invtryItem.artName}}</td>
-                        <td>{{invtryItem.asseccedQty | number:0}}</td>
-                        <td ng-show="invInvtryUtils.isInvInvtryEditable(invInvtry)"><a ng-click="editItem($index)" class=""><i class="glyphicon glyphicon-edit"></i></a></td>
-                        <td ng-show="invInvtryUtils.isInvInvtryEditable(invInvtry)"><a ng-click="deleteItem($index)" class=""><i class="glyphicon glyphicon-trash"></i></a></td>
+                        <td><span ng-show="!invtryItem.editing">{{invtryItem.expirDt | date:'dd-MM-yyyy'}}</span>
+                            <span class="" ng-show="invtryItem.editing">
+                                <input type="datetime" date-time  view="date" min-view="date" views="['date']" dismiss="true" format="dd-MM-yyyy"
+                                        ng-model="invtryItem.expirDt" class="form-control">
+                            </span>
+                        
+                        </td>
+                        <td>{{invtryItem.acsngDt | date:'dd-MM-yyyy HH:mm'}}</td>
+                        <td><span ng-show="!invtryItem.editing">{{invtryItem.asseccedQty | number:0}}</span>
+	                        <input type="text" name="asseccedQty"
+	                        	ng-model="invtryItem.asseccedQty" ng-show="invtryItem.editing" ng-change="invtryItem.acsngDt=new Date()">
+                        </td>
+                        <td ng-show="invInvtryUtils.isInvInvtryEditable(invInvtry)">
+                        	<span ng-show="!invtryItem.editing">
+	                        	<a ng-click="invtryItem.editing=true" class=""><i class="glyphicon glyphicon-edit"></i></a>
+                        	</span>
+                        	<span ng-show="invtryItem.editing">
+	                        	<a ng-click="saveItem(invtryItem)" class=""><i class="glyphicon glyphicon-save"></i></a>
+                        	</span>
+                        	<span ng-show="!invtryItem.editing && invInvtry.deleting" class="pull-right">
+	                        	<a ng-click="deleteItem(invtryItem)" class=""><i class="glyphicon glyphicon-trash"></i></a>
+                        	</span>
+                        	<span ng-show="invtryItem.editing" class="pull-right">
+	                        	<a ng-click="cancelEditItem(invtryItem)" class=""><i class="glyphicon glyphicon-remove"></i></a>
+                        	</span>
+                        </td>
                     </tr>
                 </tbody>
             </table>
