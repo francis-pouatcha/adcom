@@ -25,6 +25,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.adorsys.adstock.jpa.StkArticleLot;
+import org.adorsys.adstock.jpa.StkArticleLot_;
 import org.adorsys.adstock.jpa.StkArticleLot2StrgSctn;
 import org.adorsys.adstock.jpa.StkArticleLotSearchInput;
 import org.adorsys.adstock.jpa.StkArticleLotSearchResult;

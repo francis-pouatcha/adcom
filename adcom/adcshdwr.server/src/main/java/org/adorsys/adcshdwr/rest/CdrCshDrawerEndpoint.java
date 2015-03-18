@@ -161,6 +161,14 @@ public class CdrCshDrawerEndpoint
 	   CdrCshDrawer cdrCshDrawer = ejb.getActiveCshDrawer();
 	   return cdrCshDrawer;
    }
+   
+   @GET
+   @Path("/findPreviousCdrCshDrawer")
+   @Produces({ "application/json", "application/xml" })
+   public List<CdrCshDrawer> findPreviousCdrCshDrawer() {
+	   List<CdrCshDrawer> cdrCshDrawers = ejb.findPreviousCdrCshDrawer();
+	   return cdrCshDrawers;
+   }
 
    @SuppressWarnings("unchecked")
    private SingularAttribute<CdrCshDrawer, ?>[] readSeachAttributes(

@@ -162,4 +162,10 @@ public class CdrCshDrawerEJB
 				+ " can't find the default.");
 		return cshDrawers.iterator().next();
 	}
+	
+	public List<CdrCshDrawer> findPreviousCdrCshDrawer() {
+		String loginName = securityUtil.getCurrentLoginName();
+		List<CdrCshDrawer> previous = repository.findPrevious(loginName);
+		return previous;
+	}
 }
