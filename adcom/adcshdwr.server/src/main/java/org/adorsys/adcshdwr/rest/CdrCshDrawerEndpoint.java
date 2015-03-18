@@ -142,6 +142,25 @@ public class CdrCshDrawerEndpoint
       SingularAttribute<CdrCshDrawer, ?>[] attributes = readSeachAttributes(searchInput);
       return ejb.countByLike(searchInput.getEntity(), attributes);
    }
+   
+
+   @POST
+   @Path("/openCshDrawer")
+   @Consumes({ "application/json", "application/xml" })
+   @Produces({ "application/json", "application/xml" })
+   public CdrCshDrawer openCshDrawer(CdrCshDrawer cshDrawer)
+   {
+      cshDrawer = ejb.openCshDrawer(cshDrawer);
+      return cshDrawer;
+   }
+   
+   @GET
+   @Path("/getActive")
+   @Produces({ "application/json", "application/xml" })
+   public CdrCshDrawer getActive() {
+	   CdrCshDrawer cdrCshDrawer = ejb.getActiveCshDrawer();
+	   return cdrCshDrawer;
+   }
 
    @SuppressWarnings("unchecked")
    private SingularAttribute<CdrCshDrawer, ?>[] readSeachAttributes(
