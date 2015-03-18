@@ -19,6 +19,7 @@ import javax.persistence.TemporalType;
 import org.adorsys.adcore.jpa.AbstractIdentifData;
 import org.adorsys.javaext.description.Description;
 import org.adorsys.adaptmt.jpa.AptmtStatus;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Description("AptAptmt_description")
@@ -47,6 +48,19 @@ public class AptAptmt extends AbstractIdentifData
 
    @Column
    private AptmtStatus status;
+
+   @Column
+   @NotNull
+   private String title;
+
+   @Column
+   private String description;
+
+   @Column
+   private String locality;
+
+   @Column
+   private String parentIdentify;
 
    public Date getCreateDate()
    {
@@ -115,6 +129,46 @@ public class AptAptmt extends AbstractIdentifData
       this.appointmentDate = appointmentDate;
    }
 
+   public String getTitle()
+   {
+      return this.title;
+   }
+
+   public void setTitle(final String title)
+   {
+      this.title = title;
+   }
+
+   public String getDescription()
+   {
+      return this.description;
+   }
+
+   public void setDescription(final String description)
+   {
+      this.description = description;
+   }
+
+   public String getLocality()
+   {
+      return this.locality;
+   }
+
+   public void setLocality(final String locality)
+   {
+      this.locality = locality;
+   }
+
+   public String getParentIdentify()
+   {
+      return this.parentIdentify;
+   }
+
+   public void setParentIdentify(final String parentIdentify)
+   {
+      this.parentIdentify = parentIdentify;
+   }
+
    @Override
    public String toString()
    {
@@ -125,6 +179,14 @@ public class AptAptmt extends AbstractIdentifData
          result += ", createdUserId: " + createdUserId;
       if (closedUserId != null && !closedUserId.trim().isEmpty())
          result += ", closedUserId: " + closedUserId;
+      if (title != null && !title.trim().isEmpty())
+         result += ", title: " + title;
+      if (description != null && !description.trim().isEmpty())
+         result += ", description: " + description;
+      if (locality != null && !locality.trim().isEmpty())
+         result += ", locality: " + locality;
+      if (parentIdentify != null && !parentIdentify.trim().isEmpty())
+         result += ", parentIdentify: " + parentIdentify;
       return result;
    }
 }
