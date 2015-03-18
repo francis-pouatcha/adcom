@@ -1,98 +1,89 @@
 package org.adorsys.adaptmt.jpa;
 
-import javax.persistence.Entity;
-
-import java.io.Serializable;
-
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Column;
-import javax.persistence.Version;
-
-import java.lang.Override;
-
-import org.adorsys.adcore.jpa.AbstractIdentifData;
-import org.adorsys.javaext.description.Description;
 import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+import org.adorsys.adcore.jpa.AbstractIdentifData;
+
 @Entity
-public class AptAptmtRepport extends AbstractIdentifData
-{
+public class AptAptmtRepport extends AbstractIdentifData {
 
-   @Column
-   private String repportNbr;
+	@Column
+	private String repportNbr;
 
-   @Column
-   private String reason;
+	@Column
+	private String aptmtIdentify;
 
-   @Temporal(TemporalType.TIMESTAMP)
-   private Date createDate;
+	@Column
+	private String reason;
 
-   @Column
-   @NotNull
-   private String createdUserId;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date createDate;
 
-   public String getRepportNbr()
-   {
-      return repportNbr;
-   }
+	@Column
+	@NotNull
+	private String createdUserId;
 
-   public void setRepportNbr(String repportNbr)
-   {
-      this.repportNbr = repportNbr;
-   }
+	public String getAptmtIdentify() {
+		return aptmtIdentify;
+	}
 
-   public String getReason()
-   {
-      return this.reason;
-   }
+	public void setAptmtIdentify(String aptmtIdentify) {
+		this.aptmtIdentify = aptmtIdentify;
+	}
 
-   public void setReason(final String reason)
-   {
-      this.reason = reason;
-   }
+	public String getRepportNbr() {
+		return repportNbr;
+	}
 
-   @Override
-   protected String makeIdentif()
-   {
-      // TODO Auto-generated method stub
-      return repportNbr;
-   }
+	public void setRepportNbr(String repportNbr) {
+		this.repportNbr = repportNbr;
+	}
 
-   public Date getCreateDate()
-   {
-      return this.createDate;
-   }
+	public String getReason() {
+		return this.reason;
+	}
 
-   public void setCreateDate(final Date createDate)
-   {
-      this.createDate = createDate;
-   }
+	public void setReason(final String reason) {
+		this.reason = reason;
+	}
 
-   public String getCreatedUserId()
-   {
-      return this.createdUserId;
-   }
+	@Override
+	protected String makeIdentif() {
+		// TODO Auto-generated method stub
+		return repportNbr;
+	}
 
-   public void setCreatedUserId(final String createdUserId)
-   {
-      this.createdUserId = createdUserId;
-   }
+	public Date getCreateDate() {
+		return this.createDate;
+	}
 
-   @Override
-   public String toString()
-   {
-      String result = getClass().getSimpleName() + " ";
-      if (repportNbr != null && !repportNbr.trim().isEmpty())
-         result += "repportNbr: " + repportNbr;
-      if (reason != null && !reason.trim().isEmpty())
-         result += ", reason: " + reason;
-      if (createdUserId != null && !createdUserId.trim().isEmpty())
-         result += ", createdUserId: " + createdUserId;
-      return result;
-   }
+	public void setCreateDate(final Date createDate) {
+		this.createDate = createDate;
+	}
+
+	public String getCreatedUserId() {
+		return this.createdUserId;
+	}
+
+	public void setCreatedUserId(final String createdUserId) {
+		this.createdUserId = createdUserId;
+	}
+
+	@Override
+	public String toString() {
+		String result = getClass().getSimpleName() + " ";
+		if (repportNbr != null && !repportNbr.trim().isEmpty())
+			result += "repportNbr: " + repportNbr;
+		if (reason != null && !reason.trim().isEmpty())
+			result += ", reason: " + reason;
+		if (createdUserId != null && !createdUserId.trim().isEmpty())
+			result += ", createdUserId: " + createdUserId;
+		return result;
+	}
 }
