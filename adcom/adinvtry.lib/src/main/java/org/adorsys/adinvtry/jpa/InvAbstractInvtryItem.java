@@ -101,7 +101,6 @@ public abstract class InvAbstractInvtryItem extends AbstractIdentifData {
 	
 	@Column
 	@Description("InvInvtryItem_acsngUser_description")
-	@NotNull
 	private String acsngUser;
 	
 	@Column
@@ -354,9 +353,13 @@ public abstract class InvAbstractInvtryItem extends AbstractIdentifData {
 		this.salesRtrnDays = salesRtrnDays;
 	}
 
+	public static String toIdentifier(String invtryNbr, String lotPic, String artPic, String section){
+		return invtryNbr + "_" + lotPic + "_" + artPic + "_" + section;
+	}
+	
 	@Override
 	protected String makeIdentif() {
-		return invtryNbr + "_" + lotPic + "_" + artPic + "_" + section;
+		return toIdentifier(invtryNbr, lotPic, artPic, section);
 	}
 	
 	public void copyTo(InvAbstractInvtryItem target) {

@@ -1,8 +1,9 @@
 {
 "InvInvtry_acsngDt_description.text":"The recording date of this inventory item.",
 "InvInvtry_acsngDt_description.title":"Inventory Date",
-"InvInvtry_acsngUser_description.text":"Autor of the Inventory",
-"InvInvtry_acsngUser_description.title":"Autor",
+"InvInvtry_acsngUser_description.text":"Accessing User",
+"InvInvtry_acsngUser_description.title":"Accessing User",
+"InvInvtry_acsngUserFullName_description.title":"Full Name",
 "InvInvtry_descptn_Size_validation.text":"The description must have less than 256 characters",
 "InvInvtry_descptn_Size_validation.title":"The description must have less than 256 characters",
 "InvInvtry_descptn_description.text":"Description of this inventory.",
@@ -69,6 +70,7 @@
 "InvInvtryItem_artName_description.title":"Article Name",
 "InvInvtryItem_artNameStart_description.title":"a-z",
 "InvInvtryItem_artNameEnd_description.title":"a-z",
+"InvInvtryItem_expirDt_description.title":"Expiration Date",
 
 "InvInvntrStatus_CLOSED_description.text":"Closed document",
 "InvInvntrStatus_CLOSED_description.title":"Closed",

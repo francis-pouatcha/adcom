@@ -18,6 +18,9 @@ public class StkArticleLot2StrgSctnLookup
 
    @Inject
    private StkArticleLot2StrgSctnRepository repository;
+   
+   @Inject
+   private StkStrgSectionDetachHelper detachHelper;
 
 
    public StkArticleLot2StrgSctn findById(String id)
@@ -37,7 +40,8 @@ public class StkArticleLot2StrgSctnLookup
 
    public List<StkArticleLot2StrgSctn> findBy(StkArticleLot2StrgSctn entity, int start, int max, SingularAttribute<StkArticleLot2StrgSctn, ?>[] attributes)
    {
-      return repository.findBy(entity, start, max, attributes);
+	   List<StkArticleLot2StrgSctn> found = repository.findBy(entity, start, max, attributes);
+	   return detachHelper.detachStrSections(found);
    }
 
    public Long countBy(StkArticleLot2StrgSctn entity, SingularAttribute<StkArticleLot2StrgSctn, ?>[] attributes)
@@ -47,7 +51,8 @@ public class StkArticleLot2StrgSctnLookup
 
    public List<StkArticleLot2StrgSctn> findByLike(StkArticleLot2StrgSctn entity, int start, int max, SingularAttribute<StkArticleLot2StrgSctn, ?>[] attributes)
    {
-      return repository.findByLike(entity, start, max, attributes);
+	   List<StkArticleLot2StrgSctn> found = repository.findByLike(entity, start, max, attributes);
+	   return detachHelper.detachStrSections(found);
    }
 
    public Long countByLike(StkArticleLot2StrgSctn entity, SingularAttribute<StkArticleLot2StrgSctn, ?>[] attributes)
@@ -56,23 +61,49 @@ public class StkArticleLot2StrgSctnLookup
    }
 
    public List<StkArticleLot2StrgSctn> findByArtPic(String artPic, int start, int max){
-	   return repository.findByArtPic(artPic).firstResult(start).maxResults(max).getResultList();
+	   List<StkArticleLot2StrgSctn> found = repository.findByArtPic(artPic).firstResult(start).maxResults(max).getResultList();
+	   return detachHelper.detachStrSections(found);
    }
    
    public List<StkArticleLot2StrgSctn> findByArtPicAndLotPic(String artPic, String lotPic){
-	   return repository.findByArtPicAndLotPic(artPic, lotPic);
+	   List<StkArticleLot2StrgSctn> found = repository.findByArtPicAndLotPic(artPic, lotPic);
+	   return detachHelper.detachStrSections(found);
    }
    
    public List<StkArticleLot2StrgSctn> findByArtPicAndStrgSection(String artPic, String strgSection) {
-	   return repository.findByArtPicAndStrgSection(artPic, strgSection);
+	   List<StkArticleLot2StrgSctn> found = repository.findByArtPicAndStrgSection(artPic, strgSection);
+	   return detachHelper.detachStrSections(found);
    }
 	
 	public List<StkArticleLot2StrgSctn> findByStrgSection(String strgSection) {
-		return repository.findByStrgSection(strgSection).getResultList();
+		List<StkArticleLot2StrgSctn> found = repository.findByStrgSection(strgSection).getResultList();
+		   return detachHelper.detachStrSections(found);
 	}
-	
+	public List<StkArticleLot2StrgSctn> findByStrgSectionSorted(String strgSection, int start, int max) {
+		List<StkArticleLot2StrgSctn> found = repository.findByStrgSection(strgSection).orderAsc("artName").firstResult(start).maxResults(max).getResultList();
+		   return detachHelper.detachStrSections(found);
+	}
+	public Long countByStrgSection(String strgSection) {
+		return repository.countByStrgSection(strgSection);
+	}
+	public List<StkArticleLot2StrgSctn> findByStrgSectionAndArtNameRange(String strgSection, String rangeStart, String rangeEnd, int start, int max) {
+		List<StkArticleLot2StrgSctn> found = repository.findByStrgSectionAndArtNameRange(strgSection, rangeStart, rangeEnd).orderAsc("artName").firstResult(start).maxResults(max).getResultList();
+		   return detachHelper.detachStrSections(found);
+	}
+	public Long countByStrgSectionAndArtNameRange(String strgSection, String rangeStart, String rangeEnd) {
+		return repository.countByStrgSectionAndArtNameRange(strgSection, rangeStart, rangeEnd);
+	}	
 	public StkArticleLot2StrgSctn findByStrgSectionAndLotPicAndArtPic(String strgSection, String lotPic, String artPic){
 		String primaryKey = StkArticleLot2StrgSctn.toId(artPic, lotPic, strgSection);
-		return repository.findBy(primaryKey);
+		StkArticleLot2StrgSctn found = repository.findBy(primaryKey);
+		return detachHelper.detach(found);
 	}
+
+	public List<StkArticleLot2StrgSctn> findByArtNameRange(String rangeStart, String rangeEnd, int start, int max) {
+		List<StkArticleLot2StrgSctn> found = repository.findByArtNameRange(rangeStart, rangeEnd).orderAsc("artName").firstResult(start).maxResults(max).getResultList();
+		   return detachHelper.detachStrSections(found);
+	}
+	public Long countByArtNameRange(String rangeStart, String rangeEnd) {
+		return repository.countByArtNameRange(rangeStart, rangeEnd);
+	}	
 }

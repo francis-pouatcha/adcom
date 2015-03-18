@@ -1,8 +1,9 @@
 {
 "InvInvtry_acsngDt_description.text":"La date de saisie de cette ligne inventaire.",
 "InvInvtry_acsngDt_description.title":"Date Inventaire",
-"InvInvtry_acsngUser_description.text":"Auteur de l'Inventaire",
-"InvInvtry_acsngUser_description.title":"Auteur",
+"InvInvtry_acsngUser_description.text":"Exécuteur de l'inventaire",
+"InvInvtry_acsngUser_description.title":"Exécuteur",
+"InvInvtry_acsngUserFullName_description.title":"Nom Complet",
 "InvInvtry_descptn_Size_validation.text":"La description doit avoir moins de 256 caract\u00E8res",
 "InvInvtry_descptn_Size_validation.title":"La description doit avoir moins de 256 caract\u00E8res",
 "InvInvtry_descptn_description.text":"Description de cet inventaire.",
@@ -70,6 +71,7 @@
 "InvInvtryItem_artName_description.title":"Nom Article",
 "InvInvtryItem_artNameStart_description.title":"a-z",
 "InvInvtryItem_artNameEnd_description.title":"a-z",
+"InvInvtryItem_expirDt_description.title":"Date Expiration",
 
 "InvInvntrStatus_CLOSED_description.text":"Document cloturé",
 "InvInvntrStatus_CLOSED_description.title":"Cloturé",

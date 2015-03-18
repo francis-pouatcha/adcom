@@ -2,7 +2,10 @@ package org.adorsys.adstock.rest;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -22,12 +25,13 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.adorsys.adstock.jpa.StkArticleLot;
+import org.adorsys.adstock.jpa.StkArticleLot2StrgSctn;
 import org.adorsys.adstock.jpa.StkArticleLotSearchInput;
 import org.adorsys.adstock.jpa.StkArticleLotSearchResult;
-import org.adorsys.adstock.jpa.StkArticleLot_;
 import org.adorsys.adstock.rest.extension.invtry.ArtLotSearchInput;
 import org.adorsys.adstock.rest.extension.invtry.ArticleLotSearchResult;
 import org.adorsys.adstock.rest.extension.invtry.StkArticleInvtryIntegrationEJB;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 
@@ -49,6 +53,9 @@ public class StkArticleLotEndpoint
    
    @Inject
    private StkArticleLotDetachHelper detachHelper;
+
+   @Inject
+	private StkArticleLot2StrgSctnLookup strgSctnEJB;
    
    @POST
    @Consumes({ "application/json", "application/xml" })
@@ -258,6 +265,37 @@ public class StkArticleLotEndpoint
 
    private StkArticleLotSearchResult processSearchResult(StkArticleLotSearchInput searchInput,
 		   StkArticleLotSearchResult searchResult){
-	   return detachHelper.processSearchResult(searchInput, searchResult);
-   }
+		List<StkArticleLot> resultList = searchResult.getResultList();
+		Map<String, StkArticleLot2StrgSctn> foundCache = new HashMap<String, StkArticleLot2StrgSctn>();
+		if (StringUtils.isNotBlank(searchInput.getSectionCode())) {
+			for (StkArticleLot stkArticleLot : resultList) {
+				StkArticleLot2StrgSctn sctn = strgSctnEJB.findByStrgSectionAndLotPicAndArtPic(
+						searchInput.getSectionCode(), stkArticleLot.getLotPic(),stkArticleLot.getArtPic());
+				if(sctn != null)
+					putAndCache(foundCache, Arrays.asList(sctn), stkArticleLot);
+			}
+		} else if (searchInput.isWithStrgSection()) {
+			for (StkArticleLot stkArticleLot : resultList) {
+				List<StkArticleLot2StrgSctn> sctns = strgSctnEJB
+						.findByArtPicAndLotPic(stkArticleLot.getArtPic(),
+								stkArticleLot.getLotPic());
+				putAndCache(foundCache, sctns, stkArticleLot);
+			}
+		}
+		return searchResult;
+	}
+   
+	public void putAndCache(Map<String, StkArticleLot2StrgSctn> foundCache,
+			List<StkArticleLot2StrgSctn> sctns, StkArticleLot stkArticleLot) {
+		for (StkArticleLot2StrgSctn strgSctn : sctns) {
+			if (!foundCache.containsKey(strgSctn.getId())) {
+				foundCache.put(strgSctn.getId(), strgSctn);
+				stkArticleLot.getStrgSctns().add(strgSctn);
+			} else {
+				if (!stkArticleLot.getStrgSctns().contains(strgSctn)) {
+					stkArticleLot.getStrgSctns().add(strgSctn);
+				}
+			}
+		}
+	}
 }

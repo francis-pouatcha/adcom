@@ -37,7 +37,6 @@ public abstract class InvAbstractInvtry extends AbstractIdentifData {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Description("InvInvtry_acsngDt_description")
 	@DateFormatPattern(pattern = "dd-MM-yyyy HH:mm")
-	@NotNull
 	private Date acsngDt;
 
 	@Column
@@ -68,8 +67,48 @@ public abstract class InvAbstractInvtry extends AbstractIdentifData {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Description("InvInvtry_invtryDt_description")
 	@DateFormatPattern(pattern = "dd-MM-yyyy HH:mm")
-	@NotNull
 	private Date invtryDt;
+	
+	@Column
+	@Description("InvInvtry_rangeStart_description")
+	private String rangeStart;
+	
+	@Column
+	@Description("InvInvtry_rangeEnd_description")
+	private String rangeEnd;
+
+	@Column
+	@Description("InvInvtry_section_description")
+	private String section;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Description("InvInvtry_preparedDt_description")
+	@DateFormatPattern(pattern = "dd-MM-yyyy HH:mm")
+	private Date preparedDt;
+
+	public Date getPreparedDt() {
+		return preparedDt;
+	}
+
+	public void setPreparedDt(Date preparedDt) {
+		this.preparedDt = preparedDt;
+	}
+
+	public String getRangeStart() {
+		return rangeStart;
+	}
+
+	public void setRangeStart(String rangeStart) {
+		this.rangeStart = rangeStart;
+	}
+
+	public String getRangeEnd() {
+		return rangeEnd;
+	}
+
+	public void setRangeEnd(String rangeEnd) {
+		this.rangeEnd = rangeEnd;
+	}
 
 	public String getInvtryNbr() {
 		return this.invtryNbr;
@@ -148,6 +187,14 @@ public abstract class InvAbstractInvtry extends AbstractIdentifData {
 		return invtryNbr;
 	}
 	
+	public String getSection() {
+		return section;
+	}
+
+	public void setSection(String section) {
+		this.section = section;
+	}
+
 	public void copyTo(InvAbstractInvtry target) {
 		target.invtryNbr = invtryNbr;
 		target.acsngUser = acsngUser;
@@ -158,6 +205,7 @@ public abstract class InvAbstractInvtry extends AbstractIdentifData {
 		target.invInvtryType = invInvtryType;
 		target.descptn = descptn;
 		target.invtryDt = invtryDt;
+		target.section = section;
 	}
 
 	public void clearAmts() {

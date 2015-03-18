@@ -11,8 +11,11 @@ angular.module('AdInvtry')
     service.close = function(invtryHolder){
         return $http.put(urlBase+'/close',invtryHolder);
     };
-    service.prepare = function(invtryHolder){
-        return $http.put(urlBase+'/prepare',invtryHolder);
+    service.prepare = function(invtry){
+        return $http.put(urlBase+'/prepare',invtry);
+    };
+    service.updateItem = function(invtryItem){
+        return $http.put(urlBase+'/updateItem',invtryItem);
     };
     return service;
 }])
@@ -33,6 +36,7 @@ angular.module('AdInvtry')
                            function(sessionManager,$translate,genericResource,$q,invInvtryState){
     var service = {};
 
+    service.inventoryManagerUrlBase = "/adinvtry.server/rest/inventory";
     service.urlBase='/adinvtry.server/rest/invinvtrys';
     service.invinvtrysUrlBase='/adinvtry.server/rest/invinvtryitems';
     service.stksectionsUrlBase='/adstock.server/rest/stksections';
@@ -127,6 +131,9 @@ angular.module('AdInvtry')
     	            'InvInvtryItem_artName_description.title',
     	            'InvInvtryItem_expectedQty_description.title',
     	            'InvInvtryItem_asseccedQty_description.title',
+    	            'InvInvtry_acsngUserFullName_description.title',
+    	            'InvInvtryItem_expirDt_description.title',
+    	            'InvInvtryItem_acsngDt_description.title',
     	            
     	            'Entity_show.title',
     	            'Entity_previous.title',
@@ -153,131 +160,90 @@ angular.module('AdInvtry')
     };
     
     service.loadSectionsBySectionCode = function(sectionCode){
-        return loadSectionsBySectionCodePromise(sectionCode).then(function(entitySearchResult){
+        return genericResource.findByLikePromissed(service.stksectionsUrlBase, 'sectionCode', sectionCode)
+        .then(function(entitySearchResult){
             return entitySearchResult.resultList;
         });
     };
-    function loadSectionsBySectionCodePromise(sectionCode){
-    	if(!sectionCode) return;
-    	
-        var searchInput = {
-            entity:{},
-            fieldNames:[],
-            start: 0,
-            max: 10
-        };
-        searchInput.entity.sectionCode = sectionCode;
-        if(searchInput.fieldNames.indexOf('sectionCode')==-1)
-        	searchInput.fieldNames.push('sectionCode');
-        var deferred = $q.defer();
-        genericResource.findByLike(service.stksectionsUrlBase, searchInput)
-		.success(function(entitySearchResult) {
-        	deferred.resolve(entitySearchResult);
-		})
-        .error(function(){
-            deferred.reject(service.translations['InvInvtry_NoSectionFound_description.title']);
-        });
-        return deferred.promise;
-    }    
 
     service.loadSectionsBySectionName = function(sectionName){
-        return loadSectionsBySectionNamePromise(sectionName).then(function(entitySearchResult){
-            return entitySearchResult.resultList;
-        });
-    };
-    function loadSectionsBySectionNamePromise(sectionName){
-    	if(!sectionName) return;
-    	
-        var searchInput = {
-            entity:{},
-            fieldNames:[],
-            start: 0,
-            max: 10
-        };
-        searchInput.entity.name = sectionName;
-        if(searchInput.fieldNames.indexOf('name')==-1)
-        	searchInput.fieldNames.push('name');
-        var deferred = $q.defer();
-        genericResource.findByLike(service.stksectionsUrlBase, searchInput)
-		.success(function(entitySearchResult) {
-        	deferred.resolve(entitySearchResult);
-		})
-        .error(function(){
-            deferred.reject(service.translations['InvInvtry_NoSectionFound_description.title']);
-        });
-        return deferred.promise;
-    }    
-    
-    service.loadSections = function(val){
-        return loadSectionsPromise(val).then(function(entitySearchResult){
+        return genericResource.findByLikePromissed(service.stksectionsUrlBase, 'name', sectionName)
+        .then(function(entitySearchResult){
             return entitySearchResult.resultList;
         });
     };
 
-    function loadSectionsPromise(val){
-    	if(!val) return;
-    	
-        var searchInput = {
-            entity:{},
-            fieldNames:[],
-            start: 0,
-            max: 10
-        };
-        searchInput.codeOrName = val;
-        var deferred = $q.defer();
-        genericResource.findCustom(service.stksectionsUrlBase, searchInput)
-		.success(function(entitySearchResult) {
-        	deferred.resolve(entitySearchResult);
-		})
-        .error(function(){
-            deferred.reject(service.translations['InvInvtry_NoSectionFound_description.title']);
-        });
-        return deferred.promise;
-    }    
-    
-    service.loadArticles = function(val){
-        return loadArticlesPromise(val).then(function(entitySearchResult){
+    service.loadArticlesByPic = function(artPic){
+        return genericResource.findByLikePromissed(service.catalarticlesUrlBase, 'pic', artPic)
+        .then(function(entitySearchResult){
             return entitySearchResult.resultList;
         });
     };
 
-    function loadArticlesPromise(val){
-        var deferred = $q.defer();
-    	if(!val) {
-            deferred.reject(service.translations['InvInvtry_NoArticleFound_description.title']);
-            return deferred.promise; //we must return a promise   
-        }
-    	
-        var searchInput = {
-            entity:{},
-            fieldNames:[],
-            start: 0,
-            max: 10
-        };
-
-        searchInput.codesAndNames = val;
-        return loadArticlesPromiseUsingSearchInput(searchInput);
-    } 
-    
-    service.loadArticleWithSearchInput = function (searchInput) {
-        return loadArticlesPromiseUsingSearchInput(searchInput);
-    }
-    
-    function loadArticlesPromiseUsingSearchInput(searchInput){
-        var deferred = $q.defer();
-    	if(!searchInput) {
-            deferred.reject(service.translations['InvInvtry_NoArticleFound_description.title']);
-            return deferred.promise; //we must return a promise   
-        }
-        genericResource.findByLike(service.catalarticlesUrlBase, searchInput)
-		.success(function(entitySearchResult) {
-        	deferred.resolve(entitySearchResult);
-		})
-        .error(function(){
-            deferred.reject(service.translations['InvInvtry_NoArticleFound_description.title']);
+    service.loadArticlesByName = function(artName){
+        var searchInput = {entity:{},fieldNames:[],start: 0,max: 10};
+        searchInput.codesAndNames = artName;
+    	return genericResource.findByLikeWithSearchInputPromissed(service.catalarticlesUrlBase, searchInput)
+        .then(function(entitySearchResult){
+            return entitySearchResult.resultList;
         });
         return deferred.promise;
     }    
+    
+   /* service.loadStkSectionArticleLots = function(stkSection, searchInput){
+        return loadStkSectionArticleLotsPromise(stkSection, searchInput);
+    };*/
+    
+    // Load ArticlesLots from StkSection
+    function loadStkSectionArticleLotsPromise(stkSection, searchInput){
+          if(!stkSection) return;
+            searchInput.sectionCode= stkSection.sectionCode;
+            searchInput.withStrgSection= true;
+            var deferred = $q.defer();
+            genericResource.findBy(service.stkarticlelotsUrlBase, searchInput)
+            .success(function(entitySearchResult) {
+                deferred.resolve(entitySearchResult);
+              })
+            .error(function(error){
+                deferred.reject('No articles from StockSection');
+            });
+        return deferred.promise;
+    };
+
+    var sectionArticleLotPreloader = entityPreLoaderFactory.newEntityPreLoader('sectionArticleLots','lotPic', service.stkarticlelotsUrlBase, genericResource.findBy);
+
+   
+    /*service.loadStkSectionArticleLots = function(stkSection){
+        return loadStkSectionArticleLotsPromise(stkSection);
+    };
+    function loadStkSectionArticleLotsPromise(stkSection){
+          if(!stkSection) return;
+            
+          var searchInputArtLots = {
+            entity:{},
+            fieldNames:[],
+            start:0,
+            max:-1
+            };
+            searchInputArtLots.sectionCode= stkSection.sectionCode;
+            searchInputArtLots.withStrgSection= true;
+            var deferred = $q.defer();
+            genericResource.findBy(service.stkarticlelotsUrlBase, searchInputArtLots)
+            .success(function(entitySearchResult) {
+                deferred.resolve(entitySearchResult);
+              })
+            .error(function(error){
+                deferred.reject('No articles from StockSection');
+            });
+        return deferred.promise;
+    }*/
+
+
+
+    var articleLotPreloader = entityPreLoaderFactory.newEntityPreLoader('articleLots','lotPic', service.stkarticlelotsUrlBase, genericResource.findByLike);
+    service.loadArticleLots = function(lotPic){
+        return loadArticleLotsPromise(lotPic).then(function(entitySearchResult){
+    });
     
     service.loadStkSectionArticleLots = function(strgSection){
         return genericResource.findByLikePromissed(service.stkarticlelot2strgsctnsUrlBase, 'strgSection', strgSection)
@@ -296,69 +262,35 @@ angular.module('AdInvtry')
     // Load ArticlesLots from StkSection
     
     service.loadArticleLots = function(lotPic){
-        return loadArticleLotsPromise(lotPic).then(function(entitySearchResult){
-            return entitySearchResult.resultList;
-        });
-    };
-
-    function loadArticleLotsPromise(lotPic){
-        var deferred = $q.defer();
-        if(!lotPic || lotPic.length<5) {
-            deferred.reject("");
-            return deferred.promise;
-        }
         var searchInput = {entity:{},fieldNames:[],start: 0,max: 30};
         searchInput.entity.lotPic = lotPic;
-        if(searchInput.fieldNames.indexOf('lotPic')==-1)
-        	searchInput.fieldNames.push('lotPic');
+        searchInput.fieldNames.push('lotPic');
         // also load storage section
         searchInput.withStrgSection=true;
-        genericResource.findByLike(service.stkarticlelotsUrlBase, searchInput)
-		.success(function(entitySearchResult) {
-        	deferred.resolve(entitySearchResult);
-		})
-        .error(function(){
-            deferred.reject(service.translations['InvInvtry_NoArticleFound_description.title']);
-        });
-        return deferred.promise;
-    }
-    
-
-    service.loadUsers = function(val){
-        return loadUsersPromise(val).then(function(entitySearchResult){
+    	return genericResource.findByLikeWithSearchInputPromissed(service.stkarticlelotsUrlBase, searchInput)
+        .then(function(entitySearchResult){
             return entitySearchResult.resultList;
         });
     };
 
-    function loadUsersPromise(val){
-    	if(!val) return;
-    	
-        var searchInput = {
-            entity:{
-            },
-            fieldNames:[],
-            start: 0,
-            max: 10
-        };
-
-        searchInput.entity.fullName = val;
-        if(searchInput.fieldNames.indexOf('fullName')==-1)        
-        	searchInput.fieldNames.push('fullName');
-        var deferred = $q.defer();
-        genericResource.findByLike(service.loginnamessUrlBase, searchInput)
-		.success(function(entitySearchResult) {
-        	deferred.resolve(entitySearchResult);
-		})
-        .error(function(){
-            deferred.reject(service.translations['InvInvtry_NoUserFound_description.title']);
+    service.loadUsers = function(loginName){
+        return genericResource.findByLikePromissed(service.loginnamessUrlBase, 'loginName', loginName)
+        .then(function(entitySearchResult){
+            return entitySearchResult.resultList;
         });
-        return deferred.promise;
-    }    
+    };
+
+    service.loadUsersByName = function(fullName){
+        return genericResource.findByLikePromissed(service.loginnamessUrlBase, 'fullName', fullName)
+        .then(function(entitySearchResult){
+            return entitySearchResult.resultList;
+        });
+    };
 
     service.translate();
     service.translatePromise = function(array) {
         return $translate(array);
-    }
+    };
     
     service.isInvtryBySection = function(invInvtry){
     	return invInvtry && invInvtry.invInvtryType && invInvtry.invInvtryType=='BY_SECTION';
@@ -371,8 +303,195 @@ angular.module('AdInvtry')
     service.isInvInvtryEditable = function (invInvtry) {
         if(invInvtry && "CLOSED" != invInvtry.invtryStatus) return true;
         return false;
-    }
+    };
     return service;
+}}])
+.factory('invInvtryState',['$rootScope', '$q',function($rootScope,$q){
+
+    var service = {
+    };
+
+    // The search state.
+    // The current list of inventory objects
+    var invInvtrysVar=[];
+    service.hasInvtrys = function(){
+        return invInvtrysVar && invInvtrysVar.length>0;
+    };
+    service.invInvtrys = function(invInvtrysIn){
+        if(invInvtrysIn){
+            var length = invInvtrysVar.length;
+            for	(var index = 0; index < length; index++) {
+                invInvtrysVar.pop();
+            }
+            length = invInvtrysIn.length;
+            for	(var index1 = 0; index1 < length; index1++) {
+                invInvtrysVar.push(invInvtrysIn[index1]);
+            }
+        }
+        return invInvtrysVar;
+    };
+
+    var selectedIndexVar=-1;
+    service.selectedIndex= function(selectedIndexIn){
+        if(selectedIndexIn)selectedIndexVar=selectedIndexIn;
+        return selectedIndexVar;
+    };
+
+    var totalItemsVar=0;
+    service.totalItems = function(totalItemsIn){
+        if(totalItemsIn)totalItemsVar=totalItemsIn;
+        return totalItemsVar;
+    };
+
+    var currentPageVar = 0;
+    service.currentPage = function(currentPageIn){
+        if(currentPageIn) currentPageVar=currentPageIn;
+        return currentPageVar;
+    };
+
+    var maxSizeVar = 5;
+    service.maxSize = function(maxSizeIn) {
+        if(maxSizeIn) maxSizeVar=maxSizeIn;
+        return maxSizeVar;
+    };
+
+    var itemPerPageVar = 25;
+    var searchInputVar = {
+        entity:{},
+        fieldNames:[],
+        start:0,
+        max:itemPerPageVar
+    };
+    service.searchInput = function(searchInputIn){
+        if(!searchInputIn)
+            return angular.copy(searchInputVar);
+
+        searchInputVar=angular.copy(searchInputIn);
+        return searchInputIn;
+    };
+    
+    
+            
+    service.searchInputChanged = function(searchInputIn){
+        return angular.equals(searchInputVar, searchInputIn);
+    };
+    service.itemPerPage = function(itemPerPageIn){
+        if(itemPerPageIn)itemPerPageVar=itemPerPageIn;
+        return itemPerPageVar;
+    };
+
+    //
+    service.consumeSearchResult = function(searchInput, entitySearchResult) {
+        // store search
+        service.searchInput(searchInput);
+        // Store result
+        service.invInvtrys(entitySearchResult.resultList);
+        service.totalItems(entitySearchResult.count);
+        service.selectedIndex(-1);
+    };
+    
+
+    service.paginate = function(){
+        searchInputVar.start = ((currentPageVar - 1)  * itemPerPageVar);
+        searchInputVar.max = itemPerPageVar;
+        return service.searchInput();
+    };
+    
+    service.paginateItems = function(searchInput){
+        searchInput.start= ((currentPageVar - 1)  * itemPerPageVar);
+        searchInput.max= itemPerPageVar;
+        return service.searchInput();
+    }
+
+    // returns sets and returns the business partner at the passed index or
+    // if not set the business partner at the currently selected index.
+    service.invInvtry = function(index){
+        if(index && index>=0 && index<invInvtrysVar.length)selectedIndexVar=index;
+        if(selectedIndexVar<0 || selectedIndexVar>=invInvtrysVar.length) return;
+        return invInvtrysVar[selectedIndexVar];
+    };
+
+    // replace the current partner after a change.
+    service.replace = function(invInvtry){
+        if(!invInvtrysVar || !invInvtry) return;
+        var currentInvt = service.invInvtry();
+        if(currentInvt && currentInvt.invtryNbr==invInvtry.invtryNbr){
+            invInvtrysVar[selectedIndexVar]=invInvtry;
+        } else {
+            for (var index in invInvtrysVar) {
+                if(invInvtrysVar[index].invtryNbr==invInvtry.invtryNbr){
+                    invInvtrysVar[index]=invInvtry;
+                    selectedIndexVar=index;
+                    break;
+                }
+            }
+        }
+    };
+    service.set = function(invInvtry){
+        if(!invInvtrysVar || !invInvtry) return false;
+        invInvtrysVar[selectedIndexVar]=invInvtry;
+        return true;
+    };
+
+    // CHeck if the business partner to be displayed is at the correct index.
+    service.peek = function(invInvtry, index){
+        if(!invInvtrysVar || !invInvtry) return false;
+        if(index>=0 && index<invInvtrysVar.length){
+            selectedIndexVar=index;
+            return true;
+        }
+        return false;
+    };
+
+    service.push = function(invInvtry){
+        if(!invInvtrysVar || !invInvtry) return false;
+        var length = invInvtrysVar.push(invInvtry);
+        selectedIndexVar=length-1;
+        return true;
+    };
+
+    service.previous = function (){
+    	if(invInvtrysVar.length<=0) return;
+
+        if(selectedIndexVar<=0){
+            selectedIndexVar=invInvtrysVar.length-1;
+        } else {
+            selectedIndexVar-=1;
+        }
+        return service.invInvtry();
+    };
+
+    service.next = function(){
+    	if(invInvtrysVar.length<=0) return;
+    	
+    	if(selectedIndexVar>=invInvtrysVar.length-1 || selectedIndexVar<0){
+    		selectedIndexVar=0;
+    	} else {
+            selectedIndexVar+=1;
+    	}
+
+        return service.invInvtry();
+    };
+    
+    service.getByIdentif = function(identif) {
+        if(!identif || !invInvtrysVar) return;
+        var result ;
+         angular.forEach(invInvtrysVar, function(invInvtry){
+            if(invInvtry.identif && invInvtry.identif == identif) {
+                result = invInvtry
+            }
+        });
+        return result;
+    }
+    service.range = {};
+    
+    var stkSectionVar;
+    service.stkSection = function(stkSectionIn){
+    	if(stkSectionIn) stkSectionVar = stkSectionIn;
+    	return stkSectionVar;
+    };
+    return service;
+
 }])
 .controller('invInvtrysCtlr',['$scope','genericResource','invInvtryUtils','invInvtryState','$location','$rootScope',
 function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootScope){
@@ -445,43 +564,29 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
 		}
 	};
 }])
-.controller('invInvtryCreateCtlr',['$scope','invInvtryUtils','$translate','genericResource','$location','invInvtryState',
-        function($scope,invInvtryUtils,$translate,genericResource,$location,invInvtryState){
-    $scope.invInvtry = invInvtryState.resultHandler.entity();
-    $scope.create = create;
+.controller('invInvtryCreateCtlr',['$scope','invInvtryUtils','$translate','invInvtryManagerResource','$location','invInvtryState',
+        function($scope,invInvtryUtils,$translate,invInvtryManagerResource,$location,invInvtryState){
+    $scope.invInvtry = {};
+    $scope.display = {};
     $scope.error = "";
-    $scope.stkSection = "";
-    $scope.startRange = "";
-    $scope.endRange = "";
     $scope.invInvtryUtils=invInvtryUtils;
     
+    $scope.onUserSelectedInCreate = function(item,model,label){
+    	$scope.invInvtry.acsngUser=item.loginName;
+    	$scope.display.acsngUserFullName=item.fullName;
+    }
+    
+    $scope.onSectionSelectedInCreate = function(item,model,label){
+    	$scope.invInvtry.section=item.strgSection;
+    	$scope.display.sectionName=item.sectionName;
+    }
 
-    function create(){
+    $scope.create = function(){
     	$scope.invInvtry.invtryDt=new Date();
     	$scope.invInvtry.invtryStatus='ONGOING';
-    	if($scope.stkSection){
-    		invInvtryState.stkSection($scope.stkSection);
-    	}
-        if($scope.startRange)  invInvtryState.range.startRange = $scope.startRange;
-        if($scope.endRange) invInvtryState.range.endRange = $scope.endRange;
-        
-		var index = invInvtryState.resultHandler.push(invInvtry);
-		if(invInvtryState.resultHandler.selectedIndex(index)){
-			$location.path('/InvInvtrys/show/');
-		}
-    };
-
-  
-}])
-.controller('invInvtryEditCtlr',['$scope','genericResource','$location','invInvtryUtils','invInvtryState',
-                                 function($scope,genericResource,$location,invInvtryUtils,invInvtryState){
-    $scope.invInvtry = invInvtryState.invInvtry();
-    $scope.error = "";
-    $scope.invInvtryUtils=invInvtryUtils;
-    $scope.update = function (){
-    	genericResource.update(invInvtryUtils.urlBase, $scope.invInvtry)
+    	invInvtryManagerResource.prepare($scope.invInvtry)
     	.success(function(invInvtry){
-    		if(invInvtryState.replace(invInvtry)){
+    		if(invInvtryState.resultHandler.replace(invInvtry)){
     			$location.path('/InvInvtrys/show/');
     		}
         })
@@ -489,14 +594,140 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
             $scope.error = error;
         });
     };
+
+  
 }])
 .controller('invInvtryShowCtlr',['$scope','invInvtryManagerResource','$location','invInvtryUtils','invInvtryState','$rootScope','genericResource','$routeParams','searchResultHandler',
                                  function($scope,invInvtryManagerResource,$location,invInvtryUtils,invInvtryState,$rootScope,genericResource,$routeParams,searchResultHandler){
     $scope.invInvtry = invInvtryState.resultHandler.entity();
     $scope.error = "";
+    $scope.maxSize= 10;
     $scope.invInvtryUtils=invInvtryUtils;
+    $scope.itemPerPage=invInvtryState.itemPerPage();
+    $scope.totalItems;
+    $scope.currentPage=invInvtryState.currentPage();
     $scope.invInvtryItemHolder = emptyItemHolder();
+
+    $scope.invInvtryItemHolders = [];
+    $scope.articleLots = [];
+    var searchInputArtLots = {
+            entity:{},
+            fieldNames:[],
+            start:0,
+            max:$scope.itemPerPage
+    };
+    if($scope.invInvtry) {
+        $scope.invInvtry.acsngUser = invInvtryUtils.currentWsUser.userFullName;
+    };
+    function init(){
+    	var stkSection =invInvtryState.stkSection();
+        var identif = $routeParams.identif;
+    	if(invInvtryUtils.isInvtryBySection($scope.invInvtry) && stkSection){
+    		$scope.invInvtryItemHolder.invtryItem.section= stkSection.sectionCode;
+            $scope.invInvtryUtils.loadStkSectionArticleLots(stkSection, searchInputArtLots).then(function(entitySearchResult){
+                $scope.articleLots= entitySearchResult.resultList;
+                loadInvIvntryItemsFromArtLots($scope.articleLots);
+            }); 
+    	}
+        
+    	if(!identif && invInvtryUtils.isInvtryByOrderAlphabeticRange($scope.invInvtry)){
+            var searchInput = {
+                entity:{},
+                fieldNames:[],
+                start: 0,
+                max: -1
+            };
+            var range = invInvtryState.range;
+            searchInput.startRange = range.startRange;
+            searchInput.endRange = range.endRange;
+           if(stkSection) {
+                loadInvInvtryItemByProductNameRangeAndStkSection(stkSection,searchInput);    
+           }else {
+               loadInvInvtryItemByProductNameRange(searchInput);
+           }
+           return;
+    	}
+        
+        if(angular.isDefined(identif)) {
+            loadInvInvtryItems(identif);   
+        }
+    }
+                                     
+   $scope.paginate= function(){
+       var stkSection =invInvtryState.stkSection();
+       invInvtryState.paginateItems(searchInputArtLots);
+       $scope.invInvtryUtils.loadStkSectionArticleLots(stkSection, searchInputArtLots).then(function(entitySearchResult){
+                $scope.articleLots= entitySearchResult.resultList;
+                loadInvIvntryItemsFromArtLots($scope.articleLots);
+       }); 
+   }
+    
+    function loadInvInvtryItemByProductNameRangeAndStkSection(stkSection,searchInput) {
+        
+        if(!stkSection) return;
+        
+        $scope.invInvtryUtils.loadStkSectionArticleLots(stkSection).then(function(entitySearchResult){
+            var articleLots= entitySearchResult.resultList;
+            var alphabet = invInvtryUtils.alphabet;
+            var nameRange = invInvtryUtils.extractRange(alphabet,searchInput.startRange,searchInput.endRange);
+            var nameRangeArray = [];
+            if(nameRange) {
+                nameRangeArray = nameRange.split("");
+            }
+            var retainedArtLots = [];
+            
+            angular.forEach(articleLots,function(articleLot){
+               var artName = articleLot.artFeatures.artName;
+               angular.forEach(nameRangeArray,function(rangeItem){
+                   if(invInvtryUtils.startWithIgnCase(artName,rangeItem)) {
+                        var invInvtryItemHolder = emptyItemHolder();
+                        invInvtryItemHolder.invtryItem.lotPic= articleLot.lotPic;
+                        invInvtryItemHolder.invtryItem.artPic= articleLot.artPic;
+                        invInvtryItemHolder.invtryItem.artName= articleLot.artFeatures.artName;
+                        invInvtryItemHolder.invtryItem.asseccedQty= articleLot.lotQty;
+                        $scope.invInvtryItemHolders.push(invInvtryItemHolder);  
+                    }
+               })
+            });
+        },function(error){
+            $scope.error = error;
+        }); 
+    }
+    
+    function loadInvInvtryItemByProductNameRange (searchInput) {
+        if(!searchInput) return;
+            genericResource.findCustom(invInvtryUtils.catalarticlesUrlBase ,searchInput).success(function(searchResult){
+                var articles = searchResult.resultList;
+                var artPics = [];
+                angular.forEach(articles,function(article){
+                    artPics.push(article.pic);
+                });
+                // find article lots
+                var lotSearchInput = {entity:{},fieldNames:[],start: 0,max: -1};
+                lotSearchInput.artPics = artPics;
+                genericResource.findBy(invInvtryUtils.stkarticlelotsUrlBase, lotSearchInput)
+                .success(function(entitySearchResult) {
+        //			$scope.invInvtryItemHolder.candidateLots=entitySearchResult.resultList;
+                    var candidateLots=entitySearchResult.resultList;
+                    angular.forEach(candidateLots, function(canditateLot){
+                        var invInvtryItemHolder = emptyItemHolder();
+                        invInvtryItemHolder.invtryItem.lotPic= canditateLot.lotPic;
+                        invInvtryItemHolder.invtryItem.artPic= canditateLot.artPic;
+                        invInvtryItemHolder.invtryItem.artName= canditateLot.artFeatures.artName;
+                        invInvtryItemHolder.invtryItem.asseccedQty= canditateLot.lotQty;
+                        $scope.invInvtryItemHolders.push(invInvtryItemHolder);
+                    });
+                })
+                .error(function(error,status,config,headers){
+                    consumeError(error,status);
+                });
+            }).error(function(error){
+                $scope.error = error;
+            });
+    }
+                                     
 //    $scope.invInvtryItemHolders = invInvtryState.resultHandler.dependent('items')
+
     var itemsResultHandler = invInvtryState.itemsResultHandler();
     $scope.searchInput = itemsResultHandler.searchInput();
     $scope.itemPerPage=itemsResultHandler.itemPerPage;
@@ -505,11 +736,7 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
     $scope.maxSize =itemsResultHandler.maxResult;
     $scope.invInvtryItems =itemsResultHandler.entities;
     $scope.selectedIndex=itemsResultHandler.selectedIndex;
-    $scope.display = {};
-
-    if($scope.invInvtry) {
-        $scope.invInvtry.acsngUser = invInvtryUtils.currentWsUser.userFullName;
-    };
+    $scope.display = itemsResultHandler.displayInfo();
 
     function consumeError(error, status) {
         var error_msg=error;            
@@ -553,6 +780,27 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
     		$scope.error=error;
     	});
     }
+    init();      
+                                      
+    
+    // Create InvtryItems from ArticleLots
+    function loadInvIvntryItemsFromArtLots(articleLots){
+       if(!articleLots) return;
+    	angular.forEach(articleLots, function(articleLot){
+            var invInvtryItemHolder = emptyItemHolder();
+            var qty= articleLot.lotQty;
+            invInvtryItemHolder.invtryItem.section= $scope.invInvtryItemHolder.invtryItem.section;
+            invInvtryItemHolder.invtryItem.lotPic= articleLot.lotPic;
+            invInvtryItemHolder.invtryItem.artPic= articleLot.artPic;
+            if(articleLot.artFeatures){
+                invInvtryItemHolder.invtryItem.artName= articleLot.artFeatures.artName;
+            }
+            invInvtryItemHolder.invtryItem.asseccedQty= qty;
+            $scope.invInvtryItemHolders.push(invInvtryItemHolder);
+        });
+        $scope.totalItems= $scope.invInvtryItemHolders.length;
+    }
+    
     loadInvInvtryItems();    
     
     $scope.handleSearchRequestEvent = function(){
@@ -569,7 +817,8 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
         // To do
 	}
 	$scope.handleResetRequestEvent = function(){
-		$scope.searchInput = itemsResultHandler.newSearchInput();		
+		$scope.searchInput = itemsResultHandler.newSearchInput();	
+		$scope.display = itemsResultHandler.displayInfo({});
         loadInvInvtryItems();
 	}
 	$scope.handleAlphabeticRequestEvent = function(){
@@ -578,25 +827,18 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
         loadInvInvtryItems();
 	}
 
+    $scope.saveItem = function(invtryItem){
+    	delete invtryItem.editing;
+        invInvtryManagerResource.update(invtryItem)
+    	.success(function(invtryItem){
+    		itemsResultHandler.replace(invtryItem);
+    	})
+    	.error(function(error){
+    		$scope.error = error;
+    	});
+    };
+
     $scope.save = function(){
-//        var invInvtryHolder = {};
-//        invInvtryHolder.invtry = $scope.invInvtry;
-//        invInvtryHolder.invtryItemHolders = $scope.invInvtryItemHolders;
-//        //save
-//    	
-//        invInvtryManagerResource.update(invInvtryHolder)
-//    	.success(function(invInvtryHolder){
-//    		if($scope.invInvtry.invtryNbr){
-//    			invInvtryState.replace(invInvtryHolder.invtry);
-//    		} else {
-//    			invInvtryState.set(invInvtryHolder.invtry);
-//    		}
-//    	    $scope.invInvtry = invInvtryState.invInvtry();
-//    	    $scope.invInvtryItemHolder = {invtryItem:{}};
-//    	})
-//    	.error(function(error){
-//    		$scope.error = error;
-//    	});
     };
 
     $scope.close = function(){
@@ -711,14 +953,10 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
 //		.error(function(error){$scope.error=error;});
     };
     
-    $scope.editItem = function(index){
-//        if(index &&
-//            (0 <= index && index <=$scope.invInvtryItemHolders.length)) {
-//            var itemHolder = $scope.invInvtryItemHolders[index];
-////            $location.path('/InvInvtrys/edit/'+itemHolder.invtryItem.identif);   
-//            $scope.invInvtryItemHolder = itemHolder;
-//        }
+    $scope.editItem = function(invtryItem){
+    	invtryItem.editing = true;
     };
+    
     $scope.addItem = function() {
 //        if(!$scope.invInvtryItemHolder) return;
 //        $scope.invInvtryItemHolders.push($scope.invInvtryItemHolder);

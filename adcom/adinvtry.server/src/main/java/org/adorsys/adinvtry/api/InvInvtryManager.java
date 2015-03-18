@@ -35,6 +35,11 @@ public class InvInvtryManager {
 	@Inject
 	private InvInvtryHstryEJB invtryHstryEJB;
 
+	public InvInvtry prepareInventory(InvInvtry invtry) {
+		// Create the delivery object if necessary
+		return createInventoryObject(invtry, null, null);
+	}
+	
 	/**
 	 * Process an incoming inventory. The inventory holds :
 	 * 	- a partial list of inventory
@@ -151,12 +156,17 @@ public class InvInvtryManager {
 
 	private InvInvtry createInventoryObject(InvInvtry inventory, String currentLoginName, Date now){
 		if(StringUtils.isBlank(inventory.getId())){
-			inventory.setAcsngUser(currentLoginName);
-			inventory.setAcsngDt(now);
+			if(StringUtils.isBlank(inventory.getAcsngUser()))
+				inventory.setAcsngUser(currentLoginName);
+			if(inventory.getInvtryDt()==null)
+				inventory.setAcsngDt(now);
 			inventory.setInvtryStatus(InvInvtryStatus.ONGOING);
-			inventory.setInvtryDt(new Date());
+			if(StringUtils.isBlank(inventory.getSection()) && StringUtils.isBlank(inventory.getRangeStart()) && StringUtils.isBlank(inventory.getRangeEnd())){
+				inventory.setPreparedDt(new Date());
+			}
 			inventory = inventoryEJB.create(inventory);
 			createInitialInventoryHistory(inventory);
+			
 		}
 		return inventory;
 	}

@@ -5,16 +5,17 @@
             <b>{{"PrcmtDelivery_dlvryNbr_description.title" | translate}}: </b>{{prcmtDeliveryAddItemCtlr.prcmtDelivery.dlvrySlipNbr}},
             <b>{{"PrcmtDelivery_grossPPPreTax_description.title" | translate}}:</b> {{prcmtDeliveryAddItemCtlr.prcmtDelivery.grossPPPreTax}} cfa,
             <b>{{"PrcmtDelivery_netPPTaxIncl_description.title" | translate}}:</b> {{prcmtDeliveryAddItemCtlr.prcmtDelivery.netPPTaxIncl}} cfa,
-            <b>{{"PrcmtDelivery_creatingUsr_description.title" | translate}}: </b> {{prcmtDeliveryAddItemCtlr.prcmtDelivery.creatingUsr}}
+            <b>{{"PrcmtDelivery_creatingUsr_description.title" | translate}}: </b> {{prcmtDeliveryAddItemCtlr.prcmtDelivery.creatingUsr}},
+            <b> Status: </b> <label class="label-primary">{{prcmtDeliveryAddItemCtlr.prcmtDelivery.dlvryStatus}}</label>
         </h4>
         <p class="">
             <a class=" btn btn-default" href="#/"  type="button">Cancel</a>
-            <button class=" btn btn-primary" ng-click="prcmtDeliveryAddItemCtlr.save()" ng-show="prcmtDeliveryAddItemCtlr.closeStatus" type="button">Save</button>
-            <button class=" btn btn-primary" ng-click="prcmtDeliveryAddItemCtlr.close()" ng-show="prcmtDeliveryAddItemCtlr.closeStatus" type="button">Save and Close</button>
+            <button class=" btn btn-primary" ng-click="prcmtDeliveryAddItemCtlr.save()" ng-show="prcmtDeliveryAddItemCtlr.closeStatus" type="button">{{'save' | translate}}</button>
+            <button class=" btn btn-primary" ng-click="prcmtDeliveryAddItemCtlr.close()" ng-show="prcmtDeliveryAddItemCtlr.closeStatus" type="button">{{'save_and_close' | translate}}</button>
         </p>
     </div>
     <div class="panel panel-default" ng-show="prcmtDeliveryAddItemCtlr.closeStatus" >
-        <div class="panel-heading"><b>Add Procurement Delivery Item</b> </div>
+        <div class="panel-heading"><b>{{'Add_Procurement_Delivery_Item' | translate}}</b> </div>
         <div class="panel-body">
             <form name="prcmtDeliveryItemForm" id="prcmtDeliveryItemForm" novalidate >
             <table class="table-bordered" >
@@ -29,8 +30,8 @@
                     <th>Prix Vente</th>
                     <th>Taux Mul</th>
                     <th>Date P</th>
-                    <th><a ng-click="prcmtDeliveryAddItemCtlr.showMore()" class="pointer-element" ng-show="!prcmtDeliveryAddItemCtlr.show" ><i class="glyphicon glyphicon-plus"></i> More</a>
-                        <a ng-click="prcmtDeliveryAddItemCtlr.showLess()" class="pointer-element" ng-show="prcmtDeliveryAddItemCtlr.show" ><i class="glyphicon glyphicon-minus"></i> Less</a>
+                    <th><a ng-click="prcmtDeliveryAddItemCtlr.showMore()" class="pointer-element" ng-show="!prcmtDeliveryAddItemCtlr.show" ><i class="glyphicon glyphicon-plus"></i> {{'more' | translate}}</a>
+                        <a ng-click="prcmtDeliveryAddItemCtlr.showLess()" class="pointer-element" ng-show="prcmtDeliveryAddItemCtlr.show" ><i class="glyphicon glyphicon-minus"></i> {{'less' | translate}}</a>
                     </th>
                 </tr>
                 </thead>
@@ -156,7 +157,7 @@
         </div>
     </div>
     <div class="panel panel-default">
-        <div class="panel-heading"><b>List Procurement Delivery Item</b> </div>
+        <div class="panel-heading"><b>{{'PrcmtDlvryItem_description.title' | translate}}</b> </div>
         <div class="panel-body">
             <table class="table table-bordered  table-striped" >
                 <thead>

@@ -9,6 +9,8 @@
 "SlsAcct_blnce_description.title":"Balance",
 "SlsAcct_description.text":"Compte Facture",
 "SlsAcct_description.title":"Compte Facture",
+"SlsAccts_description.text":"Comptes Facture",
+"SlsAccts_description.title":"Comptes Facture",
 "SlsAcct_evntDt_description.text":"Date Evenement",
 "SlsAcct_evntDt_description.title":"Date Evenement",
 "SlsAcct_invceNbr_description.text":"Le numéro de la facture.",
@@ -73,6 +75,8 @@
 
 "SlsInvoice_description.text":"Une facture.",
 "SlsInvoice_description.title":"Facture Client",
+"SlsInvoices_description.text":"Factures.",
+"SlsInvoices_description.title":"Factures Client",
 "SlsInvoice_grossSPPreTax_description.text":"Montant Vente Achat Hors Taxes",
 "SlsInvoice_grossSPPreTax_description.title":"Montant Brut Vente Hors Taxes",
 "SlsInvoice_invceCur_description.text":"Dévise de cette facture",
@@ -115,6 +119,8 @@
 
 "SlsSalesOrder_description.text":"Une commande client.",
 "SlsSalesOrder_description.title":"Commande Client",
+"SlsSalesOrders_description.text":"Commandes.",
+"SlsSalesOrders_description.title":"Commandes Client",
 "SlsSalesOrder_grossSPPreTax_description.text":"Montant Vente Achat Hors Taxes",
 "SlsSalesOrder_grossSPPreTax_description.title":"Montant Brut Vente Hors Taxes",
 "SlsSalesOrder_netAmtToPay_description.text":"Net a payer.",

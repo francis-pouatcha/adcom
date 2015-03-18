@@ -1,5 +1,7 @@
 package org.adorsys.adinvtry.repo;
 
+import java.util.List;
+
 import org.adorsys.adinvtry.jpa.InvInvtryItem;
 import org.apache.deltaspike.data.api.EntityRepository;
 import org.apache.deltaspike.data.api.Modifying;
@@ -39,4 +41,6 @@ public interface InvInvtryItemRepository extends EntityRepository<InvInvtryItem,
 	@Query("SELECT count(e.id) FROM InvInvtryItem AS e WHERE e.invtryNbr = ?1 AND e.section=?2 AND LOWER(SUBSTRING(e.artName,1,1))<=?3 AND LOWER(SUBSTRING(e.artName,0,1))<=?4")
 	public Long countByInvtryNbrAndSection(String invtryNbr, String section,
 			String rangeStart, String rangeEnd);
+
+	public List<InvInvtryItem> findByIdentif(String identif);
 }
