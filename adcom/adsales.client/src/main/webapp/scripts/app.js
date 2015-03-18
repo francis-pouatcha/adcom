@@ -61,9 +61,6 @@ angular.module('AdSales', [
     .when('/SlsSOPtnrs',{templateUrl:'views/SlsSOPtnr/search.html',controller:'SearchSlsSOPtnrController'})
     .when('/SlsSOPtnrs/new',{templateUrl:'views/SlsSOPtnr/detail.html',controller:'NewSlsSOPtnrController'})
     .when('/SlsSOPtnrs/edit/:SlsSOPtnrId',{templateUrl:'views/SlsSOPtnr/detail.html',controller:'EditSlsSOPtnrController'})
-    .when('/SlsSalesOrders',{templateUrl:'views/SlsSalesOrder/search.html',controller:'SearchSlsSalesOrderController'})
-    .when('/SlsSalesOrders/new',{templateUrl:'views/SlsSalesOrder/detail.html',controller:'NewSlsSalesOrderController'})
-    .when('/SlsSalesOrders/edit/:SlsSalesOrderId',{templateUrl:'views/SlsSalesOrder/detail.html',controller:'EditSlsSalesOrderController'})
     .when('/SlsSalesStatuss',{templateUrl:'views/SlsSalesStatus/search.html',controller:'SearchSlsSalesStatusController'})
     .when('/SlsSalesStatuss/new',{templateUrl:'views/SlsSalesStatus/detail.html',controller:'NewSlsSalesStatusController'})
     .when('/SlsSalesStatuss/edit/:SlsSalesStatusId',{templateUrl:'views/SlsSalesStatus/detail.html',controller:'EditSlsSalesStatusController'})
@@ -80,11 +77,8 @@ angular.module('AdSales', [
     $translateProvider.useLoader('$translatePartialLoader', {
         urlTemplate: '{part}/locale-{lang}.json'
     });
-
-	
     
 }])
-
 .controller('LandingPageController', function LandingPageController() {})
 
 .controller('NavController', function NavController($scope, $location) {
@@ -93,13 +87,12 @@ angular.module('AdSales', [
         return (path === ("/" + route) || path.indexOf("/" + route + "/") == 0);
     };
 })
-
 .run(['$rootScope', '$location','sessionManager','$translate','APP_CONFIG','$translatePartialLoader',
       function ($rootScope, $location, sessionManager,$translate,APP_CONFIG,$translatePartialLoader) {
     $rootScope.appName = APP_CONFIG.appName ;
     $rootScope.appVersion = APP_CONFIG.appVersion ;
-    sessionManager.appMenuUrl("/adprocmt.client/menu.html");
-    $translatePartialLoader.addPart('/adprocmt.client/i18n/main');
+    sessionManager.appMenuUrl("/adsales.client/menu.html");
+    $translatePartialLoader.addPart('/adsales.client/i18n/main');
     $rootScope.sessionManager = sessionManager;
     $rootScope.$on('$locationChangeStart', function (event, next, current) {
     	var noSess = !sessionManager.hasValues(sessionManager.terminalSession(), sessionManager.userSession());

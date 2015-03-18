@@ -18,7 +18,7 @@ import org.adorsys.adstock.jpa.StkLotStockQty;
 import org.adorsys.adstock.rest.StkArticleLot2OuEJB;
 import org.adorsys.adstock.rest.StkArticleLot2StrgSctnEJB;
 import org.adorsys.adstock.rest.StkArticleLotEJB;
-import org.adorsys.adstock.rest.StkLotStockQtyEJB;
+import org.adorsys.adstock.rest.StkLotStockQtyLookup;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -41,7 +41,7 @@ public class StkArticleInvtryIntegrationEJB {
 	private SecurityUtil securityUtil;
 	
 	@Inject
-	private StkLotStockQtyEJB lotStockQtyEJB;
+	private StkLotStockQtyLookup lotStockQtyEJB;
 
 	public Map<String, StkArticleLot> findArtLotByArticlePic(List<String> artPics) {
 		if(artPics == null) artPics = new ArrayList<String>();

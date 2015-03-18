@@ -93,7 +93,7 @@
                         </table>
                     </div>
                     <ul  class="pull-right">
-                        <pagination  total-items="catalArticlesCtlr.totalItems" items-per-page="catalArticlesCtlr.itemPerPage"  class="pagination-sm" ng-model="catalArticlesCtlr.currentPage" ng-change="catalArticlesCtlr.paginate()"></pagination>
+                        <pagination  total-items="catalArticlesCtlr.totalItems" boundary-links="true" max-size="catalArticlesCtlr.maxSize" items-per-page="catalArticlesCtlr.itemPerPage"  class="pagination-sm" ng-model="catalArticlesCtlr.currentPage" ng-change="catalArticlesCtlr.paginate()"></pagination>
                     </ul>
                 </div>
 
