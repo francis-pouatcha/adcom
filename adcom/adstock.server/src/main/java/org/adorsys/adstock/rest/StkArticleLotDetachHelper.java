@@ -3,10 +3,7 @@ package org.adorsys.adstock.rest;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -15,9 +12,7 @@ import org.adorsys.adcatal.jpa.CatalArtFeatMapping;
 import org.adorsys.adcatal.rest.CatalArtFeatMappingReaderEJB;
 import org.adorsys.adcore.utils.BigDecimalUtils;
 import org.adorsys.adstock.jpa.StkArticleLot;
-import org.adorsys.adstock.jpa.StkArticleLot2StrgSctn;
 import org.adorsys.adstock.jpa.StkArticleLotSearchInput;
-import org.adorsys.adstock.jpa.StkArticleLotSearchResult;
 import org.adorsys.adstock.jpa.StkLotStockQty;
 import org.apache.commons.lang3.StringUtils;
 
@@ -30,7 +25,7 @@ import org.apache.commons.lang3.StringUtils;
 public class StkArticleLotDetachHelper {
 
 	@Inject
-	private StkLotStockQtyEJB lotStockQtyEJB;
+	private StkLotStockQtyLookup lotStockQtyEJB;
 
 	@Inject
 	private CatalArtFeatMappingReaderEJB artFeatMappingReaderEJB;
@@ -39,10 +34,7 @@ public class StkArticleLotDetachHelper {
 	private SecurityUtil securityUtil;
 
 	@Inject
-	private StkArticleLotEJB ejb;
-
-	@Inject
-	private StkArticleLot2StrgSctnEJB strgSctnEJB;
+	private StkArticleLotLookup articleLotLookup;
 
 	public StkArticleLot detach(StkArticleLot entity) {
 		if (entity == null)
@@ -56,7 +48,7 @@ public class StkArticleLotDetachHelper {
 		entity.setSppuTaxIncl(sppuTaxIncl);
 		entity.setSalesVatAmt(vat);
 
-		List<String> lotPics = ejb.findLotPicByArtPic(entity.getArtPic());
+		List<String> lotPics = articleLotLookup.findLotPicByArtPic(entity.getArtPic());
 		List<StkLotStockQty> artQties = lotStockQtyEJB.findLatestArtStockQuantities(entity.getArtPic(), lotPics);
 		entity.setArtQties(artQties);
 		// Now set the value for the current lot
@@ -87,42 +79,5 @@ public class StkArticleLotDetachHelper {
 	public StkArticleLotSearchInput detach(StkArticleLotSearchInput searchInput) {
 		searchInput.setEntity(detach(searchInput.getEntity()));
 		return searchInput;
-	}
-
-	public StkArticleLotSearchResult processSearchResult(
-			StkArticleLotSearchInput searchInput,
-			StkArticleLotSearchResult searchResult) {
-		List<StkArticleLot> resultList = searchResult.getResultList();
-		Map<String, StkArticleLot2StrgSctn> foundCache = new HashMap<String, StkArticleLot2StrgSctn>();
-		if (StringUtils.isNotBlank(searchInput.getSectionCode())) {
-			for (StkArticleLot stkArticleLot : resultList) {
-				StkArticleLot2StrgSctn sctn = strgSctnEJB.findByStrgSectionAndLotPicAndArtPic(
-						searchInput.getSectionCode(), stkArticleLot.getLotPic(),stkArticleLot.getArtPic());
-				if(sctn != null)
-					putAndCache(foundCache, Arrays.asList(sctn), stkArticleLot);
-			}
-		} else if (searchInput.isWithStrgSection()) {
-			for (StkArticleLot stkArticleLot : resultList) {
-				List<StkArticleLot2StrgSctn> sctns = strgSctnEJB
-						.findByArtPicAndLotPic(stkArticleLot.getArtPic(),
-								stkArticleLot.getLotPic());
-				putAndCache(foundCache, sctns, stkArticleLot);
-			}
-		}
-		return searchResult;
-	}
-
-	public void putAndCache(Map<String, StkArticleLot2StrgSctn> foundCache,
-			List<StkArticleLot2StrgSctn> sctns, StkArticleLot stkArticleLot) {
-		for (StkArticleLot2StrgSctn strgSctn : sctns) {
-			if (!foundCache.containsKey(strgSctn.getId())) {
-				foundCache.put(strgSctn.getId(), strgSctn);
-				stkArticleLot.getStrgSctns().add(strgSctn);
-			} else {
-				if (!stkArticleLot.getStrgSctns().contains(strgSctn)) {
-					stkArticleLot.getStrgSctns().add(strgSctn);
-				}
-			}
-		}
 	}
 }

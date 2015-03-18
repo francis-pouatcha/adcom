@@ -71,6 +71,7 @@
 "InvInvtryItem_artName_description.title":"Nom Article",
 "InvInvtryItem_artNameStart_description.title":"a-z",
 "InvInvtryItem_artNameEnd_description.title":"a-z",
+"InvInvtryItem_expirDt_description.title":"Date Expiration",
 
 "InvInvntrStatus_CLOSED_description.text":"Document cloturé",
 "InvInvntrStatus_CLOSED_description.title":"Cloturé",
