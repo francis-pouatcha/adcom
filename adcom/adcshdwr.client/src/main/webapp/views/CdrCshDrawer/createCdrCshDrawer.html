@@ -1,12 +1,12 @@
 <div class="container">
    <div class="panel panel-default">
-       <div class="panel-heading"><b>{{cdrCshDrawerUtils.translations['Entity_create.title']}}</b> </div>
+       <div class="panel-heading"><b>{{commonTranslations.translations['Entity_create.title']}}</b> </div>
        <div class="panel-body">
            <label class="error col-lg-offset-3 alert-danger" >{{error}} </label>
            <form  name="CdrCshDrawerForm" id="CdrCshDrawerForm" class="form-horizontal" novalidate="">
 	           	<div class="row" >
-               		<div class="form-group col-lg-12">
-                   		<label class=" control-label">{{cdrCshDrawerUtils.translations['InvInvtry_descptn_description.title']}} :</label>
+               		<div class="form-group">
+                   		<label class="control-label">{{cdrCshDrawerUtils.translations['CdrCshDrawer_initialAmt_description.title']}} :</label>
                         <input type="text" class="form-control" name="initialAmt" ng-model="cdrCshDrawer.initialAmt" id="initialAmt" />
                    	</div>
                	</div>
@@ -16,11 +16,11 @@
                	<span class="col-lg-4"></span>
                    <div class="col-lg-2">
                        <a class="btn-danger btn" href="#/InvInvtrys">
-                       	<i class="glyphicon glyphicon-remove" ></i> {{cdrCshDrawerUtils.translations['Entity_cancel.title']}}</a>
+                       	<i class="glyphicon glyphicon-remove" ></i> {{commonTranslations.translations['Entity_cancel.title']}}</a>
                    </div>
                    <div class="col-lg-2">
                        <button ng-click="create();" ng-disabled="CdrCshDrawerForm.$invalid" class="btn-success btn"  >
-                       	<i class="glyphicon glyphicon-save"></i>  {{cdrCshDrawerUtils.translations['Entity_save.title']}}</button>
+                       	<i class="glyphicon glyphicon-save"></i>  {{commonTranslations.translations['Entity_save.title']}}</button>
                    </div>
                	<span class="col-lg-4"></span>
                </div>

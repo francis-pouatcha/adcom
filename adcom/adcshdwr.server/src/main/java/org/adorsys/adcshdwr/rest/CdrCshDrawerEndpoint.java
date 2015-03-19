@@ -157,7 +157,7 @@ public class CdrCshDrawerEndpoint
    @GET
    @Path("/getActive")
    @Produces({ "application/json", "application/xml" })
-   public CdrCshDrawer getActive() {
+   public CdrCshDrawer findActive() {
 	   CdrCshDrawer cdrCshDrawer = ejb.getActiveCshDrawer();
 	   return cdrCshDrawer;
    }

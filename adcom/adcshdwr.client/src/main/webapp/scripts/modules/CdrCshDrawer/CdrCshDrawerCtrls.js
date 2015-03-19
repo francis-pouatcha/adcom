@@ -4,26 +4,13 @@ angular.module('AdCshdwr')
 
 .factory('cdrCshDrawerManagerResource',['$http', function($http){
     var service = {};
-    var urlBase = '/adinvtry.server/rest/inventory';
-    service.update = function(invtryHolder){
-        return $http.put(urlBase+'/update',invtryHolder);
-    };
-    service.close = function(invtryHolder){
-        return $http.put(urlBase+'/close',invtryHolder);
-    };
+    var urlBase = '/adcshdwr.server/rest/cdrcshdrawers';
     return service;
 }])
-.factory('cdrCshDrawerUtils',['sessionManager','$translate','genericResource','$q',function(sessionManager,$translate,genericResource,$q){
+.factory('cdrCshDrawerUtils',['sessionManager','$translate','genericResource','$q','cdrCshDrawerManagerResource',function(sessionManager,$translate,genericResource,$q,cdrCshDrawerManagerResource){
     var service = {};
 
-    service.urlBase='/adinvtry.server/rest/cdpaymnts';
-    service.cdrpaymntsUrlBase='/adinvtry.server/rest/cdrpaymntitems';
-    service.stksectionsUrlBase='/adstock.server/rest/stksections';
-    service.stkarticlelotsUrlBase='/adstock.server/rest/stkarticlelots';
-    service.catalarticlesUrlBase='/adcatal.server/rest/catalarticles';
-    service.loginnamessUrlBase='/adbase.server/rest/loginnamess';
-    service.stkarticlelot2strgsctnsUrlBase='/adstock.server/rest/stkarticlelot2strgsctns';
-
+    service.urlBase='/adcshdwr.server/rest/cdrcshdrawers';
     service.language=sessionManager.language;
     
     service.currentWsUser=sessionManager.userWsData();
@@ -58,30 +45,11 @@ angular.module('AdCshdwr')
                     'CdrCshDrawer_ttlVchrIn_description.title',
                     'CdrCshDrawer_ttlVchrOut_description.text',
                     'CdrCshDrawer_ttlVchrOut_description.title',
-            
-    	            'Entity_show.title',
-    	            'Entity_previous.title',
-    	            'Entity_list.title',
-    	            'Entity_next.title',
-    	            'Entity_edit.title',
-    	            'Entity_create.title',
-    	            'Entity_update.title',
-    	            'Entity_Result.title',
-    	            'Entity_search.title',
-    	            'Entity_cancel.title',
-    	            'Entity_save.title',
-    	            'Entity_By.title',
-    	            'Entity_saveleave.title',
-    	            'Entity_add.title',
-                    'Entity_From.title',
-                    'Entity_To.title'
-    	            
     	            ])
 		 .then(function (translations) {
 			 service.translations = translations;
 	 	 });
     };
-    
     service.translate();
     return service;
 }])
@@ -227,15 +195,15 @@ angular.module('AdCshdwr')
     return service;
 
 }])
-.controller('cdrCshDrawersCtlr',['$scope','genericResource','cdrCshDrawerUtils','cdrCshDrawerState','$location','$rootScope',
-function($scope,genericResource,cdrCshDrawerUtils,cdrCshDrawerState,$location,$rootScope){
+.controller('cdrCshDrawersCtlr',['$scope','genericResource','cdrCshDrawerUtils','cdrCshDrawerState','$location','$rootScope','commonTranslations',
+function($scope,genericResource,cdrCshDrawerUtils,cdrCshDrawerState,$location,$rootScope,commonTranslations){
 
     $scope.searchInput = cdrCshDrawerState.searchInput();
     $scope.itemPerPage=cdrCshDrawerState.itemPerPage;
     $scope.totalItems=cdrCshDrawerState.totalItems;
     $scope.currentPage=cdrCshDrawerState.currentPage();
     $scope.maxSize =cdrCshDrawerState.maxSize;
-    $scope.cdrPaymnts =cdrCshDrawerState.cdrPaymnts;
+    $scope.cdrCshDrawers =cdrCshDrawerState.cdrCshDrawers;
     $scope.selectedIndex=cdrCshDrawerState.selectedIndex;
     $scope.handleSearchRequestEvent = handleSearchRequestEvent;
     $scope.handlePrintRequestEvent = handlePrintRequestEvent;
@@ -244,7 +212,8 @@ function($scope,genericResource,cdrCshDrawerUtils,cdrCshDrawerState,$location,$r
     $scope.cdrCshDrawerUtils=cdrCshDrawerUtils;
     $scope.show=show;
     $scope.edit=edit;
-
+    $scope.commonTranslations = commonTranslations;
+    $scope.openCreateForm = openCreateForm;
 	var translateChangeSuccessHdl = $rootScope.$on('$translateChangeSuccess', function () {
 		cdrCshDrawerUtils.translate();
 	});
@@ -278,41 +247,67 @@ function($scope,genericResource,cdrCshDrawerUtils,cdrCshDrawerState,$location,$r
     }
     
     function init(){
+        //find previous cdr cshdrawers
+        loadPreviousCshDrws();
     }
+    function loadPreviousCshDrws() {
+        genericResource.get(cdrCshDrawerUtils.urlBase+"/findPreviousCdrCshDrawer").success(function(result){
+          $scope.cdrCshDrawers = result;  
+        }).error(function(error){
+            $scope.error = error;
+        });
+    }
+	function show(cdrCshDrawer, index){
+		
+	}
+
+	function edit(cdrCshDrawer, index){
+		
+	}
     
-	function show(cdrPymt, index){
-		
-	}
-
-	function edit(cdrPymt, index){
-		
-	}
-
+    function checkOpenedCdrCshDrawer() {
+        genericResource.get(cdrCshDrawerUtils.urlBase+"/getActive").success(function(result){
+          if(result) {
+              $location.path("/CdrCshDrawers/edit/"+result.id);//go to the show if a cash drawer exist
+          }else {
+              $location.path("/CdrCshDrawers/new")
+          }
+        }).error(function(error){
+            $scope.error = error;
+        });
+    }
+  
+    function openCreateForm () {
+        checkOpenedCdrCshDrawer();
+    }
 }])
-.controller('cdrCshDrawersCreateCtlr',['$scope','cdrCshDrawerUtils','$translate','genericResource','$location','cdrCshDrawerState',
-        function($scope,cdrCshDrawerUtils,$translate,genericResource,$location,cdrCshDrawerState){
-    $scope.cdrPaymnt = cdrCshDrawerState.cdrPaymnt();
+.controller('cdrCshDrawersCreateCtlr',['$scope','cdrCshDrawerUtils','$translate','genericResource','$location','cdrCshDrawerState','commonTranslations',
+        function($scope,cdrCshDrawerUtils,$translate,genericResource,$location,cdrCshDrawerState,commonTranslations){
+    $scope.cdrCshDrawer = {};
     $scope.create = create;
     $scope.error = "";
-    $scope.stkSection = "";
-    $scope.startRange = "";
-    $scope.endRange = "";
     $scope.cdrCshDrawerUtils=cdrCshDrawerUtils;
-
+    $scope.commonTranslations = commonTranslations;
+    
     function create(){
+        genericResource.create(cdrCshDrawerUtils.urlBase+"/openCshDrawer", $scope.cdrCshDrawer).success(function(result){
+            $scope.cdrCshDrawer = result;
+            $location.path("/CdrCshDrawers/edit/"+result.id);
+        }).error(function (error){
+            $scope.error = error;
+        });
     };
-
   
 }])
 .controller('cdrCshDrawersEditCtlr',['$scope','genericResource','$location','cdrCshDrawerUtils','cdrCshDrawerState',
                                  function($scope,genericResource,$location,cdrCshDrawerUtils,cdrCshDrawerState){
-    $scope.cdrPaymnt = cdrCshDrawerState.cdrPaymnt();
+    $scope.cdrCshDrawer = cdrCshDrawerState.cdrCshDrawer;
     $scope.error = "";
     $scope.cdrCshDrawerUtils=cdrCshDrawerUtils;
     $scope.update = function (){
-    	genericResource.update(cdrCshDrawerUtils.urlBase, $scope.cdrPaymnt)
-    	.success(function(cdrPaymnt){
-    		if(cdrCshDrawerState.replace(cdrPaymnt)){
+    	genericResource.update(cdrCshDrawerUtils.urlBase, $scope.cdrCshDrawer)
+    	.success(function(cdrCshDrawer){
+    		if(cdrCshDrawerState.replace(cdrCshDrawer)){
     			$location.path('/CdrCshDrawers');
     		}
         })
