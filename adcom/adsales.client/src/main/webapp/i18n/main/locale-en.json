@@ -9,6 +9,8 @@
 "SlsAcct_blnce_description.title":"Balance",
 "SlsAcct_description.text":"Invoice Account",
 "SlsAcct_description.title":"Invoice Account",
+"SlsAccts_description.text":"Invoice Accounts",
+"SlsAccts_description.title":"Invoice Accounts",
 "SlsAcct_evntDt_description.text":"Event Date",
 "SlsAcct_evntDt_description.title":"Event Date",
 "SlsAcct_invceNbr_description.text":"The invoice number.",
@@ -73,6 +75,8 @@
 
 "SlsInvoice_description.text":"An invoice.",
 "SlsInvoice_description.title":"Customer Invoice",
+"SlsInvoices_description.text":"Invoices.",
+"SlsInvoices_description.title":"Customer Invoices",
 "SlsInvoice_grossSPPreTax_description.text":"Gross Sales Amount Pre Tax",
 "SlsInvoice_grossSPPreTax_description.title":"Gross Sales Amount Pre Tax",
 "SlsInvoice_invceCur_description.text":"Currency of this invoice",
@@ -115,6 +119,8 @@
 
 "SlsSalesOrder_description.text":"A sales order.",
 "SlsSalesOrder_description.title":"Sales Order",
+"SlsSalesOrders_description.text":"Sales Orders.",
+"SlsSalesOrders_description.title":"Sales Orders",
 "SlsSalesOrder_grossSPPreTax_description.text":"Gross Sales Amount Pre Tax",
 "SlsSalesOrder_grossSPPreTax_description.title":"Gross Sales Amount Pre Tax",
 "SlsSalesOrder_netAmtToPay_description.text":"Net amount to pay.",
@@ -141,9 +147,23 @@
 "SlsSalesOrder_soStatus_description.title":"Status",
 "SlsSalesOrder_vatAmount_description.text":"Tax amount for this sales order.",
 "SlsSalesOrder_vatAmount_description.title":"VAT Amount",
+"SlsSalesOrder_acsngUser_description.text":"User who made the sale",
+"SlsSalesOrder_acsngUser_description.title":"Seller",
+    
+    
+"SlsSalesOrder_soDtFrom_description.title":"Sales from",
+"SlsSalesOrder_soDtTo_description.title":"To",
 
 "SlsSalesStatus_description.text":"Status of the sales",
 "SlsSalesStatus_description.title":"Sales Status",
+"SlsSalesStatus_CLOSED_description.text":"Closed document",
+"SlsSalesStatus_CLOSED_description.title":"Closed",
+"SlsSalesStatus_ONGOING_description.text":"Ongoing document",
+"SlsSalesStatus_ONGOING_description.title":"Ongoing",
+"SlsSalesStatus_RESUMED_description.text":"Resumed document",
+"SlsSalesStatus_RESUMED_description.title":"Resumed",
+"SlsSalesStatus_SUSPENDED_description.text":"Suspended document",
+"SlsSalesStatus_SUSPENDED_description.title":"Suspended",
 
 "SlsSOHstry_addtnlInfo_description.text":"Additional Information",
 "SlsSOHstry_addtnlInfo_description.title":"Additional Information",
@@ -200,7 +220,7 @@
 "SlsSOItem_vatPct_description.title":"VAT Rate",
 
 "SlsSOPtnr_description.text":"A sales order involved party.",
-"SlsSOPtnr_description.title":"Sales Order Involved Party",
+"SlsSOPtnr_description.title":"Partner",
 "SlsSOPtnr_ptnrNbr_description.text":"Party Identifier",
 "SlsSOPtnr_ptnrNbr_description.title":"Partner Identifier",
 "SlsSOPtnr_roleInSO_description.text":"Role of this business partner in the sales order.",

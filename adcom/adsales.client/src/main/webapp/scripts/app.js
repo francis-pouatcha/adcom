@@ -3,9 +3,13 @@
 angular.module('AdSales', [
       'ngRoute',
       'ngCookies',
+      'ui.bootstrap',
+      'datePicker',
       'SessionManager',
       'AuthInterceptor',
       'ngSanitize',
+      'httpProgress',
+      'ADUtils',
       'pascalprecht.translate',
       'NavBar'
 ])
