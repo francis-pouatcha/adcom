@@ -42,6 +42,8 @@
     "Entity_back.title": "Back",
     "Entity_validFrom.title":"Valid from",
     "Entity_validTo.title":"Valid to",
+    "Entity_From.title":"From",
+    "Entity_To.title":"To",
     "Entity_Result.title":"Result",
     "Entity_By.title":"By",
     "Entity_Of.title":"Of",

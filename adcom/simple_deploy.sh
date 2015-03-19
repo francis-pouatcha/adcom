@@ -37,6 +37,7 @@ cp adsales.server/target/adsales.server.war $JBOSS_HOME/standalone/deployments/
 cp adcshdwr.server/target/adcshdwr.server.war $JBOSS_HOME/standalone/deployments/
 cp adacc.server/target/adacc.server.war $JBOSS_HOME/standalone/deployments/
 cp adterm.server/target/adterm.server.war $JBOSS_HOME/standalone/deployments/
+cp adaptmt.server/target/adaptmt.server.war $JBOSS_HOME/standalone/deployments/
 
 cp adres.client/target/adres.client.war $JBOSS_HOME/standalone/deployments/
 cp adbase.client/target/adbase.client.war $JBOSS_HOME/standalone/deployments/
@@ -49,4 +50,5 @@ cp adbnsptnr.client/target/adbnsptnr.client.war $JBOSS_HOME/standalone/deploymen
 cp adsales.client/target/adsales.client.war $JBOSS_HOME/standalone/deployments/
 cp adcshdwr.client/target/adcshdwr.client.war $JBOSS_HOME/standalone/deployments/
 cp adacc.client/target/adacc.client.war $JBOSS_HOME/standalone/deployments/
+cp adaptmt.client/target/adaptmt.client.war $JBOSS_HOME/standalone/deployments/
 
