@@ -28,6 +28,7 @@ import org.adorsys.adstock.jpa.StkArticleLot2StrgSctnSearchInput;
 import org.adorsys.adstock.jpa.StkArticleLot2StrgSctnSearchResult;
 import org.adorsys.adstock.jpa.StkSection;
 import org.apache.commons.lang3.StringUtils;
+import org.adorsys.adstock.jpa.StkArticleLot2StrgSctn_;
 
 /**
  * 
