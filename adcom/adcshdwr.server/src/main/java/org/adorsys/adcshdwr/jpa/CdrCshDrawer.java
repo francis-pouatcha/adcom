@@ -30,7 +30,7 @@ public class CdrCshDrawer extends AbstractMvmtData {
 
 	@Column
 	@Description("CdrCshDrawer_closedBy_description")
-	@NotNull
+//	@NotNull
 	private String closedBy;
 
 	@Temporal(TemporalType.TIMESTAMP)

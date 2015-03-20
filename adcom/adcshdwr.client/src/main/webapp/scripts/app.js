@@ -24,7 +24,7 @@ angular.module('AdCshdwr', [
     .when('/CdrPymnts/edit/:identif',{templateUrl:'views/CdrPymnt/editCdrPymnt.html',controller:'cdrPaymntEditCtlr'})
     .when('/CdrCshDrawers',{templateUrl:'views/CdrCshDrawer/CdrCshDrawers.html',controller:'cdrCshDrawersCtlr'})
     .when('/CdrCshDrawers/new',{templateUrl:'views/CdrCshDrawer/createCdrCshDrawer.html',controller:'cdrCshDrawersCreateCtlr'})
-    .when('/CdrCshDrawers/edit/:identif',{templateUrl:'views/CdrCshDrawer/showCdrCshDrawer.html',controller:'cdrCshDrawersEditCtlr'})
+    .when('/CdrCshDrawers/show/:id',{templateUrl:'views/CdrCshDrawer/showCdrCshDrawer.html',controller:'cdrCshDrawersEditCtlr'})
     .otherwise({redirectTo: '/CdrCshDrawers'});
     
     $httpProvider.defaults.withCredentials = true;
