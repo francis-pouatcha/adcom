@@ -5,10 +5,14 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+import org.adorsys.adbase.enums.BaseProcessStatusEnum;
+import org.adorsys.adbase.jpa.BaseProcessStatus;
 import org.adorsys.adcore.jpa.AbstractIdentifData;
 import org.adorsys.javaext.description.Description;
 import org.adorsys.javaext.format.DateFormatPattern;
@@ -43,7 +47,9 @@ public class SlsSalesOrder extends AbstractIdentifData {
 
 	@Column
 	@Description("SlsSalesOrder_soStatus_description")
-	private String soStatus;
+	@Enumerated(EnumType.STRING)
+	@NotNull
+	private BaseProcessStatusEnum soStatus;
 
 	@Column
 	@Description("SlsSalesOrder_soCur_description")
@@ -97,11 +103,12 @@ public class SlsSalesOrder extends AbstractIdentifData {
 		this.soNbr = soNbr;
 	}
 
-	public String getSoStatus() {
-		return this.soStatus;
+
+	public BaseProcessStatusEnum getSoStatus() {
+		return soStatus;
 	}
 
-	public void setSoStatus(final String soStatus) {
+	public void setSoStatus(BaseProcessStatusEnum soStatus) {
 		this.soStatus = soStatus;
 	}
 

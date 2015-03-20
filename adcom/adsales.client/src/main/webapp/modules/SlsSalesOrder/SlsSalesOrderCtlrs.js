@@ -7,12 +7,30 @@ angular.module('AdSales')
 
     service.urlBase='/adsales.server/rest/slssalesorders';
     service.bnsptnrUrlBase='/adbnsptnr.server/rest/bpbnsptnrs';
+    service.loginnamessUrlBase='/adbase.server/rest/loginnamess';
+    
+    service.slsSOStatusI18nMsgTitleKey = function(enumKey){
+    	return "InvInvntrStatus_"+enumKey+"_description.title";
+    };
+    
+    service.slsSOStatusI18nMsgTitleValue = function(enumKey){
+    	return service.translations[service.slsSOStatusI18nMsgTitleKey(enumKey)];
+    };
+    
+    service.slsSOStatus = [
+      {enumKey:'SUSPENDED', translKey:'SlsSalesStatus_SUSPENDED_description.title'},
+      {enumKey:'ONGOING', translKey:'SlsSalesStatus_ONGOING_description.title'},
+      {enumKey:'RESUMED', translKey:'SlsSalesStatus_RESUMED_description.title'},
+      {enumKey:'CLOSED', translKey:'SlsSalesStatus_CLOSED_description.title'}
+    ];
     
     service.language=sessionManager.language;
     
     service.translate = function(){
     	$translate(['SlsSalesOrder_description.text',
                     'SlsSalesOrder_description.title',
+                    'SlsSalesOrders_description.text',
+                    'SlsSalesOrders_description.title',
                     'SlsSalesOrder_grossSPPreTax_description.text',
                     'SlsSalesOrder_grossSPPreTax_description.title',
                     'SlsSalesOrder_netAmtToPay_description.text',
@@ -39,6 +57,18 @@ angular.module('AdSales')
                     'SlsSalesOrder_soStatus_description.title',
                     'SlsSalesOrder_vatAmount_description.text',
                     'SlsSalesOrder_vatAmount_description.title',
+                    'SlsSalesOrder_acsngUser_description.text',
+                    'SlsSalesOrder_acsngUser_description.title',
+                    'SlsSalesOrder_soDtFrom_description.title',
+                    'SlsSalesOrder_soDtTo_description.title',
+                    
+                    'SlsSOPtnr_description.text',
+                    'SlsSOPtnr_description.title',
+                    
+                    'SlsSalesStatus_SUSPENDED_description.title',
+    	            'SlsSalesStatus_ONGOING_description.title',
+    	            'SlsSalesStatus_RESUMED_description.title',
+    	            'SlsSalesStatus_CLOSED_description.title',
                     
     	            'Entity_show.title',
     	            'Entity_previous.title',
@@ -55,6 +85,30 @@ angular.module('AdSales')
 		 .then(function (translations) {
 			 service.translations = translations;
 	 	 });    	
+    };
+    
+    service.loadUsers = function(loginName){
+        return genericResource.findByLikePromissed(service.loginnamessUrlBase, 'loginName', loginName)
+        .then(function(entitySearchResult){
+            return entitySearchResult.resultList;
+        });
+    };
+
+    service.loadUsersByName = function(fullName){
+        return genericResource.findByLikePromissed(service.loginnamessUrlBase, 'fullName', fullName)
+        .then(function(entitySearchResult){
+            if(!angular.isUndefined(entitySearchResult))
+            return entitySearchResult.resultList;
+            else return "";
+        });
+    };
+    service.loadPartnersByName = function(fullName){
+        return genericResource.findByLikePromissed(service.bnsptnrUrlBase, 'fullName', fullName)
+        .then(function(entitySearchResult){
+            if(!angular.isUndefined(entitySearchResult))
+            return entitySearchResult.resultList;
+            else return "";
+        });
     };
     
     service.translate();

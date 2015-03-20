@@ -82,7 +82,8 @@ angular.module('ADUtils',[])
 			 service.translations = translations;
 	 	 });    	
     };
-
+    
+    service.translate();
     return service;
 	
 }])
@@ -194,7 +195,10 @@ angular.module('ADUtils',[])
     service.deleteById = function(urlBase, entityId){
         return $http.delete(urlBase+'/'+entityId);
     };
-    
+    //execute a simple get
+    service.get = function(urlBase) {
+        return $http.get(urlBase);
+    }
     return service;
     
 }])

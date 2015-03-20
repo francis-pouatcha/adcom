@@ -21,8 +21,11 @@ angular.module('AdCshdwr', [
     .when('/',{templateUrl:'views/CdrPymnt/CdrPymnts.html',controller:'cdrPaymntsCtlr'})
     .when('/CdrPymnts',{templateUrl:'views/CdrPymnt/CdrPymnts.html',controller:'cdrPaymntsCtlr'})
     .when('/CdrPymnts/new',{templateUrl:'views/CdrPymnt/createCdrPymnt.html',controller:'cdrPaymntCreateCtlr'})
-    .when('/CdrPymnts/edit/:identif',{templateUrl:'views/CdrCshDrawer/editCdrPymnt.html',controller:'cdrPaymntEditCtlr'})
-    .otherwise({redirectTo: '/'});
+    .when('/CdrPymnts/edit/:identif',{templateUrl:'views/CdrPymnt/editCdrPymnt.html',controller:'cdrPaymntEditCtlr'})
+    .when('/CdrCshDrawers',{templateUrl:'views/CdrCshDrawer/CdrCshDrawers.html',controller:'cdrCshDrawersCtlr'})
+    .when('/CdrCshDrawers/new',{templateUrl:'views/CdrCshDrawer/createCdrCshDrawer.html',controller:'cdrCshDrawersCreateCtlr'})
+    .when('/CdrCshDrawers/show/:id',{templateUrl:'views/CdrCshDrawer/showCdrCshDrawer.html',controller:'cdrCshDrawersEditCtlr'})
+    .otherwise({redirectTo: '/CdrCshDrawers'});
     
     $httpProvider.defaults.withCredentials = true;
     $httpProvider.interceptors.push('authInterceptor');
