@@ -10,6 +10,7 @@ import javax.persistence.metamodel.SingularAttribute;
 import org.adorsys.adbase.enums.BaseHistoryTypeEnum;
 import org.adorsys.adinvtry.event.InvInvtryClosedEvent;
 import org.adorsys.adinvtry.jpa.InvInvtryHstry;
+import org.adorsys.adinvtry.jpa.InvInvtryStatus;
 import org.adorsys.adinvtry.repo.InvInvtryHstryRepository;
 
 @Stateless
@@ -83,5 +84,18 @@ public class InvInvtryHstryEJB {
 			return null;
 
 		return entity;
+	}
+
+	public boolean isClosed(String invtryNbr) {
+		Long count = countByEntIdentifAndStatus(invtryNbr, InvInvtryStatus.CLOSED.name());
+		return count >= 1;
+	}
+
+	public List<InvInvtryHstry> findByEntIdentif(String invtryNbr) {
+		return repository.findByEntIdentif(invtryNbr);
+	}
+
+	private Long countByEntIdentifAndStatus(String invtryNbr, String status) {
+		return repository.countByEntIdentifAndEntStatus(invtryNbr, status);
 	}
 }

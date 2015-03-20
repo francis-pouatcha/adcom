@@ -11,6 +11,9 @@ import org.adorsys.adbase.enums.BaseHistoryTypeEnum;
 import org.adorsys.adbase.enums.BaseProcStepEnum;
 import org.adorsys.adbase.security.SecurityUtil;
 import org.adorsys.adcore.auth.TermWsUserPrincipal;
+import org.adorsys.adcore.utils.BigDecimalUtils;
+import org.adorsys.adcore.utils.CalendarUtil;
+import org.adorsys.adcore.utils.FormatedValidFrom;
 import org.adorsys.adinvtry.jpa.InvInvtry;
 import org.adorsys.adinvtry.jpa.InvInvtryHstry;
 import org.adorsys.adinvtry.jpa.InvInvtryItem;
@@ -18,6 +21,12 @@ import org.adorsys.adinvtry.jpa.InvInvtryStatus;
 import org.adorsys.adinvtry.rest.InvInvtryEJB;
 import org.adorsys.adinvtry.rest.InvInvtryHstryEJB;
 import org.adorsys.adinvtry.rest.InvInvtryItemEJB;
+import org.adorsys.adstock.jpa.StkArticleLot;
+import org.adorsys.adstock.jpa.StkArticleLot2StrgSctn;
+import org.adorsys.adstock.jpa.StkLotStockQty;
+import org.adorsys.adstock.rest.StkArticleLot2StrgSctnLookup;
+import org.adorsys.adstock.rest.StkArticleLotLookup;
+import org.adorsys.adstock.rest.StkLotStockQtyLookup;
 import org.apache.commons.lang3.StringUtils;
 
 @Stateless
@@ -35,6 +44,12 @@ public class InvInvtryManager {
 	@Inject
 	private InvInvtryHstryEJB invtryHstryEJB;
 
+	@Inject
+	private StkArticleLot2StrgSctnLookup sctnLookup;
+	
+	@Inject
+	private StkArticleLotLookup articleLotLookup;
+	
 	public InvInvtry prepareInventory(InvInvtry invtry) {
 		// Create the delivery object if necessary
 		return createInventoryObject(invtry, null, null);
@@ -135,6 +150,154 @@ public class InvInvtryManager {
 		return inventoryHolder;
 	}	
 	
+	@Inject
+	private StkLotStockQtyLookup stockQtyLookup; 
+	/**
+	 * Add an inventory item. Conditions are:
+	 * <ol>
+	 * 	<li>The Inventory must not have been closed yet.</li>
+	 * </ol>
+	 * @param invtryItem
+	 * @return
+	 */
+	public InvInvtryItem addItem(InvInvtryItem invtryItem) {
+		InvInvtry invtry = inventoryEJB.findByIdentif(invtryItem.getInvtryNbr());
+		if(invtry==null) 
+			throw new IllegalArgumentException("Missing inventory object");
+		if(invtryHstryEJB.isClosed(invtry.getIdentif()))
+			throw new IllegalStateException("Inventory object closed");
+		
+		String identifier = InvInvtryItem.toIdentifier(invtryItem.getInvtryNbr(), invtryItem.getLotPic(), invtryItem.getArtPic(), invtryItem.getSection());
+		
+		InvInvtryItem existing = invInvtryItemEJB.findByIdentif(identifier);
+		if(existing!=null)
+			return existing;
+
+		StkArticleLot articleLot = articleLotLookup.findByIdentif(invtryItem.getLotPic());
+		if(invtryItem.getExpirDt()==null){
+			invtryItem.setExpirDt(articleLot.getExpirDt());
+		}
+		invtryItem.setMinSppuHT(articleLot.getMinSppuHT());
+		invtryItem.setPppuCur(articleLot.getPppuCur());
+		invtryItem.setPppuPT(articleLot.getPppuHT());
+		invtryItem.setPurchRtrnDays(articleLot.getPurchRtrnDays());
+		invtryItem.setPurchWrntyDys(articleLot.getPurchWrntyDys());
+		invtryItem.setSalesRtrnDays(articleLot.getSalesRtrnDays());
+		invtryItem.setSalesWrntyDys(articleLot.getSalesWrntyDys());
+		invtryItem.setSppuCur(articleLot.getSppuCur());
+		invtryItem.setSppuPT(articleLot.getSppuHT());
+		invtryItem.setSupplier(articleLot.getSupplier());
+		invtryItem.setSupplierPic(articleLot.getSupplierPic());
+		invtryItem.setVatPurchPct(articleLot.getVatPurchPct());
+		invtryItem.setVatSalesPct(articleLot.getVatSalesPct());
+		
+		if(invtryItem.getAsseccedQty()!=null){
+			if(invtryItem.getAcsngDt()==null){
+				invtryItem.setAcsngDt(new Date());
+			}
+			invtryItem.setAcsngUser(securityUtil.getCurrentLoginName());
+			StkLotStockQty stockQty = stockQtyLookup.findLatestQty(invtryItem.getArtPic(), invtryItem.getLotPic(), invtryItem.getSection());
+			if(stockQty!=null)
+				invtryItem.setExpectedQty(stockQty.getStockQty());
+
+			invtryItem.evlte();
+		}
+		
+		StkArticleLot2StrgSctn lot2Section = sctnLookup.findByStrgSectionAndLotPicAndArtPic(invtryItem.getSection(), invtryItem.getLotPic(), invtryItem.getArtPic());
+		if(lot2Section!=null){
+			invtryItem.setArtName(lot2Section.getArtName());
+		}
+		return invInvtryItemEJB.create(invtryItem);
+	}
+	
+	/**
+	 * Updates an inventory item. Conditions are:
+	 * <ol>
+	 * 	<li>The Inventory must not have been closed yet.</li>
+	 * 	<li>The Inventory item has been created already. Is just being modified.</li>
+	 * 	<li>The Inventory disabledDt must not have changed.</li>
+	 * </ol>
+	 * @param invtryItem
+	 * @return
+	 */
+	public InvInvtryItem updateItem(InvInvtryItem invtryItem) {
+		InvInvtry invtry = inventoryEJB.findByIdentif(invtryItem.getInvtryNbr());
+		if(invtry==null) 
+			throw new IllegalArgumentException("Missing inventory object");
+		if(invtryHstryEJB.isClosed(invtry.getIdentif()))
+			throw new IllegalStateException("Inventory object closed");
+		InvInvtryItem existing = invInvtryItemEJB.findById(invtryItem.getId());
+		if(existing==null)
+			throw new IllegalStateException("Inventory Item inexistant");
+		if(!CalendarUtil.isSameInstant(invtryItem.getDisabledDt(), existing.getDisabledDt()))
+			throw new IllegalStateException("Use disableItem/enableItem to change the status of an inventory item.");
+
+		String currentLoginName = securityUtil.getCurrentLoginName();
+
+		boolean changed = false;
+		if(!BigDecimalUtils.numericEquals(invtryItem.getAsseccedQty(), existing.getAsseccedQty())){
+			existing.setAsseccedQty(invtryItem.getAsseccedQty());
+			existing.setAcsngDt(invtryItem.getAcsngDt());
+			existing.setAcsngUser(currentLoginName);
+			existing.evlte();
+			changed = true;
+		}
+		if(!CalendarUtil.isSameDay(invtryItem.getExpirDt(), existing.getExpirDt())){
+			existing.setExpirDt(invtryItem.getExpirDt());
+			changed = true;
+		}
+		if(changed) {
+			existing = invInvtryItemEJB.update(existing);
+			if(!StringUtils.equals(currentLoginName, invtryItem.getAcsngUser())){
+				createQuantityModifiedItemHistory(invtry, existing);
+			}
+		}
+		
+		return existing;
+	}
+
+	public InvInvtryItem disableItem(InvInvtryItem invtryItem) {
+		InvInvtry invtry = inventoryEJB.findByIdentif(invtryItem.getInvtryNbr());
+		if(invtry==null) 
+			throw new IllegalArgumentException("Missing inventory object");
+		if(invtryHstryEJB.isClosed(invtry.getIdentif()))
+			throw new IllegalStateException("Inventory object closed");
+		InvInvtryItem existing = invInvtryItemEJB.findById(invtryItem.getId());
+		if(existing==null)
+			throw new IllegalStateException("Inventory Item inexistant");
+
+		if(existing.getDisabledDt()!=null) return existing;
+
+		Date disabledDt = invtryItem.getDisabledDt()!=null?invtryItem.getDisabledDt():new Date();
+		existing.setDisabledDt(disabledDt);
+		existing = invInvtryItemEJB.update(existing);
+		
+		// Create history.
+		createDisabledInventoryItemHistory(invtry, existing);
+		return existing;
+		
+	}
+
+	public InvInvtryItem enableItem(InvInvtryItem invtryItem) {
+		InvInvtry invtry = inventoryEJB.findByIdentif(invtryItem.getInvtryNbr());
+		if(invtry==null) 
+			throw new IllegalArgumentException("Missing inventory object");
+		if(invtryHstryEJB.isClosed(invtry.getIdentif()))
+			throw new IllegalStateException("Inventory object closed");
+		InvInvtryItem existing = invInvtryItemEJB.findById(invtryItem.getId());
+		if(existing==null)
+			throw new IllegalStateException("Inventory Item inexistant");
+
+		if(existing.getDisabledDt()==null) return existing;
+
+		existing.setDisabledDt(null);
+		existing = invInvtryItemEJB.update(existing);
+		
+		// Create history.
+		createDisabledInventoryItemHistory(invtry, existing);
+		return existing;
+	}
+	
 	private boolean deleteHolders(InvInvtryHolder invtryHolder){
 		List<InvInvtryItemHolder> invtryItemHolders = invtryHolder.getInvtryItemHolders();
 		List<InvInvtryItemHolder> diToRemove = new ArrayList<InvInvtryItemHolder>();
@@ -222,17 +385,49 @@ public class InvInvtryManager {
 
 	private void createModifiedInventoryHistory(InvInvtry invtry){
 		TermWsUserPrincipal callerPrincipal = securityUtil.getCallerPrincipal();
-		InvInvtryHstry deliveryHstry = new InvInvtryHstry();
-		deliveryHstry.setComment(BaseHistoryTypeEnum.MODIFIED.name());
-		deliveryHstry.setAddtnlInfo(InventoryInfo.prinInfo(invtry));
-		deliveryHstry.setEntIdentif(invtry.getId());
-		deliveryHstry.setEntStatus(invtry.getInvtryStatus().name());
-		deliveryHstry.setHstryDt(new Date());
-		deliveryHstry.setHstryType(BaseHistoryTypeEnum.MODIFIED.name());
+		InvInvtryHstry invtryHstry = new InvInvtryHstry();
+		invtryHstry.setComment(BaseHistoryTypeEnum.MODIFIED.name());
+		invtryHstry.setAddtnlInfo(InventoryInfo.prinInfo(invtry));
+		invtryHstry.setEntIdentif(invtry.getId());
+		invtryHstry.setEntStatus(invtry.getInvtryStatus().name());
+		invtryHstry.setHstryDt(new Date());
+		invtryHstry.setHstryType(BaseHistoryTypeEnum.MODIFIED.name());
 		
-		deliveryHstry.setOrignLogin(callerPrincipal.getName());
-		deliveryHstry.setOrignWrkspc(callerPrincipal.getWorkspaceId());
-		deliveryHstry.setProcStep(BaseProcStepEnum.MODIFYING.name());
-		invtryHstryEJB.create(deliveryHstry);
+		invtryHstry.setOrignLogin(callerPrincipal.getName());
+		invtryHstry.setOrignWrkspc(callerPrincipal.getWorkspaceId());
+		invtryHstry.setProcStep(BaseProcStepEnum.MODIFYING.name());
+		invtryHstryEJB.create(invtryHstry);
+	}
+
+	private void createDisabledInventoryItemHistory(InvInvtry invtry, InvInvtryItem invtryItem){
+		TermWsUserPrincipal callerPrincipal = securityUtil.getCallerPrincipal();
+		InvInvtryHstry invtryHstry = new InvInvtryHstry();
+		invtryHstry.setComment(BaseHistoryTypeEnum.ITEM_MODIFIED.name());
+		invtryHstry.setAddtnlInfo(FormatedValidFrom.format(invtryItem.getDisabledDt()));
+		invtryHstry.setEntIdentif(invtry.getIdentif());
+		invtryHstry.setEntStatus(invtry.getInvtryStatus().name());
+		invtryHstry.setHstryDt(new Date());
+		invtryHstry.setHstryType(BaseHistoryTypeEnum.MODIFIED.name());
+		
+		invtryHstry.setOrignLogin(callerPrincipal.getName());
+		invtryHstry.setOrignWrkspc(callerPrincipal.getWorkspaceId());
+		invtryHstry.setProcStep(BaseProcStepEnum.MODIFYING.name());
+		invtryHstryEJB.create(invtryHstry);
+	}
+	
+	private void createQuantityModifiedItemHistory(InvInvtry invtry, InvInvtryItem invtryItem){
+		TermWsUserPrincipal callerPrincipal = securityUtil.getCallerPrincipal();
+		InvInvtryHstry invtryHstry = new InvInvtryHstry();
+		invtryHstry.setComment(BaseHistoryTypeEnum.ITEM_MODIFIED.name());
+		invtryHstry.setAddtnlInfo("" + invtryItem.getAsseccedQty());
+		invtryHstry.setEntIdentif(invtry.getIdentif());
+		invtryHstry.setEntStatus(invtry.getInvtryStatus().name());
+		invtryHstry.setHstryDt(new Date());
+		invtryHstry.setHstryType(BaseHistoryTypeEnum.MODIFIED.name());
+		
+		invtryHstry.setOrignLogin(callerPrincipal.getName());
+		invtryHstry.setOrignWrkspc(callerPrincipal.getWorkspaceId());
+		invtryHstry.setProcStep(BaseProcStepEnum.MODIFYING.name());
+		invtryHstryEJB.create(invtryHstry);
 	}
 }
