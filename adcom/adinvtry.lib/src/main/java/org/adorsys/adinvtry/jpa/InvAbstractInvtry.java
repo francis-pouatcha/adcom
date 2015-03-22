@@ -56,7 +56,6 @@ public abstract class InvAbstractInvtry extends AbstractIdentifData {
 	@Column
 	@Description("InvInvtry_invInvtryType_description")
 	@Enumerated(EnumType.STRING)
-	@NotNull
 	private InvInvtryType invInvtryType;
 
 	@Column
@@ -85,6 +84,14 @@ public abstract class InvAbstractInvtry extends AbstractIdentifData {
 	@Description("InvInvtry_preparedDt_description")
 	@DateFormatPattern(pattern = "dd-MM-yyyy HH:mm")
 	private Date preparedDt;
+
+	/*
+	 * Define the group to which this inventory belongs to. IT is necessary to
+	 * help select inventory belonging to the same group and compare them and even merge them.
+	 */
+	@Description("InvInvtry_invtryGroup_description")
+	private String invtryGroup;
+	
 
 	public Date getPreparedDt() {
 		return preparedDt;
@@ -195,6 +202,14 @@ public abstract class InvAbstractInvtry extends AbstractIdentifData {
 		this.section = section;
 	}
 
+	public String getInvtryGroup() {
+		return invtryGroup;
+	}
+
+	public void setInvtryGroup(String invtryGroup) {
+		this.invtryGroup = invtryGroup;
+	}
+
 	public void copyTo(InvAbstractInvtry target) {
 		target.invtryNbr = invtryNbr;
 		target.acsngUser = acsngUser;
@@ -206,6 +221,7 @@ public abstract class InvAbstractInvtry extends AbstractIdentifData {
 		target.descptn = descptn;
 		target.invtryDt = invtryDt;
 		target.section = section;
+		target.invtryGroup = invtryGroup;
 	}
 
 	public void clearAmts() {

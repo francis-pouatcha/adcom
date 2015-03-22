@@ -12,30 +12,78 @@
         </div>
         <div class="panel-collapse collapse" id="invInvtryInfoToggle">
 		    <div class="panel-body">
+	            <form name="invInvtryForm" id="invInvtryForm" novalidate >
+			    	<div class="row" >
+	                   <div class="form-group col-lg-2" ng-class="{ 'has-error' : invInvtryForm.invtryDt.$invalid }">
+	                       <label class=" control-label" for="invtryDt">{{invInvtryUtils.translations['InvInvtry_invtryDt_description.title']}}</label>
+                           <input type="datetime" date-time  view="date" min-view="date" views="['date']" dismiss="true" format="dd MM yyyy" ng-disabled="!invtryEditable"
+                                        ng-model="invInvtry.invtryDt" class="form-control" name="invtryDt" id="invtryDt">
+	                   </div>
+	                   <div class="form-group col-lg-2" ng-class="{ 'has-error' : invInvtryForm.acsngUser.$invalid }">
+	                       <label class=" control-label" for="acsngUser">{{invInvtryUtils.translations['InvInvtry_acsngUser_description.title']}}</label>
+	          		       <input type="text" ng-model="invInvtry.acsngUser" id="acsngUser" name="acsngUser" class="form-control" ng-disabled="!invtryEditable"
+	                          autocomplete="off" typeahead="loginName as (loginName.loginName + ' : ' + loginName.fullName) for loginName in invInvtryUtils.loadUsers($viewValue)"
+	                          typeahead-loading="loading" typeahead-min-length="3" typeahead-on-select='onUserSelectedInShow($item, $model, $label)'>
+	                   </div>
+	                   <div class="form-group col-lg-8">
+	                       <label class=" control-label" for="acsngUserFullName">{{invInvtryUtils.translations['InvInvtry_acsngUserFullName_description.title']}}</label>
+	          		       <input type="text" ng-model="display.acsngUserFullName" id="acsngUserFullName" name="acsngUserFullName" class="form-control" ng-disabled="!invtryEditable"
+	                          autocomplete="off" typeahead="loginName as (loginName.loginName + ' : ' + loginName.fullName) for loginName in invInvtryUtils.loadUsersByName($viewValue)"
+	                          typeahead-loading="loading" typeahead-min-length="3" typeahead-on-select='onUserSelectedInShow($item, $model, $label)'>
+	                   </div>
+			    	</div>
 		    	<div class="row" >
-			    	<div class="col-lg-4 pull-left">
-		                <span><b>{{invInvtryUtils.translations['InvInvtry_invtryNbr_description.title']}} :</b> {{invInvtry.invtryNbr}}</span>
-			    	</div>
-			    	<div class="col-lg-4 pull-left">
-			    		<span><b>{{invInvtryUtils.translations['InvInvtry_invtryDt_description.title']}} :</b> {{invInvtry.invtryDt | date:'dd MMM yyyy'}}</span>
-			    	</div>
-			    	<div class="col-lg-4 pull-left">
-		            	<span><b>{{invInvtryUtils.translations['Entity_By.title']}} :</b>{{invInvtry.acsngUser}}</span>
-			    	</div>
+               		<div class="form-group col-lg-4">
+	                   	<label class=" control-label" for="invInvtryType">{{invInvtryUtils.translations['InvInvtry_invInvtryType_description.title']}} :</label>
+	                   	<div ng-class="{ 'has-error' : invInvtryForm.invMode.$invalid }" >
+	           				<select class="form-control" name="invInvtryType" id="invInvtryType" ng-model="invInvtry.invInvtryType" ng-disabled="!invtryEditable"
+	                   			ng-options="invInvtryType.enumKey as invInvtryUtils.translations[invInvtryType.translKey]
+	                   				for invInvtryType in invInvtryUtils.invInvtryTypes" >
+	                   			<option value=""/>
+							</select>
+	                   </div>
+                   	</div>
+               		<div class="form-group col-lg-2">
+	                   	<label class=" control-label" for="invInvtryStatus">{{invInvtryUtils.translations['InvInvtry_invtryStatus_description.title']}} :</label>
+	                   	<div >
+	           				<select class="form-control" name="invInvtryStatus" id="invInvtryStatus" ng-model="invInvtry.invtryStatus"
+	                   			ng-options="invInvtryStatus.enumKey as invInvtryUtils.translations[invInvtryStatus.translKey]
+	                   				for invInvtryStatus in invInvtryUtils.invInvntrStati" disabled>
+							</select>
+	                   </div>
+                   	</div>
+                   <div class="form-group col-lg-2">
+                       <label class=" control-label" for="invtryGroup">{{invInvtryUtils.translations['InvInvtry_invtryGroup_description.title']}}</label>
+              		   <input type="text" ng-model="invInvtry.invtryGroup" id="invtryGroup" name="invtryGroup" class="form-control" ng-disabled="!invtryEditable">
+                   </div>
+                   <div class="form-group col-lg-2">
+                       <label class=" control-label" for="createRangeStart">{{invInvtryUtils.translations['InvInvtryItem_artNameStart_description.title']}}</label>
+              		       <input type="text" ng-model="invInvtry.rangeStart" id="createRangeStart" name="createRangeStart" class="form-control" disabled>
+                   </div>
+                   <div class="form-group col-lg-2">
+                       <label class=" control-label" for="createRangeEnd">{{invInvtryUtils.translations['InvInvtryItem_artNameEnd_description.title']}}</label>
+              		       <input type="text" ng-model="invInvtry.rangeEnd" id="createRangeEnd" name="createRangeEnd" class="form-control" disabled>
+                   </div>
 		    	</div>
-		    	<div class="row" >
-			    	<div class="col-lg-4 pull-left">
-			            <span><b>{{invInvtryUtils.translations['InvInvtry_invInvtryType_description.title']}} :</b> {{invInvtryUtils.invInvtryTypeI18nMsgTitleValue(invInvtry.invInvtryType)}}</span>
-			    	</div>
-			    	<div class="col-lg-4 pull-left">
-			            <span><b>{{invInvtryUtils.translations['InvInvtry_invtryStatus_description.title']}} :</b>    {{invInvtryUtils.invInvntrStatusI18nMsgTitleValue(invInvtry.invtryStatus)}} </span>
-			    	</div>
+	           	<div class="row" >
+               		<div class="form-group col-lg-12">
+                   		<label class=" control-label">{{invInvtryUtils.translations['InvInvtry_descptn_description.title']}} :</label>
+		             	<textarea rows="3" id="descptn" name="descptn" class="form-control" ng-model="invInvtry.descptn" maxlength="256" ng-disabled="!invtryEditable"></textarea>
+                   	</div>
+               	</div>
+		    	<div class="row">
+	               <div class="col-lg-2 pull-left">
+		                <a class="btn-danger btn" href="#/InvIntrys" ><i class="" ></i> {{invInvtryUtils.translations['Entity_list.title']}}</a>
+	               </div>		            
+	               <div class="col-lg-10">
+	               		<div class="pull-right">
+		                   <button ng-click="update();" ng-show="!invInvtryUtils.isInvtryPosted(invInvtry)" class="btn-success btn"  >{{invInvtryUtils.translations['Entity_save.title']}}</button>
+		                   <button ng-click="close();" ng-show="!invInvtryUtils.isInvtryClosed(invInvtry) && !invInvtryUtils.isInvtryPosted(invInvtry)" class="btn-success btn"  >{{invInvtryUtils.translations['InvInvtry_close_description.title']}}</button>
+		                   <button ng-click="post();" ng-show="invInvtryUtils.isInvtryClosed(invInvtry) && !invInvtryUtils.isInvtryPosted(invInvtry)" class="btn-success btn">{{invInvtryUtils.translations['InvInvtry_post_description.title']}}</button>
+	               		</div>
+	               </div>		            
 		    	</div>
-		    	<div class="row" >
-			    	<div class="col-lg-12 pull-left">
-		                <span><b>{{invInvtryUtils.translations['InvInvtry_descptn_description.title']}} :</b> {{invInvtry.descptn}}</span>
-			    	</div>
-		    	</div>
+		    	</form>
 		    </div>
     	</div>
     </div>
@@ -113,7 +161,7 @@
                            <button  ng-click="handlePrintRequestEvent()" class="btn btn-default " style="margin-top: 23px;" >
                                <i class="glyphicon glyphicon-print"></i>
                            </button>
-	                       <button class="btn btn-default" ng-disabled="invInvtryItemForm.$invalid" ng-click="addItem(searchInput.entity)" style="margin-top: 23px;" ng-show="invInvtryUtils.isInvInvtryEditable(invInvtry)">
+	                       <button class="btn btn-default" ng-disabled="invInvtryItemForm.$invalid" ng-click="addItem(searchInput.entity)" style="margin-top: 23px;" ng-show="invInvtryUtils.isInvtryOpen(invInvtry)">
 	                       		<i class="glyphicon glyphicon-plus"></i> {{invInvtryUtils.translations['Entity_add.title']}}
 	                       </button>
                        </div>
@@ -125,9 +173,6 @@
     <div class="panel panel-default">
         <div class="panel-heading">
         	<b> {{invInvtryUtils.translations['InvInvtryItem_description.title']}} </b> 
-            <span class="pull-right">
-                <a class="btn-danger btn" href="#/InvIntrys" ><i class="" ></i> {{invInvtryUtils.translations['Entity_list.title']}}</a>
-            </span>
         </div>
         <div class="panel-body">
             <table class="table table-bordered  table-striped" >
@@ -140,17 +185,20 @@
                     <th class="col-lg-1">{{invInvtryUtils.translations['InvInvtryItem_expirDt_description.title']}}</th>
                     <th class="col-lg-1">{{invInvtryUtils.translations['InvInvtryItem_acsngDt_description.title']}}</th>
                     <th class="col-lg-1">{{invInvtryUtils.translations['InvInvtryItem_asseccedQty_description.title']}}</th>
-                    <th class="col-lg-1" ng-show="invInvtryUtils.isInvInvtryEditable(invInvtry)">
+                    <th class="col-lg-1">
+	                    <span  ng-show="!invInvtryUtils.isInvtryOpen(invInvtry)">{{invInvtryUtils.translations['InvInvtryItem_expectedQty_description.title']}}</span>
+	                    <span class="col-lg-1" ng-show="invInvtryUtils.isInvtryOpen(invInvtry)"></span>
                     </th>
                 </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="invtryItem in invInvtryItems()" ng-dblclick="editItem($index)">
+                    <tr ng-repeat="invtryItem in invInvtryItems()" ng-dblclick="invtryItem.editing=true">
                         <td>{{invtryItem.section}}</td>
                         <td>{{invtryItem.lotPic}}</td>
                         <td>{{invtryItem.artPic}}</td>
                         <td>{{invtryItem.artName}}</td>
-                        <td><span ng-show="!invtryItem.editing">{{invtryItem.expirDt | date:'dd-MM-yyyy'}}</span>
+                        <td>
+                        	<span ng-show="!invtryItem.editing">{{invtryItem.expirDt | date:'dd-MM-yyyy'}}</span>
                             <span class="" ng-show="invtryItem.editing">
                                 <input type="datetime" date-time  view="date" min-view="date" views="['date']" dismiss="true" format="dd-MM-yyyy"
                                         ng-model="invtryItem.expirDt" class="form-control">
@@ -158,11 +206,14 @@
                         
                         </td>
                         <td>{{invtryItem.acsngDt | date:'dd-MM-yyyy HH:mm'}}</td>
-                        <td><span ng-show="!invtryItem.editing">{{invtryItem.asseccedQty | number:0}}</span>
+                        <td>
+                        	<span ng-show="!invtryItem.editing">{{invtryItem.asseccedQty | number:0}}</span>
 	                        <input type="text" name="asseccedQty"
 	                        	ng-model="invtryItem.asseccedQty" ng-show="invtryItem.editing" ng-change="qtyChanged(invtryItem)">
                         </td>
-                        <td ng-show="invInvtryUtils.isInvInvtryEditable(invInvtry)">
+                        <td>
+                        <div ng-show="!invInvtryUtils.isInvtryOpen(invInvtry)"><span>{{invtryItem.expectedQty | number:0}}</span></div>
+                        <div ng-show="invInvtryUtils.isInvtryOpen(invInvtry)">
                         	<span ng-show="!invtryItem.editing && !invtryItem.disableDt">
 	                        	<a ng-click="invtryItem.editing=true" class=""><i class="glyphicon glyphicon-edit"></i></a>
                         	</span>
@@ -178,6 +229,7 @@
                         	<span ng-show="invtryItem.editing" class="pull-right">
 	                        	<a ng-click="disableItem(invtryItem)" class=""><i class="glyphicon glyphicon-trash"></i></a>
                         	</span>
+                        </div>
                         </td>
                     </tr>
                 </tbody>

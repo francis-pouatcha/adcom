@@ -5,27 +5,57 @@ angular.module('AdInvtry')
 .factory('invInvtryManagerResource',['$http', function($http){
     var service = {};
     var urlBase = '/adinvtry.server/rest/inventory';
-    service.update = function(invtryHolder){
-        return $http.put(urlBase+'/update',invtryHolder);
-    };
-    service.close = function(invtryHolder){
-        return $http.put(urlBase+'/close',invtryHolder);
-    };
+    
+    // Prepare an inventory, eventually pre creating inventory items.
+    // This simplifies the execution of the inventory by reducing the data collection to 
+    // quantities only.
     service.prepare = function(invtry){
         return $http.put(urlBase+'/prepare',invtry);
     };
+    
+    // Update core data of an inventory. 
+    // Can not be done if an inventorys posted.
+    service.update = function(invtry){
+        return $http.put(urlBase+'/update',invtry);
+    };
+    
+  
+    // Close an inventory object. No item can be added to the inventory object anymore.
+    // Inventory information can be changed. But item data can no be changed anymore.
+    service.close = function(invtry){
+        return $http.put(urlBase+'/close',invtry);
+    };
+    
+    // Post an inventory. Notifying listener about the inventory.
+    // Form this state nothing can be modified on the inventory anymore.
+    service.post = function(invtry){
+        return $http.put(urlBase+'/post',invtry);
+    };
+
+    // Add an item to the inventory. This can only be done if the 
+    // inventory is not closed.
     service.addItem = function(invtryItem){
         return $http.put(urlBase+'/addItem',invtryItem);
     };
+    
+    // Update an existing inventory item. For example setting 
+    // quantities.
     service.updateItem = function(invtryItem){
         return $http.put(urlBase+'/updateItem',invtryItem);
     };
+    
+    // Disable an inventory item. This is preferable to deleting an inventory item.
+    // This can only be done if the inventory item is not closed.
     service.disableItem = function(invtryItem){
         return $http.put(urlBase+'/disableItem',invtryItem);
     };
+    
+    // Reenabling a disabled inventory item.
+    // This can only be done if the inventory item is not closed.
     service.enableItem = function(invtryItem){
         return $http.put(urlBase+'/enableItem',invtryItem);
     };
+    
     return service;
 }])
 .factory('invInvtryState',['$rootScope','searchResultHandler',function($rootScope,searchResultHandler){
@@ -82,7 +112,8 @@ angular.module('AdInvtry')
       {enumKey:'SUSPENDED', translKey:'InvInvntrStatus_SUSPENDED_description.title'},
       {enumKey:'ONGOING', translKey:'InvInvntrStatus_ONGOING_description.title'},
       {enumKey:'RESUMED', translKey:'InvInvntrStatus_RESUMED_description.title'},
-      {enumKey:'CLOSED', translKey:'InvInvntrStatus_CLOSED_description.title'}
+      {enumKey:'CLOSED', translKey:'InvInvntrStatus_CLOSED_description.title'},
+      {enumKey:'POSTED', translKey:'InvInvntrStatus_POSTED_description.title'}
     ];
 
     service.language=sessionManager.language;
@@ -97,6 +128,7 @@ angular.module('AdInvtry')
     	            'InvInvntrStatus_ONGOING_description.title',
     	            'InvInvntrStatus_RESUMED_description.title',
     	            'InvInvntrStatus_CLOSED_description.title',
+    	            'InvInvntrStatus_POSTED_description.title',
     	            
     	            'InvInvtry_acsngDt_description.title',
     	            'InvInvtry_gapSaleAmtHT_description.title',
@@ -133,6 +165,12 @@ angular.module('AdInvtry')
     	            'InvInvtry_gapPurchAmtHTFrom_description.title',
     	            'InvInvtry_gapPurchAmtHTTo_description.title',
     	            'InvInvtry_acsngUser_description.title',
+    	            'InvInvtry_close_description.title',
+    	            'InvInvtry_correctStock_description.title',
+    	            'InvInvtry_join_description.title',
+    	            'InvInvtry_compare_description.title',
+    	            'InvInvtry_invtryGroup_description.title',
+    	            
     	            
     	            'InvInvtryItem_section_description.title',
     	            'InvInvtryItem_artPic_description.title',
@@ -143,6 +181,9 @@ angular.module('AdInvtry')
     	            'InvInvtry_acsngUserFullName_description.title',
     	            'InvInvtryItem_expirDt_description.title',
     	            'InvInvtryItem_acsngDt_description.title',
+    	            'InvInvtry_acsngDtFrom_description.title',
+    	            'InvInvtry_acsngDtTo_description.title',
+    	            'InvInvtry_post_description.title',
     	            
     	            'Entity_show.title',
     	            'Entity_previous.title',
@@ -274,10 +315,17 @@ angular.module('AdInvtry')
     	return invInvtry && invInvtry.invInvtryType && invInvtry.invInvtryType=='ALPHABETICAL_ORDER_RANGE';
     };
 
-    service.isInvInvtryEditable = function (invInvtry) {
-        if(invInvtry && "CLOSED" != invInvtry.invtryStatus) return true;
-        return false;
+    service.isInvtryOpen = function (invInvtry) {
+        return angular.isDefined(invInvtry) && !service.isInvtryClosed(invInvtry) && !service.isInvtryPosted(invInvtry);
     }
+
+    service.isInvtryClosed = function (invInvtry) {
+        return angular.isDefined(invInvtry) && ("CLOSED" == invInvtry.invtryStatus || "CLOSING" == invInvtry.invtryStatus);
+    }
+    service.isInvtryPosted = function (invInvtry) {
+        return angular.isDefined(invInvtry) && ("POSTED" == invInvtry.invtryStatus || "POSTING" == invInvtry.invtryStatus);
+    }
+    
     return service;
 }])
 .controller('invInvtrysCtlr',['$scope','genericResource','invInvtryUtils','invInvtryState','$location','$rootScope',
@@ -292,6 +340,8 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
     $scope.selectedIndex=invInvtryState.resultHandler.selectedIndex;
     $scope.error = "";
     $scope.invInvtryUtils=invInvtryUtils;
+    $scope.display = invInvtryState.resultHandler.displayInfo();
+
 
 	var translateChangeSuccessHdl = $rootScope.$on('$translateChangeSuccess', function () {
 		invInvtryUtils.translate();
@@ -305,14 +355,48 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
 
     function init(){
         if(invInvtryState.resultHandler.hasEntities())return;
-        findCustom($scope.searchInput);
+        findByLike($scope.searchInput);
     }
 
-    function findCustom(searchInput){
-		genericResource.findByLike(invInvtryUtils.urlBase, searchInput)
+    function processSearchInput(searchInput){
+    	
+    	if(angular.isDefined(searchInput.entity.invtryNbr) && searchInput.entity.invtryNbr){
+    		searchInput.fieldNames.push('invtryNbr');
+    	}
+    	if(angular.isDefined(searchInput.entity.acsngUser) && searchInput.entity.acsngUser){
+    		searchInput.fieldNames.push('acsngUser');
+    	}
+    	if(angular.isDefined(searchInput.entity.invtryStatus) && searchInput.entity.invtryStatus){
+    		searchInput.fieldNames.push('invtryStatus');
+    	}
+    	if(angular.isDefined(searchInput.entity.invtryGroup) && searchInput.entity.invtryGroup){
+    		searchInput.fieldNames.push('invtryGroup');
+    	}
+    	if(angular.isDefined(searchInput.entity.invInvtryType) && searchInput.entity.invInvtryType){
+    		searchInput.fieldNames.push('invInvtryType');
+    	}
+    	if(angular.isDefined(searchInput.entity.descptn) && searchInput.entity.descptn){
+    		searchInput.fieldNames.push('descptn');
+    	}
+    	if(angular.isDefined(searchInput.entity.section) && searchInput.entity.section){
+    		searchInput.fieldNames.push('section');
+    	}
+    	if(angular.isDefined(searchInput.entity.rangeStart) && searchInput.entity.rangeStart){
+    		searchInput.fieldNames.push('rangeStart');
+    	}
+    	if(angular.isDefined(searchInput.entity.rangeEnd) && searchInput.entity.rangeEnd){
+    		searchInput.fieldNames.push('rangeEnd');
+    	}
+    	
+    }
+    function findByLike(searchInput){
+		genericResource.findCustom(invInvtryUtils.urlBase, searchInput)
 		.success(function(entitySearchResult) {
 			// store search
 			invInvtryState.resultHandler.searchResult(entitySearchResult);
+		    $scope.searchInput = invInvtryState.resultHandler.searchInput();
+		    setAccessingUserName();
+		    setSectionName();
 		})
         .error(function(error){
             $scope.error=error;
@@ -320,18 +404,14 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
     }
 
     $scope.handleSearchRequestEvent = function(){
-    	if($scope.searchInput.acsngUser){
-    		$scope.searchInput.entity.acsngUser=$scope.searchInput.acsngUser.loginName;
-    	} else {
-    		$scope.searchInput.entity.acsngUser='';
-    	}
-    	findCustom($scope.searchInput);
+    	processSearchInput($scope.searchInput);
+    	findByLike($scope.searchInput);
     };
 
     $scope.paginate = function paginate(){
     	invInvtryState.resultHandler.currentPage($scope.currentPage);
         $scope.searchInput = invInvtryState.resultHandler.paginate();
-        findCustom($scope.searchInput);
+        findByLike($scope.searchInput);
     };
 
     $scope.handlePrintRequestEvent = function(){
@@ -350,9 +430,70 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
 			$location.path('/InvInvtrys/edit/');
 		}
 	};
+	
+    $scope.onUserChanged = function(){
+    	setAccessingUserName();
+    };
+    function setAccessingUserName(){
+    	if(angular.isUndefined($scope.searchInput.entity.acsngUser) || !$scope.searchInput.entity.acsngUser){
+        	$scope.display.acsngUserFullName='';    		
+        	$scope.display.acsngUser='';
+    		return;
+    	} else if (angular.equals($scope.display.acsngUser,$scope.searchInput.entity.acsngUser)) {
+    		return;
+    	}
+        genericResource.findByLikePromissed(invInvtryUtils.loginnamessUrlBase, 'loginName', $scope.searchInput.entity.acsngUser)
+        .then(function(entitySearchResult){
+            var resultList = entitySearchResult.resultList;
+            if(angular.isDefined(resultList) && resultList.length>0)
+            	$scope.display.acsngUser = resultList[0].loginName; 
+        		$scope.display.acsngUserFullName = resultList[0].fullName; 
+        }, function(error){
+        	$scope.searchInput.entity.acsngUser='';
+        	$scope.display.acsngUser = ''; 
+    		$scope.display.acsngUserFullName = ''; 
+        });
+    }
+    $scope.onSectionChanged = function(){
+    	setSectionName();
+    };
+    function setSectionName(){
+    	if(angular.isUndefined($scope.searchInput.entity.section) || !$scope.searchInput.entity.section){
+        	$scope.display.section='';    		
+        	$scope.display.sectionName='';    		
+    		return;
+    	} else if (angular.equals($scope.display.section,$scope.searchInput.entity.section)) {
+    		return;
+    	}
+    	
+        genericResource.findByLikePromissed(service.stksectionsUrlBase, 'sectionCode', $scope.searchInput.entity.section)
+        .then(function(entitySearchResult){
+            var resultList = entitySearchResult.resultList;
+            if(angular.isDefined(resultList) && resultList.length>0)
+            	$scope.display.section = resultList[0].sectionCode; 
+        		$scope.display.sectionName = resultList[0].name; 
+        }, function(error){
+        	$scope.display.section = ''; 
+    		$scope.display.sectionName = ''; 
+        });
+    }
+
+    $scope.onUserSelected = function(item,model,label){
+    	$scope.searchInput.entity.acsngUser=item.loginName;
+    	$scope.display.acsngUser=item.loginName;
+    	$scope.display.acsngUserFullName=item.fullName;
+    };
+    
+    $scope.onSectionSelected = function(item,model,label){
+    	$scope.searchInput.entity.section=item.sectionCode;
+    	$scope.display.section=item.strgSection;    		
+    	$scope.display.sectionName=item.name;
+    }
+	
 }])
-.controller('invInvtryCreateCtlr',['$scope','invInvtryUtils','$translate','invInvtryManagerResource','$location','invInvtryState',
-        function($scope,invInvtryUtils,$translate,invInvtryManagerResource,$location,invInvtryState){
+.controller('invInvtryCreateCtlr',['$scope','invInvtryUtils','$translate',
+                                   'invInvtryManagerResource','$location','invInvtryState','adUtils',
+        function($scope,invInvtryUtils,$translate,invInvtryManagerResource,$location,invInvtryState,adUtils){
     $scope.invInvtry = {};
     $scope.display = {};
     $scope.error = "";
@@ -365,7 +506,7 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
     
     $scope.onSectionSelectedInCreate = function(item,model,label){
     	$scope.invInvtry.section=item.strgSection;
-    	$scope.display.sectionName=item.sectionName;
+    	$scope.display.sectionName=item.name;
     }
 
     $scope.create = function(){
@@ -373,8 +514,9 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
     	$scope.invInvtry.invtryStatus='ONGOING';
     	invInvtryManagerResource.prepare($scope.invInvtry)
     	.success(function(invInvtry){
-    		if(invInvtryState.resultHandler.replace(invInvtry)){
-    			$location.path('/InvInvtrys/show/');
+    		var index = invInvtryState.resultHandler.unshift(invInvtry);
+    		if(adUtils.greaterThan(index)){
+    			$location.path('/InvInvtrys/');
     		}
         })
     	.error(function(error){
@@ -384,8 +526,8 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
 
   
 }])
-.controller('invInvtryShowCtlr',['$scope','invInvtryManagerResource','$location','invInvtryUtils','invInvtryState','$rootScope','genericResource','$routeParams','searchResultHandler',
-                                 function($scope,invInvtryManagerResource,$location,invInvtryUtils,invInvtryState,$rootScope,genericResource,$routeParams,searchResultHandler){
+.controller('invInvtryShowCtlr',['$scope','invInvtryManagerResource','$location','invInvtryUtils','invInvtryState','$rootScope','genericResource','$routeParams','searchResultHandler','adUtils',
+                                 function($scope,invInvtryManagerResource,$location,invInvtryUtils,invInvtryState,$rootScope,genericResource,$routeParams,searchResultHandler,adUtils){
     $scope.invInvtry = invInvtryState.resultHandler.entity();
     $scope.error = "";
     $scope.invInvtryUtils=invInvtryUtils;
@@ -398,7 +540,25 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
     $scope.invInvtryItems =itemsResultHandler.entities;
     $scope.selectedIndex=itemsResultHandler.selectedIndex;
     $scope.display = itemsResultHandler.displayInfo();
-
+    
+    $scope.invtryEditable = !invInvtryUtils.isInvtryPosted($scope.invInvtry);
+    $scope.itemEditable = invInvtryUtils.isInvtryOpen($scope.invInvtry);
+    $scope.invtryCopy = angular.copy($scope.invInvtry);
+    
+    $scope.invtryChanged = invtryChangedFctn;
+    
+    function refreshDisplay(){
+        $scope.invInvtry = invInvtryState.resultHandler.entity();
+        $scope.invtryCopy = angular.copy($scope.invInvtry);
+        $scope.invtryEditable = !invInvtryUtils.isInvtryPosted();
+        $scope.itemEditable = invInvtryUtils.isInvtryOpen();
+    }
+    
+    $scope.onUserSelectedInShow = function(item,model,label){
+    	$scope.invInvtry.acsngUser=item.loginName;
+    	$scope.display.acsngUserFullName=item.fullName;
+    }
+    
     function consumeError(error, status) {
         var error_msg=error;            
         if(400 === status && error && error.contains("org.codehaus.jackson.JsonParseException")) {
@@ -441,7 +601,30 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
     		$scope.error=error;
     	});
     }
-    loadInvInvtryItems();    
+    function initView(){
+    	fixDateFields();
+    	setAccessingUserName();
+    	loadInvInvtryItems();    
+    }
+    initView();
+    function setAccessingUserName(){
+    	if(angular.isUndefined($scope.invInvtry.acsngUser) || !$scope.invInvtry.acsngUser)
+    		return;
+        genericResource.findByLikePromissed(invInvtryUtils.loginnamessUrlBase, 'loginName', $scope.invInvtry.acsngUser)
+        .then(function(entitySearchResult){
+            var resultList = entitySearchResult.resultList;
+            if(angular.isDefined(resultList) && resultList.length>0)
+            	$scope.display.acsngUserFullName = resultList[0].fullName; 
+        }, function(error){
+        	$scope.invInvtry.acsngUser='';
+        	$scope.display.acsngUserFullName = '';
+        });
+    }
+    function fixDateFields(){
+    	$scope.invInvtry.invtryDt = adUtils.fixDateField($scope.invInvtry.invtryDt);
+    	$scope.invInvtry.preparedDt = adUtils.fixDateField($scope.invInvtry.preparedDt);
+    	$scope.invInvtry.acsngDt = adUtils.fixDateField($scope.invInvtry.acsngDt);
+    }
     
     $scope.handleSearchRequestEvent = function(){
     	loadInvInvtryItems();
@@ -515,28 +698,45 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
     	var dt = new Date();
     	invtryItem.acsngDt = dt.getTime();
     };
+    
+    function invtryChangedFctn(){
+    	return !angular.equals($scope.invInvtry, $scope.invtryCopy);
+    };
 
-    $scope.save = function(){
+    $scope.update = function(){
+    	if(!invtryChangedFctn()) return;
+      invInvtryManagerResource.update($scope.invInvtry)
+    	.success(function(invInvtry){
+    		if(invInvtryState.resultHandler.replace(invInvtry)){
+    			refreshDisplay();
+    		}
+    	})
+    	.error(function(error){
+    		$scope.error = error;
+    	});
     };
 
     $scope.close = function(){
-//        var invInvtryHolder = {};
-//        invInvtryHolder.invtry = $scope.invInvtry;
-//        //save
-//    	
-//        invInvtryManagerResource.close(invInvtryHolder)
-//    	.success(function(invInvtryHolder){
-//    		if($scope.invInvtry.invtryNbr){
-//    			invInvtryState.replace(invInvtryHolder.invtry);
-//    		} else {
-//    			invInvtryState.set(invInvtryHolder.invtry);
-//    		}
-//    	    $scope.invInvtry = invInvtryState.invInvtry();
-//    	    $scope.invInvtryItemHolder = {invtryItem:{}};
-//    	})
-//    	.error(function(error){
-//    		$scope.error = error;
-//    	});
+        invInvtryManagerResource.close($scope.invInvtry)
+    	.success(function(invInvtry){
+    		if(invInvtryState.resultHandler.replace(invInvtry)){
+    			$scope.invInvtry = invInvtryState.resultHandler.entity();
+    		}
+    	})
+    	.error(function(error){
+    		$scope.error = error;
+    	});
+    };
+    $scope.post = function(){
+        invInvtryManagerResource.post($scope.invInvtry)
+    	.success(function(invInvtry){
+    		if(invInvtryState.resultHandler.replace(invInvtry)){
+    			$scope.invInvtry = invInvtryState.resultHandler.entity();
+    		}
+    	})
+    	.error(function(error){
+    		$scope.error = error;
+    	});
     };
     
     $scope.onSectionSelectedInSearch = function(item,model,label){

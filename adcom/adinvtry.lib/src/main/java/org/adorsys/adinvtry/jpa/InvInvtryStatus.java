@@ -9,5 +9,6 @@ public enum InvInvtryStatus
    SUSPENDED, @Description("InvntrStatus_ONGOING_description")
    ONGOING, @Description("InvntrStatus_RESUMED_description")
    RESUMED, @Description("InvntrStatus_CLOSED_description")
-   CLOSED
+   CLOSED,@Description("InvntrStatus_POSTED_description")
+   POSTED
 }

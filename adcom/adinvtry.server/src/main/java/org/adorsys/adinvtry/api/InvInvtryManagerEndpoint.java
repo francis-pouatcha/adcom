@@ -26,31 +26,31 @@ public class InvInvtryManagerEndpoint
    @Consumes({ "application/json", "application/xml" })
    @Produces({ "application/json", "application/xml" })
    public InvInvtry newInventory(InvInvtry invtry){
-      return invtryManager.prepareInventory(invtry);
+      return invtryManager.prepareInventory(invtry, null);
    }
    
    @PUT
    @Path("/update")
    @Consumes({ "application/json", "application/xml" })
    @Produces({ "application/json", "application/xml" })
-   public InvInvtryHolder updateInventory(InvInvtryHolder invtryHolder){
-      return invtryManager.updateInventory(invtryHolder);
+   public InvInvtry updateInventory(InvInvtry invtry){
+      return invtryManager.updateInventory(invtry);
    }
 
    @PUT
    @Path("/close")
    @Consumes({ "application/json", "application/xml" })
    @Produces({ "application/json", "application/xml" })
-   public InvInvtryHolder closeDelivery(InvInvtryHolder invtryHolder){
-      return invtryManager.closeInventory(invtryHolder);
+   public InvInvtry closeInventory(InvInvtry invtry){
+      return invtryManager.closeInventory(invtry);
    }
 
    @PUT
-   @Path("/updateItem")
+   @Path("/post")
    @Consumes({ "application/json", "application/xml" })
    @Produces({ "application/json", "application/xml" })
-   public InvInvtryItem updateItem(InvInvtryItem invtryItem){
-      return invtryManager.updateItem(invtryItem);
+   public InvInvtry postInventory(InvInvtry invtry){
+      return invtryManager.postInventory(invtry);
    }
 
    @PUT
@@ -59,6 +59,14 @@ public class InvInvtryManagerEndpoint
    @Produces({ "application/json", "application/xml" })
    public InvInvtryItem addItem(InvInvtryItem invtryItem){
       return invtryManager.addItem(invtryItem);
+   }
+
+   @PUT
+   @Path("/updateItem")
+   @Consumes({ "application/json", "application/xml" })
+   @Produces({ "application/json", "application/xml" })
+   public InvInvtryItem updateItem(InvInvtryItem invtryItem){
+      return invtryManager.updateItem(invtryItem);
    }
 
    @PUT

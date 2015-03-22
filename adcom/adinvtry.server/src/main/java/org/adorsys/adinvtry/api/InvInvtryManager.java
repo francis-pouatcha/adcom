@@ -50,9 +50,10 @@ public class InvInvtryManager {
 	@Inject
 	private StkArticleLotLookup articleLotLookup;
 	
-	public InvInvtry prepareInventory(InvInvtry invtry) {
+	public InvInvtry prepareInventory(InvInvtry invtry, String accessingUser) {
 		// Create the delivery object if necessary
-		return createInventoryObject(invtry, null, null);
+		Date now = new Date();
+		return createInventoryObject(invtry, accessingUser, now);
 	}
 	
 	/**
@@ -62,94 +63,105 @@ public class InvInvtryManager {
 	 * @param invtryHolder
 	 * @return
 	 */
-	public InvInvtryHolder updateInventory(InvInvtryHolder invtryHolder){
-		InvInvtry invtry = invtryHolder.getInvtry();
-		String currentLoginName = securityUtil.getCurrentLoginName();
-		Date now = new Date();
-		
-		// Create the delivery object if necessary
-		invtry = createInventoryObject(invtry, currentLoginName, now);
-		invtryHolder.setInvtry(invtry);
-		boolean modified = false;
-
-		boolean itemModified = deleteHolders(invtryHolder);
-		
-		List<InvInvtryItemHolder> invInvtryItemHolders = invtryHolder.getInvtryItemHolders();
-		if(invInvtryItemHolders==null) invInvtryItemHolders=new ArrayList<InvInvtryItemHolder>();
-		
-		for (InvInvtryItemHolder itemHolder : invInvtryItemHolders) {
-			InvInvtryItem invInvtryItem = itemHolder.getInvtryItem();
-			invInvtryItem.setAcsngUser(securityUtil.getCurrentLoginName());
-			if(StringUtils.isBlank(invInvtryItem.getInvtryNbr()))
-				invInvtryItem.setInvtryNbr(invtry.getInvtryNbr());
-			// check presence of the article pic
-			if(StringUtils.isBlank(invInvtryItem.getArtPic()))
-				throw new IllegalStateException("Missing article identification code.");
-
-			if(StringUtils.isNotBlank(invInvtryItem.getId())){
-				// todo check mdified
-				InvInvtryItem persInvItem = invInvtryItemEJB.findById(invInvtryItem.getId());
-				if(persInvItem==null) throw new IllegalStateException("Missing inventory item with id: " + invInvtryItem.getId());
-				if(!invInvtryItem.contentEquals(persInvItem)){
-					invInvtryItem.copyTo(persInvItem);
-					invInvtryItem = invInvtryItemEJB.update(persInvItem);
-					itemModified = true;
-				}
-			} else {
-				if (StringUtils.isNotBlank(invInvtryItem.getId())) {
-					InvInvtryItem persDi = invInvtryItemEJB.findById(invInvtryItem.getId());
-					if(persDi!=null){
-						if(!invInvtryItem.contentEquals(persDi)){
-							invInvtryItem.copyTo(persDi);
-							invInvtryItem = invInvtryItemEJB.update(persDi);
-							itemModified = true;
-						}
-					} else {
-						invInvtryItem.evlte();//evaluate different amount before save
-						invInvtryItem = invInvtryItemEJB.create(invInvtryItem);
-						itemModified = true;
-					}
-				} else {
-					invInvtryItem.evlte();//evaluate different amount before save
-					invInvtryItem = invInvtryItemEJB.create(invInvtryItem);
-					itemModified = true;
-				}
-			}
-
-			itemHolder.setInvtryItem(invInvtryItem);
+	public InvInvtry updateInventory(InvInvtry invtry){
+		return inventoryEJB.update(invtry);
+//		InvInvtry invtry = invtryHolder.getInvtry();
+//		String currentLoginName = securityUtil.getCurrentLoginName();
+//		Date now = new Date();
+//		
+//		// Create the delivery object if necessary
+//		invtry = createInventoryObject(invtry, currentLoginName, now);
+//		
+//		invtryHolder.setInvtry(invtry);
+//		boolean modified = false;
+//
+//		boolean itemModified = deleteHolders(invtryHolder);
+//		
+//		List<InvInvtryItemHolder> invInvtryItemHolders = invtryHolder.getInvtryItemHolders();
+//		if(invInvtryItemHolders==null) invInvtryItemHolders=new ArrayList<InvInvtryItemHolder>();
+//		
+//		for (InvInvtryItemHolder itemHolder : invInvtryItemHolders) {
+//			InvInvtryItem invInvtryItem = itemHolder.getInvtryItem();
+//			invInvtryItem.setAcsngUser(securityUtil.getCurrentLoginName());
+//			if(StringUtils.isBlank(invInvtryItem.getInvtryNbr()))
+//				invInvtryItem.setInvtryNbr(invtry.getInvtryNbr());
+//			// check presence of the article pic
+//			if(StringUtils.isBlank(invInvtryItem.getArtPic()))
+//				throw new IllegalStateException("Missing article identification code.");
+//
+//			if(StringUtils.isNotBlank(invInvtryItem.getId())){
+//				// todo check mdified
+//				InvInvtryItem persInvItem = invInvtryItemEJB.findById(invInvtryItem.getId());
+//				if(persInvItem==null) throw new IllegalStateException("Missing inventory item with id: " + invInvtryItem.getId());
+//				if(!invInvtryItem.contentEquals(persInvItem)){
+//					invInvtryItem.copyTo(persInvItem);
+//					invInvtryItem = invInvtryItemEJB.update(persInvItem);
+//					itemModified = true;
+//				}
+//			} else {
+//				if (StringUtils.isNotBlank(invInvtryItem.getId())) {
+//					InvInvtryItem persDi = invInvtryItemEJB.findById(invInvtryItem.getId());
+//					if(persDi!=null){
+//						if(!invInvtryItem.contentEquals(persDi)){
+//							invInvtryItem.copyTo(persDi);
+//							invInvtryItem = invInvtryItemEJB.update(persDi);
+//							itemModified = true;
+//						}
+//					} else {
+//						invInvtryItem.evlte();//evaluate different amount before save
+//						invInvtryItem = invInvtryItemEJB.create(invInvtryItem);
+//						itemModified = true;
+//					}
+//				} else {
+//					invInvtryItem.evlte();//evaluate different amount before save
+//					invInvtryItem = invInvtryItemEJB.create(invInvtryItem);
+//					itemModified = true;
+//				}
+//			}
+//
+//			itemHolder.setInvtryItem(invInvtryItem);
 			
-		}
-
-		if(itemModified){
-			// Create or update the delivery.
-			recomputeInventory(invtry);
-			invtry.setInvtryStatus(InvInvtryStatus.ONGOING);
-			invtry = inventoryEJB.update(invtry);
-			invtryHolder.setInvtry(invtry);		
-		}
-		if(modified || itemModified){
-			createModifiedInventoryHistory(invtry);
-		}
-		return invtryHolder;
+//		}
+//
+//		if(itemModified){
+//			// Create or update the delivery.
+//			recomputeInventory(invtry);
+//			invtry.setInvtryStatus(InvInvtryStatus.ONGOING);
+//			invtry = inventoryEJB.update(invtry);
+//			invtryHolder.setInvtry(invtry);		
+//		}
+//		if(modified || itemModified){
+//			createModifiedInventoryHistory(invtry);
+//		}
+//		return invtryHolder;
 	}
 	
-	/**
-	 * Closing an existing invetory.
-	 * 
-	 * @param inventoryHolder
-	 * @return
-	 */
-	public InvInvtryHolder closeInventory(InvInvtryHolder inventoryHolder){
-		inventoryHolder = updateInventory(inventoryHolder);
-		InvInvtry invtry = inventoryHolder.getInvtry();
+	public InvInvtry closeInventory(InvInvtry invtry){
+//		inventoryHolder = updateInventory(inventoryHolder);
+//		InvInvtry invtry = inventoryHolder.getInvtry();
+		invtry = inventoryEJB.findById(invtry.getId());
 		recomputeInventory(invtry);
 		invtry.setInvtryStatus(InvInvtryStatus.CLOSED);
 		invtry = inventoryEJB.update(invtry);
-		inventoryHolder.setInvtry(invtry);
+//		inventoryHolder.setInvtry(invtry);
 		createClosedInventoryHistory(invtry);// Status closed
-		return inventoryHolder;
+//		return inventoryHolder;
+		return invtry;
 	}	
-	
+
+	public InvInvtry postInventory(InvInvtry invtry){
+//		inventoryHolder = updateInventory(inventoryHolder);
+//		InvInvtry invtry = inventoryHolder.getInvtry();
+		invtry = inventoryEJB.findById(invtry.getId());
+		recomputeInventory(invtry);
+		invtry.setInvtryStatus(InvInvtryStatus.POSTED);
+		invtry = inventoryEJB.update(invtry);
+//		inventoryHolder.setInvtry(invtry);
+		createPostedInventoryHistory(invtry);// Status closed
+//		return inventoryHolder;
+		return invtry;
+	}	
+
 	@Inject
 	private StkLotStockQtyLookup stockQtyLookup; 
 	/**
@@ -174,22 +186,24 @@ public class InvInvtryManager {
 			return existing;
 
 		StkArticleLot articleLot = articleLotLookup.findByIdentif(invtryItem.getLotPic());
-		if(invtryItem.getExpirDt()==null){
-			invtryItem.setExpirDt(articleLot.getExpirDt());
+		if(articleLot!=null){
+			if(invtryItem.getExpirDt()==null){
+				invtryItem.setExpirDt(articleLot.getExpirDt());
+			}
+			invtryItem.setMinSppuHT(articleLot.getMinSppuHT());
+			invtryItem.setPppuCur(articleLot.getPppuCur());
+			invtryItem.setPppuPT(articleLot.getPppuHT());
+			invtryItem.setPurchRtrnDays(articleLot.getPurchRtrnDays());
+			invtryItem.setPurchWrntyDys(articleLot.getPurchWrntyDys());
+			invtryItem.setSalesRtrnDays(articleLot.getSalesRtrnDays());
+			invtryItem.setSalesWrntyDys(articleLot.getSalesWrntyDys());
+			invtryItem.setSppuCur(articleLot.getSppuCur());
+			invtryItem.setSppuPT(articleLot.getSppuHT());
+			invtryItem.setSupplier(articleLot.getSupplier());
+			invtryItem.setSupplierPic(articleLot.getSupplierPic());
+			invtryItem.setVatPurchPct(articleLot.getVatPurchPct());
+			invtryItem.setVatSalesPct(articleLot.getVatSalesPct());
 		}
-		invtryItem.setMinSppuHT(articleLot.getMinSppuHT());
-		invtryItem.setPppuCur(articleLot.getPppuCur());
-		invtryItem.setPppuPT(articleLot.getPppuHT());
-		invtryItem.setPurchRtrnDays(articleLot.getPurchRtrnDays());
-		invtryItem.setPurchWrntyDys(articleLot.getPurchWrntyDys());
-		invtryItem.setSalesRtrnDays(articleLot.getSalesRtrnDays());
-		invtryItem.setSalesWrntyDys(articleLot.getSalesWrntyDys());
-		invtryItem.setSppuCur(articleLot.getSppuCur());
-		invtryItem.setSppuPT(articleLot.getSppuHT());
-		invtryItem.setSupplier(articleLot.getSupplier());
-		invtryItem.setSupplierPic(articleLot.getSupplierPic());
-		invtryItem.setVatPurchPct(articleLot.getVatPurchPct());
-		invtryItem.setVatSalesPct(articleLot.getVatSalesPct());
 		
 		if(invtryItem.getAsseccedQty()!=null){
 			if(invtryItem.getAcsngDt()==null){
@@ -322,7 +336,7 @@ public class InvInvtryManager {
 			if(StringUtils.isBlank(inventory.getAcsngUser()))
 				inventory.setAcsngUser(currentLoginName);
 			if(inventory.getInvtryDt()==null)
-				inventory.setAcsngDt(now);
+				inventory.setInvtryDt(now);
 			inventory.setInvtryStatus(InvInvtryStatus.ONGOING);
 			if(StringUtils.isBlank(inventory.getSection()) && StringUtils.isBlank(inventory.getRangeStart()) && StringUtils.isBlank(inventory.getRangeEnd())){
 				inventory.setPreparedDt(new Date());
@@ -367,6 +381,22 @@ public class InvInvtryManager {
 		invtryHstryEJB.create(invtryHstry);
 	}
 
+	private void createPostedInventoryHistory(InvInvtry invtry){
+		TermWsUserPrincipal callerPrincipal = securityUtil.getCallerPrincipal();
+		InvInvtryHstry invtryHstry = new InvInvtryHstry();
+		invtryHstry.setAddtnlInfo(InventoryInfo.prinInfo(invtry));
+		invtryHstry.setComment(BaseHistoryTypeEnum.POSTED.name());
+		invtryHstry.setEntIdentif(invtry.getId());
+		invtryHstry.setEntStatus(invtry.getInvtryStatus().name());
+		invtryHstry.setHstryDt(new Date());
+		invtryHstry.setHstryType(BaseHistoryTypeEnum.POSTED.name());
+		
+		invtryHstry.setOrignLogin(callerPrincipal.getName());
+		invtryHstry.setOrignWrkspc(callerPrincipal.getWorkspaceId());
+		invtryHstry.setProcStep(BaseProcStepEnum.POSTING.name());
+		invtryHstryEJB.create(invtryHstry);
+	}
+	
 	private void createInitialInventoryHistory(InvInvtry invtry){
 		TermWsUserPrincipal callerPrincipal = securityUtil.getCallerPrincipal();
 		InvInvtryHstry invtryHstry = new InvInvtryHstry();

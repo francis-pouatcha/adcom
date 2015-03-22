@@ -1,5 +1,6 @@
 package org.adorsys.adinvtry.jpa;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -37,9 +38,17 @@ public class InvInvtrySearchInput
 	 */
 	private List<String> fieldNames = new ArrayList<String>();
 
-	private Date from;
+	private Date invtryDtFrom;
 
-	private Date to;
+	private Date invtryDtTo;
+	
+	private Date acsngDtFrom;
+	
+	private Date acsngDtTo;
+	
+	private BigDecimal gapPurchAmtHTFrom;
+	
+	private BigDecimal gapPurchAmtHTTo;
 
 	public InvInvtry getEntity()
 	{
@@ -81,21 +90,55 @@ public class InvInvtrySearchInput
 		this.max = max;
 	}
 
-	public Date getFrom() {
-		return from;
+	public Date getInvtryDtFrom() {
+		return invtryDtFrom;
 	}
 
-	public void setFrom(Date from) {
-		this.from = from;
+	public void setInvtryDtFrom(Date invtryDtFrom) {
+		this.invtryDtFrom = invtryDtFrom;
 	}
 
-	public Date getTo() {
-		return to;
+	public Date getInvtryDtTo() {
+		return invtryDtTo;
 	}
 
-	public void setTo(Date to) {
-		this.to = to;
+	public void setInvtryDtTo(Date invtryDtTo) {
+		this.invtryDtTo = invtryDtTo;
 	}
 
+	public Date getAcsngDtFrom() {
+		return acsngDtFrom;
+	}
+
+	public void setAcsngDtFrom(Date acsngDtFrom) {
+		this.acsngDtFrom = acsngDtFrom;
+	}
+
+	public Date getAcsngDtTo() {
+		return acsngDtTo;
+	}
+
+	public void setAcsngDtTo(Date acsngDtTo) {
+		this.acsngDtTo = acsngDtTo;
+	}
+
+	public BigDecimal getGapPurchAmtHTFrom() {
+		return gapPurchAmtHTFrom;
+	}
+
+	public void setGapPurchAmtHTFrom(BigDecimal gapPurchAmtHTFrom) {
+		this.gapPurchAmtHTFrom = gapPurchAmtHTFrom;
+	}
+
+	public BigDecimal getGapPurchAmtHTTo() {
+		return gapPurchAmtHTTo;
+	}
+
+	public void setGapPurchAmtHTTo(BigDecimal gapPurchAmtHTTo) {
+		this.gapPurchAmtHTTo = gapPurchAmtHTTo;
+	}
+	public boolean noSpecialParams(){
+		return invtryDtFrom==null && invtryDtTo==null && acsngDtFrom==null && acsngDtTo==null && gapPurchAmtHTFrom==null && gapPurchAmtHTTo==null;
+	}
 
 }

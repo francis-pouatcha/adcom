@@ -26,6 +26,23 @@ angular.module('ADUtils',[])
     	if(typeof b === 'undefined') return a>-1;
     	return a>b;
     };
+    service.fixDateField = function(dateField){
+    	if(angular.isUndefined(dateField) || !dateField) return dateField;
+    	
+    	if(Object.prototype.toString.call(dateField) === '[object Date]')return dateField;
+
+    	var dtObject = new Date();
+		if(service.isNumber(dateField)){
+			dtObject.setTime(dateField);
+		} else {
+			var dateMilis =Date.parse(dateField);
+			dtObject.setTime(dateMilis);
+		}
+		return dtObject; 
+    };
+    service.isNumber = function (n) {
+    	return !isNaN(parseFloat(n)) && isFinite(n);
+    };
     return service;
 }])
 .factory('commonTranslations',['$translate',function($translate){
@@ -362,7 +379,7 @@ angular.module('ADUtils',[])
         this.unshift = function(entity){
         	if(angular.isUndefined(entity) || !entity) return;
         	var index = handler.indexOf(entity);
-        	if(angular.isDefined(index) && index>=0){ // slice
+        	if(adUtils.greaterThan(index) && index>=0){ // slice
         		searchResultVar.resultList.splice(index, 1);
         		searchResultVar.count -=1;
         	}
