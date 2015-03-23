@@ -241,7 +241,8 @@
 "SlsSttlmtOpEnum_VOUCHER_PAYMENT_description.text":"R\u00E8glement par bon",
 "SlsSttlmtOpEnum_VOUCHER_PAYMENT_description.title":"R\u00E8glement par bon",
 "SlsSttlmtOpEnum_description.text":"Opération de r\u00E8glement",
-"SlsSttlmtOpEnum_description.title":"Opération de r\u00E8glement"
+"SlsSttlmtOpEnum_description.title":"Opération de r\u00E8glement",
 
-
+    "CatalArticle_sppu_description.title":"Prix de Vente Unitaire",
+    "Add_Procurement_Order_Item":"Ajouter une ligne de commande"
 }

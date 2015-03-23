@@ -242,6 +242,9 @@
 "SlsSttlmtOpEnum_VOUCHER_PAYMENT_description.text":"Voucher Payment",
 "SlsSttlmtOpEnum_VOUCHER_PAYMENT_description.title":"Voucher Payment",
 "SlsSttlmtOpEnum_description.text":"Settlement Operation",
-"SlsSttlmtOpEnum_description.title":"Settlement Operation"
+"SlsSttlmtOpEnum_description.title":"Settlement Operation",
+
+    "Add_Procurement_Order_Item":"Add procurement order item",
+    "CatalArticle_sppu_description.title":"Sales Price per Unit"
 
 }
