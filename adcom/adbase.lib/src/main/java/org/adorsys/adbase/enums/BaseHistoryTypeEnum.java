@@ -18,8 +18,10 @@ public enum BaseHistoryTypeEnum
    DENIED_APPROVAL, @Description("BaseHistoryTypeEnum_FROZEN_APPROVING_description")
    FROZEN_APPROVING, @Description("BaseHistoryTypeEnum_FROZEN_ABANDONED_description")
    FROZEN_ABANDONED, @Description("BaseHistoryTypeEnum_FROZEN_TERMINATED_description")
-   FROZEN_TERMINATED, @Description("BaseHistoryTypeEnum_MODIFIED_description")
-   MODIFIED, @Description("BaseHistoryTypeEnum_CANCELED_description")
+   FROZEN_TERMINATED, 
+   @Description("BaseHistoryTypeEnum_MODIFIED_description")
+   MODIFIED, 
+   @Description("BaseHistoryTypeEnum_CANCELED_description")
    CANCELED, @Description("BaseHistoryTypeEnum_FAILED_CANCELATION_description")
    FAILED_CANCELATION, @Description("BaseHistoryTypeEnum_COMMITTED_description")
    COMMITTED, @Description("BaseHistoryTypeEnum_FAILED_COMMITMENT_description")
@@ -31,5 +33,8 @@ public enum BaseHistoryTypeEnum
    FAILED_REVERSE, @Description("BaseHistoryTypeEnum_RECALL_description")
    RECALL, @Description("BaseHistoryTypeEnum_FAILED_RECALL_description")
    FAILED_RECALL, @Description("BaseHistoryTypeEnum_CLOSING_RECALL_description")
-   CLOSING
+   CLOSING,
+   @Description("BaseHistoryTypeEnum_ITEM_MODIFIED_description")
+   ITEM_MODIFIED
+   
 }

@@ -5,7 +5,7 @@
            <label class="error col-lg-offset-3 alert-danger" >{{error}} </label>
            <form  name="invInvtryForm" id="invInvtryForm" novalidate>
 	           	<div class="row" >
-               		<div class="form-group col-lg-4">
+               		<div class="form-group col-lg-3">
 	                   	<label>{{invInvtryUtils.translations['InvInvtry_invInvtryType_description.title']}} :</label>
 	                   	<div ng-class="{ 'has-error' : invInvtryForm.invMode.$invalid }" >
 	           				<select class="form-control" name="invInvtryType" id="invInvtryType" ng-model="invInvtry.invInvtryType"
@@ -15,17 +15,21 @@
 							</select>
 	                   </div>
                    	</div>
-                   <div class="form-group col-lg-4">
+                   <div class="form-group col-lg-2">
                        <label class=" control-label" for="acsngUser">{{invInvtryUtils.translations['InvInvtry_acsngUser_description.title']}}</label>
           		       <input type="text" ng-model="invInvtry.acsngUser" id="acsngUser" name="acsngUser" class="form-control"
                           autocomplete="off" typeahead="loginName as (loginName.loginName + ' : ' + loginName.fullName) for loginName in invInvtryUtils.loadUsers($viewValue)"
                           typeahead-loading="loading" typeahead-min-length="3" typeahead-on-select='onUserSelectedInCreate($item, $model, $label)'>
                    </div>
-                   <div class="form-group col-lg-4">
+                   <div class="form-group col-lg-5">
                        <label class=" control-label" for="acsngUserFullName">{{invInvtryUtils.translations['InvInvtry_acsngUserFullName_description.title']}}</label>
           		       <input type="text" ng-model="display.acsngUserFullName" id="acsngUserFullName" name="acsngUserFullName" class="form-control"
                           autocomplete="off" typeahead="loginName as (loginName.loginName + ' : ' + loginName.fullName) for loginName in invInvtryUtils.loadUsersByName($viewValue)"
                           typeahead-loading="loading" typeahead-min-length="3" typeahead-on-select='onUserSelectedInCreate($item, $model, $label)'>
+                   </div>
+                   <div class="form-group col-lg-2">
+                       <label class=" control-label" for="invtryGroup">{{invInvtryUtils.translations['InvInvtry_invtryGroup_description.title']}}</label>
+              		       <input type="text" ng-model="invInvtry.invtryGroup" id="invtryGroup" name="invtryGroup" class="form-control">
                    </div>
                	</div>
 	           	<div class="row" >
@@ -49,11 +53,11 @@
                    </div>
                    <div class="form-group col-lg-1">
                        <label class=" control-label" for="createRangeStart">{{invInvtryUtils.translations['InvInvtryItem_artNameStart_description.title']}}</label>
-              		       <input type="text" ng-model="invInvtry.rangeStart" id="searchRangeStart" name="searchRangeStart" class="form-control">
+              		       <input type="text" ng-model="invInvtry.rangeStart" id="createRangeStart" name="createRangeStart" class="form-control">
                    </div>
                    <div class="form-group col-lg-1">
                        <label class=" control-label" for="createRangeEnd">{{invInvtryUtils.translations['InvInvtryItem_artNameEnd_description.title']}}</label>
-              		       <input type="text" ng-model="invInvtry.rangeEnd" id="searchRangeEnd" name="searchRangeEnd" class="form-control">
+              		       <input type="text" ng-model="invInvtry.rangeEnd" id="createRangeEnd" name="createRangeEnd" class="form-control">
                    </div>
                	</div>
 	           	<div class="row">

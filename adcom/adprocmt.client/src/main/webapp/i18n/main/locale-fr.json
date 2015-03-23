@@ -107,8 +107,6 @@
 "PrcmtDlvryItem_vatPct_description.title":"Taux TVA",
 "PrcmtDlvryItem_vatSalesPct_description.text":"The taux de TVA en pourcent.",
 "PrcmtDlvryItem_vatSalesPct_description.title":"Taux TVA",
-
-"Add_Procurement_Order_Item":"Ajouter une ligne de commande",
 "PrcmtPOItem_artPic_description.text":"Le code identifiant produit principal, utilisé pour identifier les lots de produits lors de la vente.",
 "PrcmtPOItem_artPic_description.title":"CIP Principal",
 "PrcmtPOItem_createdDt_description.text":"La date de creation",

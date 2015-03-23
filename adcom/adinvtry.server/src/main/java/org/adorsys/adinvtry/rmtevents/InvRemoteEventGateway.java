@@ -11,7 +11,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 
-import org.adorsys.adinvtry.event.InvInvtryClosedEvent;
+import org.adorsys.adinvtry.event.InvInvtryPostedEvent;
 import org.adorsys.adinvtry.jpa.InvInvtryEvt;
 import org.adorsys.adinvtry.jpa.InvInvtryEvtDataCstr;
 import org.adorsys.adinvtry.jpa.InvInvtryEvtLease;
@@ -33,8 +33,8 @@ public class InvRemoteEventGateway {
 	@Inject
 	private InvInvtryEvtDataEJB evtDataEJB;
 
-	public void handleInvtryClosedEvent(
-			@Observes @InvInvtryClosedEvent InvInvtryHstry invtryHstry) {
+	public void handleInvtryPostedEvent(
+			@Observes @InvInvtryPostedEvent InvInvtryHstry invtryHstry) {
 		// Move this operation to an event.
 		String evtName = invtryHstry.getHstryType();
 		InvInvtryEvt evt = new InvInvtryEvt();

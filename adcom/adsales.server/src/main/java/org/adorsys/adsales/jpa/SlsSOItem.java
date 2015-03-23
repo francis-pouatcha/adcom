@@ -58,6 +58,10 @@ public class SlsSOItem extends AbstractIdentifData {
 	@Column
 	@Description("SlsSOItem_rebate_description")
 	private BigDecimal rebate;
+	
+	@Column
+	@Description("SlsSOItem_rebatePct_description")
+	private BigDecimal rebatePct;
 
 	@Column
 	@Description("SlsSOItem_netSPPreTax_description")
@@ -106,6 +110,14 @@ public class SlsSOItem extends AbstractIdentifData {
 
 	public BigDecimal getOrderedQty() {
 		return this.orderedQty;
+	}
+
+	public BigDecimal getRebatePct() {
+		return rebatePct;
+	}
+
+	public void setRebatePct(BigDecimal rebatePct) {
+		this.rebatePct = rebatePct;
 	}
 
 	public void setOrderedQty(final BigDecimal orderedQty) {

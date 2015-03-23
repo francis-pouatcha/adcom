@@ -2,7 +2,6 @@ package org.adorsys.adinvtry.rest;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -23,9 +22,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.adorsys.adinvtry.jpa.InvInvtry;
-import org.adorsys.adinvtry.jpa.InvInvtry_;
 import org.adorsys.adinvtry.jpa.InvInvtrySearchInput;
 import org.adorsys.adinvtry.jpa.InvInvtrySearchResult;
+import org.adorsys.adinvtry.jpa.InvInvtry_;
 
 /**
  * 
@@ -147,14 +146,15 @@ public class InvInvtryEndpoint
    }
    
    @POST
-   @Path("/findInvInvtrys")
+   @Path("/findCustom")
    @Produces({ "application/json", "application/xml" })
    @Consumes({ "application/json", "application/xml" })
-   public InvInvtrySearchResult findInvInvtrys(InvInvtrySearchInput searchInput)
+   public InvInvtrySearchResult findCustom(InvInvtrySearchInput searchInput)
    {
-	   Date now = new Date();
-	   List<InvInvtry> results = ejb.findInvInvtrys(searchInput, now);
-	   Long count = ejb.countInvInvtrys(searchInput, now);
+	   if(searchInput.noSpecialParams()) return findByLike(searchInput);
+	   
+	   Long count = ejb.countCustom(searchInput);
+	   List<InvInvtry> results = ejb.findCustom(searchInput);
 	   return new InvInvtrySearchResult(count, detach(results),
 	            detach(searchInput));
    }

@@ -43,4 +43,10 @@ public interface InvInvtryItemRepository extends EntityRepository<InvInvtryItem,
 			String rangeStart, String rangeEnd);
 
 	public List<InvInvtryItem> findByIdentif(String identif);
+
+	@Query("SELECT DISTINCT e.salIndex FROM InvInvtryItem AS e WHERE e.invtryNbr IN ?1")	
+	public QueryResult<String> salIndexForInvtrys(List<String> invNbrs);  
+
+	@Query("SELECT e FROM InvInvtryItem AS e WHERE e.salIndex=?1 AND e.invtryNbr IN ?2")	
+	public QueryResult<InvInvtryItem> bySalIndexForInvtrys(String salIndex, List<String> invNbrs);  
 }

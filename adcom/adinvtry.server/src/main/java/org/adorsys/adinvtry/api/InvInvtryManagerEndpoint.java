@@ -10,6 +10,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import org.adorsys.adinvtry.jpa.InvInvtry;
+import org.adorsys.adinvtry.jpa.InvInvtryItem;
 
 @Stateless
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
@@ -25,22 +26,62 @@ public class InvInvtryManagerEndpoint
    @Consumes({ "application/json", "application/xml" })
    @Produces({ "application/json", "application/xml" })
    public InvInvtry newInventory(InvInvtry invtry){
-      return invtryManager.prepareInventory(invtry);
+      return invtryManager.prepareInventory(invtry, null);
    }
    
    @PUT
    @Path("/update")
    @Consumes({ "application/json", "application/xml" })
    @Produces({ "application/json", "application/xml" })
-   public InvInvtryHolder updateInventory(InvInvtryHolder invtryHolder){
-      return invtryManager.updateInventory(invtryHolder);
+   public InvInvtry updateInventory(InvInvtry invtry){
+      return invtryManager.updateInventory(invtry);
    }
 
    @PUT
    @Path("/close")
    @Consumes({ "application/json", "application/xml" })
    @Produces({ "application/json", "application/xml" })
-   public InvInvtryHolder closeDelivery(InvInvtryHolder invtryHolder){
-      return invtryManager.closeInventory(invtryHolder);
+   public InvInvtry closeInventory(InvInvtry invtry){
+      return invtryManager.closeInventory(invtry);
+   }
+
+   @PUT
+   @Path("/post")
+   @Consumes({ "application/json", "application/xml" })
+   @Produces({ "application/json", "application/xml" })
+   public InvInvtry postInventory(InvInvtry invtry){
+      return invtryManager.postInventory(invtry);
+   }
+
+   @PUT
+   @Path("/addItem")
+   @Consumes({ "application/json", "application/xml" })
+   @Produces({ "application/json", "application/xml" })
+   public InvInvtryItem addItem(InvInvtryItem invtryItem){
+      return invtryManager.addItem(invtryItem);
+   }
+
+   @PUT
+   @Path("/updateItem")
+   @Consumes({ "application/json", "application/xml" })
+   @Produces({ "application/json", "application/xml" })
+   public InvInvtryItem updateItem(InvInvtryItem invtryItem){
+      return invtryManager.updateItem(invtryItem);
+   }
+
+   @PUT
+   @Path("/disableItem")
+   @Consumes({ "application/json", "application/xml" })
+   @Produces({ "application/json", "application/xml" })
+   public InvInvtryItem disableItem(InvInvtryItem invtryItem){
+      return invtryManager.disableItem(invtryItem);
+   }
+
+   @PUT
+   @Path("/enableItem")
+   @Consumes({ "application/json", "application/xml" })
+   @Produces({ "application/json", "application/xml" })
+   public InvInvtryItem enableItem(InvInvtryItem invtryItem){
+      return invtryManager.enableItem(invtryItem);
    }
 }

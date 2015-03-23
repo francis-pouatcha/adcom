@@ -8,8 +8,9 @@ import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adbase.enums.BaseHistoryTypeEnum;
-import org.adorsys.adinvtry.event.InvInvtryClosedEvent;
+import org.adorsys.adinvtry.event.InvInvtryPostedEvent;
 import org.adorsys.adinvtry.jpa.InvInvtryHstry;
+import org.adorsys.adinvtry.jpa.InvInvtryStatus;
 import org.adorsys.adinvtry.repo.InvInvtryHstryRepository;
 
 @Stateless
@@ -19,14 +20,14 @@ public class InvInvtryHstryEJB {
 	private InvInvtryHstryRepository repository;
 
 	@Inject
-	@InvInvtryClosedEvent
-	private Event<InvInvtryHstry> invtryClosedEvent;
+	@InvInvtryPostedEvent
+	private Event<InvInvtryHstry> invtryPostedEvent;
 
 	public InvInvtryHstry create(InvInvtryHstry entity) {
 		InvInvtryHstry invtryHstry = repository.save(attach(entity));
 
-		if (BaseHistoryTypeEnum.CLOSED.name().equals(invtryHstry.getHstryType())){
-			invtryClosedEvent.fire(invtryHstry);
+		if (BaseHistoryTypeEnum.POSTED.name().equals(invtryHstry.getHstryType())){
+			invtryPostedEvent.fire(invtryHstry);
 		}
 
 		return invtryHstry;
@@ -83,5 +84,18 @@ public class InvInvtryHstryEJB {
 			return null;
 
 		return entity;
+	}
+
+	public boolean isClosed(String invtryNbr) {
+		Long count = countByEntIdentifAndStatus(invtryNbr, InvInvtryStatus.CLOSED.name());
+		return count >= 1;
+	}
+
+	public List<InvInvtryHstry> findByEntIdentif(String invtryNbr) {
+		return repository.findByEntIdentif(invtryNbr);
+	}
+
+	private Long countByEntIdentifAndStatus(String invtryNbr, String status) {
+		return repository.countByEntIdentifAndEntStatus(invtryNbr, status);
 	}
 }

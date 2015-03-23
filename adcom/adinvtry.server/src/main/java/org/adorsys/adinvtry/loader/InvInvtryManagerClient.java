@@ -3,9 +3,8 @@ package org.adorsys.adinvtry.loader;
 import javax.ejb.Singleton;
 import javax.inject.Inject;
 
+import org.adorsys.adbase.security.SecurityUtil;
 import org.adorsys.adcore.utils.SequenceGenerator;
-import org.adorsys.adinvtry.api.InvInvtryHolder;
-import org.adorsys.adinvtry.api.InvInvtryItemHolder;
 import org.adorsys.adinvtry.api.InvInvtryManager;
 import org.adorsys.adinvtry.jpa.InvInvtry;
 import org.adorsys.adinvtry.jpa.InvInvtryItem;
@@ -16,15 +15,22 @@ public class InvInvtryManagerClient {
 
 	@Inject
 	private InvInvtryManager invtryManager;
+	
+	@Inject
+	private SecurityUtil securityUtil; 
 
-	InvInvtryHolder invtryHolder = new InvInvtryHolder();
+//	InvInvtryHolder invtryHolder = new InvInvtryHolder();
+	
+	private InvInvtry invInvtry;
 	
 	public void saveInvtry(InvInvtryExcel invtryExcel){
 		InvInvtry invtry = new InvInvtry();
 		invtryExcel.copyTo(invtry);
 		// New Holder
-		this.invtryHolder = new InvInvtryHolder();
-		this.invtryHolder.setInvtry(invtry);
+//		this.invtryHolder = new InvInvtryHolder();
+		String currentLoginName = securityUtil.getCurrentLoginName();
+		invInvtry = invtryManager.prepareInventory(invtry, currentLoginName);
+//		this.invtryHolder.setInvtry(invtry);
 		// Process org units.
 	}
 	
@@ -35,24 +41,29 @@ public class InvInvtryManagerClient {
 			String lotPic = SequenceGenerator.getSequence(SequenceGenerator.LOT_SEQUENCE_PREFIXE);
 			invtryItem.setLotPic(lotPic);
 		}
-		InvInvtryItemHolder invtryItemHolder = new InvInvtryItemHolder();
-		invtryItemHolder.setInvtryItem(invtryItem);
+		invtryItem.setInvtryNbr(invInvtry.getInvtryNbr());
+		invtryManager.addItem(invtryItem);
+//		InvInvtryItemHolder invtryItemHolder = new InvInvtryItemHolder();
+//		invtryItemHolder.setInvtryItem(invtryItem);
 		
-		invtryHolder.getInvtryItemHolders().add(invtryItemHolder);
+//		invtryHolder.getInvtryItemHolders().add(invtryItemHolder);
 		
-		if(invtryHolder.getInvtryItemHolders().size()>=20){
-			InvInvtryHolder updateInvtry = invtryManager.updateInventory(invtryHolder);
-			invtryHolder = new InvInvtryHolder();
-			invtryHolder.setInvtry(updateInvtry.getInvtry());
-		}
+//		if(invtryHolder.getInvtryItemHolders().size()>=20){
+//			InvInvtryHolder updateInvtry = invtryManager.updateInventory(invtryHolder);
+//			invtryHolder = new InvInvtryHolder();
+//			invtryHolder.setInvtry(updateInvtry.getInvtry());
+		
+//		}
 	}
 
 	public void done() {
-		invtryManager.closeInventory(invtryHolder);
-		invtryHolder = new InvInvtryHolder();
+		invInvtry = invtryManager.closeInventory(invInvtry);
+		invInvtry = invtryManager.postInventory(invInvtry);
+		invInvtry = null;
+//		invtryHolder = new InvInvtryHolder();
 	}
 	
-	public InvInvtryHolder update(){
-		return invtryManager.updateInventory(invtryHolder);
-	}
+//	public InvInvtry update(){
+//		return invtryManager.updateInventory(invtryHolder);
+//	}
 }

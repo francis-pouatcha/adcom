@@ -16,8 +16,10 @@ import org.adorsys.adinvtry.jpa.InvInvtry;
 import org.adorsys.adinvtry.jpa.InvInvtryItem;
 import org.adorsys.adinvtry.rest.InvInvtryEJB;
 import org.adorsys.adinvtry.rest.InvInvtryItemEJB;
+import org.adorsys.adstock.jpa.StkArticleLot;
 import org.adorsys.adstock.jpa.StkArticleLot2StrgSctn;
 import org.adorsys.adstock.rest.StkArticleLot2StrgSctnLookup;
+import org.adorsys.adstock.rest.StkArticleLotLookup;
 import org.apache.commons.lang3.StringUtils;
 
 @Stateless
@@ -31,6 +33,9 @@ public class InvInvtryPrepareWkr {
 
 	@Inject
 	private StkArticleLot2StrgSctnLookup sctnLookup;
+	
+	@Inject
+	private StkArticleLotLookup articleLotLookup;
 
 	@Schedule(second="*/45", minute = "*/3", hour="*", persistent=false)
 	@AccessTimeout(unit=TimeUnit.HOURS, value=2)
@@ -98,8 +103,23 @@ public class InvInvtryPrepareWkr {
 			invtryItem.setArtPic(lot2StrgSctn.getArtPic());
 			invtryItem.setSection(lot2StrgSctn.getStrgSection());
 			invtryItem.setArtName(lot2StrgSctn.getArtName());
-			invtryItem.setExpirDt(lot2StrgSctn.getSectionArticleLot().getExpirDt());
 
+			StkArticleLot articleLot = articleLotLookup.findByIdentif(invtryItem.getLotPic());
+			invtryItem.setExpirDt(articleLot.getExpirDt());
+			invtryItem.setMinSppuHT(articleLot.getMinSppuHT());
+			invtryItem.setPppuCur(articleLot.getPppuCur());
+			invtryItem.setPppuPT(articleLot.getPppuHT());
+			invtryItem.setPurchRtrnDays(articleLot.getPurchRtrnDays());
+			invtryItem.setPurchWrntyDys(articleLot.getPurchWrntyDys());
+			invtryItem.setSalesRtrnDays(articleLot.getSalesRtrnDays());
+			invtryItem.setSalesWrntyDys(articleLot.getSalesWrntyDys());
+			invtryItem.setSppuCur(articleLot.getSppuCur());
+			invtryItem.setSppuPT(articleLot.getSppuHT());
+			invtryItem.setSupplier(articleLot.getSupplier());
+			invtryItem.setSupplierPic(articleLot.getSupplierPic());
+			invtryItem.setVatPurchPct(articleLot.getVatPurchPct());
+			invtryItem.setVatSalesPct(articleLot.getVatSalesPct());
+			
 			//evaluate different amount before save
 			try {
 				invtryItem = invInvtryItemEJB.create(invtryItem);

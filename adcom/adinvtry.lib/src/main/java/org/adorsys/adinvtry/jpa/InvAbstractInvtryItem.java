@@ -5,6 +5,7 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -137,6 +138,22 @@ public abstract class InvAbstractInvtryItem extends AbstractIdentifData {
 	@Description("InvInvtryItem_salesRtrnDays_description")
 	private BigDecimal salesRtrnDays;
 	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Description("InvInvtryItem_disabledDt_description")
+	@DateFormatPattern(pattern = "dd-MM-yyyy HH:mm")
+	private Date disabledDt;
+	
+	@Column
+	@Description("InvInvtryItem_salesRtrnDays_description")
+	@NotNull
+	private String salIndex;
+	
+	@PrePersist
+	public void prePersist() {
+		super.prePersist();
+		salIndex = section + "_" + artPic + "_" + lotPic;
+	}
+	
 	public String getInvtryNbr() {
 		return this.invtryNbr;
 	}
@@ -167,6 +184,14 @@ public abstract class InvAbstractInvtryItem extends AbstractIdentifData {
 
 	public void setSection(final String section) {
 		this.section = section;
+	}
+
+	public Date getDisabledDt() {
+		return disabledDt;
+	}
+
+	public void setDisabledDt(Date disabledDt) {
+		this.disabledDt = disabledDt;
 	}
 
 	public String getOrgUnit() {
@@ -385,6 +410,7 @@ public abstract class InvAbstractInvtryItem extends AbstractIdentifData {
 		target.supplierPic = supplierPic;
 		target.vatPurchPct = vatPurchPct;
 		target.vatSalesPct = vatSalesPct;
+		target.disabledDt = disabledDt;
 	}
 	
 	public boolean contentEquals(InvAbstractInvtryItem target) {
@@ -393,6 +419,7 @@ public abstract class InvAbstractInvtryItem extends AbstractIdentifData {
 		if(!StringUtils.equals(target.artPic,artPic)) return false;
 		if(!StringUtils.equals(target.artName,artName)) return false;
 		if(!BigDecimalUtils.numericEquals(target.asseccedQty,asseccedQty)) return false;
+		if(!CalendarUtil.isSameDay(target.disabledDt,disabledDt)) return false;
 		if(!BigDecimalUtils.numericEquals(target.expectedQty,expectedQty)) return false;
 		if(!CalendarUtil.isSameDay(target.expirDt,expirDt)) return false;
 		if(!BigDecimalUtils.numericEquals(target.gap,gap)) return false;

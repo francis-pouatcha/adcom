@@ -8,20 +8,19 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Holds an entity and corresponding field descriptions 
- * for a search by example call.
+ * Holds an entity and corresponding field descriptions for a search by example
+ * call.
  * 
  * @author francis pouatcha
  *
  */
 @XmlRootElement
-public class InvInvtrySearchInput
-{
+public class InvInvtryItemListSearchInput {
 
 	/**
 	 * The entity holding search inputs.
 	 */
-	private InvInvtry entity;
+	private InvInvtryItemList entity;
 
 	/**
 	 * The start cursor
@@ -43,50 +42,48 @@ public class InvInvtrySearchInput
 	private Date invtryDtTo;
 	
 	private Date acsngDtFrom;
-	
+
 	private Date acsngDtTo;
 	
 	private BigDecimal gapPurchAmtHTFrom;
-	
-	private BigDecimal gapPurchAmtHTTo;
 
-	public InvInvtry getEntity()
-	{
+	private BigDecimal gapPurchAmtHTTo;
+	
+	private Boolean a2z;
+	
+	private String rangeStart;
+	
+	private String rangeEnd;
+	
+	public InvInvtryItemList getEntity() {
 		return entity;
 	}
 
-	public void setEntity(InvInvtry entity)
-	{
+	public void setEntity(InvInvtryItemList entity) {
 		this.entity = entity;
 	}
 
-	public List<String> getFieldNames()
-	{
+	public List<String> getFieldNames() {
 		return fieldNames;
 	}
 
-	public void setFieldNames(List<String> fieldNames)
-	{
+	public void setFieldNames(List<String> fieldNames) {
 		this.fieldNames = fieldNames;
 	}
 
-	public int getStart()
-	{
+	public int getStart() {
 		return start;
 	}
 
-	public void setStart(int start)
-	{
+	public void setStart(int start) {
 		this.start = start;
 	}
 
-	public int getMax()
-	{
+	public int getMax() {
 		return max;
 	}
 
-	public void setMax(int max)
-	{
+	public void setMax(int max) {
 		this.max = max;
 	}
 
@@ -137,8 +134,28 @@ public class InvInvtrySearchInput
 	public void setGapPurchAmtHTTo(BigDecimal gapPurchAmtHTTo) {
 		this.gapPurchAmtHTTo = gapPurchAmtHTTo;
 	}
-	public boolean noSpecialParams(){
-		return invtryDtFrom==null && invtryDtTo==null && acsngDtFrom==null && acsngDtTo==null && gapPurchAmtHTFrom==null && gapPurchAmtHTTo==null;
+
+	public Boolean getA2z() {
+		return a2z;
 	}
 
+	public void setA2z(Boolean a2z) {
+		this.a2z = a2z;
+	}
+
+	public String getRangeStart() {
+		return rangeStart;
+	}
+
+	public void setRangeStart(String rangeStart) {
+		this.rangeStart = rangeStart;
+	}
+
+	public String getRangeEnd() {
+		return rangeEnd;
+	}
+
+	public void setRangeEnd(String rangeEnd) {
+		this.rangeEnd = rangeEnd;
+	}
 }

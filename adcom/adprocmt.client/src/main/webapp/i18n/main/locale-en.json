@@ -107,8 +107,8 @@
 "PrcmtDlvryItem_vatPct_description.title":"VAT Rate",
 "PrcmtDlvryItem_vatSalesPct_description.text":"The VAT rate in percent.",
 "PrcmtDlvryItem_vatSalesPct_description.title":"VAT Rate",
-
- "Add_Procurement_Order_Item":"Add procurement order item",
+"Add_Procurement_Order_Item":"Add procurement order item",
+"CatalArticle_sppu_description.title":"Sales Price per Unit",
 "PrcmtPOItem_artPic_description.text":"The main product identification code used to identify lots during sales.",
 "PrcmtPOItem_artPic_description.title":"Main PIC",
 "PrcmtPOItem_createdDt_description.text":"The creation date",

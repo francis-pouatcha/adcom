@@ -26,6 +26,23 @@ angular.module('ADUtils',[])
     	if(typeof b === 'undefined') return a>-1;
     	return a>b;
     };
+    service.fixDateField = function(dateField){
+    	if(angular.isUndefined(dateField) || !dateField) return dateField;
+    	
+    	if(Object.prototype.toString.call(dateField) === '[object Date]')return dateField;
+
+    	var dtObject = new Date();
+		if(service.isNumber(dateField)){
+			dtObject.setTime(dateField);
+		} else {
+			var dateMilis =Date.parse(dateField);
+			dtObject.setTime(dateMilis);
+		}
+		return dtObject; 
+    };
+    service.isNumber = function (n) {
+    	return !isNaN(parseFloat(n)) && isFinite(n);
+    };
     return service;
 }])
 .factory('commonTranslations',['$translate',function($translate){
@@ -328,25 +345,48 @@ angular.module('ADUtils',[])
         	searchResultVar.searchInput.max = searchResultVar.itemPerPage;
             return handler.searchInput();
         };
-        this.replace = function(entity){
-        	if(angular.isUndefined(entity) || !entity) return;
-
+        this.indexOf = function(entity){
+        	if(angular.isUndefined(entity) || !entity) return -1;
     		var length = searchResultVar.resultList.length;
     		for	(var index = 0; index < length; index++) {
-    			if(!equalsFnct(entity, searchResultVar.resultList[index])) continue;
-    			searchResultVar.resultList[index];
-    			return index; 
+    			if(equalsFnct(entity, searchResultVar.resultList[index])) return index;
     		}
-    		length = searchResultVar.resultList.push(entity);
-    		searchResultVar.count +=1;
-    		return length -1;
+    		return -1;
         };
+        // Replaces the object at the specified index.
+        this.replace = function(entity){
+        	if(angular.isUndefined(entity) || !entity) return;
+        	var index = handler.indexOf(entity);
+        	if(angular.isUndefined(index) || index<0) return;
+        	searchResultVar.resultList[index]=entity;
+        	return index;
+        };
+        // Add the specified entity to the end of the list. Remove the copy
+        // from the array if existent.
         this.push = function(entity){
-        	if(angular.isUndefined(entity)) return;
+        	if(angular.isUndefined(entity) || !entity) return;
+        	var index = handler.indexOf(entity);
+        	if(angular.isDefined(index) && index>=0){ // slice
+        		searchResultVar.resultList.splice(index, 1);
+        		searchResultVar.count -=1;
+        	}
             var length = searchResultVar.resultList.push(entity);
     		searchResultVar.count +=1;
     		return length -1;
         };
+        // Add the specified entity to the start of the list. Remove the copy
+        // from the array if existent.
+        this.unshift = function(entity){
+        	if(angular.isUndefined(entity) || !entity) return;
+        	var index = handler.indexOf(entity);
+        	if(adUtils.greaterThan(index) && index>=0){ // slice
+        		searchResultVar.resultList.splice(index, 1);
+        		searchResultVar.count -=1;
+        	}
+            var length = searchResultVar.resultList.unshift(entity);
+    		searchResultVar.count +=1;
+    		return 0;
+        }
         this.previous = function (){
         	if(searchResultVar.resultList.length<=0) return;
 
