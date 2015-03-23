@@ -42,7 +42,7 @@
 "InvInvtryItem_acsngDt_description.text":"La date de saisie de cette ligne inventaire.",
 "InvInvtryItem_acsngDt_description.title":"Date Inventaire",
 "InvInvtryItem_acsngUser_description.text":"Utilisateur realisant cet inventaire",
-"InvInvtryItem_acsngUser_description.title":"Utilisateur",
+"InvInvtryItem_acsngUser_description.title":"Compté Par",
 "InvInvtryItem_artPic_description.text":"Code article",
 "InvInvtryItem_artPic_description.title":"Code Article",
 "InvInvtryItem_asseccedQty_description.text":"Quantité réelle de produits de la ligne comptés physiquement.",

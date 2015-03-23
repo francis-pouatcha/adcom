@@ -157,6 +157,15 @@ public class InvInvtryItemEJB
 		if(list.isEmpty()) return null;
 		return list.iterator().next();
 	}
-
 	
+	public Long countSalIndexForInvtrys(List<String> invNbrs){
+		return repository.salIndexForInvtrys(invNbrs).count();
+	}  
+
+	public List<String> findSalIndexForInvtrys(List<String> invNbrs, int first, int max){
+		return repository.salIndexForInvtrys(invNbrs).firstResult(first).maxResults(max).orderAsc("salIndex").getResultList();
+	}
+	public List<InvInvtryItem> findBySalIndexForInvtrys(String salIndex, List<String> invNbrs){
+		return repository.bySalIndexForInvtrys(salIndex, invNbrs).getResultList();
+	}
 }

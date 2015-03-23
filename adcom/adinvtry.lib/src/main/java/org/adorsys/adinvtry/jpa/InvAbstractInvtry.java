@@ -85,6 +85,21 @@ public abstract class InvAbstractInvtry extends AbstractIdentifData {
 	@DateFormatPattern(pattern = "dd-MM-yyyy HH:mm")
 	private Date preparedDt;
 
+	@Temporal(TemporalType.TIMESTAMP)
+	@Description("InvInvtry_closedDate_description")
+	@DateFormatPattern(pattern = "dd-MM-yyyy HH:mm")
+	private Date closedDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Description("InvInvtry_mergedDate_description")
+	@DateFormatPattern(pattern = "dd-MM-yyyy HH:mm")
+	private Date mergedDate;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Description("InvInvtry_mergedDate_description")
+	@DateFormatPattern(pattern = "dd-MM-yyyy HH:mm")
+	private Date postedDate;
+	
 	/*
 	 * Define the group to which this inventory belongs to. IT is necessary to
 	 * help select inventory belonging to the same group and compare them and even merge them.
@@ -92,6 +107,12 @@ public abstract class InvAbstractInvtry extends AbstractIdentifData {
 	@Description("InvInvtry_invtryGroup_description")
 	private String invtryGroup;
 	
+	/*
+	 * The identifier of the container inventory. It is the inventory
+	 * into which this inventory is merged.
+	 */
+	@Description("InvInvtry_containerId_description")
+	private String containerId;
 
 	public Date getPreparedDt() {
 		return preparedDt;
@@ -237,5 +258,37 @@ public abstract class InvAbstractInvtry extends AbstractIdentifData {
 	public void addGapPurchAmtHT(BigDecimal gapPurchAmtHT) {
 		if(this.gapPurchAmtHT==null)this.gapPurchAmtHT=BigDecimal.ZERO;
 		this.gapPurchAmtHT = this.gapPurchAmtHT.add(gapPurchAmtHT);
+	}
+
+	public Date getClosedDate() {
+		return closedDate;
+	}
+
+	public void setClosedDate(Date closedDate) {
+		this.closedDate = closedDate;
+	}
+
+	public Date getMergedDate() {
+		return mergedDate;
+	}
+
+	public void setMergedDate(Date mergedDate) {
+		this.mergedDate = mergedDate;
+	}
+
+	public Date getPostedDate() {
+		return postedDate;
+	}
+
+	public void setPostedDate(Date postedDate) {
+		this.postedDate = postedDate;
+	}
+
+	public String getContainerId() {
+		return containerId;
+	}
+
+	public void setContainerId(String containerId) {
+		this.containerId = containerId;
 	}
 }

@@ -5,6 +5,7 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -142,6 +143,16 @@ public abstract class InvAbstractInvtryItem extends AbstractIdentifData {
 	@DateFormatPattern(pattern = "dd-MM-yyyy HH:mm")
 	private Date disabledDt;
 	
+	@Column
+	@Description("InvInvtryItem_salesRtrnDays_description")
+	@NotNull
+	private String salIndex;
+	
+	@PrePersist
+	public void prePersist() {
+		super.prePersist();
+		salIndex = section + "_" + artPic + "_" + lotPic;
+	}
 	
 	public String getInvtryNbr() {
 		return this.invtryNbr;

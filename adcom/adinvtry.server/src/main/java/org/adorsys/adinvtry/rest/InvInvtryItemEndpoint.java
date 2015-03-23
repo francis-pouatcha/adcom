@@ -22,9 +22,12 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.adorsys.adinvtry.jpa.InvInvtryItem;
-import org.adorsys.adinvtry.jpa.InvInvtryItem_;
+import org.adorsys.adinvtry.jpa.InvInvtryItemList;
+import org.adorsys.adinvtry.jpa.InvInvtryItemListSearchInput;
+import org.adorsys.adinvtry.jpa.InvInvtryItemListSearchResult;
 import org.adorsys.adinvtry.jpa.InvInvtryItemSearchInput;
 import org.adorsys.adinvtry.jpa.InvInvtryItemSearchResult;
+import org.adorsys.adinvtry.jpa.InvInvtryItem_;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -260,6 +263,24 @@ public class InvInvtryItemEndpoint
       return result.toArray(new SingularAttribute[result.size()]);
    }
 
+   @POST
+   @Path("/findCompare")
+   @Produces({ "application/json", "application/xml" })
+   @Consumes({ "application/json", "application/xml" })
+   public InvInvtryItemListSearchResult findCompare(InvInvtryItemListSearchInput searchInput)
+   {
+	   List<String> invtryNbrs = searchInput.getEntity().getInvtryNbrs();
+	   Long count = ejb.countSalIndexForInvtrys(invtryNbrs);
+	   List<String> salIndexList = ejb.findSalIndexForInvtrys(invtryNbrs,searchInput.getStart(), searchInput.getMax());
+	   List<InvInvtryItemList> resultList = new ArrayList<InvInvtryItemList>(salIndexList.size());
+	   for (String salIndex : salIndexList) {
+		   List<InvInvtryItem> invtryItems = ejb.findBySalIndexForInvtrys(salIndex, invtryNbrs);
+		   InvInvtryItemList inItemList = new InvInvtryItemList(salIndex, invtryNbrs, invtryItems);
+		   resultList.add(inItemList);
+	   }
+
+	   return new InvInvtryItemListSearchResult(count, resultList,searchInput);
+   }
    
 
    private InvInvtryItem detach(InvInvtryItem entity)

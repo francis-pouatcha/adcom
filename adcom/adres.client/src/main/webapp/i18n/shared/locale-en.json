@@ -52,6 +52,8 @@
     "Entity_type_to_select.title":"Type to select",
     "Entity_notfound.title":"Nothing found",
     "Entity_info.title":"Info",    
+    "Entity_merge.title":"Merge",
+    "Entity_compare.title":"Compare",
     
     "BaseCountryName_isoCode_description.title":"Country Code",
     "BaseCountryName_iso2_description.title":"Country Code Iso 2",

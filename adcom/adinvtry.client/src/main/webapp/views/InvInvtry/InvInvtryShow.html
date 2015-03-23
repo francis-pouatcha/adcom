@@ -72,10 +72,7 @@
                    	</div>
                	</div>
 		    	<div class="row">
-	               <div class="col-lg-2 pull-left">
-		                <a class="btn-danger btn" href="#/InvIntrys" ><i class="" ></i> {{invInvtryUtils.translations['Entity_list.title']}}</a>
-	               </div>		            
-	               <div class="col-lg-10">
+	               <div class="col-lg-12">
 	               		<div class="pull-right">
 		                   <button ng-click="update();" ng-show="!invInvtryUtils.isInvtryPosted(invInvtry)" class="btn-success btn"  >{{invInvtryUtils.translations['Entity_save.title']}}</button>
 		                   <button ng-click="close();" ng-show="!invInvtryUtils.isInvtryClosed(invInvtry) && !invInvtryUtils.isInvtryPosted(invInvtry)" class="btn-success btn"  >{{invInvtryUtils.translations['InvInvtry_close_description.title']}}</button>
@@ -237,6 +234,28 @@
             <ul  class="pull-right">
                 <pagination  total-items="totalItems()" items-per-page="itemPerPage()"  class="pagination-sm" ng-model="currentPage" ng-change="paginate()"></pagination>
             </ul>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-4">
+                    <a class="btn-default btn" ng-click="previous()" ><i class="glyphicon glyphicon-chevron-left"></i> {{invInvtryUtils.translations['Entity_previous.title']}}</a>
+                </div>
+                <div class="col-lg-4">
+                	<span class="pull-left">
+		                <a class="btn-danger btn" href="#/InvInvtrys" ><i class="glyphicon glyphicon-list" ></i> {{invInvtryUtils.translations['Entity_list.title']}}</a>
+                	</span>
+                	<span class="pull-right">
+                    	<a class="btn-danger btn" data-toggle="collapse" data-parent="#invIntryShowPanel"><i class="glyphicon glyphicon-edit"></i> {{invInvtryUtils.translations['Entity_edit.title']}}</a>
+                    </span>
+                </div>
+                <div class="col-lg-4">
+                	<span class="pull-right">
+	                    <a class="btn-default btn" ng-click="next()" >{{invInvtryUtils.translations['Entity_next.title']}} <i class="glyphicon glyphicon-chevron-right" ></i></a>
+	                   </span>
+                </div>
+            </div>
         </div>
     </div>
 </div>

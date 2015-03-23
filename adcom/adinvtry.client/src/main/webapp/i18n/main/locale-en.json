@@ -41,7 +41,7 @@
 "InvInvtryItem_acsngDt_description.text":"The recording date of this inventory item.",
 "InvInvtryItem_acsngDt_description.title":"Inventory Date",
 "InvInvtryItem_acsngUser_description.text":"The user performing the inventory",
-"InvInvtryItem_acsngUser_description.title":"User",
+"InvInvtryItem_acsngUser_description.title":"Counted By",
 "InvInvtryItem_artPic_description.text":"The article code",
 "InvInvtryItem_artPic_description.title":"Article Code",
 "InvInvtryItem_asseccedQty_description.text":"Actual quantity of products physically counted.",

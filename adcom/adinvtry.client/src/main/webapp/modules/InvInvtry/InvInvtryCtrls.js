@@ -69,6 +69,8 @@ angular.module('AdInvtry')
     	}
     	return itemsResultHandlerVar;
     };
+    service.compareResultHandler = searchResultHandler.newResultHandler('salIndex');
+    service.selected = {};
     return service;
 }])
 .factory('invInvtryUtils',['sessionManager','$translate','genericResource','$q','invInvtryState',
@@ -154,6 +156,7 @@ angular.module('AdInvtry')
     	            'InvInvtryItem_sectionName_description.title',
     	            'InvInvtryItem_artNameStart_description.title',
     	            'InvInvtryItem_artNameEnd_description.title',
+    	            'InvInvtryItem_acsngUser_description.title',
 
     	            'InvInvtryItem_description.title',
 
@@ -202,7 +205,9 @@ angular.module('AdInvtry')
     	            'Entity_notfound.title',
     	            'Entity_Of.title',
     	            'Entity_info.title',
-    	            'Entity_reset.title'
+    	            'Entity_reset.title',
+    	            'Entity_compare.title',
+    	            'Entity_merge.title'
 
     	            ])
 		 .then(function (translations) {
@@ -314,18 +319,18 @@ angular.module('AdInvtry')
     service.isInvtryByOrderAlphabeticRange = function(invInvtry){
     	return invInvtry && invInvtry.invInvtryType && invInvtry.invInvtryType=='ALPHABETICAL_ORDER_RANGE';
     };
-
     service.isInvtryOpen = function (invInvtry) {
         return angular.isDefined(invInvtry) && !service.isInvtryClosed(invInvtry) && !service.isInvtryPosted(invInvtry);
     }
-
     service.isInvtryClosed = function (invInvtry) {
-        return angular.isDefined(invInvtry) && ("CLOSED" == invInvtry.invtryStatus || "CLOSING" == invInvtry.invtryStatus);
+        return angular.isDefined(invInvtry) && angular.isDefined(invInvtry.closedDate) && invInvtry.closedDate;
     }
     service.isInvtryPosted = function (invInvtry) {
-        return angular.isDefined(invInvtry) && ("POSTED" == invInvtry.invtryStatus || "POSTING" == invInvtry.invtryStatus);
+        return angular.isDefined(invInvtry) && angular.isDefined(invInvtry.postedDate) && invInvtry.postedDate;
     }
-    
+    service.isInvtryMerged = function (invInvtry) {
+        return angular.isDefined(invInvtry) && angular.isDefined(invInvtry.mergedDate) && invInvtry.mergedDate;
+    }
     return service;
 }])
 .controller('invInvtrysCtlr',['$scope','genericResource','invInvtryUtils','invInvtryState','$location','$rootScope',
@@ -341,7 +346,6 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
     $scope.error = "";
     $scope.invInvtryUtils=invInvtryUtils;
     $scope.display = invInvtryState.resultHandler.displayInfo();
-
 
 	var translateChangeSuccessHdl = $rootScope.$on('$translateChangeSuccess', function () {
 		invInvtryUtils.translate();
@@ -489,6 +493,22 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
     	$scope.display.section=item.strgSection;    		
     	$scope.display.sectionName=item.name;
     }
+    
+    $scope.isSelected = function(invtry){
+    	if(angular.isUndefined(invInvtryState.seclected))invInvtryState.seclected={};
+    	return angular.isDefined(invInvtryState.seclected[invtry.invtryNbr]);
+    };
+    $scope.select = function(invtry){
+    	if(angular.isUndefined(invInvtryState.seclected))invInvtryState.seclected={};
+    	invInvtryState.seclected[invtry.invtryNbr]=invtry;    	
+    };
+
+    $scope.compare = function(){
+    	if(angular.isUndefined(invInvtryState.seclected)) return;
+    	var keys = Object.keys(invInvtryState.seclected);
+    	if(keys.length<0) return;
+		$location.path('/InvInvtrys/compare');
+    };
 	
 }])
 .controller('invInvtryCreateCtlr',['$scope','invInvtryUtils','$translate',
@@ -523,7 +543,6 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
             $scope.error = error;
         });
     };
-
   
 }])
 .controller('invInvtryShowCtlr',['$scope','invInvtryManagerResource','$location','invInvtryUtils','invInvtryState','$rootScope','genericResource','$routeParams','searchResultHandler','adUtils',
@@ -822,4 +841,85 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
     	$scope.searchInput.entity.artName=item.features.artName;
 
     };
+    
+    $scope.previous = function (){
+        var inv = invInvtryState.resultHandler.previous();
+        if(inv){
+        	$scope.invInvtry=inv;
+            initView();
+        }
+    }
+
+    $scope.next =  function (){
+        var inv = bpBnsPtnrState.resultHandler.next();
+        if(inv){
+        	$scope.invInvtry=inv;
+            initView();
+        }
+    };
+}])
+.controller('invInvtryCompareCtlr',['$scope','genericResource','invInvtryUtils','invInvtryState','$location','$rootScope',
+function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootScope){
+
+    $scope.searchInput = invInvtryState.compareResultHandler.searchInput();
+    $scope.itemPerPage=invInvtryState.compareResultHandler.itemPerPage;
+    $scope.totalItems=invInvtryState.compareResultHandler.totalItems;
+    $scope.currentPage=invInvtryState.compareResultHandler.currentPage();
+    $scope.maxSize =invInvtryState.compareResultHandler.maxResult;
+    $scope.invtryItemLists =invInvtryState.compareResultHandler.entities;
+    $scope.selectedIndex=invInvtryState.compareResultHandler.selectedIndex;
+    $scope.error = "";
+    $scope.invInvtryUtils=invInvtryUtils;
+    $scope.display = invInvtryState.compareResultHandler.displayInfo();
+
+    init();
+
+    function init(){
+    	if(!keysChanged()) return;
+
+    	if(angular.isUndefined(invInvtryState.seclected)) return;
+    	var keys = Object.keys(invInvtryState.seclected);
+    	$scope.searchInput.entity.invtryNbrs = [];
+		for (var i = 0; i < keys.length; i++) {
+			var invtryNbr = keys[i];
+			$scope.searchInput.entity.invtryNbrs.push(invtryNbr);
+		}
+        findByLike($scope.searchInput);
+    }
+
+    function keysChanged(){
+    	if(angular.isUndefined(invInvtryState.seclected)) return false;
+    	
+    	var keys = Object.keys(invInvtryState.seclected);
+
+    	// Compare if all keys in searchInput are the same in selected. If not process search input.
+    	if(angular.isDefined($scope.searchInput.entity) && angular.isDefined($scope.searchInput.entity.invtryNbrs)){
+    		if($scope.searchInput.entity.invtryNbrs.length!=keys.length)return true;
+    		for (var i = 0; i < keys.length; i++) {
+				var invtryNbr = keys[i];
+				if($scope.searchInput.entity.invtryNbrs.indexOf(invtryNbr)==-1) return true;
+			}
+    		return false;
+    	}
+    	return true;
+    }
+
+    function findByLike(searchInput){
+		genericResource.customMethod(invInvtryUtils.invinvtrysUrlBase + '/findCompare', searchInput)
+		.success(function(entitySearchResult) {
+			// store search
+			invInvtryState.compareResultHandler.searchResult(entitySearchResult);
+		    $scope.searchInput = invInvtryState.compareResultHandler.searchInput();
+		})
+        .error(function(error){
+            $scope.error=error;
+        });
+    }
+
+    $scope.paginate = function paginate(){
+    	invInvtryState.compareResultHandler.currentPage($scope.currentPage);
+        $scope.searchInput = invInvtryState.compareResultHandler.paginate();
+        findByLike($scope.searchInput);
+    };
+
 }]);
