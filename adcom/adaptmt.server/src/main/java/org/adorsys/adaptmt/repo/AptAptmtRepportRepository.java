@@ -4,9 +4,9 @@ import org.apache.deltaspike.data.api.EntityRepository;
 import org.apache.deltaspike.data.api.Modifying;
 import org.apache.deltaspike.data.api.Query;
 import org.apache.deltaspike.data.api.Repository;
-import org.adorsys.adaptmt.jpa.AptAptmtRepportLogin;
+import org.adorsys.adaptmt.jpa.AptAptmtRepport;
 
-@Repository(forEntity = AptAptmtRepportLogin.class)
-public interface AptAptmtRepportRepository extends EntityRepository<AptAptmtRepportLogin, String>
+@Repository(forEntity = AptAptmtRepport.class)
+public interface AptAptmtRepportRepository extends EntityRepository<AptAptmtRepport, Long>
 {
 }
