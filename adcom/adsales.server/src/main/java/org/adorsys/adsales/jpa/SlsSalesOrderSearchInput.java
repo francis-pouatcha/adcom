@@ -1,6 +1,7 @@
 package org.adorsys.adsales.jpa;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -30,8 +31,15 @@ public class SlsSalesOrderSearchInput
     * The max number of records to return.
     */
    private int max = -1;
+   
+   private Date slsSODtFrom;
+   
+   private Date slsSODtTo;
+   
+   private String ptnrNbr;
+   
 
-   /**
+/**
     * The field names to be included in the search.
     */
    private List<String> fieldNames = new ArrayList<String>();
@@ -75,4 +83,34 @@ public class SlsSalesOrderSearchInput
    {
       this.max = max;
    }
+   
+   
+
+	public Date getSlsSODtFrom() {
+		return slsSODtFrom;
+	}
+	
+	public void setSlsSODtFrom(Date slsSODtFrom) {
+		this.slsSODtFrom = slsSODtFrom;
+	}
+	
+	public Date getSlsSODtTo() {
+		return slsSODtTo;
+	}
+	
+	public void setSlsSODtTo(Date slsSODtTo) {
+		this.slsSODtTo = slsSODtTo;
+    }
+
+	public String getPtnrNbr() {
+		return ptnrNbr;
+	}
+
+	public void setPtnrNbr(String ptnrNbr) {
+		this.ptnrNbr = ptnrNbr;
+	}
+	
+	public boolean noSpecialParams(){
+		return slsSODtFrom==null && slsSODtTo==null && ptnrNbr==null;
+	}
 }

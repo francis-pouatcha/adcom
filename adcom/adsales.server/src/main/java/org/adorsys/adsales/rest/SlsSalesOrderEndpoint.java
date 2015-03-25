@@ -133,6 +133,18 @@ public class SlsSalesOrderEndpoint
       return new SlsSalesOrderSearchResult(countLike, detach(resultList),
             detach(searchInput));
    }
+   
+   @POST
+   @Path("/findCustom")
+   @Produces({ "application/json", "application/xml" })
+   @Consumes({ "application/json", "application/xml" })
+   public SlsSalesOrderSearchResult findCustom(SlsSalesOrderSearchInput searchInput)
+   {
+	 if(searchInput.noSpecialParams()) return findByLike(searchInput);
+	 Long count = ejb.countCustom(searchInput);
+	 List<SlsSalesOrder> resultList = ejb.findCustom(searchInput);
+	 return new SlsSalesOrderSearchResult(count, detach(resultList), detach(searchInput));
+   }
 
    @POST
    @Path("/countByLike")
