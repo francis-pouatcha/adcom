@@ -7,20 +7,18 @@ import javax.persistence.Entity;
 import javax.persistence.PrePersist;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
-import org.adorsys.adcore.jpa.AbstractIdentifData;
-import org.adorsys.javaext.description.Description;
-
-import org.adorsys.adaptmt.jpa.AptmtStatus;
 import javax.validation.constraints.NotNull;
 
+import org.adorsys.adcore.jpa.AbstractTimedData;
+import org.adorsys.javaext.description.Description;
 import org.apache.commons.lang3.StringUtils;
 
 
 @Entity
 @Description("AptAptmt_description")
-public class AptAptmt extends AbstractIdentifData
+public class AptAptmt extends AbstractTimedData
 {
+	private static final long serialVersionUID = 5118150729653002565L;
 
    @Temporal(TemporalType.TIMESTAMP)
    @Description("AptAptmt_createDate_description")

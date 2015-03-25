@@ -108,36 +108,15 @@ angular.module('AdProcmt').controller('prcmtDeliveryAddItemCtlr',['$scope','$rou
     }
 
     function loadBusinessPartner(val){
-        return loadBusinessPartnerPromise(val).then(function(entitySearchResult){
-            return entitySearchResult.resultList;
-        })
-    }
-    function loadBusinessPartnerPromise(businessPartnerName){
-        var searchInput = {
-            entity:{},
-            fieldNames:[],
-            start: 0,
-            max: 10
-        };
-        if(businessPartnerName){
-            searchInput.entity.cpnyName = businessPartnerName+'%';
-            searchInput.fieldNames.push('cpnyName');
-        }
-        var deferred = $q.defer();
-        genericResource.findByLike(ProcmtUtils.adbnsptnr,searchInput).success(function (entitySearchResult) {
-            deferred.resolve(entitySearchResult);
-        }).error(function(){
-            deferred.reject("No Manufacturer/Supplier");
-        });
-        return deferred.promise;
+        return genericResource.findByLikePromissed(ProcmtUtils.adbnsptnr, 'fullName', val)
+            .then(function(entitySearchResult){
+                if(!angular.isUndefined(entitySearchResult))
+                    return entitySearchResult.resultList;
+                else return "";
+            });
     }
 
     function loadOrgUnit(val){
-        return loadOrgUnitPromise(val).then(function(entitySearchResult){
-            return entitySearchResult.resultList;
-        })
-    }
-    function loadOrgUnitPromise(val){
         var searchInput = {
             entity:{},
             fieldNames:[],
@@ -149,14 +128,14 @@ angular.module('AdProcmt').controller('prcmtDeliveryAddItemCtlr',['$scope','$rou
             searchInput.entity.fullName = val+'%';
             searchInput.fieldNames.push('fullName');
         }
-        var deferred = $q.defer();
-        genericResource.findByLike(ProcmtUtils.orgunits,searchInput).success(function (entitySearchResult) {
-            deferred.resolve(entitySearchResult);
-        }).error(function(){
-            deferred.reject("No organisation unit");
-        });
-        return deferred.promise;
+        return genericResource.findByLikeWithSearchInputPromissed(ProcmtUtils.orgunits,searchInput)
+            .then(function(entitySearchResult){
+                if(!angular.isUndefined(entitySearchResult))
+                    return entitySearchResult.resultList;
+                else return "";
+            });
     }
+
 
     function loadstkSection(val){
         return loadstkSectionPromise(val).then(function(entitySearchResult){
@@ -170,6 +149,8 @@ angular.module('AdProcmt').controller('prcmtDeliveryAddItemCtlr',['$scope','$rou
             start: 0,
             max: 10
         };
+        searchInput.entity.name = val;
+        searchInput.fieldNames.push('name');
         var deferred = $q.defer();
         genericResource.findByLike(ProcmtUtils.stkSection,searchInput).success(function (entitySearchResult) {
             deferred.resolve(entitySearchResult);
