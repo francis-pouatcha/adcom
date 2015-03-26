@@ -20,5 +20,8 @@ public interface InvInvtryRepository extends EntityRepository<InvInvtry, String>
 	public Long countByInvtryDtBtw(Date from, Date to);
 
 	@Query("SELECT e FROM InvInvtry AS e WHERE e.preparedDt IS NULL")
-	public QueryResult<InvInvtry> findOpenInvtrys();
+	public QueryResult<InvInvtry> findPreparingInvtrys();
+
+	@Query("SELECT e FROM InvInvtry AS e WHERE e.containerId IS NOT NULL AND e.mergedDate IS NULL")
+	public QueryResult<InvInvtry> findMergingInvtrys();
 }

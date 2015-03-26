@@ -9,6 +9,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
+import org.adorsys.adcore.vo.StringListHolder;
 import org.adorsys.adinvtry.jpa.InvInvtry;
 import org.adorsys.adinvtry.jpa.InvInvtryItem;
 
@@ -83,5 +84,21 @@ public class InvInvtryManagerEndpoint
    @Produces({ "application/json", "application/xml" })
    public InvInvtryItem enableItem(InvInvtryItem invtryItem){
       return invtryManager.enableItem(invtryItem);
+   }
+
+   /**
+    * Marks the list of inventories listed for merging into the first inventory.
+    * 
+    * Returns the list of merged inventories. The first one being the container.
+    * 
+    * @param invtryNbrs
+    * @return
+    */
+   @PUT
+   @Path("/merge")
+   @Consumes({ "application/json", "application/xml" })
+   @Produces({ "application/json", "application/xml" })
+   public StringListHolder merge(StringListHolder invtryNbrs){
+	   return invtryManager.merge(invtryNbrs);
    }
 }

@@ -38,6 +38,7 @@
 "InvInvtry_compare_description.title":"Comparer",
 "InvInvtry_invtryGroup_description.title":"Groupe",
 "InvInvtry_post_description.title":"Affecter",
+"InvInvtry_mainInvtry_description.title":"Inventaire Principale",
 
 "InvInvtryItem_acsngDt_description.text":"La date de saisie de cette ligne inventaire.",
 "InvInvtryItem_acsngDt_description.title":"Date Inventaire",
@@ -88,10 +89,14 @@
 "InvInvntrStatus_RESUMED_description.title":"Repris",
 "InvInvntrStatus_SUSPENDED_description.text":"Document suspendu",
 "InvInvntrStatus_SUSPENDED_description.title":"Suspendu",
-"InvInvntrStatus_description.text":"\u00C9tat du document",
+"InvInvntrStatus_description.text":"Status de l'Inventaire",
 "InvInvntrStatus_description.title":"Status Inventaire",
 "InvInvntrStatus_POSTED_description.text":"Affecté",
 "InvInvntrStatus_POSTED_description.title":"Affecté",
+"InvInvntrStatus_INITIALIZING_description.text":"En Préparation",
+"InvInvntrStatus_INITIALIZING_description.title":"En Préparation",
+"InvInvntrStatus_MERGED_description.text":"Fusioné",
+"InvInvntrStatus_MERGED_description.title":"Fusioné",
 
 "InvInvtryType_description.title":"Type d'Inventaire",
 "InvInvtryType_BY_SECTION_description.title":"Inventaire Par Rayon",
@@ -107,6 +112,10 @@
 "InvInvtry_NoUserFound_description":"Aucun utilisateur Trouvé",
 "InvInvtry_gapPurchAmtHTFrom_description.title":"Écart en Achat de",
 "InvInvtry_gapPurchAmtHTTo_description.title":"Écart en Achat à",
+
+"InvInvtry_alreadyMergedTo_description.alert":" déjà integré à ",
+"InvInvtry_postedCanNotBeMerged_description.alert":" déjà Afecté. Ne peut plus etre fusioné.",
+
 
 "InvInvtry_longPdctJsonArr_exception.title":"Le nombre de produits a charger est élevé, veuillez definir des marge de nom tres proche.",
 "InvInvtry_longPdctJsonArr_exception.text":"Le nombre de produits a charger est élevé, veuillez definir des marge de nom tres proche."

@@ -102,6 +102,7 @@ public abstract class InvAbstractInvtryItem extends AbstractIdentifData {
 	
 	@Column
 	@Description("InvInvtryItem_acsngUser_description")
+	@NotNull
 	private String acsngUser;
 	
 	@Column
@@ -144,14 +145,20 @@ public abstract class InvAbstractInvtryItem extends AbstractIdentifData {
 	private Date disabledDt;
 	
 	@Column
-	@Description("InvInvtryItem_salesRtrnDays_description")
+	@Description("InvInvtryItem_salIndex_description")
 	@NotNull
 	private String salIndex;
+
+	@Column
+	@Description("InvInvtryItem_usalIndex_description")
+	@NotNull
+	private String usalIndex;
 	
 	@PrePersist
 	public void prePersist() {
 		super.prePersist();
 		salIndex = section + "_" + artPic + "_" + lotPic;
+		usalIndex = acsngUser + "_" + salIndex;
 	}
 	
 	public String getInvtryNbr() {
@@ -378,13 +385,13 @@ public abstract class InvAbstractInvtryItem extends AbstractIdentifData {
 		this.salesRtrnDays = salesRtrnDays;
 	}
 
-	public static String toIdentifier(String invtryNbr, String lotPic, String artPic, String section){
-		return invtryNbr + "_" + lotPic + "_" + artPic + "_" + section;
+	public static String toIdentifier(String invtryNbr, String acsngUser,String lotPic, String artPic, String section){
+		return invtryNbr + "_" + acsngUser + "_" + lotPic + "_" + artPic + "_" + section;
 	}
 	
 	@Override
 	protected String makeIdentif() {
-		return toIdentifier(invtryNbr, lotPic, artPic, section);
+		return toIdentifier(invtryNbr, acsngUser, lotPic, artPic, section);
 	}
 	
 	public void copyTo(InvAbstractInvtryItem target) {
