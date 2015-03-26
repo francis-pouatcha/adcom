@@ -91,6 +91,8 @@
 "CdrDrctSales_vatAmount_description.title":"VAT Amount",
 
 "CdrDsArtItem_artPic_description.text":"The article code",
+"CdrDsArtItem_artName_description.text":"The Article Name",
+"CdrDsArtItem_artName_description.title":"Article Name",
 "CdrDsArtItem_artPic_description.title":"Article PIC",
 "CdrDsArtItem_description.text":"The direct sales item.",
 "CdrDsArtItem_description.title":"Direct Sales Item",
