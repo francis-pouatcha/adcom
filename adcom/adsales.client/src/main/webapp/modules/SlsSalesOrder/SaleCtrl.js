@@ -12,13 +12,13 @@ angular.module('AdSales')
 
         return service;
   }])
-.controller('saleCtlr',['$scope','saleUtils','slsSalesOrderState','genericResource','$routeParams','$location','$q',function($scope,saleUtils,slsSalesOrderState,genericResource,$routeParams,$location,$q){
+.controller('saleCtlr',['$scope','$modal','saleUtils','slsSalesOrderState','genericResource','$routeParams','$location','$q',function($scope,$modal,saleUtils,slsSalesOrderState,genericResource,$routeParams,$location,$q){
     var self = this ;
     $scope.saleCtlr = self;
     self.slsSalesOrderHolder = {
         slsSalesOrder:{},
         slsSOItemsholder:[],
-        slsSOPtnr:{}
+        slsSOPtnrs:[]
     };
     self.slsSalesOrderHolderTab = [];
     self.slsSalesOrderItemHolder = {};
@@ -29,7 +29,7 @@ angular.module('AdSales')
     self.addItem = addItem;
     self.editItem = editItem;
     self.deleteItem = deleteItem;
-    self.selectedIndex;
+    self.index=0;
     self.selectedItem;
     self.totalAmountEntered = 0;
     self.loadBusinessPartner = loadBusinessPartner;
@@ -39,13 +39,15 @@ angular.module('AdSales')
     self.cloturerCmd = cloturerCmd;
     self.annulerCmd = annulerCmd;
     self.newCmd = newCmd;
-    self.addClient = addClient;
+    self.addBptnr = addBptnr;
     self.previous = previous;
     self.next = next;
     self.calculAmount = calculAmount;
+    self.tabLength = tabLength;
+    self.ModalInstanceAddBptrnCtrl = ModalInstanceAddBptrnCtrl;
 
     function loadBusinessPartner(val){
-        return genericResource.findByLikePromissed(saleUtils.adbnsptnr, 'fullName', val)
+        return genericResource.findByLikePromissed(saleUtils.adbnsptnr, 'cpnyName', val)
             .then(function(entitySearchResult){
                 if(!angular.isUndefined(entitySearchResult))
                     return entitySearchResult.resultList;
@@ -162,19 +164,81 @@ angular.module('AdSales')
 
         }
         function annulerCmd(){
-
+            self.slsSalesOrderHolder = {
+                slsSalesOrder:{},
+                slsSOItemsholder:[],
+                slsSOPtnr:{}
+            };
+            self.slsSalesOrderItemHolder = {};
         }
         function newCmd(){
-
+            if(self.slsSalesOrderHolder){
+                if(self.slsSalesOrderHolder.slsSOItemsholder.length > 0){
+                    self.slsSalesOrderHolderTab.push(self.slsSalesOrderHolder);
+                    self.index = self.slsSalesOrderHolderTab.length;
+                }
+            }
+            self.slsSalesOrderHolder = {
+                slsSalesOrder:{},
+                slsSOItemsholder:[],
+                slsSOPtnr:{}
+            };
+            self.slsSalesOrderItemHolder = {};
         }
-        function addClient(){
-
+        function addBptnr(size){
+            var modalInstance = $modal.open({
+                templateUrl: 'views/SlsSalesOrder/SlsSOPtnr.html',
+                controller: self.ModalInstanceAddBptrnCtrl,
+                size: size,
+                resolve:{
+                    slsSOPtnrs: function(){
+                        return self.slsSalesOrderHolder.slsSOPtnrs;
+                    }
+                }
+            });
         }
+
+        function ModalInstanceAddBptrnCtrl($scope, $modalInstance, slsSOPtnrs) {
+             $scope.slsSOPtnrs = slsSOPtnrs;
+            $scope.loadBusinessPartner = function(val){
+                return self.loadBusinessPartner(val);
+            }
+            $scope.addBptrn = function(){
+                var slsSOPtnr = $scope.slsSOPtnr;
+                $scope.slsSOPtnr = {};
+                $scope.slsSOPtnrs.push(slsSOPtnr);
+            }
+            $scope.deleteItem = function (index) {
+                $scope.slsSOPtnrs.splice(index,1);
+            }
+
+            $scope.cancel = function () {
+                self.slsSalesOrderHolder.slsSOPtnrs = $scope.slsSOPtnrs;
+                $modalInstance.dismiss('cancel');
+            };
+            $scope.$on('modal.hide',function(){
+                self.slsSalesOrderHolder.slsSOPtnrs = $scope.slsSOPtnrs;
+            });
+        };
+
         function previous(){
+            if(self.index > 0 ){
+                self.index-=1;
+                angular.copy(self.slsSalesOrderHolderTab[self.index],self.slsSalesOrderHolder);
+                self.slsSalesOrderHolderTab.splice(self.index,1);
+
+            }
 
         }
         function next(){
+            if(self.slsSalesOrderHolderTab.length > self.index){
+                angular.copy(self.slsSalesOrderHolderTab[self.index],self.slsSalesOrderHolder);
+                self.slsSalesOrderHolderTab.splice(self.index,1);
+            }
 
+        }
+        function tabLength (){
+            return self.slsSalesOrderHolderTab.length;
         }
 
 }]);
