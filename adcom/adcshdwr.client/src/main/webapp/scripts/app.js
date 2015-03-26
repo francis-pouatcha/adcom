@@ -3,11 +3,16 @@
 angular.module('AdCshdwr', [
       'ngRoute',
       'ngCookies',
+      'ui.bootstrap',
       'SessionManager',
       'AuthInterceptor',
       'ngSanitize',
       'pascalprecht.translate',
-      'NavBar'
+      'NavBar',
+       'ngResource',
+       'datePicker',
+       'ADUtils',
+       'httpProgress'
 ])
 .constant('APP_CONFIG',{
 	'appName':'Cash Drawer',
