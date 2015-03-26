@@ -91,6 +91,8 @@
 "CdrDrctSales_vatAmount_description.title":"Montant TVA",
 
 "CdrDsArtItem_artPic_description.text":"Code article",
+"CdrDsArtItem_artName_description.text":"Nom de l'Article",
+"CdrDsArtItem_artName_description.title":"Nom Article",
 "CdrDsArtItem_artPic_description.title":"CIP Article",
 "CdrDsArtItem_description.text":"Ligne de Vente Directe",
 "CdrDsArtItem_description.title":"Ligne de Vente Directe",
