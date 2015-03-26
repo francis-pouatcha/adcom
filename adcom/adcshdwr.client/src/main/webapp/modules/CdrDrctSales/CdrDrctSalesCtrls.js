@@ -375,7 +375,7 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                 return $scope.cdrDsArtItemHolder.artItemHolders;
             };
             $scope.editItem = function(index) {
-                $scope.cdrDsArtItemHolder = $scope.cdrDsArtHolder.artItemHolders[index];
+                $scope.cdrDsArtItemHolder = angular.copy($scope.cdrDsArtHolder.artItemHolders[index]);
             }
             
             function clearObject(anObject) {
@@ -387,7 +387,7 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
             }
 
             function isCorrect(cdrDsArtItemHolder) {
-                if (!cdrDsArtItemHolder || angular.isUndefined(cdrDsArtItemHolder) || !(cdrDsArtItemHolder.artPic && cdrDsArtItemHolder.soldQty)) {
+                if (!cdrDsArtItemHolder || angular.isUndefined(cdrDsArtItemHolder) || !(cdrDsArtItemHolder.artPic && 0 < cdrDsArtItemHolder.soldQty)) {
                     return false;
                 }
                 return true;
@@ -396,9 +396,22 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
             function addItem(cdrDsArtItemHolder) {
                 if (isNotCorrect($scope.cdrDsArtItemHolder)) return;
                 if (cdrDsArtItemHolder.soldQty > cdrDsArtItemHolder.maxStockQty) return;
-                $scope.cdrDsArtHolder.artItemHolders.push($scope.cdrDsArtItemHolder);
+                var copy = angular.copy($scope.cdrDsArtItemHolder)
+                var i = 0;
+                var artItemHolders = $scope.cdrDsArtHolder.artItemHolders;
+                if(artItemHolders.length == 0) {
+                    $scope.cdrDsArtHolder.artItemHolders.push(copy);
+                }else {
+                    angular.forEach(artItemHolders,function(artItemHolder) {
+                       if( (artItemHolder.artPic == copy.artPic)) {
+                           artItemHolder = copy;
+                       }else {
+                           $scope.cdrDsArtHolder.artItemHolders.push(copy);
+                       }
+                    });   
+                }
                 computeCdrDsArtHolder();
-                clearObject($scope.cdrDsArtItemHolder);
+                $scope.cdrDsArtItemHolder = clearObject($scope.cdrDsArtItemHolder);
             }
 
             function computeCdrDsArtHolder() {
@@ -406,7 +419,7 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                 var totalAmtHT = 0.0;
                 var totalAmtTTC = 0.0;
                 angular.forEach(artItemHolders, function (artItemHolder) {
-                    var netSPPreTax = artItemHolder.netSPPreTax * artItemHolder.soldQty;
+                    var netSPPreTax = artItemHolder.sppuPreTax * artItemHolder.soldQty;
                     var netSPTaxIncl = netSPPreTax + (netSPPreTax * artItemHolder.vatPct );
                     artItemHolder.netSPPreTax = netSPPreTax;
                     artItemHolder.netSPTaxIncl = netSPTaxIncl;
