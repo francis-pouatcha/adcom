@@ -1,17 +1,7 @@
 package org.adorsys.adaptmt.jpa;
 
-import javax.persistence.Entity;
-
-import java.io.Serializable;
-
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Column;
-import javax.persistence.Version;
-
-import java.lang.Override;
-
+import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 
 import org.adorsys.adcore.jpa.AbstractEntity;

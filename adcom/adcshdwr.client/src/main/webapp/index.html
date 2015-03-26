@@ -2,13 +2,15 @@
 <html ng-app="AdCshdwr">
 <head>
     <meta charset="utf-8" />
-    <title>AngularJS Basic HTTP Authentication Example</title>
+    <title>Adcom - CdrCshDrawer</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="stylesheet" type="text/css" href="/adres.client/vendors/bootstrap/css/bootstrap.min.css">
-     <link rel="stylesheet" type="text/css" href="/adres.client/styles/custom.css">
-    <script src="scripts/vendor/modernizr-2.6.2.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/adres.client/vendors/angular-datepicker/datepicker.css">
+    <link rel="stylesheet" type="text/css" href="/adres.client/styles/custom.css">
+    <link rel="stylesheet" type="text/css" href="/adres.client/vendors/ngprogress/ngProgress.css">
+    <script src="/adres.client/vendors/modernizr/modernizr-2.6.2.min.js"></script>
     <script src="/adres.client/vendors/jquery/jquery-2.1.1.min.js"></script>
     <script src="/adres.client/vendors/bootstrap/js/bootstrap.js"></script>
 </head>
@@ -34,15 +36,22 @@
     <script src="/adres.client/vendors/angular-translate/angular-translate.js"></script>
     <script src="/adres.client/vendors/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
     <script src="/adres.client/vendors/angular-translate-loader-partial/angular-translate-loader-partial.js"></script>
+    <script src="/adres.client/vendors/angular/ui-bootstrap-tpls-0.12.0.js" ></script>
+    <script src="/adres.client/vendors/angular-datepicker/datepicker.js"></script>
     <script src="/adres.client/vendors/base64/base64.js"></script>
     <script src="/adres.client/services/ADUtils.js"></script>
     <script src="/adres.client/services/SessionManager.js"></script>
     <script src="/adres.client/services/AuthInterceptor.js"></script>
     <script src="/adres.client/modules/NavBar.js"></script>
     
+    <!-- Progress Bar Loading -->
+    <script src="/adres.client/services/httpProgress.js"></script>
+    <script src="/adres.client/vendors/ngprogress/build/ngProgress.js"></script>
+    
     <script src="scripts/app.js"></script>
     
-    <script src="scripts/modules/CdrPymnt/CdrPymntCtrls.js"></script>
-    <script src="scripts/modules/CdrCshDrawer/CdrCshDrawerCtrls.js"></script>
+    <script src="modules/CdrPymnt/CdrPymntCtrls.js"></script>
+    <script src="modules/CdrCshDrawer/CdrCshDrawerCtrls.js"></script>
+    <script src="modules/CdrDrctSales/CdrDrctSalesCtrls.js"></script>
 </body>
 </html>

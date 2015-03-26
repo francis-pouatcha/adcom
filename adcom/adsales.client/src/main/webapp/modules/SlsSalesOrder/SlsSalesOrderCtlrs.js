@@ -6,6 +6,7 @@ angular.module('AdSales')
     var service = {};
 
     service.urlBase='/adsales.server/rest/slssalesorders';
+    service.urlSearchBase='/adsales.server/rest/slssalesorders/findCustom';
     service.bnsptnrUrlBase='/adbnsptnr.server/rest/bpbnsptnrs';
     service.loginnamessUrlBase='/adbase.server/rest/loginnamess';
     
@@ -166,25 +167,46 @@ function($scope,genericResource,slsSalesOrderUtils,slsSalesOrderState,$location,
             $scope.error=error;
         });
     }
+    
+    function findCustom(searchInput){
+        genericResource.findByLike(slsSalesOrderUtils.urlSearchBase, searchInput)
+		.success(function(entitySearchResult) {
+			// store search
+			slsSalesOrderState.resultHandler.searchResult(entitySearchResult);
+		})
+        .error(function(error){
+            $scope.error=error;
+        });
+    }
 
     function processSearchInput(){
         var fieldNames = [];
         if($scope.searchInput.entity.soNbr){
-        	fieldNames.push('soNbr') ;
+            $scope.searchInput.entity.soNbr= $scope.searchInput.entity.soNbr;
+        	fieldNames.push('soNbr');
         }
         if($scope.searchInput.entity.soStatus){
-        	fieldNames.push('soStatus') ;
+            $scope.searchInput.entity.soStatus= $scope.searchInput.entity.soStatus;
+        	fieldNames.push('soStatus');
         }
-        if($scope.searchInput.entity.soCur){
-            fieldNames.push('soCur');
+        if($scope.searchInput.soDtFrom) $scope.searchInput.soDtFrom= $scope.searchInput.soDtFrom;
+        if($scope.searchInput.soDtTo) $scope.searchInput.soDtTo= $scope.searchInput.soDtTo;
+        
+        if($scope.searchInput.acsngUser){
+            $scope.searchInput.entity.acsngUser= $scope.searchInput.acsngUser.loginName;
+            fieldNames.push('loginName');
         }
+        if($scope.searchInput.ptnr){
+            $scope.searchInput.ptnrNbr= $scope.searchInput.ptnr.ptnrNbr;
+        }
+        
         $scope.searchInput.fieldNames = fieldNames;
         return $scope.searchInput ;
     };
 
-    function  handleSearchRequestEvent(){
+    function handleSearchRequestEvent(){
     	processSearchInput();
-    	findByLike($scope.searchInput);
+    	findCustom($scope.searchInput);
     };
 
     function paginate(){

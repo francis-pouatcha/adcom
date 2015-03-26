@@ -13,13 +13,13 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  */
 @XmlRootElement
-public class AptAptmtSearchInput
+public class AptAptmtLoginSearchInput
 {
 
    /**
     * The entity holding search inputs.
     */
-   private AptAptmt entity;
+   private AptAptmtLogin entity;
 
    /**
     * The start cursor
@@ -36,12 +36,12 @@ public class AptAptmtSearchInput
     */
    private List<String> fieldNames = new ArrayList<String>();
 
-   public AptAptmt getEntity()
+   public AptAptmtLogin getEntity()
    {
       return entity;
    }
 
-   public void setEntity(AptAptmt entity)
+   public void setEntity(AptAptmtLogin entity)
    {
       this.entity = entity;
    }

@@ -7,6 +7,6 @@ import org.apache.deltaspike.data.api.Repository;
 import org.adorsys.adaptmt.jpa.AptAptmtRepport;
 
 @Repository(forEntity = AptAptmtRepport.class)
-public interface AptAptmtRepportRepository extends EntityRepository<AptAptmtRepport, String>
+public interface AptAptmtRepportRepository extends EntityRepository<AptAptmtRepport, Long>
 {
 }

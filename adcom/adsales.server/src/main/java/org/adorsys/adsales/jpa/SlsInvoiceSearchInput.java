@@ -1,6 +1,7 @@
 package org.adorsys.adsales.jpa;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -30,8 +31,9 @@ public class SlsInvoiceSearchInput
     * The max number of records to return.
     */
    private int max = -1;
-
-   /**
+   
+   
+/**
     * The field names to be included in the search.
     */
    private List<String> fieldNames = new ArrayList<String>();

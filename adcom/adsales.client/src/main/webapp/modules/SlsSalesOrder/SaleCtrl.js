@@ -1,117 +1,59 @@
 'use strict';
 
-angular.module('AdSales').controller('saleCtlr',['$scope','saleUtils','slsSalesOrderState','genericResource','$routeParams','$location','$q',function($scope,saleUtils,slsSalesOrderState,genericResource,$routeParams,$location,$q){
+angular.module('AdSales')
+  .factory('saleUtils',['genericResource','$q',function(genericResource,$q){
+        var service = {};
+
+        service.urlBase='';
+        service.adbnsptnr='/adbnsptnr.server/rest/bplegalptnrids';
+        service.catalarticles='/adcatal.server/rest/catalarticles';
+        service.orgunits='/adbase.server/rest/orgunits';
+        service.stkSection = '/adstock.server/rest/stksections';
+
+        return service;
+  }])
+.controller('saleCtlr',['$scope','$modal','saleUtils','slsSalesOrderState','genericResource','$routeParams','$location','$q',function($scope,$modal,saleUtils,slsSalesOrderState,genericResource,$routeParams,$location,$q){
     var self = this ;
     $scope.saleCtlr = self;
-    self.slsSalesOrder = {
+    self.slsSalesOrderHolder = {
         slsSalesOrder:{},
-        slsSOItemsholderholder:[],
-        slsSOPtnr:{}
+        slsSOItemsholder:[],
+        slsSOPtnrs:[]
     };
+    self.slsSalesOrderHolderTab = [];
     self.slsSalesOrderItemHolder = {};
     self.error = "";
     self.loadArticlesByNameLike = loadArticlesByNameLike;
     self.loadArticlesByCipLike = loadArticlesByCipLike;
-    self.loading = true;
     self.onSelect = onSelect;
-    self.save = save;
-    self.close = close;
     self.addItem = addItem;
     self.editItem = editItem;
     self.deleteItem = deleteItem;
-    self.selectedIndex;
+    self.index=0;
     self.selectedItem;
     self.totalAmountEntered = 0;
-    self.closeStatus = false;
-    self.loadstkSection = loadstkSection;
-    self.loadOrgUnit = loadOrgUnit;
     self.loadBusinessPartner = loadBusinessPartner;
     self.slsSOItemsholderDeleted = [];
-    self.transform = transform;
-
-    load();
-
-    function load(){
-        self.slsSalesOrder = slsSalesOrderState.getOrderHolder();
-        if(self.slsSalesOrder.slsSalesOrder.poStatus=='ONGOING'){
-            self.closeStatus = true;
-        }
-    };
-
-
-    function loadOrgUnit(val){
-        return loadOrgUnitPromise(val).then(function(entitySearchResult){
-            return entitySearchResult.resultList;
-        })
-    }
-    function loadOrgUnitPromise(val){
-        var searchInput = {
-            entity:{},
-            fieldNames:[],
-            start: 0,
-            max: 10
-        };
-        if(val){
-            searchInput.entity.identif='hs';
-            searchInput.entity.fullName = val+'%';
-            searchInput.fieldNames.push('fullName');
-        }
-        var deferred = $q.defer();
-        genericResource.findByLike(saleUtils.orgunits,searchInput).success(function (entitySearchResult) {
-            deferred.resolve(entitySearchResult);
-        }).error(function(){
-            deferred.reject("No organisation unit");
-        });
-        return deferred.promise;
-    }
-
-    function loadstkSection(val){
-        return loadstkSectionPromise(val).then(function(entitySearchResult){
-            return entitySearchResult.resultList;
-        })
-    }
-    function loadstkSectionPromise(val){
-        var searchInput = {
-            entity:{},
-            fieldNames:[],
-            start: 0,
-            max: 10
-        };
-        var deferred = $q.defer();
-        genericResource.findByLike(saleUtils.stkSection,searchInput).success(function (entitySearchResult) {
-            deferred.resolve(entitySearchResult);
-        }).error(function(){
-            deferred.reject("No section unit");
-        });
-        return deferred.promise;
-    }
-
+    self.maxDisctRate;
+    self.vatRate;
+    self.cloturerCmd = cloturerCmd;
+    self.annulerCmd = annulerCmd;
+    self.newCmd = newCmd;
+    self.addBptnr = addBptnr;
+    self.previous = previous;
+    self.next = next;
+    self.calculAmount = calculAmount;
+    self.tabLength = tabLength;
+    self.ModalInstanceAddBptrnCtrl = ModalInstanceAddBptrnCtrl;
 
     function loadBusinessPartner(val){
-        return loadBusinessPartnerPromise(val).then(function(entitySearchResult){
-            return entitySearchResult.resultList;
-        })
+        return genericResource.findByLikePromissed(saleUtils.adbnsptnr, 'cpnyName', val)
+            .then(function(entitySearchResult){
+                if(!angular.isUndefined(entitySearchResult))
+                    return entitySearchResult.resultList;
+                else return "";
+            });
     }
-    function loadBusinessPartnerPromise(businessPartnerName){
-        var searchInput = {
-            entity:{},
-            fieldNames:[],
-            start: 0,
-            max: 10
-        };
-        if(businessPartnerName){
-            searchInput.entity.cpnyName = businessPartnerName+'%';
-            searchInput.fieldNames.push('cpnyName');
-        }
-        var deferred = $q.defer();
-        genericResource.findByLike(saleUtils.adbnsptnr,searchInput).success(function (entitySearchResult) {
-            deferred.resolve(entitySearchResult);
-        }).error(function(){
-            deferred.reject("No Manufacturer/Supplier");
-        });
-        return deferred.promise;
-    }
-
 
     function loadArticlesByNameLike(name){
         var searchInput = {
@@ -177,45 +119,126 @@ angular.module('AdSales').controller('saleCtlr',['$scope','saleUtils','slsSalesO
     function onSelect(item,model,label){
         self.slsSalesOrderItemHolder.slsSOItem.artPic = item.pic;
         self.slsSalesOrderItemHolder.slsSOItem.artName = item.features.artName;
+        self.slsSalesOrderItemHolder.slsSOItem.sppuPreTax = item.sppu;
+        self.maxDisctRate = item.maxDisctRate;
+        self.vatRate = item.vatRate;
+        calculAmount();
     }
 
-    function save(){
-        for(var i=0;i<self.slsSOItemsholderDeleted.length;i++){
-            self.slsSalesOrder.slsSOItemsholder.push(self.slsSOItemsholderDeleted[i])
+        function calculAmount() {
+            if(self.slsSalesOrderItemHolder.slsSOItem.rebate)
+                self.slsSalesOrderItemHolder.slsSOItem.netSPPreTax=self.slsSalesOrderItemHolder.slsSOItem.sppuPreTax-parseInt(self.slsSalesOrderItemHolder.slsSOItem.rebate);
+
+            if(self.slsSalesOrderItemHolder.slsSOItem.rebatePct)
+                self.slsSalesOrderItemHolder.slsSOItem.netSPPreTax=self.slsSalesOrderItemHolder.slsSOItem.sppuPreTax-((parseInt(self.slsSalesOrderItemHolder.slsSOItem.rebatePct)*self.slsSalesOrderItemHolder.slsSOItem.sppuPreTax)/100);
+
+            if(!self.slsSalesOrderItemHolder.slsSOItem.rebate && !self.slsSalesOrderItemHolder.slsSOItem.rebatePct)
+                self.slsSalesOrderItemHolder.slsSOItem.netSPPreTax = self.slsSalesOrderItemHolder.slsSOItem.sppuPreTax;
+
+            if(self.slsSalesOrderItemHolder.slsSOItem.orderedQty){
+                self.slsSalesOrderItemHolder.slsSOItem.vatAmount = (self.slsSalesOrderItemHolder.slsSOItem.netSPPreTax*self.vatRate/100)*parseInt(self.slsSalesOrderItemHolder.slsSOItem.orderedQty);
+                self.slsSalesOrderItemHolder.slsSOItem.netSPTaxIncl = (self.slsSalesOrderItemHolder.slsSOItem.netSPPreTax*parseInt(self.slsSalesOrderItemHolder.slsSOItem.orderedQty))+self.slsSalesOrderItemHolder.slsSOItem.vatAmount;
+            }
+
         }
-        genericResource.customMethod(saleUtils.urlManageOrder+'/update',self.slsSalesOrder).success(function(data){
-            self.slsSalesOrder = data;
-        });
-
-    }
-
-    function close () {
-        for(var i=0;i<self.slsSOItemsholderDeleted.length;i++){
-            self.slsSalesOrder.slsSOItemsholder.push(self.slsSOItemsholderDeleted[i])
-        }
-        genericResource.customMethod(saleUtils.urlManageOrder+'/close',self.slsSalesOrder).success(function(data){
-            self.slsSalesOrder = data;
-            self.closeStatus = false;
-        });
-    }
 
     function addItem(){
-        self.slsSalesOrder.slsSOItemsholder.unshift(self.slsSalesOrderItemHolder);
+        self.slsSalesOrderHolder.slsSOItemsholder.unshift(self.slsSalesOrderItemHolder);
         self.slsSalesOrderItemHolder = {};
         $('#artName').focus();
     }
     function deleteItem(index){
         var slsSalesOrderItemHolderDeleted = {};
-        angular.copy(self.slsSalesOrder.slsSOItemsholder[index],slsSalesOrderItemHolderDeleted) ;
-        self.slsSalesOrder.slsSOItemsholder.splice(index,1);
+        angular.copy(self.slsSalesOrderHolder.slsSOItemsholder[index],slsSalesOrderItemHolderDeleted) ;
+        self.slsSalesOrderHolder.slsSOItemsholder.splice(index,1);
         if(slsSalesOrderItemHolderDeleted.slsSOItem && slsSalesOrderItemHolderDeleted.slsSOItem.id) {
             slsSalesOrderItemHolderDeleted.deleted = true;
             self.slsSOItemsholderDeleted.push(slsSalesOrderItemHolderDeleted);
         }
     }
     function editItem(index){
-        angular.copy(self.slsSalesOrder.slsSOItemsholder[index],self.slsSalesOrderItemHolder) ;
-        self.slsSalesOrder.slsSOItemsholder.splice(index,1);
+        angular.copy(self.slsSalesOrderHolder.slsSOItemsholder[index],self.slsSalesOrderItemHolder) ;
+        self.slsSalesOrderHolder.slsSOItemsholder.splice(index,1);
     }
+        function cloturerCmd(){
+
+        }
+        function annulerCmd(){
+            self.slsSalesOrderHolder = {
+                slsSalesOrder:{},
+                slsSOItemsholder:[],
+                slsSOPtnr:{}
+            };
+            self.slsSalesOrderItemHolder = {};
+        }
+        function newCmd(){
+            if(self.slsSalesOrderHolder){
+                if(self.slsSalesOrderHolder.slsSOItemsholder.length > 0){
+                    self.slsSalesOrderHolderTab.push(self.slsSalesOrderHolder);
+                    self.index = self.slsSalesOrderHolderTab.length;
+                }
+            }
+            self.slsSalesOrderHolder = {
+                slsSalesOrder:{},
+                slsSOItemsholder:[],
+                slsSOPtnr:{}
+            };
+            self.slsSalesOrderItemHolder = {};
+        }
+        function addBptnr(size){
+            var modalInstance = $modal.open({
+                templateUrl: 'views/SlsSalesOrder/SlsSOPtnr.html',
+                controller: self.ModalInstanceAddBptrnCtrl,
+                size: size,
+                resolve:{
+                    slsSOPtnrs: function(){
+                        return self.slsSalesOrderHolder.slsSOPtnrs;
+                    }
+                }
+            });
+        }
+
+        function ModalInstanceAddBptrnCtrl($scope, $modalInstance, slsSOPtnrs) {
+             $scope.slsSOPtnrs = slsSOPtnrs;
+            $scope.loadBusinessPartner = function(val){
+                return self.loadBusinessPartner(val);
+            }
+            $scope.addBptrn = function(){
+                var slsSOPtnr = $scope.slsSOPtnr;
+                $scope.slsSOPtnr = {};
+                $scope.slsSOPtnrs.push(slsSOPtnr);
+            }
+            $scope.deleteItem = function (index) {
+                $scope.slsSOPtnrs.splice(index,1);
+            }
+
+            $scope.cancel = function () {
+                self.slsSalesOrderHolder.slsSOPtnrs = $scope.slsSOPtnrs;
+                $modalInstance.dismiss('cancel');
+            };
+            $scope.$on('modal.hide',function(){
+                self.slsSalesOrderHolder.slsSOPtnrs = $scope.slsSOPtnrs;
+            });
+        };
+
+        function previous(){
+            if(self.index > 0 ){
+                self.index-=1;
+                angular.copy(self.slsSalesOrderHolderTab[self.index],self.slsSalesOrderHolder);
+                self.slsSalesOrderHolderTab.splice(self.index,1);
+
+            }
+
+        }
+        function next(){
+            if(self.slsSalesOrderHolderTab.length > self.index){
+                angular.copy(self.slsSalesOrderHolderTab[self.index],self.slsSalesOrderHolder);
+                self.slsSalesOrderHolderTab.splice(self.index,1);
+            }
+
+        }
+        function tabLength (){
+            return self.slsSalesOrderHolderTab.length;
+        }
 
 }]);

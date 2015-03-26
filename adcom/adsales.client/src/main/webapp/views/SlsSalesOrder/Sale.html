@@ -5,10 +5,18 @@
             
         </p>
     </div>
+    <div style="margin-bottom: 20px" >
+        <a class="btn btn-primary" ng-click="saleCtlr.cloturerCmd()"><i class="glyphicon glyphicon-ok" ></i> Cloturer la commande</a>
+        <a class="btn btn-danger" ng-click="saleCtlr.annulerCmd()" ><i class="glyphicon glyphicon-trash" ></i> Anuller la commande</a>
+        <a class="btn btn-default" ng-click="saleCtlr.newCmd()" ng-disabled="saleCtlr.tabLength()==4" ><i class="glyphicon glyphicon-plus" ></i> Nouvelle commande</a>
+        <a class="btn btn-warning" ng-click="saleCtlr.addBptnr()"><i class="glyphicon glyphicon-user" ></i> Info Client</a>
+        <a class="col-lg-offset-3 btn btn-default" ng-click="saleCtlr.previous()" ng-disabled="saleCtlr.index==0" ><i class="glyphicon glyphicon-chevron-left"></i> Previous</a>
+        <a class="btn btn-default" ng-click="saleCtlr.next()" ng-disabled="saleCtlr.index==saleCtlr.tabLength()" >Next <i class="glyphicon glyphicon-chevron-right"></i></a>
+    </div>
+    <form name="OrderItemForm" id="OrderItemForm" novalidate >
     <div class="panel panel-default" >
         <div class="panel-heading"><b>{{'Add_Procurement_Order_Item' | translate}}</b> </div>
         <div class="panel-body">
-            <form name="OrderItemForm" id="OrderItemForm" novalidate >
                 <table class="table table-bordered  table-striped">
                     <thead>
                     <tr>
@@ -16,8 +24,9 @@
                         <th class="col-lg-3">Designation</th>
                         <th>Qte Stock</th>
                         <th>Qte</th>
-                        <th>{{'SlsSOItem_sppuPreTax_description.title' | translate}}</th>
+                        <th>{{'CatalArticle_sppu_description.title' | translate}}</th>
                         <th>{{'SlsSOItem_rebate_description.title'|translate}}</th>
+                        <th>{{'SlsSOItem_rebate_description.title'|translate}} %</th>
                         <th>{{'SlsSOItem_vatAmount_description.title'|translate}}</th>
                         <th>{{'SlsSOItem_netSPTaxIncl_description.title' | translate}}</th>
                         <th></th>
@@ -41,14 +50,19 @@
                         </td>
                         <td><input type="text" class="form-control" disabled ng-model="saleCtlr.slsSalesOrderItemHolder.slsSOItem.stkQty" ></td>
                         <td>
-                            <div ng-class="{ 'has-error' : OrderItemForm.qtyDlvrd.$invalid }" >
-                                <input type="text" class="form-control" required name="orderedQty" id="orderedQty" ng-model="saleCtlr.slsSalesOrderItemHolder.slsSOItem.orderedQty" >
+                            <div ng-class="{ 'has-error' : OrderItemForm.orderedQty.$invalid }" >
+                                <input type="text" class="form-control" ng-change="saleCtlr.calculAmount()" required name="orderedQty" id="orderedQty" ng-model="saleCtlr.slsSalesOrderItemHolder.slsSOItem.orderedQty" >
                             </div>
                         </td>
-                        <td><input type="text" class="form-control" ng-model="saleCtlr.slsSalesOrderItemHolder.slsSOItem.sppuPreTax" ></td>
+                        <td><input type="text" class="form-control" disabled ng-model="saleCtlr.slsSalesOrderItemHolder.slsSOItem.sppuPreTax" ></td>
                         <td>
                             <div >
-                                <input type="text" class="form-control" name="rebate" ng-model="saleCtlr.slsSalesOrderItemHolder.slsSOItem.rebate" >
+                                <input type="text" class="form-control" name="rebate" ng-change="saleCtlr.calculAmount()" ng-model="saleCtlr.slsSalesOrderItemHolder.slsSOItem.rebate" >
+                            </div>
+                        </td>
+                        <td>
+                            <div >
+                                <input type="text" class="form-control" name="rebatePct" ng-change="saleCtlr.calculAmount()" ng-model="saleCtlr.slsSalesOrderItemHolder.slsSOItem.rebatePct" >
                             </div>
                         </td>
                         <td>
@@ -58,18 +72,16 @@
                         </td>
                         <td>
                             <div >
-                                <input type="text" class="form-control" name="netSPTaxIncl" ng-model="saleCtlr.slsSalesOrderItemHolder.slsSOItem.netSPTaxIncl" >
+                                <input type="text" class="form-control" name="netSPTaxIncl" disabled ng-model="saleCtlr.slsSalesOrderItemHolder.slsSOItem.netSPTaxIncl" >
                             </div>
                         </td>
                         <td><button class="btn btn-primary" ng-enter="saleCtlr.addItem()" ng-disabled="OrderItemForm.$invalid" ng-click="saleCtlr.addItem()" ><i class="glyphicon glyphicon-plus"></i> Add</button></td>
-
                     </tr>
                     </tbody>
                 </table>
-                
-            </form>
         </div>
     </div>
+    </form>
     <div class="panel panel-default">
         <div class="panel-heading"><b>{{'SlsSOItem_description.title' | translate}}</b> </div>
         <div class="panel-body">
@@ -83,10 +95,12 @@
                     <th>{{'SlsSOItem_rebate_description.title'|translate}}</th>
                     <th>{{'SlsSOItem_vatAmount_description.title'|translate}}</th>
                     <th>{{'SlsSOItem_netSPTaxIncl_description.title' | translate}}</th>
+                    <th></th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="orderItemHolder in saleCtlr.slsSalesOrder.slsSOItemsholder" >
+                <tr ng-repeat="orderItemHolder in saleCtlr.slsSalesOrderHolder.slsSOItemsholder" >
                     <td>{{orderItemHolder.slsSOItem.artPic}}</td>
                     <td>{{orderItemHolder.slsSOItem.artName}}</td>
                     <td>{{orderItemHolder.slsSOItem.orderedQty}}</td>
@@ -94,8 +108,8 @@
                     <td>{{orderItemHolder.slsSOItem.rebate}}</td>
                     <td>{{orderItemHolder.slsSOItem.vatAmount}}</td>
                     <td>{{orderItemHolder.slsSOItem.netSPTaxIncl}}</td>
-                    <td><a ng-show="saleCtlr.closeStatus" ng-click="saleCtlr.editItem($index)" class=""><i class="glyphicon glyphicon-edit"></i></a></td>
-                    <td><a ng-show="saleCtlr.closeStatus" ng-click="saleCtlr.deleteItem($index)" class=""><i class="glyphicon glyphicon-trash"></i></a></td>
+                    <td><a ng-click="saleCtlr.editItem($index)" class=""><i class="glyphicon glyphicon-edit"></i></a></td>
+                    <td><a ng-click="saleCtlr.deleteItem($index)" class=""><i class="glyphicon glyphicon-trash"></i></a></td>
                 </tr>
                 </tbody>
             </table>

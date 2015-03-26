@@ -1,0 +1,144 @@
+<div ng-cloak class="panel-group" id="invIntryShowPanel">
+    <div class="error">
+        {{error}}
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+ 			<span><b>{{commonTranslations.translations['Entity_info.title']}} : </b></span>
+ 			 <span><b>{{commonTranslations.translations['CdrDrctSales_dsNbr_description.title']}} </b> {{cdrDsArtHolder.dsNbr}} </span>
+ 			 <span><b>{{commonTranslations.translations['Entity_Of.title']}} </b> {{cdrDsArtHolder.invtryDt | date:'dd MMM yyyy'}}</span>
+ 			 <span><b>{{commonTranslations.translations['Entity_By.title']}} </b>{{cdrDsArtHolder.acsngUser}}</span>
+ 			 <span><b>{{cdrDrctSalesUtils.translations['CdrDrctSales_netSPPreTax_description.title']}} </b>{{cdrDsArtHolder.netSPPreTax}}</span>
+ 			 <span><b>{{cdrDrctSalesUtils.translations['CdrDrctSales_netSalesAmt_description.title']}} </b>{{cdrDsArtHolder.netSPTaxIncl}}</span>
+<!--        	<button class="glyphicon glyphicon-triangle-right icon-blue pull-right" data-toggle="collapse" data-parent="#invIntryShowPanel" data-target="#invInvtryInfoToggle"></button>-->
+        </div>
+<!--
+        <div>
+		    <div class="panel-body">
+		    	<div class="row" >
+			    	<div class="col-lg-4 pull-left">
+		            	<span><b>{{commonTranslations.translations['Entity_By.title']}} :</b>{{cdrDrctSale.acsngUser}}</span>
+			    	</div>
+		    	</div>
+		    	<div class="row" >
+			    	<div class="col-lg-4 pull-right" ng-show="cdrDrctSalesUtils.isInvInvtryEditable(invInvtry)">
+			    		<button class=" btn btn-primary" ng-click="save()" type="button">{{commonTranslations.translations['Entity_save.title']}} </button>
+			    	</div>
+		    	</div>
+		    	<div class="row" >
+			    	<div class="col-lg-4 pull-left">
+		                <span><b>{{cdrDrctSalesUtils.translations['CdrDrctSales_cdrNbr_description.title']}} :</b> {{cdrDrctSale.cdrNbr}}</span>
+			    	</div>
+			    	<div class="col-lg-4 pull-left">
+		                <span><b>{{cdrDrctSalesUtils.translations['CdrDrctSales_dsNbr_description.title']}} :</b> {{cdrDrctSale.dsNbr}}</span>
+			    	</div>
+		    	</div>
+		    </div>
+    	</div>
+    </div>
+-->
+    <div class="panel panel-default">
+        <div class="panel-heading">
+        	<span><b>{{commonTranslations.translations['Entity_search.title']}} {{cdrDrctSalesUtils.translations['CdrDsArtItem_description.title']}} </b></span>
+        </div>
+        <div class="">
+	        <div>
+	            <form name="cdrDsArtItemSearchForm" id="cdrDsArtItemSearchForm" novalidate >
+	                <div class="row" >
+	                   <div class="form-group col-lg-2">
+	                       <label class=" control-label" for="searchArtPic">{{cdrDrctSalesUtils.translations['CdrDsArtItem_artPic_description.title']}}</label>
+                           <input type="text" ng- class="form-control" name="searchArtPic" id="searchArtPic" required autocomplete="off" 
+                           		ng-model="cdrDsArtItemHolder.artPic"
+                              typeahead="article as article.pic for article in cdrDrctSalesUtils.loadArticlesByPic($viewValue)" 
+                              	typeahead-min-length="7"
+                              typeahead-loading="loading" typeahead-on-select='onArticleSelectedInSearch($item, $model, $label)' >
+	                   </div>
+	                   <div class="form-group col-lg-2">
+	                       <label class=" control-label" for="searchArtName">{{cdrDrctSalesUtils.translations['CdrDsArtItem_artName_description.title']}}</label>
+                           <input type="text" class="form-control" id="searchArtName" autocomplete="off" 
+                           	ng-model="cdrDsArtItemHolder.artName"
+                              typeahead="article as article.features.artName for article in cdrDrctSalesUtils.loadArticlesByName($viewValue)"
+                              typeahead-loading="loading" typeahead-min-length="4" 
+                              typeahead-on-select='onArticleSelectedInSearch($item, $model, $label)' name="searchArtName" >
+	                   </div>
+	                   <div class="form-group col-lg-2">
+	                       <label class=" control-label" for="soldQty">{{cdrDrctSalesUtils.translations['CdrDsArtItem_soldQty_description.title']}}</label>
+                           <input type="text" ng- class="form-control" name="soldQty" id="soldQty" autocomplete="off" 
+                           		ng-model="cdrDsArtItemHolder.soldQty">
+	                   </div>
+	                   <div class="form-group col-lg-3">
+	                       <label class=" control-label" for="sppuPreTax">{{cdrDrctSalesUtils.translations['CdrDsArtItem_sppuPreTax_description.title']}}</label>
+                           <input value="{{cdrDsArtItemHolder.sppuPreTax}}" disabled type="text" ng- class="form-control" name="sppuPreTax" id="sppuPreTax" autocomplete="off">
+	                   </div>
+	                   <div class="form-group col-lg-2">
+	                       <label class=" control-label" for="maxStockQty">Qte. En stock</label>
+                           <input disabled value="{{cdrDsArtItemHolder.maxStockQty}}" type="text" ng- class="form-control" name="maxStockQty" id="maxStockQty" autocomplete="off" >
+	                   </div>
+                        <div class="form-group col-lg-1">
+                           <button  ng-click="addItem()" class="btn btn-default " style="margin-top: 23px;" >
+                               <i class="glyphicon glyphicon-check"></i>
+                           </button>
+                       </div>
+	               	</div>
+	          </form>
+	        </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+        	<b> {{cdrDrctSalesUtils.translations['CdrDsArtItem_description.title']}} </b> 
+            <span class="pull-right">
+                <a class="btn-danger btn" href="#/CdrDrctSales" ><i class="" ></i> {{commonTranslations.translations['Entity_cancel.title']}}</a>
+            </span>
+        </div>
+        <div class="panel-body">
+            <table class="table table-bordered  table-striped" >
+                <thead>
+                <tr>
+                    <th class="clo-lg-1">{{cdrDrctSalesUtils.translations['CdrDsArtItem_artName_description.title']}}</th>
+                    <th class="clo-lg-1">{{cdrDrctSalesUtils.translations['CdrDsArtItem_artPic_description.title']}}</th>
+                    <th class="clo-lg-1">{{cdrDrctSalesUtils.translations['CdrDsArtItem_lotPic_description.title']}}</th>
+                    <th class="clo-lg-1">{{cdrDrctSalesUtils.translations['CdrDsArtItem_soldQty_description.title']}}</th>
+                    <th class="col-lg-5">{{cdrDrctSalesUtils.translations['CdrDsArtItem_netSPPreTax_description.title']}}</th>
+                    <th class="col-lg-1">{{cdrDrctSalesUtils.translations['CdrDsArtItem_vatAmount_description.title']}}</th>
+                    <th class="col-lg-1">{{cdrDrctSalesUtils.translations['CdrDsArtItem_netSPTaxIncl_description.title']}}</th>
+                    <th class="col-lg-1" ng-show="cdrDrctSalesUtils.isInvInvtryEditable(invInvtry)">
+                       	<span ng-show="!cdrDrctSale.deleting">
+                        	<a ng-click="cdrDrctSale.deleting=true" class=""><i class="glyphicon glyphicon-trash"></i></a>
+                       	</span>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="cdrDsArtItem in cdrDsArtHolder.artItemHolders" ng-dblclick="editItem($index)">
+                        <td>{{cdrDsArtItem.artName}}</td>
+                        <td>{{cdrDsArtItem.artPic}}</td>
+                        <td>{{cdrDsArtItem.lotPic}}</td>
+                        <td>{{cdrDsArtItem.soldQty}}</td>
+                        <td>{{cdrDsArtItem.netSPPreTax}}</td>
+                        <td>{{cdrDsArtItem.vatAmount}}</td>
+                        <td>{{cdrDsArtItem.netSPTaxIncl}}</td>
+                    </tr>
+                    <tr >
+                        <td colspan="5" ></td>
+                        <td>Total HT</td>
+                        <td>{{cdrDsArtHolder.netSPPreTax}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="5" ></td>
+                        <td>Taxe</td>
+                        <td>19.25</td>
+                    </tr>
+                    <tr>
+                        <td colspan="5" >TOTAL</td>
+                        <td>Montant TTC</td>
+                        <td>{{cdrDsArtHolder.netSPTaxIncl}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <ul  class="pull-right">
+                <pagination  total-items="totalItems()" items-per-page="itemPerPage()"  class="pagination-sm" ng-model="currentPage" ng-change="paginate()"></pagination>
+            </ul>
+        </div>
+    </div>
+</div>
