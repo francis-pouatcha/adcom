@@ -32,6 +32,12 @@ public class SlsInvoiceSearchInput
     */
    private int max = -1;
    
+   private Date invceDtFrom;
+   
+   private Date invceDtTo;
+   
+   private String ptnrNbr;
+   
    
 /**
     * The field names to be included in the search.
@@ -77,4 +83,33 @@ public class SlsInvoiceSearchInput
    {
       this.max = max;
    }
+
+	public Date getInvceDtFrom() {
+		return invceDtFrom;
+	}
+	
+	public void setInvceDtFrom(Date invceDtFrom) {
+		this.invceDtFrom = invceDtFrom;
+	}
+	
+	public Date getInvceDtTo() {
+		return invceDtTo;
+	}
+	
+	public void setInvceDtTo(Date invceDtTo) {
+		this.invceDtTo = invceDtTo;
+	}
+	
+	public String getPtnrNbr() {
+		return ptnrNbr;
+	}
+	
+	public void setPtnrNbr(String ptnrNbr) {
+		this.ptnrNbr = ptnrNbr;
+	}
+   
+   
+   
+   
+   
 }
