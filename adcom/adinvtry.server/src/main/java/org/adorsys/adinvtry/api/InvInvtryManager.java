@@ -183,7 +183,7 @@ public class InvInvtryManager {
 		String currentLoginName = securityUtil.getCurrentLoginName();
 
 		boolean changed = false;
-		if(!BigDecimalUtils.numericEquals(invtryItem.getAsseccedQty(), existing.getAsseccedQty())){
+		if(!BigDecimalUtils.strictEquals(invtryItem.getAsseccedQty(), existing.getAsseccedQty())){
 			existing.setAsseccedQty(invtryItem.getAsseccedQty());
 			existing.setAcsngDt(invtryItem.getAcsngDt());
 			existing.setAcsngUser(currentLoginName);
@@ -409,15 +409,18 @@ public class InvInvtryManager {
 		// Validate Inventry for merging.
 		InvInvtry containerInvtry = inventoryEJB.findByIdentif(containerInvtryNbr);
 		checkCandidateContainer(containerInvtry);
-		List<String> incomingInvtry = list.subList(1, list.size()-1);
-		for (String invtryNbr : incomingInvtry) {
+		for (String invtryNbr : list) {
+			if(StringUtils.equals(invtryNbr,containerInvtryNbr)) continue;
 			InvInvtry invtry = inventoryEJB.findByIdentif(invtryNbr);
 			checkCandidateMerge(containerInvtry, invtry);
-			if(invtry.getContainerId()!=null){
-				invtry.setContainerId(containerInvtry.getContainerId());
+			if(invtry.getContainerId()==null){
+				invtry.setContainerId(containerInvtry.getInvtryNbr());
+				invtry.setInvtryStatus(InvInvtryStatus.MERGED);
 				inventoryEJB.update(invtry);
 			}
 		}
+		containerInvtry.setContainerId(containerInvtry.getContainerId());
+		inventoryEJB.update(containerInvtry);
 		return invtryNbrs;
 	}
 	

@@ -34,9 +34,7 @@ public class InvInvtryItemList {
 		setCoreData(invtryItemsIn);
 		this.invtryItems = invtryItemsIn;
 
-		if(invtryNbrs.size()!=invtryItemsIn.size()){
-			sameQty=Boolean.FALSE;
-		} else if(invtryNbrs.size()<=1){
+		if(invtryItemsIn.size()<=1){
 			sameQty=Boolean.TRUE;
 		} else {
 			BigDecimal qty = null;

@@ -26,6 +26,12 @@ public class BigDecimalUtils {
 		if(isNullOrZero(b)) return false;
 		return a.compareTo(b)==0;
 	}
+	public static boolean strictEquals(BigDecimal a, BigDecimal b){
+		if(a==null && b!=null) return false;
+		if(b==null && a!=null) return false;
+		return numericEquals(a, b);
+	}
+
 	public static boolean greaterZero(BigDecimal a){
 		if(isNullOrZero(a)) return false;
 		return a.compareTo(BigDecimal.ZERO)>0;

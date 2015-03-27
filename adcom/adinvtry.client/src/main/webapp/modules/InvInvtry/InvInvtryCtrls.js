@@ -525,14 +525,23 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
     };
     $scope.selection = invInvtryState.selection;
     $scope.mainInvtry = invInvtryState.mainInvtry;
+    $scope.cantMerge = function(){
+    	return invInvtryState.selection.length<1 || 
+    	angular.isUndefined(invInvtryState.mainInvtry.invtryNbr) || 
+    	!invInvtryState.mainInvtry.invtryNbr ||
+    	(invInvtryState.selection.indexOf(invInvtryState.mainInvtry.invtryNbr)!=-1 && invInvtryState.selection.length<2); 
+    };
     $scope.merge = function(){
     	if(invInvtryState.selection.length<0) return;
-    	if(angular.isUndifined(mainInvtry.invtryNbr) || !mainInvtry.invtryNbr) return;
+    	if(angular.isUndefined(invInvtryState.mainInvtry.invtryNbr) || !invInvtryState.mainInvtry.invtryNbr) return;
     	var listHolder = {list:[]};
-    	listHolder.list.push(mainInvtry.invtryNbr);
+    	listHolder.list.push(invInvtryState.mainInvtry.invtryNbr);
     	for (var i = 0; i < invInvtryState.selection.length; i++) {
-    		listHolder.list.push(invInvtryState.selection[i]);
+    		if(!angular.equals(invInvtryState.selection[i], invInvtryState.mainInvtry.invtryNbr)){
+    			listHolder.list.push(invInvtryState.selection[i]);
+    		}
 		}
+    	if(listHolder.list.length<2) return;
 		invInvtryManagerResource.merge(listHolder)
 		.success(function(listHolder) {
 			findByLike($scope.searchInput);
@@ -585,7 +594,7 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
     $scope.totalItems=invInvtryState.compareResultHandler.totalItems;
     $scope.currentPage=invInvtryState.compareResultHandler.currentPage();
     $scope.maxSize =invInvtryState.compareResultHandler.maxResult;
-//    $scope.invtryItemLists =invInvtryState.compareResultHandler.entities;
+    $scope.invtryItemLists =invInvtryState.compareResultHandler.entities;
     $scope.selectedIndex=invInvtryState.compareResultHandler.selectedIndex;
     $scope.error = "";
     $scope.invInvtryUtils=invInvtryUtils;
@@ -604,6 +613,7 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
 			// store search
 			invInvtryState.compareResultHandler.searchResult(entitySearchResult);
 		    $scope.searchInput = invInvtryState.compareResultHandler.searchInput();
+		    processEntities();
 		})
         .error(function(error){
             $scope.error=error;
@@ -615,7 +625,7 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
         $scope.searchInput = invInvtryState.compareResultHandler.paginate();
         findByLike($scope.searchInput);
     };
-    $scope.invtryItemLists = function(){
+    function processEntities(){
     	var entities = invInvtryState.compareResultHandler.entities();
     	var invtryNbrs = $scope.searchInput.entity.invtryNbrs;
     	// Sort the inventryItemList in the order of InvetryNbrs.
@@ -627,7 +637,6 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
         		invtryItemList.sortedItems.push(invtryItem);
     		}
 		}
-    	return entities;
     }
     
     function selectInvtryItem(invtryNbr, invtryItems){
