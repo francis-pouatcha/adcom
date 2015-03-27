@@ -24,6 +24,7 @@ import javax.ws.rs.core.Response.Status;
 import org.adorsys.adaptmt.jpa.AptAptmtBsPtnr;
 import org.adorsys.adaptmt.jpa.AptAptmtBsPtnrSearchInput;
 import org.adorsys.adaptmt.jpa.AptAptmtBsPtnrSearchResult;
+import org.adorsys.adaptmt.jpa.AptAptmtBsPtnr_;
 
 
 /**
