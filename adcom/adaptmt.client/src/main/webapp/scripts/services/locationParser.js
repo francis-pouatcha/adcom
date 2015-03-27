@@ -1,4 +1,4 @@
-angular.module('adaptmtclient').value('locationParser', function(responseHeaders){
+angular.module('adaptmt').value('locationParser', function(responseHeaders){
     // Get the Location header and parse it.
     var locationHeader = responseHeaders('Location');
     var fragments = locationHeader.split('/');

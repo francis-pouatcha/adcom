@@ -1,10 +1,8 @@
 package org.adorsys.adaptmt.repo;
 
-import org.apache.deltaspike.data.api.EntityRepository;
-import org.apache.deltaspike.data.api.Modifying;
-import org.apache.deltaspike.data.api.Query;
-import org.apache.deltaspike.data.api.Repository;
 import org.adorsys.adaptmt.jpa.AptAptmtBsPtnr;
+import org.apache.deltaspike.data.api.EntityRepository;
+import org.apache.deltaspike.data.api.Repository;
 
 @Repository(forEntity = AptAptmtBsPtnr.class)
 public interface AptAptmtBsPtnrRepository extends EntityRepository<AptAptmtBsPtnr, String>
