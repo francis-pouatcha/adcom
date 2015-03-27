@@ -22,6 +22,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.adorsys.adaptmt.jpa.AptAptmtLogin;
+import org.adorsys.adaptmt.jpa.AptAptmtLogin_;
 import org.adorsys.adaptmt.jpa.AptAptmtLoginSearchInput;
 import org.adorsys.adaptmt.jpa.AptAptmtLoginSearchResult;
 import org.adorsys.adaptmt.jpa.AptAptmtLogin_;

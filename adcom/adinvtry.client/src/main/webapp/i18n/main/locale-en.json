@@ -37,6 +37,7 @@
 "InvInvtry_join_description.title":"Combine",
 "InvInvtry_compare_description.title":"Compare",
 "InvInvtry_invtryGroup_description.title":"Group",
+"InvInvtry_mainInvtry_description.title":"Main Inventory",
 
 "InvInvtryItem_acsngDt_description.text":"The recording date of this inventory item.",
 "InvInvtryItem_acsngDt_description.title":"Inventory Date",
@@ -92,6 +93,10 @@
 "InvInvntrStatus_description.title":"Inventory Status",
 "InvInvntrStatus_POSTED_description.text":"Posted",
 "InvInvntrStatus_POSTED_description.title":"Posted",
+"InvInvntrStatus_INITIALIZING_description.text":"Initializing",
+"InvInvntrStatus_INITIALIZING_description.title":"Initializing",
+"InvInvntrStatus_MERGED_description.text":"Merged",
+"InvInvntrStatus_MERGED_description.title":"Merged",
 
 "InvInvtryType_description.title":"Inventory Type",
 "InvInvtryType_BY_SECTION_description.title":"Inventory By Session",
@@ -107,6 +112,10 @@
 "InvInvtry_NoUserFound_description":"No User Found",
 "InvInvtry_gapPurchAmtHTFrom_description.title":"Gap Purch. Amount above",
 "InvInvtry_gapPurchAmtHTTo_description.title":"Gap Purch. Amount below",
+
+"InvInvtry_alreadyMergedTo_description.alert":" is merged to ",
+"InvInvtry_postedCanNotBeMerged_description.alert":" is already posted and can not be merged.",
+
 "InvInvtry_longPdctJsonArr_exception.title":"The much products loadings error, please chose, very close product ranges.",
 "InvInvtry_longPdctJsonArr_exception.text":"The much products loadings error, please chose, very close product ranges."
 

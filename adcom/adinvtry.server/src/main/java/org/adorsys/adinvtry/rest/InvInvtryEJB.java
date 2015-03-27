@@ -362,53 +362,6 @@ public class InvInvtryEJB
 		}
 		return invInvtry;
 	}
-
-//	public List<InvInvtry> findByDateBtw(Date from, Date to) {
-//		List<InvInvtry> invtryDtBtw = repository.findByInvtryDtBtw(from, to).getResultList();
-//		return invtryDtBtw;
-//	}
-//
-//	public Long countByDateBtw(Date from, Date to) {
-//		Long count = repository.countByInvtryDtBtw(from, to);
-//		return count;
-//	}
-//
-//	public List<InvInvtry> findInvInvtrys(InvInvtrySearchInput searchInput,Date now) {
-//		Date from = searchInput.getFrom();
-//		Date to = searchInput.getTo();
-//		int start = searchInput.getStart();
-//		int max = searchInput.getMax();
-//
-//		if(from == null) {
-//			from = DateUtils.addYears(now, -1);
-//		}
-//		if(to == null) {
-//			to = new Date();
-//		}
-//		QueryResult<InvInvtry> queryResult = repository.findByInvtryDtBtw(from, to);
-//		if(start < 0 ) {
-//			start = 0;
-//		}
-//		queryResult.firstResult(start);
-//		if(max > 0) {
-//			queryResult.maxResults(max);
-//		}
-//		return queryResult.getResultList();
-//	}
-//
-//	public Long countInvInvtrys(InvInvtrySearchInput searchInput,Date now) {
-//		Date from = searchInput.getFrom();
-//		Date to = searchInput.getTo();
-//
-//		if(from == null) {
-//			from = DateUtils.addYears(now, -1);
-//		}
-//		if(to == null) {
-//			to = new Date();
-//		}
-//		Long count = countByDateBtw(from, to);
-//		return count;
-//	}
 	
 	private InvInvtry attach(InvInvtry entity)
 	{
@@ -418,7 +371,11 @@ public class InvInvtryEJB
 		return entity;
 	}
 
-	public List<InvInvtry> findOpenInvtrys() {
-		return repository.findOpenInvtrys().getResultList();
+	public List<InvInvtry> findPreparingInvtrys() {
+		return repository.findPreparingInvtrys().getResultList();
+	}
+
+	public List<InvInvtry> findMergingInvtrys() {
+		return repository.findMergingInvtrys().getResultList();
 	}
 }

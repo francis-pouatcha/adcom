@@ -50,6 +50,8 @@ public class InvInvtrySearchInput
 	
 	private BigDecimal gapPurchAmtHTTo;
 
+	private List<String> invrtyNbrs = new ArrayList<String>();
+
 	public InvInvtry getEntity()
 	{
 		return entity;
@@ -141,4 +143,11 @@ public class InvInvtrySearchInput
 		return invtryDtFrom==null && invtryDtTo==null && acsngDtFrom==null && acsngDtTo==null && gapPurchAmtHTFrom==null && gapPurchAmtHTTo==null;
 	}
 
+	public List<String> getInvrtyNbrs() {
+		return invrtyNbrs;
+	}
+
+	public void setInvrtyNbrs(List<String> invrtyNbrs) {
+		this.invrtyNbrs = invrtyNbrs;
+	}
 }

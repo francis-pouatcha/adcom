@@ -12,12 +12,15 @@ angular.module('AdCshdwr')
 
         service.urlBase = '/adcshdwr.server/rest/cdrdrctsaless';
         service.language = sessionManager.language;
+        service.catalarticlesUrlBase = '/adcatal.server/rest/catalarticles';
 
         service.currentWsUser = sessionManager.userWsData();
 
         service.translate = function () {
             $translate([
-                    
+
+                    'CdrDsArtItem_artName_description.text',
+                    'CdrDsArtItem_artName_description.title',
                     'CdrDsArtItem_artPic_description.text',
                     'CdrDsArtItem_artPic_description.title',
                     'CdrDsArtItem_description.text',
@@ -96,6 +99,28 @@ angular.module('AdCshdwr')
                     service.translations = translations;
                 });
         };
+
+        service.loadArticlesByPic = function (artPic) {
+            return genericResource.findByLikePromissed(service.catalarticlesUrlBase, 'pic', artPic)
+                .then(function (entitySearchResult) {
+                    return entitySearchResult.resultList;
+                });
+        };
+
+        service.loadArticlesByName = function (artName) {
+            var searchInput = {
+                entity: {},
+                fieldNames: [],
+                start: 0,
+                max: 10
+            };
+            searchInput.codesAndNames = artName;
+            return genericResource.findByLikeWithSearchInputPromissed(service.catalarticlesUrlBase, searchInput)
+                .then(function (entitySearchResult) {
+                    return entitySearchResult.resultList;
+                });
+        };
+
         service.translate();
         return service;
 }])
@@ -237,6 +262,7 @@ angular.module('AdCshdwr')
 
             return service.cdrDrctSale();
         };
+
         return service;
 
 }])
@@ -313,8 +339,7 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
 
             }
 
-            function openCreateForm() {
-            }
+            function openCreateForm() {}
 }])
     .controller('cdrDrctSalesCreateCtlr', ['$scope', 'cdrDrctSalesUtils', '$translate', 'genericResource', '$location', 'cdrDrctSalesState', 'commonTranslations',
         function ($scope, cdrDrctSalesUtils, $translate, genericResource, $location, cdrDrctSalesState, commonTranslations) {
@@ -323,16 +348,92 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
             $scope.error = "";
             $scope.cdrDrctSalesUtils = cdrDrctSalesUtils;
             $scope.commonTranslations = commonTranslations;
-
-            function create() {
-                genericResource.create(cdrDrctSalesUtils.urlBase + "/openCshDrawer", $scope.cdrCshDrawer).success(function (result) {
-                    $scope.cdrCshDrawer = result;
-                    $location.path("/CdrCshDrawers/show/" + result.id);
-                }).error(function (error) {
-                    $scope.error = error;
-                });
+            $scope.cdrDsArtItemHolder = {};
+            $scope.cdrDsArtHolder = {
+                artItemHolders: []
             };
 
+            function create() {};
+
+            $scope.onArticleSelectedInSearch = function (item, model, label) {
+                $scope.cdrDsArtItemHolder.artPic = item.pic;
+                $scope.cdrDsArtItemHolder.lotPic = item.pic;
+                $scope.cdrDsArtItemHolder.artName = item.features.artName;
+                $scope.cdrDsArtItemHolder.sppuPreTax = item.sppu;
+                $scope.cdrDsArtItemHolder.netSPPreTax = item.sppu;
+                $scope.cdrDsArtItemHolder.maxStockQty = item.maxStockQty;
+                $scope.cdrDsArtItemHolder.sppuCur = item.sppuCurrIso3;
+                $scope.cdrDsArtItemHolder.vatAmount = item.vatRate;
+                $scope.cdrDsArtItemHolder.vatPct = item.vatRate/100;//compute the percentaage
+            };
+
+            $scope.addItem = function () {
+                addItem($scope.cdrDsArtItemHolder);
+            };
+            
+            $scope.cdrDsArtItems = function () {
+                return $scope.cdrDsArtItemHolder.artItemHolders;
+            };
+            $scope.editItem = function(index) {
+                $scope.cdrDsArtItemHolder = angular.copy($scope.cdrDsArtHolder.artItemHolders[index]);
+            }
+            
+            function clearObject(anObject) {
+                anObject = {};
+                return anObject;
+            }
+            function isNotCorrect(cdrDsArtItemHolder) {
+                return isCorrect(cdrDsArtItemHolder) == false;
+            }
+
+            function isCorrect(cdrDsArtItemHolder) {
+                if (!cdrDsArtItemHolder || angular.isUndefined(cdrDsArtItemHolder) || !(cdrDsArtItemHolder.artPic && 0 < cdrDsArtItemHolder.soldQty)) {
+                    return false;
+                }
+                return true;
+            }
+
+            function addItem(cdrDsArtItemHolder) {
+                if (isNotCorrect($scope.cdrDsArtItemHolder)) return;
+                if (cdrDsArtItemHolder.soldQty > cdrDsArtItemHolder.maxStockQty) return;
+                var copy = angular.copy(cdrDsArtItemHolder)
+                var i = 0;
+                var artItemHolders = $scope.cdrDsArtHolder.artItemHolders;
+                if(artItemHolders.length == 0) {
+                    $scope.cdrDsArtHolder.artItemHolders.push(copy);
+                }else {
+                    var found = false;
+                    angular.forEach(artItemHolders,function(artItemHolder) {
+                       if( (artItemHolder.artPic == copy.artPic) && (artItemHolder.artName == copy.artName)) {
+                           artItemHolders[i] = copy;
+                           found = true;
+                       }
+                       i += 1;
+                    });
+                    if(!found) {
+                        $scope.cdrDsArtHolder.artItemHolders.push(copy);
+                    }
+                }
+                computeCdrDsArtHolder();
+                $scope.cdrDsArtItemHolder = clearObject($scope.cdrDsArtItemHolder);
+            }
+
+            function computeCdrDsArtHolder() {
+                var artItemHolders = $scope.cdrDsArtHolder.artItemHolders;
+                var totalAmtHT = 0.0;
+                var totalAmtTTC = 0.0;
+                angular.forEach(artItemHolders, function (artItemHolder) {
+                    var netSPPreTax = artItemHolder.sppuPreTax * artItemHolder.soldQty;
+                    var netSPTaxIncl = netSPPreTax + (netSPPreTax * artItemHolder.vatPct );
+                    artItemHolder.netSPPreTax = netSPPreTax;
+                    artItemHolder.netSPTaxIncl = netSPTaxIncl;
+                    totalAmtHT += netSPPreTax;
+                    totalAmtTTC += netSPTaxIncl;
+                });
+                
+                $scope.cdrDsArtHolder.netSPPreTax = totalAmtHT;
+                $scope.cdrDsArtHolder.netSPTaxIncl = totalAmtTTC;
+            }
 }])
     .controller('cdrDrctSalesEditCtlr', ['$scope', 'genericResource', '$location', 'cdrDrctSalesUtils', 'cdrDrctSalesState', 'commonTranslations',
                                  function ($scope, genericResource, $location, cdrDrctSalesUtils, cdrDrctSalesState, commonTranslations) {
@@ -343,8 +444,7 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
 
             init();
 
-            function init() {
-            }
+            function init() {}
             $scope.close = function () {
                 //close the cashdrawer
             };

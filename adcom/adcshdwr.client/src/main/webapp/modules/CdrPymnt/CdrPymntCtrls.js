@@ -315,6 +315,10 @@ angular.module('AdCshdwr')
 
         return service.invInvtry();
     };
+    
+    service.cdrPaymnt = function () {
+        
+    }
     return service;
 
 }])
