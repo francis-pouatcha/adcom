@@ -56,7 +56,7 @@
 	                   <div class="form-group col-lg-2">
 	                       <label class=" control-label" for="searchArtName">{{cdrDrctSalesUtils.translations['CdrDsArtItem_artName_description.title']}}</label>
                            <input type="text" class="form-control" id="searchArtName" autocomplete="off" 
-                           	ng-model="cdrDsArtItemHolder.item.artName"
+                           	ng-model="cdrDsArtItemHolder.artName"
                               typeahead="article as article.features.artName for article in cdrDrctSalesUtils.loadArticlesByName($viewValue)"
                               typeahead-loading="loading" typeahead-min-length="4" 
                               typeahead-on-select='onArticleSelectedInSearch($item, $model, $label)' name="searchArtName" >
@@ -72,7 +72,7 @@
 	                   </div>
 	                   <div class="form-group col-lg-2">
 	                       <label class=" control-label" for="maxStockQty">Qte. En stock</label>
-                           <input disabled value="{{cdrDsArtItemHolder.item.maxStockQty}}" type="text" ng- class="form-control" name="maxStockQty" id="maxStockQty" autocomplete="off" >
+                           <input disabled value="{{cdrDsArtItemHolder.maxStockQty}}" type="text" ng- class="form-control" name="maxStockQty" id="maxStockQty" autocomplete="off" >
 	                   </div>
                         <div class="form-group col-lg-1">
                            <button  ng-click="addItem()" class="btn btn-default " style="margin-top: 23px;" >
@@ -110,8 +110,8 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="cdrDsArtItem in cdrDsArtHolder.artItemHolders" ng-dblclick="editItem($index)">
-                        <td>{{cdrDsArtItem.item.artName}}</td>
+                    <tr ng-repeat="cdrDsArtItem in cdrDsArtHolder.items" ng-dblclick="editItem($index)">
+                        <td>{{cdrDsArtItem.artName}}</td>
                         <td>{{cdrDsArtItem.item.artPic}}</td>
                         <td>{{cdrDsArtItem.item.lotPic}}</td>
                         <td>{{cdrDsArtItem.item.soldQty}}</td>
@@ -122,7 +122,7 @@
                     <tr >
                         <td colspan="5" ></td>
                         <td>Total HT</td>
-                        <td>{{cdrDsArtHolder.netSPPreTax}}</td>
+                        <td>{{cdrDsArtHolder.cdrDrctSales.netSPPreTax}}</td>
                     </tr>
                     <tr>
                         <td colspan="5" ></td>
@@ -132,7 +132,7 @@
                     <tr>
                         <td colspan="5" >TOTAL</td>
                         <td>Montant TTC</td>
-                        <td>{{cdrDsArtHolder.netSPTaxIncl}}</td>
+                        <td>{{cdrDsArtHolder.cdrDrctSales.netSPTaxIncl}}</td>
                     </tr>
                 </tbody>
             </table>

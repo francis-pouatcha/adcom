@@ -355,7 +355,8 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                 item : {}
             };
             $scope.cdrDsArtHolder = {
-                artItemHolders: []
+                cdrDrctSales : {},
+                items: []
             };
 
             function create() {};
@@ -363,10 +364,10 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
             $scope.onArticleSelectedInSearch = function (item, model, label) {
                 $scope.cdrDsArtItemHolder.item.artPic = item.pic;
                 $scope.cdrDsArtItemHolder.item.lotPic = item.pic;
-                $scope.cdrDsArtItemHolder.item.artName = item.features.artName;
+                $scope.cdrDsArtItemHolder.artName = item.features.artName;
                 $scope.cdrDsArtItemHolder.item.sppuPreTax = item.sppu;
                 $scope.cdrDsArtItemHolder.item.netSPPreTax = item.sppu;
-                $scope.cdrDsArtItemHolder.item.maxStockQty = item.maxStockQty;
+                $scope.cdrDsArtItemHolder.maxStockQty = item.maxStockQty;
                 $scope.cdrDsArtItemHolder.item.sppuCur = item.sppuCurrIso3;
                 $scope.cdrDsArtItemHolder.item.vatAmount = item.vatRate;
                 $scope.cdrDsArtItemHolder.item.vatPct = item.vatRate / 100; //compute the percentaage
@@ -377,11 +378,11 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
             };
 
             $scope.cdrDsArtItems = function () {
-                return $scope.cdrDsArtItemHolder.item.artItemHolders;
+                return $scope.cdrDsArtItemHolder.items;
             };
 
             $scope.editItem = function (index) {
-                $scope.cdrDsArtItemHolder = angular.copy($scope.cdrDsArtHolder.artItemHolders[index]);
+                $scope.cdrDsArtItemHolder = angular.copy($scope.cdrDsArtHolder.items[index]);
             };
 
             $scope.save = function () {
@@ -394,7 +395,9 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
             };
 
             function clearObject(anObject) {
-                anObject = {};
+                anObject = {
+                    item : {}
+                };
                 return anObject;
             }
 
@@ -411,23 +414,23 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
 
             function addItem(cdrDsArtItemHolder) {
                 if (isNotCorrect($scope.cdrDsArtItemHolder)) return;
-                if (cdrDsArtItemHolder.item.soldQty > cdrDsArtItemHolder.item.maxStockQty) return;
+                if (cdrDsArtItemHolder.item.soldQty > cdrDsArtItemHolder.maxStockQty) return;
                 var copy = angular.copy(cdrDsArtItemHolder)
                 var i = 0;
-                var artItemHolders = $scope.cdrDsArtHolder.artItemHolders;
-                if (artItemHolders.length == 0) {
-                    $scope.cdrDsArtHolder.artItemHolders.push(copy);
+                var items = $scope.cdrDsArtHolder.items;
+                if (items.length == 0) {
+                    $scope.cdrDsArtHolder.items.push(copy);
                 } else {
                     var found = false;
-                    angular.forEach(artItemHolders, function (artItemHolder) {
-                        if ((artItemHolder.artPic == copy.artPic) && (artItemHolder.artName == copy.artName)) {
-                            artItemHolders[i] = copy;
+                    angular.forEach(items, function (artItemHolder) {
+                        if ((artItemHolder.item.artPic == copy.item.artPic) && (artItemHolder.artName == copy.artName)) {
+                            items[i] = copy;
                             found = true;
                         }
                         i += 1;
                     });
                     if (!found) {
-                        $scope.cdrDsArtHolder.artItemHolders.push(copy);
+                        $scope.cdrDsArtHolder.items.push(copy);
                     }
                 }
                 computeCdrDsArtHolder();
@@ -435,14 +438,14 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
             }
 
             function computeCdrDsArtHolder() {
-                var artItemHolders = $scope.cdrDsArtHolder.artItemHolders;
+                var items = $scope.cdrDsArtHolder.items;
                 var totalAmtHT = 0.0;
                 var totalAmtTTC = 0.0;
-                angular.forEach(artItemHolders, function (artItemHolder) {
-                    var netSPPreTax = artItemHolder.sppuPreTax * artItemHolder.soldQty;
-                    var netSPTaxIncl = netSPPreTax + (netSPPreTax * artItemHolder.vatPct);
-                    artItemHolder.netSPPreTax = netSPPreTax;
-                    artItemHolder.netSPTaxIncl = netSPTaxIncl;
+                angular.forEach(items, function (artItemHolder) {
+                    var netSPPreTax = artItemHolder.item.sppuPreTax * artItemHolder.item.soldQty;
+                    var netSPTaxIncl = netSPPreTax + (netSPPreTax * artItemHolder.item.vatPct);
+                    artItemHolder.item.netSPPreTax = netSPPreTax;
+                    artItemHolder.item.netSPTaxIncl = netSPTaxIncl;
                     totalAmtHT += netSPPreTax;
                     totalAmtTTC += netSPTaxIncl;
                 });
