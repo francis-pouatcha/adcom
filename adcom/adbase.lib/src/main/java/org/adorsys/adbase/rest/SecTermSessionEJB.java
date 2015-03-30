@@ -78,4 +78,18 @@ public class SecTermSessionEJB
 
       return entity;
    }
+   
+//	@PostConstruct
+//	public void postConstruct(){
+//		SecTermSession termSession = new SecTermSession();
+//		termSession.setId("0031c74f-df0e-42ba-9e3b-e69f8a987dca");
+//		termSession.setCreated(new Date());
+//		termSession.setExpires(DateUtils.addYears(new Date(), 1));
+//		termSession.setIpAddress("127.0.0.1");
+//		termSession.setLangIso2("en");
+//		termSession.setTermId("A01CMTest_20150328150924");
+//		termSession.setTermName("A01CMTest");
+//		termSession.setTermCredtl("67a7723c-83b1-446a-bf96-f536036dedb4");
+//		repository.save(termSession);
+//	}
 }
