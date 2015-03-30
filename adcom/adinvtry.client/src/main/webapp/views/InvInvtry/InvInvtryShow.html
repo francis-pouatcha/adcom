@@ -72,13 +72,21 @@
                    	</div>
                	</div>
 		    	<div class="row">
-	               <div class="col-lg-12">
-	               		<div class="pull-right">
+               		<div class="col-lg-5">
+	                	<span class="pull-left">
+	                   		<button ng-click="makeMain(invInvtry)" ng-show="!invInvtryUtils.isInvtryPosted(invInvtry)" class="btn-success btn" ng-disabled="isMainInventory(invInvtry)" >{{invInvtryUtils.translations['InvInvtry_mainInvtry_description.title']}}</button>
+						</span>
+               		</div>
+               		<div class="col-lg-2">
+			            <a class="btn-danger btn" href="#/InvInvtrys" ><i class="glyphicon glyphicon-list" ></i> {{invInvtryUtils.translations['Entity_list.title']}}</a>
+               		</div>
+               		<div class="col-lg-5">
+	               		<span class="pull-right">
 		                   <button ng-click="update();" ng-show="!invInvtryUtils.isInvtryPosted(invInvtry)" class="btn-success btn"  >{{invInvtryUtils.translations['Entity_save.title']}}</button>
 		                   <button ng-click="close();" ng-show="!invInvtryUtils.isInvtryClosed(invInvtry) && !invInvtryUtils.isInvtryPosted(invInvtry)" class="btn-success btn"  >{{invInvtryUtils.translations['InvInvtry_close_description.title']}}</button>
 		                   <button ng-click="post();" ng-show="invInvtryUtils.isInvtryClosed(invInvtry) && !invInvtryUtils.isInvtryPosted(invInvtry)" class="btn-success btn">{{invInvtryUtils.translations['InvInvtry_post_description.title']}}</button>
-	               		</div>
-	               </div>		            
+	               		</span>
+               		</div>
 		    	</div>
 		    	</form>
 		    </div>
@@ -179,8 +187,9 @@
                     <th class="clo-lg-1">{{invInvtryUtils.translations['InvInvtryItem_lotPic_description.title']}}</th>
                     <th class="clo-lg-1">{{invInvtryUtils.translations['InvInvtryItem_artPic_description.title']}}</th>
                     <th class="col-lg-5">{{invInvtryUtils.translations['InvInvtryItem_artName_description.title']}}</th>
+                    <th class="col-lg-5">{{invInvtryUtils.translations['InvInvtryItem_artName_description.title']}}</th>
                     <th class="col-lg-1">{{invInvtryUtils.translations['InvInvtryItem_expirDt_description.title']}}</th>
-                    <th class="col-lg-1">{{invInvtryUtils.translations['InvInvtryItem_acsngDt_description.title']}}</th>
+                    <th class="col-lg-1">{{invInvtryUtils.translations['InvInvtryItem_acsngUser_description.title']}}</th>
                     <th class="col-lg-1">{{invInvtryUtils.translations['InvInvtryItem_asseccedQty_description.title']}}</th>
                     <th class="col-lg-1">
 	                    <span  ng-show="!invInvtryUtils.isInvtryOpen(invInvtry)">{{invInvtryUtils.translations['InvInvtryItem_expectedQty_description.title']}}</span>
@@ -189,11 +198,12 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="invtryItem in invInvtryItems()" ng-dblclick="invtryItem.editing=true">
+                    <tr ng-repeat="invtryItem in invInvtryItems()" ng-dblclick="editingItem(invtryItem, $event)" >
                         <td>{{invtryItem.section}}</td>
                         <td>{{invtryItem.lotPic}}</td>
                         <td>{{invtryItem.artPic}}</td>
                         <td>{{invtryItem.artName}}</td>
+                        <td>{{invtryItem.acsngUser}}</td>
                         <td>
                         	<span ng-show="!invtryItem.editing">{{invtryItem.expirDt | date:'dd-MM-yyyy'}}</span>
                             <span class="" ng-show="invtryItem.editing">
@@ -203,10 +213,10 @@
                         
                         </td>
                         <td>{{invtryItem.acsngDt | date:'dd-MM-yyyy HH:mm'}}</td>
-                        <td>
+                        <td name="asseccedQtyCell">
+	                        <input type="text" name="asseccedQty" 
+	                        	ng-model="invtryItem.asseccedQty" ng-show="invtryItem.editing">
                         	<span ng-show="!invtryItem.editing">{{invtryItem.asseccedQty | number:0}}</span>
-	                        <input type="text" name="asseccedQty"
-	                        	ng-model="invtryItem.asseccedQty" ng-show="invtryItem.editing" ng-change="qtyChanged(invtryItem)">
                         </td>
                         <td>
                         <div ng-show="!invInvtryUtils.isInvtryOpen(invInvtry)"><span>{{invtryItem.expectedQty | number:0}}</span></div>
@@ -217,14 +227,14 @@
                         	<span ng-show="invtryItem.editing">
 	                        	<a ng-click="updateItem(invtryItem)" class=""><i class="glyphicon glyphicon-save"></i></a>
                         	</span>
-                        	<span ng-show="invtryItem.editing" class="pull-right">
-	                        	<a ng-click="cancelEditItem(invtryItem)" class=""><i class="glyphicon glyphicon-remove"></i></a>
-                        	</span>
-                        	<span ng-show="!invtryItem.editing && invtryItem.disableDt" style="margin-left:5px">
+                        	<span ng-show="!invtryItem.editing && invtryItem.disableDt" style="margin-left:10px">
 	                        	<a ng-click="enableItem(invtryItem)" class=""><i class="glyphicon glyphicon-edit"></i></a>
                         	</span>
-                        	<span ng-show="invtryItem.editing" class="pull-right">
+                        	<span ng-show="invtryItem.editing" class="pull-right" style="margin-left: 10px">
 	                        	<a ng-click="disableItem(invtryItem)" class=""><i class="glyphicon glyphicon-trash"></i></a>
+                        	</span>
+                        	<span ng-show="invtryItem.editing" class="pull-right" style="margin-left: 10px">
+	                        	<a ng-click="cancelEditItem(invtryItem)" class=""><i class="glyphicon glyphicon-remove"></i></a>
                         	</span>
                         </div>
                         </td>
@@ -246,8 +256,8 @@
                 	<span class="pull-left">
 		                <a class="btn-danger btn" href="#/InvInvtrys" ><i class="glyphicon glyphicon-list" ></i> {{invInvtryUtils.translations['Entity_list.title']}}</a>
                 	</span>
-                	<span class="pull-right">
-                    	<a class="btn-danger btn" data-toggle="collapse" data-parent="#invIntryShowPanel"><i class="glyphicon glyphicon-edit"></i> {{invInvtryUtils.translations['Entity_edit.title']}}</a>
+                	<span class="pull-right" ng-show="!invInvtryUtils.isInvtryPosted(invInvtry)">
+                    	<a class="btn-danger btn" data-toggle="collapse" data-parent="#invIntryShowPanel" data-target="#invInvtryInfoToggle"><i class="glyphicon glyphicon-edit"></i> {{invInvtryUtils.translations['Entity_edit.title']}}</a>
                     </span>
                 </div>
                 <div class="col-lg-4">

@@ -10,16 +10,14 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
-import javax.persistence.EntityExistsException;
 
 import org.adorsys.adinvtry.jpa.InvInvtry;
 import org.adorsys.adinvtry.jpa.InvInvtryItem;
+import org.adorsys.adinvtry.jpa.InvInvtryStatus;
 import org.adorsys.adinvtry.rest.InvInvtryEJB;
 import org.adorsys.adinvtry.rest.InvInvtryItemEJB;
-import org.adorsys.adstock.jpa.StkArticleLot;
 import org.adorsys.adstock.jpa.StkArticleLot2StrgSctn;
 import org.adorsys.adstock.rest.StkArticleLot2StrgSctnLookup;
-import org.adorsys.adstock.rest.StkArticleLotLookup;
 import org.apache.commons.lang3.StringUtils;
 
 @Stateless
@@ -33,19 +31,23 @@ public class InvInvtryPrepareWkr {
 
 	@Inject
 	private StkArticleLot2StrgSctnLookup sctnLookup;
-	
+
 	@Inject
-	private StkArticleLotLookup articleLotLookup;
+	private InvInvtryMerger invInvtryMerger;
+
+	@Inject
+	private InvInvtryPrepareHelper prepareHelper;
 
 	@Schedule(second="*/45", minute = "*/3", hour="*", persistent=false)
 	@AccessTimeout(unit=TimeUnit.HOURS, value=2)
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public void prepareInventories() {
-		List<InvInvtry> invtrys = inventoryEJB.findOpenInvtrys();
+		List<InvInvtry> invtrys = inventoryEJB.findPreparingInvtrys();
 		for (InvInvtry inventory : invtrys) {
-			boolean close = false;
+			boolean close = true;
 			// Create object jobs.
 			if(StringUtils.isNotBlank(inventory.getRangeStart()) || StringUtils.isNotBlank(inventory.getRangeEnd())){
+				close = false;
 				String rangeStart = inventory.getRangeStart();
 				if(StringUtils.isBlank(rangeStart))rangeStart="a";
 				String rangeEnd = inventory.getRangeEnd();
@@ -58,7 +60,7 @@ public class InvInvtryPrepareWkr {
 						int firstResult = first;
 						first+=count;
 						List<StkArticleLot2StrgSctn> lot2Sections = sctnLookup.findByStrgSectionAndArtNameRange(inventory.getSection(), rangeStart, rangeEnd, firstResult, max);
-						close |= createInvntryItems(lot2Sections, inventory);
+						close |= prepareHelper.createInvntryItems(lot2Sections, inventory);
 					}
 				} else {
 					Long count = sctnLookup.countByArtNameRange(rangeStart, rangeEnd);
@@ -68,10 +70,11 @@ public class InvInvtryPrepareWkr {
 						int firstResult = first;
 						first+=count;
 						List<StkArticleLot2StrgSctn> lot2Sections = sctnLookup.findByArtNameRange(rangeStart, rangeEnd, firstResult, max);
-						close |= createInvntryItems(lot2Sections, inventory);
+						close |= prepareHelper.createInvntryItems(lot2Sections, inventory);
 					}
 				}
 			} else if (StringUtils.isNotBlank(inventory.getSection())){
+				close = false;
 				Long count = sctnLookup.countByStrgSection(inventory.getSection());
 				int max = 50;
 				int first = 0;
@@ -79,55 +82,48 @@ public class InvInvtryPrepareWkr {
 					int firstResult = first;
 					first+=count;
 					List<StkArticleLot2StrgSctn> lot2Sections = sctnLookup.findByStrgSectionSorted(inventory.getSection(), firstResult, max);
-					close |= createInvntryItems(lot2Sections, inventory);
+					close |= prepareHelper.createInvntryItems(lot2Sections, inventory);
 				}
 			}
 			if(close){
 				InvInvtry found = inventoryEJB.findById(inventory.getId());
 				found.setPreparedDt(new Date());
+				if(InvInvtryStatus.INITIALIZING==found.getInvtryStatus())
+					found.setInvtryStatus(InvInvtryStatus.ONGOING);
 				inventoryEJB.update(found);
 			}
 		}
 	}
 	
-	private boolean createInvntryItems(List<StkArticleLot2StrgSctn> lot2Sections, InvInvtry inventory){
-		boolean modified = false;
-		for (StkArticleLot2StrgSctn lot2StrgSctn : lot2Sections) {
-			String identifier = InvInvtryItem.toIdentifier(inventory.getInvtryNbr(), lot2StrgSctn.getLotPic(), 
-					lot2StrgSctn.getArtPic(), lot2StrgSctn.getStrgSection());
-			InvInvtryItem invtryItem = invInvtryItemEJB.findByIdentif(identifier);
-			if(invtryItem!=null) continue;
-			invtryItem = new InvInvtryItem();
-			invtryItem.setInvtryNbr(inventory.getInvtryNbr());
-			invtryItem.setLotPic(lot2StrgSctn.getLotPic());
-			invtryItem.setArtPic(lot2StrgSctn.getArtPic());
-			invtryItem.setSection(lot2StrgSctn.getStrgSection());
-			invtryItem.setArtName(lot2StrgSctn.getArtName());
-
-			StkArticleLot articleLot = articleLotLookup.findByIdentif(invtryItem.getLotPic());
-			invtryItem.setExpirDt(articleLot.getExpirDt());
-			invtryItem.setMinSppuHT(articleLot.getMinSppuHT());
-			invtryItem.setPppuCur(articleLot.getPppuCur());
-			invtryItem.setPppuPT(articleLot.getPppuHT());
-			invtryItem.setPurchRtrnDays(articleLot.getPurchRtrnDays());
-			invtryItem.setPurchWrntyDys(articleLot.getPurchWrntyDys());
-			invtryItem.setSalesRtrnDays(articleLot.getSalesRtrnDays());
-			invtryItem.setSalesWrntyDys(articleLot.getSalesWrntyDys());
-			invtryItem.setSppuCur(articleLot.getSppuCur());
-			invtryItem.setSppuPT(articleLot.getSppuHT());
-			invtryItem.setSupplier(articleLot.getSupplier());
-			invtryItem.setSupplierPic(articleLot.getSupplierPic());
-			invtryItem.setVatPurchPct(articleLot.getVatPurchPct());
-			invtryItem.setVatSalesPct(articleLot.getVatSalesPct());
-			
-			//evaluate different amount before save
-			try {
-				invtryItem = invInvtryItemEJB.create(invtryItem);
-				modified = true;
-			} catch (EntityExistsException e){
-				// Noop
+	@Schedule(second="*/47", minute = "*/7", hour="*", persistent=false)
+	@AccessTimeout(unit=TimeUnit.HOURS, value=2)
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public void mergeInventories() {
+		List<InvInvtry> invtrys = inventoryEJB.findMergingInvtrys();
+		for (InvInvtry inventory : invtrys) {
+			Long itemCount = invInvtryItemEJB.countByInvtryNbr(inventory.getInvtryNbr());
+			if(itemCount<=0L){
+				invInvtryMerger.setMerged(inventory.getInvtryNbr());
+				continue;
+			} else {
+				if(inventory.getInvtryStatus()!=InvInvtryStatus.MERGED){
+					invInvtryMerger.setMerging(inventory.getInvtryNbr());
+				}
+			}
+			int max = 50;
+			int first = 0;
+			while(first<itemCount){
+				int firstResult = first;
+				first+=max;
+				List<InvInvtryItem> items = invInvtryItemEJB.findByInvtryNbr(inventory.getInvtryNbr(), firstResult, max);
+				for (InvInvtryItem invtryItem : items) {
+					invInvtryMerger.mergeTo(invtryItem.getIdentif(), inventory.getContainerId());
+				}
+			}
+			itemCount = invInvtryItemEJB.countByInvtryNbr(inventory.getInvtryNbr());
+			if(itemCount<=0L){
+				invInvtryMerger.setMerged(inventory.getInvtryNbr());
 			}
 		}
-		return modified;
 	}
 }

@@ -209,8 +209,23 @@ public class InvInvtryItemEndpoint
 	              detach(searchInput));
 	}
 
-	private InvInvtryItemSearchResult findByInvtryNbrSorted(InvInvtryItemSearchInput searchInput){
+   @POST
+   @Path("/findByInvtryNbrSorted")
+   @Produces({ "application/json", "application/xml" })
+   @Consumes({ "application/json", "application/xml" })
+	public InvInvtryItemSearchResult findByInvtryNbrSorted(InvInvtryItemSearchInput searchInput){
 	   List<InvInvtryItem> resultList = ejb.findByInvtryNbrSorted(searchInput.getEntity().getInvtryNbr(), searchInput.getStart(), searchInput.getMax());
+	   Long countLike = ejb.countByInvtryNbr(searchInput.getEntity().getInvtryNbr());
+       return new InvInvtryItemSearchResult(countLike, detach(resultList),
+              detach(searchInput));
+   }
+   
+   @POST
+   @Path("/findByInvtryNbrSortedBySectionAndArtName")
+   @Produces({ "application/json", "application/xml" })
+   @Consumes({ "application/json", "application/xml" })
+	public InvInvtryItemSearchResult findByInvtryNbrSortedBySectionAndArtName(InvInvtryItemSearchInput searchInput){
+	   List<InvInvtryItem> resultList = ejb.findByInvtryNbrSortedBySectionAndArtName(searchInput.getEntity().getInvtryNbr(), searchInput.getStart(), searchInput.getMax());
 	   Long countLike = ejb.countByInvtryNbr(searchInput.getEntity().getInvtryNbr());
        return new InvInvtryItemSearchResult(countLike, detach(resultList),
               detach(searchInput));
@@ -282,6 +297,24 @@ public class InvInvtryItemEndpoint
 	   return new InvInvtryItemListSearchResult(count, resultList,searchInput);
    }
    
+   @POST
+   @Path("/findConflict")
+   @Produces({ "application/json", "application/xml" })
+   @Consumes({ "application/json", "application/xml" })
+   public InvInvtryItemListSearchResult findConflict(InvInvtryItemListSearchInput searchInput)
+   {
+	   List<String> invtryNbrs = searchInput.getEntity().getInvtryNbrs();
+	   Long count = ejb.countConflictingSalIndexForInvtrys(invtryNbrs);
+	   List<String> salIndexList = ejb.findConflictingSalIndexForInvtrys(invtryNbrs,searchInput.getStart(), searchInput.getMax());
+	   List<InvInvtryItemList> resultList = new ArrayList<InvInvtryItemList>(salIndexList.size());
+	   for (String salIndex : salIndexList) {
+		   List<InvInvtryItem> invtryItems = ejb.findBySalIndexForInvtrys(salIndex, invtryNbrs);
+		   InvInvtryItemList inItemList = new InvInvtryItemList(salIndex, invtryNbrs, invtryItems);
+		   resultList.add(inItemList);
+	   }
+
+	   return new InvInvtryItemListSearchResult(count, resultList,searchInput);
+   }
 
    private InvInvtryItem detach(InvInvtryItem entity)
    {

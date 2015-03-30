@@ -102,6 +102,7 @@ public abstract class InvAbstractInvtryItem extends AbstractIdentifData {
 	
 	@Column
 	@Description("InvInvtryItem_acsngUser_description")
+	@NotNull
 	private String acsngUser;
 	
 	@Column
@@ -142,16 +143,33 @@ public abstract class InvAbstractInvtryItem extends AbstractIdentifData {
 	@Description("InvInvtryItem_disabledDt_description")
 	@DateFormatPattern(pattern = "dd-MM-yyyy HH:mm")
 	private Date disabledDt;
+
+	/*
+	 * Set the date from with a conflict occured in this inventory.
+	 * A conflict occurs when tow or more inventories of the same 
+	 * item have diferrents outcomes. Or when there is no inventory
+	 * at all.
+	 */
+	@Temporal(TemporalType.TIMESTAMP)
+	@Description("InvInvtryItem_conflictingDt_description")
+	@DateFormatPattern(pattern = "dd-MM-yyyy HH:mm")
+	private Date conflictDt;
 	
 	@Column
-	@Description("InvInvtryItem_salesRtrnDays_description")
+	@Description("InvInvtryItem_salIndex_description")
 	@NotNull
 	private String salIndex;
+
+	@Column
+	@Description("InvInvtryItem_usalIndex_description")
+	@NotNull
+	private String usalIndex;
 	
 	@PrePersist
 	public void prePersist() {
 		super.prePersist();
 		salIndex = section + "_" + artPic + "_" + lotPic;
+		usalIndex = acsngUser + "_" + salIndex;
 	}
 	
 	public String getInvtryNbr() {
@@ -377,14 +395,38 @@ public abstract class InvAbstractInvtryItem extends AbstractIdentifData {
 	public void setSalesRtrnDays(BigDecimal salesRtrnDays) {
 		this.salesRtrnDays = salesRtrnDays;
 	}
+	
+	public Date getConflictDt() {
+		return conflictDt;
+	}
 
-	public static String toIdentifier(String invtryNbr, String lotPic, String artPic, String section){
-		return invtryNbr + "_" + lotPic + "_" + artPic + "_" + section;
+	public void setConflictDt(Date conflictDt) {
+		this.conflictDt = conflictDt;
+	}
+
+	public String getSalIndex() {
+		return salIndex;
+	}
+
+	public void setSalIndex(String salIndex) {
+		this.salIndex = salIndex;
+	}
+
+	public String getUsalIndex() {
+		return usalIndex;
+	}
+
+	public void setUsalIndex(String usalIndex) {
+		this.usalIndex = usalIndex;
+	}
+
+	public static String toIdentifier(String invtryNbr, String acsngUser,String lotPic, String artPic, String section){
+		return invtryNbr + "_" + acsngUser + "_" + lotPic + "_" + artPic + "_" + section;
 	}
 	
 	@Override
 	protected String makeIdentif() {
-		return toIdentifier(invtryNbr, lotPic, artPic, section);
+		return toIdentifier(invtryNbr, acsngUser, lotPic, artPic, section);
 	}
 	
 	public void copyTo(InvAbstractInvtryItem target) {
@@ -411,6 +453,9 @@ public abstract class InvAbstractInvtryItem extends AbstractIdentifData {
 		target.vatPurchPct = vatPurchPct;
 		target.vatSalesPct = vatSalesPct;
 		target.disabledDt = disabledDt;
+		target.salIndex = salIndex;
+		target.usalIndex = usalIndex;
+		target.conflictDt = conflictDt;
 	}
 	
 	public boolean contentEquals(InvAbstractInvtryItem target) {
@@ -419,6 +464,7 @@ public abstract class InvAbstractInvtryItem extends AbstractIdentifData {
 		if(!StringUtils.equals(target.artPic,artPic)) return false;
 		if(!StringUtils.equals(target.artName,artName)) return false;
 		if(!BigDecimalUtils.numericEquals(target.asseccedQty,asseccedQty)) return false;
+		if(!CalendarUtil.isSameDay(target.conflictDt,conflictDt)) return false;
 		if(!CalendarUtil.isSameDay(target.disabledDt,disabledDt)) return false;
 		if(!BigDecimalUtils.numericEquals(target.expectedQty,expectedQty)) return false;
 		if(!CalendarUtil.isSameDay(target.expirDt,expirDt)) return false;
@@ -430,11 +476,13 @@ public abstract class InvAbstractInvtryItem extends AbstractIdentifData {
 		if(!StringUtils.equals(target.orgUnit,orgUnit)) return false;
 		if(!StringUtils.equals(target.pppuCur,pppuCur)) return false;
 		if(!BigDecimalUtils.numericEquals(target.pppuPT,pppuPT)) return false;
+		if(!StringUtils.equals(target.salIndex,salIndex)) return false;
 		if(!StringUtils.equals(target.section,section)) return false;
 		if(!StringUtils.equals(target.sppuCur,sppuCur)) return false;
 		if(!BigDecimalUtils.numericEquals(target.sppuPT,sppuPT)) return false;
 		if(!StringUtils.equals(target.supplier,supplier)) return false;
 		if(!StringUtils.equals(target.supplierPic,supplierPic)) return false;
+		if(!StringUtils.equals(target.usalIndex,usalIndex)) return false;
 		if(!BigDecimalUtils.numericEquals(target.vatPurchPct,vatPurchPct)) return false;
 		if(!BigDecimalUtils.numericEquals(target.vatSalesPct,vatSalesPct)) return false;
 		return true;

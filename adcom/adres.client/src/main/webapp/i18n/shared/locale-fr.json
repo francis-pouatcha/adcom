@@ -58,6 +58,7 @@
     "Entity_info.title":"Info",
     "Entity_merge.title":"Fusionner",
     "Entity_compare.title":"Comparer",
+    "Entity_selected.title": "Selectioné",
     
     "BaseCountryName_isoCode_description.title":"Code Pays",
     "BaseCountryName_iso2_description.title":"Code Pays Iso 2",

@@ -396,19 +396,23 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
             function addItem(cdrDsArtItemHolder) {
                 if (isNotCorrect($scope.cdrDsArtItemHolder)) return;
                 if (cdrDsArtItemHolder.soldQty > cdrDsArtItemHolder.maxStockQty) return;
-                var copy = angular.copy($scope.cdrDsArtItemHolder)
+                var copy = angular.copy(cdrDsArtItemHolder)
                 var i = 0;
                 var artItemHolders = $scope.cdrDsArtHolder.artItemHolders;
                 if(artItemHolders.length == 0) {
                     $scope.cdrDsArtHolder.artItemHolders.push(copy);
                 }else {
+                    var found = false;
                     angular.forEach(artItemHolders,function(artItemHolder) {
-                       if( (artItemHolder.artPic == copy.artPic)) {
-                           artItemHolder = copy;
-                       }else {
-                           $scope.cdrDsArtHolder.artItemHolders.push(copy);
+                       if( (artItemHolder.artPic == copy.artPic) && (artItemHolder.artName == copy.artName)) {
+                           artItemHolders[i] = copy;
+                           found = true;
                        }
-                    });   
+                       i += 1;
+                    });
+                    if(!found) {
+                        $scope.cdrDsArtHolder.artItemHolders.push(copy);
+                    }
                 }
                 computeCdrDsArtHolder();
                 $scope.cdrDsArtItemHolder = clearObject($scope.cdrDsArtItemHolder);

@@ -14,6 +14,7 @@ import org.adorsys.adcore.auth.TermWsUserPrincipal;
 import org.adorsys.adcore.utils.BigDecimalUtils;
 import org.adorsys.adcore.utils.CalendarUtil;
 import org.adorsys.adcore.utils.FormatedValidFrom;
+import org.adorsys.adcore.vo.StringListHolder;
 import org.adorsys.adinvtry.jpa.InvInvtry;
 import org.adorsys.adinvtry.jpa.InvInvtryHstry;
 import org.adorsys.adinvtry.jpa.InvInvtryItem;
@@ -53,6 +54,7 @@ public class InvInvtryManager {
 	public InvInvtry prepareInventory(InvInvtry invtry, String accessingUser) {
 		// Create the delivery object if necessary
 		Date now = new Date();
+		invtry.setInvtryStatus(InvInvtryStatus.INITIALIZING);
 		return createInventoryObject(invtry, accessingUser, now);
 	}
 	
@@ -64,10 +66,14 @@ public class InvInvtryManager {
 	 * @return
 	 */
 	public InvInvtry updateInventory(InvInvtry invtry){
+		if(invtry.getInvtryStatus()==InvInvtryStatus.INITIALIZING || invtry.getInvtryStatus()==InvInvtryStatus.POSTED)
+			return invtry;// Not updatable.
 		return inventoryEJB.update(invtry);
 	}
 	
 	public InvInvtry closeInventory(InvInvtry invtry){
+		if(invtry.getInvtryStatus()==InvInvtryStatus.CLOSED || invtry.getInvtryStatus()==InvInvtryStatus.POSTED)
+			return invtry;// Not closable.
 		invtry = inventoryEJB.findById(invtry.getId());
 		recomputeInventory(invtry);
 		invtry.setInvtryStatus(InvInvtryStatus.CLOSED);
@@ -78,6 +84,8 @@ public class InvInvtryManager {
 	}	
 
 	public InvInvtry postInventory(InvInvtry invtry){
+		if(invtry.getInvtryStatus()!=InvInvtryStatus.CLOSED)
+			return invtry;// Not closable.
 		invtry = inventoryEJB.findById(invtry.getId());
 		recomputeInventory(invtry);
 		invtry.setInvtryStatus(InvInvtryStatus.POSTED);
@@ -98,13 +106,15 @@ public class InvInvtryManager {
 	 * @return
 	 */
 	public InvInvtryItem addItem(InvInvtryItem invtryItem) {
+
 		InvInvtry invtry = inventoryEJB.findByIdentif(invtryItem.getInvtryNbr());
 		if(invtry==null) 
 			throw new IllegalArgumentException("Missing inventory object");
 		if(invtryHstryEJB.isClosed(invtry.getIdentif()))
 			throw new IllegalStateException("Inventory object closed");
 		
-		String identifier = InvInvtryItem.toIdentifier(invtryItem.getInvtryNbr(), invtryItem.getLotPic(), invtryItem.getArtPic(), invtryItem.getSection());
+		invtryItem.setAcsngUser(securityUtil.getCurrentLoginName());
+		String identifier = InvInvtryItem.toIdentifier(invtryItem.getInvtryNbr(), invtryItem.getAcsngUser(), invtryItem.getLotPic(), invtryItem.getArtPic(), invtryItem.getSection());
 		
 		InvInvtryItem existing = invInvtryItemEJB.findByIdentif(identifier);
 		if(existing!=null)
@@ -134,7 +144,6 @@ public class InvInvtryManager {
 			if(invtryItem.getAcsngDt()==null){
 				invtryItem.setAcsngDt(new Date());
 			}
-			invtryItem.setAcsngUser(securityUtil.getCurrentLoginName());
 			StkLotStockQty stockQty = stockQtyLookup.findLatestQty(invtryItem.getArtPic(), invtryItem.getLotPic(), invtryItem.getSection());
 			if(stockQty!=null)
 				invtryItem.setExpectedQty(stockQty.getStockQty());
@@ -174,7 +183,7 @@ public class InvInvtryManager {
 		String currentLoginName = securityUtil.getCurrentLoginName();
 
 		boolean changed = false;
-		if(!BigDecimalUtils.numericEquals(invtryItem.getAsseccedQty(), existing.getAsseccedQty())){
+		if(!BigDecimalUtils.strictEquals(invtryItem.getAsseccedQty(), existing.getAsseccedQty())){
 			existing.setAsseccedQty(invtryItem.getAsseccedQty());
 			existing.setAcsngDt(invtryItem.getAcsngDt());
 			existing.setAcsngUser(currentLoginName);
@@ -262,7 +271,8 @@ public class InvInvtryManager {
 				inventory.setAcsngUser(currentLoginName);
 			if(inventory.getInvtryDt()==null)
 				inventory.setInvtryDt(now);
-			inventory.setInvtryStatus(InvInvtryStatus.ONGOING);
+			if(inventory.getInvtryStatus()==null)
+				inventory.setInvtryStatus(InvInvtryStatus.ONGOING);
 			if(StringUtils.isBlank(inventory.getSection()) && StringUtils.isBlank(inventory.getRangeStart()) && StringUtils.isBlank(inventory.getRangeEnd())){
 				inventory.setPreparedDt(new Date());
 			}
@@ -384,5 +394,55 @@ public class InvInvtryManager {
 		invtryHstry.setOrignWrkspc(callerPrincipal.getWorkspaceId());
 		invtryHstry.setProcStep(BaseProcStepEnum.MODIFYING.name());
 		invtryHstryEJB.create(invtryHstry);
+	}
+
+	/**
+	 * Merge all listed inventories into a single inventory.
+	 * 
+	 * @param searchInput
+	 * @return
+	 */
+	public StringListHolder merge(StringListHolder invtryNbrs) {
+		List<String> list = invtryNbrs.getList();
+		if(list.isEmpty() || list.size()==1) return invtryNbrs;
+		String containerInvtryNbr = list.get(0);
+		// Validate Inventry for merging.
+		InvInvtry containerInvtry = inventoryEJB.findByIdentif(containerInvtryNbr);
+		checkCandidateContainer(containerInvtry);
+		for (String invtryNbr : list) {
+			if(StringUtils.equals(invtryNbr,containerInvtryNbr)) continue;
+			InvInvtry invtry = inventoryEJB.findByIdentif(invtryNbr);
+			checkCandidateMerge(containerInvtry, invtry);
+			if(invtry.getContainerId()==null){
+				invtry.setContainerId(containerInvtry.getInvtryNbr());
+				invtry.setInvtryStatus(InvInvtryStatus.MERGED);
+				inventoryEJB.update(invtry);
+			}
+		}
+		containerInvtry.setContainerId(containerInvtry.getContainerId());
+		inventoryEJB.update(containerInvtry);
+		return invtryNbrs;
+	}
+	
+	private void checkCandidateContainer(InvInvtry containerInvtry){
+		if(containerInvtry==null)
+			throw new IllegalArgumentException("InvInvtry_candidateContainerNotFound_error");
+		// COnditions
+		if(containerInvtry.getContainerId()!=null || containerInvtry.getMergedDate()!=null)
+			throw new IllegalArgumentException("InvInvtry_mergedCanNotContain_error");
+		if(containerInvtry.getPostedDate()!=null || containerInvtry.getMergedDate()!=null)
+			throw new IllegalArgumentException("InvInvtry_postedCanNotContain_error");
+	}
+
+	private void checkCandidateMerge(InvInvtry invtry, InvInvtry containerInvtry){
+		if(invtry==null)
+			throw new IllegalArgumentException("InvInvtry_candidateMergeNotFound_error");
+		// Conditions
+		if(invtry.getPostedDate()!=null)
+			throw new IllegalArgumentException("InvInvtry_postedCanNotBeMerged_error");
+		if(invtry.getContainerId()!=null && !StringUtils.equals(invtry.getContainerId(), containerInvtry.getInvtryNbr()))
+			throw new IllegalArgumentException("InvInvtry_mergeCandAssignedToAnotherContainer_error");
+		if(invtry.getMergedDate()!=null && !StringUtils.equals(invtry.getContainerId(), containerInvtry.getInvtryNbr()))
+			throw new IllegalArgumentException("InvInvtry_mergeCandMergedIntoAnotherContainer_error");
 	}
 }

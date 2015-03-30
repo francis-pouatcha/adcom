@@ -1,10 +1,10 @@
 package org.adorsys.adinvtry.jpa;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
+import org.adorsys.adcore.utils.BigDecimalUtils;
 
 public class InvInvtryItemList {
 
@@ -19,35 +19,49 @@ public class InvInvtryItemList {
 	private String artName;
 	
 	private String section;
-	
+
 	private List<InvInvtryItem> invtryItems = new ArrayList<InvInvtryItem>();
+	
+	private Boolean sameQty;
 	
 	public InvInvtryItemList() {
 	}
-	
+
 	public InvInvtryItemList(String salIndex, List<String> invtryNbrs,
-			List<InvInvtryItem> invtryItems) {
+			List<InvInvtryItem> invtryItemsIn) {
 		this.salIndex = salIndex;
 		this.invtryNbrs = invtryNbrs;
-		InvInvtryItem invInvtryItem = invtryItems.iterator().next();
+		setCoreData(invtryItemsIn);
+		this.invtryItems = invtryItemsIn;
+
+		sameQty = checkSameQty(invtryItemsIn);
+	}
+	
+	public static final Boolean checkSameQty(List<InvInvtryItem> invtryItemsIn){
+		BigDecimal qty = null;
+		Boolean sameQty = Boolean.FALSE;
+		int count = 0;
+		for (InvInvtryItem item : invtryItemsIn) {
+			if(item.getDisabledDt()!=null) continue;
+			if(count==0){
+				qty = item.getAsseccedQty();
+				if(qty!=null)
+					sameQty = Boolean.TRUE;
+			} else {
+				if(item.getAsseccedQty()==null || !BigDecimalUtils.strictEquals(qty, item.getAsseccedQty())){
+					sameQty = Boolean.FALSE;
+				}
+			}
+		}
+		return sameQty;
+	}
+	
+	private void setCoreData(List<InvInvtryItem> invtryItemsIn){
+		InvInvtryItem invInvtryItem = invtryItemsIn.iterator().next();
 		lotPic = invInvtryItem.getLotPic();
 		artPic = invInvtryItem.getArtPic();
 		artName = invInvtryItem.getArtName();
 		section = invInvtryItem.getSection();
-		// Sort the inventory items in the order of the intryNbrs
-//		this.invtryItems = new ArrayList<InvInvtryItem>(invtryNbrs.size());
-		InvInvtryItem[] invtryItemsArray = new InvInvtryItem[invtryNbrs.size()];
-		int size = invtryNbrs.size();
-		for (int i = 0; i < size; i++) {
-			String invtryNbr = invtryNbrs.get(i);
-			for (InvInvtryItem invtryItem : invtryItems) {
-				if(StringUtils.equals(invtryNbr, invtryItem.getInvtryNbr())){
-					invtryItemsArray[i]=invtryItem;
-					break;
-				}
-			}
-		}
-		this.invtryItems = Arrays.asList(invtryItemsArray);
 	}
 
 	public List<String> getInvtryNbrs() {
@@ -56,14 +70,6 @@ public class InvInvtryItemList {
 
 	public void setInvtryNbrs(List<String> invtryNbrs) {
 		this.invtryNbrs = invtryNbrs;
-	}
-
-	public List<InvInvtryItem> getInvtryItems() {
-		return invtryItems;
-	}
-
-	public void setInvtryItems(List<InvInvtryItem> invtryItems) {
-		this.invtryItems = invtryItems;
 	}
 
 	public String getSalIndex() {
@@ -105,5 +111,20 @@ public class InvInvtryItemList {
 	public void setSection(String section) {
 		this.section = section;
 	}
-	
+
+	public Boolean getSameQty() {
+		return sameQty;
+	}
+
+	public void setSameQty(Boolean sameQty) {
+		this.sameQty = sameQty;
+	}
+
+	public List<InvInvtryItem> getInvtryItems() {
+		return invtryItems;
+	}
+
+	public void setInvtryItems(List<InvInvtryItem> invtryItems) {
+		this.invtryItems = invtryItems;
+	}
 }

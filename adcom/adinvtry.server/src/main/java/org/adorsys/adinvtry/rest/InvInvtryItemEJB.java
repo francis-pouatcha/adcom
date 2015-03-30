@@ -1,5 +1,8 @@
 package org.adorsys.adinvtry.rest;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -8,6 +11,7 @@ import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adinvtry.jpa.InvInvtryItem;
 import org.adorsys.adinvtry.jpa.InvInvtryItemEvtData;
+import org.adorsys.adinvtry.jpa.InvInvtryItemList;
 import org.adorsys.adinvtry.repo.InvInvtryItemRepository;
 import org.apache.commons.lang3.StringUtils;
 
@@ -23,6 +27,33 @@ public class InvInvtryItemEJB
 	
 	public InvInvtryItem create(InvInvtryItem entity)
 	{
+		String salIndex = entity.getSalIndex();
+		List<InvInvtryItem> found = findBySalIndexForInvtrys(salIndex, Arrays.asList(entity.getInvtryNbr()));
+		List<InvInvtryItem> compareList = new ArrayList<InvInvtryItem>();
+		compareList.add(entity);
+		compareList.addAll(found);
+		Boolean sameQty = InvInvtryItemList.checkSameQty(compareList);
+		Date now = new Date();
+		if(!sameQty){
+			entity.setConflictDt(now);
+			for (InvInvtryItem item : found) {
+				// Only save if conflict date was null.
+				if(item.getConflictDt()==null){
+					item.setConflictDt(now);
+					internalUpdate(item);
+				}
+			}
+		} else { // resolve conflict if any
+			entity.setConflictDt(null);
+			for (InvInvtryItem item : found) {
+				// Only save if conflict date was null.
+				if(item.getConflictDt()!=null){
+					item.setConflictDt(null);
+					internalUpdate(item);
+				}
+			}
+		}
+
 		InvInvtryItem invtryItem = repository.save(attach(entity));
 		InvInvtryItemEvtData itemEvtData = new InvInvtryItemEvtData();
 		invtryItem.copyTo(itemEvtData);
@@ -44,7 +75,60 @@ public class InvInvtryItemEJB
 
 	public InvInvtryItem update(InvInvtryItem entity)
 	{
-		InvInvtryItem invtryItem = repository.save(attach(entity));
+		// Make sure there is a consistency, if not set conflicting date.
+		// 1. Select all inventoru items of this inventory with the salIndex.
+		String salIndex = entity.getSalIndex();
+		List<InvInvtryItem> found = findBySalIndexForInvtrys(salIndex, Arrays.asList(entity.getInvtryNbr()));
+		List<InvInvtryItem> compareList = new ArrayList<InvInvtryItem>();
+		for (InvInvtryItem item : found) {
+			if(StringUtils.equals(item.getId(), entity.getId())){
+				compareList.add(entity);
+			} else {
+				compareList.add(item);
+			}
+		}
+		// 2. Make sure all non disabled have a number.
+		Boolean sameQty = InvInvtryItemList.checkSameQty(compareList);
+		InvInvtryItem invtryItem = null;
+		// If not all identical qty, set conflict.
+		// Unless they are discarded.
+		Date now = new Date();
+		if(!sameQty){
+			for (InvInvtryItem item : compareList) {
+				if(StringUtils.equals(item.getId(), entity.getId())){
+					if(item.getConflictDt()==null){
+						item.setConflictDt(now);
+					}
+					invtryItem = internalUpdate(item);
+				} else {
+					// Only save if conflict date was null.
+					if(item.getConflictDt()==null){
+						item.setConflictDt(now);
+						internalUpdate(item);
+					}
+				}
+			}
+		} else { // resolve conflict if any
+			for (InvInvtryItem item : compareList) {
+				if(StringUtils.equals(item.getId(), entity.getId())){
+					if(item.getConflictDt()!=null){
+						item.setConflictDt(null);
+					}
+					invtryItem = internalUpdate(item);
+				} else {
+					// Only save if conflict date was null.
+					if(item.getConflictDt()!=null){
+						item.setConflictDt(null);
+						internalUpdate(item);
+					}
+				}
+			}
+		}
+		return invtryItem;
+	}
+	
+	private InvInvtryItem internalUpdate(InvInvtryItem invtryItem){
+		invtryItem = repository.save(attach(invtryItem));
 		InvInvtryItemEvtData itemEvtData = itemEvtDataEJB.findById(invtryItem.getId());
 		invtryItem.copyTo(itemEvtData);
 		itemEvtDataEJB.update(itemEvtData);
@@ -110,6 +194,10 @@ public class InvInvtryItemEJB
 		return repository.findByInvtryNbr(invtryNbr).orderAsc("artName").firstResult(start).maxResults(max).getResultList();
 	}
 
+	public List<InvInvtryItem> findByInvtryNbrSortedBySectionAndArtName(String invtryNbr, int start, int max) {
+		return repository.findByInvtryNbr(invtryNbr).orderAsc("section").orderAsc("artName").firstResult(start).maxResults(max).getResultList();
+	}
+	
 	public List<InvInvtryItem> findByInvtryNbrAndSectionSorted(
 			String invtryNbr, String section, int start, int max) {
 		return repository.findByInvtryNbrAndSection(invtryNbr, section).orderAsc("artName").firstResult(start).maxResults(max).getResultList();
@@ -167,5 +255,13 @@ public class InvInvtryItemEJB
 	}
 	public List<InvInvtryItem> findBySalIndexForInvtrys(String salIndex, List<String> invNbrs){
 		return repository.bySalIndexForInvtrys(salIndex, invNbrs).getResultList();
+	}
+
+	public Long countConflictingSalIndexForInvtrys(List<String> invNbrs){
+		return repository.conflictingSalIndexForInvtrys(invNbrs).count();
+	}  
+
+	public List<String> findConflictingSalIndexForInvtrys(List<String> invNbrs, int first, int max){
+		return repository.conflictingSalIndexForInvtrys(invNbrs).firstResult(first).maxResults(max).orderAsc("salIndex").getResultList();
 	}
 }
