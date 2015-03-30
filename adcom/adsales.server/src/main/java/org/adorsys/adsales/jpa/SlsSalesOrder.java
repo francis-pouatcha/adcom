@@ -12,7 +12,6 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 import org.adorsys.adbase.enums.BaseProcessStatusEnum;
-import org.adorsys.adbase.jpa.BaseProcessStatus;
 import org.adorsys.adcore.jpa.AbstractIdentifData;
 import org.adorsys.javaext.description.Description;
 import org.adorsys.javaext.format.DateFormatPattern;

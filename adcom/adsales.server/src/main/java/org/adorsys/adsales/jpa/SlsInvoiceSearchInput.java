@@ -109,7 +109,9 @@ public class SlsInvoiceSearchInput
 	}
    
    
-   
+	public boolean noSpecialParams(){
+		return invceDtFrom==null && invceDtTo==null && ptnrNbr==null;
+	}
    
    
 }

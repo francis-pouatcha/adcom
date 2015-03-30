@@ -11,7 +11,6 @@ import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adsales.jpa.SlsSalesOrder;
 import org.adorsys.adsales.jpa.SlsSalesOrderSearchInput;
-import org.adorsys.adsales.repo.SlsSOPtnrRepository;
 import org.adorsys.adsales.repo.SlsSalesOrderRepository;
 import org.apache.commons.lang3.StringUtils;
 
@@ -22,8 +21,6 @@ public class SlsSalesOrderEJB
    @Inject
    private SlsSalesOrderRepository repository;
    
-   @Inject
-   private SlsSOPtnrRepository slsSOPtnrRepository;
    
    @Inject
 	private EntityManager em;
@@ -158,10 +155,10 @@ public class SlsSalesOrderEJB
 		}
 	   
 		if(searchInput.getSlsSODtFrom()!=null){
-			query.setParameter("invtryDtFrom", searchInput.getSlsSODtFrom());
+			query.setParameter("slsSODtFrom", searchInput.getSlsSODtFrom());
 		}
 		if(searchInput.getSlsSODtTo()!=null){
-			query.setParameter("invtryDtTo", searchInput.getSlsSODtTo());
+			query.setParameter("slsSODtTo", searchInput.getSlsSODtTo());
 		}
 	   
    }
@@ -169,7 +166,7 @@ public class SlsSalesOrderEJB
    
    public List<SlsSalesOrder> findCustom(SlsSalesOrderSearchInput searchInput){
 	   StringBuilder qBuilder = null;
-	   if(searchInput.getPtnrNbr()!=null){
+	   if(StringUtils.isNotBlank(searchInput.getPtnrNbr())){
 		   qBuilder= preprocessQuery(FIND_CUSTOM_PARTNER_QUERY, searchInput);
 		   qBuilder.append(" AND s.soNbr = p.soNbr");
 	   }else {

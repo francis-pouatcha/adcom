@@ -64,7 +64,7 @@
 "SlsInvceItem_vatPct_description.text":"The taux de TVA en pourcent.",
 "SlsInvceItem_vatPct_description.title":"Taux TVA",
 
-"SlsInvcePtnr_description.text":"Personne Impliqué dans une Facture",
+"SlsInvcePtnr_description.text":"Personne Impliquée dans une Facture",
 "SlsInvcePtnr_description.title":"Partenaire",
 "SlsInvcePtnr_invceNbr_description.text":"Le numéro de la facture.",
 "SlsInvcePtnr_invceNbr_description.title":"Numéro de Facture",
@@ -78,7 +78,7 @@
 "SlsInvoices_description.text":"Factures.",
 "SlsInvoices_description.title":"Factures Client",
 "SlsInvoice_grossSPPreTax_description.text":"Montant Vente Achat Hors Taxes",
-"SlsInvoice_grossSPPreTax_description.title":"Montant Brut Vente Hors Taxes",
+"SlsInvoice_grossSPPreTax_description.title":"Montant Brut Vente HT",
 "SlsInvoice_invceCur_description.text":"Dévise de cette facture",
 "SlsInvoice_invceCur_description.title":"Dévise",
 "SlsInvoice_invceDt_description.text":"Date de facturation",
@@ -109,7 +109,9 @@
 "SlsInvoice_soNbr_description.title":"Numéro de Commande",
 "SlsInvoice_vatAmount_description.text":"Montant de la taxe de cette facture.",
 "SlsInvoice_vatAmount_description.title":"Montant TVA",
-"SlsInvoice_invceDtFrom_description.title": "Date du",
+"SlsInvoice_invceDtFrom_description.text": "Date Facture inferieure a",
+"SlsInvoice_invceDtFrom_description.text": "Date du",
+"SlsInvoice_invceDtTo_description.text":"Date Facture superieure a",
 "SlsInvoice_invceDtTo_description.title":"Au",
 
 "SlsInvceStatus_description.text":"Status da la facture",

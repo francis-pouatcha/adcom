@@ -25,6 +25,8 @@ import org.adorsys.adsales.jpa.SlsInvoice;
 import org.adorsys.adsales.jpa.SlsInvoiceSearchInput;
 import org.adorsys.adsales.jpa.SlsInvoiceSearchResult;
 import org.adorsys.adsales.jpa.SlsInvoice_;
+import org.adorsys.adsales.jpa.SlsSalesOrder;
+import org.adorsys.adsales.jpa.SlsSalesOrderSearchResult;
 
 /**
  * 
@@ -132,6 +134,21 @@ public class SlsInvoiceEndpoint
             searchInput.getStart(), searchInput.getMax(), attributes);
       return new SlsInvoiceSearchResult(countLike, detach(resultList),
             detach(searchInput));
+   }
+   
+   @POST
+   @Path("/findCustom")
+   @Produces({ "application/json", "application/xml" })
+   @Consumes({ "application/json", "application/xml" })
+   public SlsInvoiceSearchResult findCustom(SlsInvoiceSearchInput searchInput)
+   {
+      if(searchInput.noSpecialParams()){
+    	  return findByLike(searchInput);
+      }
+      Long count = ejb.countCustom(searchInput);
+ 	 List<SlsInvoice> resultList = ejb.findCustom(searchInput);
+ 	 return new SlsInvoiceSearchResult(count, detach(resultList), detach(searchInput));
+     
    }
 
    @POST

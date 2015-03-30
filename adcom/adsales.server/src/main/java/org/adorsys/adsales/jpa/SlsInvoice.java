@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.adorsys.adcore.jpa.AbstractIdentifData;
@@ -88,6 +89,10 @@ public class SlsInvoice extends AbstractIdentifData {
 	@Column
 	@Description("SlsInvoice_netAmtToPay_description")
 	private BigDecimal netAmtToPay;
+	
+	@Transient
+	@Description("SlsInvoice_ptnrNbr_description")
+	private String ptnrNbr;
 
 	public String getInvceType() {
 		return this.invceType;
@@ -216,6 +221,14 @@ public class SlsInvoice extends AbstractIdentifData {
 
 	public void setNetAmtToPay(final BigDecimal netAmtToPay) {
 		this.netAmtToPay = netAmtToPay;
+	}
+
+	public String getPtnrNbr() {
+		return ptnrNbr;
+	}
+
+	public void setPtnrNbr(String ptnrNbr) {
+		this.ptnrNbr = ptnrNbr;
 	}
 
 	@Override

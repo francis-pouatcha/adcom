@@ -4,6 +4,7 @@
                 <div class="row">
                     <div class="col-lg-3">
                         <b>{{slsInvoicesUtils.translations['Entity_search.title']}}</b>
+                        <b>{{slsInvoicesUtils.translations['SlsInvoices_description.title']}}</b>
                     </div>
                 </div>
             </div>
@@ -13,7 +14,7 @@
                         <div class="row" >
                             <div class="col-lg-3">
                                 <div class="form-group">
-                                    <label class=" control-label" for="soNbr">{{slsInvoicesUtils.translations['SlsInvoice_soNbr_description.title']}}</label>
+                                    <label class=" control-label" tooltips="" title="{{slsInvoicesUtils.translations['SlsInvoice_soNbr_description.text']}}" tooltip-side="top" for="soNbr">{{slsInvoicesUtils.translations['SlsInvoice_soNbr_description.title']}}</label>
                                     <div class="">
                                         <input type="text" id="soNbr" ng-model="searchInput.entity.soNbr" class="form-control">
                                     </div>
@@ -21,7 +22,7 @@
                             </div>
                             <div class="col-lg-3">
                                 <div class="form-group">
-                                    <label class=" control-label" for="invceNbr">{{slsInvoicesUtils.translations['SlsInvoice_invceNbr_description.title']}}</label>
+                                    <label class=" control-label" tooltips="" title="{{slsInvoicesUtils.translations['SlsInvoice_invceNbr_description.text']}}" tooltip-side="top" for="invceNbr">{{slsInvoicesUtils.translations['SlsInvoice_invceNbr_description.title']}}</label>
                                     <div class="">
                                         <input type="text" id="invceNbr" ng-model="searchInput.entity.invceNbr" class="form-control">
                                     </div>
@@ -29,7 +30,7 @@
                             </div>
                             <div class="col-lg-2">
                                 <div class="form-group">
-                                    <label class=" control-label" for="invceDtFrom">{{slsInvoicesUtils.translations['SlsInvoice_invceDtFrom_description.title']}}</label>
+                                    <label class=" control-label" tooltips="" title="{{slsInvoicesUtils.translations['SlsInvoice_invceDtFrom_description.text']}}" tooltip-side="top" for="invceDtFrom">{{slsInvoicesUtils.translations['SlsInvoice_invceDtFrom_description.title']}}</label>
                                     <div class="">
                                         <input type="datetime" date-time  view="date" min-view="date" views="['date']" dismiss="true" format="dd-MM-yyyy"
                                                id="invceDtFrom" ng-model="searchInput.invceDtFrom" class="form-control">
@@ -38,7 +39,7 @@
                             </div>
                             <div class="col-lg-2">
                                 <div class="form-group">
-                                    <label class=" control-label" for="invceDtTo">{{slsInvoicesUtils.translations['SlsInvoice_invceDtTo_description.title']}}</label>
+                                    <label class=" control-label" tooltips="" title="{{slsInvoicesUtils.translations['SlsInvoice_invceDtTo_description.text']}}" tooltip-side="top" for="invceDtTo">{{slsInvoicesUtils.translations['SlsInvoice_invceDtTo_description.title']}}</label>
                                     <div class="">
                                         <input type="datetime" date-time  view="date" min-view="date" views="['date']" dismiss="true" format="dd-MM-yyyy"
                                                id="invceDtTo" ng-model="searchInput.invceDtTo" class="form-control">
@@ -58,11 +59,11 @@
                               </div>
                         </div>
                         <div class="row">
-                            <div class="col-lg-4">
+                            <div class="col-lg-3">
                             <div class="form-group">
-                               <label class=" control-label" for="ptnr">{{slsInvoicesUtils.translations['SlsInvcePtnr_description.title']}}</label>
+                               <label class=" control-label" tooltips="" tooltip-title="{{slsInvoicesUtils.translations['SlsInvcePtnr_description.text']}}" tooltip-side="top" for="ptnr">{{slsInvoicesUtils.translations['SlsInvcePtnr_description.title']}}</label>
                                <div class="">
-                                <input type="text" name="ptnr" id="ptnr" placeholder="{{slsInvoicesUtils.translations['SlsInvcePtnr_description.text']}}" ng-model="searchInput.ptnr" autocomplete="off" typeahead="ptnr as ptnr.fullName for ptnr in slsSalesOrderUtils.loadPartnersByName($viewValue) | filter:$viewValue" typeahead-loading="loading" class="form-control">
+                                <input type="text" name="ptnr" id="ptnr" ng-model="searchInput.ptnr" autocomplete="off" typeahead="ptnr as ptnr.fullName for ptnr in slsSalesOrderUtils.loadPartnersByName($viewValue) | filter:$viewValue" typeahead-loading="loading" class="form-control">
                                </div>
                             </div>
                             </div>
@@ -77,11 +78,28 @@
             <div class="panel-heading no-collapse"><b>{{slsInvoicesUtils.translations['Entity_Result.title']}}</b></div>
             <div class="panel-body">
                 <div class="col-lg-12">
-                    <div  class="row">
-                        <a class="btn btn-primary pull-right margBott10" href="#/SlsSalesOrders/new" >
-                            <i class="glyphicon-plus"></i> {{slsInvoicesUtils.translations['Entity_create.title']}}
-                        </a>
-
+                    <div  class="row ">
+                      <div class="col-lg-6 col-lg-offset-3">
+                        <div class="dropdown col-lg-3">
+                          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                            <span>{{slsInvoicesUtils.translations['Entity_print.title']}}</span>
+                            <span class="caret"></span>
+                          </button>
+                          <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">PDF</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">EXCEL</a></li>
+                          </ul>
+                        </div>
+                        <div class="dropdown col-lg-3">
+                          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                            Partager
+                            <span class="caret"></span>
+                          </button>
+                          <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Envoyer par email</a></li>
+                          </ul>
+                        </div>
+                       </div>
                     </div>
                     <div class="table-overflow-middle row">
                         <table class="table table-bordered  table-striped pointer-element" >
@@ -90,7 +108,7 @@
                                 <th class="text-center">
 {{slsInvoicesUtils.translations['SlsInvoice_invceNbr_description.title']}}</th>
                                 <th class="text-center">
-{{slsInvoicesUtils.translations['SlsInvoice_soNbr_description.title']}}q</th>
+{{slsInvoicesUtils.translations['SlsInvoice_soNbr_description.title']}}</th>
                                 <th class="text-center">
 {{slsInvoicesUtils.translations['SlsInvoice_invceStatus_description.title']}}</th>
                                 <th class="text-center">
@@ -109,12 +127,13 @@
                                 <td>{{slsInvce.invceNbr}}</td>
                                 <td>{{slsInvce.soNbr}}</td>
                                 <td>{{slsInvce.invceStatus}}</td>
-                                <td>{{slsInvce.vatAmount}}</td>
+                                <td>{{slsInvce.ptnrNbr}}</td>
+                                <td>{{slsInvce.invceDt}}</td>
+                                <td>{{slsInvce.netSPPreTax}}</td>
                                 <td>{{slsInvce.netSPTaxIncl}}</td>
-                                <td>{{slsInvce.netSalesAmt}}</td>
                                 <td>{{slsInvce.netAmtToPay}}</td>
-                                <td><a href="" ng-click="show(slsSO,$index)"><i class="glyphicon glyphicon-eye-open"></i></a></td>
-                                <td><a href="" ng-click="edit(slsSO,$index)"><i class="glyphicon glyphicon-edit"></i></a></td>
+                                <td><a href="" ng-click="show(slsInvce,$index)"><i class="glyphicon glyphicon-eye-open"></i></a></td>
+                                <td><a href="" ng-click="edit(slsInvce,$index)"><i class="glyphicon glyphicon-edit"></i></a></td>
                             </tr>
                             </tbody>
                         </table>

@@ -7,6 +7,7 @@ angular.module('AdSales')
 
     service.urlBase='/adsales.server/rest/slsinvoices';
     service.bnsptnrUrlBase='/adbnsptnr.server/rest/bpbnsptnrs';
+    service.urlSearchBase='/adsales.server/rest/slsinvoices/findCustom';
     
     service.language=sessionManager.language;
     
@@ -47,7 +48,9 @@ angular.module('AdSales')
                     'SlsInvoice_soNbr_description.title',
                     'SlsInvoice_vatAmount_description.text',
                     'SlsInvoice_vatAmount_description.title',
+                    'SlsInvoice_invceDtFrom_description.text',
                     'SlsInvoice_invceDtFrom_description.title',
+                    'SlsInvoice_invceDtTo_description.text',
                     'SlsInvoice_invceDtTo_description.title',
                     
                     'SlsInvcePtnr_description.text',
@@ -64,6 +67,7 @@ angular.module('AdSales')
     	            'Entity_search.title',
     	            'Entity_cancel.title',
     	            'Entity_save.title',
+                    'Entity_print.title',
     	            ])
 		 .then(function (translations) {
 			 service.translations = translations;
@@ -99,7 +103,7 @@ function($scope,genericResource,slsInvoicesUtils,slsInvoicesState,$location,$roo
     $scope.totalItems=slsInvoicesState.resultHandler.totalItems;
     $scope.currentPage=slsInvoicesState.resultHandler.currentPage();
     $scope.maxSize =slsInvoicesState.resultHandler.maxResult;
-    $scope.slsSalesOrders =slsInvoicesState.resultHandler.entities;
+    $scope.slsInvoices =slsInvoicesState.resultHandler.entities;
     $scope.selectedIndex=slsInvoicesState.resultHandler.selectedIndex;
     $scope.handleSearchRequestEvent = handleSearchRequestEvent;
     $scope.handlePrintRequestEvent = handlePrintRequestEvent;
@@ -125,7 +129,7 @@ function($scope,genericResource,slsInvoicesUtils,slsInvoicesState,$location,$roo
     }
 
     function findByLike(searchInput){
-		genericResource.findByLike(slsInvoicesUtils.urlBase, searchInput)
+		genericResource.findByLike(slsInvoicesUtils.urlSearchBase, searchInput)
 		.success(function(entitySearchResult) {
 			// store search
 			slsInvoicesState.resultHandler.searchResult(entitySearchResult);
@@ -142,17 +146,12 @@ function($scope,genericResource,slsInvoicesUtils,slsInvoicesState,$location,$roo
             $scope.searchInput.entity.soNbr= $scope.searchInput.entity.soNbr;
         	fieldNames.push('soNbr');
         }
-        if($scope.searchInput.entity.soStatus){
-            $scope.searchInput.entity.soStatus= $scope.searchInput.entity.soStatus;
-        	fieldNames.push('soStatus');
+        if($scope.searchInput.entity.invceNbr){
+            $scope.searchInput.entity.invceNbr= $scope.searchInput.entity.invceNbr;
+        	fieldNames.push('invceNbr');
         }
-        if($scope.searchInput.soDtFrom) $scope.searchInput.soDtFrom= $scope.searchInput.soDtFrom;
-        if($scope.searchInput.soDtTo) $scope.searchInput.soDtTo= $scope.searchInput.soDtTo;
-        
-        if($scope.searchInput.acsngUser){
-            $scope.searchInput.entity.acsngUser= $scope.searchInput.acsngUser.loginName;
-            fieldNames.push('loginName');
-        }
+        if($scope.searchInput.invceDtFrom) $scope.searchInput.invceDtFrom= $scope.searchInput.invceDtFrom;
+        if($scope.searchInput.invceDtTo) $scope.searchInput.invceDtTo= $scope.searchInput.invceDtTo;
         if($scope.searchInput.ptnr){
             $scope.searchInput.ptnrNbr= $scope.searchInput.ptnr.ptnrNbr;
         }
@@ -163,6 +162,7 @@ function($scope,genericResource,slsInvoicesUtils,slsInvoicesState,$location,$roo
 
     function handleSearchRequestEvent(){
     	processSearchInput();
+    	findCustom($scope.searchInput);
     };
 
     function paginate(){
