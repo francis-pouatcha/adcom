@@ -601,13 +601,27 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
     $scope.display = invInvtryState.compareResultHandler.displayInfo();
 
     init();
-
+    
+    $scope.showAll = function(){
+		findCompare(searchInput);
+    }
+    $scope.showConflict = function(){
+    	findByLike(searchInput);
+    }
+    
     function init(){
     	$scope.searchInput.entity.invtryNbrs = angular.copy(invInvtryState.selection);
         findByLike($scope.searchInput);
     }
 
     function findByLike(searchInput){
+    	if($scope.searchInput.entity.invtryNbrs.length==1){
+    		findConflict(searchInput);
+    	} else {
+    		findCompare(searchInput);
+    	}
+    }
+    function findCompare(searchInput){
 		genericResource.customMethod(invInvtryUtils.invinvtrysUrlBase + '/findCompare', searchInput)
 		.success(function(entitySearchResult) {
 			// store search
@@ -619,12 +633,25 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
             $scope.error=error;
         });
     }
-
+    function findConflict(searchInput){
+		genericResource.customMethod(invInvtryUtils.invinvtrysUrlBase + '/findConflict', searchInput)
+		.success(function(entitySearchResult) {
+			// store search
+			invInvtryState.compareResultHandler.searchResult(entitySearchResult);
+		    $scope.searchInput = invInvtryState.compareResultHandler.searchInput();
+		    processEntities();
+		})
+        .error(function(error){
+            $scope.error=error;
+        });
+    }
+    
     $scope.paginate = function paginate(){
     	invInvtryState.compareResultHandler.currentPage($scope.currentPage);
         $scope.searchInput = invInvtryState.compareResultHandler.paginate();
         findByLike($scope.searchInput);
     };
+    
     function processEntities(){
     	var entities = invInvtryState.compareResultHandler.entities();
     	var invtryNbrs = $scope.searchInput.entity.invtryNbrs;

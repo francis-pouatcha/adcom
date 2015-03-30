@@ -26,12 +26,21 @@ public class InvInvtryMerger {
 	public void setMerged(String invtryNbr) {
 		InvInvtry invtry = inventoryEJB.findByIdentif(invtryNbr);
 		if(invtry==null) return;
-		if(invtry.getMergedDate()!=null) return;
+		if(invtry.getMergedDate()!=null) {
+			inventoryEJB.deleteById(invtry.getId());
+		}
 		invtry.setInvtryStatus(InvInvtryStatus.MERGED);
 		invtry.setMergedDate(new Date());
 		inventoryEJB.update(invtry);
 	}
 
+	public void setMerging(String invtryNbr) {
+		InvInvtry invtry = inventoryEJB.findByIdentif(invtryNbr);
+		if(invtry==null) return;
+		invtry.setInvtryStatus(InvInvtryStatus.MERGED);
+		inventoryEJB.update(invtry);
+	}
+	
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public void mergeTo(String itemIdentif, String containerId) {
 		if(StringUtils.equals(itemIdentif, containerId)) return;

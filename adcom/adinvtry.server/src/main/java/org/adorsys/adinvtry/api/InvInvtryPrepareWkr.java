@@ -105,6 +105,10 @@ public class InvInvtryPrepareWkr {
 			if(itemCount<=0L){
 				invInvtryMerger.setMerged(inventory.getInvtryNbr());
 				continue;
+			} else {
+				if(inventory.getInvtryStatus()!=InvInvtryStatus.MERGED){
+					invInvtryMerger.setMerging(inventory.getInvtryNbr());
+				}
 			}
 			int max = 50;
 			int first = 0;
@@ -119,7 +123,6 @@ public class InvInvtryPrepareWkr {
 			itemCount = invInvtryItemEJB.countByInvtryNbr(inventory.getInvtryNbr());
 			if(itemCount<=0L){
 				invInvtryMerger.setMerged(inventory.getInvtryNbr());
-				continue;
 			}
 		}
 	}
