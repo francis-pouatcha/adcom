@@ -20,6 +20,7 @@ import org.adorsys.adcshdwr.jpa.CdrDsArtItem;
 import org.adorsys.adcshdwr.rest.CdrCshDrawerEJB;
 import org.adorsys.adcshdwr.rest.CdrDrctSalesEJB;
 import org.adorsys.adcshdwr.rest.CdrDsArtItemEJB;
+import org.apache.commons.lang3.RandomStringUtils;
 
 /**
  * @author boriswaguia
@@ -50,6 +51,7 @@ public class CdrDrctSalesManager {
 		cdrDrctSales.setCashier(securityUtil.getCurrentLoginName());
 		cdrDrctSales.setIdentif(UUID.randomUUID().toString());
 		cdrDrctSales.setCdrNbr(activeCshDrawer.getCdrNbr());
+		cdrDrctSales.setRcptNbr(RandomStringUtils.randomAlphabetic(7));
 		
 		BigDecimal amountTTC = BigDecimal.ZERO;
 		BigDecimal amountHT = BigDecimal.ZERO;
