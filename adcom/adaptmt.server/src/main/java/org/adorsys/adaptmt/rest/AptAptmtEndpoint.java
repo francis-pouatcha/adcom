@@ -25,6 +25,7 @@ import org.adorsys.adaptmt.jpa.AptAptmt;
 import org.adorsys.adaptmt.jpa.AptAptmt_;
 import org.adorsys.adaptmt.jpa.AptAptmtSearchInput;
 import org.adorsys.adaptmt.jpa.AptAptmtSearchResult;
+import org.adorsys.adaptmt.jpa.AptAptmt_;
 
 
 /**

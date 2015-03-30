@@ -25,12 +25,21 @@
                                <td>{{invtryItemList.artPic}}</td>
                                <td>{{invtryItemList.lotPic}}</td>
                                <td>{{invtryItemList.artName}}</td>
-			                   <td ng-repeat-start="invtryItem in invtryItemList.sortedItems">{{invtryItem.acsngUser}}</td>
-					           <td>{{invtryItem.acsngDt | date:'yyyy-MM-dd HH:mm'}}</td>
-					           <td ng-repeat-end>{{invtryItem.asseccedQty | number:0}}</td>
+			                   <td ng-repeat-start="invtryItem in invtryItemList.sortedItems">
+			                   	{{invtryItem.acsngUser}}
+			                   	<table ng-show="invtryItem.others"><tr ng-repeat="other in invtryItem.others"><td>{{other.acsngUser}}</td></tr></table>
+			                   </td>
+					           <td>
+					           		{{invtryItem.acsngDt | date:'yyyy-MM-dd HH:mm'}}
+			                   		<table ng-show="invtryItem.others"><tr ng-repeat="other in invtryItem.others"><td>{{other.acsngDt | date:'yyyy-MM-dd HH:mm'}}</td></tr></table>
+					           </td>
+					           <td ng-repeat-end>
+					           		{{invtryItem.asseccedQty | number:0}}
+			                   		<table ng-show="invtryItem.others"><tr ng-repeat="other in invtryItem.others"><td>{{other.asseccedQty | number:0}}</td></tr></table>
+					           </td>
                                <td>
-                               		<span ng-show="invtryItemList.sameQty"><i class="glyphicon glyphicon-ok-circle" ></i></span>
-                               		<span ng-show="!invtryItemList.sameQty"><i class="glyphicon glyphicon-ban-circle" ></i></span>
+                               		<span ng-show="invtryItemList.sameQty"><i class="glyphicon glyphicon-ok-circle" style="color:green"></i></span>
+                               		<span ng-show="!invtryItemList.sameQty"><i class="glyphicon glyphicon-ban-circle" style="color:red"></i></span>
                                </td>
                            </tr>
                            </tbody>

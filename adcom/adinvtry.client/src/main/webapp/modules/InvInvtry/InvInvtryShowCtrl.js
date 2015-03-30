@@ -162,8 +162,8 @@ angular.module('AdInvtry')
     		delete invtryItem.oldExpirDt;
     }
     function isItemModified(invtryItem){
-    	return (angular.isDefined(invtryItem.oldAccessedQty)&&(invtryItem.oldAccessedQty==invtryItem.asseccedQty)) || 
-    		(angular.isDefined(invtryItem.oldExpirDt)&&(invtryItem.oldExpirDt==invtryItem.expirDt));
+    	return (angular.isDefined(invtryItem.oldAccessedQty)&& (!angular.equals(invtryItem.oldAccessedQty,invtryItem.asseccedQty))) || 
+    		(angular.isDefined(invtryItem.oldExpirDt) && (!angular.equals(invtryItem.oldExpirDt,invtryItem.expirDt)));
     }
     
     $scope.editingItem = function(invtryItem, $event){

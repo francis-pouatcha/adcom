@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('adaptmtclient').filter('searchFilter', function() {
+angular.module('adaptmt').filter('searchFilter', function() {
 
     function matchObjectProperties(expectedObject, actualObject) {
         var flag = true;

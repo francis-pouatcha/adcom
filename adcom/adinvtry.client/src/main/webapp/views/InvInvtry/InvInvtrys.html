@@ -210,7 +210,7 @@
 	        <div class="panel-body">
 	            <div class="row">
 	                <div class="col-lg-2">
-		           		<button class="btn-default btn" ng-click="merge()" ><i class="glyphicon glyphicon-link" ></i> {{invInvtryUtils.translations['Entity_merge.title']}} </button>
+		           		<button class="btn-default btn" ng-click="merge()" ng-disabled="!mainInvtry.invtryNbr || selection.length<1 || (selection.indexOf(mainInvtry.invtryNbr)!=-1 && selection.length<2)"><i class="glyphicon glyphicon-link" ></i> {{invInvtryUtils.translations['Entity_merge.title']}} </button>
 	                </div>
 	                <div class="col-lg-3">
 	                	<span ng-show="mainInvtry.invtryNbr">{{invInvtryUtils.translations['InvInvtry_mainInvtry_description.title']}}: {{mainInvtry.invtryNbr}}</span>
@@ -220,7 +220,7 @@
 	                </div>
 	                <div class="col-lg-2">
 	                	<span class="pull-right">
-	                    	<button class="btn-default btn" ng-click="compare()" ><i class="glyphicon glyphicon-tasks"></i> {{invInvtryUtils.translations['Entity_compare.title']}}</button>
+	                    	<button class="btn-default btn" ng-click="compare()" ng-disabled="selection.length<1"><i class="glyphicon glyphicon-tasks"></i> {{invInvtryUtils.translations['Entity_compare.title']}}</button>
 		                </span>
 	                </div>
 	            </div>
