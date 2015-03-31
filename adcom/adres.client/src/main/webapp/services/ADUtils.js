@@ -93,7 +93,8 @@ angular.module('ADUtils',[])
             'BaseGender_FEMALE_description.title',
         	'BaseGender_MALE_description.title',
             'BaseLanguage_fr_description.title',
-            'BaseLanguage_en_description.title'
+            'BaseLanguage_en_description.title',
+            'Entity_recompute.title'
             ])
 		 .then(function (translations) {
 			 service.translations = translations;

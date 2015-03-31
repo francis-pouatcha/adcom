@@ -55,6 +55,7 @@
     "Entity_merge.title":"Merge",
     "Entity_compare.title":"Compare",
     "Entity_selected.title": "Selected",
+    "Entity_recompute.title": "Recompute",
     
     "BaseCountryName_isoCode_description.title":"Country Code",
     "BaseCountryName_iso2_description.title":"Country Code Iso 2",
