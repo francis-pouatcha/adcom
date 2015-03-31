@@ -11,7 +11,10 @@
 			                    <th rowspan="2">{{invInvtryUtils.translations['InvInvtryItem_lotPic_description.title']}}</th>
 			                    <th rowspan="2">{{invInvtryUtils.translations['InvInvtryItem_artName_description.title']}}</th>
 			                    <th colspan="3" ng-repeat="invtryNbr in searchInput.entity.invtryNbrs">{{invtryNbr}}</th>
-			                    <th rowspan="2"></th>
+			                    <th rowspan="2">
+                               		<span ng-show="!invInvtry.conflictDt"><i class="glyphicon glyphicon-ok-circle" style="color:green"></i></span>
+                               		<span ng-show="invInvtry.conflictDt"><i class="glyphicon glyphicon-ban-circle" style="color:red"></i></span>
+			                    </th>
 			               </tr>
                            <tr>
 			                    <th ng-repeat-start="invtryNbr in searchInput.entity.invtryNbrs">{{invInvtryUtils.translations['InvInvtryItem_acsngUser_description.title']}}</th>
@@ -25,12 +28,21 @@
                                <td>{{invtryItemList.artPic}}</td>
                                <td>{{invtryItemList.lotPic}}</td>
                                <td>{{invtryItemList.artName}}</td>
-			                   <td ng-repeat-start="invtryItem in invtryItemList.sortedItems">{{invtryItem.acsngUser}}</td>
-					           <td>{{invtryItem.acsngDt | date:'yyyy-MM-dd HH:mm'}}</td>
-					           <td ng-repeat-end>{{invtryItem.asseccedQty | number:0}}</td>
+			                   <td ng-repeat-start="invtryItem in invtryItemList.sortedItems">
+			                   	{{invtryItem.acsngUser}}
+			                   	<table ng-show="invtryItem.others"><tr ng-repeat="other in invtryItem.others"><td>{{other.acsngUser}}</td></tr></table>
+			                   </td>
+					           <td>
+					           		{{invtryItem.acsngDt | date:'yyyy-MM-dd HH:mm'}}
+			                   		<table ng-show="invtryItem.others"><tr ng-repeat="other in invtryItem.others"><td>{{other.acsngDt | date:'yyyy-MM-dd HH:mm'}}</td></tr></table>
+					           </td>
+					           <td ng-repeat-end>
+					           		{{invtryItem.asseccedQty | number:0}}
+			                   		<table ng-show="invtryItem.others"><tr ng-repeat="other in invtryItem.others"><td>{{other.asseccedQty | number:0}}</td></tr></table>
+					           </td>
                                <td>
-                               		<span ng-show="invtryItemList.sameQty"><i class="glyphicon glyphicon-ok-circle" ></i></span>
-                               		<span ng-show="!invtryItemList.sameQty"><i class="glyphicon glyphicon-ban-circle" ></i></span>
+                               		<span ng-show="invtryItemList.sameQty"><i class="glyphicon glyphicon-ok-circle" style="color:green"></i></span>
+                               		<span ng-show="!invtryItemList.sameQty"><i class="glyphicon glyphicon-ban-circle" style="color:red"></i></span>
                                </td>
                            </tr>
                            </tbody>

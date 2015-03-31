@@ -34,25 +34,28 @@ public class InvInvtryItemList {
 		setCoreData(invtryItemsIn);
 		this.invtryItems = invtryItemsIn;
 
-		if(invtryNbrs.size()!=invtryItemsIn.size()){
-			sameQty=Boolean.FALSE;
-		} else if(invtryNbrs.size()<=1){
-			sameQty=Boolean.TRUE;
-		} else {
-			BigDecimal qty = null;
-			sameQty = null;
-			for (InvInvtryItem item : invtryItemsIn) {
-				if(sameQty==null){
-					qty = item.getAsseccedQty();
+		sameQty = checkSameQty(invtryItemsIn);
+	}
+	
+	public static final Boolean checkSameQty(List<InvInvtryItem> invtryItemsIn){
+		BigDecimal qty = null;
+		Boolean sameQty = Boolean.FALSE;
+		int count = 0;
+		for (InvInvtryItem item : invtryItemsIn) {
+			if(item.getDisabledDt()!=null) continue;
+			if(count==0){
+				qty = item.getAsseccedQty();
+				if(qty!=null)
 					sameQty = Boolean.TRUE;
-				} else {
-					if(!BigDecimalUtils.numericEquals(qty, item.getAsseccedQty())){
-						sameQty = Boolean.FALSE;
-					}
+			} else {
+				if(item.getAsseccedQty()==null || !BigDecimalUtils.strictEquals(qty, item.getAsseccedQty())){
+					sameQty = Boolean.FALSE;
 				}
 			}
 		}
+		return sameQty;
 	}
+	
 	private void setCoreData(List<InvInvtryItem> invtryItemsIn){
 		InvInvtryItem invInvtryItem = invtryItemsIn.iterator().next();
 		lotPic = invInvtryItem.getLotPic();

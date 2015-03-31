@@ -1,13 +1,19 @@
 package org.adorsys.adinvtry.rest;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
 
+import org.adorsys.adinvtry.jpa.InvInvtry;
+import org.adorsys.adinvtry.jpa.InvInvtryGap;
 import org.adorsys.adinvtry.jpa.InvInvtryItem;
 import org.adorsys.adinvtry.jpa.InvInvtryItemEvtData;
+import org.adorsys.adinvtry.jpa.InvInvtryItemList;
 import org.adorsys.adinvtry.repo.InvInvtryItemRepository;
 import org.apache.commons.lang3.StringUtils;
 
@@ -23,6 +29,33 @@ public class InvInvtryItemEJB
 	
 	public InvInvtryItem create(InvInvtryItem entity)
 	{
+		String salIndex = entity.getSalIndex();
+		List<InvInvtryItem> found = findBySalIndexForInvtrys(salIndex, Arrays.asList(entity.getInvtryNbr()));
+		List<InvInvtryItem> compareList = new ArrayList<InvInvtryItem>();
+		compareList.add(entity);
+		compareList.addAll(found);
+		Boolean sameQty = InvInvtryItemList.checkSameQty(compareList);
+		Date now = new Date();
+		if(!sameQty){
+			entity.setConflictDt(now);
+			for (InvInvtryItem item : found) {
+				// Only save if conflict date was null.
+				if(item.getConflictDt()==null){
+					item.setConflictDt(now);
+					internalUpdate(item);
+				}
+			}
+		} else { // resolve conflict if any
+			entity.setConflictDt(null);
+			for (InvInvtryItem item : found) {
+				// Only save if conflict date was null.
+				if(item.getConflictDt()!=null){
+					item.setConflictDt(null);
+					internalUpdate(item);
+				}
+			}
+		}
+
 		InvInvtryItem invtryItem = repository.save(attach(entity));
 		InvInvtryItemEvtData itemEvtData = new InvInvtryItemEvtData();
 		invtryItem.copyTo(itemEvtData);
@@ -44,7 +77,60 @@ public class InvInvtryItemEJB
 
 	public InvInvtryItem update(InvInvtryItem entity)
 	{
-		InvInvtryItem invtryItem = repository.save(attach(entity));
+		// Make sure there is a consistency, if not set conflicting date.
+		// 1. Select all inventoru items of this inventory with the salIndex.
+		String salIndex = entity.getSalIndex();
+		List<InvInvtryItem> found = findBySalIndexForInvtrys(salIndex, Arrays.asList(entity.getInvtryNbr()));
+		List<InvInvtryItem> compareList = new ArrayList<InvInvtryItem>();
+		for (InvInvtryItem item : found) {
+			if(StringUtils.equals(item.getId(), entity.getId())){
+				compareList.add(entity);
+			} else {
+				compareList.add(item);
+			}
+		}
+		// 2. Make sure all non disabled have a number.
+		Boolean sameQty = InvInvtryItemList.checkSameQty(compareList);
+		InvInvtryItem invtryItem = null;
+		// If not all identical qty, set conflict.
+		// Unless they are discarded.
+		Date now = new Date();
+		if(!sameQty){
+			for (InvInvtryItem item : compareList) {
+				if(StringUtils.equals(item.getId(), entity.getId())){
+					if(item.getConflictDt()==null){
+						item.setConflictDt(now);
+					}
+					invtryItem = internalUpdate(item);
+				} else {
+					// Only save if conflict date was null.
+					if(item.getConflictDt()==null){
+						item.setConflictDt(now);
+						internalUpdate(item);
+					}
+				}
+			}
+		} else { // resolve conflict if any
+			for (InvInvtryItem item : compareList) {
+				if(StringUtils.equals(item.getId(), entity.getId())){
+					if(item.getConflictDt()!=null){
+						item.setConflictDt(null);
+					}
+					invtryItem = internalUpdate(item);
+				} else {
+					// Only save if conflict date was null.
+					if(item.getConflictDt()!=null){
+						item.setConflictDt(null);
+						internalUpdate(item);
+					}
+				}
+			}
+		}
+		return invtryItem;
+	}
+	
+	private InvInvtryItem internalUpdate(InvInvtryItem invtryItem){
+		invtryItem = repository.save(attach(invtryItem));
 		InvInvtryItemEvtData itemEvtData = itemEvtDataEJB.findById(invtryItem.getId());
 		invtryItem.copyTo(itemEvtData);
 		itemEvtDataEJB.update(itemEvtData);
@@ -171,5 +257,134 @@ public class InvInvtryItemEJB
 	}
 	public List<InvInvtryItem> findBySalIndexForInvtrys(String salIndex, List<String> invNbrs){
 		return repository.bySalIndexForInvtrys(salIndex, invNbrs).getResultList();
+	}
+
+	public Long countConflictingSalIndexForInvtrys(List<String> invNbrs){
+		return repository.conflictingSalIndexForInvtrys(invNbrs).count();
+	}  
+
+	public List<String> findConflictingSalIndexForInvtrys(List<String> invNbrs, int first, int max){
+		return repository.conflictingSalIndexForInvtrys(invNbrs).firstResult(first).maxResults(max).orderAsc("salIndex").getResultList();
+	}
+
+	public InvInvtryGap computeInvtryGap(String invtryNbr) {
+		return repository.computeInvtryGap(invtryNbr).getSingleResult();
+	}
+	
+	public InvInvtry recomputeInventory(InvInvtry invInvtry){
+		String invtryNbr = invInvtry.getInvtryNbr();
+		long count = repository.salIndexForInvtry(invtryNbr).count();
+		int start = 0;
+		int max = 100;
+		while(start<=count){
+			// @WARNIGN increase counter before request to avoid endless loop on error. 
+			int firstResult = start;
+			start +=max;
+			List<String> resultList = repository.salIndexForInvtry(invtryNbr).firstResult(firstResult).maxResults(max).getResultList();
+			for (String salIndex : resultList) {
+				Integer c = makeConsistent(invtryNbr, salIndex);
+				if(c<0 && invInvtry.getConflictDt()==null){
+					invInvtry.setConflictDt(new Date());
+				}
+			}
+		}
+		if(invInvtry.getConflictDt()!=null) return invInvtry;
+
+		InvInvtryGap invtryGap = computeInvtryGap(invtryNbr);
+		invInvtry.setGapPurchAmtHT(invtryGap.getGapPurchAmtHT());
+		invInvtry.setGapSaleAmtHT(invInvtry.getGapSaleAmtHT());
+		return invInvtry;
+	}
+	
+	/**
+	 * Returns true if the inventory object is consistent. Means that there is only one enabled item for each
+	 * inventory item. An inventory can have many inventory items if counted by many employees.
+	 * 
+	 * @param invtryNbr
+	 * @return true : if consistent.
+	 */
+	public Boolean checkConsistent(String invtryNbr){
+		long count = repository.salIndexForInvtry(invtryNbr).count();
+		int start = 0;
+		int max = 100;
+		while(start<=count){
+			// @WARNIGN increase counter before request to avoid endless loop on error. 
+			int firstResult = start;
+			start +=max;
+			List<String> resultList = repository.salIndexForInvtry(invtryNbr).firstResult(firstResult).maxResults(max).getResultList();
+			for (String salIndex : resultList) {
+				Long countEnabled = repository.countEnabled(salIndex, invtryNbr);
+				if(countEnabled!=1) return false;
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * Returns the number of item automatically consolidated. This happens when all the inventories of that 
+	 * same item are counted with the same quantity. In this case the system automatically marks the latest 
+	 * count as enabled by marking everything else disabled.
+	 * 
+	 * @param invtryNbr
+	 * @return
+	 */
+	public Integer makeConsistent(String invtryNbr, String salIndex){
+		Integer count = 0;
+		Long countEnabled = repository.countEnabled(salIndex, invtryNbr);
+		if(countEnabled==1) return 0;
+		List<InvInvtryItem> resultList = repository.bySalIndexForInvtry(salIndex, invtryNbr).getResultList();
+		Boolean sameQty = InvInvtryItemList.checkSameQty(resultList);
+		if(!sameQty) return -1;
+		InvInvtryItem oldest = null;
+		for (InvInvtryItem invInvtryItem : resultList) {
+			// continue if this item is disabled and there is more than one enabled item.
+			if(invInvtryItem.getDisabledDt()!=null && countEnabled>1) continue;
+			
+			// set this as oldest.
+			if(oldest==null) {
+				oldest  = invInvtryItem;
+				continue;
+			}
+			if(oldest.getAcsngDt()!=null && invInvtryItem.getAcsngDt()!=null && oldest.getAcsngDt().before(invInvtryItem.getAcsngDt())){
+				oldest = invInvtryItem;
+				continue;
+			}
+		}
+		// enable oldest and 
+		if(oldest!=null){
+			Date date = new Date();
+			for (InvInvtryItem invInvtryItem : resultList) {
+				boolean update = false;
+				if(oldest.getId()!=invInvtryItem.getId()){
+					if(invInvtryItem.getDisabledDt()==null){
+						invInvtryItem.setDisabledDt(date);
+						update = true;
+					}
+					if(invInvtryItem.getConflictDt()!=null){
+						invInvtryItem.setConflictDt(null);
+						update = true;
+					}
+				}
+				if(update){
+					internalUpdate(invInvtryItem);
+					count+=1;
+				}
+			}
+			boolean update = false;
+			if(oldest.getDisabledDt()!=null){
+				oldest.setDisabledDt(null);
+				update = true;
+			}
+			if(oldest.getConflictDt()!=null){
+				oldest.setConflictDt(null);
+				update = true;
+			}
+			if(update){
+				internalUpdate(oldest);
+				count+=1;				
+			}
+		}
+
+		return count;
 	}
 }
