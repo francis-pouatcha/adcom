@@ -9,6 +9,7 @@ angular.module('AdSales')
         service.catalarticles='/adcatal.server/rest/catalarticles';
         service.orgunits='/adbase.server/rest/orgunits';
         service.stkSection = '/adstock.server/rest/stksections';
+        service.sale = '/adsales.server/sale';
 
         return service;
   }])
@@ -18,8 +19,14 @@ angular.module('AdSales')
     self.slsSalesOrderHolder = {
         slsSalesOrder:{},
         slsSOItemsholder:[],
-        slsSOPtnrs:[]
+        slsSOPtnrsHolder:[]
     };
+        self.slsSalesOrderHolder.slsSalesOrder.soDt = new Date();
+        self.slsSalesOrderHolder.slsSalesOrder.grossSPPreTax = 0;
+        self.slsSalesOrderHolder.slsSalesOrder.netSPPreTax = 0;
+        self.slsSalesOrderHolder.slsSalesOrder.vatAmount = 0;
+        self.slsSalesOrderHolder.slsSalesOrder.netSPTaxIncl = 0;
+        self.slsSalesOrderHolder.slsSalesOrder.rebate = 0;
     self.slsSalesOrderHolderTab = [];
     self.slsSalesOrderItemHolder = {};
     self.error = "";
@@ -45,6 +52,7 @@ angular.module('AdSales')
     self.calculAmount = calculAmount;
     self.tabLength = tabLength;
     self.ModalInstanceAddBptrnCtrl = ModalInstanceAddBptrnCtrl;
+    self.totalAmount = totalAmount;
 
     function loadBusinessPartner(val){
         return genericResource.findByLikePromissed(saleUtils.adbnsptnr, 'cpnyName', val)
@@ -126,25 +134,51 @@ angular.module('AdSales')
     }
 
         function calculAmount() {
+            if(self.slsSalesOrderItemHolder.slsSOItem.orderedQty){
+                self.slsSalesOrderItemHolder.slsSOItem.grossSPPreTax = self.slsSalesOrderItemHolder.slsSOItem.sppuPreTax*parseInt(self.slsSalesOrderItemHolder.slsSOItem.orderedQty);
+            }
             if(self.slsSalesOrderItemHolder.slsSOItem.rebate)
-                self.slsSalesOrderItemHolder.slsSOItem.netSPPreTax=self.slsSalesOrderItemHolder.slsSOItem.sppuPreTax-parseInt(self.slsSalesOrderItemHolder.slsSOItem.rebate);
+                self.slsSalesOrderItemHolder.slsSOItem.netSPPreTax=self.slsSalesOrderItemHolder.slsSOItem.grossSPPreTax-parseInt(self.slsSalesOrderItemHolder.slsSOItem.rebate);
 
             if(self.slsSalesOrderItemHolder.slsSOItem.rebatePct)
-                self.slsSalesOrderItemHolder.slsSOItem.netSPPreTax=self.slsSalesOrderItemHolder.slsSOItem.sppuPreTax-((parseInt(self.slsSalesOrderItemHolder.slsSOItem.rebatePct)*self.slsSalesOrderItemHolder.slsSOItem.sppuPreTax)/100);
+                self.slsSalesOrderItemHolder.slsSOItem.netSPPreTax=self.slsSalesOrderItemHolder.slsSOItem.grossSPPreTax-((parseInt(self.slsSalesOrderItemHolder.slsSOItem.rebatePct)*self.slsSalesOrderItemHolder.slsSOItem.grossSPPreTax)/100);
 
             if(!self.slsSalesOrderItemHolder.slsSOItem.rebate && !self.slsSalesOrderItemHolder.slsSOItem.rebatePct)
-                self.slsSalesOrderItemHolder.slsSOItem.netSPPreTax = self.slsSalesOrderItemHolder.slsSOItem.sppuPreTax;
+                self.slsSalesOrderItemHolder.slsSOItem.netSPPreTax = self.slsSalesOrderItemHolder.slsSOItem.grossSPPreTax;
 
             if(self.slsSalesOrderItemHolder.slsSOItem.orderedQty){
-                self.slsSalesOrderItemHolder.slsSOItem.vatAmount = (self.slsSalesOrderItemHolder.slsSOItem.netSPPreTax*self.vatRate/100)*parseInt(self.slsSalesOrderItemHolder.slsSOItem.orderedQty);
-                self.slsSalesOrderItemHolder.slsSOItem.netSPTaxIncl = (self.slsSalesOrderItemHolder.slsSOItem.netSPPreTax*parseInt(self.slsSalesOrderItemHolder.slsSOItem.orderedQty))+self.slsSalesOrderItemHolder.slsSOItem.vatAmount;
+                self.slsSalesOrderItemHolder.slsSOItem.vatAmount = self.slsSalesOrderItemHolder.slsSOItem.grossSPPreTax*self.vatRate/100;
+                self.slsSalesOrderItemHolder.slsSOItem.netSPTaxIncl = self.slsSalesOrderItemHolder.slsSOItem.netSPPreTax+self.slsSalesOrderItemHolder.slsSOItem.vatAmount;
             }
-
+        }
+    function totalAmount(){
+        self.slsSalesOrderHolder.slsSalesOrder.grossSPPreTax = 0;
+        self.slsSalesOrderHolder.slsSalesOrder.netSPPreTax = 0;
+        self.slsSalesOrderHolder.slsSalesOrder.vatAmount = 0;
+        self.slsSalesOrderHolder.slsSalesOrder.netSPTaxIncl = 0;
+        angular.forEach(self.slsSalesOrderHolder.slsSOItemsholder, function (value, key) {
+            self.slsSalesOrderHolder.slsSalesOrder.grossSPPreTax = self.slsSalesOrderHolder.slsSalesOrder.grossSPPreTax+value.slsSOItem.netSPPreTax;
+            self.slsSalesOrderHolder.slsSalesOrder.vatAmount = self.slsSalesOrderHolder.slsSalesOrder.vatAmount + value.slsSOItem.vatAmount;
+        })
+        if(!self.slsSalesOrderHolder.slsSalesOrder.rebate && !self.slsSalesOrderHolder.slsSalesOrder.rebatePct){
+            self.slsSalesOrderHolder.slsSalesOrder.rebate = 0;
+            self.slsSalesOrderHolder.slsSalesOrder.rebatePct = 0;
+        }
+        if(self.slsSalesOrderHolder.slsSalesOrder.rebatePct)
+            self.slsSalesOrderHolder.slsSalesOrder.rebate = self.slsSalesOrderHolder.slsSalesOrder.grossSPPreTax*self.slsSalesOrderHolder.slsSalesOrder.rebatePct/100;
+        if(self.slsSalesOrderHolder.slsSalesOrder.rebate){
+            self.slsSalesOrderHolder.slsSalesOrder.rebate = parseInt(self.slsSalesOrderHolder.slsSalesOrder.rebate);
+            self.slsSalesOrderHolder.slsSalesOrder.rebatePct = self.slsSalesOrderHolder.slsSalesOrder.rebate * 100/self.slsSalesOrderHolder.slsSalesOrder.grossSPPreTax;
         }
 
+        self.slsSalesOrderHolder.slsSalesOrder.netSPPreTax = self.slsSalesOrderHolder.slsSalesOrder.grossSPPreTax - self.slsSalesOrderHolder.slsSalesOrder.rebate;
+        self.slsSalesOrderHolder.slsSalesOrder.netSPTaxIncl=self.slsSalesOrderHolder.slsSalesOrder.netSPPreTax + self.slsSalesOrderHolder.slsSalesOrder.vatAmount;
+    }
+        
     function addItem(){
         self.slsSalesOrderHolder.slsSOItemsholder.unshift(self.slsSalesOrderItemHolder);
         self.slsSalesOrderItemHolder = {};
+        totalAmount();
         $('#artName').focus();
     }
     function deleteItem(index){
@@ -155,21 +189,23 @@ angular.module('AdSales')
             slsSalesOrderItemHolderDeleted.deleted = true;
             self.slsSOItemsholderDeleted.push(slsSalesOrderItemHolderDeleted);
         }
+        totalAmount();
     }
     function editItem(index){
         angular.copy(self.slsSalesOrderHolder.slsSOItemsholder[index],self.slsSalesOrderItemHolder) ;
         self.slsSalesOrderHolder.slsSOItemsholder.splice(index,1);
+        totalAmount();
     }
         function cloturerCmd(){
-
+            for(var i=0;i<self.slsSOItemsholderDeleted.length;i++){
+                self.prcmtOrderHolder.poItems.push(self.slsSOItemsholderDeleted[i])
+            }
+            genericResource.customMethod(saleUtils.sale+'/doSale',self.slsSalesOrderHolder).success(function(data){
+                clearSaleOrder();
+            });
         }
         function annulerCmd(){
-            self.slsSalesOrderHolder = {
-                slsSalesOrder:{},
-                slsSOItemsholder:[],
-                slsSOPtnr:{}
-            };
-            self.slsSalesOrderItemHolder = {};
+            clearSaleOrder();
         }
         function newCmd(){
             if(self.slsSalesOrderHolder){
@@ -178,12 +214,7 @@ angular.module('AdSales')
                     self.index = self.slsSalesOrderHolderTab.length;
                 }
             }
-            self.slsSalesOrderHolder = {
-                slsSalesOrder:{},
-                slsSOItemsholder:[],
-                slsSOPtnr:{}
-            };
-            self.slsSalesOrderItemHolder = {};
+            clearSaleOrder();
         }
         function addBptnr(size){
             var modalInstance = $modal.open({
@@ -191,33 +222,47 @@ angular.module('AdSales')
                 controller: self.ModalInstanceAddBptrnCtrl,
                 size: size,
                 resolve:{
-                    slsSOPtnrs: function(){
-                        return self.slsSalesOrderHolder.slsSOPtnrs;
+                    slsSOPtnrsHolder: function(){
+                        return self.slsSalesOrderHolder.slsSOPtnrsHolder;
                     }
                 }
             });
         }
-
-        function ModalInstanceAddBptrnCtrl($scope, $modalInstance, slsSOPtnrs) {
-             $scope.slsSOPtnrs = slsSOPtnrs;
+        function clearSaleOrder(){
+            self.slsSalesOrderHolder = {
+                slsSalesOrder:{},
+                slsSOItemsholder:[],
+                slsSOPtnr:{}
+            };
+            self.slsSalesOrderHolder.slsSalesOrder.soDt = new Date();
+            self.slsSalesOrderHolder.slsSalesOrder.grossSPPreTax = 0;
+            self.slsSalesOrderHolder.slsSalesOrder.netSPPreTax = 0;
+            self.slsSalesOrderHolder.slsSalesOrder.vatAmount = 0;
+            self.slsSalesOrderHolder.slsSalesOrder.netSPTaxIncl = 0;
+            self.slsSalesOrderHolder.slsSalesOrder.rebate = 0;
+            self.slsSalesOrderItemHolder = {};
+        }
+        function ModalInstanceAddBptrnCtrl($scope, $modalInstance, slsSOPtnrsHolder) {
+             $scope.slsSOPtnrsHolder = slsSOPtnrsHolder;
             $scope.loadBusinessPartner = function(val){
                 return self.loadBusinessPartner(val);
             }
             $scope.addBptrn = function(){
-                var slsSOPtnr = $scope.slsSOPtnr;
+                var slsSOPtnr = {};
+                slsSOPtnr.slsSOPtnr = $scope.slsSOPtnr;
                 $scope.slsSOPtnr = {};
-                $scope.slsSOPtnrs.push(slsSOPtnr);
+                $scope.slsSOPtnrsHolder.push(slsSOPtnr);
             }
             $scope.deleteItem = function (index) {
-                $scope.slsSOPtnrs.splice(index,1);
+                $scope.slsSOPtnrsHolder.splice(index,1);
             }
 
             $scope.cancel = function () {
-                self.slsSalesOrderHolder.slsSOPtnrs = $scope.slsSOPtnrs;
+                self.slsSalesOrderHolder.slsSOPtnrsHolder = $scope.slsSOPtnrsHolder;
                 $modalInstance.dismiss('cancel');
             };
             $scope.$on('modal.hide',function(){
-                self.slsSalesOrderHolder.slsSOPtnrs = $scope.slsSOPtnrs;
+                self.slsSalesOrderHolder.slsSOPtnrsHolder = $scope.slsSOPtnrsHolder;
             });
         };
 

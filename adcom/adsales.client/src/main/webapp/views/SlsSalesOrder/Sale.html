@@ -1,17 +1,12 @@
 <div>
-    <div class="well">
-
-        <p class="">
-            
-        </p>
-    </div>
     <div style="margin-bottom: 20px" >
-        <a class="btn btn-primary" ng-click="saleCtlr.cloturerCmd()"><i class="glyphicon glyphicon-ok" ></i> Cloturer la commande</a>
+        <a class="btn btn-default" ng-click="saleCtlr.previous()" ng-disabled="saleCtlr.index==0" ><i class="glyphicon glyphicon-chevron-left"></i> Previous</a>
+        <a class="btn btn-default" ng-click="saleCtlr.next()" ng-disabled="saleCtlr.index==saleCtlr.tabLength()" >Next <i class="glyphicon glyphicon-chevron-right"></i></a>
         <a class="btn btn-danger" ng-click="saleCtlr.annulerCmd()" ><i class="glyphicon glyphicon-trash" ></i> Anuller la commande</a>
         <a class="btn btn-default" ng-click="saleCtlr.newCmd()" ng-disabled="saleCtlr.tabLength()==4" ><i class="glyphicon glyphicon-plus" ></i> Nouvelle commande</a>
-        <a class="btn btn-warning" ng-click="saleCtlr.addBptnr()"><i class="glyphicon glyphicon-user" ></i> Info Client</a>
-        <a class="col-lg-offset-3 btn btn-default" ng-click="saleCtlr.previous()" ng-disabled="saleCtlr.index==0" ><i class="glyphicon glyphicon-chevron-left"></i> Previous</a>
-        <a class="btn btn-default" ng-click="saleCtlr.next()" ng-disabled="saleCtlr.index==saleCtlr.tabLength()" >Next <i class="glyphicon glyphicon-chevron-right"></i></a>
+        <a class="btn btn-warning" ng-click="saleCtlr.addBptnr()"><i class="glyphicon glyphicon-user" ></i> {{saleCtlr.slsSalesOrderHolder.slsSOPtnrs[0].ptnrNbr.shortName}}</a>
+        <label>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.soDt | date:'medium'}}</label>
+        <a class="btn btn-primary col-lg-offset-1" ng-click="saleCtlr.cloturerCmd()"><i class="glyphicon glyphicon-ok" ></i> Cloturer la commande</a>
     </div>
     <form name="OrderItemForm" id="OrderItemForm" novalidate >
     <div class="panel panel-default" >
@@ -25,6 +20,7 @@
                         <th>Qte Stock</th>
                         <th>Qte</th>
                         <th>{{'CatalArticle_sppu_description.title' | translate}}</th>
+                        <th>{{'SlsSOItem_grossSPPreTax_description.title'|translate}}</th>
                         <th>{{'SlsSOItem_rebate_description.title'|translate}}</th>
                         <th>{{'SlsSOItem_rebate_description.title'|translate}} %</th>
                         <th>{{'SlsSOItem_vatAmount_description.title'|translate}}</th>
@@ -56,14 +52,15 @@
                         </td>
                         <td><input type="text" class="form-control" disabled ng-model="saleCtlr.slsSalesOrderItemHolder.slsSOItem.sppuPreTax" ></td>
                         <td>
-                            <div >
-                                <input type="text" class="form-control" name="rebate" ng-change="saleCtlr.calculAmount()" ng-model="saleCtlr.slsSalesOrderItemHolder.slsSOItem.rebate" >
+                            <div>
+                                <input type="text" class="form-control" name="grossSPPreTax" disabled  ng-model="saleCtlr.slsSalesOrderItemHolder.slsSOItem.grossSPPreTax" >
                             </div>
                         </td>
                         <td>
-                            <div >
-                                <input type="text" class="form-control" name="rebatePct" ng-change="saleCtlr.calculAmount()" ng-model="saleCtlr.slsSalesOrderItemHolder.slsSOItem.rebatePct" >
-                            </div>
+                            <input type="text" class="form-control" name="rebate" ng-change="saleCtlr.calculAmount()" ng-model="saleCtlr.slsSalesOrderItemHolder.slsSOItem.rebate" >
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="rebatePct" ng-change="saleCtlr.calculAmount()" ng-model="saleCtlr.slsSalesOrderItemHolder.slsSOItem.rebatePct" placeholder="%" >
                         </td>
                         <td>
                             <div >
@@ -79,6 +76,39 @@
                     </tr>
                     </tbody>
                 </table>
+            <div class="row">
+                  <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="">Remise NAP</label><br/>
+                            <input  type="text" class="form-control" ng-model="saleCtlr.slsSalesOrderHolder.slsSalesOrder.rebate" placeholder="Entrer la remise" >
+                        </div>
+                  </div>
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="">Remise Nap(%)</label><br/>
+                            <input  type="text" class="form-control" ng-model="saleCtlr.slsSalesOrderHolder.slsSalesOrder.rebatePct" placeholder="Entrer la remise %" >
+                        </div>
+                    </div>
+                <div class="col-lg-2" style="margin-top: 24px">
+                    <input  type="submit" class="btn btn-primary" value="Apply" ng-click="saleCtlr.totalAmount()">
+                </div>
+                <div class="col-lg-4 col-lg-offset-3" style="margin-top: -24px" >
+                    <table class="table table-bordered  table-striped" style="text-align: center">
+                        <tr>
+                            <td>{{'SlsSalesOrder_grossSPPreTax_description.text' | translate}}</td>
+                            <td class="bg-danger">{{'SlsSalesOrder_rebate_description.title' | translate}}</td>
+                            <td >{{'SlsSalesOrder_vatAmount_description.title' | translate}}</td>
+                            <td >{{'SlsSalesOrder_netSPTaxIncl_description.title' | translate}}</td>
+                        </tr>
+                        <tr>
+                            <td><b>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.grossSPPreTax}} CFA</b></td>
+                            <td><b>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.rebate}} CFA</b></td>
+                            <td><b>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.vatAmount}} CFA</b></td>
+                            <td><b>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.netSPTaxIncl}} CFA</b></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
     </form>
@@ -92,6 +122,7 @@
                     <th class="col-lg-3" >Designation</th>
                     <th>{{'SlsSOItem_orderedQty_description.title' |translate}}</th>
                     <th>{{'SlsSOItem_sppuPreTax_description.title' | translate}}</th>
+                    <th>{{'SlsSOItem_grossSPPreTax_description.title' | translate}}</th>
                     <th>{{'SlsSOItem_rebate_description.title'|translate}}</th>
                     <th>{{'SlsSOItem_vatAmount_description.title'|translate}}</th>
                     <th>{{'SlsSOItem_netSPTaxIncl_description.title' | translate}}</th>
@@ -105,6 +136,7 @@
                     <td>{{orderItemHolder.slsSOItem.artName}}</td>
                     <td>{{orderItemHolder.slsSOItem.orderedQty}}</td>
                     <td>{{orderItemHolder.slsSOItem.sppuPreTax}}</td>
+                    <td>{{orderItemHolder.slsSOItem.grossSPPreTax}}</td>
                     <td>{{orderItemHolder.slsSOItem.rebate}}</td>
                     <td>{{orderItemHolder.slsSOItem.vatAmount}}</td>
                     <td>{{orderItemHolder.slsSOItem.netSPTaxIncl}}</td>

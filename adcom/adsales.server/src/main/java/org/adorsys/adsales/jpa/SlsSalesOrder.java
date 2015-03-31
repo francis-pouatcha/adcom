@@ -62,6 +62,10 @@ public class SlsSalesOrder extends AbstractIdentifData {
 	@Column
 	@Description("SlsSalesOrder_rebate_description")
 	private BigDecimal rebate;
+	
+	@Column
+	@Description("SlsSalesOrder_rebatePct_description")
+	private BigDecimal rebatePct;
 
 	@Column
 	@Description("SlsSalesOrder_netSPPreTax_description")
@@ -130,6 +134,14 @@ public class SlsSalesOrder extends AbstractIdentifData {
 
 	public BigDecimal getRebate() {
 		return this.rebate;
+	}
+
+	public BigDecimal getRebatePct() {
+		return rebatePct;
+	}
+
+	public void setRebatePct(BigDecimal rebatePct) {
+		this.rebatePct = rebatePct;
 	}
 
 	public void setRebate(final BigDecimal rebate) {
