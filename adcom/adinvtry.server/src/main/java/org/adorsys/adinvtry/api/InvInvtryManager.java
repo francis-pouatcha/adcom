@@ -127,8 +127,10 @@ public class InvInvtryManager {
 		String identifier = InvInvtryItem.toIdentifier(invtryItem.getInvtryNbr(), invtryItem.getAcsngUser(), invtryItem.getLotPic(), invtryItem.getArtPic(), invtryItem.getSection());
 		
 		InvInvtryItem existing = invInvtryItemEJB.findByIdentif(identifier);
-		if(existing!=null)
-			return existing;
+		if(existing!=null){
+			invtryItem.setId(existing.getId());
+			return updateItem(invtryItem);
+		}
 
 		StkArticleLot articleLot = articleLotLookup.findByIdentif(invtryItem.getLotPic());
 		if(articleLot!=null){
@@ -206,13 +208,21 @@ public class InvInvtryManager {
 
 		boolean changed = false;
 		if(!BigDecimalUtils.strictEquals(invtryItem.getAsseccedQty(), existing.getAsseccedQty())){
+
+			if(invtryItem.getAcsngDt()==null){
+				invtryItem.setAcsngDt(new Date());
+			}
+			StkLotStockQty stockQty = stockQtyLookup.findLatestQty(existing.getArtPic(), existing.getLotPic(), existing.getSection());
+			if(stockQty!=null)
+				existing.setExpectedQty(stockQty.getStockQty());
+			
 			existing.setAsseccedQty(invtryItem.getAsseccedQty());
 			existing.setAcsngDt(invtryItem.getAcsngDt());
 			existing.setAcsngUser(currentLoginName);
 			existing.evlte();
 			changed = true;
 		}
-		if(!CalendarUtil.isSameDay(invtryItem.getExpirDt(), existing.getExpirDt())){
+		if(!CalendarUtil.isSameDay(invtryItem.getExpirDt(), existing.getExpirDt()) && invtryItem.getExpirDt()!=null){
 			existing.setExpirDt(invtryItem.getExpirDt());
 			changed = true;
 		}
