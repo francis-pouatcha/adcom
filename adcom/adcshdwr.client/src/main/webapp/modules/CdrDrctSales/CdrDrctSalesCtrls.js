@@ -404,11 +404,24 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
             
             $scope.recompute = function() {
                 computeCdrDsArtHolder();
-            }
+            };
             
             $scope.hasItem = function () {
                 return $scope.cdrDsArtHolder.items.length > 0;
-            }
+            };
+            
+            $scope.pymtDscntPctChanged = function() {
+                
+            };
+            
+            $scope.pymtDscntAmtChanged = function() {
+                
+            };
+            
+            $scope.rebateChanged = function() {
+                
+            };
+            
             function clearObject(anObject) {
                 anObject = {
                     item : {}
@@ -463,7 +476,7 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                 
                 angular.forEach(items, function (artItemHolder) {
                     var totalRebate = 0.0;
-                    if(artItemHolder.item.rebate)artItemHolder.item.rebate * artItemHolder.item.soldQty;
+                    if(artItemHolder.item.rebate)totalRebate = artItemHolder.item.rebate * artItemHolder.item.soldQty;
                     var grossSPPTax = artItemHolder.item.sppuPreTax * artItemHolder.item.soldQty;
                     var netSPPreTax = grossSPPTax - totalRebate;
                     var vatAmount = netSPPreTax * (artItemHolder.item.vatPct/100);
@@ -477,9 +490,11 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                     totalNetSPTaxIncl += netSPTaxIncl;
                     totalVatAmount += vatAmount;
                 });
-                var totalRebate = $scope.cdrDsArtHolder.cdrDrctSales.rebate;
-                totalNetSalesAmt = totalNetSPPreTax
-                if(totalRebate)totalNetSalesAmt = totalNetSalesAmt - totalRebate;
+                totalNetSalesAmt = totalNetSPTaxIncl;
+                
+                if($scope.cdrDsArtHolder.cdrDrctSales.rebate) {
+                    totalNetSPPreTax = totalNetSPPreTax - $scope.cdrDsArtHolder.cdrDrctSales.rebate;
+                }
                 $scope.cdrDsArtHolder.cdrDrctSales.netSalesAmt = totalNetSalesAmt;
                 $scope.cdrDsArtHolder.cdrDrctSales.netAmtToPay = totalNetSalesAmt;
                 $scope.cdrDsArtHolder.cdrDrctSales.netSPPreTax = totalNetSPPreTax;
