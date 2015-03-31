@@ -589,6 +589,7 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
 .controller('invInvtryCompareCtlr',['$scope','genericResource','invInvtryUtils','invInvtryState','$location','$rootScope',
 function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootScope){
 
+    $scope.invInvtry = invInvtryState.resultHandler.entity();
     $scope.searchInput = invInvtryState.compareResultHandler.searchInput();
     $scope.itemPerPage=invInvtryState.compareResultHandler.itemPerPage;
     $scope.totalItems=invInvtryState.compareResultHandler.totalItems;

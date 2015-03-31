@@ -72,10 +72,16 @@ public class InvInvtryManager {
 	}
 	
 	public InvInvtry closeInventory(InvInvtry invtry){
+		
 		if(invtry.getInvtryStatus()==InvInvtryStatus.CLOSED || invtry.getInvtryStatus()==InvInvtryStatus.POSTED)
 			return invtry;// Not closable.
+		
 		invtry = inventoryEJB.findById(invtry.getId());
-		recomputeInventory(invtry);
+		if(invtry.getConflictDt()!=null)return invtry;
+		
+		invtry = invInvtryItemEJB.recomputeInventory(invtry);
+		if(invtry.getConflictDt()!=null)return inventoryEJB.update(invtry);
+
 		invtry.setInvtryStatus(InvInvtryStatus.CLOSED);
 		invtry.setClosedDate(new Date());
 		invtry = inventoryEJB.update(invtry);
@@ -87,7 +93,11 @@ public class InvInvtryManager {
 		if(invtry.getInvtryStatus()!=InvInvtryStatus.CLOSED)
 			return invtry;// Not closable.
 		invtry = inventoryEJB.findById(invtry.getId());
-		recomputeInventory(invtry);
+		if(invtry.getConflictDt()!=null)return invtry;
+
+		invtry = invInvtryItemEJB.recomputeInventory(invtry);
+		if(invtry.getConflictDt()!=null)return inventoryEJB.update(invtry);
+
 		invtry.setInvtryStatus(InvInvtryStatus.POSTED);
 		invtry.setPostedDate(new Date());
 		invtry = inventoryEJB.update(invtry);
@@ -155,7 +165,19 @@ public class InvInvtryManager {
 		if(lot2Section!=null){
 			invtryItem.setArtName(lot2Section.getArtName());
 		}
-		return invInvtryItemEJB.create(invtryItem);
+		InvInvtryItem created = invInvtryItemEJB.create(invtryItem);
+		setConflicting(invtry, created);
+		return created;
+	}
+	
+	private void setConflicting(InvInvtry invtry, InvInvtryItem created){
+		if(created.getConflictDt()!=null && invtry.getConflictDt()==null){
+			invtry = inventoryEJB.findById(invtry.getId());
+			if(invtry.getConflictDt()==null){
+				invtry.setConflictDt(new Date());
+				inventoryEJB.update(invtry);
+			}
+		}
 	}
 	
 	/**
@@ -200,6 +222,8 @@ public class InvInvtryManager {
 				createQuantityModifiedItemHistory(invtry, existing);
 			}
 		}
+
+		setConflicting(invtry, existing);
 		
 		return existing;
 	}
@@ -222,6 +246,9 @@ public class InvInvtryManager {
 		
 		// Create history.
 		createDisabledInventoryItemHistory(invtry, existing);
+		
+		setConflicting(invtry, existing);
+		
 		return existing;
 		
 	}
@@ -243,6 +270,9 @@ public class InvInvtryManager {
 		
 		// Create history.
 		createDisabledInventoryItemHistory(invtry, existing);
+
+		setConflicting(invtry, existing);
+
 		return existing;
 	}
 	
@@ -283,22 +313,22 @@ public class InvInvtryManager {
 		return inventory;
 	}
 	
-	private void recomputeInventory(final InvInvtry invInvtry){
-		// update delivery object.
-		String invtryNbr = invInvtry.getInvtryNbr();
-		Long count = invInvtryItemEJB.countByInvtryNbr(invtryNbr);
-		int start = 0;
-		int max = 100;
-		invInvtry.clearAmts();
-		while(start<=count){
-			List<InvInvtryItem> list = invInvtryItemEJB.findByInvtryNbr(invtryNbr, start, max);
-			start +=max;
-			for (InvInvtryItem item : list) {
-				invInvtry.addGapPurchAmtHT(item.getGapTotalPpPT());
-				invInvtry.addGapSaleAmtHT(item.getGapTotalSpPT());
-			}
-		}
-	}
+//	private void recomputeInventory(final InvInvtry invInvtry){
+//		// update delivery object.
+//		String invtryNbr = invInvtry.getInvtryNbr();
+//		Long count = invInvtryItemEJB.countByInvtryNbr(invtryNbr);
+//		int start = 0;
+//		int max = 100;
+//		invInvtry.clearAmts();
+//		while(start<=count){
+//			List<InvInvtryItem> list = invInvtryItemEJB.findByInvtryNbr(invtryNbr, start, max);
+//			start +=max;
+//			for (InvInvtryItem item : list) {
+//				invInvtry.addGapPurchAmtHT(item.getGapTotalPpPT());
+//				invInvtry.addGapSaleAmtHT(item.getGapTotalSpPT());
+//			}
+//		}
+//	}
 	
 	private void createClosedInventoryHistory(InvInvtry invtry){
 		TermWsUserPrincipal callerPrincipal = securityUtil.getCallerPrincipal();
