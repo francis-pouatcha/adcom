@@ -113,6 +113,12 @@ public abstract class InvAbstractInvtry extends AbstractIdentifData {
 	 */
 	@Description("InvInvtry_containerId_description")
 	private String containerId;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Description("InvInvtry_consistentDt_description")
+	@DateFormatPattern(pattern = "dd-MM-yyyy HH:mm")
+	private Date conflictDt;
+
 
 	public Date getPreparedDt() {
 		return preparedDt;
@@ -231,10 +237,19 @@ public abstract class InvAbstractInvtry extends AbstractIdentifData {
 		this.invtryGroup = invtryGroup;
 	}
 
+	public Date getConflictDt() {
+		return conflictDt;
+	}
+
+	public void setConflictDt(Date conflictDt) {
+		this.conflictDt = conflictDt;
+	}
+
 	public void copyTo(InvAbstractInvtry target) {
 		target.invtryNbr = invtryNbr;
 		target.acsngUser = acsngUser;
 		target.acsngDt = acsngDt;
+		target.conflictDt = conflictDt;
 		target.gapSaleAmtHT = gapSaleAmtHT;
 		target.gapPurchAmtHT = gapPurchAmtHT;
 		target.invtryStatus = invtryStatus;
@@ -291,4 +306,5 @@ public abstract class InvAbstractInvtry extends AbstractIdentifData {
 	public void setContainerId(String containerId) {
 		this.containerId = containerId;
 	}
+	
 }

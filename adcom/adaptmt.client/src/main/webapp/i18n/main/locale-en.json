@@ -1,0 +1,14 @@
+{
+
+"AptAptmt_title_description.text":"Title of Appointment",
+"AptAptmt_title_description.title":"Title Apptmt",
+"AptAptmt_aptmtnNbr_description.text":"Number of Apptmt",
+"AptAptmt_aptmtnNbr_description.title":"Number",
+"AptAptmt_createdUserId_description.text":"Created login of Apt",
+"AptAptmt_createdUserId_description.title":"Created login",
+"AptAptmt_description.text":"Appointment",
+"AptAptmt_description.title":"Appointment",
+"AptAptmt_appointmentDate_description.text":"Date of Apt",
+"AptAptmt_appointmentDate_description.title":"Date of Apt"
+
+}
