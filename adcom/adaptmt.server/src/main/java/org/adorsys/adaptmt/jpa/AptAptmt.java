@@ -41,19 +41,24 @@ public class AptAptmt extends AbstractTimedData
    private String closedUserId;
 
    @Column
+   @Description("AptAptmt_status_description")
    private AptmtStatus status;
 
    @Column
    @NotNull
+   @Description("AptAptmt_title_description")
    private String title;
 
    @Column
+   @Description("AptAptmt_description_description")
    private String description;
 
    @Column
+   @Description("AptAptmt_locality_description")
    private String locality;
 
    @Column
+   @Description("AptAptmt_parentIdentify_description")
    private String parentIdentify;
 
    public Date getCreateDate()
