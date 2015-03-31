@@ -14,7 +14,7 @@
                         <div class="row" >
                             <div class="col-lg-3">
                                 <div class="form-group">
-                                    <label class=" control-label" tooltips="" title="{{slsInvoicesUtils.translations['SlsInvoice_soNbr_description.text']}}" tooltip-side="top" for="soNbr">{{slsInvoicesUtils.translations['SlsInvoice_soNbr_description.title']}}</label>
+                                    <label class=" control-label" tooltips="" tooltip-title="{{'SlsInvoice_soNbr_description.text' | translate}}" tooltip-side="top" for="soNbr">{{slsInvoicesUtils.translations['SlsInvoice_soNbr_description.title']}}</label>
                                     <div class="">
                                         <input type="text" id="soNbr" ng-model="searchInput.entity.soNbr" class="form-control">
                                     </div>
@@ -22,7 +22,7 @@
                             </div>
                             <div class="col-lg-3">
                                 <div class="form-group">
-                                    <label class=" control-label" tooltips="" title="{{slsInvoicesUtils.translations['SlsInvoice_invceNbr_description.text']}}" tooltip-side="top" for="invceNbr">{{slsInvoicesUtils.translations['SlsInvoice_invceNbr_description.title']}}</label>
+                                    <label class=" control-label" tooltips="" tooltip-title="{{'SlsInvoice_invceNbr_description.text' | translate}}" tooltip-side="top" for="invceNbr">{{slsInvoicesUtils.translations['SlsInvoice_invceNbr_description.title']}}</label>
                                     <div class="">
                                         <input type="text" id="invceNbr" ng-model="searchInput.entity.invceNbr" class="form-control">
                                     </div>
@@ -30,7 +30,7 @@
                             </div>
                             <div class="col-lg-2">
                                 <div class="form-group">
-                                    <label class=" control-label" tooltips="" title="{{slsInvoicesUtils.translations['SlsInvoice_invceDtFrom_description.text']}}" tooltip-side="top" for="invceDtFrom">{{slsInvoicesUtils.translations['SlsInvoice_invceDtFrom_description.title']}}</label>
+                                    <label class=" control-label" tooltips="" tooltip-title="{{'SlsInvoice_invceDtFrom_description.text' | translate}}" tooltip-side="top" for="invceDtFrom">{{slsInvoicesUtils.translations['SlsInvoice_invceDtFrom_description.title']}}</label>
                                     <div class="">
                                         <input type="datetime" date-time  view="date" min-view="date" views="['date']" dismiss="true" format="dd-MM-yyyy"
                                                id="invceDtFrom" ng-model="searchInput.invceDtFrom" class="form-control">
@@ -39,7 +39,7 @@
                             </div>
                             <div class="col-lg-2">
                                 <div class="form-group">
-                                    <label class=" control-label" tooltips="" title="{{slsInvoicesUtils.translations['SlsInvoice_invceDtTo_description.text']}}" tooltip-side="top" for="invceDtTo">{{slsInvoicesUtils.translations['SlsInvoice_invceDtTo_description.title']}}</label>
+                                    <label class=" control-label" tooltips="" tooltip-title="{{'SlsInvoice_invceDtTo_description.text' | translate}}" tooltip-side="top" for="invceDtTo">{{slsInvoicesUtils.translations['SlsInvoice_invceDtTo_description.title']}}</label>
                                     <div class="">
                                         <input type="datetime" date-time  view="date" min-view="date" views="['date']" dismiss="true" format="dd-MM-yyyy"
                                                id="invceDtTo" ng-model="searchInput.invceDtTo" class="form-control">
@@ -61,7 +61,7 @@
                         <div class="row">
                             <div class="col-lg-3">
                             <div class="form-group">
-                               <label class=" control-label" tooltips="" tooltip-title="{{slsInvoicesUtils.translations['SlsInvcePtnr_description.text']}}" tooltip-side="top" for="ptnr">{{slsInvoicesUtils.translations['SlsInvcePtnr_description.title']}}</label>
+                               <label class=" control-label" tooltips="" tooltip-title="{{'SlsInvcePtnr_description.text' | translate}}" tooltip-side="top" for="ptnr">{{slsInvoicesUtils.translations['SlsInvcePtnr_description.title']}}</label>
                                <div class="">
                                 <input type="text" name="ptnr" id="ptnr" ng-model="searchInput.ptnr" autocomplete="off" typeahead="ptnr as ptnr.fullName for ptnr in slsSalesOrderUtils.loadPartnersByName($viewValue) | filter:$viewValue" typeahead-loading="loading" class="form-control">
                                </div>

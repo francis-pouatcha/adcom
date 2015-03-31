@@ -65,7 +65,7 @@ public class SecTermCredtl extends AbstractMvmtData {
 
 	@PrePersist
 	public void prePersist() {
-		if(StringUtils.isBlank(getId()));
+		if(StringUtils.isBlank(getId()))
 			setId(UUID.randomUUID().toString());
 	}
 

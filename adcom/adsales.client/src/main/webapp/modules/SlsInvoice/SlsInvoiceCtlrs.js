@@ -7,7 +7,6 @@ angular.module('AdSales')
 
     service.urlBase='/adsales.server/rest/slsinvoices';
     service.bnsptnrUrlBase='/adbnsptnr.server/rest/bpbnsptnrs';
-    service.urlSearchBase='/adsales.server/rest/slsinvoices/findCustom';
     
     service.language=sessionManager.language;
     
@@ -164,6 +163,17 @@ function($scope,genericResource,slsInvoicesUtils,slsInvoicesState,$location,$roo
     	processSearchInput();
     	findCustom($scope.searchInput);
     };
+    
+    function findCustom(searchInput){
+        genericResource.findCustom(slsInvoicesUtils.urlBase, searchInput)
+		.success(function(entitySearchResult) {
+			// store search
+			slsInvoicesState.resultHandler.searchResult(entitySearchResult);
+		})
+        .error(function(error){
+            $scope.error=error;
+        });
+    }
 
     function paginate(){
     	slsInvoicesState.resultHandler.currentPage($scope.currentPage);

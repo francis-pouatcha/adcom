@@ -6,7 +6,6 @@ angular.module('AdSales')
     var service = {};
 
     service.urlBase='/adsales.server/rest/slssalesorders';
-    service.urlSearchBase='/adsales.server/rest/slssalesorders/findCustom';
     service.bnsptnrUrlBase='/adbnsptnr.server/rest/bpbnsptnrs';
     service.loginnamessUrlBase='/adbase.server/rest/loginnamess';
     
@@ -169,7 +168,7 @@ function($scope,genericResource,slsSalesOrderUtils,slsSalesOrderState,$location,
     }
     
     function findCustom(searchInput){
-        genericResource.findByLike(slsSalesOrderUtils.urlSearchBase, searchInput)
+        genericResource.findCustom(slsSalesOrderUtils.urlBase, searchInput)
 		.success(function(entitySearchResult) {
 			// store search
 			slsSalesOrderState.resultHandler.searchResult(entitySearchResult);

@@ -109,8 +109,8 @@
 "SlsInvoice_soNbr_description.title":"Numéro de Commande",
 "SlsInvoice_vatAmount_description.text":"Montant de la taxe de cette facture.",
 "SlsInvoice_vatAmount_description.title":"Montant TVA",
-"SlsInvoice_invceDtFrom_description.text": "Date Facture inferieure a",
-"SlsInvoice_invceDtFrom_description.text": "Date du",
+"SlsInvoice_invceDtFrom_description.text":"Date Facture inferieure a",
+"SlsInvoice_invceDtFrom_description.title":"Date du",
 "SlsInvoice_invceDtTo_description.text":"Date Facture superieure a",
 "SlsInvoice_invceDtTo_description.title":"Au",
 

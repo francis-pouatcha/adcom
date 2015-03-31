@@ -29,7 +29,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="slsSOPtnr in slsSOPtnrs" >
+                    <tr ng-repeat="slsSOPtnr in slsSOPtnrsHolder" >
                         <td>{{slsSOPtnr.ptnrNbr.cpnyName}}</td>
                         <td>{{slsSOPtnr.roleInSO}}</td>
                         <td><a ng-click="deleteItem($index)" class=""><i class="glyphicon glyphicon-trash"></i></a></td>
