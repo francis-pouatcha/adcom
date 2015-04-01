@@ -106,8 +106,16 @@
                            <input type="text" ng- class="form-control" name="artPic" id="artPic" required autocomplete="off" 
                            		ng-model="searchInput.entity.artPic"
                               typeahead="article as article.pic for article in invInvtryUtils.loadArticlesByPic($viewValue)" 
-                              	typeahead-min-length="7"
+                              	typeahead-min-length="5"
                               typeahead-loading="loading" typeahead-on-select='onArticleSelectedInSearch($item, $model, $label)' >
+	                   </div>
+	                   <div class="form-group col-lg-2" ng-class="{ 'has-error' : invInvtryItemForm.lotPic.$invalid }">
+	                       <label class=" control-label" for="lotPic">{{invInvtryUtils.translations['InvInvtryItem_lotPic_description.title']}}</label>
+                           <input type="text" ng- class="form-control" name="lotPic" id="lotPic" autocomplete="off" required 
+                           		ng-model="searchInput.entity.lotPic" ng-change="onArticleLotChangedInSearch()"
+                              typeahead="articleLotSection as (articleLotSection.lotPic + ' : ' + articleLotSection.artName + ' : ' + articleLotSection.sectionName) for articleLotSection in showLotsForArtPic($viewValue)"
+                              typeahead-loading="loading" typeahead-min-length="0"
+                              typeahead-on-select='onArticleLotSectionSelectedInSearch($item, $model, $label)' >
 	                   </div>
 	                   <div class="form-group col-lg-5" >
 	                       <label class=" control-label" for="searchArtName">{{invInvtryUtils.translations['InvInvtryItem_artName_description.title']}}</label>
@@ -117,18 +125,10 @@
                               typeahead-loading="loading" typeahead-min-length="4" 
                               typeahead-on-select='onArticleSelectedInSearch($item, $model, $label)' >
 	                   </div>
-	                   <div class="form-group col-lg-2" ng-class="{ 'has-error' : invInvtryItemForm.lotPic.$invalid }">
-	                       <label class=" control-label" for="lotPic">{{invInvtryUtils.translations['InvInvtryItem_lotPic_description.title']}}</label>
-                           <input type="text" ng- class="form-control" name="lotPic" id="lotPic" autocomplete="off" required 
-                           		ng-model="searchInput.entity.lotPic" ng-change="onArticleLotChangedInSearch()" 
-                              typeahead="articleLotSection as (articleLotSection.lotPic + ' : ' + articleLotSection.artName + ' : ' + articleLotSection.sectionName) for articleLotSection in showLotsForArtPic($viewValue)"
-                              typeahead-loading="loading" typeahead-min-length="0"
-                              typeahead-on-select='onArticleLotSectionSelectedInSearch($item, $model, $label)' >
-	                   </div>
 	                   <div class="form-group col-lg-3">
 	                       <label class=" control-label" for="asseccedQty">{{invInvtryUtils.translations['InvInvtryItem_asseccedQty_description.title']}}</label>
 	                       <div ng-class="{ 'has-error' : invInvtryItemForm.asseccedQty.$invalid }" >
-	                           <input type="text" class="form-control" name="asseccedQty" id="asseccedQty" ng-model="invtryItem.asseccedQty" >
+	                           <input type="text" class="form-control" name="asseccedQty" id="asseccedQty" ng-model="searchInput.entity.asseccedQty" >
 	                       </div>
 	                   </div>
 	               	</div>
@@ -186,10 +186,10 @@
                     <th class="clo-lg-1">{{invInvtryUtils.translations['InvInvtryItem_section_description.title']}}</th>
                     <th class="clo-lg-1">{{invInvtryUtils.translations['InvInvtryItem_lotPic_description.title']}}</th>
                     <th class="clo-lg-1">{{invInvtryUtils.translations['InvInvtryItem_artPic_description.title']}}</th>
-                    <th class="col-lg-5">{{invInvtryUtils.translations['InvInvtryItem_artName_description.title']}}</th>
-                    <th class="col-lg-5">{{invInvtryUtils.translations['InvInvtryItem_artName_description.title']}}</th>
-                    <th class="col-lg-1">{{invInvtryUtils.translations['InvInvtryItem_expirDt_description.title']}}</th>
+                    <th class="col-lg-4">{{invInvtryUtils.translations['InvInvtryItem_artName_description.title']}}</th>
                     <th class="col-lg-1">{{invInvtryUtils.translations['InvInvtryItem_acsngUser_description.title']}}</th>
+                    <th class="col-lg-1">{{invInvtryUtils.translations['InvInvtryItem_expirDt_description.title']}}</th>
+                    <th class="col-lg-1">{{invInvtryUtils.translations['InvInvtryItem_acsngDt_description.title']}}</th>
                     <th class="col-lg-1">{{invInvtryUtils.translations['InvInvtryItem_asseccedQty_description.title']}}</th>
                     <th class="col-lg-1">
 	                    <span  ng-show="!invInvtryUtils.isInvtryOpen(invInvtry)">{{invInvtryUtils.translations['InvInvtryItem_expectedQty_description.title']}}</span>
@@ -198,25 +198,24 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="invtryItem in invInvtryItems()" ng-dblclick="editingItem(invtryItem, $event)" >
+                    <tr ng-repeat="invtryItem in invInvtryItems()" >
                         <td>{{invtryItem.section}}</td>
                         <td>{{invtryItem.lotPic}}</td>
                         <td>{{invtryItem.artPic}}</td>
                         <td>{{invtryItem.artName}}</td>
                         <td>{{invtryItem.acsngUser}}</td>
-                        <td>
-                        	<span ng-show="!invtryItem.editing">{{invtryItem.expirDt | date:'dd-MM-yyyy'}}</span>
-                            <span class="" ng-show="invtryItem.editing">
+                        <td name="expirDtCell" ng-dblclick="editingExpirDt(invtryItem, $event)">
+                            <span class="" ng-show="invtryItem.editingExpirDt">
                                 <input type="datetime" date-time  view="date" min-view="date" views="['date']" dismiss="true" format="dd-MM-yyyy"
-                                        ng-model="invtryItem.expirDt" class="form-control">
+                                        ng-model="invtryItem.expirDt" class="form-control" >
                             </span>
-                        
+                        	<span ng-show="!invtryItem.editingExpirDt">{{invtryItem.expirDt | date:'dd-MM-yyyy'}}</span>
                         </td>
                         <td>{{invtryItem.acsngDt | date:'dd-MM-yyyy HH:mm'}}</td>
-                        <td name="asseccedQtyCell">
-	                        <input type="text" name="asseccedQty" 
-	                        	ng-model="invtryItem.asseccedQty" ng-show="invtryItem.editing">
-                        	<span ng-show="!invtryItem.editing">{{invtryItem.asseccedQty | number:0}}</span>
+                        <td name="asseccedQtyCell" ng-dblclick="editingAsseccedQty(invtryItem,$event)">
+	                        <input type="text" name="asseccedQty" ad-focus="invtryItem.editingAsseccedQty" ad-enter="updateItem(invtryItem)" 
+	                        	ng-model="invtryItem.asseccedQty" ng-show="invtryItem.editingAsseccedQty" ng-blur="updateItem(invtryItem)">
+                        	<span ng-show="!invtryItem.editingAsseccedQty">{{invtryItem.asseccedQty | number:0}}</span>
                         </td>
                         <td>
                         <div ng-show="!invInvtryUtils.isInvtryOpen(invInvtry)"><span>{{invtryItem.expectedQty | number:0}}</span></div>

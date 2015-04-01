@@ -9,14 +9,16 @@ angular.module('adaptmt',['ngRoute',
                           'NavBar'])
   
    .constant('APP_CONFIG',{
-	'appName':'Apointment - Partner',
+	'appName':'Appointment',
 	'appVersion':'1.0.0-SNAPSHOT'
 
    })
                           
   .config(['$routeProvider', '$httpProvider','$translateProvider','$translatePartialLoaderProvider', function($routeProvider,$httpProvider,$translateProvider,$translatePartialLoaderProvider) {
     $routeProvider
-      .when('/',{templateUrl:'views/landing.html',controller:'LandingPageController'})
+      .when('/',{templateUrl:'views/aptaptmt/aptaptmts.html',controller:'aptAptmtsController'})
+      .when('/aptaptmt',{templateUrl:'views/aptaptmt/search.html',controller:'SearchAptAptmtController'})
+      .when('/aptaptmt/create',{templateUrl:'views/aptaptmt/create.html',controller:'aptAptmtCreateCtlr'})
       .otherwise({
         redirectTo: '/'
       });

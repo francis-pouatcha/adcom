@@ -14,6 +14,7 @@ import org.adorsys.adinvtry.rest.InvInvtryItemEJB;
 import org.adorsys.adstock.jpa.StkArticleLot;
 import org.adorsys.adstock.jpa.StkArticleLot2StrgSctn;
 import org.adorsys.adstock.rest.StkArticleLotLookup;
+import org.apache.commons.lang3.StringUtils;
 
 @Stateless
 public class InvInvtryPrepareHelper {
@@ -30,7 +31,9 @@ public class InvInvtryPrepareHelper {
 	@AdSystem
 	public boolean createInvntryItems(List<StkArticleLot2StrgSctn> lot2Sections, InvInvtry inventory){
 		boolean modified = false;
-		String loginName = securityUtil.getCurrentLoginName();
+		String loginName = inventory.getAcsngUser();
+		if(StringUtils.isBlank(loginName))
+			loginName = securityUtil.getCurrentLoginName();
 		for (StkArticleLot2StrgSctn lot2StrgSctn : lot2Sections) {
 			String identifier = InvInvtryItem.toIdentifier(inventory.getInvtryNbr(), loginName, lot2StrgSctn.getLotPic(), 
 					lot2StrgSctn.getArtPic(), lot2StrgSctn.getStrgSection());
