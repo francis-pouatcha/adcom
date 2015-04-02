@@ -237,6 +237,25 @@ public class CdrAbstractDrctSales extends AbstractIdentifData {
 
 	}
 
+	public void copyTo(CdrAbstractDrctSales target){
+		target.dsNbr=dsNbr;
+		target.dsCur=dsCur;
+		target.grossSPPreTax=grossSPPreTax;
+		target.rebate=rebate;
+		target.netSPPreTax=netSPPreTax;
+		target.vatAmount=vatAmount;
+		target.netSPTaxIncl=netSPTaxIncl;
+		target.pymtDscntPct=pymtDscntPct;
+		target.pymtDscntAmt=pymtDscntAmt;
+		target.netSalesAmt=netSalesAmt;
+		target.rdngDscntAmt=rdngDscntAmt;
+		target.netAmtToPay=netAmtToPay;
+		target.cashier=cashier;
+		target.cdrNbr=cdrNbr;
+		target.rcptNbr=rcptNbr;
+		target.rcptPrntDt=rcptPrntDt;
+	}
+	
 	public void addGrossSPPreTax(BigDecimal grossSPPreTax) {
 		if(this.grossSPPreTax==null)this.grossSPPreTax=BigDecimal.ZERO;
 		this.grossSPPreTax = this.grossSPPreTax.add(grossSPPreTax);

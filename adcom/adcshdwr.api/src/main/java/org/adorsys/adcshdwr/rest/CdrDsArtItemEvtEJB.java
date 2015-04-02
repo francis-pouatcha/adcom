@@ -85,4 +85,8 @@ public class CdrDsArtItemEvtEJB
 	public List<CdrDsArtItemEvt> findByDsNbr(String dsNbr, int start, int max){
 		return repository.findByDsNbr(dsNbr).firstResult(start).maxResults(max).getResultList();
 	}
+
+	public List<CdrDsArtItemEvt> findByDsNbr(String dsNbr){
+		return repository.findByDsNbr(dsNbr).getResultList();
+	}
 }

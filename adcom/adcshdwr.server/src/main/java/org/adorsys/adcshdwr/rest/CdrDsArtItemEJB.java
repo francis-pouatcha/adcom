@@ -6,42 +6,58 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
 
+import org.adorsys.adcshdwr.jpa.CdrDsArtItem;
 import org.adorsys.adcshdwr.jpa.CdrDsArtItemEvt;
-import org.adorsys.adcshdwr.repo.CdrDsArtItemEvtRepository;
+import org.adorsys.adcshdwr.repo.CdrDsArtItemRepository;
 
 @Stateless
 public class CdrDsArtItemEJB
 {
 
 	@Inject
-	private CdrDsArtItemEvtRepository repository;
+	private CdrDsArtItemRepository repository;
 
-	public CdrDsArtItemEvt create(CdrDsArtItemEvt entity)
+	@Inject
+	private CdrDsArtItemEvtEJB cdrDsArtItemEvtEJB;
+	
+	public CdrDsArtItem create(CdrDsArtItem entity)
 	{
+		CdrDsArtItemEvt cdrDsArtItemEvt = new CdrDsArtItemEvt();
+		entity.copyTo(cdrDsArtItemEvt);
+		cdrDsArtItemEvt.setId(entity.getId());
+		cdrDsArtItemEvtEJB.create(cdrDsArtItemEvt);
+		
 		return repository.save(attach(entity));
 	}
 
-	public CdrDsArtItemEvt deleteById(String id)
+	public CdrDsArtItem deleteById(String id)
 	{
-		CdrDsArtItemEvt entity = repository.findBy(id);
+		CdrDsArtItem entity = repository.findBy(id);
 		if (entity != null)
 		{
 			repository.remove(entity);
+			cdrDsArtItemEvtEJB.deleteById(id);
 		}
+		
 		return entity;
 	}
 
-	public CdrDsArtItemEvt update(CdrDsArtItemEvt entity)
+	public CdrDsArtItem update(CdrDsArtItem entity)
 	{
+		CdrDsArtItemEvt cdrDsArtItemEvt = cdrDsArtItemEvtEJB.findById(entity.getId());
+		if(cdrDsArtItemEvt != null) {
+			entity.copyTo(cdrDsArtItemEvt);
+			cdrDsArtItemEvtEJB.update(cdrDsArtItemEvt);
+		}
 		return repository.save(attach(entity));
 	}
 
-	public CdrDsArtItemEvt findById(String id)
+	public CdrDsArtItem findById(String id)
 	{
 		return repository.findBy(id);
 	}
 
-	public List<CdrDsArtItemEvt> listAll(int start, int max)
+	public List<CdrDsArtItem> listAll(int start, int max)
 	{
 		return repository.findAll(start, max);
 	}
@@ -51,27 +67,27 @@ public class CdrDsArtItemEJB
 		return repository.count();
 	}
 
-	public List<CdrDsArtItemEvt> findBy(CdrDsArtItemEvt entity, int start, int max, SingularAttribute<CdrDsArtItemEvt, ?>[] attributes)
+	public List<CdrDsArtItem> findBy(CdrDsArtItem entity, int start, int max, SingularAttribute<CdrDsArtItem, ?>[] attributes)
 	{
 		return repository.findBy(entity, start, max, attributes);
 	}
 
-	public Long countBy(CdrDsArtItemEvt entity, SingularAttribute<CdrDsArtItemEvt, ?>[] attributes)
+	public Long countBy(CdrDsArtItem entity, SingularAttribute<CdrDsArtItem, ?>[] attributes)
 	{
 		return repository.count(entity, attributes);
 	}
 
-	public List<CdrDsArtItemEvt> findByLike(CdrDsArtItemEvt entity, int start, int max, SingularAttribute<CdrDsArtItemEvt, ?>[] attributes)
+	public List<CdrDsArtItem> findByLike(CdrDsArtItem entity, int start, int max, SingularAttribute<CdrDsArtItem, ?>[] attributes)
 	{
 		return repository.findByLike(entity, start, max, attributes);
 	}
 
-	public Long countByLike(CdrDsArtItemEvt entity, SingularAttribute<CdrDsArtItemEvt, ?>[] attributes)
+	public Long countByLike(CdrDsArtItem entity, SingularAttribute<CdrDsArtItem, ?>[] attributes)
 	{
 		return repository.countLike(entity, attributes);
 	}
 
-	private CdrDsArtItemEvt attach(CdrDsArtItemEvt entity)
+	private CdrDsArtItem attach(CdrDsArtItem entity)
 	{
 		if (entity == null)
 			return null;
@@ -82,7 +98,11 @@ public class CdrDsArtItemEJB
 	public Long countByDsNbr(String poNbr){
 		return repository.findByDsNbr(poNbr).count();
 	}
-	public List<CdrDsArtItemEvt> findByDsNbr(String dsNbr, int start, int max){
+	public List<CdrDsArtItem> findByDsNbr(String dsNbr, int start, int max){
 		return repository.findByDsNbr(dsNbr).firstResult(start).maxResults(max).getResultList();
+	}
+
+	public List<CdrDsArtItem> findByDsNbr(String dsNbr){
+		return repository.findByDsNbr(dsNbr).getResultList();
 	}
 }
