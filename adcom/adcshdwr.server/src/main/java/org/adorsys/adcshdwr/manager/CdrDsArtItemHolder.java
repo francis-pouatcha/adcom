@@ -3,7 +3,7 @@
  */
 package org.adorsys.adcshdwr.manager;
 
-import org.adorsys.adcshdwr.jpa.CdrDsArtItem;
+import org.adorsys.adcshdwr.jpa.CdrDsArtItemEvt;
 
 /**
  * @author boriswaguia
@@ -13,9 +13,8 @@ public class CdrDsArtItemHolder {
 	
 	private String artName;
 	private String maxStockQty;
-	private CdrDsArtItem item;
-	
-	
+	private CdrDsArtItemEvt item;
+	private boolean deleted;
 	public String getMaxStockQty() {
 		return maxStockQty;
 	}
@@ -28,17 +27,23 @@ public class CdrDsArtItemHolder {
 	public void setArtName(String artName) {
 		this.artName = artName;
 	}
-	public CdrDsArtItem getItem() {
+	public CdrDsArtItemEvt getItem() {
 		return item;
 	}
-	public void setItem(CdrDsArtItem item) {
+	public void setItem(CdrDsArtItemEvt item) {
 		this.item = item;
 	}
-	
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
 	@Override
 	public String toString() {
 		return "CdrDsArtItemHolder [artName=" + artName + ", maxStockQty="
 				+ maxStockQty + ", item=" + item + "]";
 	}
-	
 }

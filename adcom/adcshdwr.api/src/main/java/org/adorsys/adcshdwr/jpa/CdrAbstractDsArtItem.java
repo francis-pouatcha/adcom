@@ -14,7 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 
 @Entity
 @Description("CdrDsArtItem_description")
-public class CdrDsArtItem extends AbstractIdentifData {
+public class CdrAbstractDsArtItem extends AbstractIdentifData {
 
 	private static final long serialVersionUID = -1884185030982589312L;
 
@@ -226,7 +226,7 @@ public class CdrDsArtItem extends AbstractIdentifData {
 	}
 	
 
-	public void copyTo(CdrDsArtItem target){
+	public void copyTo(CdrAbstractDsArtItem target){
 		target.dsNbr=dsNbr;
 		target.lotPic=lotPic;
 		target.artPic=artPic;
@@ -244,7 +244,7 @@ public class CdrDsArtItem extends AbstractIdentifData {
 		target.objctOrgUnit=objctOrgUnit;
 	}
 	
-	public boolean contentEquals(CdrDsArtItem target){
+	public boolean contentEquals(CdrAbstractDsArtItem target){
 		if(!BigDecimalUtils.numericEquals(target.grossSPPreTax,grossSPPreTax)) return false;
 		if(!BigDecimalUtils.numericEquals(target.netSPPreTax,netSPPreTax)) return false;
 		if(!BigDecimalUtils.numericEquals(target.netSPTaxIncl,netSPTaxIncl)) return false;

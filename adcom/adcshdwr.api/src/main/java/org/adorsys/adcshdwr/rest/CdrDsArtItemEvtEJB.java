@@ -10,7 +10,7 @@ import org.adorsys.adcshdwr.jpa.CdrDsArtItemEvt;
 import org.adorsys.adcshdwr.repo.CdrDsArtItemEvtRepository;
 
 @Stateless
-public class CdrDsArtItemEJB
+public class CdrDsArtItemEvtEJB
 {
 
 	@Inject

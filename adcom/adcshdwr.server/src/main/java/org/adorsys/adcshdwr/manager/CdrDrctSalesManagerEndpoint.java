@@ -24,6 +24,6 @@ public class CdrDrctSalesManagerEndpoint {
 	@Consumes({ "application/json", "application/xml" })
 	@Produces({ "application/json", "application/xml" })
 	public CdrDsArtHolder save(CdrDsArtHolder cdrDsArtHolder) {
-		return ejb.save(cdrDsArtHolder);
+		return ejb.updateOrder(cdrDsArtHolder);
 	}
 }

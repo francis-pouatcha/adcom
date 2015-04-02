@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 package org.adorsys.adcshdwr.jpa;
 
 import java.math.BigDecimal;
@@ -13,9 +16,10 @@ import org.adorsys.adcore.jpa.AbstractIdentifData;
 import org.adorsys.adcore.utils.FinancialOps;
 import org.adorsys.javaext.description.Description;
 
+
 @Entity
 @Description("CdrDrctSales_description")
-public class CdrDrctSales extends AbstractIdentifData {
+public class CdrAbstractDrctSales extends AbstractIdentifData {
 
 	private static final long serialVersionUID = 1100532460425251752L;
 

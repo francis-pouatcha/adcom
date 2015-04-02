@@ -6,8 +6,7 @@ import org.apache.deltaspike.data.api.QueryResult;
 import org.apache.deltaspike.data.api.Repository;
 
 @Repository(forEntity = CdrDsArtItemEvt.class)
-public interface CdrDsArtItemRepository extends EntityRepository<CdrDsArtItemEvt, String>
+public interface CdrDsArtItemEvtRepository extends EntityRepository<CdrDsArtItemEvt, String>
 {
-	
 	public QueryResult<CdrDsArtItemEvt> findByDsNbr(String dsNbr);
 }
