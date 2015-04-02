@@ -8,6 +8,8 @@ angular.module("adaptmt")
    $scope.error = [];
    $scope.aptAptmtsService=aptAptmtsService;
    $scope.searchInput = {};
+   $scope.aptAptmts = {};
+   $scope.totalItems = 0;
    $scope.aptAptmtsearchResults = {};
    $scope.itemPerPage=25;
    
@@ -19,8 +21,13 @@ angular.module("adaptmt")
                 start:0,
                 max:$scope.itemPerPage
             }
+          
+       aptAptmtsService.loadAptAptmts($scope.searchInput).then(function(entitySearchResult) {
+                $scope.aptAptmts = entitySearchResult.resultList;
+                $scope.totalItems = entitySearchResult.count ;
+            });
        
-        $scope.aptAptmtsearchResults = aptAptmtsService.loadAptAptmts($scope.searchInput);
+       alert($scope.totalItems);
        
    }
    
