@@ -14,6 +14,7 @@ angular.module('AdCshdwr')
         service.cdrdrctsalesmanager = '/adcshdwr.server/rest/cdrdrctsalesmanager';
         service.language = sessionManager.language;
         service.catalarticlesUrlBase = '/adcatal.server/rest/catalarticles';
+        service.stkArtLotUrlBase = '/adstock.server/rest/stkarticlelots';
 
         service.currentWsUser = sessionManager.userWsData();
 
@@ -107,6 +108,13 @@ angular.module('AdCshdwr')
                     return entitySearchResult.resultList;
                 });
         };
+        
+        service.loadArticleLotByPic = function(artPic) {
+           return genericResource.findByLikePromissed(service.stkArtLotUrlBase, 'artPic', artPic)
+                .then(function (entitySearchResult) {
+                    return entitySearchResult.resultList;
+                });
+        }
 
         service.loadArticlesByName = function (artName) {
             var searchInput = {
@@ -369,8 +377,7 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                 $scope.cdrDsArtItemHolder.item.netSPPreTax = item.sppu;
                 $scope.cdrDsArtItemHolder.maxStockQty = item.maxStockQty;
                 $scope.cdrDsArtItemHolder.item.sppuCur = item.sppuCurrIso3;
-                $scope.cdrDsArtItemHolder.item.vatAmount = item.vatRate;
-                $scope.cdrDsArtItemHolder.item.vatPct = item.vatRate / 100; //compute the percentaage
+                $scope.cdrDsArtItemHolder.item.vatPct = item.vatRate; //compute the percentaage
             };
 
             $scope.addItem = function () {
@@ -385,15 +392,36 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                 $scope.cdrDsArtItemHolder = angular.copy($scope.cdrDsArtHolder.items[index]);
             };
 
-            $scope.save = function () {
+            $scope.saveAndLeave = function () {
                 computeCdrDsArtHolder();
                 genericResource.create(cdrDrctSalesUtils.cdrdrctsalesmanager, $scope.cdrDsArtHolder).success(function (result) {
                     $scope.cdrDsArtHolder = result;
+                    $location.path("/CdrDrctSales/show"+result.id);
                 }).error(function (error) {
                     $scope.error = error;
                 });
             };
-
+            
+            $scope.recompute = function() {
+                computeCdrDsArtHolder();
+            };
+            
+            $scope.hasItem = function () {
+                return $scope.cdrDsArtHolder.items.length > 0;
+            };
+            
+            $scope.pymtDscntPctChanged = function() {
+                
+            };
+            
+            $scope.pymtDscntAmtChanged = function() {
+                
+            };
+            
+            $scope.rebateChanged = function() {
+                
+            };
+            
             function clearObject(anObject) {
                 anObject = {
                     item : {}
@@ -439,21 +467,39 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
 
             function computeCdrDsArtHolder() {
                 var items = $scope.cdrDsArtHolder.items;
-                var totalAmtHT = 0.0;
-                var totalAmtTTC = 0.0;
+                
+                var totalNetSalesAmt = 0.0;
+                var totalVatAmount = 0.0;
+                var totalNetSPPreTax = 0.0;
+                var totalNetSPTaxIncl = 0.0;
+                var totalGrossSPPreTax = 0.0;
+                
                 angular.forEach(items, function (artItemHolder) {
-                    var netSPPreTax = artItemHolder.item.sppuPreTax * artItemHolder.item.soldQty;
-                    var netSPTaxIncl = netSPPreTax + (netSPPreTax * artItemHolder.item.vatPct);
+                    var totalRebate = 0.0;
+                    if(artItemHolder.item.rebate)totalRebate = artItemHolder.item.rebate * artItemHolder.item.soldQty;
+                    var grossSPPTax = artItemHolder.item.sppuPreTax * artItemHolder.item.soldQty;
+                    var netSPPreTax = grossSPPTax - totalRebate;
+                    var vatAmount = netSPPreTax * (artItemHolder.item.vatPct/100);
+                    var netSPTaxIncl = netSPPreTax + vatAmount;
                     artItemHolder.item.netSPPreTax = netSPPreTax;
                     artItemHolder.item.netSPTaxIncl = netSPTaxIncl;
-                    totalAmtHT += netSPPreTax;
-                    totalAmtTTC += netSPTaxIncl;
+                    artItemHolder.item.vatAmount = vatAmount;
+                    //update the global sale object
+                    totalGrossSPPreTax += grossSPPTax;
+                    totalNetSPPreTax += netSPPreTax;
+                    totalNetSPTaxIncl += netSPTaxIncl;
+                    totalVatAmount += vatAmount;
                 });
-
-                $scope.cdrDsArtHolder.cdrDrctSales.netSalesAmt = totalAmtHT;
-                $scope.cdrDsArtHolder.cdrDrctSales.netAmtToPay = totalAmtTTC;
-                $scope.cdrDsArtHolder.cdrDrctSales.netSPPreTax = totalAmtHT;
-                $scope.cdrDsArtHolder.cdrDrctSales.netSPTaxIncl = totalAmtTTC;
+                totalNetSalesAmt = totalNetSPTaxIncl;
+                
+                if($scope.cdrDsArtHolder.cdrDrctSales.rebate) {
+                    totalNetSPPreTax = totalNetSPPreTax - $scope.cdrDsArtHolder.cdrDrctSales.rebate;
+                }
+                $scope.cdrDsArtHolder.cdrDrctSales.netSalesAmt = totalNetSalesAmt;
+                $scope.cdrDsArtHolder.cdrDrctSales.netAmtToPay = totalNetSalesAmt;
+                $scope.cdrDsArtHolder.cdrDrctSales.netSPPreTax = totalNetSPPreTax;
+                $scope.cdrDsArtHolder.cdrDrctSales.netSPTaxIncl = totalNetSPTaxIncl;
+                $scope.cdrDsArtHolder.cdrDrctSales.vatAmount = totalVatAmount;
             }
 }])
     .controller('cdrDrctSalesEditCtlr', ['$scope', 'genericResource', '$location', 'cdrDrctSalesUtils', 'cdrDrctSalesState', 'commonTranslations',

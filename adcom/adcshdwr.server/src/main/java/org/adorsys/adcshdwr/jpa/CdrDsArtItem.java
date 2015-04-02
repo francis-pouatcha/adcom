@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 
 import org.adorsys.adcore.jpa.AbstractIdentifData;
+import org.adorsys.adcore.utils.Contract;
 import org.adorsys.javaext.description.Description;
 
 @Entity
@@ -203,5 +204,22 @@ public class CdrDsArtItem extends AbstractIdentifData {
 	@Override
 	protected String makeIdentif() {
 		return dsNbr + "_" + lotPic + "_" + artPic;
+	}
+	/**
+	 * Use this method to check if this article item is in a good state.
+	 * i.e : soldQty > 0, rebate >=0, etc.
+	 * checkState.
+	 * this method should thrown a runtime exception if something is wrong with this article item.
+	 * @return
+	 */
+	public boolean consolidate() {
+		//return true actually, but
+		if(rebate == null || rebate.compareTo(BigDecimal.ZERO) == -1) rebate = BigDecimal.ZERO;
+		if(grossSPPreTax == null || grossSPPreTax.compareTo(BigDecimal.ZERO) == -1) grossSPPreTax = BigDecimal.ZERO;
+		if(netSPPreTax == null || netSPPreTax.compareTo(BigDecimal.ZERO) == -1) netSPPreTax = BigDecimal.ZERO;
+		if(netSPTaxIncl == null || netSPTaxIncl.compareTo(BigDecimal.ZERO) == -1) netSPTaxIncl = BigDecimal.ZERO;
+		if(soldQty == null || soldQty.compareTo(BigDecimal.ZERO) == -1) soldQty = BigDecimal.ZERO;
+		if(sppuPreTax == null || sppuPreTax.compareTo(BigDecimal.ZERO) == -1) sppuPreTax = BigDecimal.ZERO;
+		return true;
 	}
 }

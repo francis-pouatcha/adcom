@@ -452,7 +452,7 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
     function setAccessingUserName(){
     	if(angular.isUndefined($scope.searchInput.entity.acsngUser) || !$scope.searchInput.entity.acsngUser){
         	$scope.display.acsngUserFullName='';    		
-        	$scope.display.acsngUser='';
+        	$scope.display.acsngUser='';    		
     		return;
     	} else if (angular.equals($scope.display.acsngUser,$scope.searchInput.entity.acsngUser)) {
     		return;
@@ -553,8 +553,8 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
 	
 }])
 .controller('invInvtryCreateCtlr',['$scope','invInvtryUtils','$translate',
-                                   'invInvtryManagerResource','$location','invInvtryState','adUtils',
-        function($scope,invInvtryUtils,$translate,invInvtryManagerResource,$location,invInvtryState,adUtils){
+                                   'invInvtryManagerResource','$location','invInvtryState','adUtils','genericResource',
+        function($scope,invInvtryUtils,$translate,invInvtryManagerResource,$location,invInvtryState,adUtils,genericResource){
     $scope.invInvtry = {};
     $scope.display = {};
     $scope.error = "";
@@ -563,12 +563,28 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
     $scope.onUserSelectedInCreate = function(item,model,label){
     	$scope.invInvtry.acsngUser=item.loginName;
     	$scope.display.acsngUserFullName=item.fullName;
-    }
+    	$scope.display.acsngUser=item.loginName;
+    };
     
+    $scope.onUserNameChanged = function(){
+    	if(angular.isDefined($scope.invInvtry.acsngUser) && 
+    			$scope.invInvtry.acsngUser &&
+    			angular.isDefined($scope.display.acsngUser) &&
+    			$scope.display.acsngUser &&
+    			($scope.invInvtry.acsngUser==$scope.display.acsngUser)){return;}
+    	
+    	if($scope.invInvtry.acsngUser.length<3) return;
+    	// Read user
+    	genericResource.findById(invInvtryUtils.loginnamessUrlBase,$scope.invInvtry.acsngUser)
+    	.success(function(item){
+        	$scope.display.acsngUserFullName=item.fullName;
+        	$scope.display.acsngUser=item.loginName;
+    	});
+    };    
     $scope.onSectionSelectedInCreate = function(item,model,label){
     	$scope.invInvtry.section=item.strgSection;
     	$scope.display.sectionName=item.name;
-    }
+    };
 
     $scope.create = function(){
     	$scope.invInvtry.invtryDt=new Date();

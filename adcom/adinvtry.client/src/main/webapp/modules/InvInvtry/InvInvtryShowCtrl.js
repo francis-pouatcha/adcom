@@ -138,22 +138,29 @@ angular.module('AdInvtry')
 	}
 
     $scope.addItem = function(invtryItem){
-    	delete invtryItem.editing;
+    	unsetEditing(invtryItem);
         invInvtryManagerResource.addItem(invtryItem)
     	.success(function(invtryItem){
     		itemsResultHandler.unshift(invtryItem);
     		$scope.searchInput.entity.artPic=undefined;
     		$scope.searchInput.entity.artName=undefined;
     		$scope.searchInput.entity.lotPic=undefined;
+    		$scope.searchInput.entity.asseccedQty=undefined;
     	})
     	.error(function(error){
     		$scope.error = error;
     	});
     };
     
+    function unsetEditing(invtryItem){
+    	if(angular.isDefined(invtryItem.editingExpirDt))
+    		delete invtryItem.editingExpirDt;
+    	if(angular.isDefined(invtryItem.editingAsseccedQty))
+    		delete invtryItem.editingAsseccedQty;
+    }
+    
     function cleanupItem(invtryItem){
-    	if(angular.isDefined(invtryItem.editing))
-    		delete invtryItem.editing;
+    	unsetEditing(invtryItem);
     	if(angular.isDefined(invtryItem.oldAccessedQty))
     		delete invtryItem.oldAccessedQty;
     	if(angular.isDefined(invtryItem.oldAccessedDt))
@@ -166,9 +173,16 @@ angular.module('AdInvtry')
     		(angular.isDefined(invtryItem.oldExpirDt) && (!angular.equals(invtryItem.oldExpirDt,invtryItem.expirDt)));
     }
     
-    $scope.editingItem = function(invtryItem, $event){
+    $scope.editingExpirDt = function(invtryItem, $event){
     	// First set editing flag.
-    	invtryItem.editing = true;
+    	invtryItem.editingExpirDt = true;
+    	if(angular.isUndefined(invtryItem.oldExpirDt) && angular.isDefined(invtryItem.expirDt)){
+    		invtryItem.oldExpirDt = angular.copy(invtryItem.expirDt);
+    	}
+    };
+    $scope.editingAsseccedQty = function(invtryItem, $event){
+    	// First set editing flag.
+    	invtryItem.editingAsseccedQty = true;
     	// Then clone and hold clone.
     	if(angular.isUndefined(invtryItem.oldAccessedQty) && angular.isDefined(invtryItem.asseccedQty)){
     		invtryItem.oldAccessedQty = angular.copy(invtryItem.asseccedQty);
@@ -176,9 +190,10 @@ angular.module('AdInvtry')
     	if(angular.isUndefined(invtryItem.oldAccessedDt) && angular.isDefined(invtryItem.acsngDt)){
     		invtryItem.oldAccessedDt = angular.copy(invtryItem.acsngDt);
     	}
-    	if(angular.isUndefined(invtryItem.oldExpirDt) && angular.isDefined(invtryItem.expirDt)){
-    		invtryItem.oldExpirDt = angular.copy(invtryItem.expirDt);
-    	}
+    };
+    $scope.editingItem = function(invtryItem, $event){
+    	$scope.editingExpirDt(invtryItem, $event);
+    	$scope.editingAsseccedQty(invtryItem, $event);
     }
     
 	$scope.updateItem = function(invtryItem){
@@ -197,6 +212,10 @@ angular.module('AdInvtry')
     	.error(function(error){
     		$scope.error = error;
     	});
+    };
+    
+    $scope.updateItemOnKeyPress = function(event,invtryItem){
+    	if (event.which === 13 || event.which === 9) $scope.updateItem(invtryItem);
     };
     
     $scope.cancelEditItem = function(invtryItem){
@@ -283,7 +302,8 @@ angular.module('AdInvtry')
     	$scope.searchInput.entity.section=item.strgSection;
     	$scope.display.sectionName=item.sectionName;
     	$scope.display.sectionCode=item.strgSection;
-    }
+    };
+    
     $scope.onArticleLotChangedInSearch = function(){
     	if($scope.searchInput.entity.lotPic && $scope.searchInput.entity.lotPic.length<9) return;
     	if(
