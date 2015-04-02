@@ -6,7 +6,7 @@ import org.adorsys.javaext.description.Description;
 
 @Entity
 @Description("CdrDsArtItem_description")
-public class CdrDsArtItem extends CdrAbstractDsArtItem {
+public class CdrDsArtItemEvt extends CdrAbstractDsArtItem {
 
 	/**
 	 * The serialVersionUID field.

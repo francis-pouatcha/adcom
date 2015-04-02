@@ -9,7 +9,7 @@ angular.module('AdSales')
         service.catalarticles='/adcatal.server/rest/catalarticles';
         service.orgunits='/adbase.server/rest/orgunits';
         service.stkSection = '/adstock.server/rest/stksections';
-        service.sale = '/adsales.server/sale';
+        service.sale = '/adsales.server/rest/sale';
 
         return service;
   }])
@@ -27,6 +27,8 @@ angular.module('AdSales')
         self.slsSalesOrderHolder.slsSalesOrder.vatAmount = 0;
         self.slsSalesOrderHolder.slsSalesOrder.netSPTaxIncl = 0;
         self.slsSalesOrderHolder.slsSalesOrder.rebate = 0;
+        self.slsSalesOrderHolder.slsSalesOrder.netSalesAmt = 0;
+        self.slsSalesOrderHolder.slsSalesOrder.soStatus = 'INITIATED';
     self.slsSalesOrderHolderTab = [];
     self.slsSalesOrderItemHolder = {};
     self.error = "";
@@ -135,7 +137,10 @@ angular.module('AdSales')
 
         function calculAmount() {
             if(self.slsSalesOrderItemHolder.slsSOItem.orderedQty){
-                self.slsSalesOrderItemHolder.slsSOItem.grossSPPreTax = self.slsSalesOrderItemHolder.slsSOItem.sppuPreTax*parseInt(self.slsSalesOrderItemHolder.slsSOItem.orderedQty);
+                if(!self.slsSalesOrderItemHolder.slsSOItem.returnedQty)
+                    self.slsSalesOrderItemHolder.slsSOItem.returnedQty = 0;
+                self.slsSalesOrderItemHolder.slsSOItem.deliveredQty = parseInt(self.slsSalesOrderItemHolder.slsSOItem.orderedQty) - parseInt(self.slsSalesOrderItemHolder.slsSOItem.returnedQty);
+                self.slsSalesOrderItemHolder.slsSOItem.grossSPPreTax = self.slsSalesOrderItemHolder.slsSOItem.sppuPreTax*self.slsSalesOrderItemHolder.slsSOItem.deliveredQty;
             }
             if(self.slsSalesOrderItemHolder.slsSOItem.rebate)
                 self.slsSalesOrderItemHolder.slsSOItem.netSPPreTax=self.slsSalesOrderItemHolder.slsSOItem.grossSPPreTax-parseInt(self.slsSalesOrderItemHolder.slsSOItem.rebate);
@@ -153,26 +158,31 @@ angular.module('AdSales')
         }
     function totalAmount(){
         self.slsSalesOrderHolder.slsSalesOrder.grossSPPreTax = 0;
+        self.slsSalesOrderHolder.slsSalesOrder.rebate = 0;
         self.slsSalesOrderHolder.slsSalesOrder.netSPPreTax = 0;
         self.slsSalesOrderHolder.slsSalesOrder.vatAmount = 0;
         self.slsSalesOrderHolder.slsSalesOrder.netSPTaxIncl = 0;
+        self.slsSalesOrderHolder.slsSalesOrder.netSalesAmt = 0;
+
         angular.forEach(self.slsSalesOrderHolder.slsSOItemsholder, function (value, key) {
-            self.slsSalesOrderHolder.slsSalesOrder.grossSPPreTax = self.slsSalesOrderHolder.slsSalesOrder.grossSPPreTax+value.slsSOItem.netSPPreTax;
+            self.slsSalesOrderHolder.slsSalesOrder.grossSPPreTax = self.slsSalesOrderHolder.slsSalesOrder.grossSPPreTax + value.slsSOItem.grossSPPreTax;
+            self.slsSalesOrderHolder.slsSalesOrder.rebate = self.slsSalesOrderHolder.slsSalesOrder.rebate + value.slsSOItem.rebate;
+            self.slsSalesOrderHolder.slsSalesOrder.netSPPreTax = self.slsSalesOrderHolder.slsSalesOrder.netSPPreTax + value.slsSOItem.netSPPreTax;
             self.slsSalesOrderHolder.slsSalesOrder.vatAmount = self.slsSalesOrderHolder.slsSalesOrder.vatAmount + value.slsSOItem.vatAmount;
+            self.slsSalesOrderHolder.slsSalesOrder.netSPTaxIncl = self.slsSalesOrderHolder.slsSalesOrder.netSPTaxIncl + value.slsSOItem.netSPTaxIncl;
         })
-        if(!self.slsSalesOrderHolder.slsSalesOrder.rebate && !self.slsSalesOrderHolder.slsSalesOrder.rebatePct){
-            self.slsSalesOrderHolder.slsSalesOrder.rebate = 0;
-            self.slsSalesOrderHolder.slsSalesOrder.rebatePct = 0;
-        }
-        if(self.slsSalesOrderHolder.slsSalesOrder.rebatePct)
-            self.slsSalesOrderHolder.slsSalesOrder.rebate = self.slsSalesOrderHolder.slsSalesOrder.grossSPPreTax*self.slsSalesOrderHolder.slsSalesOrder.rebatePct/100;
-        if(self.slsSalesOrderHolder.slsSalesOrder.rebate){
-            self.slsSalesOrderHolder.slsSalesOrder.rebate = parseInt(self.slsSalesOrderHolder.slsSalesOrder.rebate);
-            self.slsSalesOrderHolder.slsSalesOrder.rebatePct = self.slsSalesOrderHolder.slsSalesOrder.rebate * 100/self.slsSalesOrderHolder.slsSalesOrder.grossSPPreTax;
+
+        if(self.slsSalesOrderHolder.slsSalesOrder.pymtDscntPct)
+            self.slsSalesOrderHolder.slsSalesOrder.netSalesAmt =self.slsSalesOrderHolder.slsSalesOrder.netSPTaxIncl -(self.slsSalesOrderHolder.slsSalesOrder.netSPPreTax*self.slsSalesOrderHolder.slsSalesOrder.pymtDscntPct/100);
+
+        if(self.slsSalesOrderHolder.slsSalesOrder.pymtDscntAmt){
+            self.slsSalesOrderHolder.slsSalesOrder.netSalesAmt=self.slsSalesOrderHolder.slsSalesOrder.netSPTaxIncl - parseInt(self.slsSalesOrderHolder.slsSalesOrder.pymtDscntAmt);
         }
 
-        self.slsSalesOrderHolder.slsSalesOrder.netSPPreTax = self.slsSalesOrderHolder.slsSalesOrder.grossSPPreTax - self.slsSalesOrderHolder.slsSalesOrder.rebate;
-        self.slsSalesOrderHolder.slsSalesOrder.netSPTaxIncl=self.slsSalesOrderHolder.slsSalesOrder.netSPPreTax + self.slsSalesOrderHolder.slsSalesOrder.vatAmount;
+        if(!self.slsSalesOrderHolder.slsSalesOrder.pymtDscntAmt && !self.slsSalesOrderHolder.slsSalesOrder.pymtDscntPct){
+            self.slsSalesOrderHolder.slsSalesOrder.netSalesAmt = self.slsSalesOrderHolder.slsSalesOrder.netSPTaxIncl;
+        }
+
     }
         
     function addItem(){
@@ -240,6 +250,9 @@ angular.module('AdSales')
             self.slsSalesOrderHolder.slsSalesOrder.vatAmount = 0;
             self.slsSalesOrderHolder.slsSalesOrder.netSPTaxIncl = 0;
             self.slsSalesOrderHolder.slsSalesOrder.rebate = 0;
+            self.slsSalesOrderHolder.slsSalesOrder.pymtDscntAmt = 0;
+            self.slsSalesOrderHolder.slsSalesOrder.netSalesAmt = 0;
+            self.slsSalesOrderHolder.slsSalesOrder.soStatus = 'INITIATED';
             self.slsSalesOrderItemHolder = {};
         }
         function ModalInstanceAddBptrnCtrl($scope, $modalInstance, slsSOPtnrsHolder) {

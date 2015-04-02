@@ -33,6 +33,7 @@
     <module>adbnsptnr.server</module>
     <module>adsales.server</module>
     <module>adcshdwr.server</module>
+    <module>adcshdwr.api</module>
     <module>adterm.server</module>
     <module>adcom.all</module>
     <module>adcom.configuration</module>

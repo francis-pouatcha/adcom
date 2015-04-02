@@ -14,8 +14,7 @@ public class CdrDsArtItemHolder {
 	private String artName;
 	private String maxStockQty;
 	private CdrDsArtItem item;
-	
-	
+	private boolean deleted;
 	public String getMaxStockQty() {
 		return maxStockQty;
 	}
@@ -34,11 +33,17 @@ public class CdrDsArtItemHolder {
 	public void setItem(CdrDsArtItem item) {
 		this.item = item;
 	}
-	
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
 	@Override
 	public String toString() {
 		return "CdrDsArtItemHolder [artName=" + artName + ", maxStockQty="
 				+ maxStockQty + ", item=" + item + "]";
 	}
-	
 }

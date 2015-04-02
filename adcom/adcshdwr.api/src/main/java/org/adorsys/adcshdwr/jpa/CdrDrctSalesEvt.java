@@ -5,11 +5,12 @@ import javax.persistence.Entity;
 import org.adorsys.javaext.description.Description;
 
 @Entity
-@Description("CdrDsArtItem_description")
-public class CdrDsArtItem extends CdrAbstractDsArtItem {
+@Description("CdrDrctSales_description")
+public class CdrDrctSalesEvt extends CdrAbstractDrctSales {
 
 	/**
 	 * The serialVersionUID field.
 	 */
-	private static final long serialVersionUID = -6398806516924684135L;
+	private static final long serialVersionUID = -4463478926303975708L;
+
 }

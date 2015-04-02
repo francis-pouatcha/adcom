@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adsales.jpa.SlsSOPtnr;
+import org.adorsys.adsales.jpa.SlsSalesOrder;
 import org.adorsys.adsales.repo.SlsSOPtnrRepository;
 
 @Stateless
@@ -78,4 +79,19 @@ public class SlsSOPtnrEJB
 
       return entity;
    }
+
+	public SlsSOPtnr findPtnr(String soNbr, String ptnrNbr, String roleInSo) {
+		return repository.findBy(SlsSOPtnr.toId(soNbr, ptnrNbr, roleInSo));
+	}
+	
+	public SlsSOPtnr addPtnr(SlsSalesOrder salesOrder, String ptnrNbr,
+			String roleInSO) {
+		
+		SlsSOPtnr slsSOPtnr = new SlsSOPtnr();
+		slsSOPtnr.setSoNbr(salesOrder.getSoNbr());
+		slsSOPtnr.setPtnrNbr(ptnrNbr);
+		slsSOPtnr.setRoleInSO(roleInSO);
+		return repository.save(slsSOPtnr);
+		
+	}
 }
