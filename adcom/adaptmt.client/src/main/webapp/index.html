@@ -2,7 +2,7 @@
 <html ng-app="adaptmt">
 <head>
     <meta charset="utf-8" />
-    <title>AngularJS Basic HTTP Authentication Example</title>
+    <title>Appointements</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -15,6 +15,7 @@
     <script src="/adres.client/vendors/bootstrap/js/bootstrap.js"></script>
 </head>
 <body class="theme-blue">
+    
 	<div ng-include="'/adres.client/views/navbar.html'"></div>
     <div class="container">
         <div ng-show="sessionManager.hasAuthErrors()">
@@ -27,7 +28,7 @@
         <div ng-view></div>
      	<div id="push"></div>
     </div>
-
+    
     <script src="/adres.client/vendors/angular/angular.js"></script>
     <script src="/adres.client/vendors/angular/angular-sanitize.js"></script>
     <script src="/adres.client/vendors/angular/angular-route.js"></script>
@@ -52,6 +53,7 @@
     
     <script type="text/javascript" src="scripts/services/aptAptmtsService.js"></script>    
     <script type="text/javascript" src="scripts/controllers/AptAptmtsController.js"></script>
+    <script type="text/javascript" src="scripts/controllers/AptAptmtShowController.js"></script>
  
 </body>
 </html>

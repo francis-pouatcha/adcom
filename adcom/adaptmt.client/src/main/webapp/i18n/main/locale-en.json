@@ -1,14 +1,21 @@
 {
-
+"Entity_create.title":"Creation of Appointment",
+"Entity_list.title":"List of Appointments",
 "AptAptmt_title_description.text":"Title of Appointment",
 "AptAptmt_title_description.title":"Title Apptmt",
 "AptAptmt_aptmtnNbr_description.text":"Number of Apptmt",
 "AptAptmt_aptmtnNbr_description.title":"Number",
-"AptAptmt_createdUserId_description.text":"Created login of Apt",
-"AptAptmt_createdUserId_description.title":"Created login",
-"AptAptmt_description.text":"Appointment",
-"AptAptmt_description.title":"Appointment",
+"AptAptmt_createdUserName":"Created login",
+"AptAptmt_lockedUserName":"user who locked",
+"AptAptmt_description.text":"Description",
+"AptAptmt_description.title":"Description",
 "AptAptmt_appointmentDate_description.text":"Date of Apt",
 "AptAptmt_appointmentDate_description.title":"Date of Apt"
+"AptAptmt_locality_description.title":"locality",
+"AptAptmt_locality_description.title":"locality of RDV",
+"AptAptmt_parentIdentify_description.title":"parent RDV",
+"AptAptmt_parentIdentify_description.text":"parent RDV",
+"AptAptmt_createDate_description":"Creation Date",
+"AptAptmt_status_description":"Status of Aptm"
 
 }
