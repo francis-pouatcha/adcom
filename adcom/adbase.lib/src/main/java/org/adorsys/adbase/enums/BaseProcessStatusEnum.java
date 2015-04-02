@@ -14,5 +14,7 @@ public enum BaseProcessStatusEnum
    @Description("BaseProcessStatusEnum_CLOSING_description")
    CLOSING,
    @Description("BaseProcessStatusEnum_CLOSED_description")
-   CLOSED
+   CLOSED,
+   @Description("BaseProcessStatusEnum_INITIATED_description")
+   INITIATED
 }

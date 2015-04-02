@@ -10,7 +10,11 @@
     </div>
     <form name="OrderItemForm" id="OrderItemForm" novalidate >
     <div class="panel panel-default" >
-        <div class="panel-heading"><b>{{'Add_Procurement_Order_Item' | translate}}</b> </div>
+        <div class="panel-heading">
+            <b>{{'Add_Procurement_Order_Item' | translate}}</b>
+            ---- N# : {{saleCtlr.slsSalesOrderHolder.slsSalesOrder.soNbr}}
+            ---- Status : <label class="bg-warning" >{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.soStatus}}</label>
+        </div>
         <div class="panel-body">
                 <table class="table table-bordered  table-striped">
                     <thead>
@@ -79,14 +83,14 @@
             <div class="row">
                   <div class="col-lg-2">
                         <div class="form-group">
-                            <label for="">Remise NAP</label><br/>
-                            <input  type="text" class="form-control" ng-model="saleCtlr.slsSalesOrderHolder.slsSalesOrder.rebate" placeholder="Entrer la remise" >
+                            <label for="">{{'SlsSalesOrder_pymtDscntAmt_description.title' | translate}}</label><br/>
+                            <input  type="text" class="form-control" ng-model="saleCtlr.slsSalesOrderHolder.slsSalesOrder.pymtDscntAmt" >
                         </div>
                   </div>
                     <div class="col-lg-2">
                         <div class="form-group">
-                            <label for="">Remise Nap(%)</label><br/>
-                            <input  type="text" class="form-control" ng-model="saleCtlr.slsSalesOrderHolder.slsSalesOrder.rebatePct" placeholder="Entrer la remise %" >
+                            <label for="">{{'SlsSalesOrder_pymtDscntPct_description.title' | translate}}</label><br/>
+                            <input  type="text" class="form-control" ng-model="saleCtlr.slsSalesOrderHolder.slsSalesOrder.pymtDscntPct" >
                         </div>
                     </div>
                 <div class="col-lg-2" style="margin-top: 24px">
@@ -95,16 +99,16 @@
                 <div class="col-lg-4 col-lg-offset-3" style="margin-top: -24px" >
                     <table class="table table-bordered  table-striped" style="text-align: center">
                         <tr>
-                            <td>{{'SlsSalesOrder_grossSPPreTax_description.text' | translate}}</td>
-                            <td class="bg-danger">{{'SlsSalesOrder_rebate_description.title' | translate}}</td>
+                            <td>{{'SlsSalesOrder_netSPPreTax_description.text' | translate}}</td>
+                            <td>{{'SlsSalesOrder_pymtDscntAmt_description.title' | translate}}</td>
                             <td >{{'SlsSalesOrder_vatAmount_description.title' | translate}}</td>
-                            <td >{{'SlsSalesOrder_netSPTaxIncl_description.title' | translate}}</td>
+                            <td>{{'SlsSalesOrder_netSalesAmt_description.title' | translate}}</td>
                         </tr>
                         <tr>
-                            <td><b>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.grossSPPreTax}} CFA</b></td>
-                            <td><b>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.rebate}} CFA</b></td>
+                            <td><b>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.netSPPreTax}} CFA</b></td>
+                            <td><b>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.pymtDscntAmt}} CFA</b></td>
                             <td><b>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.vatAmount}} CFA</b></td>
-                            <td><b>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.netSPTaxIncl}} CFA</b></td>
+                            <td><b>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.netSalesAmt}} CFA</b></td>
                         </tr>
                     </table>
                 </div>

@@ -78,4 +78,13 @@ public class SlsSOItemEJB
 
       return entity;
    }
+
+	public List<SlsSOItem> findSoNbr(String soNbr, int start, int max) {
+		
+		return repository.findBySoNbr(soNbr).firstResult(start).maxResults(max).getResultList();
+	}
+
+	public Long countBySoNbr(String soNbr) {
+		return repository.findBySoNbr(soNbr).count();
+	}
 }

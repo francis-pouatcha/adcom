@@ -26,12 +26,11 @@ public class AptAptmtEJB {
 		Date now = new Date();
 		entity.setCreateDate(now);
 
-		String sequence = SequenceGenerator
-				.getSequence(SequenceGenerator.APPOINTMENT_NUMBER_SEQUENCE_PREFIXE);
-		entity.setAptmtnNbr(sequence);
+		entity.setAptmtnNbr(SequenceGenerator
+				.getSequence(SequenceGenerator.APPOINTMENT_NUMBER_SEQUENCE_PREFIXE));
 
 		String loginName = securityUtil.getCurrentLoginName();
-		
+
 		Login login = securityUtil.getConnectedUser();
 		entity.setCreatedUserId(login.getIdentif());
 

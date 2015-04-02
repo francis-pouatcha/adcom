@@ -46,7 +46,7 @@ public class PrcmtOrderManager {
 	@Inject
 	private TriggerModeHandlerFactoryProducer triggerModeHandlerFactoryProducer;
 	
-	public PrcmtOrderHolder createOrder(PrcmtProcOrder prcmtOrder){
+	public PrcmtOrderHolder createPcrmtOrder(PrcmtProcOrder prcmtOrder){
 		
 		PrcmtProcOrder prcmtProcOrder = prcmtOrderEJB.createCustom(prcmtOrder);
 		TriggerModeExecuter triggerModeExecuter = triggerModeHandlerFactoryProducer.getTriggerModeHandlerFactory().findHandler(prcmtOrder.getPoTriggerMode());
@@ -78,6 +78,7 @@ public class PrcmtOrderManager {
 				if(persDi==null) throw new IllegalStateException("Missing delivery item with id: " + orderItem.getId());
 				if(!orderItem.contentEquals(persDi)){
 					orderItem.copyTo(persDi);
+					orderItem.evlte();
 					orderItem = prcmtPOItemEJB.update(persDi);
 					itemModified = true;
 				}
@@ -87,6 +88,7 @@ public class PrcmtOrderManager {
 					if(persDi!=null){
 						if(!orderItem.contentEquals(persDi)){
 							orderItem.copyTo(persDi);
+							orderItem.evlte();
 							orderItem = prcmtPOItemEJB.update(persDi);
 							itemModified = true;
 						}
