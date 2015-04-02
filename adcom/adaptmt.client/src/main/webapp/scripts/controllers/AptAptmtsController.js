@@ -27,7 +27,7 @@ angular.module("adaptmt")
                 $scope.totalItems = entitySearchResult.count ;
             });
        
-       alert($scope.totalItems);
+       console.log($scope.totalItems);
        
    }
    

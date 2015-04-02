@@ -1,60 +1,80 @@
-<header ng-switch on="$location.path().indexOf('/AccAccounts/new') > -1">
-    <h3 ng-switch-when="true">Create AccAccount</h3>
-    <h3 ng-switch-when="false">View or edit AccAccount</h3>
-</header>
-<form id="AccAccountForm" name="AccAccountForm" class="form-horizontal">
-    <div ng-show="displayError" class="alert alert-error">
-        <strong>Error!</strong> Something broke. Retry, or cancel and start afresh.
-    </div>
-    <div class="control-group" ng-class="{error: AccAccountForm.accCoA.$invalid}">
-        <label for="accCoA" class="control-label">Acc Co A</label>
-        <div id="accCoAControls" class="controls">
-            <input id="accCoA" name="accCoA" type="text" ng-model="accAccount.accCoA" placeholder="Enter the AccAccount Acc Co A"></input>
+<div class="container">
+
+    <div class="col-xs-offset-2 col-xs-8">
+
+        <div class="panel panel-default  ng-scope">
+            <div class="panel-heading no-collapse"><b>{{"Entity_show.title"|translate}}</b> </div>
+            <div class="panel-body">
+                    <form  name="shoAptAptmtForm" class="form-horizontal" novalidate >
+
+                        
+                        
+                        <div class="form-group">
+                            <label class="col-lg-4 ">{{"AptAptmt_title_description.title"|translate}} :</label>
+                            <div class="col-lg-8"  >
+                                <input type="text" ng-model="aptAptmt.title" name="title" disabled class="form-control"  >
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-lg-4 ">{{"AptAptmt_appointmentDate_description.title"|translate}} :</label>
+                            <div class="col-lg-8">
+                                <input type="text" ng-model="aptAptmt.appointmentDate" name="appointmentDate" disabled class="form-control"  >
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-lg-4 ">{{ "AptAptmt_description.title"| translate}} :</label>
+                            <div class="col-lg-5" >
+                                <input type="text" ng-model="aptAptmt.description" name="description" disabled class="form-control"  >
+
+                            </div>
+                            
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-lg-4 ">{{ "AptAptmt_locality_description.title"| translate}} :</label>
+                            <div class="col-lg-8" ng-class="{ 'has-error' : loginForm.email.$invalid }" >
+                                <input type="text" ng-model="aptAptmt.locality" name="locality" disabled class="form-control"  >
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-lg-4 ">{{ "AptAptmt_parentIdentify_description.title"| translate}} :</label>
+                            <div class="col-lg-8"  >
+                                <input type="text" ng-model="aptAptmt.parentIdentify" disabled name="parentIdentify" class="form-control" >
+
+                            </div>
+                        </div>
+                        
+
+
+                        <div class="form-group">
+
+                            <div class="col-lg-3">
+                                <a class="btn-default btn" ng-click="loginShowCtrl.previous();" ><i class="glyphicon glyphicon-circle-arrow-left"></i> {{"Entity_previous.title"|translate}}</a>
+                            </div>
+
+                            <div class="col-lg-3" >
+                                <a class="btn-default btn" href="#/"  ><i class="glyphicon glyphicon-remove" ></i> {{"Entity_cancel.title" | translate }}</a>
+                            </div>
+                            <div class="col-lg-3" >
+                                <a class="btn-default btn" href="#/login/edit/{{loginShowCtrl.login.identif}}"  ><i class="glyphicon glyphicon-edit" ></i> Editer</a>
+                            </div>
+                            <div class="col-lg-3">
+                                <a class="btn-default btn" ng-click="loginShowCtrl.next();" ><i class="fa glyphicon glyphicon-circle-arrow-right"></i> {{"Entity_next.title"|translate}}</a>
+                            </div>
+
+                        </div>
+                    </form>
+                
+            </div>
+
         </div>
+
     </div>
-    <div class="control-group" ng-class="{error: AccAccountForm.accNbr.$invalid}">
-        <label for="accNbr" class="control-label">Acc Nbr</label>
-        <div id="accNbrControls" class="controls">
-            <input id="accNbr" name="accNbr" type="text" ng-model="accAccount.accNbr" placeholder="Enter the AccAccount Acc Nbr"></input>
-        </div>
-    </div>
-    <div class="control-group" ng-class="{error: AccAccountForm.accType.$invalid}">
-        <label for="accType" class="control-label">Acc Type</label>
-        <div id="accTypeControls" class="controls">
-        <select id="accType" name="accType" ng-model="accAccount.accType" ng-options="a for a in accTypeList"  >
-            <option value="">Choose a Acc Type</option>
-        </select>
-        </div>
-    </div>
-    <div class="control-group" ng-class="{error: AccAccountForm.prntAccNbr.$invalid}">
-        <label for="prntAccNbr" class="control-label">Prnt Acc Nbr</label>
-        <div id="prntAccNbrControls" class="controls">
-            <input id="prntAccNbr" name="prntAccNbr" type="text" ng-model="accAccount.prntAccNbr" placeholder="Enter the AccAccount Prnt Acc Nbr"></input>
-        </div>
-    </div>
-    <div class="control-group" ng-class="{error: AccAccountForm.accCur.$invalid}">
-        <label for="accCur" class="control-label">Acc Cur</label>
-        <div id="accCurControls" class="controls">
-            <input id="accCur" name="accCur" type="text" ng-model="accAccount.accCur" placeholder="Enter the AccAccount Acc Cur"></input>
-        </div>
-    </div>
-    <div class="control-group" ng-class="{error: AccAccountForm.accDesc.$invalid}">
-        <label for="accDesc" class="control-label">Acc Desc</label>
-        <div id="accDescControls" class="controls">
-            <input id="accDesc" name="accDesc" type="text" ng-model="accAccount.accDesc" placeholder="Enter the AccAccount Acc Desc"></input>
-        </div>
-    </div>
-    <div class="control-group" ng-class="{error: AccAccountForm.accBrr.$invalid}">
-        <label for="accBrr" class="control-label">Acc Brr</label>
-        <div id="accBrrControls" class="controls">
-            <input id="accBrr" name="accBrr" type="text" ng-model="accAccount.accBrr" placeholder="Enter the AccAccount Acc Brr"></input>
-        </div>
-    </div>
-    <div class="control-group">
-        <div class="controls">
-            <button id="saveAccAccount" name="saveAccAccount" class="btn btn-primary" ng-disabled="isClean() || AccAccountForm.$invalid" ng-click="save()"><i class="icon-ok-sign icon-white"></i> Save</button>
-            <button id="cancel" name="cancel" class="btn" ng-click="cancel()"><i class="icon-remove-sign"></i> Cancel</button>
-            <button id="deleteAccAccount" name="deleteAccAccount" class="btn btn-danger" ng-show="accAccount.id" ng-click="remove()"><i class="icon-trash icon-white"></i> Delete</button>
-        </div>
-    <div>
-</form>
+    
+</div>

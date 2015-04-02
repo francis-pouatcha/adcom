@@ -8,7 +8,7 @@
                 <form  name="createAptAptmtForm" class="form-horizontal" novalidate="">
                     <div class="form-group">
                         <label class="col-lg-4 ">{{"AptAptmt_title_description.title"|translate}} :</label>
-                        <div class="col-lg-8" ng-class="{ 'has-error' : lcreateAptAptmtForm.title.$invalid }" >
+                        <div class="col-lg-8" ng-class="{ 'has-error' : createAptAptmtForm.title.$invalid }" >
                              <input type="text" ng-model="aptAptmt.title" name="title" class="form-control" required >
                             <p ng-show="createAptAptmtForm.aptAptmt.$error.required" class="help-block">le title est  requis !</p>
                         </div>
