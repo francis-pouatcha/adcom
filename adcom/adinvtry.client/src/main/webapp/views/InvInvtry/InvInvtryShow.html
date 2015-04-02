@@ -213,7 +213,7 @@
                         </td>
                         <td>{{invtryItem.acsngDt | date:'dd-MM-yyyy HH:mm'}}</td>
                         <td name="asseccedQtyCell" ng-dblclick="editingAsseccedQty(invtryItem,$event)">
-	                        <input type="text" name="asseccedQty" ad-focus="invtryItem.editingAsseccedQty" ad-enter="updateItem(invtryItem)" 
+	                        <input type="text" name="asseccedQty" ad-focus="invtryItem.editingAsseccedQty" ad-enter="updateItem(invtryItem)" style="width: 35px" 
 	                        	ng-model="invtryItem.asseccedQty" ng-show="invtryItem.editingAsseccedQty" ng-blur="updateItem(invtryItem)">
                         	<span ng-show="!invtryItem.editingAsseccedQty">{{invtryItem.asseccedQty | number:0}}</span>
                         </td>

@@ -50,8 +50,11 @@ public class InvInvtryItemList {
 			} else {
 				if(item.getAsseccedQty()==null || !BigDecimalUtils.strictEquals(qty, item.getAsseccedQty())){
 					sameQty = Boolean.FALSE;
+				} else {
+					sameQty = Boolean.TRUE;
 				}
 			}
+			count +=1;
 		}
 		return sameQty;
 	}
