@@ -1,14 +1,21 @@
 {
-
+"Entity_create.title":"Création de Rendez-vous",
+"Entity_list.title":"Liste des Rendez-vous",
 "AptAptmt_title_description.text":"Titre du Rendez-vous",
 "AptAptmt_title_description.title":"Titre RDV",
 "AptAptmt_aptmtnNbr_description.text":"Numero du rendez-vous",
 "AptAptmt_aptmtnNbr_description.title":"Numero",
-"AptAptmt_createdUserId_description.text":"login qui a crée le rendez-vous",
-"AptAptmt_createdUserId_description.title":"Created",
-"AptAptmt_description.text":"rendez-vous",
-"AptAptmt_description.title":"Appointement",
+"AptAptmt_createdUserName":"Createur",
+"AptAptmt_lockedUserName":"Clôtureur",
+"AptAptmt_description.text":"Description",
+"AptAptmt_description.title":"Description",
 "AptAptmt_appointmentDate_description.text":"Date du Rdv",
-"AptAptmt_appointmentDate_description.title":"Date du Rdv"
+"AptAptmt_appointmentDate_description.title":"Date du Rdv",
+"AptAptmt_locality_description.title":"localité",
+"AptAptmt_locality_description.text":"localité du RDV",
+"AptAptmt_parentIdentify_description.title":"RDV parent",
+"AptAptmt_parentIdentify_description.text":"RDV parent RDV",
+"AptAptmt_createDate_description":"Date création",
+"AptAptmt_status_description":"Status du RDV"
 
 }

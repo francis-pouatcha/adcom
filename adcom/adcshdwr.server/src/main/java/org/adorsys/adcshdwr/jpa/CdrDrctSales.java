@@ -217,4 +217,5 @@ public class CdrDrctSales extends AbstractIdentifData {
 	protected String makeIdentif() {
 		return dsNbr;
 	}
+	
 }
