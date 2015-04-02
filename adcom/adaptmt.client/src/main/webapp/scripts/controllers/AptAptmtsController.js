@@ -5,18 +5,33 @@ angular.module("adaptmt")
 .controller('aptAptmtsController',['$scope','genericResource', '$translate', 'aptAptmtsService','$location','$rootScope',
                                 function($scope,genericResource, $translate, aptAptmtsService,$location,$rootScope){
 	
-   $scope.error = "";
+   $scope.error = [];
    $scope.aptAptmtsService=aptAptmtsService;
+   $scope.searchInput = {};
+   $scope.aptAptmts = {};
+   $scope.totalItems = 0;
+   $scope.aptAptmtsearchResults = {};
+   $scope.itemPerPage=25;
    
-   $scope.previous = function (){
+   $scope.init = function (){
+       
+        $scope.searchInput = {
+                entity:{},
+                fieldNames:[],
+                start:0,
+                max:$scope.itemPerPage
+            }
+          
+       aptAptmtsService.loadAptAptmts($scope.searchInput).then(function(entitySearchResult) {
+                $scope.aptAptmts = entitySearchResult.resultList;
+                $scope.totalItems = entitySearchResult.count ;
+            });
+       
+       alert($scope.totalItems);
+       
    }
-
-   $scope.next =  function (){
-   };
    
-   $scope.edit =function(){
-       $location.path('/aptaptmt/edit/');
-   };
+   $scope.init();
 
 }])
 

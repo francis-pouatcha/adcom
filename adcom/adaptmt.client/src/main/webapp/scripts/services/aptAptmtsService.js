@@ -27,6 +27,26 @@ angular.module('adaptmt')
         });
         return deferred.promise;
     };
+    
+    service.loadAptAptmt = function(identif){
+       var deferred = $q.defer();
+        genericResource.findById(service.urlBase, identif).success(function(data){
+            deferred.resolve(data);
+        }).error(function(){
+            deferred.reject("Can not update")
+        });
+        return deferred.promise;
+    };
+    
+    service.loadAptAptmts = function(searchInput){
+       var deferred = $q.defer();
+        genericResource.findBy(service.urlBase, searchInput).success(function(data){
+            deferred.resolve(data);
+        }).error(function(){
+            deferred.reject("Can not update")
+        });
+        return deferred.promise;
+    };
 
     return service;
 }]);
