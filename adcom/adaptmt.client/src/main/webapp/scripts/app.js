@@ -1,12 +1,17 @@
 'use strict';
 
 angular.module('adaptmt',['ngRoute',
-                          'ngResource', 
+                          'ngCookies',
+                          'ui.bootstrap',
                           'SessionManager',
                           'AuthInterceptor',
                           'ngSanitize',
                           'pascalprecht.translate',
-                          'NavBar'])
+                          'NavBar',
+                           'ngResource',
+                           'datePicker',
+                           'ADUtils',
+                           'httpProgress'])
   
    .constant('APP_CONFIG',{
 	'appName':'Appointment',

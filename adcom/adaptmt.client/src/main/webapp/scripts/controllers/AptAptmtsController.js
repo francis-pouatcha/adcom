@@ -2,8 +2,8 @@
 
 angular.module("adaptmt")
 
-.controller('aptAptmtsController',['$scope','genericResource', 'aptAptmtsService','$location','$rootScope',
-                                function($scope,genericResource, aptAptmtsService,$location,$rootScope){
+.controller('aptAptmtsController',['$scope','genericResource', '$translate', 'aptAptmtsService','$location','$rootScope',
+                                function($scope,genericResource, $translate, aptAptmtsService,$location,$rootScope){
 	
    $scope.error = "";
    $scope.aptAptmtsService=aptAptmtsService;
@@ -44,4 +44,4 @@ angular.module("adaptmt")
     	});*/
     };
     
-}])
+}]);
