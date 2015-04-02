@@ -26,6 +26,8 @@ public class InvInvtryItemEJB
 
 	@Inject
 	private InvInvtryItemEvtDataEJB itemEvtDataEJB;
+	@Inject
+	private InvInvtryItemHelperEJB itemHelperEJB;
 	
 	public InvInvtryItem create(InvInvtryItem entity)
 	{
@@ -270,26 +272,32 @@ public class InvInvtryItemEJB
 	public InvInvtryGap computeInvtryGap(String invtryNbr) {
 		return repository.computeInvtryGap(invtryNbr).getSingleResult();
 	}
-	
-	public InvInvtry recomputeInventory(InvInvtry invInvtry){
+		
+	public InvInvtry validateInventory(InvInvtry invInvtry){
 		String invtryNbr = invInvtry.getInvtryNbr();
 		long count = repository.salIndexForInvtry(invtryNbr).count();
 		int start = 0;
 		int max = 100;
+
 		while(start<=count){
 			// @WARNIGN increase counter before request to avoid endless loop on error. 
 			int firstResult = start;
 			start +=max;
 			List<String> resultList = repository.salIndexForInvtry(invtryNbr).firstResult(firstResult).maxResults(max).getResultList();
 			for (String salIndex : resultList) {
-				Integer c = makeConsistent(invtryNbr, salIndex);
-				if(c<0 && invInvtry.getConflictDt()==null){
-					invInvtry.setConflictDt(new Date());
-				}
+				Long countEnabled = repository.countEnabled(salIndex, invtryNbr);
+				if(countEnabled==1) continue;
+				
+				itemHelperEJB.makeConsistent(invtryNbr, salIndex);
 			}
 		}
-		if(invInvtry.getConflictDt()!=null) return invInvtry;
 
+		return invInvtry;
+	}
+
+	public InvInvtry recomputeInventory(InvInvtry invInvtry){
+
+		String invtryNbr = invInvtry.getInvtryNbr();
 		InvInvtryGap invtryGap = computeInvtryGap(invtryNbr);
 		invInvtry.setGapPurchAmtHT(invtryGap.getGapPurchAmtHT());
 		invInvtry.setGapSaleAmtHT(invInvtry.getGapSaleAmtHT());
@@ -318,73 +326,5 @@ public class InvInvtryItemEJB
 			}
 		}
 		return true;
-	}
-	
-	/**
-	 * Returns the number of item automatically consolidated. This happens when all the inventories of that 
-	 * same item are counted with the same quantity. In this case the system automatically marks the latest 
-	 * count as enabled by marking everything else disabled.
-	 * 
-	 * @param invtryNbr
-	 * @return
-	 */
-	public Integer makeConsistent(String invtryNbr, String salIndex){
-		Integer count = 0;
-		Long countEnabled = repository.countEnabled(salIndex, invtryNbr);
-		if(countEnabled==1) return 0;
-		List<InvInvtryItem> resultList = repository.bySalIndexForInvtry(salIndex, invtryNbr).getResultList();
-		Boolean sameQty = InvInvtryItemList.checkSameQty(resultList);
-		if(!sameQty) return -1;
-		InvInvtryItem oldest = null;
-		for (InvInvtryItem invInvtryItem : resultList) {
-			// continue if this item is disabled and there is more than one enabled item.
-			if(invInvtryItem.getDisabledDt()!=null && countEnabled>1) continue;
-			
-			// set this as oldest.
-			if(oldest==null) {
-				oldest  = invInvtryItem;
-				continue;
-			}
-			if(oldest.getAcsngDt()!=null && invInvtryItem.getAcsngDt()!=null && oldest.getAcsngDt().before(invInvtryItem.getAcsngDt())){
-				oldest = invInvtryItem;
-				continue;
-			}
-		}
-		// enable oldest and 
-		if(oldest!=null){
-			Date date = new Date();
-			for (InvInvtryItem invInvtryItem : resultList) {
-				boolean update = false;
-				if(oldest.getId()!=invInvtryItem.getId()){
-					if(invInvtryItem.getDisabledDt()==null){
-						invInvtryItem.setDisabledDt(date);
-						update = true;
-					}
-					if(invInvtryItem.getConflictDt()!=null){
-						invInvtryItem.setConflictDt(null);
-						update = true;
-					}
-				}
-				if(update){
-					internalUpdate(invInvtryItem);
-					count+=1;
-				}
-			}
-			boolean update = false;
-			if(oldest.getDisabledDt()!=null){
-				oldest.setDisabledDt(null);
-				update = true;
-			}
-			if(oldest.getConflictDt()!=null){
-				oldest.setConflictDt(null);
-				update = true;
-			}
-			if(update){
-				internalUpdate(oldest);
-				count+=1;				
-			}
-		}
-
-		return count;
 	}
 }

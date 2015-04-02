@@ -12,6 +12,7 @@ import javax.ws.rs.Produces;
 import org.adorsys.adcore.vo.StringListHolder;
 import org.adorsys.adinvtry.jpa.InvInvtry;
 import org.adorsys.adinvtry.jpa.InvInvtryItem;
+import org.adorsys.adinvtry.jpa.InvInvtryItemList;
 
 @Stateless
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
@@ -47,6 +48,14 @@ public class InvInvtryManagerEndpoint
    }
 
    @PUT
+   @Path("/validate")
+   @Consumes({ "application/json", "application/xml" })
+   @Produces({ "application/json", "application/xml" })
+   public InvInvtry validateInventory(InvInvtry invtry){
+      return invtryManager.validateInventory(invtry);
+   }
+   
+   @PUT
    @Path("/post")
    @Consumes({ "application/json", "application/xml" })
    @Produces({ "application/json", "application/xml" })
@@ -74,7 +83,7 @@ public class InvInvtryManagerEndpoint
    @Path("/disableItem")
    @Consumes({ "application/json", "application/xml" })
    @Produces({ "application/json", "application/xml" })
-   public InvInvtryItem disableItem(InvInvtryItem invtryItem){
+   public InvInvtryItemList disableItem(InvInvtryItem invtryItem){
       return invtryManager.disableItem(invtryItem);
    }
 
@@ -82,7 +91,7 @@ public class InvInvtryManagerEndpoint
    @Path("/enableItem")
    @Consumes({ "application/json", "application/xml" })
    @Produces({ "application/json", "application/xml" })
-   public InvInvtryItem enableItem(InvInvtryItem invtryItem){
+   public InvInvtryItemList enableItem(InvInvtryItem invtryItem){
       return invtryManager.enableItem(invtryItem);
    }
 

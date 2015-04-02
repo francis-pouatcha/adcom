@@ -1,8 +1,10 @@
 package org.adorsys.adinvtry.rest;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -26,10 +28,7 @@ public class InvInvtryEJB
 
 	@Inject
 	private InvInvtryRepository repository;
-//
-//	@Inject
-//	private SecurityUtil securityUtil;
-	
+
 	@Inject
 	private InvInvtryEvtDataEJB invtryEvtDataEJB;
 	
@@ -377,5 +376,13 @@ public class InvInvtryEJB
 
 	public List<InvInvtry> findMergingInvtrys() {
 		return repository.findMergingInvtrys().getResultList();
+	}
+	
+	public void handleInconsistentInvtry(@Observes @InvInconsistentInvtryEvent String invtryNbr){
+		InvInvtry invtry = findByIdentif(invtryNbr);
+		if(invtry==null) return;
+		if(invtry.getConflictDt()!=null) return;
+		invtry.setConflictDt(new Date());
+		update(invtry);
 	}
 }
