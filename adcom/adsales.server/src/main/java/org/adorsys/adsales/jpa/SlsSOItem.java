@@ -7,7 +7,13 @@ import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 
 import org.adorsys.adcore.jpa.AbstractIdentifData;
+import org.adorsys.adcore.jpa.AmtOrPct;
+import org.adorsys.adcore.utils.BigDecimalUtils;
+import org.adorsys.adcore.utils.CalendarUtil;
+import org.adorsys.adcore.utils.FinancialOps;
 import org.adorsys.javaext.description.Description;
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 
 @Entity
 @Description("SlsSOItem_description")
@@ -29,6 +35,11 @@ public class SlsSOItem extends AbstractIdentifData {
 	@Description("SlsSOItem_artPic_description")
 	@NotNull
 	private String artPic;
+	
+	@Column
+	@Description("SlsSOItem_artName_description")
+	@NotNull
+	private String artName;
 
 	@Column
 	@Description("SlsSOItem_orderedQty_description")
@@ -102,6 +113,14 @@ public class SlsSOItem extends AbstractIdentifData {
 
 	public String getArtPic() {
 		return this.artPic;
+	}
+
+	public String getArtName() {
+		return artName;
+	}
+
+	public void setArtName(String artName) {
+		this.artName = artName;
 	}
 
 	public void setArtPic(final String artPic) {
@@ -215,5 +234,81 @@ public class SlsSOItem extends AbstractIdentifData {
 	@Override
 	protected String makeIdentif() {
 		return soNbr + "_" + lotPic + "_" + artPic;
+	}
+
+	public boolean contentEquals(SlsSOItem target) {
+		if(!BigDecimalUtils.numericEquals(target.deliveredQty,deliveredQty)) return false;
+		if(!BigDecimalUtils.numericEquals(target.grossSPPreTax,grossSPPreTax)) return false;
+		if(!BigDecimalUtils.numericEquals(target.netSPPreTax,netSPPreTax)) return false;
+		if(!BigDecimalUtils.numericEquals(target.netSPTaxIncl,netSPTaxIncl)) return false;
+		if(!BigDecimalUtils.numericEquals(target.orderedQty,orderedQty)) return false;	
+		if(!BigDecimalUtils.numericEquals(target.rebate,rebate)) return false;
+		if(!BigDecimalUtils.numericEquals(target.rebatePct,rebatePct)) return false;
+		if(!BigDecimalUtils.numericEquals(target.returnedQty,returnedQty)) return false;
+		if(!BigDecimalUtils.numericEquals(target.sppuPreTax,sppuPreTax)) return false;
+		if(!BigDecimalUtils.numericEquals(target.vatAmount,vatAmount)) return false;
+		if(!BigDecimalUtils.numericEquals(target.vatPct,vatPct)) return false;	
+		if(!StringUtils.equals(target.soNbr,soNbr)) return false;
+		if(!StringUtils.equals(target.lotPic,lotPic)) return false;
+		if(!StringUtils.equals(target.artPic,artPic)) return false;	
+		if(!StringUtils.equals(target.sppuCur,sppuCur)) return false;
+		if(!StringUtils.equals(target.objctOrgUnit,objctOrgUnit)) return false;			
+		return true;
+	}
+
+	public void copyTo(SlsSOItem target) {	
+		target.deliveredQty = deliveredQty;
+		target.grossSPPreTax = grossSPPreTax;
+		target.netSPPreTax = netSPPreTax;
+		target.netSPTaxIncl = netSPTaxIncl;
+		target.orderedQty = orderedQty;
+		target.rebate = rebate;
+		target.rebatePct = rebatePct;
+		target.returnedQty = returnedQty;
+		target.sppuPreTax = sppuPreTax;
+		target.vatAmount = vatAmount;
+		target.vatPct = vatPct;
+		target.soNbr = soNbr;
+		target.lotPic = lotPic;
+		target.artPic = artPic;
+		target.sppuCur = sppuCur;
+		target.objctOrgUnit = objctOrgUnit;
+		target.identif = identif;	
+	}
+
+	public void evlte() {
+		
+		if(this.orderedQty==null) this.orderedQty=BigDecimal.ZERO;
+		if(this.returnedQty==null) this.returnedQty=BigDecimal.ZERO;
+		this.deliveredQty=this.orderedQty.subtract(this.returnedQty);
+		
+		if(this.sppuPreTax==null) this.sppuPreTax=BigDecimal.ZERO;
+		this.grossSPPreTax = deliveredQty.multiply(this.sppuPreTax);
+		
+		if(this.rebatePct==null)this.rebatePct=BigDecimal.ZERO;
+		if(this.rebate==null)this.rebate=BigDecimal.ZERO;
+		
+		if(this.grossSPPreTax.compareTo(BigDecimal.ZERO)<=0){
+			this.rebate = BigDecimal.ZERO;
+			this.rebatePct = BigDecimal.ZERO;
+		} else {
+			if(this.rebatePct.compareTo(BigDecimal.ZERO) == 1){
+				this.rebate = FinancialOps.amtFromPrct(this.grossSPPreTax, this.rebatePct, this.sppuCur);
+			} else {
+				this.rebatePct = FinancialOps.prctFromAmt(this.grossSPPreTax, this.rebate, this.sppuCur);
+			}
+		}
+		this.netSPPreTax = FinancialOps.substract(this.grossSPPreTax, this.rebate, this.sppuCur);
+		
+		if(this.vatPct==null)this.vatPct=BigDecimal.ZERO;
+		if(this.vatAmount==null)this.vatAmount=BigDecimal.ZERO;
+		if(this.netSPPreTax.compareTo(BigDecimal.ZERO)<=0){
+			this.vatPct = BigDecimal.ZERO;
+			this.vatAmount = BigDecimal.ZERO;
+		} else {
+			this.vatAmount = FinancialOps.amtFromPrct(this.netSPPreTax, this.vatPct, this.sppuCur);
+		}
+		this.netSPTaxIncl = FinancialOps.add(this.netSPPreTax, this.vatAmount, this.sppuCur);
+		
 	}
 }
