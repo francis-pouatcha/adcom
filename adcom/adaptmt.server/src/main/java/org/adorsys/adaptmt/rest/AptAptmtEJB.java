@@ -9,7 +9,6 @@ import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adaptmt.jpa.AptAptmt;
 import org.adorsys.adaptmt.repo.AptAptmtRepository;
-import org.adorsys.adbase.jpa.Login;
 import org.adorsys.adbase.security.SecurityUtil;
 import org.adorsys.adcore.utils.SequenceGenerator;
 
@@ -30,10 +29,10 @@ public class AptAptmtEJB {
 				.getSequence(SequenceGenerator.APPOINTMENT_NUMBER_SEQUENCE_PREFIXE);
 		entity.setAptmtnNbr(sequence);
 
-		String loginName = securityUtil.getCurrentLoginName();
-		
-		Login login = securityUtil.getConnectedUser();
-		entity.setCreatedUserId(login.getIdentif());
+		// String loginName = securityUtil.getCurrentLoginName();
+
+		// Login login = securityUtil.getConnectedUser();
+		// entity.setCreatedUserId(login.getIdentif());
 
 		return repository.save(attach(entity));
 	}
