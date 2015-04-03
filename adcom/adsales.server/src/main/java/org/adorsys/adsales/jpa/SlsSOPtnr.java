@@ -5,7 +5,9 @@ import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 
 import org.adorsys.adcore.jpa.AbstractIdentifData;
+import org.adorsys.adcore.utils.BigDecimalUtils;
 import org.adorsys.javaext.description.Description;
+import org.apache.commons.lang3.StringUtils;
 
 @Entity
 @Description("SlsSOPtnr_description")
@@ -51,9 +53,28 @@ public class SlsSOPtnr extends AbstractIdentifData {
 	public void setRoleInSO(final String roleInSO) {
 		this.roleInSO = roleInSO;
 	}
+	
+	public static String toId(String soNbr, String ptnrNbr, String roleInSOr){
+		return soNbr + "_" + ptnrNbr + "_" + roleInSOr;
+	}
 
 	@Override
 	protected String makeIdentif() {
 		return soNbr + "_" + ptnrNbr + "_" + roleInSO;
+	}
+
+	public boolean contentEquals(SlsSOPtnr target) {
+		if(target==null) return false;
+		if(!StringUtils.equals(soNbr, target.soNbr)) return false;
+		if(!StringUtils.equals(ptnrNbr, target.ptnrNbr)) return false;
+		if(!StringUtils.equals(roleInSO, target.roleInSO)) return false;
+		return true;
+	}
+
+	public void copyTo(SlsSOPtnr target) {
+		target.ptnrNbr=ptnrNbr;
+		target.soNbr=soNbr;
+		target.roleInSO=roleInSO;
+		
 	}
 }

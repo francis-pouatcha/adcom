@@ -21,6 +21,11 @@
 			<artifactId>adbase.lib</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+        <dependency>
+			<groupId>org.adorsys.adcom</groupId>
+			<artifactId>adcshdwr.lib</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.hibernate.javax.persistence</groupId>
 			<artifactId>hibernate-jpa-2.0-api</artifactId>

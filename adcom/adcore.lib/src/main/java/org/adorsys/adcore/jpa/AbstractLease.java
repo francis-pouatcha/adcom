@@ -48,8 +48,9 @@ public abstract class AbstractLease extends AbstractTimedData {
 	 */
 	@PrePersist
 	public void prePersist() {
-		setIdentif(handlerName);
-		setId(handlerName);
+		String identif2 = makeIdentif();
+		setIdentif(identif2);
+		setId(identif2);
 		Date now = new Date();
 		if(getValidFrom()==null) setValidFrom(now);
 		if(getValidTo()==null) setValidTo(DateUtils.addMinutes(now, 5));

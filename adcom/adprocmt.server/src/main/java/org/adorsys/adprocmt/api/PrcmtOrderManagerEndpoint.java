@@ -27,7 +27,7 @@ public class PrcmtOrderManagerEndpoint
    @Consumes({ "application/json", "application/xml" })
    @Produces({ "application/json", "application/xml" })
    public PrcmtOrderHolder createOrder(PrcmtProcOrder prcmtProcOrder){
-      return OrderManager.createOrder(prcmtProcOrder);
+      return OrderManager.createPcrmtOrder(prcmtProcOrder);
    }
    
    @POST

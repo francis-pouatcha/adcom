@@ -74,7 +74,7 @@
 		    	<div class="row">
                		<div class="col-lg-5">
 	                	<span class="pull-left">
-	                   		<button ng-click="makeMain(invInvtry)" ng-show="!invInvtryUtils.isInvtryPosted(invInvtry)" class="btn-success btn" ng-disabled="isMainInventory(invInvtry)" >{{invInvtryUtils.translations['InvInvtry_mainInvtry_description.title']}}</button>
+	                   		<button ng-click="makeMain(invInvtry)" ng-show="!invInvtryUtils.isInvtryClosed(invInvtry) && !invInvtryUtils.isInvtryPosted(invInvtry)" class="btn-success btn" ng-disabled="isMainInventory(invInvtry)" >{{invInvtryUtils.translations['InvInvtry_mainInvtry_description.title']}}</button>
 						</span>
                		</div>
                		<div class="col-lg-2">
@@ -82,8 +82,9 @@
                		</div>
                		<div class="col-lg-5">
 	               		<span class="pull-right">
+	                    	<button ng-click="check()" ng-show="!invInvtryUtils.isInvtryClosed(invInvtry) && !invInvtryUtils.isInvtryPosted(invInvtry)" class="btn-success btn"> {{invInvtryUtils.translations['Entity_validate.title']}}</button>
 		                   <button ng-click="update();" ng-show="!invInvtryUtils.isInvtryPosted(invInvtry)" class="btn-success btn"  >{{invInvtryUtils.translations['Entity_save.title']}}</button>
-		                   <button ng-click="close();" ng-show="!invInvtryUtils.isInvtryClosed(invInvtry) && !invInvtryUtils.isInvtryPosted(invInvtry)" class="btn-success btn"  >{{invInvtryUtils.translations['InvInvtry_close_description.title']}}</button>
+		                   <button ng-click="close();" ng-show="!invInvtryUtils.isInvtryClosed(invInvtry) && !invInvtryUtils.isInvtryPosted(invInvtry) && !invInvtry.conflictDt" class="btn-success btn"  >{{invInvtryUtils.translations['InvInvtry_close_description.title']}}</button>
 		                   <button ng-click="post();" ng-show="invInvtryUtils.isInvtryClosed(invInvtry) && !invInvtryUtils.isInvtryPosted(invInvtry)" class="btn-success btn">{{invInvtryUtils.translations['InvInvtry_post_description.title']}}</button>
 	               		</span>
                		</div>
@@ -192,8 +193,9 @@
                     <th class="col-lg-1">{{invInvtryUtils.translations['InvInvtryItem_acsngDt_description.title']}}</th>
                     <th class="col-lg-1">{{invInvtryUtils.translations['InvInvtryItem_asseccedQty_description.title']}}</th>
                     <th class="col-lg-1">
-	                    <span  ng-show="!invInvtryUtils.isInvtryOpen(invInvtry)">{{invInvtryUtils.translations['InvInvtryItem_expectedQty_description.title']}}</span>
-	                    <span class="col-lg-1" ng-show="invInvtryUtils.isInvtryOpen(invInvtry)"></span>
+                   		<span ng-show="!invInvtry.conflictDt"><i class="glyphicon glyphicon-ok-circle" style="color:green"></i></span>
+                   		<span ng-show="invInvtry.conflictDt"><i class="glyphicon glyphicon-ban-circle" style="color:red"></i></span>
+
                     </th>
                 </tr>
                 </thead>

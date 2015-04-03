@@ -24,4 +24,7 @@ public interface InvInvtryRepository extends EntityRepository<InvInvtry, String>
 
 	@Query("SELECT e FROM InvInvtry AS e WHERE e.containerId IS NOT NULL AND e.mergedDate IS NULL")
 	public QueryResult<InvInvtry> findMergingInvtrys();
+
+	@Query("SELECT e FROM InvInvtry AS e WHERE e.containerId IS NOT NULL AND e.mergedDate IS NOT NULL")
+	public QueryResult<InvInvtry> findMergedInvtrys();
 }

@@ -6,76 +6,108 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
 
+import org.adorsys.adbase.security.SecurityUtil;
+import org.adorsys.adcore.utils.SequenceGenerator;
 import org.adorsys.adcshdwr.jpa.CdrDrctSales;
+import org.adorsys.adcshdwr.jpa.CdrDrctSalesEvt;
 import org.adorsys.adcshdwr.repo.CdrDrctSalesRepository;
+import org.apache.commons.lang3.StringUtils;
 
 @Stateless
 public class CdrDrctSalesEJB
 {
 
-   @Inject
-   private CdrDrctSalesRepository repository;
+	@Inject
+	private CdrDrctSalesRepository repository;
 
-   public CdrDrctSales create(CdrDrctSales entity)
-   {
-      return repository.save(attach(entity));
-   }
+	@Inject
+	private CdrDrctSalesEvtEJB cdrDrctSalesEvtEJB;
 
-   public CdrDrctSales deleteById(String id)
-   {
-      CdrDrctSales entity = repository.findBy(id);
-      if (entity != null)
-      {
-         repository.remove(entity);
-      }
-      return entity;
-   }
+	@Inject
+	private SecurityUtil securityUtil;
+	
+	public CdrDrctSales create(CdrDrctSales entity)
+	{
+		if (StringUtils.isBlank(entity.getDsNbr())) {
+			entity.setDsNbr(SequenceGenerator
+					.getSequence(SequenceGenerator.DIRECT_SALES_SEQUENCE_PREFIXE));
+		}
+		entity.setCashier(securityUtil.getCurrentLoginName());
+		entity.setId(entity.getDsNbr());
+		entity.setIdentif(entity.getDsNbr());
 
-   public CdrDrctSales update(CdrDrctSales entity)
-   {
-      return repository.save(attach(entity));
-   }
+		CdrDrctSalesEvt cdrDrctSalesEvt = new CdrDrctSalesEvt();
 
-   public CdrDrctSales findById(String id)
-   {
-      return repository.findBy(id);
-   }
+		entity = repository.save(attach(entity));
+		entity.copyTo(cdrDrctSalesEvt);
+		cdrDrctSalesEvt.setId(entity.getId());
+		cdrDrctSalesEvt.setIdentif(entity.getIdentif());
+		cdrDrctSalesEvtEJB.create(cdrDrctSalesEvt);
+		return repository.save(attach(entity));
+	}
 
-   public List<CdrDrctSales> listAll(int start, int max)
-   {
-      return repository.findAll(start, max);
-   }
+	public CdrDrctSales deleteById(String id)
+	{
+		CdrDrctSales entity = repository.findBy(id);
+		if (entity != null)
+		{
+			repository.remove(entity);
+			cdrDrctSalesEvtEJB.deleteById(id);
+		}
+		return entity;
+	}
 
-   public Long count()
-   {
-      return repository.count();
-   }
+	public CdrDrctSales update(CdrDrctSales entity)
+	{
+		CdrDrctSalesEvt cdrDrctSalesEvt = cdrDrctSalesEvtEJB.findById(entity.getId());
+		
+		if (cdrDrctSalesEvt != null) {
+			entity.copyTo(cdrDrctSalesEvt);
+			cdrDrctSalesEvtEJB.update(cdrDrctSalesEvt);
+		}
+		return repository.save(attach(entity));
+	}
 
-   public List<CdrDrctSales> findBy(CdrDrctSales entity, int start, int max, SingularAttribute<CdrDrctSales, ?>[] attributes)
-   {
-      return repository.findBy(entity, start, max, attributes);
-   }
+	public CdrDrctSales findById(String id)
+	{
+		return repository.findBy(id);
+	}
 
-   public Long countBy(CdrDrctSales entity, SingularAttribute<CdrDrctSales, ?>[] attributes)
-   {
-      return repository.count(entity, attributes);
-   }
+	public List<CdrDrctSales> listAll(int start, int max)
+	{
+		return repository.findAll(start, max);
+	}
 
-   public List<CdrDrctSales> findByLike(CdrDrctSales entity, int start, int max, SingularAttribute<CdrDrctSales, ?>[] attributes)
-   {
-      return repository.findByLike(entity, start, max, attributes);
-   }
+	public Long count()
+	{
+		return repository.count();
+	}
 
-   public Long countByLike(CdrDrctSales entity, SingularAttribute<CdrDrctSales, ?>[] attributes)
-   {
-      return repository.countLike(entity, attributes);
-   }
+	public List<CdrDrctSales> findBy(CdrDrctSales entity, int start, int max, SingularAttribute<CdrDrctSales, ?>[] attributes)
+	{
+		return repository.findBy(entity, start, max, attributes);
+	}
 
-   private CdrDrctSales attach(CdrDrctSales entity)
-   {
-      if (entity == null)
-         return null;
+	public Long countBy(CdrDrctSales entity, SingularAttribute<CdrDrctSales, ?>[] attributes)
+	{
+		return repository.count(entity, attributes);
+	}
 
-      return entity;
-   }
+	public List<CdrDrctSales> findByLike(CdrDrctSales entity, int start, int max, SingularAttribute<CdrDrctSales, ?>[] attributes)
+	{
+		return repository.findByLike(entity, start, max, attributes);
+	}
+
+	public Long countByLike(CdrDrctSales entity, SingularAttribute<CdrDrctSales, ?>[] attributes)
+	{
+		return repository.countLike(entity, attributes);
+	}
+
+	private CdrDrctSales attach(CdrDrctSales entity)
+	{
+		if (entity == null)
+			return null;
+
+		return entity;
+	}
 }

@@ -56,6 +56,10 @@
     "Entity_compare.title":"Compare",
     "Entity_selected.title": "Selected",
     "Entity_recompute.title": "Recompute",
+    "Entity_validate.title": "Validate",
+    "Entity_reload.title": "Reload",
+    "Entity_showAll.title": "Show All",
+    "Entity_showConflict.title": "Only Conflicts",
     
     "BaseCountryName_isoCode_description.title":"Country Code",
     "BaseCountryName_iso2_description.title":"Country Code Iso 2",

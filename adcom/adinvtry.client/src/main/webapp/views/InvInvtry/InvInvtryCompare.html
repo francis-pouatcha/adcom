@@ -29,16 +29,32 @@
                                <td>{{invtryItemList.lotPic}}</td>
                                <td>{{invtryItemList.artName}}</td>
 			                   <td ng-repeat-start="invtryItem in invtryItemList.sortedItems">
-			                   	{{invtryItem.acsngUser}}
-			                   	<table ng-show="invtryItem.others"><tr ng-repeat="other in invtryItem.others"><td>{{other.acsngUser}}</td></tr></table>
+				                   	<span ng-show="!invtryItem.disabledDt">{{invtryItem.acsngUser}}</span>
+				                   	<span ng-show="invtryItem.disabledDt" style="color: red; text-decoration: line-through;">{{invtryItem.acsngUser}}</span>
+			                   	<table ng-show="invtryItem.others"><tr ng-repeat="other in invtryItem.others"><td>
+				                   	<span ng-show="!other.disabledDt">{{other.acsngUser}}</span>
+				                   	<span ng-show="other.disabledDt" style="color: red; text-decoration: line-through;">{{other.acsngUser}}</span>
+			                   		</td></tr></table>
 			                   </td>
 					           <td>
-					           		{{invtryItem.acsngDt | date:'yyyy-MM-dd HH:mm'}}
-			                   		<table ng-show="invtryItem.others"><tr ng-repeat="other in invtryItem.others"><td>{{other.acsngDt | date:'yyyy-MM-dd HH:mm'}}</td></tr></table>
+				                   	<span ng-show="!invtryItem.disabledDt">{{invtryItem.acsngDt | date:'yyyy-MM-dd HH:mm'}}</span>
+				                   	<span ng-show="invtryItem.disabledDt" style="color: red; text-decoration: line-through;">{{invtryItem.acsngDt | date:'yyyy-MM-dd HH:mm'}}</span>
+			                   		<table ng-show="invtryItem.others"><tr ng-repeat="other in invtryItem.others"><td>
+				                   	<span ng-show="!other.disabledDt">{{other.acsngDt | date:'yyyy-MM-dd HH:mm'}}</span>
+				                   	<span ng-show="other.disabledDt" style="color: red; text-decoration: line-through;">{{other.acsngDt | date:'yyyy-MM-dd HH:mm'}}</span>
+			                   		</td></tr></table>
 					           </td>
 					           <td ng-repeat-end>
-					           		{{invtryItem.asseccedQty | number:0}}
-			                   		<table ng-show="invtryItem.others"><tr ng-repeat="other in invtryItem.others"><td>{{other.asseccedQty | number:0}}</td></tr></table>
+				                   	<span ng-show="!invtryItem.disabledDt">{{invtryItem.asseccedQty | number:0}}</span>
+				                   	<span ng-show="invtryItem.disabledDt" style="color: red; text-decoration: line-through;">{{invtryItem.asseccedQty | number:0}}</span>
+				                   	<span class="pull-right" ng-show="invtryItem.editing && !invtryItem.disabledDt"><button ng-click="disable(invtryItemList,invtryItem)" ><i class="glyphicon glyphicon-remove" style="color:red"></i></button></span>
+				                   	<span class="pull-right" ng-show="invtryItem.editing && invtryItem.disabledDt"><button ng-click="disable(invtryItemList,invtryItem)" ><i class="glyphicon glyphicon-ok" style="color:green"></i></button></span>
+			                   		<table ng-show="invtryItem.others"><tr ng-repeat="other in invtryItem.others"><td width="100%">
+				                   	<span ng-show="!other.disabledDt">{{other.asseccedQty | number:0}}</span>
+				                   	<span ng-show="other.disabledDt" style="color: red; text-decoration: line-through;">{{other.asseccedQty | number:0}}</span>
+				                   	<span class="pull-right" ng-show="other.editing && !other.disabledDt"><button ng-click="disable(invtryItemList,other)" ><i class="glyphicon glyphicon-remove" style="color:red"></i></button></span>
+				                   	<span class="pull-right" ng-show="other.editing && other.disabledDt"><button ng-click="disable(invtryItemList,other)" ><i class="glyphicon glyphicon-ok" style="color:green"></i></button></span>
+			                   		</td></tr></table>
 					           </td>
                                <td>
                                		<span ng-show="invtryItemList.sameQty"><i class="glyphicon glyphicon-ok-circle" style="color:green"></i></span>
@@ -69,4 +85,29 @@
             </div>
         </div>
     </div>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-2">
+	           		<button class="btn-default btn" ng-click="edit()" >{{invInvtryUtils.translations['Entity_edit.title']}} </button>
+                </div>
+                <div class="col-lg-4">
+                	<span class="pull-right">
+                    	<button class="btn-default btn" ng-click="showAll()" ><i class="glyphicon glyphicon-tasks"></i> {{invInvtryUtils.translations['Entity_showAll.title']}}</button>
+	                </span>
+                </div>
+                <div class="col-lg-4">
+                	<span class="pull-left">
+                    	<button class="btn-default btn" ng-click="showConflict()" ><i class="glyphicon glyphicon-tasks"></i> {{invInvtryUtils.translations['Entity_showConflict.title']}}</button>
+	                </span>
+                </div>
+                <div class="col-lg-2">
+                	<span class="pull-right">
+                    	<button class="btn-default btn" ng-click="reload()" ><i class="glyphicon glyphicon-tasks"></i> {{invInvtryUtils.translations['Entity_reload.title']}}</button>
+	                </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
 </div>

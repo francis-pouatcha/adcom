@@ -1,6 +1,7 @@
 package org.adorsys.adinvtry.api;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -18,6 +19,7 @@ import org.adorsys.adcore.vo.StringListHolder;
 import org.adorsys.adinvtry.jpa.InvInvtry;
 import org.adorsys.adinvtry.jpa.InvInvtryHstry;
 import org.adorsys.adinvtry.jpa.InvInvtryItem;
+import org.adorsys.adinvtry.jpa.InvInvtryItemList;
 import org.adorsys.adinvtry.jpa.InvInvtryStatus;
 import org.adorsys.adinvtry.rest.InvInvtryEJB;
 import org.adorsys.adinvtry.rest.InvInvtryHstryEJB;
@@ -77,10 +79,15 @@ public class InvInvtryManager {
 			return invtry;// Not closable.
 		
 		invtry = inventoryEJB.findById(invtry.getId());
+		Date conflictDt = invtry.getConflictDt();
+		invtry = invInvtryItemEJB.validateInventory(invtry);
+		// Conflict detected. Save and return
+		if(conflictDt==null && invtry.getConflictDt()!=null) return inventoryEJB.update(invtry);
+		
+		// conflict still there. Just return
 		if(invtry.getConflictDt()!=null)return invtry;
 		
 		invtry = invInvtryItemEJB.recomputeInventory(invtry);
-		if(invtry.getConflictDt()!=null)return inventoryEJB.update(invtry);
 
 		invtry.setInvtryStatus(InvInvtryStatus.CLOSED);
 		invtry.setClosedDate(new Date());
@@ -89,14 +96,33 @@ public class InvInvtryManager {
 		return invtry;
 	}	
 
+	public InvInvtry validateInventory(InvInvtry invtry){
+		
+		if(invtry.getInvtryStatus()==InvInvtryStatus.CLOSED || invtry.getInvtryStatus()==InvInvtryStatus.POSTED)
+			return invtry;// Not closable.
+		
+		invtry = inventoryEJB.findById(invtry.getId());
+		Date conflictDt = invtry.getConflictDt();
+		invtry = invInvtryItemEJB.validateInventory(invtry);
+
+		if(conflictDt!=invtry.getConflictDt()) invtry = inventoryEJB.update(invtry);
+		
+		return inventoryEJB.findById(invtry.getId());
+	}	
+	
 	public InvInvtry postInventory(InvInvtry invtry){
 		if(invtry.getInvtryStatus()!=InvInvtryStatus.CLOSED)
 			return invtry;// Not closable.
-		invtry = inventoryEJB.findById(invtry.getId());
-		if(invtry.getConflictDt()!=null)return invtry;
 
+		Date conflictDt = invtry.getConflictDt();
+		invtry = invInvtryItemEJB.validateInventory(invtry);
+		// Conflict detected. Save and return
+		if(conflictDt==null && invtry.getConflictDt()!=null) return inventoryEJB.update(invtry);
+		
+		// conflict still there. Just return
+		if(invtry.getConflictDt()!=null)return invtry;
+		
 		invtry = invInvtryItemEJB.recomputeInventory(invtry);
-		if(invtry.getConflictDt()!=null)return inventoryEJB.update(invtry);
 
 		invtry.setInvtryStatus(InvInvtryStatus.POSTED);
 		invtry.setPostedDate(new Date());
@@ -238,7 +264,7 @@ public class InvInvtryManager {
 		return existing;
 	}
 
-	public InvInvtryItem disableItem(InvInvtryItem invtryItem) {
+	public InvInvtryItemList disableItem(InvInvtryItem invtryItem) {
 		InvInvtry invtry = inventoryEJB.findByIdentif(invtryItem.getInvtryNbr());
 		if(invtry==null) 
 			throw new IllegalArgumentException("Missing inventory object");
@@ -247,23 +273,25 @@ public class InvInvtryManager {
 		InvInvtryItem existing = invInvtryItemEJB.findById(invtryItem.getId());
 		if(existing==null)
 			throw new IllegalStateException("Inventory Item inexistant");
+		
+		if(existing.getDisabledDt()==null){
+			Date disabledDt = invtryItem.getDisabledDt()!=null?invtryItem.getDisabledDt():new Date();
+			existing.setDisabledDt(disabledDt);
+			existing = invInvtryItemEJB.update(existing);
+			
+			// Create history.
+			createDisabledInventoryItemHistory(invtry, existing);
 
-		if(existing.getDisabledDt()!=null) return existing;
+			setConflicting(invtry, existing);
+		}
 
-		Date disabledDt = invtryItem.getDisabledDt()!=null?invtryItem.getDisabledDt():new Date();
-		existing.setDisabledDt(disabledDt);
-		existing = invInvtryItemEJB.update(existing);
-		
-		// Create history.
-		createDisabledInventoryItemHistory(invtry, existing);
-		
-		setConflicting(invtry, existing);
-		
-		return existing;
+		List<String> invtryNbrs = Arrays.asList(existing.getInvtryNbr());
+		List<InvInvtryItem> invtryItems = invInvtryItemEJB.findBySalIndexForInvtrys(existing.getSalIndex(), invtryNbrs);
+		return new InvInvtryItemList(existing.getSalIndex(), invtryNbrs, invtryItems);
 		
 	}
 
-	public InvInvtryItem enableItem(InvInvtryItem invtryItem) {
+	public InvInvtryItemList enableItem(InvInvtryItem invtryItem) {
 		InvInvtry invtry = inventoryEJB.findByIdentif(invtryItem.getInvtryNbr());
 		if(invtry==null) 
 			throw new IllegalArgumentException("Missing inventory object");
@@ -273,17 +301,19 @@ public class InvInvtryManager {
 		if(existing==null)
 			throw new IllegalStateException("Inventory Item inexistant");
 
-		if(existing.getDisabledDt()==null) return existing;
+		if(existing.getDisabledDt()!=null) {
+			existing.setDisabledDt(null);
+			existing = invInvtryItemEJB.update(existing);
+			
+			// Create history.
+			createDisabledInventoryItemHistory(invtry, existing);
 
-		existing.setDisabledDt(null);
-		existing = invInvtryItemEJB.update(existing);
-		
-		// Create history.
-		createDisabledInventoryItemHistory(invtry, existing);
+			setConflicting(invtry, existing);
+		}
 
-		setConflicting(invtry, existing);
-
-		return existing;
+		List<String> invtryNbrs = Arrays.asList(existing.getInvtryNbr());
+		List<InvInvtryItem> invtryItems = invInvtryItemEJB.findBySalIndexForInvtrys(existing.getSalIndex(), invtryNbrs);
+		return new InvInvtryItemList(existing.getSalIndex(), invtryNbrs, invtryItems);
 	}
 	
 	private boolean deleteHolders(InvInvtryHolder invtryHolder){

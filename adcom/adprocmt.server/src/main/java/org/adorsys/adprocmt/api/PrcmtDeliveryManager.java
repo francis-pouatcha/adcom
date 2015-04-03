@@ -87,6 +87,7 @@ public class PrcmtDeliveryManager {
 				if(persDi==null) throw new IllegalStateException("Missing delivery item with id: " + dlvryItem.getId());
 				if(!dlvryItem.contentEquals(persDi)){
 					dlvryItem.copyTo(persDi);
+					dlvryItem.evlte();
 					dlvryItem = dlvryItemEJB.update(persDi);
 					itemModified = true;
 				}
@@ -96,17 +97,18 @@ public class PrcmtDeliveryManager {
 					if(persDi!=null){
 						if(!dlvryItem.contentEquals(persDi)){
 							dlvryItem.copyTo(persDi);
+							dlvryItem.evlte();
 							dlvryItem = dlvryItemEJB.update(persDi);
 							itemModified = true;
 						}
 					} else {
-						dlvryItem.evlte();//evaluate different amount before save
+						dlvryItem.evlte();
 						dlvryItem.setDlvryNbr(delivery.getDlvryNbr());
 						dlvryItem = dlvryItemEJB.create(dlvryItem);
 						itemModified = true;
 					}
 				} else {
-					dlvryItem.evlte();//evaluate different amount before save
+					dlvryItem.evlte();
 					dlvryItem = dlvryItemEJB.create(dlvryItem);
 					itemModified = true;
 				}
