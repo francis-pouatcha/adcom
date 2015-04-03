@@ -19,6 +19,7 @@ import org.adorsys.adinvtry.rest.InvInvtryItemEJB;
 import org.adorsys.adstock.jpa.StkArticleLot2StrgSctn;
 import org.adorsys.adstock.rest.StkArticleLot2StrgSctnLookup;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 
 @Stateless
 public class InvInvtryPrepareWkr {
@@ -123,6 +124,23 @@ public class InvInvtryPrepareWkr {
 			itemCount = invInvtryItemEJB.countByInvtryNbr(inventory.getInvtryNbr());
 			if(itemCount<=0L){
 				invInvtryMerger.setMerged(inventory.getInvtryNbr());
+			}
+		}
+	}
+
+	@Schedule(second="*/49", minute = "*", hour="*", persistent=false)
+	@AccessTimeout(unit=TimeUnit.HOURS, value=2)
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public void deleteMergedInventories() {
+		List<InvInvtry> invtrys = inventoryEJB.findMergedInvtrys();
+		for (InvInvtry inventory : invtrys) {
+			Long itemCount = invInvtryItemEJB.countByInvtryNbr(inventory.getInvtryNbr());
+			if(itemCount>0L) continue;
+			Date mergedDate = inventory.getMergedDate();
+			if(mergedDate==null) return;
+			// delete if merged 10 minutes ago.
+			if(DateUtils.addMinutes(mergedDate, 10).before(new Date())){
+				inventoryEJB.deleteById(inventory.getId());
 			}
 		}
 	}

@@ -10,7 +10,6 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -48,17 +47,6 @@ public class InvInvtryItemEndpoint
    public InvInvtryItem create(InvInvtryItem entity)
    {
       return detach(ejb.create(entity));
-   }
-
-   @DELETE
-   @Path("/{id}")
-   public Response deleteById(@PathParam("id") String id)
-   {
-      InvInvtryItem deleted = ejb.deleteById(id);
-      if (deleted == null)
-         return Response.status(Status.NOT_FOUND).build();
-
-      return Response.ok(detach(deleted)).build();
    }
 
    @PUT

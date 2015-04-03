@@ -656,6 +656,7 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
     $scope.disable = function(invtryItemList, invtryItem){
     	if(!angular.isDefined(invtryItem.editing) || !invtryItem.editing) return;
     	delete invtryItem.editing;
+		if(angular.isDefined(invtryItem.others)) invtryItem.others = undefined;
     	if(angular.isDefined(invtryItem.disabledDt) && invtryItem.disabledDt){
     		// enable
     		invInvtryManagerResource.enableItem(invtryItem)

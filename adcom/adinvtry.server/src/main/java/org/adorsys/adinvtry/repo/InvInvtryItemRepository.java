@@ -5,7 +5,6 @@ import java.util.List;
 import org.adorsys.adinvtry.jpa.InvInvtryGap;
 import org.adorsys.adinvtry.jpa.InvInvtryItem;
 import org.apache.deltaspike.data.api.EntityRepository;
-import org.apache.deltaspike.data.api.Modifying;
 import org.apache.deltaspike.data.api.Query;
 import org.apache.deltaspike.data.api.QueryResult;
 import org.apache.deltaspike.data.api.Repository;
@@ -18,10 +17,6 @@ public interface InvInvtryItemRepository extends EntityRepository<InvInvtryItem,
 
 	@Query("SELECT COUNT(e.id) FROM InvInvtryItem AS e WHERE e.invtryNbr = ?1")
 	public Long countByInvtryNbr(String invtryNbr);
-
-	@Modifying
-	@Query("DELETE e FROM InvInvtryItem AS e WHERE e.invtryNbr = ?1")
-	public Long removeByInvtryNbr(String invtryNbr);
 
 	@Query("SELECT e FROM InvInvtryItem AS e WHERE e.invtryNbr = ?1 AND e.section=?2")
 	public QueryResult<InvInvtryItem> findByInvtryNbrAndSection(String invtryNbr, String section);

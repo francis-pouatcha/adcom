@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
 
@@ -28,6 +29,9 @@ public class InvInvtryItemEJB
 	private InvInvtryItemEvtDataEJB itemEvtDataEJB;
 	@Inject
 	private InvInvtryItemHelperEJB itemHelperEJB;
+	@Inject
+	@InvConsistentInvtryEvent
+	private Event<String> consistentInvtryEvent;
 	
 	public InvInvtryItem create(InvInvtryItem entity)
 	{
@@ -64,17 +68,6 @@ public class InvInvtryItemEJB
 		itemEvtData.setIdentif(invtryItem.getIdentif());
 		itemEvtDataEJB.create(itemEvtData);
 		return invtryItem;
-	}
-
-	public InvInvtryItem deleteById(String id)
-	{
-		InvInvtryItem entity = repository.findBy(id);
-		if (entity != null)
-		{
-			repository.remove(entity);
-			itemEvtDataEJB.deleteById(id);
-		}
-		return entity;
 	}
 
 	public InvInvtryItem update(InvInvtryItem entity)
@@ -191,7 +184,16 @@ public class InvInvtryItemEJB
 	}
 	
 	public void removeByInvtryNbr(String invtryNbr) {
-		repository.removeByInvtryNbr(invtryNbr);
+		long count = repository.findByInvtryNbr(invtryNbr).count();
+		int start = 0;
+		int max = 100;
+		while(start<=count){
+			// @WARNIGN increase counter before request to avoid endless loop on error. 
+			int firstResult = start;
+			start +=max;
+			List<InvInvtryItem> resultList = repository.findByInvtryNbr(invtryNbr).firstResult(firstResult).maxResults(max).getResultList();
+			itemHelperEJB.deleteItems(resultList);
+		}
 	}
 	
 	public List<InvInvtryItem> findByInvtryNbrSorted(String invtryNbr, int start, int max) {
@@ -278,7 +280,8 @@ public class InvInvtryItemEJB
 		long count = repository.salIndexForInvtry(invtryNbr).count();
 		int start = 0;
 		int max = 100;
-
+		
+		boolean clean = true;
 		while(start<=count){
 			// @WARNIGN increase counter before request to avoid endless loop on error. 
 			int firstResult = start;
@@ -287,10 +290,12 @@ public class InvInvtryItemEJB
 			for (String salIndex : resultList) {
 				Long countEnabled = repository.countEnabled(salIndex, invtryNbr);
 				if(countEnabled==1) continue;
-				
+				clean = false;
 				itemHelperEJB.makeConsistent(invtryNbr, salIndex);
 			}
 		}
+		if(clean)// send noConflictEvent.
+			consistentInvtryEvent.fire(invInvtry.getInvtryNbr());
 
 		return invInvtry;
 	}
@@ -326,5 +331,9 @@ public class InvInvtryItemEJB
 			}
 		}
 		return true;
+	}
+
+	public void deleteById(String id) {
+		itemHelperEJB.deleteById(id);
 	}
 }

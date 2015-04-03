@@ -33,7 +33,7 @@ public class StkInvtryListener {
 	@AccessTimeout(unit=TimeUnit.MINUTES, value=10)
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public void process() throws Exception {
-		List<InvInvtryEvt> events = evtEJB.findByEvtName(BaseHistoryTypeEnum.CLOSED.name());
+		List<InvInvtryEvt> events = evtEJB.findByEvtName(BaseHistoryTypeEnum.POSTED.name());
 		for (InvInvtryEvt invtryEvt : events) {
 			evtProcessor.process(invtryEvt);
 		}

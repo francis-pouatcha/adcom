@@ -49,7 +49,26 @@ public class InvInvtryItemHelperEJB
 
 		return entity;
 	}
+	
+	@Asynchronous
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+	public void deleteItems(List<InvInvtryItem> items){
+		if(items.size()>100) items = items.subList(0, 99);
+		for (InvInvtryItem invtryItem : items) {
+			deleteById(invtryItem.getId());
+		}
+	}
 
+	public InvInvtryItem deleteById(String id)
+	{
+		InvInvtryItem entity = repository.findBy(id);
+		if (entity != null)
+		{
+			repository.remove(entity);
+			itemEvtDataEJB.deleteById(id);
+		}
+		return entity;
+	}
 
 
 	/**

@@ -107,7 +107,7 @@ public class InvInvtryManager {
 
 		if(conflictDt!=invtry.getConflictDt()) invtry = inventoryEJB.update(invtry);
 		
-		return invtry;
+		return inventoryEJB.findById(invtry.getId());
 	}	
 	
 	public InvInvtry postInventory(InvInvtry invtry){
