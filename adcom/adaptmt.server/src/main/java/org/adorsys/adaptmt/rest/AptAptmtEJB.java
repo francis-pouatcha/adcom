@@ -29,8 +29,6 @@ public class AptAptmtEJB {
 		entity.setAptmtnNbr(SequenceGenerator
 				.getSequence(SequenceGenerator.APPOINTMENT_NUMBER_SEQUENCE_PREFIXE));
 
-		String loginName = securityUtil.getCurrentLoginName();
-
 		Login login = securityUtil.getConnectedUser();
 		entity.setCreatedUserId(login.getIdentif());
 

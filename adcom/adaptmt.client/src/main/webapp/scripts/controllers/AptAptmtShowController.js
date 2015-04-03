@@ -9,7 +9,7 @@ angular.module("adaptmt")
 	
         function show(){
 
-            var identif = $routeParams.identif;
+            var identif = $routeParams.id;
 
             aptAptmtsService.loadAptAptmt(identif).then(function(result){
 

@@ -43,20 +43,14 @@ angular.module("adaptmt")
 	$scope.error = {};
 
 	$scope.create = function(){
-		aptAptmtsService.create($scope.aptAptmt);
-    	/* .success(function(aptAptmt){
-    		/*var index = aptAptmtsService.resultHandler.push(bpBnsPtnr);
-    		if(bpBnsPtnrState.resultHandler.selectedIndex(index)){
-    			$location.path('/BpBnsPtnrs/show/');
-    		}*/
-    		
-    		// $location.path('/aptAptmt/show/' + aptAptmt.identif);
-    	/*	console.log("aptAptmt created successfuly");
-    	})
-    	.error(function(error){
-    		console.log("cannot create aptAptmt");
-    		$scope.error = error;
-    	});*/
+		
+		aptAptmtsService.create($scope.aptAptmt)
+		.then(function(result){
+            $location.path('/aptaptmt/show/'+result.id);
+        },function(error){
+        	$scope.error = error;
+        });
+        
     };
     
 }]);

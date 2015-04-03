@@ -24,7 +24,8 @@ angular.module('adaptmt',['ngRoute',
       .when('/',{templateUrl:'views/aptaptmt/aptaptmts.html',controller:'aptAptmtsController'})
       .when('/aptaptmt',{templateUrl:'views/aptaptmt/search.html',controller:'SearchAptAptmtController'})
       .when('/aptaptmt/create',{templateUrl:'views/aptaptmt/create.html',controller:'aptAptmtCreateCtlr'})
-      .when('/aptaptmt/show/:identif',{templateUrl:'views/aptaptmt/show.html',controller:'aptAptmtShowController'})
+      .when('/aptaptmt/show/:id',{templateUrl:'views/aptaptmt/show.html',controller:'aptAptmtShowController'})
+      .when('/aptaptmt/update/:id',{templateUrl:'views/aptaptmt/update.html',controller:'aptAptmtUpdateController'})
       .otherwise({
         redirectTo: '/'
       });

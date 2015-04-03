@@ -18,7 +18,7 @@ angular.module('adaptmt')
         return deferred.promise;
     };
 
-    service.update = function(entity){
+    service.updateAptAptmt = function(entity){
         var deferred = $q.defer();
         genericResource.update(service.urlBase, entity).success(function(data){
             deferred.resolve(data);
