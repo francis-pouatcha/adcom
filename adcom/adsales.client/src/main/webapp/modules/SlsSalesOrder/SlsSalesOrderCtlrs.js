@@ -6,7 +6,6 @@ angular.module('AdSales')
     var service = {};
 
     service.urlBase='/adsales.server/rest/slssalesorders';
-    service.urlSearchBase='/adsales.server/rest/slssalesorders/findCustom';
     service.bnsptnrUrlBase='/adbnsptnr.server/rest/bpbnsptnrs';
     service.loginnamessUrlBase='/adbase.server/rest/loginnamess';
     
@@ -60,7 +59,10 @@ angular.module('AdSales')
                     'SlsSalesOrder_vatAmount_description.title',
                     'SlsSalesOrder_acsngUser_description.text',
                     'SlsSalesOrder_acsngUser_description.title',
+                    
+                    'SlsSalesOrder_soDtFrom_description.text',
                     'SlsSalesOrder_soDtFrom_description.title',
+                    'SlsSalesOrder_soDtTo_description.text',
                     'SlsSalesOrder_soDtTo_description.title',
                     
                     'SlsSOPtnr_description.text',
@@ -124,8 +126,8 @@ angular.module('AdSales')
     return service;
 
 }])
-.controller('slsSalesOrdersCtlr',['$scope','genericResource','slsSalesOrderUtils','slsSalesOrderState','$location','$rootScope',
-function($scope,genericResource,slsSalesOrderUtils,slsSalesOrderState,$location,$rootScope){
+.controller('slsSalesOrdersCtlr',['$scope','genericResource','slsSalesOrderUtils','slsSalesOrderState','$location' ,'$translate','$rootScope',
+function($scope,genericResource,slsSalesOrderUtils,slsSalesOrderState,$location,$translate,$rootScope){
 
     $scope.searchInput = slsSalesOrderState.resultHandler.searchInput();
     $scope.itemPerPage=slsSalesOrderState.resultHandler.itemPerPage;
@@ -169,7 +171,7 @@ function($scope,genericResource,slsSalesOrderUtils,slsSalesOrderState,$location,
     }
     
     function findCustom(searchInput){
-        genericResource.findByLike(slsSalesOrderUtils.urlSearchBase, searchInput)
+        genericResource.findCustom(slsSalesOrderUtils.urlBase, searchInput)
 		.success(function(entitySearchResult) {
 			// store search
 			slsSalesOrderState.resultHandler.searchResult(entitySearchResult);

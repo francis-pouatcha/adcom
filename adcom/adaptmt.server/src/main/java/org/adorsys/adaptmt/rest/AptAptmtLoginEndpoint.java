@@ -28,6 +28,7 @@ import org.adorsys.adaptmt.jpa.AptAptmtLoginSearchResult;
 import org.adorsys.adaptmt.jpa.AptAptmtLogin_;
 
 
+
 /**
  * 
  */
