@@ -14,7 +14,7 @@
                         <div class="row" >
                             <div class="col-lg-3">
                                 <div class="form-group">
-                                    <label class=" control-label" for="soNbr">{{slsSalesOrderUtils.translations['SlsSalesOrder_soNbr_description.title']}}</label>
+                                    <label class=" control-label" tooltips="" tooltip-title="{{slsSalesOrderUtils.translations['SlsSalesOrder_soNbr_description.text']}}" tooltip-side="top" for="soNbr">{{slsSalesOrderUtils.translations['SlsSalesOrder_soNbr_description.title']}}</label>
                                     <div class="">
                                         <input type="text" id="soNbr" ng-model="searchInput.entity.soNbr" class="form-control">
                                     </div>
@@ -22,7 +22,7 @@
                             </div>
                             <div class="col-lg-3">
                                 <div class="form-group">
-                                    <label class=" control-label" for="soStatus">{{slsSalesOrderUtils.translations['SlsSalesOrder_soStatus_description.title']}}</label>
+                                    <label class=" control-label" tooltips="" tooltip-title="{{'SlsSalesOrder_soStatus_description.text' | translate}}" tooltip-side="top" for="soStatus">{{slsSalesOrderUtils.translations['SlsSalesOrder_soStatus_description.title']}}</label>
                                     <div class="">
                                         <select id="soStatus" class="form-control" name="soStatus" id="invtryStatus" ng-model="searchInput.entity.soStatus"
 							                    ng-options="soStatus.enumKey as slsSalesOrderUtils.translations[soStatus.translKey]
@@ -34,7 +34,7 @@
                             </div>
                             <div class="col-lg-2">
                                 <div class="form-group">
-                                    <label class=" control-label" for="soDtFrom">{{slsSalesOrderUtils.translations['SlsSalesOrder_soDtFrom_description.title']}}</label>
+                                    <label class=" control-label" tooltips="" tooltip-title="{{'SlsSalesOrder_soDtFrom_description.text' | translate}}" tooltip-side="top" for="soDtFrom">{{slsSalesOrderUtils.translations['SlsSalesOrder_soDtFrom_description.title']}}</label>
                                     <div class="">
                                         <input type="datetime" date-time  view="date" min-view="date" views="['date']" dismiss="true" format="dd-MM-yyyy"
                                                id="soDtFrom" ng-model="searchInput.soDtFrom" class="form-control">
@@ -43,7 +43,7 @@
                             </div>
                             <div class="col-lg-2">
                                 <div class="form-group">
-                                    <label class=" control-label" for="soDtTo">{{slsSalesOrderUtils.translations['SlsSalesOrder_soDtTo_description.title']}}</label>
+                                    <label class=" control-label" tooltips="" tooltip-title="{{'SlsSalesOrder_soDtTo_description.text' | translate}}" tooltip-side="top" for="soDtTo">{{slsSalesOrderUtils.translations['SlsSalesOrder_soDtTo_description.title']}}</label>
                                     <div class="">
                                         <input type="datetime" date-time  view="date" min-view="date" views="['date']" dismiss="true" format="dd-MM-yyyy"
                                                id="soDtTo" ng-model="searchInput.soDtTo" class="form-control">
@@ -65,17 +65,17 @@
                         <div class="row">
                             <div class="col-lg-3">
                             <div class="form-group">
-                               <label class=" control-label" for="acsngUser">{{slsSalesOrderUtils.translations['SlsSalesOrder_acsngUser_description.title']}}</label>
+                               <label class=" control-label" tooltips="" tooltip-title="{{'SlsSalesOrder_acsngUser_description.text' | translate}}" tooltip-side="top" for="acsngUser">{{slsSalesOrderUtils.translations['SlsSalesOrder_acsngUser_description.title']}}</label>
                                <div class="">
-                                <input type="text" id="acsngUser" placeholder="{{slsSalesOrderUtils.translations['SlsSalesOrder_acsngUser_description.text']}}" ng-model="searchInput.acsngUser" autocomplete="off" typeahead="acsngUser as acsngUser.loginName for acsngUser in slsSalesOrderUtils.loadUsers($viewValue) | filter:$viewValue" typeahead-loading="loading" class="form-control">
+                                <input type="text" id="acsngUser" ng-model="searchInput.acsngUser" autocomplete="off" typeahead="acsngUser as acsngUser.loginName for acsngUser in slsSalesOrderUtils.loadUsers($viewValue) | filter:$viewValue" typeahead-loading="loading" class="form-control">
                                </div>
                             </div>
                             </div>
                             <div class="col-lg-3">
                             <div class="form-group">
-                               <label class=" control-label" for="ptnr">{{slsSalesOrderUtils.translations['SlsSOPtnr_description.title']}}</label>
+                               <label class=" control-label" tooltips="" tooltip-title="{{'SlsSOPtnr_description.text' | translate}}" tooltip-side="top" for="ptnr">{{slsSalesOrderUtils.translations['SlsSOPtnr_description.title']}}</label>
                                <div class="">
-                                <input type="text" name="ptnr" id="ptnr" placeholder="{{slsSalesOrderUtils.translations['SlsSOPtnr_description.text']}}" ng-model="searchInput.ptnr" autocomplete="off" typeahead="ptnr as ptnr.fullName for ptnr in slsSalesOrderUtils.loadPartnersByName($viewValue) | filter:$viewValue" typeahead-loading="loading" class="form-control">
+                                <input type="text" name="ptnr" id="ptnr" ng-model="searchInput.ptnr" autocomplete="off" typeahead="ptnr as ptnr.fullName for ptnr in slsSalesOrderUtils.loadPartnersByName($viewValue) | filter:$viewValue" typeahead-loading="loading" class="form-control">
                                </div>
                             </div>
                             </div>

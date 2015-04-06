@@ -59,7 +59,10 @@ angular.module('AdSales')
                     'SlsSalesOrder_vatAmount_description.title',
                     'SlsSalesOrder_acsngUser_description.text',
                     'SlsSalesOrder_acsngUser_description.title',
+                    
+                    'SlsSalesOrder_soDtFrom_description.text',
                     'SlsSalesOrder_soDtFrom_description.title',
+                    'SlsSalesOrder_soDtTo_description.text',
                     'SlsSalesOrder_soDtTo_description.title',
                     
                     'SlsSOPtnr_description.text',
@@ -123,8 +126,8 @@ angular.module('AdSales')
     return service;
 
 }])
-.controller('slsSalesOrdersCtlr',['$scope','genericResource','slsSalesOrderUtils','slsSalesOrderState','$location','$rootScope',
-function($scope,genericResource,slsSalesOrderUtils,slsSalesOrderState,$location,$rootScope){
+.controller('slsSalesOrdersCtlr',['$scope','genericResource','slsSalesOrderUtils','slsSalesOrderState','$location' ,'$translate','$rootScope',
+function($scope,genericResource,slsSalesOrderUtils,slsSalesOrderState,$location,$translate,$rootScope){
 
     $scope.searchInput = slsSalesOrderState.resultHandler.searchInput();
     $scope.itemPerPage=slsSalesOrderState.resultHandler.itemPerPage;

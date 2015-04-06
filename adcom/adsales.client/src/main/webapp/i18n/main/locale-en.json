@@ -156,8 +156,9 @@
 "SlsSalesOrder_acsngUser_description.text":"User who made the sale",
 "SlsSalesOrder_acsngUser_description.title":"Seller",
     
-    
-"SlsSalesOrder_soDtFrom_description.title":"Sales from",
+"SlsSalesOrder_soDtFrom_description.text":"Sales Order Date lower than",
+"SlsSalesOrder_soDtFrom_description.title":"Date from",
+"SlsSalesOrder_soDtTo_description.text":"Sales Order Date greather than",
 "SlsSalesOrder_soDtTo_description.title":"To",
 
 "SlsSalesStatus_description.text":"Status of the sales",

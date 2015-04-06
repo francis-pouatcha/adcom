@@ -26,7 +26,7 @@ public class SlsInvoiceEJB
 	private EntityManager em;
    
    private static final String FIND_CUSTOM_QUERY = "SELECT s FROM SlsInvoice AS s";
-   private static final String FIND_CUSTOM_PARTNER_QUERY = "SELECT s, p FROM SlsInvoice AS s SlsInvcePtnr AS p";
+   private static final String FIND_CUSTOM_PARTNER_QUERY = "SELECT s FROM SlsInvoice AS s, SlsInvcePtnr AS p";
    private static final String COUNT_CUSTOM_QUERY = "SELECT count(s.id) FROM SlsInvoice AS s";
 
    public SlsInvoice create(SlsInvoice entity)

@@ -26,7 +26,7 @@ public class SlsSalesOrderEJB
 	private EntityManager em;
    
    private static final String FIND_CUSTOM_QUERY = "SELECT s FROM SlsSalesOrder AS s";
-   private static final String FIND_CUSTOM_PARTNER_QUERY = "SELECT s, p.fullName FROM SlsSalesOrder AS s SlsSOPtnr AS p";
+   private static final String FIND_CUSTOM_PARTNER_QUERY = "SELECT s FROM SlsSalesOrder AS s SlsSOPtnr AS p";
    private static final String COUNT_CUSTOM_QUERY = "SELECT count(s.id) FROM SlsSalesOrder AS s";
 
    public SlsSalesOrder create(SlsSalesOrder entity)

@@ -156,7 +156,9 @@
 "SlsSalesOrder_acsngUser_description.text":"Utilisateur ayant effectue la vente",
 "SlsSalesOrder_acsngUser_description.title":"Vendeur",
 
+"SlsSalesOrder_soDtFrom_description.text":"Date de vente inferieure a",
 "SlsSalesOrder_soDtFrom_description.title":"Vente du",
+"SlsSalesOrder_soDtTo_description.text":"Date de vente superieure a",
 "SlsSalesOrder_soDtTo_description.title":"Au",
 
 "SlsSalesStatus_description.text":"Status da la vente",

@@ -63,7 +63,7 @@
                             <div class="form-group">
                                <label class=" control-label" tooltips="" tooltip-title="{{'SlsInvcePtnr_description.text' | translate}}" tooltip-side="top" for="ptnr">{{slsInvoicesUtils.translations['SlsInvcePtnr_description.title']}}</label>
                                <div class="">
-                                <input type="text" name="ptnr" id="ptnr" ng-model="searchInput.ptnr" autocomplete="off" typeahead="ptnr as ptnr.fullName for ptnr in slsSalesOrderUtils.loadPartnersByName($viewValue) | filter:$viewValue" typeahead-loading="loading" class="form-control">
+                                <input type="text" name="ptnr" id="ptnr" ng-model="searchInput.ptnr" autocomplete="off" typeahead="ptnr as ptnr.fullName for ptnr in slsInvoicesUtils.loadPartnersByName($viewValue) | filter:$viewValue" typeahead-loading="loading" class="form-control">
                                </div>
                             </div>
                             </div>
@@ -105,6 +105,8 @@
                         <table class="table table-bordered  table-striped pointer-element" >
                             <thead>
                             <tr>
+                                <th><input type="checkbox" ng-model="" ng-change="" />
+                                </th>
                                 <th class="text-center">
 {{slsInvoicesUtils.translations['SlsInvoice_invceNbr_description.title']}}</th>
                                 <th class="text-center">
@@ -123,7 +125,8 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="slsInvce in slsInvoices()" >
+                            <tr ng-repeat="slsInvce in slsInvoices" >
+                                <td><input type="checkbox" /></td>
                                 <td>{{slsInvce.invceNbr}}</td>
                                 <td>{{slsInvce.soNbr}}</td>
                                 <td>{{slsInvce.invceStatus}}</td>

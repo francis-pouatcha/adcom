@@ -111,6 +111,13 @@ function($scope,genericResource,slsInvoicesUtils,slsInvoicesState,$location,$roo
     $scope.slsInvoicesUtils=slsInvoicesUtils;
     $scope.show=show;
     $scope.edit=edit;
+    
+    // test initialization
+    $scope.slsInvoices= [
+    {invceNbr:"INV001",soNbr:"SO001",invceStatus:"EN_COURS",ptnrNbr:"PART001",invceDt:"01-04-2015",netSPPreTax:"2000",netSPTaxIncl:"2500",netAmtToPay:"2500"},
+    {invceNbr:"INV002",soNbr:"SO002",invceStatus:"EN_COURS",ptnrNbr:"PART002",invceDt:"02-04-2015",netSPPreTax:"3000",netSPTaxIncl:"3500",netAmtToPay:"3500"},
+    {invceNbr:"INV003",soNbr:"SO003",invceStatus:"EN_COURS",ptnrNbr:"PART003",invceDt:"03-04-2015",netSPPreTax:"4000",netSPTaxIncl:"4500",netAmtToPay:"4500"}
+    ]
 
 	var translateChangeSuccessHdl = $rootScope.$on('$translateChangeSuccess', function () {
 		slsInvoicesUtils.translate();
