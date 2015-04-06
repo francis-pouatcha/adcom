@@ -28,7 +28,7 @@ public class SlsSOItem extends AbstractIdentifData {
 
 	@Column
 	@Description("SlsSOItem_lotPic_description")
-	@NotNull
+	//@NotNull
 	private String lotPic;
 
 	@Column
@@ -92,7 +92,7 @@ public class SlsSOItem extends AbstractIdentifData {
 
 	@Column
 	@Description("SlsSOItem_objctOrgUnit_description")
-	@NotNull
+	//@NotNull
 	private String objctOrgUnit;
 
 	public String getSoNbr() {

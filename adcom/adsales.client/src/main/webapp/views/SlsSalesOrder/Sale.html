@@ -4,9 +4,9 @@
         <a class="btn btn-default" ng-click="saleCtlr.next()" ng-disabled="saleCtlr.index==saleCtlr.tabLength()" >Next <i class="glyphicon glyphicon-chevron-right"></i></a>
         <a class="btn btn-danger" ng-click="saleCtlr.annulerCmd()" ><i class="glyphicon glyphicon-trash" ></i> Anuller la commande</a>
         <a class="btn btn-default" ng-click="saleCtlr.newCmd()" ng-disabled="saleCtlr.tabLength()==4" ><i class="glyphicon glyphicon-plus" ></i> Nouvelle commande</a>
-        <a class="btn btn-warning" ng-click="saleCtlr.addBptnr()"><i class="glyphicon glyphicon-user" ></i> {{saleCtlr.slsSalesOrderHolder.slsSOPtnrs[0].ptnrNbr.shortName}}</a>
+        <a class="btn btn-warning" ng-click="saleCtlr.addBptnr()"><i class="glyphicon glyphicon-user" ></i> {{saleCtlr.slsSalesOrderHolder.slsSOPtnrsHolder[0].slsSOPtnr.ptnrNbr}}</a>
         <label>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.soDt | date:'medium'}}</label>
-        <a class="btn btn-primary col-lg-offset-1" ng-click="saleCtlr.cloturerCmd()"><i class="glyphicon glyphicon-ok" ></i> Cloturer la commande</a>
+        <a class="btn btn-primary col-lg-offset-1" ng-disabled="saleCtlr.showBtnClose" ng-click="saleCtlr.cloturerCmd()"><i class="glyphicon glyphicon-ok" ></i> Cloturer la commande</a>
     </div>
     <form name="OrderItemForm" id="OrderItemForm" novalidate >
     <div class="panel panel-default" >

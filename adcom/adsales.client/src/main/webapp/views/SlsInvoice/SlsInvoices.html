@@ -1,0 +1,151 @@
+<div class="row">
+        <div class="panel panel-default  ng-scope">
+            <div class="panel-heading no-collapse">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <b>{{slsInvoicesUtils.translations['Entity_search.title']}}</b>
+                        <b>{{slsInvoicesUtils.translations['SlsInvoices_description.title']}}</b>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="">
+                    <form role="form" class="">
+                        <div class="row" >
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label class=" control-label" tooltips="" tooltip-title="{{'SlsInvoice_soNbr_description.text' | translate}}" tooltip-side="top" for="soNbr">{{slsInvoicesUtils.translations['SlsInvoice_soNbr_description.title']}}</label>
+                                    <div class="">
+                                        <input type="text" id="soNbr" ng-model="searchInput.entity.soNbr" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label class=" control-label" tooltips="" tooltip-title="{{'SlsInvoice_invceNbr_description.text' | translate}}" tooltip-side="top" for="invceNbr">{{slsInvoicesUtils.translations['SlsInvoice_invceNbr_description.title']}}</label>
+                                    <div class="">
+                                        <input type="text" id="invceNbr" ng-model="searchInput.entity.invceNbr" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="form-group">
+                                    <label class=" control-label" tooltips="" tooltip-title="{{'SlsInvoice_invceDtFrom_description.text' | translate}}" tooltip-side="top" for="invceDtFrom">{{slsInvoicesUtils.translations['SlsInvoice_invceDtFrom_description.title']}}</label>
+                                    <div class="">
+                                        <input type="datetime" date-time  view="date" min-view="date" views="['date']" dismiss="true" format="dd-MM-yyyy"
+                                               id="invceDtFrom" ng-model="searchInput.invceDtFrom" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="form-group">
+                                    <label class=" control-label" tooltips="" tooltip-title="{{'SlsInvoice_invceDtTo_description.text' | translate}}" tooltip-side="top" for="invceDtTo">{{slsInvoicesUtils.translations['SlsInvoice_invceDtTo_description.title']}}</label>
+                                    <div class="">
+                                        <input type="datetime" date-time  view="date" min-view="date" views="['date']" dismiss="true" format="dd-MM-yyyy"
+                                               id="invceDtTo" ng-model="searchInput.invceDtTo" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="form-group">
+                                    <button  ng-click="handleSearchRequestEvent()" class="btn btn-default " style="margin-top: 23px;" >
+                                        <i class="glyphicon glyphicon-search"></i>
+                                    </button>
+                                    <button  ng-click="handlePrintRequestEvent()" class="btn btn-default " style="margin-top: 23px;" >
+                                        <i class="glyphicon glyphicon-print"></i>
+                                    </button>
+
+                                </div>
+                              </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-3">
+                            <div class="form-group">
+                               <label class=" control-label" tooltips="" tooltip-title="{{'SlsInvcePtnr_description.text' | translate}}" tooltip-side="top" for="ptnr">{{slsInvoicesUtils.translations['SlsInvcePtnr_description.title']}}</label>
+                               <div class="">
+                                <input type="text" name="ptnr" id="ptnr" ng-model="searchInput.ptnr" autocomplete="off" typeahead="ptnr as ptnr.fullName for ptnr in slsInvoicesUtils.loadPartnersByName($viewValue) | filter:$viewValue" typeahead-loading="loading" class="form-control">
+                               </div>
+                            </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default ">
+            <div class="panel-heading no-collapse"><b>{{slsInvoicesUtils.translations['Entity_Result.title']}}</b></div>
+            <div class="panel-body">
+                <div class="col-lg-12">
+                    <div  class="row ">
+                      <div class="col-lg-6 col-lg-offset-3">
+                        <div class="dropdown col-lg-3">
+                          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                            <span>{{slsInvoicesUtils.translations['Entity_print.title']}}</span>
+                            <span class="caret"></span>
+                          </button>
+                          <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">PDF</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">EXCEL</a></li>
+                          </ul>
+                        </div>
+                        <div class="dropdown col-lg-3">
+                          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                            Partager
+                            <span class="caret"></span>
+                          </button>
+                          <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Envoyer par email</a></li>
+                          </ul>
+                        </div>
+                       </div>
+                    </div>
+                    <div class="table-overflow-middle row">
+                        <table class="table table-bordered  table-striped pointer-element" >
+                            <thead>
+                            <tr>
+                                <th><input type="checkbox" ng-model="" ng-change="" />
+                                </th>
+                                <th class="text-center">
+{{slsInvoicesUtils.translations['SlsInvoice_invceNbr_description.title']}}</th>
+                                <th class="text-center">
+{{slsInvoicesUtils.translations['SlsInvoice_soNbr_description.title']}}</th>
+                                <th class="text-center">
+{{slsInvoicesUtils.translations['SlsInvoice_invceStatus_description.title']}}</th>
+                                <th class="text-center">
+{{slsInvoicesUtils.translations['SlsInvcePtnr_description.title']}}</th>
+                                <th class="text-center">
+{{slsInvoicesUtils.translations['SlsInvoice_invceDt_description.title']}}</th>
+                                <th class="text-center">{{slsInvoicesUtils.translations['SlsInvoice_netSPPreTax_description.title']}}</th>
+                                <th class="text-center">{{slsInvoicesUtils.translations['SlsInvoice_netSPTaxIncl_description.title']}}</th>
+                                <th class="text-center">{{slsInvoicesUtils.translations['SlsInvoice_netAmtToPay_description.title']}}</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="slsInvce in slsInvoices" >
+                                <td><input type="checkbox" /></td>
+                                <td>{{slsInvce.invceNbr}}</td>
+                                <td>{{slsInvce.soNbr}}</td>
+                                <td>{{slsInvce.invceStatus}}</td>
+                                <td>{{slsInvce.ptnrNbr}}</td>
+                                <td>{{slsInvce.invceDt}}</td>
+                                <td>{{slsInvce.netSPPreTax}}</td>
+                                <td>{{slsInvce.netSPTaxIncl}}</td>
+                                <td>{{slsInvce.netAmtToPay}}</td>
+                                <td><a href="" ng-click="show(slsInvce,$index)"><i class="glyphicon glyphicon-eye-open"></i></a></td>
+                                <td><a href="" ng-click="edit(slsInvce,$index)"><i class="glyphicon glyphicon-edit"></i></a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                      </div>
+                    <ul  class="pull-right">
+                        <pagination  total-items="totalItems()" max-size="maxSize" boundary-links="true" items-per-page="itemPerPage()"  class="pagination-sm" ng-model="currentPage" ng-change="paginate()"></pagination>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+</div>

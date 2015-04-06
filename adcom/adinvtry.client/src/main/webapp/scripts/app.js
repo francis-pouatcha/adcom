@@ -27,7 +27,7 @@ angular.module('AdInvtry', [
     
     $httpProvider.defaults.withCredentials = true;
     $httpProvider.interceptors.push('authInterceptor');
-    $httpProvider.interceptors.push('httpProgressInterceptor')
+    $httpProvider.interceptors.push('httpProgressInterceptor');
     
     $translateProvider.useLoader('$translatePartialLoader', {
         urlTemplate: '{part}/locale-{lang}.json'
