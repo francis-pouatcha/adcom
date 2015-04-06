@@ -173,7 +173,7 @@ public class SaleOrderManager {
 		List<SlsSOPtnrHolder> soPtnrsToRemove = new ArrayList<SlsSOPtnrHolder>();
 		if(!soPtnrs.isEmpty()){
 			for (SlsSOPtnrHolder soPtnrHolder : soPtnrs) {
-				SlsSOPtnr soPtnrPersi = slsSOPtnrEJB.findPtnr(soNbr,soPtnrHolder.getSlsSoPtnr().getPtnrNbr(),soPtnrHolder.getSlsSoPtnr().getRoleInSO());
+				SlsSOPtnr soPtnrPersi = slsSOPtnrEJB.findPtnr(soNbr,soPtnrHolder.getSlsSOPtnr().getPtnrNbr(),soPtnrHolder.getSlsSOPtnr().getRoleInSO());
 				if(soPtnrHolder.isDeleted()){
 					if(soPtnrPersi!=null){
 						slsSOPtnrEJB.deleteById(soPtnrPersi.getId());
@@ -183,16 +183,16 @@ public class SaleOrderManager {
 					continue;
 				}
 				if(soPtnrPersi==null){
-					soPtnrPersi = slsSOPtnrEJB.addPtnr(salesOrder, soPtnrHolder.getSlsSoPtnr().getPtnrNbr(), soPtnrHolder.getSlsSoPtnr().getRoleInSO());
-					soPtnrHolder.setSlsSoPtnr(soPtnrPersi);
+					soPtnrPersi = slsSOPtnrEJB.addPtnr(salesOrder, soPtnrHolder.getSlsSOPtnr().getPtnrNbr(), soPtnrHolder.getSlsSOPtnr().getRoleInSO());
+					soPtnrHolder.setSlsSOPtnr(soPtnrPersi);
 					modified = true;
 				} else {
-					SlsSOPtnr soPtnr = soPtnrHolder.getSlsSoPtnr();
+					SlsSOPtnr soPtnr = soPtnrHolder.getSlsSOPtnr();
 					if(!soPtnr.contentEquals(soPtnrPersi)){
 						soPtnr.copyTo(soPtnrPersi);
 						soPtnrPersi.setId(soPtnr.getId());
 						soPtnrPersi = slsSOPtnrEJB.update(soPtnrPersi);
-						soPtnrHolder.setSlsSoPtnr(soPtnrPersi);
+						soPtnrHolder.setSlsSOPtnr(soPtnrPersi);
 						modified = true;
 					}
 				}

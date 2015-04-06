@@ -182,7 +182,7 @@
                         <td>{{prcmtDeliveryItemHolder.dlvryItem.qtyDlvrd}}</td>
                         <td>{{prcmtDeliveryItemHolder.dlvryItem.freeQty}}</td>
                         <td>{{prcmtDeliveryItemHolder.dlvryItem.pppuPreTax}}</td>
-                        <td>{{prcmtDeliveryItemHolder.dlvryItem.sppuPreTax}}</td>
+                        <td>{{prcmtDeliveryItemHolder.dlvryItem.sppuPreTax}} -- {{prcmtDeliveryItemHolder.dlvryItem.sppuPreTax}}</td>
                         <td>{{prcmtDeliveryItemHolder.dlvryItem.expirDt | date: 'dd-MM-yyyy'}}</td>
                         <td><a ng-show="prcmtDeliveryAddItemCtlr.closeStatus" ng-click="prcmtDeliveryAddItemCtlr.editItem($index)" class=""><i class="glyphicon glyphicon-edit"></i></a></td>
                         <td><a ng-show="prcmtDeliveryAddItemCtlr.closeStatus" ng-click="prcmtDeliveryAddItemCtlr.deleteItem($index)" class=""><i class="glyphicon glyphicon-trash"></i></a></td>

@@ -55,6 +55,7 @@ angular.module('AdSales')
     self.tabLength = tabLength;
     self.ModalInstanceAddBptrnCtrl = ModalInstanceAddBptrnCtrl;
     self.totalAmount = totalAmount;
+     self.showBtnClose = true;
 
     function loadBusinessPartner(val){
         return genericResource.findByLikePromissed(saleUtils.adbnsptnr, 'cpnyName', val)
@@ -190,6 +191,7 @@ angular.module('AdSales')
         self.slsSalesOrderItemHolder = {};
         totalAmount();
         $('#artName').focus();
+        enableCloseCmd();
     }
     function deleteItem(index){
         var slsSalesOrderItemHolderDeleted = {};
@@ -200,11 +202,13 @@ angular.module('AdSales')
             self.slsSOItemsholderDeleted.push(slsSalesOrderItemHolderDeleted);
         }
         totalAmount();
+        enableCloseCmd();
     }
     function editItem(index){
         angular.copy(self.slsSalesOrderHolder.slsSOItemsholder[index],self.slsSalesOrderItemHolder) ;
         self.slsSalesOrderHolder.slsSOItemsholder.splice(index,1);
         totalAmount();
+        enableCloseCmd();
     }
         function cloturerCmd(){
             for(var i=0;i<self.slsSOItemsholderDeleted.length;i++){
@@ -242,7 +246,7 @@ angular.module('AdSales')
             self.slsSalesOrderHolder = {
                 slsSalesOrder:{},
                 slsSOItemsholder:[],
-                slsSOPtnr:{}
+                slsSOPtnrsHolder:[]
             };
             self.slsSalesOrderHolder.slsSalesOrder.soDt = new Date();
             self.slsSalesOrderHolder.slsSalesOrder.grossSPPreTax = 0;
@@ -250,10 +254,10 @@ angular.module('AdSales')
             self.slsSalesOrderHolder.slsSalesOrder.vatAmount = 0;
             self.slsSalesOrderHolder.slsSalesOrder.netSPTaxIncl = 0;
             self.slsSalesOrderHolder.slsSalesOrder.rebate = 0;
-            self.slsSalesOrderHolder.slsSalesOrder.pymtDscntAmt = 0;
             self.slsSalesOrderHolder.slsSalesOrder.netSalesAmt = 0;
             self.slsSalesOrderHolder.slsSalesOrder.soStatus = 'INITIATED';
             self.slsSalesOrderItemHolder = {};
+            self.showBtnClose = true;
         }
         function ModalInstanceAddBptrnCtrl($scope, $modalInstance, slsSOPtnrsHolder) {
              $scope.slsSOPtnrsHolder = slsSOPtnrsHolder;
@@ -261,10 +265,11 @@ angular.module('AdSales')
                 return self.loadBusinessPartner(val);
             }
             $scope.addBptrn = function(){
-                var slsSOPtnr = {};
-                slsSOPtnr.slsSOPtnr = $scope.slsSOPtnr;
+                var slsSOPtnrHolder = {};
+                slsSOPtnrHolder.slsSOPtnr = $scope.slsSOPtnr;
+                $scope.slsSOPtnrsHolder.push(slsSOPtnrHolder);
                 $scope.slsSOPtnr = {};
-                $scope.slsSOPtnrsHolder.push(slsSOPtnr);
+
             }
             $scope.deleteItem = function (index) {
                 $scope.slsSOPtnrsHolder.splice(index,1);
@@ -284,7 +289,8 @@ angular.module('AdSales')
                 self.index-=1;
                 angular.copy(self.slsSalesOrderHolderTab[self.index],self.slsSalesOrderHolder);
                 self.slsSalesOrderHolderTab.splice(self.index,1);
-
+                self.slsSalesOrderItemHolder = {};
+                enableCloseCmd ();
             }
 
         }
@@ -292,11 +298,20 @@ angular.module('AdSales')
             if(self.slsSalesOrderHolderTab.length > self.index){
                 angular.copy(self.slsSalesOrderHolderTab[self.index],self.slsSalesOrderHolder);
                 self.slsSalesOrderHolderTab.splice(self.index,1);
+                self.slsSalesOrderItemHolder = {};
+                enableCloseCmd ();
             }
 
         }
         function tabLength (){
             return self.slsSalesOrderHolderTab.length;
+        }
+
+        function enableCloseCmd (){
+            if(self.slsSalesOrderHolder.slsSOItemsholder.length > 0)
+                self.showBtnClose = false;
+            else
+                self.showBtnClose = true;
         }
 
 }]);

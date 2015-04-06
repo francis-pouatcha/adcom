@@ -16,11 +16,13 @@ public class SlsSOPtnrHolder {
 		this.deleted = deleted;
 	}
 
-	public SlsSOPtnr getSlsSoPtnr() {
+	public SlsSOPtnr getSlsSOPtnr() {
 		return slsSOPtnr;
 	}
 
-	public void setSlsSoPtnr(SlsSOPtnr slsSoPtnr) {
-		this.slsSOPtnr = slsSoPtnr;
+	public void setSlsSOPtnr(SlsSOPtnr slsSOPtnr) {
+		this.slsSOPtnr = slsSOPtnr;
 	}
+
+	
 }

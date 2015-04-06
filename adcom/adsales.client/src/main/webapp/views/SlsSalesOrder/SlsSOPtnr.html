@@ -6,7 +6,7 @@
                     <div class="form-group" ng-class="{ 'has-error' : SlsSOPtnrForm.partner.$invalid }">
                         <label for="partner">{{'SlsSOPtnr_ptnrNbr_description.title' | translate}}</label>
                         <input type="text" ng-model="slsSOPtnr.ptnrNbr" id="supplier" name="partner" class="form-control" required
-                               autocomplete="off" typeahead="businessPartner as businessPartner.cpnyName for businessPartner in loadBusinessPartner($viewValue)"
+                               autocomplete="off" typeahead="businessPartner.ptnrNbr as businessPartner.cpnyName for businessPartner in loadBusinessPartner($viewValue)"
                                typeahead-loading="loading">
                     </div>
                 </div>
@@ -29,9 +29,9 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="slsSOPtnr in slsSOPtnrsHolder" >
-                        <td>{{slsSOPtnr.ptnrNbr.cpnyName}}</td>
-                        <td>{{slsSOPtnr.roleInSO}}</td>
+                    <tr ng-repeat="slsSOPtnrHolder in slsSOPtnrsHolder" >
+                        <td>{{slsSOPtnrHolder.slsSOPtnr.ptnrNbr}}</td>
+                        <td>{{slsSOPtnrHolder.slsSOPtnr.roleInSO}}</td>
                         <td><a ng-click="deleteItem($index)" class=""><i class="glyphicon glyphicon-trash"></i></a></td>
                     </tr>
                     </tbody>
