@@ -44,7 +44,6 @@ angular.module('AdSales')
     self.loadBusinessPartner = loadBusinessPartner;
     self.slsSOItemsholderDeleted = [];
     self.maxDisctRate;
-    self.vatRate;
     self.cloturerCmd = cloturerCmd;
     self.annulerCmd = annulerCmd;
     self.newCmd = newCmd;
@@ -132,7 +131,7 @@ angular.module('AdSales')
         self.slsSalesOrderItemHolder.slsSOItem.artName = item.features.artName;
         self.slsSalesOrderItemHolder.slsSOItem.sppuPreTax = item.sppu;
         self.maxDisctRate = item.maxDisctRate;
-        self.vatRate = item.vatRate;
+        self.slsSalesOrderItemHolder.slsSOItem.vatPct = item.vatRate;
         calculAmount();
     }
 
@@ -153,7 +152,7 @@ angular.module('AdSales')
                 self.slsSalesOrderItemHolder.slsSOItem.netSPPreTax = self.slsSalesOrderItemHolder.slsSOItem.grossSPPreTax;
 
             if(self.slsSalesOrderItemHolder.slsSOItem.orderedQty){
-                self.slsSalesOrderItemHolder.slsSOItem.vatAmount = self.slsSalesOrderItemHolder.slsSOItem.grossSPPreTax*self.vatRate/100;
+                self.slsSalesOrderItemHolder.slsSOItem.vatAmount = self.slsSalesOrderItemHolder.slsSOItem.grossSPPreTax*self.slsSalesOrderItemHolder.slsSOItem.vatPct/100;
                 self.slsSalesOrderItemHolder.slsSOItem.netSPTaxIncl = self.slsSalesOrderItemHolder.slsSOItem.netSPPreTax+self.slsSalesOrderItemHolder.slsSOItem.vatAmount;
             }
         }
@@ -167,7 +166,7 @@ angular.module('AdSales')
 
         angular.forEach(self.slsSalesOrderHolder.slsSOItemsholder, function (value, key) {
             self.slsSalesOrderHolder.slsSalesOrder.grossSPPreTax = self.slsSalesOrderHolder.slsSalesOrder.grossSPPreTax + value.slsSOItem.grossSPPreTax;
-            self.slsSalesOrderHolder.slsSalesOrder.rebate = self.slsSalesOrderHolder.slsSalesOrder.rebate + value.slsSOItem.rebate;
+            self.slsSalesOrderHolder.slsSalesOrder.rebate = self.slsSalesOrderHolder.slsSalesOrder.rebate + parseInt(value.slsSOItem.rebate);
             self.slsSalesOrderHolder.slsSalesOrder.netSPPreTax = self.slsSalesOrderHolder.slsSalesOrder.netSPPreTax + value.slsSOItem.netSPPreTax;
             self.slsSalesOrderHolder.slsSalesOrder.vatAmount = self.slsSalesOrderHolder.slsSalesOrder.vatAmount + value.slsSOItem.vatAmount;
             self.slsSalesOrderHolder.slsSalesOrder.netSPTaxIncl = self.slsSalesOrderHolder.slsSalesOrder.netSPTaxIncl + value.slsSOItem.netSPTaxIncl;

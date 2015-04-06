@@ -35,7 +35,7 @@ angular.module('AdProcmt').controller('prcmtOrderShowCtlr',['$scope','ProcmtUtil
 
     function load(){
         self.prcmtOrderHolder = PrcmtOrderState.getOrderHolder();
-        if(self.prcmtOrderHolder.prcmtProcOrder.poStatus=='INITIATED'){
+        if(self.prcmtOrderHolder.prcmtProcOrder.poStatus=='INITIATED' || self.prcmtOrderHolder.prcmtProcOrder.poStatus=='ONGOING'){
             self.closeStatus = true;
         }
     };

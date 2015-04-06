@@ -41,10 +41,9 @@ angular.module('AdProcmt').controller('prcmtDeliveryAddItemCtlr',['$scope','$rou
         var data = PrcmtDeliveryState.getDeliveryHolder();
         self.prcmtDelivery = data.delivery;
         self.prcmtDeliveryItemHolders = data.deliveryItems;
-        if(self.prcmtDelivery.dlvryStatus=='INITIATED'){
+        if(self.prcmtDelivery.dlvryStatus=='INITIATED' || self.prcmtDelivery.dlvryStatus=='ONGOING'){
             self.closeStatus = true;
         }
-
     };
 
     function loadArticlesByNameLike(name){
