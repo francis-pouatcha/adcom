@@ -1,15 +1,16 @@
 package org.adorsys.adinvtry.rest;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.metamodel.SingularAttribute;
 
-import org.adorsys.adcore.utils.Contract;
 import org.adorsys.adcore.utils.SequenceGenerator;
 import org.adorsys.adinvtry.jpa.InvInvtry;
 import org.adorsys.adinvtry.jpa.InvInvtryEvtData;
@@ -26,10 +27,7 @@ public class InvInvtryEJB
 
 	@Inject
 	private InvInvtryRepository repository;
-//
-//	@Inject
-//	private SecurityUtil securityUtil;
-	
+
 	@Inject
 	private InvInvtryEvtDataEJB invtryEvtDataEJB;
 	
@@ -38,6 +36,9 @@ public class InvInvtryEJB
 
 	@Inject
 	private EntityManager em;
+	
+	@Inject
+	private InvInvtryHstryEJB invtryHstryEJB;
 	
 	public InvInvtry create(InvInvtry entity)
 	{
@@ -64,21 +65,24 @@ public class InvInvtryEJB
 		InvInvtry entity = repository.findBy(id);
 		if (entity != null)
 		{
-			removeIntryItems(entity);
+			// TODO: Non sense. REplace this with data constraint.
+			// count invtryItems
+			Long itemsCount = itemEJB.countByInvtryNbr(entity.getInvtryNbr());
+			if(itemsCount>0)itemEJB.removeByInvtryNbr(entity.getInvtryNbr());
+			
+			// count evt data.
 			invtryEvtDataEJB.deleteById(id);
-			repository.remove(entity);
+			
+
+			itemsCount = itemEJB.countByInvtryNbr(entity.getInvtryNbr());
+			if(itemsCount<=0) {
+				// count history
+				invtryHstryEJB.deleteByEntIdentif(entity.getInvtryNbr());
+				repository.remove(entity);
+				
+			}
 		}
 		return entity;
-	}
-
-	/**
-	 * removeIntryItems.
-	 *
-	 * @param entity
-	 */
-	private void removeIntryItems(InvInvtry entity) {
-		Contract.checkIllegalArgumentException(entity);
-		itemEJB.removeByInvtryNbr(entity.getInvtryNbr());
 	}
 
 	public InvInvtry update(InvInvtry entity)
@@ -377,5 +381,25 @@ public class InvInvtryEJB
 
 	public List<InvInvtry> findMergingInvtrys() {
 		return repository.findMergingInvtrys().getResultList();
+	}
+
+	public List<InvInvtry> findMergedInvtrys() {
+		return repository.findMergedInvtrys().getResultList();
+	}
+	
+	public void handleInconsistentInvtry(@Observes @InvInconsistentInvtryEvent String invtryNbr){
+		InvInvtry invtry = findByIdentif(invtryNbr);
+		if(invtry==null) return;
+		if(invtry.getConflictDt()!=null) return;
+		invtry.setConflictDt(new Date());
+		update(invtry);
+	}
+
+	public void handleConsistentInvtry(@Observes @InvConsistentInvtryEvent String invtryNbr){
+		InvInvtry invtry = findByIdentif(invtryNbr);
+		if(invtry==null) return;
+		if(invtry.getConflictDt()==null) return;
+		invtry.setConflictDt(null);
+		update(invtry);
 	}
 }

@@ -1,0 +1,80 @@
+<div class="container">
+
+    <div class="col-xs-offset-2 col-xs-8">
+
+        <div class="panel panel-default  ng-scope">
+            <div class="panel-heading no-collapse"><b>{{"Entity_show.title"|translate}}</b> </div>
+            <div class="panel-body">
+                    <form  name="showAptAptmtForm" class="form-horizontal" novalidate >
+
+                        
+                        
+                        <div class="form-group">
+                            <label class="col-lg-4 ">{{"AptAptmt_title_description.title"|translate}} :</label>
+                            <div class="col-lg-8"  >
+                                <input type="text" ng-model="aptAptmt.title" name="title" disabled class="form-control"  >
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-lg-4 ">{{"AptAptmt_appointmentDate_description.title"|translate}} :</label>
+                            <div class="col-lg-8">
+                                <input type="text" ng-model="aptAptmt.appointmentDate" name="appointmentDate" disabled class="form-control"  >
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-lg-4">{{ "AptAptmt_description.title"| translate}} :</label>
+                            <div class="col-lg-8">
+                                <input type="text" ng-model="aptAptmt.description" name="description" disabled class="form-control"  >
+
+                            </div>
+                            
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-lg-4 ">{{ "AptAptmt_locality_description.title"| translate}} :</label>
+                            <div class="col-lg-8">
+                                <input type="text" ng-model="aptAptmt.locality" name="locality" disabled class="form-control"  >
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-lg-4 ">{{ "AptAptmt_parentIdentify_description.title"| translate}} :</label>
+                            <div class="col-lg-8"  >
+                                <input type="text" ng-model="aptAptmt.parentIdentify" disabled name="parentIdentify" class="form-control" >
+
+                            </div>
+                        </div>
+                        
+
+
+                        <div class="form-group">
+
+                            <div class="col-lg-3">
+                                <a class="btn-default btn" ng-click="previous();" ><i class="glyphicon glyphicon-circle-arrow-left"></i> {{"Entity_previous.title"|translate}}</a>
+                            </div>
+
+                            <div class="col-lg-3" >
+                                <a class="btn-default btn" href="#/"  ><i class="glyphicon glyphicon-remove" ></i> {{"Entity_cancel.title" | translate }}</a>
+                            </div>
+                            <div class="col-lg-3" >
+                                <a class="btn-default btn" href="#/aptaptmt/update/{{aptAptmt.id}}"  ><i class="glyphicon glyphicon-edit" ></i> Editer</a>
+                            </div>
+                            <div class="col-lg-3">
+                                <a class="btn-default btn" ng-click="next();" ><i class="fa glyphicon glyphicon-circle-arrow-right"></i> {{"Entity_next.title"|translate}}</a>
+                            </div>
+
+                        </div>
+                    </form>
+                
+            </div>
+
+        </div>
+
+    </div>
+    
+</div>

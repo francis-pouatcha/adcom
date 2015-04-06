@@ -151,6 +151,19 @@ angular.module('AdInvtry')
     		$scope.error = error;
     	});
     };
+    $scope.check = function(){
+        invInvtryManagerResource.validate($scope.invInvtry)
+    	.success(function(invInvtry){
+    		if(invInvtryState.resultHandler.replace(invInvtry)){
+    			$scope.invInvtry = invInvtryState.resultHandler.entity();
+    	    	invInvtryState.selection=[$scope.invInvtry.invtryNbr];
+    			$location.path('/InvInvtrys/compare');
+    		}
+    	})
+    	.error(function(error){
+    		$scope.error = error;
+    	});
+    };
     
     function unsetEditing(invtryItem){
     	if(angular.isDefined(invtryItem.editingExpirDt))

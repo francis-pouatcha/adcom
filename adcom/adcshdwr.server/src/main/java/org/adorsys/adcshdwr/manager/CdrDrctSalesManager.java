@@ -3,23 +3,26 @@
  */
 package org.adorsys.adcshdwr.manager;
 
-import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
+import org.adorsys.adbase.enums.BaseHistoryTypeEnum;
+import org.adorsys.adbase.enums.BaseProcStepEnum;
 import org.adorsys.adbase.security.SecurityUtil;
-import org.adorsys.adcore.utils.BigDecimalUtils;
-import org.adorsys.adcore.utils.SequenceGenerator;
-import org.adorsys.adcshdwr.jpa.CdrCshDrawer;
+import org.adorsys.adcore.auth.TermWsUserPrincipal;
 import org.adorsys.adcshdwr.jpa.CdrDrctSales;
 import org.adorsys.adcshdwr.jpa.CdrDsArtItem;
+import org.adorsys.adcshdwr.jpa.CdrDsHstry;
+import org.adorsys.adcshdwr.jpa.CdrDsInfo;
 import org.adorsys.adcshdwr.rest.CdrCshDrawerEJB;
 import org.adorsys.adcshdwr.rest.CdrDrctSalesEJB;
 import org.adorsys.adcshdwr.rest.CdrDsArtItemEJB;
-import org.apache.commons.lang3.RandomStringUtils;
+import org.adorsys.adcshdwr.rest.CdrDsHstryEJB;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author boriswaguia
@@ -36,88 +39,167 @@ public class CdrDrctSalesManager {
 	
 	@Inject
 	private CdrCshDrawerEJB cdrCshDrawerEJB;
+	
+	@Inject
+	private CdrDsHstryEJB cdrDsHstryEJB;
+	
 	@Inject
 	private SecurityUtil securityUtil;
 	
-	public CdrDsArtHolder save(CdrDsArtHolder cdrDsArtHolder) {
-		if(cdrDsArtHolder == null) throw new IllegalArgumentException("Invalid ds articles holder");
-		List<CdrDsArtItemHolder> items = cdrDsArtHolder.getItems();
+	
+	
+	
 
-		CdrCshDrawer activeCshDrawer = cdrCshDrawerEJB.getActiveCshDrawer();
-		if(activeCshDrawer == null) throw new IllegalStateException("Invalid cash drawer. A new one must be opened");
-		
-		CdrDrctSales cdrDrctSales = new CdrDrctSales();
-		cdrDrctSales.setDsNbr(SequenceGenerator.getSequence(SequenceGenerator.CASHDRAWER_SEQUENCE_PREFIXE));
-		cdrDrctSales.setCashier(securityUtil.getCurrentLoginName());
-		cdrDrctSales.setIdentif(UUID.randomUUID().toString());
-		cdrDrctSales.setCdrNbr(activeCshDrawer.getCdrNbr());
-		cdrDrctSales.setRcptNbr(RandomStringUtils.randomAlphabetic(7));
-		
-		AmtHolder salesHolder = new AmtHolder();
-		for (CdrDsArtItemHolder artItemHolder : items) {
-			CdrDsArtItem artItem = artItemHolder.getItem();
-			artItem.consolidate();
-			BigDecimal totalRebate = BigDecimal.ZERO;
-			BigDecimal rebate = artItem.getRebate();
-			BigDecimal grossSPPreTax = artItem.getGrossSPPreTax();
-			BigDecimal netSPPreTax = artItem.getNetSPPreTax();
-			BigDecimal netSPTaxIncl = artItem.getNetSPTaxIncl();
-			BigDecimal soldQty = artItem.getSoldQty();
-			BigDecimal sppuPreTax = artItem.getSppuPreTax();
-			BigDecimal vatAmount = artItem.getVatAmount();
-			
-//			String sppuCur = artItem.getSppuCur();
-			
-			totalRebate = rebate.multiply(soldQty);
-			grossSPPreTax = sppuPreTax.multiply(soldQty);
-			netSPPreTax = grossSPPreTax.subtract(totalRebate);
-			vatAmount = netSPPreTax.multiply(artItem.getVatPct().divide(BigDecimalUtils.HUNDRED));
-			netSPTaxIncl = netSPPreTax.add(vatAmount);
-			
-			artItem.setDsNbr(cdrDrctSales.getDsNbr());
-			artItem.setNetSPPreTax(netSPPreTax);
-			artItem.setNetSPTaxIncl(netSPTaxIncl);
-			artItem.setRebate(totalRebate);
-			artItem.setVatAmount(vatAmount);
-			artItem.setObjctOrgUnit(securityUtil.getCurrentOrgUnit().getIdentif());
-			cdrDsArtItemEJB.create(artItem);
-			//sum amt for the drctsales
-			salesHolder.grossSPPreTax = salesHolder.grossSPPreTax.add(grossSPPreTax);
-			salesHolder.netSPPreTax = salesHolder.netSPPreTax.add(netSPPreTax);
-			salesHolder.netSPTaxIncl = salesHolder.netSPTaxIncl.add(netSPTaxIncl);
-			salesHolder.vatAmount = salesHolder.vatAmount.add(vatAmount);
-			salesHolder.rebate = salesHolder.rebate.add(totalRebate);
+	public CdrDsArtHolder updateOrder(CdrDsArtHolder cdrDsArtHolder){
+		CdrDrctSales cdrDrctSales = cdrDsArtHolder.getCdrDrctSales();
+		if(StringUtils.isBlank(cdrDrctSales.getId())) {
+			cdrDrctSales = cdrDrctSalesEJB.create(cdrDrctSales);;
 		}
-		salesHolder.netSalesAmt = salesHolder.netSPTaxIncl;
-		cdrDrctSales.setNetSalesAmt(salesHolder.netSalesAmt);
-        cdrDrctSales.setNetAmtToPay(salesHolder.netSalesAmt);
-        cdrDrctSales.setNetSPPreTax(salesHolder.netSPPreTax);
-        cdrDrctSales.setNetSPTaxIncl(salesHolder.netSPTaxIncl);
-        cdrDrctSales.setVatAmount(salesHolder.vatAmount);
-		cdrDrctSalesEJB.create(cdrDrctSales);
+		boolean modified = false;
+		boolean itemModified = deleteHolders(cdrDsArtHolder);
+					
+		List<CdrDsArtItemHolder> cdrDsArtItemHolders = cdrDsArtHolder.getItems();
+		if(cdrDsArtItemHolders == null) cdrDsArtItemHolders = new ArrayList<CdrDsArtItemHolder>();
+		
+		for (CdrDsArtItemHolder cdrDsArtItemHolder : cdrDsArtItemHolders) {
+			CdrDsArtItem cdrDsArtItem = cdrDsArtItemHolder.getItem();
+
+			if(StringUtils.isBlank(cdrDsArtItem.getDsNbr()))
+				cdrDsArtItem.setDsNbr(cdrDrctSales.getDsNbr());
+			// check presence of the article pic
+			if(StringUtils.isBlank(cdrDsArtItem.getArtPic()))
+				throw new IllegalStateException("Missing article identification code.");
+
+			if(StringUtils.isNotBlank(cdrDsArtItem.getId())){
+				// todo check mdified
+				CdrDsArtItem persDi = cdrDsArtItemEJB.findById(cdrDsArtItem.getId());
+				if(persDi==null) throw new IllegalStateException("Missing delivery item with id: " + cdrDsArtItem.getId());
+				if(!cdrDsArtItem.contentEquals(persDi)){
+					cdrDsArtItem.copyTo(persDi);
+					cdrDsArtItem = cdrDsArtItemEJB.update(persDi);
+					itemModified = true;
+				}
+			} else {
+				if (StringUtils.isNotBlank(cdrDsArtItem.getDsNbr())) {
+					CdrDsArtItem persDi = cdrDsArtItemEJB.findById(cdrDsArtItem.getDsNbr());
+					if(persDi!=null){
+						if(!cdrDsArtItem.contentEquals(persDi)){
+							cdrDsArtItem.copyTo(persDi);
+							cdrDsArtItem = cdrDsArtItemEJB.update(persDi);
+							itemModified = true;
+						}
+					} else {
+						cdrDsArtItem.evlte();
+						cdrDsArtItem.setDsNbr(cdrDrctSales.getDsNbr());
+						cdrDsArtItem = cdrDsArtItemEJB.create(cdrDsArtItem);
+						itemModified = true;
+					}
+				} else {
+					cdrDsArtItem.evlte();
+					cdrDsArtItem = cdrDsArtItemEJB.create(cdrDsArtItem);
+					itemModified = true;
+				}
+			}
+
+			cdrDsArtItemHolder.setItem(cdrDsArtItem);
+		}
+		
+		if(itemModified){
+			recomputeOrder(cdrDrctSales);
+//			cdrDrctSales.setPoStatus(BaseProcessStatusEnum.ONGOING.name());
+			cdrDrctSales = cdrDrctSalesEJB.update(cdrDrctSales);
+			cdrDsArtHolder.setCdrDrctSales(cdrDrctSales);
+		}
+		if(modified || itemModified){
+//			createModifiedOrderHistory(cdrDrctSales);
+//			updateCshDrawer(cdrDrctSales);
+		}
 		return cdrDsArtHolder;
 	}
 	
-	@SuppressWarnings(value = { "unused" })
-	private CdrDsArtItem createInstance(CdrDrctSales cdrDrctSales,
-			CdrDsArtItem artItem, BigDecimal netSPPreTax,
-			BigDecimal netSPTaxIncl) {
-		CdrDsArtItem cdrDsArtItem = new CdrDsArtItem();
-		cdrDsArtItem.setArtPic(artItem.getArtPic());
-		cdrDsArtItem.setDsNbr(cdrDrctSales.getDsNbr());
-		cdrDsArtItem.setGrossSPPreTax(artItem.getGrossSPPreTax());
-		cdrDsArtItem.setLotPic(artItem.getLotPic());
-		cdrDsArtItem.setNetSPPreTax(netSPPreTax);//set the netSPPreTax
-		cdrDsArtItem.setNetSPTaxIncl(netSPTaxIncl);//set the netSPTaxIncl
-		cdrDsArtItem.setObjctOrgUnit(securityUtil.getCurrentOrgUnit().getIdentif());
-		cdrDsArtItem.setRebate(artItem.getRebate());
-		cdrDsArtItem.setRestockgFees(artItem.getRestockgFees());
-		cdrDsArtItem.setReturnedQty(artItem.getReturnedQty());//TODO compute the returned qty ?
-		cdrDsArtItem.setSoldQty(artItem.getSoldQty());
-		cdrDsArtItem.setSppuCur(artItem.getSppuCur());
-		cdrDsArtItem.setSppuPreTax(artItem.getSppuPreTax());
-		cdrDsArtItem.setVatAmount(artItem.getVatAmount());
-		cdrDsArtItem.setVatPct(artItem.getVatPct());
-		return cdrDsArtItem;
+
+	private boolean deleteHolders(CdrDsArtHolder cdrDsArtHolder){
+		List<CdrDsArtItemHolder> cdrDsArtItemHolders = cdrDsArtHolder.getItems();
+		List<CdrDsArtItemHolder> oiToRemove = new ArrayList<CdrDsArtItemHolder>();
+		boolean modified = false;
+		for (CdrDsArtItemHolder itemHolder : cdrDsArtItemHolders) {
+			if(itemHolder.isDeleted()){
+				CdrDsArtItem cdrDsArtItem = itemHolder.getItem();
+				String id = StringUtils.isNotBlank(cdrDsArtItem.getId())?cdrDsArtItem.getId():cdrDsArtItem.getDsNbr();
+				if(StringUtils.isNotBlank(id)){
+					cdrDsArtItemEJB.deleteById(id);
+					modified = true;					
+				}
+				oiToRemove.add(itemHolder);
+			}
+		}
+		cdrDsArtItemHolders.removeAll(oiToRemove);
+		return modified;
 	}
+	
+
+	private void recomputeOrder(final CdrDrctSales cdrDrctSales){
+		// recompute order object.
+		String dsNbr = cdrDrctSales.getDsNbr();
+		Long count = cdrDsArtItemEJB.countByDsNbr(dsNbr);
+		int start = 0;
+		int max = 100;
+		cdrDrctSales.clearAmts();
+		while(start<=count){
+			List<CdrDsArtItem> list = cdrDsArtItemEJB.findByDsNbr(dsNbr, start, max);
+			start +=max;
+			for (CdrDsArtItem cdrDsArtItem : list) {
+				cdrDrctSales.addGrossSPPreTax(cdrDsArtItem.getGrossSPPreTax());
+				cdrDrctSales.addRebate(cdrDsArtItem.getRebate());
+				cdrDrctSales.addNetSPPreTax(cdrDsArtItem.getNetSPPreTax());
+				cdrDrctSales.addVatAmount(cdrDsArtItem.getVatAmount());
+				cdrDrctSales.addNetSPTaxIncl(cdrDsArtItem.getNetSPTaxIncl());
+			}
+		}
+		cdrDrctSales.evlte();
+	}
+
+	public CdrDsArtHolder closeOrder(CdrDsArtHolder cdrDsArtHolder){
+		cdrDsArtHolder = updateOrder(cdrDsArtHolder);
+		CdrDrctSales cdrDrctSales = cdrDsArtHolder.getCdrDrctSales();
+		recomputeOrder(cdrDrctSales);
+//		procOrder.setPoStatus(BaseProcessStatusEnum.CLOSED.name());
+		cdrDrctSales = cdrDrctSalesEJB.update(cdrDrctSales);
+		cdrDsArtHolder.setCdrDrctSales(cdrDrctSales);
+		createClosedSalesHistory(cdrDrctSales);// closed, no need processor?
+
+		return cdrDsArtHolder;
+	}
+	
+	public CdrDsArtHolder findOrder(String id){
+		CdrDsArtHolder cdrDsArtHolder = new CdrDsArtHolder();
+		CdrDrctSales cdrDrctSales = cdrDrctSalesEJB.findById(id);
+		cdrDsArtHolder.setCdrDrctSales(cdrDrctSales);
+		List<CdrDsArtItem> cdrDsArtItems = cdrDsArtItemEJB.findByDsNbr(cdrDrctSales.getDsNbr());
+		for(CdrDsArtItem cdrDsArtItem:cdrDsArtItems) {
+			CdrDsArtItemHolder cdrDsArtItemHolder = new CdrDsArtItemHolder();
+			cdrDsArtItemHolder.setItem(cdrDsArtItem);
+			cdrDsArtHolder.getItems().add(cdrDsArtItemHolder);
+		}
+		return cdrDsArtHolder;
+	}
+	
+
+	private void createClosedSalesHistory(CdrDrctSales cdrDrctSales){
+		TermWsUserPrincipal callerPrincipal = securityUtil.getCallerPrincipal();
+		CdrDsHstry cdrDsHstry = new CdrDsHstry();
+		
+		cdrDsHstry.setComment(BaseHistoryTypeEnum.CLOSED.name());
+		cdrDsHstry.setAddtnlInfo(CdrDsInfo.prinInfo(cdrDrctSales));
+		cdrDsHstry.setEntIdentif(cdrDrctSales.getId());
+//		cdrDsHstry.setEntStatus(prcmtOrder.getPoStatus());
+		cdrDsHstry.setHstryDt(new Date());
+		cdrDsHstry.setHstryType(BaseHistoryTypeEnum.CLOSED.name());	
+		cdrDsHstry.setOrignLogin(callerPrincipal.getName());
+		cdrDsHstry.setOrignWrkspc(callerPrincipal.getWorkspaceId());
+		cdrDsHstry.setProcStep(BaseProcStepEnum.CLOSING.name());
+		cdrDsHstry.makeHistoryId(true);
+		cdrDsHstryEJB.create(cdrDsHstry);
+	}
+
 }

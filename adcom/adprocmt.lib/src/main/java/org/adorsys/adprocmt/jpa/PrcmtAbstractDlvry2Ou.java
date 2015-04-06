@@ -77,7 +77,7 @@ public abstract class PrcmtAbstractDlvry2Ou extends AbstractIdentifData {
 	public boolean contentEquals(PrcmtAbstractDlvry2Ou target){
 		if(target==null) return false;
 		if(!StringUtils.equals(dlvryNbr, target.dlvryNbr)) return false;
-		if(StringUtils.equals(rcvngOrgUnit, target.rcvngOrgUnit)) return false;
+		if(!StringUtils.equals(rcvngOrgUnit, target.rcvngOrgUnit)) return false;
 		if(!BigDecimalUtils.numericEquals(qtyPct, target.qtyPct)) return false;
 		return true;
 	}

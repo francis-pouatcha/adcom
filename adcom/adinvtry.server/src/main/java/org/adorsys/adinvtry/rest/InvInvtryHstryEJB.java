@@ -40,6 +40,16 @@ public class InvInvtryHstryEJB {
 		}
 		return entity;
 	}
+	public void deleteByEntIdentif(String invtryNbr) {
+		List<InvInvtryHstry> list = repository.byEntIdentif(invtryNbr).getResultList();
+		for (InvInvtryHstry invInvtryHstry : list) {
+			repository.remove(invInvtryHstry);
+		}
+	}
+
+	public Long countByEntIdentif(String invtryNbr) {
+		return repository.byEntIdentif(invtryNbr).count();
+	}
 
 	public InvInvtryHstry update(InvInvtryHstry entity) {
 		return repository.save(attach(entity));
@@ -92,7 +102,7 @@ public class InvInvtryHstryEJB {
 	}
 
 	public List<InvInvtryHstry> findByEntIdentif(String invtryNbr) {
-		return repository.findByEntIdentif(invtryNbr);
+		return repository.byEntIdentif(invtryNbr).getResultList();
 	}
 
 	private Long countByEntIdentifAndStatus(String invtryNbr, String status) {

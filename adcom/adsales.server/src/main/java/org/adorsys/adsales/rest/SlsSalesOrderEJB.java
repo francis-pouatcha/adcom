@@ -9,6 +9,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.metamodel.SingularAttribute;
 
+import org.adorsys.adcore.utils.SequenceGenerator;
 import org.adorsys.adsales.jpa.SlsSalesOrder;
 import org.adorsys.adsales.jpa.SlsSalesOrderSearchInput;
 import org.adorsys.adsales.repo.SlsSalesOrderRepository;
@@ -31,9 +32,24 @@ public class SlsSalesOrderEJB
 
    public SlsSalesOrder create(SlsSalesOrder entity)
    {
-      return repository.save(attach(entity));
-   }
+	   if (StringUtils.isBlank(entity.getSoNbr())) {
+			entity.setSoNbr(SequenceGenerator
+					.getSequence(SequenceGenerator.SALE_SEQUENCE_PREFIXE));
+		}
 
+		entity.setId(entity.getSoNbr());
+		entity.setIdentif(entity.getSoNbr());	
+		entity = repository.save(attach(entity));
+		
+		//TODO: create the SlsSOEvtData class in adsale.lib
+		/*SlsSOEvtData evtData = new SlsSOEvtData();
+		entity.copyTo(evtData);
+		evtData.setId(entity.getId());
+		evtData.setIdentif(entity.getIdentif());
+		evtDataEJB.create(evtData);*/	
+		return entity;
+   }
+   
    public SlsSalesOrder deleteById(String id)
    {
       SlsSalesOrder entity = repository.findBy(id);

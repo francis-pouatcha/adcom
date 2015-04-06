@@ -26,6 +26,10 @@ angular.module('AdInvtry')
         return $http.put(urlBase+'/close',invtry);
     };
     
+    service.validate = function(invtry){
+        return $http.put(urlBase+'/validate',invtry);
+    };
+    
     // Post an inventory. Notifying listener about the inventory.
     // Form this state nothing can be modified on the inventory anymore.
     service.post = function(invtry){
@@ -59,6 +63,7 @@ angular.module('AdInvtry')
     service.merge = function(invrtyNbr){
         return $http.put(urlBase+'/merge',invrtyNbr);
     }
+    
     return service;
 }])
 .factory('invInvtryState',['$rootScope','searchResultHandler',function($rootScope,searchResultHandler){
@@ -218,8 +223,12 @@ angular.module('AdInvtry')
     	            'Entity_reset.title',
     	            'Entity_compare.title',
     	            'Entity_merge.title',
-    	            'Entity_selected.title'
-
+    	            'Entity_selected.title',
+    	            'Entity_validate.title',
+    	            'Entity_reload.title',
+    	            'Entity_showAll.title',
+    	            'Entity_showConflict.title'
+    	            
     	            ])
 		 .then(function (translations) {
 			 service.translations = translations;
@@ -602,8 +611,8 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
     };
   
 }])
-.controller('invInvtryCompareCtlr',['$scope','genericResource','invInvtryUtils','invInvtryState','$location','$rootScope',
-function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootScope){
+.controller('invInvtryCompareCtlr',['$scope','genericResource','invInvtryUtils','invInvtryState','$location','$rootScope','invInvtryManagerResource',
+function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootScope,invInvtryManagerResource){
 
     $scope.invInvtry = invInvtryState.resultHandler.entity();
     $scope.searchInput = invInvtryState.compareResultHandler.searchInput();
@@ -620,11 +629,62 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
     init();
     
     $scope.showAll = function(){
-		findCompare(searchInput);
-    }
+		findCompare($scope.searchInput);
+    };
     $scope.showConflict = function(){
-    	findByLike(searchInput);
+		findConflict($scope.searchInput);
+    };
+    $scope.reload = function(){
+    	findByLike($scope.searchInput);
+    };
+    $scope.edit = function(){
+    	var invtryItemLists = $scope.invtryItemLists();
+    	for (var int = 0; int < invtryItemLists.length; int++) {
+    		var invtryItemList = invtryItemLists[int];
+    		editing(invtryItemList);
+    	}
+    };
+    function editing(invtryItemList){
+		if(invtryItemList.sameQty) return;
+		var invtryItems = invtryItemList.invtryItems;
+		for (var int2 = 0; int2 < invtryItems.length; int2++) {
+			var invtryItem = invtryItems[int2];
+			invtryItem.editing = true;
+		}    	
     }
+    
+    $scope.disable = function(invtryItemList, invtryItem){
+    	if(!angular.isDefined(invtryItem.editing) || !invtryItem.editing) return;
+    	delete invtryItem.editing;
+		if(angular.isDefined(invtryItem.others)) invtryItem.others = undefined;
+    	if(angular.isDefined(invtryItem.disabledDt) && invtryItem.disabledDt){
+    		// enable
+    		invInvtryManagerResource.enableItem(invtryItem)
+    		.success(function(invtryItemList) {
+    			// store search
+    			invInvtryState.compareResultHandler.replace(invtryItemList);
+    			processEntity(invtryItemList);
+    			editing(invtryItemList);
+    		})
+            .error(function(error){
+                $scope.error=error;
+                invtryItem.editing = true;
+            });
+    	} else {
+    		// disable
+    		invInvtryManagerResource.disableItem(invtryItem)
+    		.success(function(invtryItemList) {
+    			// store search
+    			invInvtryState.compareResultHandler.replace(invtryItemList);
+    			processEntity(invtryItemList);
+    			editing(invtryItemList);
+    		})
+            .error(function(error){
+                $scope.error=error;
+                invtryItem.editing = true;
+            });
+    	}
+    };
     
     function init(){
     	$scope.searchInput.entity.invtryNbrs = angular.copy(invInvtryState.selection);
@@ -632,13 +692,20 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
     }
 
     function findByLike(searchInput){
-    	if($scope.searchInput.entity.invtryNbrs.length==1){
+    	if(angular.isDefined(invInvtryState.onlyConflict)){
+    		if(invInvtryState.onlyConflict){
+        		findConflict(searchInput);
+    		} else {
+        		findCompare(searchInput);    			
+    		}
+    	} else if($scope.searchInput.entity.invtryNbrs.length==1){
     		findConflict(searchInput);
     	} else {
     		findCompare(searchInput);
     	}
     }
     function findCompare(searchInput){
+    	invInvtryState.onlyConflict = false;
 		genericResource.customMethod(invInvtryUtils.invinvtrysUrlBase + '/findCompare', searchInput)
 		.success(function(entitySearchResult) {
 			// store search
@@ -651,6 +718,7 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
         });
     }
     function findConflict(searchInput){
+    	invInvtryState.onlyConflict = true;
 		genericResource.customMethod(invInvtryUtils.invinvtrysUrlBase + '/findConflict', searchInput)
 		.success(function(entitySearchResult) {
 			// store search
@@ -680,6 +748,15 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
         		var invtryItem = selectInvtryItem(invtryNbrs[int2], invtryItemList.invtryItems);
         		invtryItemList.sortedItems.push(invtryItem);
     		}
+		}
+    }
+
+    function processEntity(invtryItemList){
+    	var invtryNbrs = $scope.searchInput.entity.invtryNbrs;
+		invtryItemList.sortedItems = [];
+    	for (var int2 = 0; int2 < invtryNbrs.length; int2++) {
+    		var invtryItem = selectInvtryItem(invtryNbrs[int2], invtryItemList.invtryItems);
+    		invtryItemList.sortedItems.push(invtryItem);
 		}
     }
     

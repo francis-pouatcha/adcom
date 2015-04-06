@@ -29,8 +29,7 @@ public class InvInvtryEvtDataEJB {
 
 	public InvInvtryEvtData deleteById(String id) {
 		InvInvtryEvtData entity = repository.findBy(id);
-		if (entity == null)
-			return null;
+		if (entity == null)return null;
 
 		// Create the deleted constraint so items can be deleted iteratively.
 		List<InvInvtryEvtDataCstr> list = cstrRepo
@@ -48,6 +47,7 @@ public class InvInvtryEvtDataEJB {
 			invtryEvtDataCstr.makeId(true);
 			cstrRepo.save(invtryEvtDataCstr);
 		}
+		repository.remove(entity);
 		return entity;
 	}
 

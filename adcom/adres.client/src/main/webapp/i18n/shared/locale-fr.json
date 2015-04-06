@@ -60,6 +60,10 @@
     "Entity_compare.title":"Comparer",
     "Entity_selected.title": "Selectioné",
     "Entity_recompute.title": "Recalculer",
+    "Entity_validate.title": "Valider",
+    "Entity_reload.title": "Recharger",
+    "Entity_showAll.title": "Toutes les Lignes",
+    "Entity_showConflict.title": "Seulement les Conflits",
     
     "BaseCountryName_isoCode_description.title":"Code Pays",
     "BaseCountryName_iso2_description.title":"Code Pays Iso 2",

@@ -13,6 +13,7 @@ import javax.validation.constraints.NotNull;
 
 import org.adorsys.adbase.enums.BaseProcessStatusEnum;
 import org.adorsys.adcore.jpa.AbstractIdentifData;
+import org.adorsys.adcore.utils.FinancialOps;
 import org.adorsys.javaext.description.Description;
 import org.adorsys.javaext.format.DateFormatPattern;
 
@@ -63,10 +64,6 @@ public class SlsSalesOrder extends AbstractIdentifData {
 	private BigDecimal rebate;
 	
 	@Column
-	@Description("SlsSalesOrder_rebatePct_description")
-	private BigDecimal rebatePct;
-
-	@Column
 	@Description("SlsSalesOrder_netSPPreTax_description")
 	private BigDecimal netSPPreTax;
 
@@ -97,6 +94,56 @@ public class SlsSalesOrder extends AbstractIdentifData {
 	@Column
 	@Description("SlsSalesOrder_netAmtToPay_description")
 	private BigDecimal netAmtToPay;
+	
+	public void clearAmts() {
+		this.grossSPPreTax=BigDecimal.ZERO;
+		this.rebate = BigDecimal.ZERO;
+		this.netSPPreTax=BigDecimal.ZERO;
+		this.vatAmount=BigDecimal.ZERO;
+		this.netSPTaxIncl=BigDecimal.ZERO;
+		this.netSalesAmt=BigDecimal.ZERO;
+		this.netAmtToPay=BigDecimal.ZERO;
+	}
+	
+	public void evlte() {
+		
+			if(this.pymtDscntPct!=null)
+				this.pymtDscntAmt = FinancialOps.amtFromPrct(this.netSPPreTax, this.pymtDscntPct, this.soCur);
+			
+		if(this.pymtDscntAmt==null) this.pymtDscntAmt=BigDecimal.ZERO;
+		
+		this.netSalesAmt = FinancialOps.substract(this.netSPTaxIncl, this.pymtDscntAmt, this.soCur);
+		
+		if(this.rdngDscntAmt==null) this.rdngDscntAmt=BigDecimal.ZERO;
+		this.netAmtToPay = FinancialOps.substract(this.netSalesAmt, this.rdngDscntAmt, this.soCur);
+	}
+
+	public void addGrossSPPreTax(BigDecimal grossSPPreTax) {
+		if(this.grossSPPreTax==null)this.grossSPPreTax=BigDecimal.ZERO;
+		this.grossSPPreTax = this.grossSPPreTax.add(grossSPPreTax);
+	}
+
+	public void addRebate(BigDecimal rebate) {
+		if(this.rebate==null) this.rebate = BigDecimal.ZERO;
+		this.rebate=this.rebate.add(rebate);
+	}
+
+	public void addNetSPPreTax(BigDecimal netSPPreTax) {
+		if(this.netSPPreTax==null) this.netSPPreTax=BigDecimal.ZERO;
+		this.netSPPreTax = this.netSPPreTax.add(netSPPreTax);
+	}
+
+	public void addVatAmount(BigDecimal vatAmt) {
+		if(this.vatAmount==null)this.vatAmount=BigDecimal.ZERO;
+		this.vatAmount = this.vatAmount.add(vatAmt);
+	}
+
+	public void addNetSPTaxIncl(BigDecimal netSPTaxIncl) {
+		if(this.netSPTaxIncl==null)this.netSPTaxIncl=BigDecimal.ZERO;
+		this.netSPTaxIncl=this.netSPTaxIncl.add(netSPTaxIncl);
+	}
+
+	
 
 	public String getSoNbr() {
 		return this.soNbr;
@@ -133,14 +180,6 @@ public class SlsSalesOrder extends AbstractIdentifData {
 
 	public BigDecimal getRebate() {
 		return this.rebate;
-	}
-
-	public BigDecimal getRebatePct() {
-		return rebatePct;
-	}
-
-	public void setRebatePct(BigDecimal rebatePct) {
-		this.rebatePct = rebatePct;
 	}
 
 	public void setRebate(final BigDecimal rebate) {
@@ -210,7 +249,6 @@ public class SlsSalesOrder extends AbstractIdentifData {
 	public void setNetAmtToPay(final BigDecimal netAmtToPay) {
 		this.netAmtToPay = netAmtToPay;
 	}
-	
 	
 
 	public String getAcsngUser() {

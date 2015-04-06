@@ -7,7 +7,7 @@ import org.apache.commons.lang3.time.DateUtils;
 
 
 public class SequenceGenerator {
-	public static final String DEBTS_INVOICE_SEQUENCE_PREFIXE = "DS";
+	public static final String DEBTS_INVOICE_SEQUENCE_PREFIXE = "DI";
 	public static final String PAYMENT_SEQUENCE_PREFIX = "PY";
 	public static final String PRODUCT_FAMILY_SEQUENCE_PREFIXE = "PF";
 	public static final String PORCHASE_SEQUENCE_PREFIXE = "CF";
@@ -26,6 +26,8 @@ public class SequenceGenerator {
 	public static final String ID_SEQUENCE_PREFIXE = "ID";
 	public static final String BUSINESS_PARTNER_CATEGORY_SEQUENCE_PREFIXE = "BPC";
 	public static final String PRCMT_ORDER_SEQUENCE_PREFIXE = "PO";
+	public static final String APPOINTMENT_NUMBER_SEQUENCE_PREFIXE = "APT";
+	public static final String DIRECT_SALES_SEQUENCE_PREFIXE = "DS";
 
 	static long time = 0l;// the time corresponding to the 01.01.2014 00:00:00:00 ...
 	static {
