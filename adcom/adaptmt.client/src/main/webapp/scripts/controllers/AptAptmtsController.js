@@ -19,7 +19,7 @@ angular.module("adaptmt")
    self.handlePrintRequestEvent = handlePrintRequestEvent;
    self.paginate = paginate;
    self.logins = [];
-   
+      
    function init(){
        
         self.searchInput = {
@@ -39,17 +39,27 @@ angular.module("adaptmt")
    };
    
    init();
+   
+   function findByLike(searchInput){
+	   aptAptmtsService.findAptAptmts(searchInput).then(function(entitySearchResult) {
+           self.aptAptmts = entitySearchResult.resultList;
+           self.totalItems = entitySearchResult.count ;
+       });
+   }
 
    function processSearchInput(){
        var fileName = [];
-       if(self.searchInput.entity.loginName){
-           fileName.push('loginName') ;
+       if(self.searchInput.entity.title){
+           fileName.push('title') ;
        }
-       if(self.searchInput.entity.fullName){
-           fileName.push('fullName') ;
+       if(self.searchInput.entity.description){
+           fileName.push('description') ;
        }
-       if(self.searchInput.entity.ouIdentif){
-           fileName.push('ouIdentif') ;
+       if(self.searchInput.entity.createdUserId){
+           fileName.push('createdUserId') ;
+       }
+       if(self.searchInput.entity.closedUserId){
+    	   fileName.push('closedUserId');
        }
        self.searchInput.fieldNames = fileName ;
        return self.searchInput ;
