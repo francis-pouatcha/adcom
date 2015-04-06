@@ -81,15 +81,34 @@ angular.module("adaptmt")
 
    }
 
-
 }])
 
 .controller('aptAptmtCreateCtlr',['$scope','aptAptmtsService','$translate','genericResource','$location',
         function($scope,aptAptmtsService,$translate,genericResource,$location){
 	
+	var self = this;
 	$scope.aptAptmt = {};
-	$scope.aptAptmts = {};
-	$scope.error = {};
+	self.aptAptmts = {};
+	self.searchInput = {};
+	self.error = {};
+	var currentDate;
+	
+	function init(){
+	       
+        self.searchInput = {
+                entity:{},
+                fieldNames:[],
+                start:0,
+                max:$scope.itemPerPage
+            }
+          
+       aptAptmtsService.loadAptAptmts(self.searchInput).then(function(entitySearchResult) {
+    	   self.aptAptmts = entitySearchResult.resultList;
+            });
+       
+   };
+   
+   init();
 
 	$scope.create = function(){
 		
@@ -101,5 +120,17 @@ angular.module("adaptmt")
         });
         
     };
+    
+    
+    $scope.$watch(function() {
+    	  		return $scope.aptAptmt.appointmentDate;
+    		}, function(newValue, oldValue){
+    			currentDate = new Date();
+    			
+		 	    if($scope.aptAptmt.appointmentDate <= currentDate) {
+		 	    	$scope.aptAptmt.appointmentDate = '';
+		 	    	console.log("the appointment Date cannot be before the current date");
+		 	    };
+ 	});
     
 }]);

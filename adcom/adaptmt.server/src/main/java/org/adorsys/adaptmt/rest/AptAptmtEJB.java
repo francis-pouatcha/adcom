@@ -12,6 +12,7 @@ import org.adorsys.adaptmt.repo.AptAptmtRepository;
 import org.adorsys.adbase.jpa.Login;
 import org.adorsys.adbase.security.SecurityUtil;
 import org.adorsys.adcore.utils.SequenceGenerator;
+import org.apache.commons.lang3.time.DateUtils;
 
 @Stateless
 public class AptAptmtEJB {
@@ -23,8 +24,12 @@ public class AptAptmtEJB {
 	private SecurityUtil securityUtil;
 
 	public AptAptmt create(AptAptmt entity) {
+		
 		Date now = new Date();
-		entity.setCreateDate(now);
+		if(checkAptAptmtDate(entity.getAppointmentDate(), now))
+			entity.setCreateDate(now);
+		else
+			entity.setCreateDate(DateUtils.addWeeks(now, 1));
 
 		entity.setAptmtnNbr(SequenceGenerator
 				.getSequence(SequenceGenerator.APPOINTMENT_NUMBER_SEQUENCE_PREFIXE));
@@ -84,6 +89,16 @@ public class AptAptmtEJB {
 			return null;
 
 		return entity;
+	}
+	
+	public boolean checkAptAptmtDate(Date aptAptmtDate, Date aptAptmtCreationDate){
+
+		if(aptAptmtDate.before(aptAptmtCreationDate))
+			return false;
+		if(aptAptmtDate.equals(aptAptmtCreationDate))
+			return false;
+		
+		return true;
 	}
 
 }

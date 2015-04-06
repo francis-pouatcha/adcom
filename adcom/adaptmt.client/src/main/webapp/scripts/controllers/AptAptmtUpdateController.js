@@ -6,6 +6,11 @@ angular.module("adaptmt")
                                 function($scope,genericResource, $translate, aptAptmtsService,$location,$routeParams){
 
         $scope.aptAptmt = {};
+        
+        var self = this;
+        self.aptAptmts = {};
+    	self.searchInput = {};
+    	self.error = {};
 	
         $scope.update = function(){
             aptAptmtsService.updateAptAptmt($scope.aptAptmt).then(function(result){
@@ -24,7 +29,20 @@ angular.module("adaptmt")
         };
                               
         function init(){
+        	
             show();
+            
+            self.searchInput = {
+                    entity:{},
+                    fieldNames:[],
+                    start:0,
+                    max:$scope.itemPerPage
+                }
+              
+           aptAptmtsService.loadAptAptmts(self.searchInput).then(function(entitySearchResult) {
+        	   self.aptAptmts = entitySearchResult.resultList;
+                });
+            
         }
 
         init();

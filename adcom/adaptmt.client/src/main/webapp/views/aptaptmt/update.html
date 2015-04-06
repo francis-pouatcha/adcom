@@ -45,7 +45,7 @@ ng-model="aptAptmt.appointmentDate" name="appointmentDate" class="form-control" 
                         <label class="col-lg-4 ">{{ "AptAptmt_parentIdentify_description.title"| translate}} :</label>
                         <div class="col-lg-8" ng-class="{ 'has-error' : updateAptAptmtForm.parentIdentify.$invalid }" >
                              <select class="form-control" ng-model="aptAptmt.parentIdentify" name="aptAptmt"
-                                    ng-options="aptAptmts.identif as aptAptmts.title for aptAptmts in aptAptmts">
+                                    ng-options="aptAptmts.identif as aptAptmts.title for aptAptmts in aptAptmtUpdateCtlr.aptAptmts">
                             </select>
 <!--                             <p ng-show="createAptAptmtForm.parentIdentify.$error.required" class="help-block">parentIdentify est  requis !</p> -->
                         </div>
