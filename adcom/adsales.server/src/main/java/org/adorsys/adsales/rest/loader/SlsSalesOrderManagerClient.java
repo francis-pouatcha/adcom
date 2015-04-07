@@ -48,7 +48,7 @@ public class SlsSalesOrderManagerClient {
 		SlsSOPtnr slsSoPtnr = new SlsSOPtnr();
 		slsSoPtnr.setPtnrNbr(ctmrNbr);
 		slsSoPtnr.setRoleInSO(BaseRoleInProcessEnum.CUSTOMER.name());
-		ctmrHolder.setSlsSoPtnr(slsSoPtnr);
+		ctmrHolder.setSlsSOPtnr(slsSoPtnr);
 		slsSalesOrderHolder.getSlsSOPtnrsHolder().add(ctmrHolder);
 		String insNbr = salesOrderExcel.getInsNbr();
 		if(StringUtils.isNotBlank(insNbr)){
@@ -56,7 +56,7 @@ public class SlsSalesOrderManagerClient {
 			SlsSOPtnr insPtnr = new SlsSOPtnr();
 			insPtnr.setPtnrNbr(insNbr);
 			insPtnr.setRoleInSO(BaseRoleInProcessEnum.INSURER.name());
-			insHolder.setSlsSoPtnr(insPtnr);
+			insHolder.setSlsSOPtnr(insPtnr);
 			slsSalesOrderHolder.getSlsSOPtnrsHolder().add(insHolder);
 		}
 	}
