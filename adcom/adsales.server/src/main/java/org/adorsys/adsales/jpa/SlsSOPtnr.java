@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 
 import org.adorsys.adcore.jpa.AbstractIdentifData;
-import org.adorsys.adcore.utils.BigDecimalUtils;
 import org.adorsys.javaext.description.Description;
 import org.apache.commons.lang3.StringUtils;
 

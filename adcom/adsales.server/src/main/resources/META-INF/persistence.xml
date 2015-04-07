@@ -37,6 +37,12 @@
 	<class>org.adorsys.adbase.jpa.BaseRoleInProcess</class>    
 	<class>org.adorsys.adbase.jpa.BaseSttlmtOp</class>    
 	<class>org.adorsys.adbase.jpa.BaseCountryName</class>
+	
+	<class>org.adorsys.adstock.jpa.StkArticleLot2StrgSctn</class>
+    <class>org.adorsys.adstock.jpa.StkLotStockQty</class>
+    <class>org.adorsys.adstock.jpa.StkArticleLot</class>
+	<class>org.adorsys.adstock.jpa.StkSection</class>
+	
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.hbm2ddl.auto" value="update"/>
