@@ -3,7 +3,7 @@ package org.adorsys.adcshdwr.jpa;
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotNull;
 
 import org.adorsys.adcore.jpa.AbstractIdentifData;
@@ -12,7 +12,7 @@ import org.adorsys.adcore.utils.FinancialOps;
 import org.adorsys.javaext.description.Description;
 import org.apache.commons.lang3.StringUtils;
 
-@Entity
+@MappedSuperclass
 @Description("CdrDsArtItem_description")
 public class CdrAbstractDsArtItem extends AbstractIdentifData {
 

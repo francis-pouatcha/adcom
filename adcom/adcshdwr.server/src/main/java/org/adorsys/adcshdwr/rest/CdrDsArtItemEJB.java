@@ -23,11 +23,14 @@ public class CdrDsArtItemEJB
 	public CdrDsArtItem create(CdrDsArtItem entity)
 	{
 		CdrDsArtItemEvt cdrDsArtItemEvt = new CdrDsArtItemEvt();
+		entity = repository.save(attach(entity));
+		repository.flush();
 		entity.copyTo(cdrDsArtItemEvt);
 		cdrDsArtItemEvt.setId(entity.getId());
+		cdrDsArtItemEvt.setIdentif(entity.getIdentif());
 		cdrDsArtItemEvtEJB.create(cdrDsArtItemEvt);
 		
-		return repository.save(attach(entity));
+		return entity;
 	}
 
 	public CdrDsArtItem deleteById(String id)
@@ -45,11 +48,12 @@ public class CdrDsArtItemEJB
 	public CdrDsArtItem update(CdrDsArtItem entity)
 	{
 		CdrDsArtItemEvt cdrDsArtItemEvt = cdrDsArtItemEvtEJB.findById(entity.getId());
+		entity = repository.save(attach(entity));
 		if(cdrDsArtItemEvt != null) {
 			entity.copyTo(cdrDsArtItemEvt);
 			cdrDsArtItemEvtEJB.update(cdrDsArtItemEvt);
 		}
-		return repository.save(attach(entity));
+		return entity;
 	}
 
 	public CdrDsArtItem findById(String id)

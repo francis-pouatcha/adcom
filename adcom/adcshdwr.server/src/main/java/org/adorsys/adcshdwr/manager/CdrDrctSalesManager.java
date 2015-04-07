@@ -52,6 +52,9 @@ public class CdrDrctSalesManager {
 
 	public CdrDsArtHolder updateOrder(CdrDsArtHolder cdrDsArtHolder){
 		CdrDrctSales cdrDrctSales = cdrDsArtHolder.getCdrDrctSales();
+		if(StringUtils.isBlank(cdrDrctSales.getRcptNbr())) {
+			cdrDrctSales.setRcptNbr("-");
+		}
 		if(StringUtils.isBlank(cdrDrctSales.getId())) {
 			cdrDrctSales = cdrDrctSalesEJB.create(cdrDrctSales);;
 		}
@@ -71,16 +74,20 @@ public class CdrDrctSalesManager {
 				throw new IllegalStateException("Missing article identification code.");
 
 			if(StringUtils.isNotBlank(cdrDsArtItem.getId())){
-				// todo check mdified
 				CdrDsArtItem persDi = cdrDsArtItemEJB.findById(cdrDsArtItem.getId());
-				if(persDi==null) throw new IllegalStateException("Missing delivery item with id: " + cdrDsArtItem.getId());
+				if(persDi==null) throw new IllegalStateException("Missing directsales item with id: " + cdrDsArtItem.getId());
 				if(!cdrDsArtItem.contentEquals(persDi)){
 					cdrDsArtItem.copyTo(persDi);
 					cdrDsArtItem = cdrDsArtItemEJB.update(persDi);
 					itemModified = true;
 				}
 			} else {
-				if (StringUtils.isNotBlank(cdrDsArtItem.getDsNbr())) {
+				cdrDsArtItem.evlte();
+				cdrDsArtItem.setObjctOrgUnit(securityUtil.getCurrentOrgUnit().getIdentif());
+				cdrDsArtItem.setDsNbr(cdrDrctSales.getDsNbr());
+				cdrDsArtItem = cdrDsArtItemEJB.create(cdrDsArtItem);
+				itemModified = true;
+				/*if (StringUtils.isNotBlank(cdrDsArtItem.getId())) {
 					CdrDsArtItem persDi = cdrDsArtItemEJB.findById(cdrDsArtItem.getDsNbr());
 					if(persDi!=null){
 						if(!cdrDsArtItem.contentEquals(persDi)){
@@ -96,9 +103,12 @@ public class CdrDrctSalesManager {
 					}
 				} else {
 					cdrDsArtItem.evlte();
+					if(StringUtils.isBlank(cdrDsArtItem.getObjctOrgUnit())) {
+						cdrDsArtItem.setObjctOrgUnit(securityUtil.getCurrentOrgUnit().getIdentif());
+					}
 					cdrDsArtItem = cdrDsArtItemEJB.create(cdrDsArtItem);
 					itemModified = true;
-				}
+				}*/
 			}
 
 			cdrDsArtItemHolder.setItem(cdrDsArtItem);
