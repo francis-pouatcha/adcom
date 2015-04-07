@@ -60,6 +60,10 @@ public class StkArticleLot2StrgSctnLookup
       return repository.countLike(entity, attributes);
    }
 
+   public Long countByArtPic(String artPic){
+	   return repository.findByArtPic(artPic).count();
+   }
+   
    public List<StkArticleLot2StrgSctn> findByArtPic(String artPic, int start, int max){
 	   List<StkArticleLot2StrgSctn> found = repository.findByArtPic(artPic).firstResult(start).maxResults(max).getResultList();
 	   return detachHelper.detachStrSections(found);

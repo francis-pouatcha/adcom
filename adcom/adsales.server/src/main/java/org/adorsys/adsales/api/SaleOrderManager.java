@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
 import org.adorsys.adbase.enums.BaseHistoryTypeEnum;
@@ -36,7 +38,7 @@ public class SaleOrderManager {
 	@Inject
 	private SlsSOPtnrEJB slsSOPtnrEJB;
 	
-	
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public SlsSalesOrderHolder doSale(SlsSalesOrderHolder saleOrderHolder) {
 		
 		String currentLoginName = securityUtil.getCurrentLoginName();
@@ -56,7 +58,9 @@ public class SaleOrderManager {
 		
 		for (SlsSOItemHolder itemHolder : slsSOItemsholder) {
 			SlsSOItem soItem = itemHolder.getSlsSOItem();
-
+			
+			if(StringUtils.isBlank(soItem.getLotPic())) continue;
+			
 			if(StringUtils.isBlank(soItem.getSoNbr()))
 				soItem.setSoNbr(slsSalesOrder.getSoNbr());
 			// check presence of the article pic
