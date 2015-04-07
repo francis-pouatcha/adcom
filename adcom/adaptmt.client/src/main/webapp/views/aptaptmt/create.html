@@ -8,7 +8,7 @@
                 <form  name="createAptAptmtForm" class="form-horizontal" novalidate="">
                     <div class="form-group">
                         <label class="col-lg-4 ">{{"AptAptmt_title_description.title"|translate}} :</label>
-                        <div class="col-lg-8" ng-class="{ 'has-error' : lcreateAptAptmtForm.title.$invalid }" >
+                        <div class="col-lg-8" ng-class="{ 'has-error' : createAptAptmtForm.title.$invalid }" >
                              <input type="text" ng-model="aptAptmt.title" name="title" class="form-control" required >
                             <p ng-show="createAptAptmtForm.aptAptmt.$error.required" class="help-block">le title est  requis !</p>
                         </div>
@@ -17,7 +17,7 @@
                         <label class="col-lg-4 ">{{"AptAptmt_appointmentDate_description.title"|translate}} :</label>
                         <div class="col-lg-8" ng-class="{ 'has-error' : createAptAptmtForm.appointmentDate.$invalid }" >
                             <input type="datetimes" date-time=""  view="date" views="['date']" format="dd-MM-yyyy-" 
-ng-model="aptAptmt.appointmentDate" name="appointmentDate" class="form-control"  ></input>
+ng-model="aptAptmt.appointmentDate" name="appointmentDate" class="form-control"  required></input>
                             <p ng-show="createAptAptmtForm.appointmentDate.$error.required" class="help-block">appointmentDate est  requis !</p>
                         </div>
                     </div>
@@ -26,7 +26,7 @@ ng-model="aptAptmt.appointmentDate" name="appointmentDate" class="form-control" 
                     <div class="form-group">
                         <label class="col-lg-4 ">{{ "AptAptmt_description.title"| translate}} :</label>
                         <div class="col-lg-8" ng-class="{ 'has-error' : createAptAptmtForm.description.$invalid }" >
-                            <input type="text" ng-model="aptAptmt.description" name="description" class="form-control"  >
+                            <input type="text" ng-model="aptAptmt.description" name="description" class="form-control"  required>
 							<p ng-show="createAptAptmtForm.description.$error.required" class="help-block"> description est requis</p>
                         </div>
                     </div>
@@ -42,15 +42,14 @@ ng-model="aptAptmt.appointmentDate" name="appointmentDate" class="form-control" 
                     <div class="form-group">
                         <label class="col-lg-4 ">{{ "AptAptmt_parentIdentify_description.title"| translate}} :</label>
                         <div class="col-lg-8" ng-class="{ 'has-error' : createAptAptmtForm.parentIdentify.$invalid }" >
-                             <select class="form-control" ng-model="aptAptmt.parentIdentify" name="aptAptmt"
-                                    ng-options="aptAptmts.identif as aptAptmts.title for aptAptmts in aptAptmts">
+                             <select class="form-control" ng-model="aptAptmt.parentIdentify" name="parentIdentify"
+                                    ng-options="aptAptmts.identif as aptAptmts.title for aptAptmts in aptAptmtCreateCtlr.aptAptmts">
                             </select>
-<!--                             <p ng-show="createAptAptmtForm.parentIdentify.$error.required" class="help-block">parentIdentify est  requis !</p> -->
+                            <p ng-show="createAptAptmtForm.parentIdentify.$error.required" class="help-block">parentIdentify est  requis !</p>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="col-lg-4"  > </label>
                         <div class="col-lg-8" >
                             <a class="btn-danger btn" href="#/"  ><i class="glyphicon glyphicon-remove" ></i> {{"Entity_cancel.title" | translate }}</a>
                             <button ng-click="create();" ng-disabled="createAptAptmtForm.$invalid" class="btn-success btn"  ><i class="glyphicon glyphicon-save"></i>  {{"Entity_save.title" | translate }}</button>

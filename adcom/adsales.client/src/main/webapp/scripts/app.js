@@ -11,7 +11,8 @@ angular.module('AdSales', [
       'httpProgress',
       'ADUtils',
       'pascalprecht.translate',
-      'NavBar'
+      'NavBar',
+      '720kb.tooltips'
 ])
 .constant('APP_CONFIG',{
 	'appName':'Sales',
@@ -22,27 +23,6 @@ angular.module('AdSales', [
 .config(['$routeProvider', '$httpProvider','$translateProvider','$translatePartialLoaderProvider',
          function($routeProvider,$httpProvider,$translateProvider,$translatePartialLoaderProvider) {
     $routeProvider
-    .when('/',{templateUrl:'views/landing.html',controller:'LandingPageController'})
-    .when('/DynEnums',{templateUrl:'views/DynEnum/search.html',controller:'SearchDynEnumController'})
-    .when('/DynEnums/new',{templateUrl:'views/DynEnum/detail.html',controller:'NewDynEnumController'})
-    .when('/DynEnums/edit/:DynEnumId',{templateUrl:'views/DynEnum/detail.html',controller:'EditDynEnumController'})
-    .when('/HistoryTypes',{templateUrl:'views/HistoryType/search.html',controller:'SearchHistoryTypeController'})
-    .when('/HistoryTypes/new',{templateUrl:'views/HistoryType/detail.html',controller:'NewHistoryTypeController'})
-    .when('/HistoryTypes/edit/:HistoryTypeId',{templateUrl:'views/HistoryType/detail.html',controller:'EditHistoryTypeController'})
-    .when('/ProcSteps',{templateUrl:'views/ProcStep/search.html',controller:'SearchProcStepController'})
-    .when('/ProcSteps/new',{templateUrl:'views/ProcStep/detail.html',controller:'NewProcStepController'})
-    .when('/ProcSteps/edit/:ProcStepId',{templateUrl:'views/ProcStep/detail.html',controller:'EditProcStepController'})
-    .when('/SlsAccts',{templateUrl:'views/SlsAcct/search.html',controller:'SearchSlsAcctController'})
-    .when('/SlsAccts/new',{templateUrl:'views/SlsAcct/detail.html',controller:'NewSlsAcctController'})
-    .when('/SlsAccts/edit/:SlsAcctId',{templateUrl:'views/SlsAcct/detail.html',controller:'EditSlsAcctController'})
-    .when('/SlsInvceHistorys',{templateUrl:'views/SlsInvceHistory/search.html',controller:'SearchSlsInvceHistoryController'})
-    .when('/SlsInvceHistorys/new',{templateUrl:'views/SlsInvceHistory/detail.html',controller:'NewSlsInvceHistoryController'})
-    .when('/SlsInvceHistorys/edit/:SlsInvceHistoryId',{templateUrl:'views/SlsInvceHistory/detail.html',controller:'EditSlsInvceHistoryController'})
-    .when('/SlsInvceItems',{templateUrl:'views/SlsInvceItem/search.html',controller:'SearchSlsInvceItemController'})
-    .when('/SlsInvceItems/new',{templateUrl:'views/SlsInvceItem/detail.html',controller:'NewSlsInvceItemController'})
-    .when('/SlsInvceItems/edit/:SlsInvceItemId',{templateUrl:'views/SlsInvceItem/detail.html',controller:'EditSlsInvceItemController'})
-    .when('/SlsInvcePtnrs',{templateUrl:'views/SlsInvcePtnr/search.html',controller:'SearchSlsInvcePtnrController'})
-    .when('/SlsInvcePtnrs/new',{templateUrl:'views/SlsInvcePtnr/detail.html',controller:'NewSlsInvcePtnrController'})
     .when('/SlsInvcePtnrs/edit/:SlsInvcePtnrId',{templateUrl:'views/SlsInvcePtnr/detail.html',controller:'EditSlsInvcePtnrController'})
     .when('/SlsInvceStatuss',{templateUrl:'views/SlsInvceStatus/search.html',controller:'SearchSlsInvceStatusController'})
     .when('/SlsInvceStatuss/new',{templateUrl:'views/SlsInvceStatus/detail.html',controller:'NewSlsInvceStatusController'})
@@ -77,6 +57,7 @@ angular.module('AdSales', [
     
     $httpProvider.defaults.withCredentials = true;
     $httpProvider.interceptors.push('authInterceptor');
+    $httpProvider.interceptors.push('httpProgressInterceptor')
     
     $translateProvider.useLoader('$translatePartialLoader', {
         urlTemplate: '{part}/locale-{lang}.json'

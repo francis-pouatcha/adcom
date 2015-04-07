@@ -18,7 +18,7 @@ angular.module('adaptmt')
         return deferred.promise;
     };
 
-    service.update = function(entity){
+    service.updateAptAptmt = function(entity){
         var deferred = $q.defer();
         genericResource.update(service.urlBase, entity).success(function(data){
             deferred.resolve(data);
@@ -47,6 +47,18 @@ angular.module('adaptmt')
         });
         return deferred.promise;
     };
+    
+    service.findAptAptmts = function(searchInput){
+        var deferred = $q.defer();
+        genericResource.findByLike(service.urlBase, searchInput)
+            .success(function(data, status, headers, config){
+                deferred.resolve(data);
+            }).error(function(data, status, headers, config){
+                deferred.reject("An error occured while fetching appointments");
+            });
+        return deferred.promise;
+    };
+
 
     return service;
 }]);

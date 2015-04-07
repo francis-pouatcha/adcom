@@ -44,7 +44,6 @@ angular.module('AdSales')
     self.loadBusinessPartner = loadBusinessPartner;
     self.slsSOItemsholderDeleted = [];
     self.maxDisctRate;
-    self.vatRate;
     self.cloturerCmd = cloturerCmd;
     self.annulerCmd = annulerCmd;
     self.newCmd = newCmd;
@@ -55,6 +54,7 @@ angular.module('AdSales')
     self.tabLength = tabLength;
     self.ModalInstanceAddBptrnCtrl = ModalInstanceAddBptrnCtrl;
     self.totalAmount = totalAmount;
+     self.showBtnClose = true;
 
     function loadBusinessPartner(val){
         return genericResource.findByLikePromissed(saleUtils.adbnsptnr, 'cpnyName', val)
@@ -131,7 +131,7 @@ angular.module('AdSales')
         self.slsSalesOrderItemHolder.slsSOItem.artName = item.features.artName;
         self.slsSalesOrderItemHolder.slsSOItem.sppuPreTax = item.sppu;
         self.maxDisctRate = item.maxDisctRate;
-        self.vatRate = item.vatRate;
+        self.slsSalesOrderItemHolder.slsSOItem.vatPct = item.vatRate;
         calculAmount();
     }
 
@@ -152,7 +152,7 @@ angular.module('AdSales')
                 self.slsSalesOrderItemHolder.slsSOItem.netSPPreTax = self.slsSalesOrderItemHolder.slsSOItem.grossSPPreTax;
 
             if(self.slsSalesOrderItemHolder.slsSOItem.orderedQty){
-                self.slsSalesOrderItemHolder.slsSOItem.vatAmount = self.slsSalesOrderItemHolder.slsSOItem.grossSPPreTax*self.vatRate/100;
+                self.slsSalesOrderItemHolder.slsSOItem.vatAmount = self.slsSalesOrderItemHolder.slsSOItem.grossSPPreTax*self.slsSalesOrderItemHolder.slsSOItem.vatPct/100;
                 self.slsSalesOrderItemHolder.slsSOItem.netSPTaxIncl = self.slsSalesOrderItemHolder.slsSOItem.netSPPreTax+self.slsSalesOrderItemHolder.slsSOItem.vatAmount;
             }
         }
@@ -166,7 +166,7 @@ angular.module('AdSales')
 
         angular.forEach(self.slsSalesOrderHolder.slsSOItemsholder, function (value, key) {
             self.slsSalesOrderHolder.slsSalesOrder.grossSPPreTax = self.slsSalesOrderHolder.slsSalesOrder.grossSPPreTax + value.slsSOItem.grossSPPreTax;
-            self.slsSalesOrderHolder.slsSalesOrder.rebate = self.slsSalesOrderHolder.slsSalesOrder.rebate + value.slsSOItem.rebate;
+            self.slsSalesOrderHolder.slsSalesOrder.rebate = self.slsSalesOrderHolder.slsSalesOrder.rebate + parseInt(value.slsSOItem.rebate);
             self.slsSalesOrderHolder.slsSalesOrder.netSPPreTax = self.slsSalesOrderHolder.slsSalesOrder.netSPPreTax + value.slsSOItem.netSPPreTax;
             self.slsSalesOrderHolder.slsSalesOrder.vatAmount = self.slsSalesOrderHolder.slsSalesOrder.vatAmount + value.slsSOItem.vatAmount;
             self.slsSalesOrderHolder.slsSalesOrder.netSPTaxIncl = self.slsSalesOrderHolder.slsSalesOrder.netSPTaxIncl + value.slsSOItem.netSPTaxIncl;
@@ -190,6 +190,7 @@ angular.module('AdSales')
         self.slsSalesOrderItemHolder = {};
         totalAmount();
         $('#artName').focus();
+        enableCloseCmd();
     }
     function deleteItem(index){
         var slsSalesOrderItemHolderDeleted = {};
@@ -200,11 +201,13 @@ angular.module('AdSales')
             self.slsSOItemsholderDeleted.push(slsSalesOrderItemHolderDeleted);
         }
         totalAmount();
+        enableCloseCmd();
     }
     function editItem(index){
         angular.copy(self.slsSalesOrderHolder.slsSOItemsholder[index],self.slsSalesOrderItemHolder) ;
         self.slsSalesOrderHolder.slsSOItemsholder.splice(index,1);
         totalAmount();
+        enableCloseCmd();
     }
         function cloturerCmd(){
             for(var i=0;i<self.slsSOItemsholderDeleted.length;i++){
@@ -242,7 +245,7 @@ angular.module('AdSales')
             self.slsSalesOrderHolder = {
                 slsSalesOrder:{},
                 slsSOItemsholder:[],
-                slsSOPtnr:{}
+                slsSOPtnrsHolder:[]
             };
             self.slsSalesOrderHolder.slsSalesOrder.soDt = new Date();
             self.slsSalesOrderHolder.slsSalesOrder.grossSPPreTax = 0;
@@ -250,10 +253,10 @@ angular.module('AdSales')
             self.slsSalesOrderHolder.slsSalesOrder.vatAmount = 0;
             self.slsSalesOrderHolder.slsSalesOrder.netSPTaxIncl = 0;
             self.slsSalesOrderHolder.slsSalesOrder.rebate = 0;
-            self.slsSalesOrderHolder.slsSalesOrder.pymtDscntAmt = 0;
             self.slsSalesOrderHolder.slsSalesOrder.netSalesAmt = 0;
             self.slsSalesOrderHolder.slsSalesOrder.soStatus = 'INITIATED';
             self.slsSalesOrderItemHolder = {};
+            self.showBtnClose = true;
         }
         function ModalInstanceAddBptrnCtrl($scope, $modalInstance, slsSOPtnrsHolder) {
              $scope.slsSOPtnrsHolder = slsSOPtnrsHolder;
@@ -261,10 +264,11 @@ angular.module('AdSales')
                 return self.loadBusinessPartner(val);
             }
             $scope.addBptrn = function(){
-                var slsSOPtnr = {};
-                slsSOPtnr.slsSOPtnr = $scope.slsSOPtnr;
+                var slsSOPtnrHolder = {};
+                slsSOPtnrHolder.slsSOPtnr = $scope.slsSOPtnr;
+                $scope.slsSOPtnrsHolder.push(slsSOPtnrHolder);
                 $scope.slsSOPtnr = {};
-                $scope.slsSOPtnrsHolder.push(slsSOPtnr);
+
             }
             $scope.deleteItem = function (index) {
                 $scope.slsSOPtnrsHolder.splice(index,1);
@@ -284,7 +288,8 @@ angular.module('AdSales')
                 self.index-=1;
                 angular.copy(self.slsSalesOrderHolderTab[self.index],self.slsSalesOrderHolder);
                 self.slsSalesOrderHolderTab.splice(self.index,1);
-
+                self.slsSalesOrderItemHolder = {};
+                enableCloseCmd ();
             }
 
         }
@@ -292,11 +297,20 @@ angular.module('AdSales')
             if(self.slsSalesOrderHolderTab.length > self.index){
                 angular.copy(self.slsSalesOrderHolderTab[self.index],self.slsSalesOrderHolder);
                 self.slsSalesOrderHolderTab.splice(self.index,1);
+                self.slsSalesOrderItemHolder = {};
+                enableCloseCmd ();
             }
 
         }
         function tabLength (){
             return self.slsSalesOrderHolderTab.length;
+        }
+
+        function enableCloseCmd (){
+            if(self.slsSalesOrderHolder.slsSOItemsholder.length > 0)
+                self.showBtnClose = false;
+            else
+                self.showBtnClose = true;
         }
 
 }]);

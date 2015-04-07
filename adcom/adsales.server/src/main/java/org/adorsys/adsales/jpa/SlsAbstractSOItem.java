@@ -307,4 +307,5 @@ public abstract class SlsAbstractSOItem extends AbstractIdentifData {
 		this.netSPTaxIncl = FinancialOps.add(this.netSPPreTax, this.vatAmount, this.sppuCur);
 		
 	}
+	
 }

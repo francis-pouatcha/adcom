@@ -1,13 +1,18 @@
 package org.adorsys.adsales.jpa;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.adorsys.adcore.jpa.AbstractIdentifData;
 import org.adorsys.javaext.description.Description;
+import org.adorsys.javaext.format.DateFormatPattern;
 
 @Entity
 @Description("SlsInvoice_description")
@@ -38,6 +43,12 @@ public class SlsInvoice extends AbstractIdentifData {
 	@Column
 	@Description("SlsInvoice_invceCur_description")
 	private String invceCur;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Description("SlsInvoice_invceDt_description")
+	@DateFormatPattern(pattern = "dd-MM-yyyy HH:mm")
+	@NotNull
+	private Date invceDt;
 
 	@Column
 	@Description("SlsInvoice_grossSPPreTax_description")
@@ -78,6 +89,10 @@ public class SlsInvoice extends AbstractIdentifData {
 	@Column
 	@Description("SlsInvoice_netAmtToPay_description")
 	private BigDecimal netAmtToPay;
+	
+	@Transient
+	@Description("SlsInvoice_ptnrNbr_description")
+	private String ptnrNbr;
 
 	public String getInvceType() {
 		return this.invceType;
@@ -117,6 +132,15 @@ public class SlsInvoice extends AbstractIdentifData {
 
 	public void setInvceCur(final String invceCur) {
 		this.invceCur = invceCur;
+	}
+	
+	
+	public Date getInvceDt() {
+		return invceDt;
+	}
+
+	public void setInvceDt(Date invceDt) {
+		this.invceDt = invceDt;
 	}
 
 	public BigDecimal getGrossSPPreTax() {
@@ -197,6 +221,14 @@ public class SlsInvoice extends AbstractIdentifData {
 
 	public void setNetAmtToPay(final BigDecimal netAmtToPay) {
 		this.netAmtToPay = netAmtToPay;
+	}
+
+	public String getPtnrNbr() {
+		return ptnrNbr;
+	}
+
+	public void setPtnrNbr(String ptnrNbr) {
+		this.ptnrNbr = ptnrNbr;
 	}
 
 	@Override

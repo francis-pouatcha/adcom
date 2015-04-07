@@ -2,62 +2,26 @@
 
 angular.module("adaptmt")
 
-.controller('AptAptmtShowController',['$scope','genericResource', '$translate', 'aptAptmtsService','$location','$routeParams',
+.controller('aptAptmtShowController',['$scope','genericResource', '$translate', 'aptAptmtsService','$location','$routeParams',
                                 function($scope,genericResource, $translate, aptAptmtsService,$location,$routeParams){
 
-
+        $scope.aptAptmt = {};
 	
-	function loginShowController($scope, aptAptmtsService, $location, $routeParams){
-        var self = this ;
-        self.aptAptmt = {};
-        self.show = show;
-        self.previous = previous;
-        self.next = next;
-
-        init();
-
-        function init(){
-            show();
-        }
-
         function show(){
 
-            var identif = $routeParams.identif ;
+            var identif = $routeParams.id;
 
             aptAptmtsService.loadAptAptmt(identif).then(function(result){
 
-               self.aptAptmt = result;
+               $scope.aptAptmt = result;
 
             })
 
         };
-
-        function previous(){
-            self.error = "";
-            loginService.previousAptAptmt(self.aptAptmt.identif).then(function(result){
-                self.aptAptmt = result;
-            },function(error){
-                self.error = error;
-            })
-
+                              
+        function init(){
+            show();
         }
 
-
-
-        function next(){
-            self.error = "";
-            loginService.nextAptAptmt(self.aptAptmt.identif).then(function(result){
-                self.aptAptmt = result;
-            },function(error){
-                self.error = error;
-            })
-
-        }
-    };
-
-
-	
-
-
-
+    init();
 }]);
