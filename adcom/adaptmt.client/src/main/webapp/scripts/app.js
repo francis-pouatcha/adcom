@@ -33,13 +33,17 @@ angular
 								controller : 'SearchAptAptmtController'
 							}).when('/aptaptmt/create', {
 								templateUrl : 'views/aptaptmt/create.html',
-								controller : 'aptAptmtCreateCtlr'
+								controller : 'aptAptmtCreateCtlr',
+								controllerAs : 'aptAptmtCreateCtlr',
+								module : 'adaptmt'
 							}).when('/aptaptmt/show/:id', {
 								templateUrl : 'views/aptaptmt/show.html',
 								controller : 'aptAptmtShowController'
 							}).when('/aptaptmt/update/:id', {
 								templateUrl : 'views/aptaptmt/update.html',
-								controller : 'aptAptmtUpdateController'
+								controller : 'aptAptmtUpdateController',
+								controllerAs : 'aptAptmtUpdateCtlr',
+								module : 'adaptmt'
 							}).otherwise({
 								redirectTo : '/'
 							});

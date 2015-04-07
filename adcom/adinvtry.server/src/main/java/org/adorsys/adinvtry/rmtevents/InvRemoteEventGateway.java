@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.ejb.AccessTimeout;
 import javax.ejb.Schedule;
+import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.enterprise.event.Observes;
@@ -22,6 +23,7 @@ import org.adorsys.adinvtry.rest.InvInvtryEvtLeaseEJB;
 import org.adorsys.adinvtry.rest.InvInvtryItemEvtDataEJB;
 import org.apache.commons.lang3.time.DateUtils;
 
+@Stateless
 public class InvRemoteEventGateway {
 
 	@Inject
@@ -32,6 +34,9 @@ public class InvRemoteEventGateway {
 
 	@Inject
 	private InvInvtryEvtDataEJB evtDataEJB;
+
+	@Inject
+	private InvInvtryItemEvtDataEJB itemEvtDataEJB;
 
 	public void handleInvtryPostedEvent(
 			@Observes @InvInvtryPostedEvent InvInvtryHstry invtryHstry) {
@@ -44,43 +49,40 @@ public class InvRemoteEventGateway {
 		evtEJB.create(evt);
 	}
 
-	@Schedule(minute = "*/43", hour="*", persistent=false)
-	@AccessTimeout(unit=TimeUnit.HOURS, value=2)
-	public void cleanUpProcessedEventData(InvInvtryEvt evt, Date now) {
-		Date hstryDt = evt.getHstryDt();
-
-		// 1 hour wait time for listeners to process the event.
-		if (now.before(DateUtils.addHours(hstryDt, 1)))
-			return;
-
-		List<InvInvtryEvtLease> leases = evtLeaseEJB.findByEvtId(evt.getId());
-		for (InvInvtryEvtLease lease : leases) {
-			if (!lease.expired(now))
+	@Schedule(minute = "*", second="1/35" ,hour="*", persistent=false)
+	@AccessTimeout(unit=TimeUnit.MINUTES, value=10)
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public void cleanUpProcessedEventData() {
+		List<InvInvtryEvt> listAll = evtEJB.listAll(0, 10);
+		for (InvInvtryEvt evt : listAll) {
+			Date now = new Date();
+			Date hstryDt = evt.getHstryDt();
+			
+			// 1 hour wait time for listeners to process the event.
+			if (now.before(DateUtils.addHours(hstryDt, 1)))
 				return;
+			
+			List<InvInvtryEvtLease> leases = evtLeaseEJB.findByEvtId(evt.getId());
+			for (InvInvtryEvtLease lease : leases) {
+				if (!lease.expired(now))
+					return;
+			}
+			// remove leases;
+			leases = evtLeaseEJB.findByEvtId(evt.getId());
+			for (InvInvtryEvtLease lease : leases) {
+				evtLeaseEJB.deleteById(lease.getId());
+			}
+			
+			// remove event data
+			evtDataEJB.deleteById(evt.getEntIdentif());
+			
+			// remove evt
+			evtEJB.deleteById(evt.getId());
 		}
-		// remove leases;
-		leases = evtLeaseEJB.findByEvtId(evt.getId());
-		for (InvInvtryEvtLease lease : leases) {
-			// if there is any lease not expired. Withdraw and wait.
-			if (!lease.expired(now))
-				return;
-		}
-		for (InvInvtryEvtLease lease : leases) {
-			evtLeaseEJB.deleteById(lease.getId());
-		}
-
-		// remove event data
-		evtDataEJB.deleteById(evt.getEntIdentif());
-
-		// remove evt
-		evtEJB.deleteById(evt.getId());
 	}
 
-	@Inject
-	private InvInvtryItemEvtDataEJB itemEvtDataEJB;
-
-	@Schedule(minute = "*/47", hour="*", persistent=false)
-	@AccessTimeout(unit=TimeUnit.HOURS, value=2)
+	@Schedule(minute = "*/35", second="1/35" ,hour="*", persistent=false)
+	@AccessTimeout(unit=TimeUnit.MINUTES, value=10)
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public void cleanUp() {
 		Date now = new Date();

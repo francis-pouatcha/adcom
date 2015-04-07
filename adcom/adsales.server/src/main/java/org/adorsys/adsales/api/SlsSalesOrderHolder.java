@@ -1,5 +1,6 @@
 package org.adorsys.adsales.api;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.adorsys.adsales.jpa.SlsSalesOrder;
@@ -8,9 +9,9 @@ public class SlsSalesOrderHolder {
 
 	private SlsSalesOrder slsSalesOrder;
 	
-	private List<SlsSOItemHolder> slsSOItemsholder;
+	private List<SlsSOItemHolder> slsSOItemsholder = new ArrayList<SlsSOItemHolder>();
 	
-	private List<SlsSOPtnrHolder> slsSOPtnrsHolder;
+	private List<SlsSOPtnrHolder> slsSOPtnrsHolder = new ArrayList<SlsSOPtnrHolder>();
 
 	public SlsSalesOrder getSlsSalesOrder() {
 		return slsSalesOrder;

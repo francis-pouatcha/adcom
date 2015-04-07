@@ -13,6 +13,9 @@ public interface StkLotStockQtyRepository extends EntityRepository<StkLotStockQt
 {
 	@Query("SELECT e FROM StkLotStockQty AS e WHERE e.artPic = ?1")
 	public List<StkLotStockQty> findByArtPic(String artPic);
+
+	@Query("SELECT DISTINCT e.lotPic FROM StkLotStockQty AS e WHERE e.artPic = ?1")
+	public QueryResult<String> findLotPicByArtPic(String artPic);
 	
 	@Query("SELECT e FROM StkLotStockQty AS e WHERE e.artPic = ?1 AND e.lotPic = ?2")
 	public QueryResult<StkLotStockQty> findByArtPicAndLotPic(String artPic,String lotPic);

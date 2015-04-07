@@ -19,7 +19,7 @@ angular.module("adaptmt")
    self.handlePrintRequestEvent = handlePrintRequestEvent;
    self.paginate = paginate;
    self.logins = [];
-   
+      
    function init(){
        
         self.searchInput = {
@@ -39,17 +39,27 @@ angular.module("adaptmt")
    };
    
    init();
+   
+   function findByLike(searchInput){
+	   aptAptmtsService.findAptAptmts(searchInput).then(function(entitySearchResult) {
+           self.aptAptmts = entitySearchResult.resultList;
+           self.totalItems = entitySearchResult.count ;
+       });
+   }
 
    function processSearchInput(){
        var fileName = [];
-       if(self.searchInput.entity.loginName){
-           fileName.push('loginName') ;
+       if(self.searchInput.entity.title){
+           fileName.push('title') ;
        }
-       if(self.searchInput.entity.fullName){
-           fileName.push('fullName') ;
+       if(self.searchInput.entity.description){
+           fileName.push('description') ;
        }
-       if(self.searchInput.entity.ouIdentif){
-           fileName.push('ouIdentif') ;
+       if(self.searchInput.entity.createdUserId){
+           fileName.push('createdUserId') ;
+       }
+       if(self.searchInput.entity.closedUserId){
+    	   fileName.push('closedUserId');
        }
        self.searchInput.fieldNames = fileName ;
        return self.searchInput ;
@@ -71,15 +81,34 @@ angular.module("adaptmt")
 
    }
 
-
 }])
 
 .controller('aptAptmtCreateCtlr',['$scope','aptAptmtsService','$translate','genericResource','$location',
         function($scope,aptAptmtsService,$translate,genericResource,$location){
 	
+	var self = this;
 	$scope.aptAptmt = {};
-	$scope.aptAptmts = {};
-	$scope.error = {};
+	self.aptAptmts = {};
+	self.searchInput = {};
+	self.error = {};
+	var currentDate;
+	
+	function init(){
+	       
+        self.searchInput = {
+                entity:{},
+                fieldNames:[],
+                start:0,
+                max:$scope.itemPerPage
+            }
+          
+       aptAptmtsService.loadAptAptmts(self.searchInput).then(function(entitySearchResult) {
+    	   self.aptAptmts = entitySearchResult.resultList;
+            });
+       
+   };
+   
+   init();
 
 	$scope.create = function(){
 		
@@ -91,5 +120,17 @@ angular.module("adaptmt")
         });
         
     };
+    
+    
+    $scope.$watch(function() {
+    	  		return $scope.aptAptmt.appointmentDate;
+    		}, function(newValue, oldValue){
+    			currentDate = new Date();
+    			
+		 	    if($scope.aptAptmt.appointmentDate <= currentDate) {
+		 	    	$scope.aptAptmt.appointmentDate = '';
+		 	    	console.log("the appointment Date cannot be before the current date");
+		 	    };
+ 	});
     
 }]);

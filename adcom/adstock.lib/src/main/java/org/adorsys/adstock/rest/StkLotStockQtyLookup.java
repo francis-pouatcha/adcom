@@ -101,7 +101,17 @@ public class StkLotStockQtyLookup {
 		stkLotStockQty.setStockQty(base);
 		return stkLotStockQty;
 	}
-
+	
+	public List<StkLotStockQty> findLatestQtiesByArtPic(String artPic) {
+		List<String> lotPics = repository.findLotPicByArtPic(artPic).getResultList();
+		List<StkLotStockQty> result = new ArrayList<StkLotStockQty>();
+		for (String lotPic : lotPics) {
+			List<StkLotStockQty> latestQties = findLatestQties(artPic, lotPic);
+			result.addAll(latestQties);
+		}
+		return result;
+	}
+	
 	public List<StkLotStockQty> findLatestQties(String artPic, String lotPic) {
 		List<StkLotStockQty> result = new ArrayList<StkLotStockQty>();
 		List<StkArticleLot2StrgSctn> sections = articleLot2StrgSctnLookup.findByArtPicAndLotPic(artPic, lotPic);
