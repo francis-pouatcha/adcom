@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.adorsys.adcshdwr.manager;
+package org.adorsys.adcshdwr.api;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -169,7 +169,7 @@ public class CdrDrctSalesManager {
 		cdrDrctSales.evlte();
 	}
 
-	public CdrDsArtHolder closeOrder(CdrDsArtHolder cdrDsArtHolder){
+	public CdrDsArtHolder closeSales(CdrDsArtHolder cdrDsArtHolder){
 		cdrDsArtHolder = updateOrder(cdrDsArtHolder);
 		CdrDrctSales cdrDrctSales = cdrDsArtHolder.getCdrDrctSales();
 		recomputeOrder(cdrDrctSales);

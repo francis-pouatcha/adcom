@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.adorsys.adcshdwr.manager;
+package org.adorsys.adcshdwr.api;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
