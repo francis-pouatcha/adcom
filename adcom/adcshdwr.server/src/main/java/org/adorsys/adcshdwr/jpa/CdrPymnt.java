@@ -136,4 +136,23 @@ public class CdrPymnt extends AbstractIdentifData {
 	protected String makeIdentif() {
 		return pymntNbr;
 	}
+
+	/**
+	 * addAmnt.
+	 *
+	 * @param amt2
+	 */
+	public void addAmnt(BigDecimal amt2) {
+		if(amt2 == null) amt2 = BigDecimal.ZERO;
+		if(amt == null) amt = BigDecimal.ZERO;
+		this.amt = amt.add(amt2);
+	}
+
+	/**
+	 * clearAmts.
+	 *
+	 */
+	public void clearAmts() {
+		if(amt == null) amt = BigDecimal.ZERO;
+	}
 }

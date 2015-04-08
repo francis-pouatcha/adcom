@@ -97,4 +97,18 @@ public class CdrPymntObject extends AbstractIdentifData {
 	protected String makeIdentif() {
 		return pymntNbr + "_" + origDocType + "_" + origDocNbr;
 	}
+
+	/**
+	 * copyPi.
+	 *
+	 * @param persPi
+	 */
+	public void copyTo(CdrPymntObject target) {
+		target.pymntNbr=pymntNbr;
+		target.origDocType=origDocType;
+		target.origDocNbr=origDocNbr;
+		target.origItemNbr=origItemNbr;
+		target.amt=amt;
+		target.orgUnit=orgUnit;
+	}
 }

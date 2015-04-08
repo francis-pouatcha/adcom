@@ -8,6 +8,7 @@ import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adcshdwr.jpa.CdrPymntObject;
 import org.adorsys.adcshdwr.repo.CdrPymntObjectRepository;
+import org.apache.deltaspike.data.api.QueryResult;
 
 @Stateless
 public class CdrPymntObjectEJB
@@ -77,5 +78,11 @@ public class CdrPymntObjectEJB
          return null;
 
       return entity;
+   }
+   
+   public CdrPymntObject findByOrigItemNbr(String origItemNbr) {
+	   List<CdrPymntObject> resultList = repository.findByOrigItemNbr(origItemNbr).maxResults(1).getResultList();
+	   if(!resultList.isEmpty()) return resultList.iterator().next();
+	   return null;
    }
 }

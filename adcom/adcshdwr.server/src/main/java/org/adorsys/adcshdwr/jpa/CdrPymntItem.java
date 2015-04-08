@@ -8,7 +8,11 @@ import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
 
 import org.adorsys.adcore.jpa.AbstractIdentifData;
+import org.adorsys.adcore.utils.BigDecimalUtils;
+import org.adorsys.adcore.utils.FinancialOps;
+import org.adorsys.adcshdwr.api.CdrPymntItemInfo;
 import org.adorsys.javaext.description.Description;
+import org.apache.commons.lang3.StringUtils;
 
 @Entity
 @Description("CdrPymntItem_description")
@@ -105,7 +109,60 @@ public class CdrPymntItem extends AbstractIdentifData {
 	}
 
 	@Override
-	protected String makeIdentif() {
+	public String makeIdentif() {
 		return pymntNbr + "_ " + pymntMode.name() + "_" + pymntDocType + "_" + pymntDocNbr;
+	}
+
+	/**
+	 * contentEquals.
+	 *
+	 * @param persDi
+	 * @return
+	 */
+	public boolean contentEquals(CdrPymntItem target) {
+		if(!StringUtils.equals(target.pymntNbr,pymntNbr)) return false;
+		if(target.pymntMode != pymntMode) return false;
+		if(!StringUtils.equals(target.pymntDocType,pymntDocType)) return false;
+		if(!StringUtils.equals(target.pymntDocNbr,pymntDocNbr)) return false;
+		if(!BigDecimalUtils.numericEquals(target.amt,amt)) return false;
+		if(!BigDecimalUtils.numericEquals(target.rcvdAmt,rcvdAmt)) return false;
+		if(!BigDecimalUtils.numericEquals(target.diffAmt,diffAmt)) return false;
+		return true;
+	}
+
+	/**
+	 * copyTo.
+	 *
+	 * @param target
+	 */
+	public void copyTo(CdrPymntItem target) {
+		target.pymntNbr=pymntNbr;
+		target.pymntMode=pymntMode;
+		target.pymntDocType=pymntDocType;
+		target.pymntDocNbr=pymntDocNbr;
+		target.amt=amt;
+		target.rcvdAmt=rcvdAmt;
+		target.diffAmt=diffAmt;
+	}
+
+	/**
+	 * evlte.
+	 *
+	 */
+	public void evlte() {
+		if(this.amt == null) amt = BigDecimal.ZERO;
+		if(this.rcvdAmt == null) rcvdAmt = BigDecimal.ZERO;
+		if(this.diffAmt == null) diffAmt = BigDecimal.ZERO;
+		this.diffAmt = FinancialOps.substract(rcvdAmt, amt);
+	}
+	
+	public CdrPymntObject toPymntObject() {
+		CdrPymntObject pymntObject = new CdrPymntObject();
+		pymntObject.setAmt(amt);
+		pymntObject.setOrigDocNbr(pymntDocNbr);
+		pymntObject.setOrigItemNbr(getIdentif());
+		pymntObject.setOrigDocType(CdrPymntItemInfo.getDocType());
+		pymntObject.setPymntNbr(pymntNbr);
+		return pymntObject;
 	}
 }

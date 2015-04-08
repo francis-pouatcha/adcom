@@ -14,6 +14,7 @@ import org.adorsys.adbase.enums.BaseHistoryTypeEnum;
 import org.adorsys.adbase.enums.BaseProcStepEnum;
 import org.adorsys.adbase.security.SecurityUtil;
 import org.adorsys.adcore.auth.TermWsUserPrincipal;
+import org.adorsys.adcshdwr.jpa.CdrCshDrawer;
 import org.adorsys.adcshdwr.jpa.CdrDrctSales;
 import org.adorsys.adcshdwr.jpa.CdrDsArtItem;
 import org.adorsys.adcshdwr.jpa.CdrDsHstry;
@@ -38,7 +39,7 @@ public class CdrDrctSalesManager {
 	private CdrDsArtItemEJB cdrDsArtItemEJB;
 
 	@Inject
-	private CdrCshDrawerEJB cdrCshDrawerEJB;
+	private CdrCshDrawerEJB cshDrawerEJB;
 
 	@Inject
 	private CdrDsHstryEJB cdrDsHstryEJB;
@@ -52,6 +53,9 @@ public class CdrDrctSalesManager {
 
 	public CdrDsArtHolder updateOrder(CdrDsArtHolder cdrDsArtHolder){
 		CdrDrctSales cdrDrctSales = cdrDsArtHolder.getCdrDrctSales();
+		CdrCshDrawer activeCshDrawer = cshDrawerEJB.getActiveCshDrawer();
+		if(activeCshDrawer == null) throw new IllegalStateException("No opened cash drawer found for this session, please open one.");
+		cdrDrctSales.setCdrNbr(activeCshDrawer.getCdrNbr());
 		if(StringUtils.isBlank(cdrDrctSales.getRcptNbr())) {
 			cdrDrctSales.setRcptNbr("-");
 		}
