@@ -290,6 +290,7 @@ function($scope,genericResource,bpBnsPtnrUtils,bpBnsPtnrState,$location,$rootSco
 .controller('bpBnsPtnrCreateCtlr',['$scope','bpBnsPtnrUtils','$translate','genericResource','$location','bpBnsPtnrState',
         function($scope,bpBnsPtnrUtils,$translate,genericResource,$location,bpBnsPtnrState){
     $scope.bpBnsPtnr = bpBnsPtnrState.resultHandler.entity();
+    $scope.bpBnsPtnr = {ptnrType : "INDIVIDUAL"};
     $scope.create = create;
     $scope.error = "";
     $scope.bpBnsPtnrUtils=bpBnsPtnrUtils;
