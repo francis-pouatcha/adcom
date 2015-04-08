@@ -7,10 +7,9 @@
            <form  name="bpBnsPtnrForm" class="form-horizontal" novalidate="">
 	            	<div class="form-group">
 		              <label class="col-lg-2">{{bpBnsPtnrUtils.translations['BpBnsPtnr_ptnrType_description.title']}} :</label>
-		              <div class="col-lg-4" ng-class="{ 'has-error' : bpBnsPtnrForm.ptnrType.$invalid }" >
+		              <div class="col-lg-4" ng-class="{ 'has-error' : bpBnsPtnrForm.ptnrType.$invalid }" ng-init="bpBnsPtnr.ptnrType='INDIVIDUAL">
 				            <select class="form-control" name="ptnrType" ng-model="bpBnsPtnr.ptnrType"
 				                    ng-options="bpBnsPtnrType.enumKey as bpBnsPtnrType.translKey|translate for bpBnsPtnrType in bpBnsPtnrUtils.bpBnsPtnrTypes"  required>
-				                    <option value=""/>
 							</select>
                            <p ng-show="bpBnsPtnrForm.ptnrType.$error.required" class="help-block">{{bpBnsPtnrUtils.translations['Entity_required.title']}}</p>
 		              </div>
