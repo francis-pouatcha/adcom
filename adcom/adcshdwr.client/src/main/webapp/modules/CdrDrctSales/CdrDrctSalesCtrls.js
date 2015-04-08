@@ -95,7 +95,9 @@ angular.module('AdCshdwr')
                     'CdrDrctSales_rebate_description.text',
                     'CdrDrctSales_rebate_description.title',
                     'CdrDrctSales_vatAmount_description.text',
-                    'CdrDrctSales_vatAmount_description.title'
+                    'CdrDrctSales_vatAmount_description.title',
+                    'CdrDrctSales_paidAmt_description.title',
+                    'CdrDrctSales_changeAmt_description.title'
                  ])
                 .then(function (translations) {
                     service.translations = translations;
@@ -411,16 +413,21 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
             };
             
             $scope.pymtDscntPctChanged = function() {
-                
+                if(!$scope.cdrDsArtHolder.cdrDrctSales.pymtDscntPct) return;
+                $scope.cdrDsArtHolder.cdrDrctSales.pymtDscntAmt = ($scope.cdrDsArtHolder.cdrDrctSales.pymtDscntPct * $scope.cdrDsArtHolder.cdrDrctSales.netSPPreTax)/100;
+                $scope.cdrDsArtHolder.cdrDrctSales.netSalesAmt = $scope.cdrDsArtHolder.cdrDrctSales.netSPTaxIncl - $scope.cdrDsArtHolder.cdrDrctSales.pymtDscntAmt;
             };
             
             $scope.pymtDscntAmtChanged = function() {
-                
+                if(!$scope.cdrDsArtHolder.cdrDrctSales.pymtDscntAmt) return;
+                $scope.cdrDsArtHolder.cdrDrctSales.pymtDscntPct = ($scope.cdrDsArtHolder.cdrDrctSales.pymtDscntAmt *               100)/$scope.cdrDsArtHolder.cdrDrctSales.netSPPreTax;
+                $scope.cdrDsArtHolder.cdrDrctSales.netSalesAmt = $scope.cdrDsArtHolder.cdrDrctSales.netSPTaxIncl - $scope.cdrDsArtHolder.cdrDrctSales.pymtDscntAmt; //update the netSPTaxIncl
             };
             
-            $scope.rebateChanged = function() {
-                
-            };
+            $scope.paidAmtChanged = function() {
+                if(!$scope.cdrDsArtHolder.paidAmt) return;
+                $scope.cdrDsArtHolder.changeAmt = $scope.cdrDsArtHolder.paidAmt - $scope.cdrDsArtHolder.cdrDrctSales.netSalesAmt;
+            }
             
             function clearObject(anObject) {
                 anObject = {
