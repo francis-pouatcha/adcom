@@ -17,11 +17,11 @@
                     <div class="row">
                         <div class="form-group col-lg-2">
                             <label class=" control-label" for="searchArtPic">{{cdrDrctSalesUtils.translations['CdrDsArtItem_artPic_description.title']}}</label>
-                            <input type="text" ng- class="form-control" name="searchArtPic" id="searchArtPic" required autocomplete="off" ng-model="cdrDsArtItemHolder.item.artPic" typeahead="article as article.pic for article in cdrDrctSalesUtils.loadArticlesByPic($viewValue)" typeahead-min-length="7" typeahead-loading="loading" typeahead-on-select='onArticleSelectedInSearch($item, $model, $label)'>
+                            <input type="text" ng- class="form-control" name="searchArtPic" id="searchArtPic" required autocomplete="off" ng-model="cdrDsArtItemHolder.item.artPic" typeahead="article as article.pic for article in cdrDrctSalesUtils.loadArticlesByPic($viewValue)" typeahead-loading="loading" typeahead-on-select='onArticleSelectedInSearch($item, $model, $label)'>
                         </div>
                         <div class="form-group col-lg-2">
                             <label class=" control-label" for="searchArtName">{{cdrDrctSalesUtils.translations['CdrDsArtItem_artName_description.title']}}</label>
-                            <input type="text" class="form-control" id="searchArtName" autocomplete="off" ng-model="cdrDsArtItemHolder.artName" typeahead="article as article.features.artName for article in cdrDrctSalesUtils.loadArticlesByName($viewValue)" typeahead-loading="loading" typeahead-min-length="4" typeahead-on-select='onArticleSelectedInSearch($item, $model, $label)' name="searchArtName">
+                            <input type="text" class="form-control" id="searchArtName" autocomplete="off" ng-model="cdrDsArtItemHolder.artName" typeahead="displayable as displayable.displayableStr for displayable in cdrDrctSalesUtils.loadArticlesByName($viewValue)" typeahead-loading="loading" typeahead-on-select='onArticleSelectedInSearch($item, $model, $label)' name="searchArtName">
                         </div>
                         <div class="form-group col-lg-2">
                             <label class=" control-label" for="soldQty">{{cdrDrctSalesUtils.translations['CdrDsArtItem_soldQty_description.title']}}</label>
