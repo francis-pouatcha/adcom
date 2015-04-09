@@ -155,9 +155,17 @@ angular.module('AdCshdwr')
                                     displayable.stockQty = artQty.stockQty;
                                     displayableStr += "- Qty ("+artQty.stockQty+")";
                                 }
-                                if(displayableStr) {
-                                    displayable.displayableStr = displayableStr;
-                                }
+                                displayable.artPic = artQty.artPic;
+                                displayable.sppuPreTax = sectionArticleLot.sppuHT;
+                                displayable.minSppuHT = sectionArticleLot.minSppuHT;
+                                displayable.sppuTaxIncl = sectionArticleLot.sppuTaxIncl;
+                                displayable.sppuCur = sectionArticleLot.sppuCur;
+                                displayable.vatPct = sectionArticleLot.vatSalesPct;
+                                displayable.salesVatAmt = sectionArticleLot.salesVatAmt;
+                                displayable.salesWrntyDys = sectionArticleLot.salesWrntyDys;
+                                displayable.salesRtrnDays = sectionArticleLot.salesRtrnDays;
+                                
+                                displayable.displayableStr = displayableStr;
                                 displayDatas.push(displayable);
                             });
                         }
@@ -405,16 +413,18 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
             };
 
             function create() {};
-
+            
             $scope.onArticleSelectedInSearch = function (item, model, label) {
-                $scope.cdrDsArtItemHolder.item.artPic = item.pic;
-                $scope.cdrDsArtItemHolder.item.lotPic = item.pic;
-                $scope.cdrDsArtItemHolder.artName = item.features.artName;
-                $scope.cdrDsArtItemHolder.item.sppuPreTax = item.sppu;
-                $scope.cdrDsArtItemHolder.item.netSPPreTax = item.sppu;
-                $scope.cdrDsArtItemHolder.maxStockQty = item.maxStockQty;
-                $scope.cdrDsArtItemHolder.item.sppuCur = item.sppuCurrIso3;
-                $scope.cdrDsArtItemHolder.item.vatPct = item.vatRate; //compute the percentaage
+                $scope.cdrDsArtItemHolder.item.artPic = item.artPic;
+                $scope.cdrDsArtItemHolder.item.lotPic = item.logPic;
+                $scope.cdrDsArtItemHolder.artName = item.artName;
+                $scope.cdrDsArtItemHolder.item.sppuPreTax = item.sppuPreTax;
+                if(!item.sppuPreTax) item.sppuPreTax = 0.0;
+                if(!item.salesVatAmt) item.salesVatAmt = 0.0;
+                $scope.cdrDsArtItemHolder.item.netSPPreTax = item.sppuPreTax + item.salesVatAmt;
+                $scope.cdrDsArtItemHolder.maxStockQty = item.stockQty;
+                $scope.cdrDsArtItemHolder.item.sppuCur = item.sppuCur;
+                $scope.cdrDsArtItemHolder.item.vatPct = item.vatPct; //the vatPct
             };
 
             $scope.addItem = function () {
