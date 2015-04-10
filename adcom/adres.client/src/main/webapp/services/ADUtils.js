@@ -106,6 +106,8 @@ angular.module('ADUtils',[])
             'Entity_next.title',
             'Entity_reprint.title',
             'Entity_previous.title',
+            'Entity_first.title',
+            'Entity_last.title',
             'Entity_back.title',
             'Entity_validFrom.title',
             'Entity_validTo.title',

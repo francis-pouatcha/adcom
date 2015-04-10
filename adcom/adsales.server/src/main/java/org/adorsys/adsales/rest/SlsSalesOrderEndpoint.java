@@ -37,6 +37,9 @@ public class SlsSalesOrderEndpoint
 
    @Inject
    private SlsSalesOrderEJB ejb;
+   
+   @Inject
+   private SlsSalesOrderHolderEJB holderEJB;
 
    @POST
    @Consumes({ "application/json", "application/xml" })
@@ -130,7 +133,8 @@ public class SlsSalesOrderEndpoint
       Long countLike = ejb.countByLike(searchInput.getEntity(), attributes);
       List<SlsSalesOrder> resultList = ejb.findByLike(searchInput.getEntity(),
             searchInput.getStart(), searchInput.getMax(), attributes);
-      return new SlsSalesOrderSearchResult(countLike, detach(resultList),
+      List<SlsSalesOrder> resultList2 = holderEJB.reloadSlsSalesOrders(resultList);
+      return new SlsSalesOrderSearchResult(countLike, detach(resultList2),
             detach(searchInput));
    }
    

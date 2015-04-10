@@ -41,6 +41,8 @@
     "Entity_New_password.title":"Nouveau Mot de Passe",
     "Entity_print.title":"Imprimer",
     "Entity_next.title":"Suivant",
+    "Entity_first.title": "Premier",
+    "Entity_last.title": "Dernier",
     "Entity_Finish.title":"Terminer",
     "Entity_previous.title":"Précédent",
     "Entity_back.title":"Retour",

@@ -2,15 +2,16 @@
     
 angular.module('AdSales')
 
-.factory('slsSalesOrderUtils',['sessionManager','$translate','genericResource','$q',function(sessionManager,$translate,genericResource,$q){
+.factory('slsSalesOrderUtils',['sessionManager','$translate', 'commonTranslations','genericResource','$q',function(sessionManager,$translate,commonTranslations,genericResource,$q){
     var service = {};
 
     service.urlBase='/adsales.server/rest/slssalesorders';
     service.bnsptnrUrlBase='/adbnsptnr.server/rest/bpbnsptnrs';
     service.loginnamessUrlBase='/adbase.server/rest/loginnamess';
+    service.slsSOItemsUrlBase='/adsales.server/rest/slssoitems';
     
     service.slsSOStatusI18nMsgTitleKey = function(enumKey){
-    	return "InvInvntrStatus_"+enumKey+"_description.title";
+    	return "SlsSalesStatus_"+enumKey+"_description.title";
     };
     
     service.slsSOStatusI18nMsgTitleValue = function(enumKey){
@@ -25,6 +26,8 @@ angular.module('AdSales')
     ];
     
     service.language=sessionManager.language;
+    
+    service.commonTranslations=commonTranslations.translations;
     
     service.translate = function(){
     	$translate(['SlsSalesOrder_description.text',
@@ -53,6 +56,8 @@ angular.module('AdSales')
                     'SlsSalesOrder_soCur_description.title',
                     'SlsSalesOrder_soNbr_description.text',
                     'SlsSalesOrder_soNbr_description.title',
+                    'SlsSalesOrder_soDt_description.text',
+                    'SlsSalesOrder_soDt_description.title',
                     'SlsSalesOrder_soStatus_description.text',
                     'SlsSalesOrder_soStatus_description.title',
                     'SlsSalesOrder_vatAmount_description.text',
@@ -67,11 +72,31 @@ angular.module('AdSales')
                     
                     'SlsSOPtnr_description.text',
                     'SlsSOPtnr_description.title',
+                    'SlsSOPtnrs_description.text',
+                    'SlsSOPtnrs_description.title',
+                    'SlsSOPtnr_ptnrNbr_description.text',
+                    'SlsSOPtnr_ptnrNbr_description.title',
+                    'SlsSOPtnr_roleInSO_description.text',
+                    'SlsSOPtnr_roleInSO_description.title',
+                    'SlsSOPtnr_soNbr_description.text',
+                    'SlsSOPtnr_soNbr_description.title',
                     
                     'SlsSalesStatus_SUSPENDED_description.title',
     	            'SlsSalesStatus_ONGOING_description.title',
     	            'SlsSalesStatus_RESUMED_description.title',
     	            'SlsSalesStatus_CLOSED_description.title',
+                    
+                    'SlsSOItems_description.text',
+                    'SlsSOItems_description.title',
+                    'SlsSOItem_artPic_description.title',
+                    'SlsSOItem_artName_description.title',
+                    'SlsSOItem_orderedQty_description.title',
+                    'SlsSOItem_returnedQty_description.title',
+                    'SlsSOItem_deliveredQty_description.title',
+                    'SlsSOItem_vatAmount_description.title',
+                    'SlsSOItem_rebate_description.title',
+                    'SlsSOItem_netSPPreTax_description.title',
+                    'SlsSOItem_netSPTaxIncl_description.title',
                     
     	            'Entity_show.title',
     	            'Entity_previous.title',
@@ -84,6 +109,8 @@ angular.module('AdSales')
     	            'Entity_search.title',
     	            'Entity_cancel.title',
     	            'Entity_save.title',
+                    'Entity_first.title',
+                    'Entity_last.title'
     	            ])
 		 .then(function (translations) {
 			 service.translations = translations;
@@ -122,6 +149,8 @@ angular.module('AdSales')
 
     var service = {};
     service.resultHandler = searchResultHandler.newResultHandler('soNbr');
+    service.resultHandler.slsSOItems=[];
+    service.resultHandler.slsSOPtnrs=[];
     service.resultHandler.maxResult=10;
     return service;
 
@@ -129,6 +158,13 @@ angular.module('AdSales')
 .controller('slsSalesOrdersCtlr',['$scope','genericResource','slsSalesOrderUtils','slsSalesOrderState','$location' ,'$translate','$rootScope',
 function($scope,genericResource,slsSalesOrderUtils,slsSalesOrderState,$location,$translate,$rootScope){
 
+    $scope.slsSalesOrders= [];
+    $scope.slsSalesOrderHolder = {
+        slsSalesOrder:{},
+        slsSOItemsholder:[],
+        slsSOPtnrsHolder:[]
+    };
+    $scope.slsSalesOrdersHolder=[];
     $scope.searchInput = slsSalesOrderState.resultHandler.searchInput();
     $scope.itemPerPage=slsSalesOrderState.resultHandler.itemPerPage;
     $scope.totalItems=slsSalesOrderState.resultHandler.totalItems;
@@ -143,6 +179,18 @@ function($scope,genericResource,slsSalesOrderUtils,slsSalesOrderState,$location,
     $scope.slsSalesOrderUtils=slsSalesOrderUtils;
     $scope.show=show;
     $scope.edit=edit;
+    fullFillSales();
+    
+    
+    function fullFillSales(){
+        console.log('Partners: '+$scope.slsSalesOrders[1]);
+        for(var i=0; i<$scope.slsSalesOrders.length; i++){
+            $scope.slsSalesOrderHolder.slsSalesOrder=$scope.slsSalesOrders[i];
+            $scope.slsSalesOrderHolder.slsSOItemsholder=$scope.slsSalesOrders[i].slsSOItems;
+            $scope.slsSalesOrderHolder.slsSOPtnrsHolder=$scope.slsSalesOrders[i].slsSOPtnrs;
+            $scope.slsSalesOrdersHolder.push($scope.slsSalesOrderHolder);
+        }
+    }
 
 	var translateChangeSuccessHdl = $rootScope.$on('$translateChangeSuccess', function () {
 		slsSalesOrderUtils.translate();
@@ -161,13 +209,19 @@ function($scope,genericResource,slsSalesOrderUtils,slsSalesOrderState,$location,
 
     function findByLike(searchInput){
 		genericResource.findByLike(slsSalesOrderUtils.urlBase, searchInput)
-		.success(function(entitySearchResult) {
+		.success(function(entitySearchResult) {   
 			// store search
 			slsSalesOrderState.resultHandler.searchResult(entitySearchResult);
 		})
         .error(function(error){
             $scope.error=error;
         });
+    }
+    
+    
+    function findInMemory(resultItems){
+        slsSalesOrderState.resultHandler.searchResult(resultItems)
+        
     }
     
     function findCustom(searchInput){
@@ -221,13 +275,13 @@ function($scope,genericResource,slsSalesOrderUtils,slsSalesOrderState,$location,
 	}
 	
 	function show(slsSO, index){
-		if(slsSalesOrderState.resultHandler.selectedObject(slsSO)){
+		if(slsSalesOrderState.resultHandler.selectedObject(slsSO) != -1){
 			$location.path('/SlsSalesOrders/show/');
 		}
 	}
 
 	function edit(slsSO, index){
-		if(slsSalesOrderState.resultHandler.selectedObject(slsSO)){
+		if(slsSalesOrderState.resultHandler.selectedObject(slsSO) != -1){
 			$location.path('/SlsSalesOrders/edit/');
 		}
 	}
@@ -270,11 +324,20 @@ function($scope,genericResource,slsSalesOrderUtils,slsSalesOrderState,$location,
         });
     };
 }])
-.controller('slsSalesOrderShowCtlr',['$scope','genericResource','$location','slsSalesOrderUtils','slsSalesOrderState','$rootScope',
-                                 function($scope,genericResource,$location,slsSalesOrderUtils,slsSalesOrderState,$rootScope){
+.controller('slsSalesOrderShowCtlr',['$scope','genericResource','$location','slsSalesOrderUtils','slsSalesOrderState', '$filter','$rootScope', function($scope,genericResource,$location,slsSalesOrderUtils,slsSalesOrderState,$filter,$rootScope){
     $scope.slsSalesOrder = slsSalesOrderState.resultHandler.entity();
+    $scope.itemPerPage=slsSalesOrderState.resultHandler.itemPerPage;
+    $scope.currentPage=slsSalesOrderState.resultHandler.currentPage();
+    $scope.maxSize =slsSalesOrderState.resultHandler.maxResult;
+    $scope.slsSalesOrder.soStatus = slsSalesOrderUtils.slsSOStatusI18nMsgTitleValue($scope.slsSalesOrder.soStatus);
+    $scope.slsSalesOrder.soDt = $filter('date')($scope.slsSalesOrder.soDt, 'dd-MM-yyyy HH:mm', '');
     $scope.error = "";
     $scope.slsSalesOrderUtils=slsSalesOrderUtils;
+    $scope.pageChangeHandler = function(num) {
+      console.log('Articles page change to' + num);
+    };
+    
+    
     
     $scope.previous = function (){
         var bp = slsSalesOrderState.resultHandler.previous();

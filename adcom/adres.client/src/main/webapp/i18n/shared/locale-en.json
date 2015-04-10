@@ -37,6 +37,8 @@
     "Entity_password.title": "Password",
     "Entity_print.title": "Print",
     "Entity_next.title": "Next",
+    "Entity_first.title": "First",
+    "Entity_last.title": "Last",
     "Entity_reprint.title": "Reprint",
     "Entity_previous.title": "Previous",
     "Entity_back.title": "Back",

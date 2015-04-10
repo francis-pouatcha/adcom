@@ -10,6 +10,11 @@ import org.apache.deltaspike.data.api.Repository;
 public interface SlsSOPtnrRepository extends EntityRepository<SlsSOPtnr, String>
 {
 	
-	@Query("SELECT p FROM SlsSOPtnr WHERE p.ptnrNbr = ?1")
+	@Query("SELECT p FROM SlsSOPtnr AS p WHERE p.ptnrNbr = ?1")
 	public QueryResult<SlsSOPtnr> findByPtnrNbr(String ptnrNbr);
+	
+	@Query("SELECT p FROM SlsSOPtnr AS p WHERE p.soNbr = ?1")
+	public QueryResult<SlsSOPtnr> findBySoNbr(String soNbr);
+	
+	
 }

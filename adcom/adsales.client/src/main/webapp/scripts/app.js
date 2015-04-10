@@ -12,7 +12,9 @@ angular.module('AdSales', [
       'ADUtils',
       'pascalprecht.translate',
       'NavBar',
-      '720kb.tooltips'
+      '720kb.tooltips',
+      'smart-table',
+      'angularUtils.directives.dirPagination'
 ])
 .constant('APP_CONFIG',{
 	'appName':'Sales',
@@ -54,7 +56,7 @@ angular.module('AdSales', [
     .otherwise({
       redirectTo: '/'
     });
-    
+
     $httpProvider.defaults.withCredentials = true;
     $httpProvider.interceptors.push('authInterceptor');
     $httpProvider.interceptors.push('httpProgressInterceptor')

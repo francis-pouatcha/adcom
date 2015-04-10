@@ -2,6 +2,9 @@ package org.adorsys.adsales.jpa;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.adorsys.adcore.jpa.AbstractIdentifData;
@@ -28,6 +31,42 @@ public class SlsSOPtnr extends AbstractIdentifData {
 	@Description("SlsSOPtnr_roleInSO_description")
 	@NotNull
 	private String roleInSO;
+	
+	
+	// Transcient fields
+	@Transient
+	private String ptnrType;
+	
+	@Transient
+	private String fullName;
+	
+	@Transient
+	private String ctryOfRsdnc;
+	
+
+	public String getPtnrType() {
+		return ptnrType;
+	}
+
+	public void setPtnrType(String ptnrType) {
+		this.ptnrType = ptnrType;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+	public String getCtryOfRsdnc() {
+		return ctryOfRsdnc;
+	}
+
+	public void setCtryOfRsdnc(String ctryOfRsdnc) {
+		this.ctryOfRsdnc = ctryOfRsdnc;
+	}
 
 	public String getSoNbr() {
 		return this.soNbr;
