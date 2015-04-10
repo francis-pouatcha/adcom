@@ -25,8 +25,6 @@ import org.adorsys.adsales.jpa.SlsInvoice;
 import org.adorsys.adsales.jpa.SlsInvoiceSearchInput;
 import org.adorsys.adsales.jpa.SlsInvoiceSearchResult;
 import org.adorsys.adsales.jpa.SlsInvoice_;
-import org.adorsys.adsales.jpa.SlsSalesOrder;
-import org.adorsys.adsales.jpa.SlsSalesOrderSearchResult;
 
 /**
  * 

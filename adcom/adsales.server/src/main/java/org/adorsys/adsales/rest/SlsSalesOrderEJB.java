@@ -20,8 +20,7 @@ public class SlsSalesOrderEJB
 {
 
    @Inject
-   private SlsSalesOrderRepository repository;
-   
+   private SlsSalesOrderRepository repository;   
    
    @Inject
 	private EntityManager em;
@@ -41,12 +40,11 @@ public class SlsSalesOrderEJB
 		entity.setIdentif(entity.getSoNbr());	
 		entity = repository.save(attach(entity));
 		
-		//TODO: create the SlsSOEvtData class in adsale.lib
-		/*SlsSOEvtData evtData = new SlsSOEvtData();
+		/*SlsSalesOrderEvtData evtData = new SlsSalesOrderEvtData();	
 		entity.copyTo(evtData);
 		evtData.setId(entity.getId());
 		evtData.setIdentif(entity.getIdentif());
-		evtDataEJB.create(evtData);*/	
+		evtDataEJB.create(evtData);*/
 		return entity;
    }
    

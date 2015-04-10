@@ -11,7 +11,6 @@ import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adsales.jpa.SlsInvoice;
 import org.adorsys.adsales.jpa.SlsInvoiceSearchInput;
-import org.adorsys.adsales.jpa.SlsSalesOrderSearchInput;
 import org.adorsys.adsales.repo.SlsInvoiceRepository;
 import org.apache.commons.lang3.StringUtils;
 

@@ -40,6 +40,8 @@
     <module>adcom.test</module>
     <module>adaptmt.server</module>
     <module>adaptmt.client</module>
+    
+    
   </modules>
   <scm>
     <connection>scm:git:https://github.com/francis-pouatcha/adcom.git</connection>

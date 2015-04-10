@@ -55,6 +55,9 @@ angular.module('AdSales')
     self.ModalInstanceAddBptrnCtrl = ModalInstanceAddBptrnCtrl;
     self.totalAmount = totalAmount;
      self.showBtnClose = true;
+     self.ptnrRole;
+
+        loadPtnrRole();
 
     function loadBusinessPartner(val){
         return genericResource.findByLikePromissed(saleUtils.adbnsptnr, 'cpnyName', val)
@@ -125,6 +128,12 @@ angular.module('AdSales')
             });
         return deferred.promise;
     }
+
+        function loadPtnrRole(){
+            genericResource.listAll(saleUtils.sale+'/listAllPtnrRole').success(function(data){
+                self.ptnrRole = data;
+            })
+        }
 
     function onSelect(item,model,label){
         self.slsSalesOrderItemHolder.slsSOItem.artPic = item.pic;
@@ -221,10 +230,11 @@ angular.module('AdSales')
             clearSaleOrder();
         }
         function newCmd(){
+
             if(self.slsSalesOrderHolder){
                 if(self.slsSalesOrderHolder.slsSOItemsholder.length > 0){
                     self.slsSalesOrderHolderTab.push(self.slsSalesOrderHolder);
-                    self.index = self.slsSalesOrderHolderTab.length;
+                    self.index = self.slsSalesOrderHolderTab.length-1;
                 }
             }
             clearSaleOrder();
@@ -263,6 +273,7 @@ angular.module('AdSales')
             $scope.loadBusinessPartner = function(val){
                 return self.loadBusinessPartner(val);
             }
+            $scope.roleInSOs = self.ptnrRole;
             $scope.addBptrn = function(){
                 var slsSOPtnrHolder = {};
                 slsSOPtnrHolder.slsSOPtnr = $scope.slsSOPtnr;
@@ -285,20 +296,35 @@ angular.module('AdSales')
 
         function previous(){
             if(self.index > 0 ){
+                if(self.slsSalesOrderHolder){
+                    if(self.slsSalesOrderHolder.slsSOItemsholder && self.slsSalesOrderHolder.slsSOItemsholder.length > 0){
+                        self.slsSalesOrderHolderTab.push(self.slsSalesOrderHolder);
+                    }
+                }
                 self.index-=1;
                 angular.copy(self.slsSalesOrderHolderTab[self.index],self.slsSalesOrderHolder);
                 self.slsSalesOrderHolderTab.splice(self.index,1);
                 self.slsSalesOrderItemHolder = {};
                 enableCloseCmd ();
+                console.log(self.index);
+                console.log('lenght tab '+self.slsSalesOrderHolderTab.length);
             }
 
         }
         function next(){
             if(self.slsSalesOrderHolderTab.length > self.index){
+                if(self.slsSalesOrderHolder){
+                    if(self.slsSalesOrderHolder.slsSOItemsholder && self.slsSalesOrderHolder.slsSOItemsholder.length > 0){
+                        self.slsSalesOrderHolderTab.push(self.slsSalesOrderHolder);
+                    }
+                }
+                self.index+=1;
                 angular.copy(self.slsSalesOrderHolderTab[self.index],self.slsSalesOrderHolder);
                 self.slsSalesOrderHolderTab.splice(self.index,1);
                 self.slsSalesOrderItemHolder = {};
                 enableCloseCmd ();
+                console.log(self.index);
+                console.log('lenght tab '+self.slsSalesOrderHolderTab.length);
             }
 
         }
@@ -307,7 +333,7 @@ angular.module('AdSales')
         }
 
         function enableCloseCmd (){
-            if(self.slsSalesOrderHolder.slsSOItemsholder.length > 0)
+            if(self.slsSalesOrderHolder.slsSOItemsholder && self.slsSalesOrderHolder.slsSOItemsholder.length > 0)
                 self.showBtnClose = false;
             else
                 self.showBtnClose = true;

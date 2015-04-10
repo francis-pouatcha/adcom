@@ -13,7 +13,8 @@
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label for="roleInSO">{{'SlsSOPtnr_roleInSO_description.title' | translate}}</label>
-                        <input type="text" class="form-control" id="roleInSO" ng-model="slsSOPtnr.roleInSO">
+                        <select ng-options="roleInSO.enumKey as roleInSO.name for roleInSO in roleInSOs"
+                                ng-model="slsSOPtnr.roleInSO" id="roleInSO" name="roleInSO" class="form-control" ></select>
                     </div>
                 </div>
                 <div class="col-lg-4" style="margin-top: 40px">
