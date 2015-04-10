@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.adorsys.adcshdwr.manager;
+package org.adorsys.adcshdwr.api;
 
 import org.adorsys.adcshdwr.jpa.CdrDsArtItem;
 

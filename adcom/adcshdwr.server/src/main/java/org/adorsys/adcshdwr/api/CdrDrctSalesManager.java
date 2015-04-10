@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.adorsys.adcshdwr.manager;
+package org.adorsys.adcshdwr.api;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,6 +14,7 @@ import org.adorsys.adbase.enums.BaseHistoryTypeEnum;
 import org.adorsys.adbase.enums.BaseProcStepEnum;
 import org.adorsys.adbase.security.SecurityUtil;
 import org.adorsys.adcore.auth.TermWsUserPrincipal;
+import org.adorsys.adcshdwr.jpa.CdrCshDrawer;
 import org.adorsys.adcshdwr.jpa.CdrDrctSales;
 import org.adorsys.adcshdwr.jpa.CdrDsArtItem;
 import org.adorsys.adcshdwr.jpa.CdrDsHstry;
@@ -30,37 +31,43 @@ import org.apache.commons.lang3.StringUtils;
  */
 @Stateless
 public class CdrDrctSalesManager {
-	
+
 	@Inject
 	private CdrDrctSalesEJB cdrDrctSalesEJB;
-	
+
 	@Inject
 	private CdrDsArtItemEJB cdrDsArtItemEJB;
-	
+
 	@Inject
-	private CdrCshDrawerEJB cdrCshDrawerEJB;
-	
+	private CdrCshDrawerEJB cshDrawerEJB;
+
 	@Inject
 	private CdrDsHstryEJB cdrDsHstryEJB;
-	
+
 	@Inject
 	private SecurityUtil securityUtil;
-	
-	
-	
-	
+
+
+
+
 
 	public CdrDsArtHolder updateOrder(CdrDsArtHolder cdrDsArtHolder){
 		CdrDrctSales cdrDrctSales = cdrDsArtHolder.getCdrDrctSales();
+		CdrCshDrawer activeCshDrawer = cshDrawerEJB.getActiveCshDrawer();
+		if(activeCshDrawer == null) throw new IllegalStateException("No opened cash drawer found for this session, please open one.");
+		cdrDrctSales.setCdrNbr(activeCshDrawer.getCdrNbr());
+		if(StringUtils.isBlank(cdrDrctSales.getRcptNbr())) {
+			cdrDrctSales.setRcptNbr("-");
+		}
 		if(StringUtils.isBlank(cdrDrctSales.getId())) {
 			cdrDrctSales = cdrDrctSalesEJB.create(cdrDrctSales);;
 		}
 		boolean modified = false;
 		boolean itemModified = deleteHolders(cdrDsArtHolder);
-					
+
 		List<CdrDsArtItemHolder> cdrDsArtItemHolders = cdrDsArtHolder.getItems();
 		if(cdrDsArtItemHolders == null) cdrDsArtItemHolders = new ArrayList<CdrDsArtItemHolder>();
-		
+
 		for (CdrDsArtItemHolder cdrDsArtItemHolder : cdrDsArtItemHolders) {
 			CdrDsArtItem cdrDsArtItem = cdrDsArtItemHolder.getItem();
 
@@ -71,16 +78,20 @@ public class CdrDrctSalesManager {
 				throw new IllegalStateException("Missing article identification code.");
 
 			if(StringUtils.isNotBlank(cdrDsArtItem.getId())){
-				// todo check mdified
 				CdrDsArtItem persDi = cdrDsArtItemEJB.findById(cdrDsArtItem.getId());
-				if(persDi==null) throw new IllegalStateException("Missing delivery item with id: " + cdrDsArtItem.getId());
+				if(persDi==null) throw new IllegalStateException("Missing directsales item with id: " + cdrDsArtItem.getId());
 				if(!cdrDsArtItem.contentEquals(persDi)){
 					cdrDsArtItem.copyTo(persDi);
 					cdrDsArtItem = cdrDsArtItemEJB.update(persDi);
 					itemModified = true;
 				}
 			} else {
-				if (StringUtils.isNotBlank(cdrDsArtItem.getDsNbr())) {
+				cdrDsArtItem.evlte();
+				cdrDsArtItem.setObjctOrgUnit(securityUtil.getCurrentOrgUnit().getIdentif());
+				cdrDsArtItem.setDsNbr(cdrDrctSales.getDsNbr());
+				cdrDsArtItem = cdrDsArtItemEJB.create(cdrDsArtItem);
+				itemModified = true;
+				/*if (StringUtils.isNotBlank(cdrDsArtItem.getId())) {
 					CdrDsArtItem persDi = cdrDsArtItemEJB.findById(cdrDsArtItem.getDsNbr());
 					if(persDi!=null){
 						if(!cdrDsArtItem.contentEquals(persDi)){
@@ -96,27 +107,30 @@ public class CdrDrctSalesManager {
 					}
 				} else {
 					cdrDsArtItem.evlte();
+					if(StringUtils.isBlank(cdrDsArtItem.getObjctOrgUnit())) {
+						cdrDsArtItem.setObjctOrgUnit(securityUtil.getCurrentOrgUnit().getIdentif());
+					}
 					cdrDsArtItem = cdrDsArtItemEJB.create(cdrDsArtItem);
 					itemModified = true;
-				}
+				}*/
 			}
 
 			cdrDsArtItemHolder.setItem(cdrDsArtItem);
 		}
-		
+
 		if(itemModified){
 			recomputeOrder(cdrDrctSales);
-//			cdrDrctSales.setPoStatus(BaseProcessStatusEnum.ONGOING.name());
+			//			cdrDrctSales.setPoStatus(BaseProcessStatusEnum.ONGOING.name());
 			cdrDrctSales = cdrDrctSalesEJB.update(cdrDrctSales);
 			cdrDsArtHolder.setCdrDrctSales(cdrDrctSales);
 		}
-		if(modified || itemModified){
-//			createModifiedOrderHistory(cdrDrctSales);
-//			updateCshDrawer(cdrDrctSales);
-		}
+		/*		if(modified || itemModified){
+			createModifiedOrderHistory(cdrDrctSales);
+			updateCshDrawer(cdrDrctSales);
+		}*/
 		return cdrDsArtHolder;
 	}
-	
+
 
 	private boolean deleteHolders(CdrDsArtHolder cdrDsArtHolder){
 		List<CdrDsArtItemHolder> cdrDsArtItemHolders = cdrDsArtHolder.getItems();
@@ -136,10 +150,10 @@ public class CdrDrctSalesManager {
 		cdrDsArtItemHolders.removeAll(oiToRemove);
 		return modified;
 	}
-	
+
 
 	private void recomputeOrder(final CdrDrctSales cdrDrctSales){
-		// recompute order object.
+		// recompute sales object.
 		String dsNbr = cdrDrctSales.getDsNbr();
 		Long count = cdrDsArtItemEJB.countByDsNbr(dsNbr);
 		int start = 0;
@@ -159,18 +173,18 @@ public class CdrDrctSalesManager {
 		cdrDrctSales.evlte();
 	}
 
-	public CdrDsArtHolder closeOrder(CdrDsArtHolder cdrDsArtHolder){
+	public CdrDsArtHolder closeSales(CdrDsArtHolder cdrDsArtHolder){
 		cdrDsArtHolder = updateOrder(cdrDsArtHolder);
 		CdrDrctSales cdrDrctSales = cdrDsArtHolder.getCdrDrctSales();
 		recomputeOrder(cdrDrctSales);
-//		procOrder.setPoStatus(BaseProcessStatusEnum.CLOSED.name());
+		//		procOrder.setPoStatus(BaseProcessStatusEnum.CLOSED.name());
 		cdrDrctSales = cdrDrctSalesEJB.update(cdrDrctSales);
 		cdrDsArtHolder.setCdrDrctSales(cdrDrctSales);
 		createClosedSalesHistory(cdrDrctSales);// closed, no need processor?
 
 		return cdrDsArtHolder;
 	}
-	
+
 	public CdrDsArtHolder findOrder(String id){
 		CdrDsArtHolder cdrDsArtHolder = new CdrDsArtHolder();
 		CdrDrctSales cdrDrctSales = cdrDrctSalesEJB.findById(id);
@@ -183,16 +197,16 @@ public class CdrDrctSalesManager {
 		}
 		return cdrDsArtHolder;
 	}
-	
+
 
 	private void createClosedSalesHistory(CdrDrctSales cdrDrctSales){
 		TermWsUserPrincipal callerPrincipal = securityUtil.getCallerPrincipal();
 		CdrDsHstry cdrDsHstry = new CdrDsHstry();
-		
+
 		cdrDsHstry.setComment(BaseHistoryTypeEnum.CLOSED.name());
 		cdrDsHstry.setAddtnlInfo(CdrDsInfo.prinInfo(cdrDrctSales));
 		cdrDsHstry.setEntIdentif(cdrDrctSales.getId());
-//		cdrDsHstry.setEntStatus(prcmtOrder.getPoStatus());
+		//		cdrDsHstry.setEntStatus(prcmtOrder.getPoStatus());
 		cdrDsHstry.setHstryDt(new Date());
 		cdrDsHstry.setHstryType(BaseHistoryTypeEnum.CLOSED.name());	
 		cdrDsHstry.setOrignLogin(callerPrincipal.getName());

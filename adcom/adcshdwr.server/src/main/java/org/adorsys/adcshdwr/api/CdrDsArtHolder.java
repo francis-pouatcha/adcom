@@ -1,8 +1,9 @@
 /**
  * 
  */
-package org.adorsys.adcshdwr.manager;
+package org.adorsys.adcshdwr.api;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.adorsys.adcshdwr.jpa.CdrDrctSales;
@@ -14,10 +15,11 @@ import org.adorsys.adcshdwr.jpa.CdrDrctSales;
 public class CdrDsArtHolder {
 	
 	private CdrDrctSales cdrDrctSales;
+	private BigDecimal paidAmt;//amt given by the customer
+	private BigDecimal changeAmt;//change 
+	
 	private List<CdrDsArtItemHolder> items;
 
-	
-	
 	public CdrDrctSales getCdrDrctSales() {
 		return cdrDrctSales;
 	}
@@ -32,6 +34,22 @@ public class CdrDsArtHolder {
 
 	public void setItems(List<CdrDsArtItemHolder> items) {
 		this.items = items;
+	}
+
+	public BigDecimal getPaidAmt() {
+		return paidAmt;
+	}
+
+	public void setPaidAmt(BigDecimal paidAmt) {
+		this.paidAmt = paidAmt;
+	}
+
+	public BigDecimal getChangeAmt() {
+		return changeAmt;
+	}
+
+	public void setChangeAmt(BigDecimal changeAmt) {
+		this.changeAmt = changeAmt;
 	}
 
 	@Override

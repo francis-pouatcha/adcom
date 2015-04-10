@@ -38,7 +38,9 @@ angular
 								module : 'adaptmt'
 							}).when('/aptaptmt/show/:id', {
 								templateUrl : 'views/aptaptmt/show.html',
-								controller : 'aptAptmtShowController'
+								controller : 'aptAptmtShowController',
+								controllerAs : 'aptAptmtShowCtlr',
+								module : 'adaptmt'
 							}).when('/aptaptmt/update/:id', {
 								templateUrl : 'views/aptaptmt/update.html',
 								controller : 'aptAptmtUpdateController',

@@ -1,4 +1,4 @@
-package org.adorsys.adcshdwr.manager;
+package org.adorsys.adcshdwr.api;
 
 import java.math.BigDecimal;
 

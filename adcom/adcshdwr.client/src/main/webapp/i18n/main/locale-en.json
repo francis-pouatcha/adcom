@@ -89,6 +89,10 @@
 "CdrDrctSales_rebate_description.title":"Rebate Amount",
 "CdrDrctSales_vatAmount_description.text":"Tax amount for this sales order.",
 "CdrDrctSales_vatAmount_description.title":"VAT Amount",
+"CdrDrctSales_paidAmt_description.text":"Paid amount",
+"CdrDrctSales_paidAmt_description.title":"Paid amount",
+"CdrDrctSales_changeAmt_description.text":"Change",
+"CdrDrctSales_changeAmt_description.title":"Change",
 
 "CdrDsArtItem_artPic_description.text":"The article code",
 "CdrDsArtItem_artName_description.text":"The Article Name",

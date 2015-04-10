@@ -35,15 +35,14 @@ public class CdrDrctSalesEJB
 		entity.setCashier(securityUtil.getCurrentLoginName());
 		entity.setId(entity.getDsNbr());
 		entity.setIdentif(entity.getDsNbr());
-
-		CdrDrctSalesEvt cdrDrctSalesEvt = new CdrDrctSalesEvt();
-
 		entity = repository.save(attach(entity));
+		repository.flush();
+		CdrDrctSalesEvt cdrDrctSalesEvt = new CdrDrctSalesEvt();
 		entity.copyTo(cdrDrctSalesEvt);
 		cdrDrctSalesEvt.setId(entity.getId());
 		cdrDrctSalesEvt.setIdentif(entity.getIdentif());
 		cdrDrctSalesEvtEJB.create(cdrDrctSalesEvt);
-		return repository.save(attach(entity));
+		return entity;
 	}
 
 	public CdrDrctSales deleteById(String id)
@@ -60,12 +59,12 @@ public class CdrDrctSalesEJB
 	public CdrDrctSales update(CdrDrctSales entity)
 	{
 		CdrDrctSalesEvt cdrDrctSalesEvt = cdrDrctSalesEvtEJB.findById(entity.getId());
-		
+		entity = repository.save(attach(entity));
 		if (cdrDrctSalesEvt != null) {
 			entity.copyTo(cdrDrctSalesEvt);
 			cdrDrctSalesEvtEJB.update(cdrDrctSalesEvt);
 		}
-		return repository.save(attach(entity));
+		return entity;
 	}
 
 	public CdrDrctSales findById(String id)

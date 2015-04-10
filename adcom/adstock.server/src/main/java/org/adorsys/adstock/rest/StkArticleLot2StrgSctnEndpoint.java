@@ -38,8 +38,7 @@ import org.adorsys.adstock.jpa.StkArticleLot2StrgSctn_;
 @Stateless
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 @Path("/stkarticlelot2strgsctns")
-public class StkArticleLot2StrgSctnEndpoint
-{
+public class StkArticleLot2StrgSctnEndpoint{
 
    @Inject
    private StkArticleLot2StrgSctnEJB ejb;

@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -17,7 +17,7 @@ import org.adorsys.adcore.utils.FinancialOps;
 import org.adorsys.javaext.description.Description;
 
 
-@Entity
+@MappedSuperclass
 @Description("CdrDrctSales_description")
 public class CdrAbstractDrctSales extends AbstractIdentifData {
 

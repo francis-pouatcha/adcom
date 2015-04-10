@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.adorsys.adcshdwr.manager;
+package org.adorsys.adcshdwr.api;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -13,17 +13,16 @@ import javax.ws.rs.Produces;
  * @author boriswaguia
  *
  */
-@Path("/cdrdrctsalesmanager")
-public class CdrDrctSalesManagerEndpoint {
-
+@Path("/cdrpymntmanager")
+public class CdrPymntManagerEndPoint {
 	@Inject
-	private CdrDrctSalesManager ejb;
+	private CdrPymntManager ejb;
 	
 	
 	@POST
 	@Consumes({ "application/json", "application/xml" })
 	@Produces({ "application/json", "application/xml" })
-	public CdrDsArtHolder save(CdrDsArtHolder cdrDsArtHolder) {
-		return ejb.updateOrder(cdrDsArtHolder);
+	public CdrPymntHolder save(CdrPymntHolder cdrPymntHolder) {
+		return ejb.saveAndClovePymt(cdrPymntHolder);
 	}
 }

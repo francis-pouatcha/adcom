@@ -22,11 +22,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.adorsys.adaptmt.jpa.AptAptmt;
-import org.adorsys.adaptmt.jpa.AptAptmt_;
 import org.adorsys.adaptmt.jpa.AptAptmtSearchInput;
 import org.adorsys.adaptmt.jpa.AptAptmtSearchResult;
 import org.adorsys.adaptmt.jpa.AptAptmt_;
-
 
 /**
  * 
@@ -34,8 +32,7 @@ import org.adorsys.adaptmt.jpa.AptAptmt_;
 @Stateless
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 @Path("/aptaptmts")
-public class AptAptmtEndpoint
-{
+public class AptAptmtEndpoint {
 	@Inject
 	private AptAptmtEJB ejb;
 
@@ -84,6 +81,38 @@ public class AptAptmtEndpoint
 		searchInput.setMax(max);
 		return new AptAptmtSearchResult((long) resultList.size(),
 				detach(resultList), detach(searchInput));
+	}
+
+	@GET
+	@Path("previousLogin/{id}")
+	@Produces({ "application/json", "application/xml" })
+	public Response previousLogin(@PathParam("id") String id) {
+		List<AptAptmt> found;
+		try {
+			found = ejb.findPreviousAptAptmt(id);
+		} catch (Exception e) {
+			return Response.status(Status.NOT_FOUND).build();
+		}
+		if (found.isEmpty()) {
+			return Response.status(Status.NOT_FOUND).build();
+		}
+		return Response.ok(detach(found.iterator().next())).build();
+	}
+
+	@GET
+	@Path("nextLogin/{id}")
+	@Produces({ "application/json", "application/xml" })
+	public Response nextLogin(@PathParam("id") String id) {
+		List<AptAptmt> found;
+		try {
+			found = ejb.findNextAptAptmt(id);
+		} catch (Exception e) {
+			return Response.status(Status.NOT_FOUND).build();
+		}
+		if (found.isEmpty()) {
+			return Response.status(Status.NOT_FOUND).build();
+		}
+		return Response.ok(detach(found.iterator().next())).build();
 	}
 
 	@GET

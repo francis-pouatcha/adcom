@@ -24,9 +24,9 @@ public class AptAptmtEJB {
 	private SecurityUtil securityUtil;
 
 	public AptAptmt create(AptAptmt entity) {
-		
+
 		Date now = new Date();
-		if(checkAptAptmtDate(entity.getAppointmentDate(), now))
+		if (checkAptAptmtDate(entity.getAppointmentDate(), now))
 			entity.setCreateDate(now);
 		else
 			entity.setCreateDate(DateUtils.addWeeks(now, 1));
@@ -90,15 +90,25 @@ public class AptAptmtEJB {
 
 		return entity;
 	}
-	
-	public boolean checkAptAptmtDate(Date aptAptmtDate, Date aptAptmtCreationDate){
 
-		if(aptAptmtDate.before(aptAptmtCreationDate))
+	public boolean checkAptAptmtDate(Date aptAptmtDate,
+			Date aptAptmtCreationDate) {
+
+		if (aptAptmtDate.before(aptAptmtCreationDate))
 			return false;
-		if(aptAptmtDate.equals(aptAptmtCreationDate))
+		if (aptAptmtDate.equals(aptAptmtCreationDate))
 			return false;
-		
+
 		return true;
+	}
+
+	public List<AptAptmt> findPreviousAptAptmt(String id) {
+		return repository.findPreviousAptAptmt(id).maxResults(2)
+				.getResultList();
+	}
+
+	public List<AptAptmt> findNextAptAptmt(String id) {
+		return repository.findNextAptAptmt(id).maxResults(2).getResultList();
 	}
 
 }
