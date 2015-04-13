@@ -97,28 +97,28 @@
 
                     </div>
                     <div class="table-overflow-middle row">
-                        <table st-table="slsSalesOrders()" class="table table-bordered  table-striped pointer-element" >
+                        <table class="table table-bordered  table-striped pointer-element" >
                             <thead>
+                            <div class="row">
+                              <div class="col-lg-3">
+                                 <input ng-model="q" id="search" class="form-control" placeholder="Recherche..."/>
+                              </div> 
+                            </div><br>
                             <tr>
-                                <th colspan="10">
-                                    <input st-search placeholder="Recherche..." class="input-sm form-control" type="search"/>
-                                </th>
-                            </tr>
-                            <tr>
-                                <th st-sort="soNbr" class="text-center">{{slsSalesOrderUtils.translations['SlsSalesOrder_soNbr_description.title']}}</th>
-                                <th st-sort="soStatus" class="text-center">{{slsSalesOrderUtils.translations['SlsSalesOrder_soStatus_description.title']}}</th>
-                                <th st-sort="acsngUser" class="text-center">{{slsSalesOrderUtils.translations['SlsSalesOrder_acsngUser_description.title']}}</th>
-                                <th st-sort="netSPPreTax" class="text-center">{{slsSalesOrderUtils.translations['SlsSalesOrder_netSPPreTax_description.title']}}</th>
-                                <th st-sort="vatAmount" class="text-center">{{slsSalesOrderUtils.translations['SlsSalesOrder_vatAmount_description.title']}}</th>
-                                <th st-sort="netSPTaxIncl" class="text-center">{{slsSalesOrderUtils.translations['SlsSalesOrder_netSPTaxIncl_description.title']}}</th>
-                                <th st-sort="netSalesAmt" class="text-center">{{slsSalesOrderUtils.translations['SlsSalesOrder_netSalesAmt_description.title']}}</th>
-                                <th st-sort="netAmtToPay" class="text-center">{{slsSalesOrderUtils.translations['SlsSalesOrder_netAmtToPay_description.title']}}</th>
+                                <th class="text-center">{{slsSalesOrderUtils.translations['SlsSalesOrder_soNbr_description.title']}}</th>
+                                <th class="text-center">{{slsSalesOrderUtils.translations['SlsSalesOrder_soStatus_description.title']}}</th>
+                                <th class="text-center">{{slsSalesOrderUtils.translations['SlsSalesOrder_acsngUser_description.title']}}</th>
+                                <th class="text-center">{{slsSalesOrderUtils.translations['SlsSalesOrder_netSPPreTax_description.title']}}</th>
+                                <th class="text-center">{{slsSalesOrderUtils.translations['SlsSalesOrder_vatAmount_description.title']}}</th>
+                                <th class="text-center">{{slsSalesOrderUtils.translations['SlsSalesOrder_netSPTaxIncl_description.title']}}</th>
+                                <th class="text-center">{{slsSalesOrderUtils.translations['SlsSalesOrder_netSalesAmt_description.title']}}</th>
+                                <th class="text-center">{{slsSalesOrderUtils.translations['SlsSalesOrder_netAmtToPay_description.title']}}</th>
                                 <th></th>
                                 <th></th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="slsSO in slsSalesOrders()" >
+                            <tr dir-paginate="slsSO in slsSalesOrders() | filter:q | itemsPerPage: itemPerPage()" >
                                 <td>{{slsSO.soNbr}}</td>
                                 <td>{{slsSalesOrderUtils.slsSOStatusI18nMsgTitleValue(slsSO.soStatus)}}</td>
                                 <td>{{slsSO.acsngUser}}</td>

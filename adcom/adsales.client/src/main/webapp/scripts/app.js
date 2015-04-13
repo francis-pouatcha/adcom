@@ -13,7 +13,6 @@ angular.module('AdSales', [
       'pascalprecht.translate',
       'NavBar',
       '720kb.tooltips',
-      'smart-table',
       'angularUtils.directives.dirPagination'
 ])
 .constant('APP_CONFIG',{
