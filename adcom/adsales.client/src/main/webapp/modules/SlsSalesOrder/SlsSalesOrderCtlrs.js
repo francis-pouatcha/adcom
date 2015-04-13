@@ -97,6 +97,7 @@ angular.module('AdSales')
                     'SlsSOItem_rebate_description.title',
                     'SlsSOItem_netSPPreTax_description.title',
                     'SlsSOItem_netSPTaxIncl_description.title',
+                    'SlsSOItem_sppuPreTax_description.title',
                     
     	            'Entity_show.title',
     	            'Entity_previous.title',
@@ -179,7 +180,15 @@ function($scope,genericResource,slsSalesOrderUtils,slsSalesOrderState,$location,
     $scope.slsSalesOrderUtils=slsSalesOrderUtils;
     $scope.show=show;
     $scope.edit=edit;
+    translateSOStatus();
     fullFillSales();
+    
+    
+    function translateSOStatus(){
+        for(var i=0; i<$scope.slsSalesOrders.length; i++){
+            $scope.slsSalesOrders[i].soStatus= slsSalesOrderUtils.slsSOStatusI18nMsgTitleValue($scope.slsSalesOrders[i].soStatus);
+        }
+    }
     
     
     function fullFillSales(){
@@ -329,12 +338,11 @@ function($scope,genericResource,slsSalesOrderUtils,slsSalesOrderState,$location,
     $scope.itemPerPage=slsSalesOrderState.resultHandler.itemPerPage;
     $scope.currentPage=slsSalesOrderState.resultHandler.currentPage();
     $scope.maxSize =slsSalesOrderState.resultHandler.maxResult;
-    $scope.slsSalesOrder.soStatus = slsSalesOrderUtils.slsSOStatusI18nMsgTitleValue($scope.slsSalesOrder.soStatus);
     $scope.slsSalesOrder.soDt = $filter('date')($scope.slsSalesOrder.soDt, 'dd-MM-yyyy HH:mm', '');
     $scope.error = "";
     $scope.slsSalesOrderUtils=slsSalesOrderUtils;
     $scope.pageChangeHandler = function(num) {
-      console.log('Articles page change to' + num);
+      //nothing to do
     };
     
     
