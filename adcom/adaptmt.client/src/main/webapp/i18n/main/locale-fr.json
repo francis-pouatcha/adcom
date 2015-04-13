@@ -16,6 +16,20 @@
 "AptAptmt_parentIdentify_description.title":"RDV parent",
 "AptAptmt_parentIdentify_description.text":"RDV parent RDV",
 "AptAptmt_createDate_description":"Date création",
-"AptAptmt_status_description":"Status du RDV"
+"AptAptmt_status_description":"Status du RDV",
+
+
+
+"Entity_create_Report.title":"Créer Rapport",
+"Entity_list_Report.title":"Créer",
+"AptAptmtReport_title_description.text":"Titre du Rapport du Rendez-Vous",
+"AptAptmtReport_title_description.title":"Titre Rapport RDV",
+"AptAptmtReport_description.text":"Description",
+"AptAptmtReport_description_description.title":"Description",
+"AptAptmtReport_CreateUser.text":"Créateur",
+"AptAptmtReport_CreateDate.text":"Date de Création",
+"Entity_createRepport.title":"Creation de Rapport",
+"Entity_cancel.title":"Annulation de RDV",
+"AptAptmtRepport_numero_description.title":"Numero de Rapport"
 
 }
