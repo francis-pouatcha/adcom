@@ -14,27 +14,45 @@
                     <div class="row">
                         <div class="col-lg-3">
                             <div class="form-group">
+                                <label class=" control-label" for="dsNbr">{{cdrDrctSalesUtils.translations['CdrDrctSales_dsNbr_description.title']}}</label>
+                                <div class="">
+                                    <input type="text" id="dsNbr" ng-model="searchInput.entity.dsNbr" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label class=" control-label" for="cashier">{{cdrDrctSalesUtils.translations['CdrDrctSales_cashier_description.title']}}</label>
+                                <div class="">
+                                    <input type="text" id="cashier" ng-model="searchInput.entity.cashier" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
                                 <label class=" control-label" for="cdrNbr">{{cdrDrctSalesUtils.translations['CdrDrctSales_cdrNbr_description.title']}}</label>
                                 <div class="">
-                                    <input type="text" id="cdrNbr" ng-model="searchInput.entity.cdrNbr" class="form-control">
+                                    <input type="text" id="cdrNbr " ng-model="searchInput.cdrNbr" class="form-control">
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-3">
                             <div class="form-group">
-                                <label class=" control-label" for="cdrNbr">{{commonTranslations.translations['Entity_From.title']}}</label>
+                                <label class=" control-label" for="rcptNbr">{{cdrDrctSalesUtils.translations['CdrDrctSales_rcptNbr_description.title']}}</label>
                                 <div class="">
-                                    <input type="text" id="cdrNbr" ng-model="searchInput.from" class="form-control">
+                                    <input type="text" id="rcptNbr" ng-model="searchInput.rcptNbr" class="form-control">
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-3">
-                            <div class="form-group">
-                                <label class=" control-label" for="rcptNbr">{{commonTranslations.translations['Entity_From.title']}}</label>
-                                <div class="">
-                                    <input type="text" id="rcptNbr" ng-model="searchInput.to" class="form-control">
+                                <div class="form-group">
+                                    <button  ng-click="handleSearchRequestEvent()" class="btn btn-default " style="margin-top: 23px;" >
+                                        <i class="glyphicon glyphicon-search"></i>
+                                    </button>
+                                    <button  ng-click="handlePrintRequestEvent()" class="btn btn-default " style="margin-top: 23px;" >
+                                        <i class="glyphicon glyphicon-print"></i>
+                                    </button>
                                 </div>
-                            </div>
                         </div>
                     </div>
                 </form>
@@ -77,22 +95,22 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="cdrDrctSale in cdrDrctSales" ng-dblclick="editItem">
-                                <td>{{CdrDrctSales.cashier}}</td>
-                                <td>{{CdrDrctSales.dsCur}}</td>
-                                <td>{{CdrDrctSales.dsNb}}</td>
-                                <td>{{CdrDrctSales.grossSPPreTax}}</td>
+                                <td>{{cdrDrctSale.cashier}}</td>
+                                <td>{{cdrDrctSale.dsCur}}</td>
+                                <td>{{cdrDrctSale.dsNb}}</td>
+                                <td>{{cdrDrctSale.grossSPPreTax}}</td>
 
-                                <td>{{CdrDrctSales.netAmtToPay}}</td>
-                                <td>{{CdrDrctSales.netSPPreTax}}</td>
-                                <td>{{CdrDrctSales.netSPTaxIncl}}</td>
-                                <td>{{CdrDrctSales.netSalesAmt}}</td>
-                                <td>{{CdrDrctSales.pymtDscntAmt}}</td>
-                                <td>{{CdrDrctSales.pymtDscntPct}}</td>
-                                <td>{{CdrDrctSales.rcptNbr}}</td>
-                                <td>{{CdrDrctSales.rcptPrntDt  | date:'yyyy-MM-dd HH:mm'}}</td>
-                                <td>{{CdrDrctSales.rdngDscntAm}}</td>
-                                <td>{{CdrDrctSales.rebate}}</td>
-                                <td>{{CdrDrctSales.vatAmount}}</td>
+                                <td>{{cdrDrctSale.netAmtToPay}}</td>
+                                <td>{{cdrDrctSale.netSPPreTax}}</td>
+                                <td>{{cdrDrctSale.netSPTaxIncl}}</td>
+                                <td>{{cdrDrctSale.netSalesAmt}}</td>
+                                <td>{{cdrDrctSale.pymtDscntAmt}}</td>
+                                <td>{{cdrDrctSale.pymtDscntPct}}</td>
+                                <td>{{cdrDrctSale.rcptNbr}}</td>
+                                <td>{{cdrDrctSale.rcptPrntDt  | date:'yyyy-MM-dd HH:mm'}}</td>
+                                <td>{{cdrDrctSale.rdngDscntAm}}</td>
+                                <td>{{cdrDrctSale.rebate}}</td>
+                                <td>{{cdrDrctSale.vatAmount}}</td>
                                 <td><a href="#/CdrDrctSales/show/{{cdrDrctSale.id}}"><i class="glyphicon glyphicon-eye-open"></i></a>
                                 </td>
                             </tr>

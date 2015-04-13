@@ -143,9 +143,9 @@ angular.module('AdCshdwr')
                                 var displayableStr = "";
                                 displayable.artName = "Product (" + artName + ")";
                                 displayableStr += artName;
-                                if (artQty.logPic) {
-                                    displayable.logPic = artQty.logPic;
-                                    displayableStr += "- lot (" + artQty.logPic + ")";
+                                if (artQty.lotPic) {
+                                    displayable.lotPic = artQty.lotPic;
+                                    displayableStr += "- lot (" + artQty.lotPic + ")";
                                 }
                                 if (artQty.section) {
                                     displayable.section = artQty.section;
@@ -182,6 +182,7 @@ angular.module('AdCshdwr')
 
         var service = {};
         var selectedIndexVar = -1;
+        var searchResult = {};
         service.selectedIndex = function (selectedIndexIn) {
             if (selectedIndexIn) selectedIndexVar = selectedIndexIn;
             return selectedIndexVar;
@@ -316,7 +317,15 @@ angular.module('AdCshdwr')
 
             return service.cdrDrctSale();
         };
-
+        service.searchResult = function (srchRslt) {
+            if (srchRslt) {
+                searchResult = srchRslt;
+            }
+            return searchResult;
+        };
+        service.hasEntities = function() {
+            return searchResult.resultList && searchResult.resultList.length > 0;
+        }
         return service;
 
 }])
@@ -349,14 +358,28 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
 
             init();
 
+            function processSearchInput(searchInput) {
+                if (angular.isDefined(searchInput.entity.dsNbr ) && searchInput.entity.dsNbr ) {
+                    searchInput.fieldNames.push('dsNbr ');
+                }
+                if (angular.isDefined(searchInput.entity.cashier ) && searchInput.entity.cashier ) {
+                    searchInput.fieldNames.push('cashier');
+                }
+                if (angular.isDefined(searchInput.entity.cdrNbr ) && searchInput.entity.cdrNbr ) {
+                    searchInput.fieldNames.push('cdrNbr');
+                }
+                if (angular.isDefined(searchInput.entity.rcptNbr ) && searchInput.entity.rcptNbr ) {
+                    searchInput.fieldNames.push('rcptNbr');
+                }
+            }
+
             function findCustom(searchInput) {
                 genericResource.findCustom(cdrDrctSalesUtils.urlBase, searchInput)
                     .success(function (entitySearchResult) {
                         // store search
-                        cdrDrctSalesState.resultHandler.searchResult(entitySearchResult);
-                        $scope.searchInput = cdrDrctSalesState.resultHandler.searchInput();
-                        setAccessingUserName();
-                        setSectionName();
+                        cdrDrctSalesState.searchResult(entitySearchResult);
+                        $scope.searchInput = cdrDrctSalesState.searchResult().searchInput;
+                        $scope.cdrDrctSales = cdrDrctSalesState.searchResult().resultList;
                     })
                     .error(function (error) {
                         $scope.error = error;
@@ -364,18 +387,11 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
             }
 
             function handleSearchRequestEvent() {
-                if ($scope.searchInput.acsngUser) {
-                    $scope.searchInput.entity.acsngUser = $scope.searchInput.acsngUser.loginName;
-                } else {
-                    $scope.searchInput.entity.acsngUser = '';
-                }
-                findCustom($scope.searchInput);
-            }
-
-            function handlePrintRequestEvent() {
                 processSearchInput($scope.searchInput);
                 findCustom($scope.searchInput);
             }
+
+            function handlePrintRequestEvent() {}
 
             function paginate() {
                 $scope.searchInput = cdrDrctSaleState.paginate();
@@ -388,7 +404,6 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
             }
 
             function init() {
-                if (cdrDrctSalesState.resultHandler.hasEntities()) return;
                 findCustom($scope.searchInput);
             }
 
@@ -423,7 +438,7 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
 
             $scope.onArticleSelectedInSearch = function (item, model, label) {
                 $scope.cdrDsArtItemHolder.item.artPic = item.artPic;
-                $scope.cdrDsArtItemHolder.item.lotPic = item.logPic;
+                $scope.cdrDsArtItemHolder.item.lotPic = item.lotPic;
                 $scope.cdrDsArtItemHolder.artName = item.artName;
                 $scope.cdrDsArtItemHolder.item.sppuPreTax = item.sppuPreTax;
                 if (!item.sppuPreTax) item.sppuPreTax = 0.0;
