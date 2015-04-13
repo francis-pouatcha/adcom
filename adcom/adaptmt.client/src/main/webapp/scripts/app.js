@@ -6,7 +6,7 @@ angular
 				[ 'ngRoute', 'ngCookies', 'ui.bootstrap', 'SessionManager',
 						'AuthInterceptor', 'ngSanitize',
 						'pascalprecht.translate', 'NavBar', 'ngResource',
-						'datePicker', 'ADUtils', 'httpProgress' ])
+						'datePicker', 'ADUtils', 'httpProgress', 'AdBnsptnr' ])
 
 		.constant('APP_CONFIG', {
 			'appName' : 'Appointment',
