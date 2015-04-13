@@ -132,28 +132,28 @@ angular.module('AdCshdwr')
                     var resultList = entitySearchResult.resultList;
                     console.log(resultList);
                     var displayDatas = [];
-                    angular.forEach(resultList,function(item){
+                    angular.forEach(resultList, function (item) {
                         var artName = item.artName;
                         var displayable = {};
                         var sectionArticleLot = item.sectionArticleLot;
-                        if(sectionArticleLot) {
+                        if (sectionArticleLot) {
                             var artQties = sectionArticleLot.artQties;
-                            if(!artQties) artQties = [];
-                            angular.forEach(artQties, function(artQty){
+                            if (!artQties) artQties = [];
+                            angular.forEach(artQties, function (artQty) {
                                 var displayableStr = "";
-                                displayable.artName = "Product ("+artName+")";
+                                displayable.artName = "Product (" + artName + ")";
                                 displayableStr += artName;
-                                if(artQty.logPic) {
+                                if (artQty.logPic) {
                                     displayable.logPic = artQty.logPic;
-                                    displayableStr += "- lot ("+artQty.logPic+")";
+                                    displayableStr += "- lot (" + artQty.logPic + ")";
                                 }
-                                if(artQty.section) {
+                                if (artQty.section) {
                                     displayable.section = artQty.section;
-                                    displayableStr += "- section ("+artQty.section+")";
+                                    displayableStr += "- section (" + artQty.section + ")";
                                 }
-                                if(artQty.stockQty) {
+                                if (artQty.stockQty) {
                                     displayable.stockQty = artQty.stockQty;
-                                    displayableStr += "- Qty ("+artQty.stockQty+")";
+                                    displayableStr += "- Qty (" + artQty.stockQty + ")";
                                 }
                                 displayable.artPic = artQty.artPic;
                                 displayable.sppuPreTax = sectionArticleLot.sppuHT;
@@ -164,7 +164,7 @@ angular.module('AdCshdwr')
                                 displayable.salesVatAmt = sectionArticleLot.salesVatAmt;
                                 displayable.salesWrntyDys = sectionArticleLot.salesWrntyDys;
                                 displayable.salesRtrnDays = sectionArticleLot.salesRtrnDays;
-                                
+
                                 displayable.displayableStr = displayableStr;
                                 displayDatas.push(displayable);
                             });
@@ -349,6 +349,20 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
 
             init();
 
+            function findCustom(searchInput) {
+                genericResource.findCustom(cdrDrctSalesUtils.urlBase, searchInput)
+                    .success(function (entitySearchResult) {
+                        // store search
+                        cdrDrctSalesState.resultHandler.searchResult(entitySearchResult);
+                        $scope.searchInput = cdrDrctSalesState.resultHandler.searchInput();
+                        setAccessingUserName();
+                        setSectionName();
+                    })
+                    .error(function (error) {
+                        $scope.error = error;
+                    });
+            }
+
             function handleSearchRequestEvent() {
                 if ($scope.searchInput.acsngUser) {
                     $scope.searchInput.entity.acsngUser = $scope.searchInput.acsngUser.loginName;
@@ -359,7 +373,8 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
             }
 
             function handlePrintRequestEvent() {
-                // To do
+                processSearchInput($scope.searchInput);
+                findCustom($scope.searchInput);
             }
 
             function paginate() {
@@ -373,16 +388,8 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
             }
 
             function init() {
-                //find previous cdr cshdrawers
-                loadPreviousCshDrws();
-            }
-
-            function loadPreviousCshDrws() {
-                genericResource.listAll(cdrDrctSalesUtils.urlBase).success(function (result) {
-                    $scope.cdrCshDrawers = result;
-                }).error(function (error) {
-                    $scope.error = error;
-                });
+                if (cdrDrctSalesState.resultHandler.hasEntities()) return;
+                findCustom($scope.searchInput);
             }
 
             function show(cdrCshDrawer, index) {
@@ -413,14 +420,14 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
             };
 
             function create() {};
-            
+
             $scope.onArticleSelectedInSearch = function (item, model, label) {
                 $scope.cdrDsArtItemHolder.item.artPic = item.artPic;
                 $scope.cdrDsArtItemHolder.item.lotPic = item.logPic;
                 $scope.cdrDsArtItemHolder.artName = item.artName;
                 $scope.cdrDsArtItemHolder.item.sppuPreTax = item.sppuPreTax;
-                if(!item.sppuPreTax) item.sppuPreTax = 0.0;
-                if(!item.salesVatAmt) item.salesVatAmt = 0.0;
+                if (!item.sppuPreTax) item.sppuPreTax = 0.0;
+                if (!item.salesVatAmt) item.salesVatAmt = 0.0;
                 $scope.cdrDsArtItemHolder.item.netSPPreTax = item.sppuPreTax + item.salesVatAmt;
                 $scope.cdrDsArtItemHolder.maxStockQty = item.stockQty;
                 $scope.cdrDsArtItemHolder.item.sppuCur = item.sppuCur;

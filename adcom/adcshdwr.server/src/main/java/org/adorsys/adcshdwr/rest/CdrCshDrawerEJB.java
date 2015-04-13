@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
 import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adbase.security.SecurityUtil;
@@ -28,6 +29,9 @@ public class CdrCshDrawerEJB
 
 	@Inject
 	private SecurityUtil securityUtil;
+	
+	@Inject
+	private EntityManager em;
 
 	public CdrCshDrawer create(CdrCshDrawer entity)
 	{
@@ -168,4 +172,5 @@ public class CdrCshDrawerEJB
 		List<CdrCshDrawer> previous = repository.findPrevious(loginName);
 		return previous;
 	}
+	
 }

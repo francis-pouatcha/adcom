@@ -133,6 +133,18 @@ public class CdrDrctSalesEndpoint
       return new CdrDrctSalesSearchResult(countLike, detach(resultList),
             detach(searchInput));
    }
+   
+   @POST
+   @Path("/findCustom")
+   @Produces({ "application/json", "application/xml" })
+   @Consumes({ "application/json", "application/xml" })
+   public CdrDrctSalesSearchResult findCustom(CdrDrctSalesSearchInput searchInput)
+   {
+	   Long countLike = ejb.countCustom(searchInput);
+	   List<CdrDrctSales> resultList = ejb.findCustom(searchInput);
+	   return new CdrDrctSalesSearchResult(countLike, detach(resultList),
+			   detach(searchInput));
+   }
 
    @POST
    @Path("/countByLike")
