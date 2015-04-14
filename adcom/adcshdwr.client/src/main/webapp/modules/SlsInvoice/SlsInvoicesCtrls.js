@@ -253,7 +253,7 @@ function ($scope, genericResource, cdrSlsInvoicetUtils, cdrSlsInvoiceState, $loc
                 start : 0,
                 max : 100,
                 fieldNames : []
-            }
+            };
 
             var translateChangeSuccessHdl = $rootScope.$on('$translateChangeSuccess', function () {
                 cdrSlsInvoicetUtils.translate();
@@ -266,7 +266,7 @@ function ($scope, genericResource, cdrSlsInvoicetUtils, cdrSlsInvoiceState, $loc
             init();
 
             function handleSearchRequestEvent() {
-                $scope.searchInput = processSearchInput($scope,searchInput);
+                $scope.searchInput = processSearchInput($scope.searchInput);
                 findCustom($scope.searchInput);
             }
     
