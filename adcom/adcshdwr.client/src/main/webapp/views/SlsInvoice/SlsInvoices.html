@@ -1,0 +1,114 @@
+<div class="row" ng-cloak>
+        <div class="panel panel-default  ng-scope">
+            <div class="panel-heading no-collapse">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <b>{{cdrSlsInvoicetUtils.translations['Entity_search.title']}}</b>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="">
+                    <form role="form" class="">
+                        <div class="row" >
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label class=" control-label" for="invceNbr">{{cdrSlsInvoicetUtils.translations['SlsInvoice_invceNbr_description.title']}}</label>
+                                    <div class="">
+                                        <input type="text" id="invceNbr" ng-model="searchInput.entity.invceNbr" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label class=" control-label" for="invceStatus">{{cdrSlsInvoicetUtils.translations['SlsInvoice_invceStatus_description.title']}}</label>
+                                    <div class="">
+                                        <input type="text" id="invceStatus" ng-model="searchInput.entity.invceStatus" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label class=" control-label" for="invceType">{{cdrSlsInvoicetUtils.translations['SlsInvoice_invceType_description.title']}}</label>
+                                    <div class="">
+                                        <input type="text" id="invceType" ng-model="searchInput.entity.invceType" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <button  ng-click="handleSearchRequestEvent()" class="btn btn-default " style="margin-top: 23px;" >
+                                        <i class="glyphicon glyphicon-search"></i>
+                                    </button>
+                                    <button  ng-click="handlePrintRequestEvent()" class="btn btn-default " style="margin-top: 23px;" >
+                                        <i class="glyphicon glyphicon-print"></i>
+                                    </button>
+                                </div>
+                        </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="panel panel-default ">
+            <div class="panel-heading no-collapse"><b>{{cdrSlsInvoicetUtils.translations['SlsInvoice_description.title']}}</b></div>
+            <div class="panel-body">
+                <div class="col-lg-12">
+                    <div class="table-overflow-middle row">
+                        <table class="table table-bordered  table-striped pointer-element" >
+                            <thead>
+                            <tr>
+                    <th>{{cdrSlsInvoicetUtils.translations['SlsInvoice_invceType_description.title']}}</th>
+                                <th>{{cdrSlsInvoicetUtils.translations['SlsInvoice_invceNbr_description.title']}}</th>
+                    <th>{{cdrSlsInvoicetUtils.translations['SlsInvoice_soNbr_description.title']}}</th>
+                    <th>{{cdrSlsInvoicetUtils.translations['SlsInvoice_invceStatus_description.title']}}</th>
+                                <th>{{cdrSlsInvoicetUtils.translations['SlsInvoice_invceCur_description.title']}}</th>
+                                <th>{{cdrSlsInvoicetUtils.translations['SlsInvoice_invceDt_description.title']}}</th>
+                                <th>{{cdrSlsInvoicetUtils.translations['SlsInvoice_grossSPPreTax_description.title']}}</th>
+                                <th>{{cdrSlsInvoicetUtils.translations['SlsInvoice_rebate_description.title']}}</th>
+                                <th>{{cdrSlsInvoicetUtils.translations['SlsInvoice_netSPPreTax_description.title']}}</th>
+                    <th>{{cdrSlsInvoicetUtils.translations['SlsInvoice_vatAmount_description.title']}}</th>
+                    <th>{{cdrSlsInvoicetUtils.translations['SlsInvoice_netSPTaxIncl_description.title']}}</th>
+                    <th>{{cdrSlsInvoicetUtils.translations['SlsInvoice_pymtDscntAmt_description.title']}}</th>
+                    <th>{{cdrSlsInvoicetUtils.translations['SlsInvoice_netSalesAmt_description.title']}}</th>
+                    <th>{{cdrSlsInvoicetUtils.translations['SlsInvoice_rdngDscntAmt_description.title']}}</th>
+                    <th>{{cdrSlsInvoicetUtils.translations['SlsInvoice_pymtDscntPct_description.title']}}</th>
+                    <th>{{cdrSlsInvoicetUtils.translations['SlsInvoice_netAmtToPay_description.title']}}</th>
+                    <th>{{cdrSlsInvoicetUtils.translations['SlsInvoice_ptnrNbr_description.title']}}</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="slsInvoice in slsInvoices" ng-dblclick="editItem" >
+                                <td>{{slsInvoice.invceType}}</td>
+                                <td>{{slsInvoice.invceNbr}}</td>
+                                <td>{{slsInvoice.soNbr}}</td>
+                                <td>{{slsInvoice.invceStatus}}</td>
+                                <td>{{slsInvoice.invceCur}}</td>
+                                <td>{{slsInvoice.invceDt  | date:'yyyy-MM-dd HH:mm'}}</td>
+                                <td>{{slsInvoice.grossSPPreTax}}</td>
+                                <td>{{slsInvoice.rebate}}</td>
+                                <td>{{slsInvoice.netSPPreTax}}</td>
+                                <td>{{slsInvoice.vatAmount}}</td>
+                                <td>{{slsInvoice.netSPTaxIncl}}</td>
+                                <td>{{slsInvoice.pymtDscntPct}}</td>
+                                <td>{{slsInvoice.pymtDscntAmt}}</td>
+                                <td>{{slsInvoice.netSalesAmt}}</td>
+                                <td>{{slsInvoice.rdngDscntAmt}}</td>
+                                <td>{{slsInvoice.netAmtToPay}}</td>
+                                <td>{{slsInvoice.ptnrNbr}}</td>
+                                <td><a href="#/SlsInvoices/show/{{slsInvoice.id}}" ><i class="glyphicon glyphicon-eye-open"></i></a></td>
+                                <td><a href="#/SlsInvoices/edit/{{slsInvoice.id}}" ><i class="glyphicon glyphicon-edit"></i></a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <ul  class="pull-right">
+                        <pagination  total-items="totalItems" items-per-page="itemPerPage"  class="pagination-sm" ng-model="currentPage" ng-change="paginate()"></pagination>
+                    </ul>
+                </div>
+
+            </div>
+        </div>

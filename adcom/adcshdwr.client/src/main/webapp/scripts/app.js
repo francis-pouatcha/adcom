@@ -27,6 +27,8 @@ angular.module('AdCshdwr', [
     .when('/CdrPymnts',{templateUrl:'views/CdrPymnt/CdrPymnts.html',controller:'cdrPaymntsCtlr'})
     .when('/CdrPymnts/new',{templateUrl:'views/CdrPymnt/createCdrPymnt.html',controller:'cdrPaymntCreateCtlr'})
     .when('/CdrPymnts/edit/:identif',{templateUrl:'views/CdrPymnt/editCdrPymnt.html',controller:'cdrPaymntEditCtlr'})
+    .when('/SlsInvoices',{templateUrl:'views/SlsInvoice/SlsInvoices.html',controller:'slsInvoicesCtlr'})
+    .when('/SlsInvoices/show/:id',{templateUrl:'views/SlsInvoice/showSlsInvoices.html',controller:'cdrSlsInvoiceShowCtlr'})
     .when('/CdrCshDrawers',{templateUrl:'views/CdrCshDrawer/CdrCshDrawers.html',controller:'cdrCshDrawersCtlr'})
     .when('/CdrCshDrawers/new',{templateUrl:'views/CdrCshDrawer/createCdrCshDrawer.html',controller:'cdrCshDrawersCreateCtlr'})
     .when('/CdrCshDrawers/show/:id',{templateUrl:'views/CdrCshDrawer/showCdrCshDrawer.html',controller:'cdrCshDrawersEditCtlr'})                       .when('/CdrDrctSales',{templateUrl:'views/CdrDrctSale/CdrDrctSales.html',controller:'cdrDrctSalesCtlr'})

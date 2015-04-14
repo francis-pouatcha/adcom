@@ -113,9 +113,59 @@ angular.module('AdCshdwr')
         };
 
         service.loadArticleLotByPic = function (artPic) {
-            return genericResource.findByLikePromissed(service.stkArtLotUrlBase, 'artPic', artPic)
+            
+            var searchInput = {
+                entity: {},
+                fieldNames: [],
+                start: 0,
+                max: 10
+            };
+            searchInput.artPic = artPic;
+            return genericResource.findByLikePromissed(service.stkArtlot2strgsctnsUrlBase, 'artPic', artPic)
                 .then(function (entitySearchResult) {
-                    return entitySearchResult.resultList;
+                    var resultList = entitySearchResult.resultList;
+                    console.log(resultList);
+                    var displayDatas = [];
+                    angular.forEach(resultList, function (item) {
+                        var artName = item.artName;
+                        var displayable = {};
+                        var sectionArticleLot = item.sectionArticleLot;
+                        if (sectionArticleLot) {
+                            var artQties = sectionArticleLot.artQties;
+                            if (!artQties) artQties = [];
+                            angular.forEach(artQties, function (artQty) {
+                                var displayableStr = "";
+                                displayable.artName = "Product (" + artName + ")";
+                                displayableStr += artName;
+                                if (artQty.lotPic) {
+                                    displayable.lotPic = artQty.lotPic;
+                                    displayableStr += "- lot (" + artQty.lotPic + ")";
+                                }
+                                if (artQty.section) {
+                                    displayable.section = artQty.section;
+                                    displayableStr += "- section (" + artQty.section + ")";
+                                }
+                                if (artQty.stockQty) {
+                                    displayable.stockQty = artQty.stockQty;
+                                    displayableStr += "- Qty (" + artQty.stockQty + ")";
+                                }
+                                displayable.artPic = artQty.artPic;
+                                displayable.sppuPreTax = sectionArticleLot.sppuHT;
+                                displayable.minSppuHT = sectionArticleLot.minSppuHT;
+                                displayable.sppuTaxIncl = sectionArticleLot.sppuTaxIncl;
+                                displayable.sppuCur = sectionArticleLot.sppuCur;
+                                displayable.vatPct = sectionArticleLot.vatSalesPct;
+                                displayable.salesVatAmt = sectionArticleLot.salesVatAmt;
+                                displayable.salesWrntyDys = sectionArticleLot.salesWrntyDys;
+                                displayable.salesRtrnDays = sectionArticleLot.salesRtrnDays;
+
+                                displayable.displayableStr = displayableStr;
+                                displayDatas.push(displayable);
+                            });
+                        }
+                    });
+                    console.log(displayDatas);
+                    return displayDatas;
                 });
         }
 
