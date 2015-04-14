@@ -43,6 +43,7 @@ public class BpBnsPtnrEJB
 	   } else if (BpPtnrType.LEGAL.equals(entity.getPtnrType()) && ptnrId!=null){
 		   entity.setFullName(ptnrId.getCpnyName());
 	   }
+	   ptnrId.setShortName(entity.getFullName());
 	   
 	   if(entity.getCountryName()!=null && !StringUtils.equals(entity.getCtryOfRsdnc(), entity.getCountryName().getIso3())){
 		   entity.setCtryOfRsdnc(entity.getCountryName().getIso3());
