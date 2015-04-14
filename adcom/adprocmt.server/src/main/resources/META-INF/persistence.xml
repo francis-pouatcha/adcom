@@ -37,6 +37,7 @@
 	<class>org.adorsys.adbase.jpa.BaseRoleInProcess</class>    
 	<class>org.adorsys.adbase.jpa.BaseSttlmtOp</class>    
 	<class>org.adorsys.adbase.jpa.BaseCountryName</class>
+	<class>org.adorsys.adbase.jpa.BaseBatchEvt</class>
     
     <class>org.adorsys.adprocmt.jpa.PrcmtAbstractDelivery</class>
     <class>org.adorsys.adprocmt.jpa.PrcmtAbstractDlvrHstry</class>

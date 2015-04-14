@@ -31,7 +31,7 @@ public class InvInvtryEvtLeaseEJB {
 		return repository.save(attach(lease)).getId();
 	}
 
-	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public String close(String processOwner, String leaseId) {
 		InvInvtryEvtLease lease = findById(leaseId);
 		if(lease==null) return null;

@@ -1,6 +1,6 @@
 package org.adorsys.adprocmt.loader;
 
-import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
@@ -12,7 +12,9 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
-import org.apache.commons.lang3.time.DateUtils;
+import org.adorsys.adbase.enums.BaseHistoryTypeEnum;
+import org.adorsys.adbase.jpa.BaseBatchEvt;
+import org.adorsys.adbase.rest.BaseBatchEvtEJB;
 
 @Startup
 @Singleton
@@ -25,8 +27,9 @@ public class PrcmtLoaderRegistration {
 	@Inject
 	private PrcmtDlvryItemLoader prcmtDlvryItemLoader;
 	
-	private Date firstCall = new Date();
-	
+	@Inject
+	private BaseBatchEvtEJB batchEvtEJB;
+
 	@PostConstruct
 	public void postConstruct(){
 		dataSheetLoader.registerLoader(PrcmtDeliveryExcel.class.getSimpleName(), prcmtDeliveryLoader);
@@ -38,10 +41,8 @@ public class PrcmtLoaderRegistration {
 	@AccessTimeout(unit=TimeUnit.MINUTES, value=10)
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public void process() throws Exception {
-		// only start 7 mins after server start.
-		Date now = new Date();
-		if(now.before(DateUtils.addMinutes(firstCall, 7))) return;
-		
+		List<BaseBatchEvt> found = batchEvtEJB.findByEvtModuleAndEvtKlassAndEvtName("ADSTOCK", "InvInvtryEvt", BaseHistoryTypeEnum.COMMITTED.name(), 0, 1);
+		if(found.isEmpty()) return;
 		dataSheetLoader.process();
 	}
 	
