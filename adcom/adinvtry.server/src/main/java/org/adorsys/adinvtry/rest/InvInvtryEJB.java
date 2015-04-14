@@ -42,8 +42,10 @@ public class InvInvtryEJB
 	
 	public InvInvtry create(InvInvtry entity)
 	{
-		String sequence = SequenceGenerator.getSequence(SequenceGenerator.INVENTORY_SEQUENCE_PREFIXE);
-		entity.setInvtryNbr(sequence);
+		if(StringUtils.isBlank(entity.getInvtryNbr())){
+			String sequence = SequenceGenerator.getSequence(SequenceGenerator.INVENTORY_SEQUENCE_PREFIXE);
+			entity.setInvtryNbr(sequence);
+		}
 
 		if(entity.getInvtryStatus()==null)
 			entity.setInvtryStatus(InvInvtryStatus.ONGOING);

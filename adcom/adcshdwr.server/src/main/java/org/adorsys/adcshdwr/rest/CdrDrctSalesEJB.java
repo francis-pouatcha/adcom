@@ -4,12 +4,16 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adbase.security.SecurityUtil;
 import org.adorsys.adcore.utils.SequenceGenerator;
 import org.adorsys.adcshdwr.jpa.CdrDrctSales;
 import org.adorsys.adcshdwr.jpa.CdrDrctSalesEvt;
+import org.adorsys.adcshdwr.jpa.CdrDrctSalesSearchInput;
 import org.adorsys.adcshdwr.repo.CdrDrctSalesRepository;
 import org.apache.commons.lang3.StringUtils;
 
@@ -25,6 +29,9 @@ public class CdrDrctSalesEJB
 
 	@Inject
 	private SecurityUtil securityUtil;
+	
+	@Inject
+	private EntityManager em;
 	
 	public CdrDrctSales create(CdrDrctSales entity)
 	{
@@ -67,6 +74,102 @@ public class CdrDrctSalesEJB
 		return entity;
 	}
 
+
+	private static final String FIND_CUSTOM_QUERY = "SELECT e FROM CdrDrctSales AS e";
+	private static final String COUNT_CUSTOM_QUERY = "SELECT count(e.id) FROM CdrDrctSales AS e";
+
+	public List<CdrDrctSales> findCustom(CdrDrctSalesSearchInput searchInput)
+	{
+		StringBuilder qBuilder = preprocessQuery(FIND_CUSTOM_QUERY, searchInput);
+		TypedQuery<CdrDrctSales> query = em.createQuery(qBuilder.toString(), CdrDrctSales.class);
+		setParameters(searchInput, query);
+
+		int start = searchInput.getStart();
+		int max = searchInput.getMax();
+
+		if(start < 0)  start = 0;
+		query.setFirstResult(start);
+		if(max >= 1) 
+			query.setMaxResults(max);
+		
+		return query.getResultList();
+	}
+
+	public Long countCustom(CdrDrctSalesSearchInput searchInput)
+	{
+		StringBuilder qBuilder = preprocessQuery(COUNT_CUSTOM_QUERY, searchInput);
+		TypedQuery<Long> query = em.createQuery(qBuilder.toString(), Long.class);
+		setParameters(searchInput, query);
+		return query.getSingleResult();
+	}
+	
+
+	private StringBuilder preprocessQuery(String findOrCount, CdrDrctSalesSearchInput searchInput){
+		CdrDrctSales entity = searchInput.getEntity();
+
+		String whereClause = " WHERE ";
+		String andClause = " AND ";
+
+		StringBuilder qBuilder = new StringBuilder(findOrCount);
+		boolean whereSet = false;
+		
+		if(searchInput.getFieldNames().contains("dsNbr") && StringUtils.isNotBlank(entity.getDsNbr())){
+			if(!whereSet){
+				qBuilder.append(whereClause);
+				whereSet = true;
+			} else {
+				qBuilder.append(andClause);
+			}
+			qBuilder.append("e.dsNbr=:dsNbr");
+		}
+		if(searchInput.getFieldNames().contains("cashier") && StringUtils.isNotBlank(entity.getCashier())){
+			if(!whereSet){
+				qBuilder.append(whereClause);
+				whereSet = true;
+			} else {
+				qBuilder.append(andClause);
+			}
+			qBuilder.append("e.cashier=:cashier");
+		}
+		if(searchInput.getFieldNames().contains("cdrNbr") && entity.getCdrNbr()!=null){
+			if(!whereSet){
+				qBuilder.append(whereClause);
+				whereSet = true;
+			} else {
+				qBuilder.append(andClause);
+			}
+			qBuilder.append("e.cdrNbr=:cdrNbr");
+		}
+		if(searchInput.getFieldNames().contains("rcptNbr") && StringUtils.isNotBlank(entity.getRcptNbr())){
+			if(!whereSet){
+				qBuilder.append(whereClause);
+				whereSet = true;
+			} else {
+				qBuilder.append(andClause);
+			}
+			qBuilder.append("LOWER(e.rcptNbr) LIKE(LOWER(:rcptNbr))");
+		}
+		return qBuilder;
+	}
+
+	
+	public void setParameters(CdrDrctSalesSearchInput searchInput, Query query)
+	{
+		CdrDrctSales entity = searchInput.getEntity();
+
+		if(searchInput.getFieldNames().contains("dsNbr") && StringUtils.isNotBlank(entity.getDsNbr())){
+			query.setParameter("dsNbr", entity.getDsNbr());
+		}
+		if(searchInput.getFieldNames().contains("cashier") && StringUtils.isNotBlank(entity.getCashier())){
+			query.setParameter("cashier", entity.getCashier());
+		}
+		if(searchInput.getFieldNames().contains("cdrNbr") && entity.getCdrNbr()!=null){
+			query.setParameter("cdrNbr", entity.getCdrNbr());
+		}
+		if(searchInput.getFieldNames().contains("rcptNbr") && StringUtils.isNotBlank(entity.getRcptNbr())){
+			query.setParameter("rcptNbr", "%"+entity.getRcptNbr()+"%");
+		}
+	}
 	public CdrDrctSales findById(String id)
 	{
 		return repository.findBy(id);

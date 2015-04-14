@@ -2,6 +2,7 @@ package org.adorsys.adinvtry.rmtevents;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import javax.ejb.AccessTimeout;
@@ -12,6 +13,8 @@ import javax.ejb.TransactionAttributeType;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 
+import org.adorsys.adbase.jpa.BaseBatchEvt;
+import org.adorsys.adbase.rest.BaseBatchEvtEJB;
 import org.adorsys.adinvtry.event.InvInvtryPostedEvent;
 import org.adorsys.adinvtry.jpa.InvInvtryEvt;
 import org.adorsys.adinvtry.jpa.InvInvtryEvtDataCstr;
@@ -37,6 +40,9 @@ public class InvRemoteEventGateway {
 
 	@Inject
 	private InvInvtryItemEvtDataEJB itemEvtDataEJB;
+	
+	@Inject
+	private BaseBatchEvtEJB batchEvtEJB;
 
 	public void handleInvtryPostedEvent(
 			@Observes @InvInvtryPostedEvent InvInvtryHstry invtryHstry) {
@@ -47,6 +53,14 @@ public class InvRemoteEventGateway {
 		evt.setEvtName(evtName);
 		evt.setId(invtryHstry.getId());
 		evtEJB.create(evt);
+		
+		BaseBatchEvt batchEvt = new BaseBatchEvt();
+		invtryHstry.copyTo(batchEvt);
+		batchEvt.setEvtName(evtName);
+		batchEvt.setId(UUID.randomUUID().toString());
+		batchEvt.setEvtModule("ADINVTRY");
+		batchEvt.setEvtKlass(InvInvtryEvt.class.getSimpleName());
+		batchEvtEJB.create(batchEvt);
 	}
 
 	@Schedule(minute = "*", second="1/35" ,hour="*", persistent=false)

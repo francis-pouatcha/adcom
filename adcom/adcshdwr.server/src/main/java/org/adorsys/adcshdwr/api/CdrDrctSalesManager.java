@@ -86,12 +86,12 @@ public class CdrDrctSalesManager {
 					itemModified = true;
 				}
 			} else {
-				cdrDsArtItem.evlte();
+				/*cdrDsArtItem.evlte();
 				cdrDsArtItem.setObjctOrgUnit(securityUtil.getCurrentOrgUnit().getIdentif());
 				cdrDsArtItem.setDsNbr(cdrDrctSales.getDsNbr());
 				cdrDsArtItem = cdrDsArtItemEJB.create(cdrDsArtItem);
-				itemModified = true;
-				/*if (StringUtils.isNotBlank(cdrDsArtItem.getId())) {
+				itemModified = true;*/
+				if (StringUtils.isNotBlank(cdrDsArtItem.getId())) {
 					CdrDsArtItem persDi = cdrDsArtItemEJB.findById(cdrDsArtItem.getDsNbr());
 					if(persDi!=null){
 						if(!cdrDsArtItem.contentEquals(persDi)){
@@ -112,7 +112,7 @@ public class CdrDrctSalesManager {
 					}
 					cdrDsArtItem = cdrDsArtItemEJB.create(cdrDsArtItem);
 					itemModified = true;
-				}*/
+				}
 			}
 
 			cdrDsArtItemHolder.setItem(cdrDsArtItem);

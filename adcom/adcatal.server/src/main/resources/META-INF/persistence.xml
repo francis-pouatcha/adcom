@@ -38,6 +38,7 @@
 	<class>org.adorsys.adbase.jpa.BaseRoleInProcess</class>    
 	<class>org.adorsys.adbase.jpa.BaseSttlmtOp</class>    
 	<class>org.adorsys.adbase.jpa.BaseCountryName</class>
+	<class>org.adorsys.adbase.jpa.BaseBatchEvt</class>
 	
 	<!-- Art feature mapping -->
 	<class>org.adorsys.adcatal.jpa.CatalAbstractArticle</class>

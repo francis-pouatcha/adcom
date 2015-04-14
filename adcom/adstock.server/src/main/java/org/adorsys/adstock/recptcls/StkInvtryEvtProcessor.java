@@ -42,10 +42,15 @@ public class StkInvtryEvtProcessor {
 	private InvInvtryEvtLeaseEJB evtLeaseEJB;
 	@Inject
 	private StkInvtryItemHstryEJB invtryItemHstryEJB;
+	@Inject
+	private StkInvtryEvtProcessorHelper evtProcessorHelper;
 	
 	@Asynchronous
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public void process(InvInvtryEvt invtryEvt) {
+
+		if(!evtProcessorHelper.shallProcessEvtLease(invtryEvt)) return;
+
 		// This identifies a run.
 		String processId = UUID.randomUUID().toString();
 		
@@ -71,11 +76,11 @@ public class StkInvtryEvtProcessor {
 			}
 		}
 		if(leaseId==null) return;
-		
+				
 		String entIdentif = invtryEvt.getEntIdentif();
 		InvInvtryEvtData invtryEvtData = evtDataEJB.findById(entIdentif);
 		if(invtryEvtData==null) {
-			evtLeaseEJB.close(processId, leaseId);
+			evtProcessorHelper.closeEvtLease(processId, leaseId, invtryEvt);
 			return;
 		}
 		
@@ -95,7 +100,7 @@ public class StkInvtryEvtProcessor {
 			}
 		}
 		if(itemEventDataToProcess.isEmpty()) {
-			evtLeaseEJB.close(processId, leaseId);
+			evtProcessorHelper.closeEvtLease(processId, leaseId, invtryEvt);
 			return;
 		}
 		Date time = new Date();

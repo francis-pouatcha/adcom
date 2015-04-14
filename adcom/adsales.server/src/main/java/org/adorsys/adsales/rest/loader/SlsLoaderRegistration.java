@@ -1,6 +1,7 @@
 package org.adorsys.adsales.rest.loader;
 
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
@@ -12,6 +13,9 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
+import org.adorsys.adbase.enums.BaseHistoryTypeEnum;
+import org.adorsys.adbase.jpa.BaseBatchEvt;
+import org.adorsys.adbase.rest.BaseBatchEvtEJB;
 import org.apache.commons.lang3.time.DateUtils;
 
 @Startup
@@ -27,9 +31,10 @@ public class SlsLoaderRegistration {
 	
 	@Inject
 	private SlsSalesOrderManagerClient salesOrderManagerClient;
-	
-	private Date firstCall = new Date();
-	
+
+	@Inject
+	private BaseBatchEvtEJB batchEvtEJB;
+
 	@PostConstruct
 	public void postConstruct(){
 		dataSheetLoader.registerLoader(SlsSalesOrderExcel.class.getSimpleName(), salesOrderLoader);
@@ -37,18 +42,16 @@ public class SlsLoaderRegistration {
 		createTemplate();
 	}
 
-	@Schedule(minute = "*", second="1/35" ,hour="*", persistent=false)
+	@Schedule(minute = "*", second="1/37" ,hour="*", persistent=false)
 	@AccessTimeout(unit=TimeUnit.MINUTES, value=10)
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public void process() throws Exception {
-		// only start 10 mins after server start.
-		Date now = new Date();
-		if(now.before(DateUtils.addMinutes(firstCall, 10))) return;
-		
+		List<BaseBatchEvt> found = batchEvtEJB.findByEvtModuleAndEvtKlassAndEvtName("ADSTOCK", "PrcmtDeliveryEvt", BaseHistoryTypeEnum.COMMITTED.name(), 0, 1);
+		if(found.isEmpty()) return;
 		dataSheetLoader.process();
 	}
 
-	@Schedule(minute = "*/2", hour="*", persistent=false)
+	@Schedule(minute = "*", hour="*", persistent=false, second="*/33")
 	@AccessTimeout(unit=TimeUnit.MINUTES, value=10)
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public void doSale() throws Exception {

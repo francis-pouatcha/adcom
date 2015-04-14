@@ -29,7 +29,7 @@ public class StkInvtryListener {
 	@Inject
 	private StkInvtryEvtProcessor evtProcessor; 
 
-	@Schedule(minute = "*/3", hour="*", persistent=false)
+	@Schedule(minute = "*", hour="*", persistent=false, second="*/35")
 	@AccessTimeout(unit=TimeUnit.MINUTES, value=10)
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public void process() throws Exception {

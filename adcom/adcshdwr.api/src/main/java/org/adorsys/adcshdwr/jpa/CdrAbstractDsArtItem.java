@@ -80,7 +80,7 @@ public class CdrAbstractDsArtItem extends AbstractIdentifData {
 
 	@Column
 	@Description("CdrDsArtItem_objctOrgUnit_description")
-	@NotNull
+//	@NotNull
 	private String objctOrgUnit;
 
 	public String getDsNbr() {
