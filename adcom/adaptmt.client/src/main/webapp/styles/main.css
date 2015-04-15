@@ -8,6 +8,12 @@ html, body {
     /* The html and body elements cannot have any padding or margin. */
 }
 
+/* small modal style */
+.bnsPtnt-Modal .modal-dialog {
+	width:800px;
+    height: 600px;
+}
+
 /* Wrapper for page content to push down footer */
 #wrap {
     min-height: 100%;

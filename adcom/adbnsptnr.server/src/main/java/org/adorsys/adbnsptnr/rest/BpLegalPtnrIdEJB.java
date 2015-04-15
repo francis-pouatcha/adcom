@@ -9,6 +9,7 @@ import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adbnsptnr.jpa.BpLegalPtnrId;
 import org.adorsys.adbnsptnr.repo.BpLegalPtnrIdRepository;
+import org.adorsys.adcore.utils.SequenceGenerator;
 import org.apache.commons.lang3.StringUtils;
 
 @Stateless
@@ -32,14 +33,25 @@ public class BpLegalPtnrIdEJB
    {
 	   if(entity==null) return null;
 	   if(StringUtils.isBlank(entity.getId()))
-		   return repository.save(attach(entity));
-
-	   BpLegalPtnrId found = findById(entity.getId());
-	   if(found==null) {// persist
+	   {
+		   entity.setPtnrNbr(SequenceGenerator
+					.getSequence(SequenceGenerator.BUSINESS_PARTNER_LEGAL_SEQUENCE_PREFIXE));
 		   return repository.save(attach(entity));
 	   }
+	   
+	   BpLegalPtnrId found = findById(entity.getId());
+	   if(found==null) {// persist
+		   entity.setPtnrNbr(SequenceGenerator
+					.getSequence(SequenceGenerator.BUSINESS_PARTNER_LEGAL_SEQUENCE_PREFIXE));
+		   return repository.save(attach(entity));
+	   }
+	   
 	   if(found.updateContent(entity))
+	   {
+		   found.setPtnrNbr(SequenceGenerator
+					.getSequence(SequenceGenerator.BUSINESS_PARTNER_LEGAL_SEQUENCE_PREFIXE));
 		   return repository.save(found);
+	   }
 	   return found;
    }
 

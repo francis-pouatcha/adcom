@@ -1,162 +1,104 @@
 package org.adorsys.adaptmt.jpa;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
+import org.adorsys.adcore.jpa.AbstractTimedData;
+
 @Entity
-public class AptAptmtRepport implements Serializable
-{
+public class AptAptmtRepport extends AbstractTimedData {
 
-   @Id
-   @GeneratedValue(strategy = GenerationType.AUTO)
-   @Column(name = "id", updatable = false, nullable = false)
-   private Long id = null;
-   @Version
-   @Column(name = "version")
-   private int version = 0;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6804688696774500010L;
 
-   @Column
-   @NotNull
-   private String title;
+	@Column
+	@NotNull
+	private String aptmtRepportnNbr;
 
-   @Column
-   private String description;
+	@Column
+	@NotNull
+	private String title;
 
-   @Column
-   @NotNull
-   private String aptmtIdentify;
+	@Column
+	private String description;
 
-   @Temporal(TemporalType.TIMESTAMP)
-   private Date created;
+	@Column
+	@NotNull
+	private String aptmtIdentify;
 
-   @Column
-   @NotNull
-   private String createUserId;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date created;
 
-   public Long getId()
-   {
-      return this.id;
-   }
+	@Column
+	@NotNull
+	private String createUserId;
 
-   public void setId(final Long id)
-   {
-      this.id = id;
-   }
+	public String getTitle() {
+		return this.title;
+	}
 
-   public int getVersion()
-   {
-      return this.version;
-   }
+	public void setTitle(final String title) {
+		this.title = title;
+	}
 
-   public void setVersion(final int version)
-   {
-      this.version = version;
-   }
+	public String getDescription() {
+		return this.description;
+	}
 
-   @Override
-   public boolean equals(Object that)
-   {
-      if (this == that)
-      {
-         return true;
-      }
-      if (that == null)
-      {
-         return false;
-      }
-      if (getClass() != that.getClass())
-      {
-         return false;
-      }
-      if (id != null)
-      {
-         return id.equals(((AptAptmtRepport) that).id);
-      }
-      return super.equals(that);
-   }
+	public void setDescription(final String description) {
+		this.description = description;
+	}
 
-   @Override
-   public int hashCode()
-   {
-      if (id != null)
-      {
-         return id.hashCode();
-      }
-      return super.hashCode();
-   }
+	public String getAptmtIdentify() {
+		return this.aptmtIdentify;
+	}
 
-   public String getTitle()
-   {
-      return this.title;
-   }
+	public void setAptmtIdentify(final String aptmtIdentify) {
+		this.aptmtIdentify = aptmtIdentify;
+	}
 
-   public void setTitle(final String title)
-   {
-      this.title = title;
-   }
+	public Date getCreated() {
+		return this.created;
+	}
 
-   public String getDescription()
-   {
-      return this.description;
-   }
+	public void setCreated(final Date created) {
+		this.created = created;
+	}
 
-   public void setDescription(final String description)
-   {
-      this.description = description;
-   }
+	public String getCreateUserId() {
+		return this.createUserId;
+	}
 
-   public String getAptmtIdentify()
-   {
-      return this.aptmtIdentify;
-   }
+	public void setCreateUserId(final String createUserId) {
+		this.createUserId = createUserId;
+	}
 
-   public void setAptmtIdentify(final String aptmtIdentify)
-   {
-      this.aptmtIdentify = aptmtIdentify;
-   }
+	public String getAptmtRepportnNbr() {
+		return aptmtRepportnNbr;
+	}
 
-   public Date getCreated()
-   {
-      return this.created;
-   }
+	public void setAptmtRepportnNbr(String aptmtRepportnNbr) {
+		this.aptmtRepportnNbr = aptmtRepportnNbr;
+	}
 
-   public void setCreated(final Date created)
-   {
-      this.created = created;
-   }
+	@Override
+	public String toString() {
+		return "AptAptmtRepport [aptmtRepportnNbr=" + aptmtRepportnNbr
+				+ ", title=" + title + ", description=" + description
+				+ ", aptmtIdentify=" + aptmtIdentify + ", created=" + created
+				+ ", createUserId=" + createUserId + "]";
+	}
 
-   public String getCreateUserId()
-   {
-      return this.createUserId;
-   }
+	@Override
+	protected String makeIdentif() {
+		return aptmtRepportnNbr;
+	}
 
-   public void setCreateUserId(final String createUserId)
-   {
-      this.createUserId = createUserId;
-   }
-
-   @Override
-   public String toString()
-   {
-      String result = getClass().getSimpleName() + " ";
-      if (title != null && !title.trim().isEmpty())
-         result += "title: " + title;
-      if (description != null && !description.trim().isEmpty())
-         result += ", description: " + description;
-      if (aptmtIdentify != null && !aptmtIdentify.trim().isEmpty())
-         result += ", aptmtIdentify: " + aptmtIdentify;
-      if (createUserId != null && !createUserId.trim().isEmpty())
-         result += ", createUserId: " + createUserId;
-      return result;
-   }
 }

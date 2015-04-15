@@ -29,7 +29,7 @@ public class StkDeliveryListener {
 	@Inject
 	private StkDeliveryEvtProcessor evtProcessor; 
 
-	@Schedule(minute = "*/3", hour="*", persistent=false)
+	@Schedule(minute = "*", hour="*", persistent=false, second="*/41")
 	@AccessTimeout(unit=TimeUnit.MINUTES, value=10)
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public void process() throws Exception {

@@ -6,7 +6,7 @@ angular
 				[ 'ngRoute', 'ngCookies', 'ui.bootstrap', 'SessionManager',
 						'AuthInterceptor', 'ngSanitize',
 						'pascalprecht.translate', 'NavBar', 'ngResource',
-						'datePicker', 'ADUtils', 'httpProgress' ])
+						'datePicker', 'ADUtils', 'httpProgress', 'AdBnsptnr' ])
 
 		.constant('APP_CONFIG', {
 			'appName' : 'Appointment',
@@ -23,32 +23,113 @@ angular
 						function($routeProvider, $httpProvider,
 								$translateProvider,
 								$translatePartialLoaderProvider) {
-							$routeProvider.when('/', {
-								templateUrl : 'views/aptaptmt/aptaptmts.html',
-								controller : 'aptAptmtsController',
-								controllerAs : 'aptAptmtsCtrl',
-								module : 'adaptmt'
-							}).when('/aptaptmt', {
-								templateUrl : 'views/aptaptmt/search.html',
-								controller : 'SearchAptAptmtController'
-							}).when('/aptaptmt/create', {
-								templateUrl : 'views/aptaptmt/create.html',
-								controller : 'aptAptmtCreateCtlr',
-								controllerAs : 'aptAptmtCreateCtlr',
-								module : 'adaptmt'
-							}).when('/aptaptmt/show/:id', {
-								templateUrl : 'views/aptaptmt/show.html',
-								controller : 'aptAptmtShowController',
-								controllerAs : 'aptAptmtShowCtlr',
-								module : 'adaptmt'
-							}).when('/aptaptmt/update/:id', {
-								templateUrl : 'views/aptaptmt/update.html',
-								controller : 'aptAptmtUpdateController',
-								controllerAs : 'aptAptmtUpdateCtlr',
-								module : 'adaptmt'
-							}).otherwise({
-								redirectTo : '/'
-							});
+							$routeProvider
+									.when(
+											'/',
+											{
+												templateUrl : 'views/aptaptmt/aptaptmts.html',
+												controller : 'aptAptmtsController',
+												controllerAs : 'aptAptmtsCtrl',
+												module : 'adaptmt'
+											})
+									.when(
+											'/aptaptmt',
+											{
+												templateUrl : 'views/aptaptmt/search.html',
+												controller : 'SearchAptAptmtController'
+											})
+									.when(
+											'/aptaptmt/create',
+											{
+												templateUrl : 'views/aptaptmt/create.html',
+												controller : 'aptAptmtCreateCtlr',
+												controllerAs : 'aptAptmtCreateCtlr',
+												module : 'adaptmt'
+											})
+									.when(
+											'/aptaptmt/show/:id',
+											{
+												templateUrl : 'views/aptaptmt/show.html',
+												controller : 'aptAptmtShowController',
+												controllerAs : 'aptAptmtShowCtlr',
+												module : 'adaptmt'
+											})
+									.when(
+											'/aptaptmt/update/:id',
+											{
+												templateUrl : 'views/aptaptmt/update.html',
+												controller : 'aptAptmtUpdateController',
+												controllerAs : 'aptAptmtUpdateCtlr',
+												module : 'adaptmt'
+											})
+									.when(
+											'/aptaptmtRepport/create',
+											{
+												templateUrl : 'views/aptaptmtRepport/create.html',
+												controller : 'aptAptmtRepportCreateController',
+												controllerAs : 'aptAptmtRepportCreateCtrl'
+											})
+
+									.when(
+											'/aptaptmtRepport/show/:id',
+											{
+												templateUrl : 'views/aptaptmtRepport/show.html',
+												controller : 'aptAptmtRepportShowController',
+												controllerAs : 'aptAptmtRepportShowCtlr'
+											})
+
+									.when(
+											'/aptaptmtRepport/edit',
+											{
+												templateUrl : 'views/aptaptmtRepport/edit.html',
+												controller : 'aptAptmtRepportEditController',
+												controllerAs : 'aptAptmtRepportEditCtrl'
+											})
+
+									.when(
+											'/aptaptmtRepport',
+											{
+												templateUrl : 'views/aptaptmtRepport/aptaptmtRepports.html',
+												controller : 'aptAptmtRepportsController',
+												controllerAs : 'aptAptmtRepportsCtrl'
+											})
+
+									.when(
+											'/aptaptmtRepport/update/:id',
+											{
+												templateUrl : 'views/aptaptmtRepport/update.html',
+												controller : 'aptAptmtRepportUpdateController',
+												controllerAs : 'aptAptmtRepportUpdateCtlr',
+												module : 'adaptmt'
+											})
+									.when(
+											'/aptaptmtRepport/add/:id',
+											{
+												templateUrl : 'views/aptaptmtRepport/add.html',
+												controller : 'aptAptmtRepportCreateController',
+												controllerAs : 'aptAptmtRepportCreateCtrl',
+												module : 'adaptmt'
+											})
+									.when(
+											'/aptaptmtRepport/list/:id',
+											{
+												templateUrl : 'views/aptaptmtRepport/list.html',
+												controller : 'aptAptmtRepportListController',
+												controllerAs : 'aptAptmtRepportListCtrl',
+												module : 'adaptmt'
+											})
+									.when(
+											'/aptaptmt/cancel/:id',
+											{
+												templateUrl : 'views/aptaptmt/cancel.html',
+												controller : 'aptAptmtCancelController',
+												controllerAs : 'aptAptmtCancelCtrl',
+												module : 'adaptmt'
+											})
+
+									.otherwise({
+										redirectTo : '/'
+									});
 
 							$httpProvider.defaults.withCredentials = true;
 							$httpProvider.interceptors.push('authInterceptor');

@@ -352,24 +352,7 @@ public class InvInvtryManager {
 		}
 		return inventory;
 	}
-	
-//	private void recomputeInventory(final InvInvtry invInvtry){
-//		// update delivery object.
-//		String invtryNbr = invInvtry.getInvtryNbr();
-//		Long count = invInvtryItemEJB.countByInvtryNbr(invtryNbr);
-//		int start = 0;
-//		int max = 100;
-//		invInvtry.clearAmts();
-//		while(start<=count){
-//			List<InvInvtryItem> list = invInvtryItemEJB.findByInvtryNbr(invtryNbr, start, max);
-//			start +=max;
-//			for (InvInvtryItem item : list) {
-//				invInvtry.addGapPurchAmtHT(item.getGapTotalPpPT());
-//				invInvtry.addGapSaleAmtHT(item.getGapTotalSpPT());
-//			}
-//		}
-//	}
-	
+
 	private void createClosedInventoryHistory(InvInvtry invtry){
 		TermWsUserPrincipal callerPrincipal = securityUtil.getCallerPrincipal();
 		InvInvtryHstry invtryHstry = new InvInvtryHstry();

@@ -15,7 +15,7 @@
                            </div>
 	                       <label class="col-lg-2">{{slsSalesOrderUtils.translations['SlsSalesOrder_soStatus_description.title']}}:</label>
 	                        <div class="col-lg-2">
-	                            <input type="text" ng-model="slsSalesOrder.soStatus" name="soStatus" class="form-control" disabled >
+	                            <input type="text" ng-model="{{slsSalesOrderUtils.slsSOStatusI18nMsgTitleValue($scope.slsSalesOrder.soStatus)}}" name="soStatus" class="form-control" disabled >
 	                        </div>
                             <label class="col-lg-2">{{slsSalesOrderUtils.translations['SlsSalesOrder_soDt_description.title']}}:</label>
 	                        <div class="col-lg-2">
@@ -86,7 +86,7 @@
                           </div>
                 </form>
                 <br><br>
-                <div  class="row ">
+                <div  class="row">
                     <tabset justified="true">
                         
                         <tab heading="{{slsSalesOrderUtils.translations['SlsSOItems_description.title']}}">
@@ -100,7 +100,13 @@
                         </tab>
                     </tabset>
                 </div>
-
+                <div class="row">
+                     <div class="text-center">
+                        <a class="btn-danger btn" href="#/SlsSalesOrders" >
+                            <i class="" ></i> {{slsSalesOrderUtils.translations['Entity_list.title']}}
+                         </a>
+                      </div>
+                </div>
              </div>
         </div>
 </div>

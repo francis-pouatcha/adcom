@@ -113,9 +113,59 @@ angular.module('AdCshdwr')
         };
 
         service.loadArticleLotByPic = function (artPic) {
-            return genericResource.findByLikePromissed(service.stkArtLotUrlBase, 'artPic', artPic)
+            
+            var searchInput = {
+                entity: {},
+                fieldNames: [],
+                start: 0,
+                max: 10
+            };
+            searchInput.artPic = artPic;
+            return genericResource.findByLikePromissed(service.stkArtlot2strgsctnsUrlBase, 'artPic', artPic)
                 .then(function (entitySearchResult) {
-                    return entitySearchResult.resultList;
+                    var resultList = entitySearchResult.resultList;
+                    console.log(resultList);
+                    var displayDatas = [];
+                    angular.forEach(resultList, function (item) {
+                        var artName = item.artName;
+                        var displayable = {};
+                        var sectionArticleLot = item.sectionArticleLot;
+                        if (sectionArticleLot) {
+                            var artQties = sectionArticleLot.artQties;
+                            if (!artQties) artQties = [];
+                            angular.forEach(artQties, function (artQty) {
+                                var displayableStr = "";
+                                displayable.artName = "Product (" + artName + ")";
+                                displayableStr += artName;
+                                if (artQty.lotPic) {
+                                    displayable.lotPic = artQty.lotPic;
+                                    displayableStr += "- lot (" + artQty.lotPic + ")";
+                                }
+                                if (artQty.section) {
+                                    displayable.section = artQty.section;
+                                    displayableStr += "- section (" + artQty.section + ")";
+                                }
+                                if (artQty.stockQty) {
+                                    displayable.stockQty = artQty.stockQty;
+                                    displayableStr += "- Qty (" + artQty.stockQty + ")";
+                                }
+                                displayable.artPic = artQty.artPic;
+                                displayable.sppuPreTax = sectionArticleLot.sppuHT;
+                                displayable.minSppuHT = sectionArticleLot.minSppuHT;
+                                displayable.sppuTaxIncl = sectionArticleLot.sppuTaxIncl;
+                                displayable.sppuCur = sectionArticleLot.sppuCur;
+                                displayable.vatPct = sectionArticleLot.vatSalesPct;
+                                displayable.salesVatAmt = sectionArticleLot.salesVatAmt;
+                                displayable.salesWrntyDys = sectionArticleLot.salesWrntyDys;
+                                displayable.salesRtrnDays = sectionArticleLot.salesRtrnDays;
+
+                                displayable.displayableStr = displayableStr;
+                                displayDatas.push(displayable);
+                            });
+                        }
+                    });
+                    console.log(displayDatas);
+                    return displayDatas;
                 });
         }
 
@@ -132,28 +182,28 @@ angular.module('AdCshdwr')
                     var resultList = entitySearchResult.resultList;
                     console.log(resultList);
                     var displayDatas = [];
-                    angular.forEach(resultList,function(item){
+                    angular.forEach(resultList, function (item) {
                         var artName = item.artName;
                         var displayable = {};
                         var sectionArticleLot = item.sectionArticleLot;
-                        if(sectionArticleLot) {
+                        if (sectionArticleLot) {
                             var artQties = sectionArticleLot.artQties;
-                            if(!artQties) artQties = [];
-                            angular.forEach(artQties, function(artQty){
+                            if (!artQties) artQties = [];
+                            angular.forEach(artQties, function (artQty) {
                                 var displayableStr = "";
-                                displayable.artName = "Product ("+artName+")";
+                                displayable.artName = "Product (" + artName + ")";
                                 displayableStr += artName;
-                                if(artQty.logPic) {
-                                    displayable.logPic = artQty.logPic;
-                                    displayableStr += "- lot ("+artQty.logPic+")";
+                                if (artQty.lotPic) {
+                                    displayable.lotPic = artQty.lotPic;
+                                    displayableStr += "- lot (" + artQty.lotPic + ")";
                                 }
-                                if(artQty.section) {
+                                if (artQty.section) {
                                     displayable.section = artQty.section;
-                                    displayableStr += "- section ("+artQty.section+")";
+                                    displayableStr += "- section (" + artQty.section + ")";
                                 }
-                                if(artQty.stockQty) {
+                                if (artQty.stockQty) {
                                     displayable.stockQty = artQty.stockQty;
-                                    displayableStr += "- Qty ("+artQty.stockQty+")";
+                                    displayableStr += "- Qty (" + artQty.stockQty + ")";
                                 }
                                 displayable.artPic = artQty.artPic;
                                 displayable.sppuPreTax = sectionArticleLot.sppuHT;
@@ -164,7 +214,7 @@ angular.module('AdCshdwr')
                                 displayable.salesVatAmt = sectionArticleLot.salesVatAmt;
                                 displayable.salesWrntyDys = sectionArticleLot.salesWrntyDys;
                                 displayable.salesRtrnDays = sectionArticleLot.salesRtrnDays;
-                                
+
                                 displayable.displayableStr = displayableStr;
                                 displayDatas.push(displayable);
                             });
@@ -182,6 +232,7 @@ angular.module('AdCshdwr')
 
         var service = {};
         var selectedIndexVar = -1;
+        var searchResult = {};
         service.selectedIndex = function (selectedIndexIn) {
             if (selectedIndexIn) selectedIndexVar = selectedIndexIn;
             return selectedIndexVar;
@@ -316,7 +367,15 @@ angular.module('AdCshdwr')
 
             return service.cdrDrctSale();
         };
-
+        service.searchResult = function (srchRslt) {
+            if (srchRslt) {
+                searchResult = srchRslt;
+            }
+            return searchResult;
+        };
+        service.hasEntities = function() {
+            return searchResult.resultList && searchResult.resultList.length > 0;
+        }
         return service;
 
 }])
@@ -349,18 +408,40 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
 
             init();
 
-            function handleSearchRequestEvent() {
-                if ($scope.searchInput.acsngUser) {
-                    $scope.searchInput.entity.acsngUser = $scope.searchInput.acsngUser.loginName;
-                } else {
-                    $scope.searchInput.entity.acsngUser = '';
+            function processSearchInput(searchInput) {
+                if (angular.isDefined(searchInput.entity.dsNbr ) && searchInput.entity.dsNbr ) {
+                    searchInput.fieldNames.push('dsNbr ');
                 }
+                if (angular.isDefined(searchInput.entity.cashier ) && searchInput.entity.cashier ) {
+                    searchInput.fieldNames.push('cashier');
+                }
+                if (angular.isDefined(searchInput.entity.cdrNbr ) && searchInput.entity.cdrNbr ) {
+                    searchInput.fieldNames.push('cdrNbr');
+                }
+                if (angular.isDefined(searchInput.entity.rcptNbr ) && searchInput.entity.rcptNbr ) {
+                    searchInput.fieldNames.push('rcptNbr');
+                }
+            }
+
+            function findCustom(searchInput) {
+                genericResource.findCustom(cdrDrctSalesUtils.urlBase, searchInput)
+                    .success(function (entitySearchResult) {
+                        // store search
+                        cdrDrctSalesState.searchResult(entitySearchResult);
+                        $scope.searchInput = cdrDrctSalesState.searchResult().searchInput;
+                        $scope.cdrDrctSales = cdrDrctSalesState.searchResult().resultList;
+                    })
+                    .error(function (error) {
+                        $scope.error = error;
+                    });
+            }
+
+            function handleSearchRequestEvent() {
+                processSearchInput($scope.searchInput);
                 findCustom($scope.searchInput);
             }
 
-            function handlePrintRequestEvent() {
-                // To do
-            }
+            function handlePrintRequestEvent() {}
 
             function paginate() {
                 $scope.searchInput = cdrDrctSaleState.paginate();
@@ -373,16 +454,7 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
             }
 
             function init() {
-                //find previous cdr cshdrawers
-                loadPreviousCshDrws();
-            }
-
-            function loadPreviousCshDrws() {
-                genericResource.listAll(cdrDrctSalesUtils.urlBase).success(function (result) {
-                    $scope.cdrCshDrawers = result;
-                }).error(function (error) {
-                    $scope.error = error;
-                });
+                findCustom($scope.searchInput);
             }
 
             function show(cdrCshDrawer, index) {
@@ -413,14 +485,14 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
             };
 
             function create() {};
-            
+
             $scope.onArticleSelectedInSearch = function (item, model, label) {
                 $scope.cdrDsArtItemHolder.item.artPic = item.artPic;
-                $scope.cdrDsArtItemHolder.item.lotPic = item.logPic;
+                $scope.cdrDsArtItemHolder.item.lotPic = item.lotPic;
                 $scope.cdrDsArtItemHolder.artName = item.artName;
                 $scope.cdrDsArtItemHolder.item.sppuPreTax = item.sppuPreTax;
-                if(!item.sppuPreTax) item.sppuPreTax = 0.0;
-                if(!item.salesVatAmt) item.salesVatAmt = 0.0;
+                if (!item.sppuPreTax) item.sppuPreTax = 0.0;
+                if (!item.salesVatAmt) item.salesVatAmt = 0.0;
                 $scope.cdrDsArtItemHolder.item.netSPPreTax = item.sppuPreTax + item.salesVatAmt;
                 $scope.cdrDsArtItemHolder.maxStockQty = item.stockQty;
                 $scope.cdrDsArtItemHolder.item.sppuCur = item.sppuCur;

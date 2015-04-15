@@ -37,6 +37,7 @@
 	<class>org.adorsys.adbase.jpa.BaseRoleInProcess</class>    
 	<class>org.adorsys.adbase.jpa.BaseSttlmtOp</class>    
 	<class>org.adorsys.adbase.jpa.BaseCountryName</class>
+	<class>org.adorsys.adbase.jpa.BaseBatchEvt</class>
 
 	<class>org.adorsys.adinvtry.jpa.InvInvtryEvtData</class>
 	<class>org.adorsys.adinvtry.jpa.InvInvtryItemEvtData</class>

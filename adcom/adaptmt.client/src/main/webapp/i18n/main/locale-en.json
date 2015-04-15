@@ -16,6 +16,21 @@
 "AptAptmt_parentIdentify_description.title":"parent RDV",
 "AptAptmt_parentIdentify_description.text":"parent RDV",
 "AptAptmt_createDate_description":"Creation Date",
-"AptAptmt_status_description":"Status of Aptm"
+"AptAptmt_status_description":"Status of Aptm",
+
+
+
+
+
+"Entity_create_Report.title":"Creation Report of Appointment ",
+"Entity_list_Report.title":"Creation Report ",
+"AptAptmtReport_title_description.text":"Title of Report Appointment",
+"AptAptmtReport_title_description.title":"Title Report",
+"AptAptmtReport_description_description.text":"Description Report of Appointment",
+"AptAptmtReport_description_description.title":"Description Report",
+"AptAptmtReport_CreateUser.text":"Creator",
+"AptAptmtReport_CreateDate.text":"Creation Date",
+"Entity_createRepport.title":"Creation Report",
+"AptAptmtRepport_numero_description.title":"Report Number"
 
 }
