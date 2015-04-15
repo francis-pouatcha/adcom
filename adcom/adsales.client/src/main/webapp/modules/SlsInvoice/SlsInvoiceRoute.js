@@ -5,5 +5,6 @@ angular.module('AdSales')
     $routeProvider
     .when('/SlsInvoices',{templateUrl:'views/SlsInvoice/SlsInvoices.html',controller:'slsInvoicesCtlr'})
     .when('/SlsInvoices/edit/:SlsInvoiceId',{templateUrl:'views/SlsInvoice/SlsInvoiceEdit.html',controller:'slsInvoicesEditCtlr'})
-    .when('/SlsInvoices/show',{templateUrl:'views/SlsInvoice/SlsInvoiceShow.html',controller:'slsInvoicesShowCtlr'});
+    .when('/SlsInvoices/show',{templateUrl:'views/SlsInvoice/SlsInvoiceShow.html',controller:'slsInvoicesShowCtlr'})
+    .when('/SlsInvoices/new',{templateUrl:'views/SlsInvoice/SlsInvoiceNew.html',controller:'slsInvoiceNewCtlr'});
 }])
