@@ -9,7 +9,7 @@ import javax.inject.Inject;
 
 import org.adorsys.adbase.security.SecurityUtil;
 import org.adorsys.adcatal.jpa.CatalArtFeatMapping;
-import org.adorsys.adcatal.rest.CatalArtFeatMappingReaderEJB;
+import org.adorsys.adcatal.rest.CatalArtFeatMappingLookupEJB;
 import org.adorsys.adcore.utils.BigDecimalUtils;
 import org.adorsys.adstock.jpa.StkArticleLot;
 import org.adorsys.adstock.jpa.StkArticleLotSearchInput;
@@ -28,7 +28,7 @@ public class StkArticleLotDetachHelper {
 	private StkLotStockQtyLookup lotStockQtyEJB;
 
 	@Inject
-	private CatalArtFeatMappingReaderEJB artFeatMappingReaderEJB;
+	private CatalArtFeatMappingLookupEJB artFeatMappingReaderEJB;
 
 	@Inject
 	private SecurityUtil securityUtil;

@@ -7,8 +7,8 @@ import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adcshdwr.jpa.CdrPymntItem;
+import org.adorsys.adcshdwr.jpa.CdrPymntItemEvt;
 import org.adorsys.adcshdwr.repo.CdrPymntItemRepository;
-import org.apache.deltaspike.data.api.QueryResult;
 
 @Stateless
 public class CdrPymntItemEJB
@@ -17,9 +17,16 @@ public class CdrPymntItemEJB
 	@Inject
 	private CdrPymntItemRepository repository;
 
+	@Inject
+	private CdrPymntItemEvtEJB pymntItemEvtEJB;
+	
 	public CdrPymntItem create(CdrPymntItem entity)
 	{
-		return repository.save(attach(entity));
+		entity = repository.save(attach(entity));
+		CdrPymntItemEvt pymntItemEvt = new CdrPymntItemEvt();
+		entity.copyTo(pymntItemEvt);
+		pymntItemEvtEJB.create(pymntItemEvt);
+		return entity;
 	}
 
 	public CdrPymntItem deleteById(String id)
@@ -27,6 +34,8 @@ public class CdrPymntItemEJB
 		CdrPymntItem entity = repository.findBy(id);
 		if (entity != null)
 		{
+			CdrPymntItemEvt pymntItemEvt = pymntItemEvtEJB.findById(entity.getId());
+			if(pymntItemEvt != null) pymntItemEvtEJB.deleteById(id);
 			repository.remove(entity);
 		}
 		return entity;
@@ -34,7 +43,13 @@ public class CdrPymntItemEJB
 
 	public CdrPymntItem update(CdrPymntItem entity)
 	{
-		return repository.save(attach(entity));
+		entity = repository.save(attach(entity));
+		CdrPymntItemEvt pymntItemEvt = pymntItemEvtEJB.findById(entity.getId());
+		if(pymntItemEvt != null) {
+			pymntItemEvt.copyTo(entity);
+			pymntItemEvtEJB.update(pymntItemEvt);
+		}
+		return entity;
 	}
 
 	public CdrPymntItem findById(String id)
