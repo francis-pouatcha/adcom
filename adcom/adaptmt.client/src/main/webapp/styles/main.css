@@ -11,7 +11,7 @@ html, body {
 /* small modal style */
 .bnsPtnt-Modal .modal-dialog {
 	width:800px;
-    height: 600px;
+    min-height: 600px;
 }
 
 /* Wrapper for page content to push down footer */

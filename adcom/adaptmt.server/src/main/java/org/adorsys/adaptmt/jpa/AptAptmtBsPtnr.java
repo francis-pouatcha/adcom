@@ -5,10 +5,12 @@ import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 
 import org.adorsys.adcore.jpa.AbstractEntity;
+import org.adorsys.adcore.jpa.AbstractTimedData;
 
 @Entity
 public class AptAptmtBsPtnr extends AbstractEntity
 {
+	private static final long serialVersionUID = 5118120729653009565L;
 
    @Column
    @NotNull
@@ -68,4 +70,10 @@ public class AptAptmtBsPtnr extends AbstractEntity
          result += ", bsPtnrIdentify: " + bsPtnrIdentify;
       return result;
    }
+
+
+@Override
+protected String makeIdentif() {
+	return aptmtIdentify + "_" + bsPtnrIdentify;
+}
 }
