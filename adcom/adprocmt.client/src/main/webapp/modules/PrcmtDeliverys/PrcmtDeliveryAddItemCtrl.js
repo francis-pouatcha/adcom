@@ -14,8 +14,8 @@ angular.module('AdProcmt').controller('prcmtDeliveryAddItemCtlr',['$scope','$rou
     self.prcmtDeliveryItemHolders = [];
     self.prcmtDeliveryItemHoldersDeleted = [];
     self.error = "";
-    self.loadArticlesByNameLike = loadArticlesByNameLike;
-    self.loadArticlesByCipLike = loadArticlesByCipLike;
+    self.findArticleByName = findArticleByName;
+    self.findArticleByCip = findArticleByCip;
     self.loading = true;
     self.onSelect = onSelect;
     self.save = save;
@@ -46,64 +46,81 @@ angular.module('AdProcmt').controller('prcmtDeliveryAddItemCtlr',['$scope','$rou
         }
     };
 
-    function loadArticlesByNameLike(name){
-        var searchInput = {
-            entity:{
-                features:{}
-            },
-            fieldNames:[],
-            start:0,
-            max:10
-        };
-        if(name){
-            searchInput.entity.features.artName = name+'%';
-            searchInput.fieldNames.push('features.artName') ;
-            searchInput.entity.features.langIso2='fr';
-        }
-        return findByNameStartWith(searchInput).then(function(entitySearchResult){
-            return entitySearchResult.resultList;
-        });
+    function findArticleByName (value) {
+        return findArticle('artName',value);
     }
 
-    function loadArticlesByCipLike(pic){
-        var searchInput = {
-            entity:{
-                features:{}
-            },
-            fieldNames:[],
-            start:0,
-            max:10
-        };
-        if(pic){
-            searchInput.entity.pic = pic;
-            searchInput.fieldNames.push('pic') ;
-        }
-        return findByPicLike(searchInput).then(function(entitySearchResult){
-            return entitySearchResult.resultList;
-        });
+    function findArticleByCip (value) {
+        return findArticle('artPic',value);
     }
 
-    function findByNameStartWith (searchInput) {
-        var deferred = $q.defer();
-        genericResource.find(ProcmtUtils.catalarticles+'/findByNameStartWith',searchInput)
-            .success(function(entitySearchResult) {
-                deferred.resolve(entitySearchResult);
-            })
-            .error(function(){
-                deferred.reject("No Article");
+    function findArticle(variableName, variableValue){
+        return genericResource.findByLikePromissed(ProcmtUtils.stkArtlot2strgsctnsUrlBase, variableName, variableValue)
+            .then(function (entitySearchResult) {
+                var resultList = entitySearchResult.resultList;
+                var displayDatas = [];
+                angular.forEach(resultList,function(item){
+                    var artName = item.artName;
+                    var displayable = {};
+                    var sectionArticleLot = item.sectionArticleLot;
+                    if(sectionArticleLot) {
+                        var artQties = sectionArticleLot.artQties;
+                        if(!artQties) artQties = [];
+                        angular.forEach(artQties, function(artQty){
+                            var displayableStr = "";
+                            displayable.artName = artName;
+                            displayableStr = artQty.artPic
+                            displayableStr += " - "+artName;
+                            if(artQty.lotPic) {
+                                displayable.lotPic = artQty.lotPic;
+                            }
+                            if(artQty.section) {
+                                displayable.section = artQty.section;
+                                displayableStr += " - "+artQty.section;
+                            }
+                            if(artQty.stockQty) {
+                                displayable.stockQty = artQty.stockQty;
+                                displayableStr += " - Qty ("+artQty.stockQty+")";
+                            }
+                            displayable.artPic = artQty.artPic;
+                            displayable.sppuPreTax = sectionArticleLot.sppuHT;
+                            displayable.minSppuHT = sectionArticleLot.minSppuHT;
+                            displayable.sppuTaxIncl = sectionArticleLot.sppuTaxIncl;
+                            displayable.sppuCur = sectionArticleLot.sppuCur;
+                            displayable.vatPct = sectionArticleLot.vatPct;
+                            displayable.vatSalesPct = sectionArticleLot.vatSalesPct;
+                            displayable.salesVatAmt = sectionArticleLot.salesVatAmt;
+                            displayable.salesWrntyDys = sectionArticleLot.salesWrntyDys;
+                            displayable.salesRtrnDays = sectionArticleLot.salesRtrnDays;
+                            displayable.pppuPreTax = sectionArticleLot.pppuHT;
+                            displayable.purchWrntyDys = sectionArticleLot.purchWrntyDys;
+                            displayable.purchRtrnDays = sectionArticleLot.purchRtrnDays;
+
+                            displayable.displayableStr = displayableStr;
+                            displayDatas.push(displayable);
+                        });
+                    }
+                });
+                return displayDatas;
             });
-        return deferred.promise;
     }
-    function findByPicLike (searchInput) {
-        var deferred = $q.defer();
-        genericResource.find(ProcmtUtils.catalarticles+'/findByPicLike',searchInput)
-            .success(function(entitySearchResult) {
-                deferred.resolve(entitySearchResult);
-            })
-            .error(function(){
-                deferred.reject("No Article");
-            });
-        return deferred.promise;
+
+    function onSelect(item,model,label){
+
+        self.prcmtDeliveryItemHolder.dlvryItem.artPic = item.artPic;
+        self.prcmtDeliveryItemHolder.dlvryItem.artName = item.artName;
+        self.prcmtDeliveryItemHolder.dlvryItem.lotPic = item.lotPic;
+        self.prcmtDeliveryItemHolder.dlvryItem.sppuPreTax = item.sppuPreTax;
+        self.prcmtDeliveryItemHolder.dlvryItem.sppuCur = item.sppuCur;
+        self.prcmtDeliveryItemHolder.dlvryItem.vatPct = item.vatPct;
+        self.prcmtDeliveryItemHolder.dlvryItem.vatSalesPct = item.vatSalesPct;
+        self.prcmtDeliveryItemHolder.dlvryItem.stkQty =item.stockQty;
+        self.prcmtDeliveryItemHolder.dlvryItem.minSppuHT = item.minSppuHT;
+        self.prcmtDeliveryItemHolder.dlvryItem.salesWrntyDys = item.salesWrntyDys;
+        self.prcmtDeliveryItemHolder.dlvryItem.salesRtrnDays = item.salesRtrnDays;
+        self.prcmtDeliveryItemHolder.dlvryItem.purchWrntyDys = item.purchWrntyDys;
+        self.prcmtDeliveryItemHolder.dlvryItem.purchRtrnDays = item.purchRtrnDays;
+        self.prcmtDeliveryItemHolder.dlvryItem.pppuPreTax = item.pppuPreTax;
     }
 
     function loadBusinessPartner(val){
@@ -157,12 +174,6 @@ angular.module('AdProcmt').controller('prcmtDeliveryAddItemCtlr',['$scope','$rou
             deferred.reject("No section unit");
         });
         return deferred.promise;
-    }
-
-    function onSelect(item,model,label){
-        self.prcmtDeliveryItemHolder.dlvryItem.artPic = item.pic;
-        self.prcmtDeliveryItemHolder.dlvryItem.artName  = item.features.artName;
-        self.taux = "";
     }
 
     function save(){
