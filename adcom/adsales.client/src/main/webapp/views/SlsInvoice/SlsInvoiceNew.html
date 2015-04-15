@@ -1,0 +1,154 @@
+<div>
+    <div style="margin-bottom: 20px" >
+        <!--<a class="btn btn-default"  ng-click="slsInvoiceNewCtlr.previous()" ng-disabled="slsInvoiceNewCtlr.index==0" ><i class="glyphicon glyphicon-chevron-left"></i> Previous</a>
+        <a class="btn btn-default" ng-click="slsInvoiceNewCtlr.next()" ng-disabled="slsInvoiceNewCtlr.index==slsInvoiceNewCtlr.tabLength()-1 || slsInvoiceNewCtlr.tabLength()==0" >Next <i class="glyphicon glyphicon-chevron-right"></i></a>-->
+        <a class="btn btn-danger" ng-click="slsInvoiceNewCtlr.annulerCmd()" ><i class="glyphicon glyphicon-trash" ></i> Anuller la facture</a>
+        <a class="btn btn-default" ng-click="slsInvoiceNewCtlr.newCmd()"  ><i class="glyphicon glyphicon-plus" ></i> Nouvelle facture</a>
+        <a class="btn btn-warning" ng-click="slsInvoiceNewCtlr.addBptnr()"><i class="glyphicon glyphicon-user" ></i> {{slsInvoiceNewCtlr.slsInvoiceHolder.slsInvcePtnrsHolder[0].slsInvcePtnr.ptnrNbr}}</a>
+        <label>{{slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.invceDt | date:'medium'}}</label>
+        <a class="btn btn-primary col-lg-offset-1" ng-disabled="slsInvoiceNewCtlr.showBtnClose" ng-click="slsInvoiceNewCtlr.cloturerCmd()"><i class="glyphicon glyphicon-ok" ></i> Cloturer la facture</a>
+    </div>
+    <form name="invoiceItemForm" id="invoiceItemForm" novalidate >
+    <div class="panel panel-default" >
+        <div class="panel-heading">
+            <b>Ajouter une ligne de facture</b>
+            ---- N# : {{slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.invceNbr}}
+            ---- Status : <label class="bg-warning" >{{slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.invceStatus}}</label>
+        </div>
+        <div class="panel-body">
+                <table class="table table-bordered  table-striped">
+                    <thead>
+                    <tr>
+                        <th class="clo-lg-2">CIP</th>
+                        <th class="col-lg-3">Designation</th>
+                        <th>Qte Stock</th>
+                        <th>Qte</th>
+                        <th>{{'CatalArticle_sppu_description.title' | translate}}</th>
+                        <th>{{'SlsInvceItem_grossSPPreTax_description.title'|translate}}</th>
+                        <th>{{'SlsInvceItem_rebate_description.title'|translate}}</th>
+                        <th>{{'SlsInvceItem_rebate_description.title'|translate}} %</th>
+                        <th>{{'SlsInvceItem_vatAmount_description.title'|translate}}</th>
+                        <th>{{'SlsInvceItem_netSPTaxIncl_description.title' | translate}}</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <div ng-class="{ 'has-error' : invoiceItemForm.artPic.$invalid }" >
+                                <input type="text" style="width: 80px" ng- class="form-control" select-on-click name="artPic" id="artPic" required autocomplete="off" ng-model="slsInvoiceNewCtlr.slsInvoiceItemHolder.slsInvceItem.artPic"
+                                       typeahead="article as article.displayableStr for article in slsInvoiceNewCtlr.findArticleByCip($viewValue)"
+                                       typeahead-loading="loading"  typeahead-on-select='slsInvoiceNewCtlr.onSelect($item, $model, $label)' >
+                            </div>
+                        </td>
+                        <td>
+                            <div ng-class="{ 'has-error' : invoiceItemForm.artName.$invalid }" >
+                                <input type="text" class="form-control" select-on-click focus required id="artName" autocomplete="off" ng-model="slsInvoiceNewCtlr.slsInvoiceItemHolder.slsInvceItem.artName"
+                                       typeahead="article as article.displayableStr for article in slsInvoiceNewCtlr.findArticleByName($viewValue)"
+                                       typeahead-loading="loading" typeahead-on-select='slsInvoiceNewCtlr.onSelect($item, $model, $label)' name="artName" >
+                            </div>
+                        </td>
+                        <td><input type="text" class="form-control" disabled ng-model="slsInvoiceNewCtlr.slsInvoiceItemHolder.slsInvceItem.stkQty" ></td>
+                        <td>
+                            <div ng-class="{ 'has-error' : invoiceItemForm.orderedQty.$invalid }" >
+                                <input type="text" class="form-control" ng-change="slsInvoiceNewCtlr.calculAmount()" required name="qty" id="qty" ng-model="slsInvoiceNewCtlr.slsInvoiceItemHolder.slsInvceItem.qty" >
+                            </div>
+                        </td>
+                        <td><input type="text" class="form-control" disabled ng-model="slsInvoiceNewCtlr.slsInvoiceItemHolder.slsInvceItem.sppuPreTax" ></td>
+                        <td>
+                            <div>
+                                <input type="text" class="form-control" name="grossSPPreTax" disabled  ng-model="slsInvoiceNewCtlr.slsInvoiceItemHolder.slsInvceItem.grossSPPreTax" >
+                            </div>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="rebate" ng-change="slsInvoiceNewCtlr.calculAmount()" ng-model="slsInvoiceNewCtlr.slsInvoiceItemHolder.slsInvceItem.rebate" >
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="rebatePct" ng-change="slsInvoiceNewCtlr.calculAmount()" ng-model="slsInvoiceNewCtlr.slsInvoiceItemHolder.slsInvceItem.rebatePct" placeholder="%" >
+                        </td>
+                        <td>
+                            <div >
+                                <input type="text" class="form-control" name="vatAmount" disabled ng-model="slsInvoiceNewCtlr.slsInvoiceItemHolder.slsInvceItem.vatAmount" >
+                            </div>
+                        </td>
+                        <td>
+                            <div >
+                                <input type="text" class="form-control" name="netSPTaxIncl" disabled ng-model="slsInvoiceNewCtlr.slsInvoiceItemHolder.slsInvceItem.netSPTaxIncl" >
+                            </div>
+                        </td>
+                        <td><button class="btn btn-primary" ng-enter="slsInvoiceNewCtlr.addItem()" ng-disabled="invoiceItemForm.$invalid" ng-click="slsInvoiceNewCtlr.addItem()" ><i class="glyphicon glyphicon-plus"></i> Add</button></td>
+                    </tr>
+                    </tbody>
+                </table>
+            <div class="row">
+                  <div class="col-lg-2">
+                        <div class="form-group">
+                            <label>{{'SlsInvoice_pymtDscntAmt_description.title' | translate}}</label><br/>
+                            <input  type="text" class="form-control" ng-model="slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.pymtDscntAmt" >
+                        </div>
+                  </div>
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label >{{'SlsInvoice_pymtDscntPct_description.title' | translate}}</label><br/>
+                            <input  type="text" class="form-control" ng-model="slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.pymtDscntPct" >
+                        </div>
+                    </div>
+                <div class="col-lg-2" style="margin-top: 24px">
+                    <input  type="submit" class="btn btn-primary" value="Apply" ng-click="slsInvoiceNewCtlr.totalAmount()">
+                </div>
+                <div class="col-lg-4 col-lg-offset-3" style="margin-top: -24px" >
+                    <table class="table table-bordered  table-striped" style="text-align: center">
+                        <tr>
+                            <td>{{'SlsInvoice_netSPPreTax_description.text' | translate}}</td>
+                            <td>{{'SlsInvoice_pymtDscntAmt_description.title' | translate}}</td>
+                            <td >{{'SlsInvoice_vatAmount_description.title' | translate}}</td>
+                            <td>{{'SlsInvoice_netSalesAmt_description.title' | translate}}</td>
+                        </tr>
+                        <tr>
+                            <td><b>{{slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.netSPPreTax}} CFA</b></td>
+                            <td><b>{{slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.pymtDscntAmt}} CFA</b></td>
+                            <td><b>{{slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.vatAmount}} CFA</b></td>
+                            <td><b>{{slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.netSalesAmt}} CFA</b></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    </form>
+    <div class="panel panel-default">
+        <div class="panel-heading"><b>{{'SlsInvceItem_description.title' | translate}}</b> </div>
+        <div class="panel-body">
+            <table class="table table-bordered  table-striped" >
+                <thead>
+                <tr>
+                    <th class="col-lg-2" >{{'SlsInvceItem_artPic_description.title' | translate}}</th>
+                    <th class="col-lg-3" >Designation</th>
+                    <th>{{'SlsInvceItem_qty_description.title' |translate}}</th>
+                    <th>{{'SlsInvceItem_sppuPreTax_description.title' | translate}}</th>
+                    <th>{{'SlsInvceItem_grossSPPreTax_description.title' | translate}}</th>
+                    <th>{{'SlsInvceItem_rebate_description.title'|translate}}</th>
+                    <th>{{'SlsInvceItem_vatAmount_description.title'|translate}}</th>
+                    <th>{{'SlsInvceItem_netSPTaxIncl_description.title' | translate}}</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="invoiceItemHolder in slsInvoiceNewCtlr.slsInvoiceHolder.slsInvceItemsholder" >
+                    <td>{{invoiceItemHolder.slsInvceItem.artPic}}</td>
+                    <td>{{invoiceItemHolder.slsInvceItem.artName}}</td>
+                    <td>{{invoiceItemHolder.slsInvceItem.qty}}</td>
+                    <td>{{invoiceItemHolder.slsInvceItem.sppuPreTax}}</td>
+                    <td>{{invoiceItemHolder.slsInvceItem.grossSPPreTax}}</td>
+                    <td>{{invoiceItemHolder.slsInvceItem.rebate}}</td>
+                    <td>{{invoiceItemHolder.slsInvceItem.vatAmount}}</td>
+                    <td>{{invoiceItemHolder.slsInvceItem.netSPTaxIncl}}</td>
+                    <td><a ng-click="slsInvoiceNewCtlr.editItem($index)" class=""><i class="glyphicon glyphicon-edit"></i></a></td>
+                    <td><a ng-click="slsInvoiceNewCtlr.deleteItem($index)" class=""><i class="glyphicon glyphicon-trash"></i></a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

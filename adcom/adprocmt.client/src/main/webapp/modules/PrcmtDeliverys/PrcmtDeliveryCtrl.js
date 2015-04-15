@@ -10,7 +10,7 @@ angular.module('AdProcmt')
         service.catalarticles='/adcatal.server/rest/catalarticles';
         service.orgunits='/adbase.server/rest/orgunits';
         service.stkSection = '/adstock.server/rest/stksections';
-
+        service.stkArtlot2strgsctnsUrlBase = '/adstock.server/rest/stkarticlelot2strgsctns';
         service.urlPrcmtOrder='/adprocmt.server/rest/prcmtprocorders';
         service.urlManageOrder='/adprocmt.server/rest/order';
 

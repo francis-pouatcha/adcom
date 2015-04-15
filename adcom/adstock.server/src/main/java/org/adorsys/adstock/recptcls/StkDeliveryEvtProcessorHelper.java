@@ -9,7 +9,6 @@ import javax.inject.Inject;
 import org.adorsys.adbase.enums.BaseHistoryTypeEnum;
 import org.adorsys.adbase.jpa.BaseBatchEvt;
 import org.adorsys.adbase.rest.BaseBatchEvtEJB;
-import org.adorsys.adinvtry.jpa.InvInvtryEvt;
 import org.adorsys.adprocmt.jpa.PrcmtDeliveryEvt;
 import org.adorsys.adprocmt.rest.PrcmtDeliveryEvtLeaseEJB;
 
