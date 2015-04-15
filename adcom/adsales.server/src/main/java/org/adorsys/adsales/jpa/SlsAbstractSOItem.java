@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.adorsys.adcore.jpa.AbstractIdentifData;
@@ -38,6 +39,13 @@ public abstract class SlsAbstractSOItem extends AbstractIdentifData {
 	@NotNull
 	private String artName;
 
+
+	@Transient
+	@Description("SlsSOItem_stkQty_description")
+	@NotNull
+	private BigDecimal stkQty;
+
+	
 	@Column
 	@Description("SlsSOItem_orderedQty_description")
 	@NotNull
@@ -161,6 +169,14 @@ public abstract class SlsAbstractSOItem extends AbstractIdentifData {
 
 	public void setSppuPreTax(final BigDecimal sppuPreTax) {
 		this.sppuPreTax = sppuPreTax;
+	}
+
+	public BigDecimal getStkQty() {
+		return stkQty;
+	}
+
+	public void setStkQty(BigDecimal stkQty) {
+		this.stkQty = stkQty;
 	}
 
 	public String getSppuCur() {

@@ -43,6 +43,9 @@
 	<class>org.adorsys.adcshdwr.jpa.CdrAbstractDsArtItem</class>
 	<class>org.adorsys.adcshdwr.jpa.CdrDrctSalesEvt</class>
 	<class>org.adorsys.adcshdwr.jpa.CdrDsArtItemEvt</class>
+	
+	<class>org.adorsys.adcshdwr.jpa.CdrAbstractPymnt</class>
+	<class>org.adorsys.adcshdwr.jpa.CdrAbstractPymntItem</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.hbm2ddl.auto" value="update"/>

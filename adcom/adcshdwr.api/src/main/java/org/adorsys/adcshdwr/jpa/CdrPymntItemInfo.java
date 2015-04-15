@@ -1,9 +1,8 @@
 /**
  * 
  */
-package org.adorsys.adcshdwr.api;
+package org.adorsys.adcshdwr.jpa;
 
-import org.adorsys.adcshdwr.jpa.CdrPymntItem;
 
 
 /**
@@ -13,7 +12,8 @@ import org.adorsys.adcshdwr.jpa.CdrPymntItem;
 public class CdrPymntItemInfo {
 	
 	public static String getDocType() {
-		return CdrPymntItem.class.getName();
+		//TODO  Improve this.
+		return CdrAbstractPymntItem.class.getName();
 	}
 	
 }
