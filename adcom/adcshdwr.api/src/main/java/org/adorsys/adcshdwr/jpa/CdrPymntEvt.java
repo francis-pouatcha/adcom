@@ -10,7 +10,7 @@ import javax.persistence.Entity;
  *
  */
 @Entity
-public abstract class CdrPymntEvt extends CdrAbstractPymnt{
+public class CdrPymntEvt extends CdrAbstractPymnt{
 
 	/**
 	 * The serialVersionUID field.

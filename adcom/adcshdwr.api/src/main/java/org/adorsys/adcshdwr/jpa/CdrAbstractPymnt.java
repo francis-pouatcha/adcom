@@ -160,4 +160,16 @@ public abstract class CdrAbstractPymnt extends AbstractIdentifData {
 	public void clearAmts() {
 		if(amt == null) amt = BigDecimal.ZERO;
 	}
+	
+	public void copyTo(CdrAbstractPymnt target) {
+		target.pymntNbr=pymntNbr;
+		target.pymntDt=pymntDt;
+		target.valueDt=valueDt;
+		target.amt=amt;
+		target.cashier=cashier;
+		target.cdrNbr=cdrNbr;
+		target.paidBy=paidBy;
+		target.rcptNbr=rcptNbr;
+		target.rcptPrntDt=rcptPrntDt;
+	}
 }
