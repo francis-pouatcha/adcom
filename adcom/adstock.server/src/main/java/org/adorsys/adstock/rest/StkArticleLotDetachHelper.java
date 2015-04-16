@@ -9,7 +9,7 @@ import javax.inject.Inject;
 
 import org.adorsys.adbase.security.SecurityUtil;
 import org.adorsys.adcatal.jpa.CatalArtFeatMapping;
-import org.adorsys.adcatal.rest.CatalArtFeatMappingLookupEJB;
+//import org.adorsys.adcatal.rest.CatalArtFeatMappingLookupEJB;
 import org.adorsys.adcore.utils.BigDecimalUtils;
 import org.adorsys.adstock.jpa.StkArticleLot;
 import org.adorsys.adstock.jpa.StkArticleLotSearchInput;
@@ -27,8 +27,8 @@ public class StkArticleLotDetachHelper {
 	@Inject
 	private StkLotStockQtyLookup lotStockQtyEJB;
 
-	@Inject
-	private CatalArtFeatMappingLookupEJB artFeatMappingReaderEJB;
+	//@Inject
+	//private CatalArtFeatMappingLookupEJB artFeatMappingReaderEJB;
 
 	@Inject
 	private SecurityUtil securityUtil;
@@ -59,10 +59,10 @@ public class StkArticleLotDetachHelper {
 			}
 		}
 		String langIso2 = securityUtil.getUserLange();
-		CatalArtFeatMapping artFeatures = artFeatMappingReaderEJB
+		/*CatalArtFeatMapping artFeatures = artFeatMappingReaderEJB
 				.findByIdentif(CatalArtFeatMapping.toIdentif(
 						entity.getArtPic(), langIso2));
-		entity.setArtFeatures(artFeatures);
+		entity.setArtFeatures(artFeatures);*/
 		return entity;
 	}
 

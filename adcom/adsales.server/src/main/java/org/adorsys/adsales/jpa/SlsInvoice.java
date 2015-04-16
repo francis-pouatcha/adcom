@@ -11,6 +11,7 @@ import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.adorsys.adcore.jpa.AbstractIdentifData;
+import org.adorsys.adcore.utils.FinancialOps;
 import org.adorsys.javaext.description.Description;
 import org.adorsys.javaext.format.DateFormatPattern;
 
@@ -22,7 +23,7 @@ public class SlsInvoice extends AbstractIdentifData {
 
 	@Column
 	@Description("SlsInvoice_invceType_description")
-	@NotNull
+	//@NotNull
 	private String invceType;
 
 	@Column
@@ -32,7 +33,7 @@ public class SlsInvoice extends AbstractIdentifData {
 
 	@Column
 	@Description("SlsInvoice_soNbr_description")
-	@NotNull
+	//@NotNull
 	private String soNbr;
 
 	@Column
@@ -93,6 +94,87 @@ public class SlsInvoice extends AbstractIdentifData {
 	@Transient
 	@Description("SlsInvoice_ptnrNbr_description")
 	private String ptnrNbr;
+	
+	@Column
+	private String creatingUsr;
+	
+	
+	public void clearAmts() {
+		this.grossSPPreTax=BigDecimal.ZERO;
+		this.rebate = BigDecimal.ZERO;
+		this.netSPPreTax=BigDecimal.ZERO;
+		this.vatAmount=BigDecimal.ZERO;
+		this.netSPTaxIncl=BigDecimal.ZERO;
+		this.netSalesAmt=BigDecimal.ZERO;
+		this.netAmtToPay=BigDecimal.ZERO;
+	}
+	
+	public void evlte() {
+		
+			if(this.pymtDscntPct!=null)
+				this.pymtDscntAmt = FinancialOps.amtFromPrct(this.netSPPreTax, this.pymtDscntPct, this.invceCur);
+			
+		if(this.pymtDscntAmt==null) this.pymtDscntAmt=BigDecimal.ZERO;
+		
+		this.netSalesAmt = FinancialOps.substract(this.netSPTaxIncl, this.pymtDscntAmt, this.invceCur);
+		
+		if(this.rdngDscntAmt==null) this.rdngDscntAmt=BigDecimal.ZERO;
+		this.netAmtToPay = FinancialOps.substract(this.netSalesAmt, this.rdngDscntAmt, this.invceCur);
+	}
+
+	public void addGrossSPPreTax(BigDecimal grossSPPreTax) {
+		if(this.grossSPPreTax==null)this.grossSPPreTax=BigDecimal.ZERO;
+		this.grossSPPreTax = this.grossSPPreTax.add(grossSPPreTax);
+	}
+
+	public void addRebate(BigDecimal rebate) {
+		if(this.rebate==null) this.rebate = BigDecimal.ZERO;
+		this.rebate=this.rebate.add(rebate);
+	}
+
+	public void addNetSPPreTax(BigDecimal netSPPreTax) {
+		if(this.netSPPreTax==null) this.netSPPreTax=BigDecimal.ZERO;
+		this.netSPPreTax = this.netSPPreTax.add(netSPPreTax);
+	}
+
+	public void addVatAmount(BigDecimal vatAmt) {
+		if(this.vatAmount==null)this.vatAmount=BigDecimal.ZERO;
+		this.vatAmount = this.vatAmount.add(vatAmt);
+	}
+
+	public void addNetSPTaxIncl(BigDecimal netSPTaxIncl) {
+		if(this.netSPTaxIncl==null)this.netSPTaxIncl=BigDecimal.ZERO;
+		this.netSPTaxIncl=this.netSPTaxIncl.add(netSPTaxIncl);
+	}
+
+	public void copyTo(final SlsInvoice target){
+		target.creatingUsr = creatingUsr;
+		target.grossSPPreTax = grossSPPreTax;
+		target.identif = identif;
+		target.netAmtToPay = netAmtToPay;
+		target.netSalesAmt = netSalesAmt;
+		target.netSPPreTax = netSPPreTax;
+		target.netSPTaxIncl = netSPTaxIncl;
+		target.pymtDscntAmt = pymtDscntAmt;
+		target.pymtDscntPct = pymtDscntPct;
+		target.rdngDscntAmt = rdngDscntAmt;
+		target.rebate = rebate;
+		target.invceCur = invceCur;
+		target.invceDt = invceDt;
+		target.soNbr = soNbr;
+		target.invceNbr = invceNbr;
+		target.invceStatus = invceStatus;
+		target.vatAmount = vatAmount;
+	}
+	
+
+	public String getCreatingUsr() {
+		return creatingUsr;
+	}
+
+	public void setCreatingUsr(String creatingUsr) {
+		this.creatingUsr = creatingUsr;
+	}
 
 	public String getInvceType() {
 		return this.invceType;

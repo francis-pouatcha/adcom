@@ -13,8 +13,8 @@
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label for="roleInSO">{{'SlsSOPtnr_roleInSO_description.title' | translate}}</label>
-                        <select ng-options="roleInSO.enumKey as roleInSO.name for roleInSO in roleInSOs"
-                                ng-model="slsInvcePtnr.roleInSO" id="roleInSO" name="roleInSO" class="form-control" ></select>
+                        <select ng-options="roleInInvce.enumKey as roleInInvce.name for roleInInvce in roleInInvces"
+                                ng-model="slsInvcePtnr.roleInInvce" id="roleInInvce" name="roleInInvce" class="form-control" ></select>
                     </div>
                 </div>
                 <div class="col-lg-4" style="margin-top: 40px">
@@ -32,7 +32,7 @@
                     <tbody>
                     <tr ng-repeat="slsInvcePtnrHolder in slsInvcePtnrsHolder" >
                         <td>{{slsInvcePtnrHolder.slsInvcePtnr.ptnrNbr}}</td>
-                        <td>{{slsInvcePtnrHolder.slsInvcePtnr.roleInSO}}</td>
+                        <td>{{slsInvcePtnrHolder.slsInvcePtnr.roleInInvce}}</td>
                         <td><a ng-click="deleteItem($index)" class=""><i class="glyphicon glyphicon-trash"></i></a></td>
                     </tr>
                     </tbody>

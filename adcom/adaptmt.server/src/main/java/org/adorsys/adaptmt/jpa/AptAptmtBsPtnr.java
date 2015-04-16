@@ -72,8 +72,8 @@ public class AptAptmtBsPtnr extends AbstractEntity
    }
 
 
-@Override
+/*@Override
 protected String makeIdentif() {
 	return aptmtIdentify + "_" + bsPtnrIdentify;
-}
+}*/
 }

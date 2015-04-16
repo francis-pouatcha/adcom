@@ -218,7 +218,7 @@ angular.module('AdSales')
             for(var i=0;i<self.slsInvceItemsholderDeleted.length;i++){
                 self.prcmtOrderHolder.poItems.push(self.slsInvceItemsholderDeleted[i])
             }
-            genericResource.customMethod(SlsInvoiceUtils.invoice+'/doSale',self.slsInvoiceHolder).success(function(data){
+            genericResource.customMethod(SlsInvoiceUtils.invoice+'/processInvoice',self.slsInvoiceHolder).success(function(data){
                 clearSaleOrder();
             });
         }
@@ -269,7 +269,7 @@ angular.module('AdSales')
             $scope.loadBusinessPartner = function(val){
                 return self.loadBusinessPartner(val);
             }
-            $scope.roleInSOs = self.ptnrRole;
+            $scope.roleInInvces = self.ptnrRole;
             $scope.addBptrn = function(){
                 console.log('hello');
                 var slsInvcePtnrHolder = {};
