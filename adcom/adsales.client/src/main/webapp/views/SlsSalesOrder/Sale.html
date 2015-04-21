@@ -1,9 +1,9 @@
 <div>
     <div style="margin-bottom: 20px" >
-        <a class="btn btn-default" ng-click="saleCtlr.previous()" ng-disabled="saleCtlr.index==0" ><i class="glyphicon glyphicon-chevron-left"></i> Previous</a>
-        <a class="btn btn-default" ng-click="saleCtlr.next()" ng-disabled="saleCtlr.index==saleCtlr.tabLength()-1 || saleCtlr.tabLength()==0" >Next <i class="glyphicon glyphicon-chevron-right"></i></a>
+        <!--<a class="btn btn-default"  ng-click="saleCtlr.previous()" ng-disabled="saleCtlr.index==0" ><i class="glyphicon glyphicon-chevron-left"></i> Previous</a>
+        <a class="btn btn-default" ng-click="saleCtlr.next()" ng-disabled="saleCtlr.index==saleCtlr.tabLength()-1 || saleCtlr.tabLength()==0" >Next <i class="glyphicon glyphicon-chevron-right"></i></a>-->
         <a class="btn btn-danger" ng-click="saleCtlr.annulerCmd()" ><i class="glyphicon glyphicon-trash" ></i> Anuller la commande</a>
-        <a class="btn btn-default" ng-click="saleCtlr.newCmd()" ng-disabled="saleCtlr.tabLength()==4" ><i class="glyphicon glyphicon-plus" ></i> Nouvelle commande</a>
+        <a class="btn btn-default" ng-click="saleCtlr.newCmd()"  ><i class="glyphicon glyphicon-plus" ></i> Nouvelle commande</a>
         <a class="btn btn-warning" ng-click="saleCtlr.addBptnr()"><i class="glyphicon glyphicon-user" ></i> {{saleCtlr.slsSalesOrderHolder.slsSOPtnrsHolder[0].slsSOPtnr.ptnrNbr}}</a>
         <label>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.soDt | date:'medium'}}</label>
         <a class="btn btn-primary col-lg-offset-1" ng-disabled="saleCtlr.showBtnClose" ng-click="saleCtlr.cloturerCmd()"><i class="glyphicon glyphicon-ok" ></i> Cloturer la commande</a>
@@ -36,15 +36,15 @@
                     <tr>
                         <td>
                             <div ng-class="{ 'has-error' : OrderItemForm.artPic.$invalid }" >
-                                <input type="text" ng- class="form-control" select-on-click name="artPic" id="artPic" required autocomplete="off" ng-model="saleCtlr.slsSalesOrderItemHolder.slsSOItem.artPic"
-                                       typeahead="article as article.pic for article in saleCtlr.loadArticlesByCipLike($viewValue)"
-                                       typeahead-loading="loading" typeahead-template-url="views/SlsSalesOrder/CatalTypeaheadTemplate.html" typeahead-on-select='saleCtlr.onSelect($item, $model, $label)' >
+                                <input type="text" style="width: 80px" ng- class="form-control" select-on-click name="artPic" id="artPic" required autocomplete="off" ng-model="saleCtlr.slsSalesOrderItemHolder.slsSOItem.artPic"
+                                       typeahead="article as article.displayableStr for article in saleCtlr.findArticleByCip($viewValue)"
+                                       typeahead-loading="loading"  typeahead-on-select='saleCtlr.onSelect($item, $model, $label)' >
                             </div>
                         </td>
                         <td>
                             <div ng-class="{ 'has-error' : OrderItemForm.artName.$invalid }" >
                                 <input type="text" class="form-control" select-on-click focus required id="artName" autocomplete="off" ng-model="saleCtlr.slsSalesOrderItemHolder.slsSOItem.artName"
-                                       typeahead="article as article.features.artName for article in saleCtlr.loadArticlesByNameLike($viewValue)"
+                                       typeahead="article as article.displayableStr for article in saleCtlr.findArticleByName($viewValue)"
                                        typeahead-loading="loading" typeahead-on-select='saleCtlr.onSelect($item, $model, $label)' name="artName" >
                             </div>
                         </td>

@@ -163,7 +163,7 @@ public class CdrDrctSalesEJB
 		if(searchInput.getFieldNames().contains("cashier") && StringUtils.isNotBlank(entity.getCashier())){
 			query.setParameter("cashier", entity.getCashier());
 		}
-		if(searchInput.getFieldNames().contains("cdrNbr") && entity.getCdrNbr()!=null){
+		if(searchInput.getFieldNames().contains("cdrNbr") && StringUtils.isNotBlank(entity.getCdrNbr())){
 			query.setParameter("cdrNbr", entity.getCdrNbr());
 		}
 		if(searchInput.getFieldNames().contains("rcptNbr") && StringUtils.isNotBlank(entity.getRcptNbr())){

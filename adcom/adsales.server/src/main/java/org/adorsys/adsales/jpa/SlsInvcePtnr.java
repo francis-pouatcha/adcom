@@ -6,6 +6,7 @@ import javax.validation.constraints.NotNull;
 
 import org.adorsys.adcore.jpa.AbstractIdentifData;
 import org.adorsys.javaext.description.Description;
+import org.apache.commons.lang3.StringUtils;
 
 @Entity
 @Description("SlsInvcePtnr_description")
@@ -51,9 +52,28 @@ public class SlsInvcePtnr extends AbstractIdentifData {
 	public void setRoleInInvce(final String roleInInvce) {
 		this.roleInInvce = roleInInvce;
 	}
+	
+	public static String toId(String invceNbr, String ptnrNbr, String roleInInvce){
+		return invceNbr + "_" + ptnrNbr + "_" + roleInInvce;
+	}
 
 	@Override
 	protected String makeIdentif() {
 		return invceNbr + "_" + ptnrNbr + "_" + roleInInvce;
+	}
+	
+	public boolean contentEquals(SlsInvcePtnr target) {
+		if(target==null) return false;
+		if(!StringUtils.equals(invceNbr, target.invceNbr)) return false;
+		if(!StringUtils.equals(ptnrNbr, target.ptnrNbr)) return false;
+		if(!StringUtils.equals(roleInInvce, target.roleInInvce)) return false;
+		return true;
+	}
+
+	public void copyTo(SlsInvcePtnr target) {
+		target.ptnrNbr=ptnrNbr;
+		target.invceNbr=invceNbr;
+		target.roleInInvce=roleInInvce;
+		
 	}
 }

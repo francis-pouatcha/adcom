@@ -23,7 +23,6 @@
                 <tr>
                     <th class="clo-lg-2">CIP</th>
                     <th class="col-lg-3">Designation</th>
-                    <th>Qte Stock</th>
                     <th>Qte</th>
                     <th>Qte Gratuite</th>
                     <th>prix Achat</th>
@@ -41,21 +40,20 @@
                             <td>
                                 <div ng-class="{ 'has-error' : prcmtDeliveryItemForm.artPic.$invalid }" >
                                     <input type="text" ng- class="form-control" select-on-click name="artPic" id="artPic" required autocomplete="off" ng-model="prcmtDeliveryAddItemCtlr.prcmtDeliveryItemHolder.dlvryItem.artPic"
-                                       typeahead="article as article.pic for article in prcmtDeliveryAddItemCtlr.loadArticlesByCipLike($viewValue)"
+                                       typeahead="article as article.displayableStr for article in prcmtDeliveryAddItemCtlr.findArticleByCip($viewValue)"
                                        typeahead-loading="loading" typeahead-template-url="views/PrcmtDelivery/CatalTypeaheadTemplate.html" typeahead-on-select='prcmtDeliveryAddItemCtlr.onSelect($item, $model, $label)' >
                                 </div>
                             </td>
                             <td>
                                 <div ng-class="{ 'has-error' : prcmtDeliveryItemForm.artName.$invalid }" >
                                     <input type="text" class="form-control" select-on-click focus required id="artName" autocomplete="off" ng-model="prcmtDeliveryAddItemCtlr.prcmtDeliveryItemHolder.dlvryItem.artName"
-                                       typeahead="article as article.features.artName for article in prcmtDeliveryAddItemCtlr.loadArticlesByNameLike($viewValue)"
+                                       typeahead="article as article.displayableStr for article in prcmtDeliveryAddItemCtlr.findArticleByName($viewValue)"
                                        typeahead-loading="loading" typeahead-on-select='prcmtDeliveryAddItemCtlr.onSelect($item, $model, $label)' name="artName" >
                                 </div>
                             </td>
-                            <td><input type="text" class="form-control" disabled ></td>
                             <td>
-                                <div ng-class="{ 'has-error' : prcmtDeliveryItemForm.qtyDlvrd.$invalid }" >
-                                    <input type="text" class="form-control" required name="qtyDlvrd" id="qtyDlvrd" ng-model="prcmtDeliveryAddItemCtlr.prcmtDeliveryItemHolder.dlvryItem.qtyDlvrd" >
+                                <div >
+                                    <input type="text" class="form-control" name="qtyDlvrd" id="qtyDlvrd" ng-model="prcmtDeliveryAddItemCtlr.prcmtDeliveryItemHolder.dlvryItem.qtyDlvrd" >
                                 </div>
                             </td>
                             <td><input type="text" class="form-control" ng-model="prcmtDeliveryAddItemCtlr.prcmtDeliveryItemHolder.dlvryItem.freeQty" ></td>

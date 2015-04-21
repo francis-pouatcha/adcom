@@ -9,6 +9,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.metamodel.SingularAttribute;
 
+import org.adorsys.adcore.utils.SequenceGenerator;
 import org.adorsys.adsales.jpa.SlsInvoice;
 import org.adorsys.adsales.jpa.SlsInvoiceSearchInput;
 import org.adorsys.adsales.repo.SlsInvoiceRepository;
@@ -30,7 +31,16 @@ public class SlsInvoiceEJB
 
    public SlsInvoice create(SlsInvoice entity)
    {
-      return repository.save(attach(entity));
+	   if (StringUtils.isBlank(entity.getInvceNbr())) {
+			entity.setInvceNbr(SequenceGenerator
+					.getSequence(SequenceGenerator.DEBTS_INVOICE_SEQUENCE_PREFIXE));
+		}
+		entity.setId(entity.getInvceNbr());
+		entity.setIdentif(entity.getInvceNbr());	
+		entity = repository.save(attach(entity));
+		
+		//generate event
+		return entity;
    }
 
    public SlsInvoice deleteById(String id)

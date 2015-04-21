@@ -14,6 +14,7 @@ import org.adorsys.adbase.enums.BaseProcStepEnum;
 import org.adorsys.adbase.enums.BaseProcessStatusEnum;
 import org.adorsys.adbase.security.SecurityUtil;
 import org.adorsys.adcore.auth.TermWsUserPrincipal;
+import org.adorsys.adcore.jpa.CurrencyEnum;
 import org.adorsys.adsales.jpa.SlsSOHstry;
 import org.adorsys.adsales.jpa.SlsSOItem;
 import org.adorsys.adsales.jpa.SlsSOPtnr;
@@ -214,6 +215,7 @@ public class SaleOrderManager {
 			slsSalesOrder.setAcsngDt(now);
 			if(slsSalesOrder.getSoDt()==null) slsSalesOrder.setSoDt(now);
 			slsSalesOrder.setSoStatus(BaseProcessStatusEnum.ONGOING);
+			if(slsSalesOrder.getSoCur()==null)slsSalesOrder.setSoCur(CurrencyEnum.XAF.name());
 			slsSalesOrder = slsSalesOrderEJB.create(slsSalesOrder);
 			createInitialSaleOrderHistory(slsSalesOrder);
 		}else{
