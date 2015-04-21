@@ -11,30 +11,30 @@
                        <div class="form-group">
                            <label class="col-lg-2">{{slsSalesOrderUtils.translations['SlsSalesOrder_soNbr_description.title']}} :</label>
                            <div class="col-lg-2">
-                               <input type="text" ng-model="slsSalesOrder.soNbr" name="soNbr" class="form-control" disabled >
+                               <input type="text" value="{{slsSalesOrder.soNbr}}" name="soNbr" class="form-control" disabled >
                            </div>
 	                       <label class="col-lg-2">{{slsSalesOrderUtils.translations['SlsSalesOrder_soStatus_description.title']}}:</label>
 	                        <div class="col-lg-2">
-	                            <input type="text" ng-model="{{slsSalesOrderUtils.slsSOStatusI18nMsgTitleValue($scope.slsSalesOrder.soStatus)}}" name="soStatus" class="form-control" disabled >
+	                            <input type="text" value="{{slsSalesOrderUtils.slsSOStatusI18nMsgTitleValue(slsSalesOrder.soStatus)}}" name="soStatus" class="form-control" disabled >
 	                        </div>
                             <label class="col-lg-2">{{slsSalesOrderUtils.translations['SlsSalesOrder_soDt_description.title']}}:</label>
 	                        <div class="col-lg-2">
-	                            <input type="text" ng-model="slsSalesOrder.soDt" name="soDt" class="form-control" disabled >
+	                            <input type="text" value="{{slsSalesOrder.soDt}}" name="soDt" class="form-control" disabled >
 	                        </div>
                     	</div>
                     
 	                    <div class="form-group">
                             <label class="col-lg-2">{{slsSalesOrderUtils.translations['SlsSalesOrder_soCur_description.title']}} :</label>
 	                        <div class="col-lg-2">
-	                            <input type="text" ng-model="slsSalesOrder.soCur" name="soCur" class="form-control" disabled>
+	                            <input type="text" value="{{slsSalesOrder.soCur}}" name="soCur" class="form-control" disabled>
 	                        </div>
                             <label class="col-lg-2">{{slsSalesOrderUtils.translations['SlsSalesOrder_grossSPPreTax_description.title']}} :</label>
                             <div class="col-lg-2" >
-                                <input type="text" ng-model="slsSalesOrder.grossSPPreTax" name="grossSPPreTax" class="form-control" disabled>
+                                <input type="text" value="{{slsSalesOrder.grossSPPreTax}}" name="grossSPPreTax" class="form-control" disabled>
                             </div>
 	                        <label class="col-lg-2">{{slsSalesOrderUtils.translations['SlsSalesOrder_netSPPreTax_description.title']}} :</label>
 	                        <div class="col-lg-2">
-	                            <input type="text" ng-model="slsSalesOrder.netSPPreTax" name="netSPPreTax" class="form-control" disabled>
+	                            <input type="text" value="{{slsSalesOrder.netSPPreTax}}" name="netSPPreTax" class="form-control" disabled>
 	                        </div>
 	                        
 	                    </div>
@@ -42,31 +42,31 @@
                         <div class=" form-group ">
                             <label class="col-lg-2 ">{{slsSalesOrderUtils.translations['SlsSalesOrder_vatAmount_description.title']}} :</label>
 	                        <div class="col-lg-2" >
-	                            <input type="text" ng-model="slsSalesOrder.vatAmount" name="vatAmount" class="form-control" disabled>
+	                            <input type="text" value="{{slsSalesOrder.vatAmount}}" name="vatAmount" class="form-control" disabled>
 	                        </div>
                             <label class="col-lg-2 ">{{slsSalesOrderUtils.translations['SlsSalesOrder_netSPTaxIncl_description.title']}} :</label>
                             <div class="col-lg-2">
-                                <input type="text" ng-model="slsSalesOrder.netSPTaxIncl" name="netSPTaxIncl" class="form-control" disabled>
+                                <input type="text" value="{{slsSalesOrder.netSPTaxIncl}}" name="netSPTaxIncl" class="form-control" disabled>
                             </div>
                         
                             <label class="col-lg-2 ">{{slsSalesOrderUtils.translations['SlsSalesOrder_netSalesAmt_description.title']}} :</label>
                             <div class="col-lg-2" >
-                                <input type="text" ng-model="slsSalesOrder.netSalesAmt" name="netSalesAmt" class="form-control" disabled>
+                                <input type="text" value="{{slsSalesOrder.netSalesAmt}}" name="netSalesAmt" class="form-control" disabled>
                             </div>
                              
                         </div>
                         <div class=" form-group ">
                             <label class="col-lg-2 ">{{slsSalesOrderUtils.translations['SlsSalesOrder_pymtDscntPct_description.title']}} :</label>
                             <div class="col-lg-2" >
-                                <input type="text" ng-model="slsSalesOrder.pymtDscntPct" name="pymtDscntPct" class="form-control" disabled>
+                                <input type="text" value="{{slsSalesOrder.pymtDscntPct}}" name="pymtDscntPct" class="form-control" disabled>
                             </div>
                             <label class="col-lg-2">{{slsSalesOrderUtils.translations['SlsSalesOrder_pymtDscntAmt_description.title']}} :</label>
                             <div class="col-lg-2" >
-                                <input type="text" ng-model="slsSalesOrder.pymtDscntAmt" name="pymtDscntAmt" class="form-control" disabled>
+                                <input type="text" value="{{slsSalesOrder.pymtDscntAmt}}" name="pymtDscntAmt" class="form-control" disabled>
                             </div>
                             <label class="col-lg-2">{{slsSalesOrderUtils.translations['SlsSalesOrder_rdngDscntAmt_description.title']}} :</label>
                             <div class="col-lg-2" >
-                                <input type="text" ng-model="slsSalesOrder.rdngDscntAmt" name="rdngDscntAmt" class="form-control" disabled>
+                                <input type="text" value="{{slsSalesOrder.rdngDscntAmt}}" name="rdngDscntAmt" class="form-control" disabled>
                             </div>
                             
                             
@@ -75,11 +75,11 @@
                          <div class=" form-group ">
                             <label class="col-lg-2 ">{{slsSalesOrderUtils.translations['SlsSalesOrder_rebate_description.title']}} :</label>
                             <div class="col-lg-2" >
-                                <input type="text" ng-model="slsSalesOrder.rebate" name="rebate" class="form-control" disabled>
+                                <input type="text" value="{{slsSalesOrder.rebate}}" name="rebate" class="form-control" disabled>
                             </div>
                              <label class="col-lg-2">{{slsSalesOrderUtils.translations['SlsSalesOrder_netAmtToPay_description.title']}} :</label>
                             <div class="col-lg-2" >
-                                <input type="text" ng-model="slsSalesOrder.netAmtToPay" name="netAmtToPay" class="form-control" disabled>
+                                <input type="text" value="{{slsSalesOrder.netAmtToPay}}" name="netAmtToPay" class="form-control" disabled>
                             </div>
                             
                             

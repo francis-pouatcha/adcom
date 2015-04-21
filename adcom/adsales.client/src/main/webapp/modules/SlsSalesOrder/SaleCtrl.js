@@ -21,6 +21,10 @@ angular.module('AdSales')
         slsSOItemsholder:[],
         slsSOPtnrsHolder:[]
     };
+    if(slsSalesOrderState.slsSalesOrderHolder){
+        self.slsSalesOrderHolder = slsSalesOrderState.slsSalesOrderHolder;
+    }
+    if(!self.slsSalesOrderHolder){
         self.slsSalesOrderHolder.slsSalesOrder.soDt = new Date();
         self.slsSalesOrderHolder.slsSalesOrder.grossSPPreTax = 0;
         self.slsSalesOrderHolder.slsSalesOrder.netSPPreTax = 0;
@@ -29,6 +33,8 @@ angular.module('AdSales')
         self.slsSalesOrderHolder.slsSalesOrder.rebate = 0;
         self.slsSalesOrderHolder.slsSalesOrder.netSalesAmt = 0;
         self.slsSalesOrderHolder.slsSalesOrder.soStatus = 'INITIATED';
+     }
+        
     self.slsSalesOrderHolderTab = [];
     self.slsSalesOrderItemHolder = {};
     self.error = "";
@@ -54,8 +60,8 @@ angular.module('AdSales')
     self.tabLength = tabLength;
     self.ModalInstanceAddBptrnCtrl = ModalInstanceAddBptrnCtrl;
     self.totalAmount = totalAmount;
-     self.showBtnClose = true;
-     self.ptnrRole;
+    self.showBtnClose = true;
+    self.ptnrRole;
 
         loadPtnrRole();
 

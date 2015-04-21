@@ -153,6 +153,15 @@ angular.module('AdSales')
     service.resultHandler.slsSOItems=[];
     service.resultHandler.slsSOPtnrs=[];
     service.resultHandler.maxResult=10;
+    service.slsSalesOrderHolder = {
+        slsSalesOrder:{},
+        slsSOItemsholder:[],
+        slsSOPtnrsHolder:[]
+    };
+    service.saveSlsSalesOrderHolder= function(slsSOHolder){
+        if(!service.slsSalesOrderHolder) return;
+        angular.copy(slsSOHolder, service.slsSalesOrderHolder);
+    }
     return service;
 
 }])
@@ -165,6 +174,7 @@ function($scope,genericResource,slsSalesOrderUtils,slsSalesOrderState,$location,
         slsSOItemsholder:[],
         slsSOPtnrsHolder:[]
     };
+    $scope.slsSalesOrderItemHolder = {};
     $scope.slsSalesOrdersHolder=[];
     $scope.searchInput = slsSalesOrderState.resultHandler.searchInput();
     $scope.itemPerPage=slsSalesOrderState.resultHandler.itemPerPage;
@@ -227,12 +237,6 @@ function($scope,genericResource,slsSalesOrderUtils,slsSalesOrderState,$location,
         });
     }
     
-    
-    function findInMemory(resultItems){
-        slsSalesOrderState.resultHandler.searchResult(resultItems)
-        
-    }
-    
     function findCustom(searchInput){
         genericResource.findCustom(slsSalesOrderUtils.urlBase, searchInput)
 		.success(function(entitySearchResult) {
@@ -291,9 +295,24 @@ function($scope,genericResource,slsSalesOrderUtils,slsSalesOrderState,$location,
 
 	function edit(slsSO, index){
 		if(slsSalesOrderState.resultHandler.selectedObject(slsSO) != -1){
+            prepareSalesOrder(slsSO);
+            slsSalesOrderState.saveSlsSalesOrderHolder($scope.slsSalesOrderHolder);
 			$location.path('/SlsSalesOrders/edit/');
 		}
 	}
+     
+    function prepareSalesOrder(slsSO){
+        $scope.slsSalesOrderHolder.slsSalesOrder= slsSO;
+        $scope.slsSalesOrderHolder.slsSOItemsholder= slsSO.slsSOItems;
+        console.log('Prepare Sales Order'+$scope.slsSalesOrderHolder.slsSOItemsholder);
+        /*for(var i=0; i<$scope.items; i++){
+            console.log('Iterate over SOItems');
+            $scope.slsSalesOrderItemHolder.slsSOItem = $scope.items[i];
+            console.log('Sales Order Item: '+$scope.slsSalesOrderItemHolder.slsSOItem);
+            $scope.slsSalesOrderHolder.slsSOItemsholder.push($scope.slsSalesOrderItemHolder.slsSOItem);
+        };*/
+        $scope.slsSalesOrderHolder.slsSOPtnrsHolder= slsSO.slsSOPtnrs;
+    }
 }])
 .controller('slsSalesOrderCreateCtlr',['$scope','slsSalesOrderUtils','$translate','genericResource','$location','slsSalesOrderState',
         function($scope,slsSalesOrderUtils,$translate,genericResource,$location,slsSalesOrderState){
