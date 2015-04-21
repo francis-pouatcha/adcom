@@ -1,28 +1,21 @@
 <div class="container">
     <div class="panel panel-default">
-        <div class="panel-heading"><b>{{commonTranslations.translations['Entity_show.title']}}</b> </div>
+        <div class="panel-heading"><b>{{commonTranslations.translations['Entity_create.title']}}</b> </div>
         <div class="panel-body">
             <label class="error col-lg-offset-3 alert-danger">{{error}} </label>
-            <form name="CdrCshDrawerForm" id="CdrCshDrawerForm" class="form-horizontal" novalidate="">
-                <div class="row">
-                    <div class="form-group">
-                        <label class="control-label col-lg-2" for="initialAmt">{{cdrCshDrawerUtils.translations['CdrCshDrawer_initialAmt_description.title']}} :</label>
-                        <input type="text" autocomplete="off" class="form-control col-lg-4" disabled name="initialAmt" value="{{cdrCshDrawer.initialAmt}}" id="initialAmt" />
+            <form name="CdrCshDrawerForm" id="CdrCshDrawerForm" novalidate="" class="form-horizontal">
+                <div class="form-group">
+                    <label for="initialAmt" class="col-sm-2 control-label">{{cdrCshDrawerUtils.translations['CdrCshDrawer_initialAmt_description.title']}} :</label>
+                    <div class="col-sm-10">
+                        <input type="email" class="form-control" id="inputEmail3" autocomplete="off" name="initialAmt"  value="{{cdrCshDrawer.initialAmt}}" id="initialAmt">
                     </div>
                 </div>
-
-                <hr/>
-                <div class="row">
-                    <div class="form-group">
-                        <span class="col-lg-4"></span>
-                        <div class="col-lg-2">
-                            <a class="btn-danger btn" href="#/CdrCshDrawers">
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-3">
+                        <a class="btn-danger btn" href="#/InvInvtrys">
                                 <i class="glyphicon glyphicon-remove"></i> {{commonTranslations.translations['Entity_cancel.title']}}</a>
-                        </div>
-                        <span class="col-lg-4"></span>
                     </div>
                 </div>
-
             </form>
         </div>
     </div>
