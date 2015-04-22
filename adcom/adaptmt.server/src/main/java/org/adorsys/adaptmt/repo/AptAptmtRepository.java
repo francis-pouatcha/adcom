@@ -1,7 +1,6 @@
 package org.adorsys.adaptmt.repo;
 
 import org.adorsys.adaptmt.jpa.AptAptmt;
-import org.adorsys.adbase.jpa.Login;
 import org.apache.deltaspike.data.api.EntityRepository;
 import org.apache.deltaspike.data.api.Query;
 import org.apache.deltaspike.data.api.QueryResult;

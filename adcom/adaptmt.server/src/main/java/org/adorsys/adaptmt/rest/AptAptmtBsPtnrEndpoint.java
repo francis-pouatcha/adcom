@@ -72,6 +72,16 @@ public class AptAptmtBsPtnrEndpoint
 			return Response.status(Status.NOT_FOUND).build();
 		return Response.ok(detach(found)).build();
 	}
+	
+	@GET
+	@Path("aptmtIdentify/{aptmtIdentify}")
+	@Produces({ "application/json", "application/xml" })
+	public Response findByAptmtIdentify(@PathParam("aptmtIdentify") String aptmtIdentify) {
+		List<AptAptmtBsPtnr> found = ejb.findAptmtBsPtnr(aptmtIdentify);
+		if (found == null)
+			return Response.status(Status.NOT_FOUND).build();
+		return Response.ok(detach(found)).build();
+	}
 
 	@GET
 	@Produces({ "application/json", "application/xml" })
