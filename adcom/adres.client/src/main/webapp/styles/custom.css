@@ -9,3 +9,17 @@
 
     margin-bottom: 10px;
 }
+
+.overflowVisible{
+    overflow: visible !important;
+}
+
+#panelV.panel{
+    overflow: visible !important;
+}
+
+.panelCustom {
+    border-radius: 4px;
+    margin-bottom: 0;
+    overflow: visible;
+}

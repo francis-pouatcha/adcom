@@ -114,13 +114,13 @@
 		                   <div class="form-group col-lg-2">
 		                       <label class=" control-label" for="createSectionCode">{{invInvtryUtils.translations['InvInvtryItem_section_description.title']}}</label>
 		              		       <input type="text" ng-model="searchInput.entity.section" id="createSectionCode" name="createSectionCode" class="form-control" ng-change="onSectionChanged()"
-		                              autocomplete="off" typeahead="stkSection as (stkSection.strgSection + ' : ' + stkSection.sectionName) for stkSection in invInvtryUtils.loadStkSectionArticleLots($viewValue)"
+		                              autocomplete="off" typeahead="stkSection as (stkSection.sectionCode + ' : ' + stkSection.name) for stkSection in invInvtryUtils.loadStkSectionArticleLots($viewValue)"
 		                              typeahead-loading="loading" typeahead-min-length="4" typeahead-on-select='onSectionSelected($item, $model, $label)'>
 		                   </div>
 		                   <div class="form-group col-lg-4">
 		                       <label class=" control-label" for="createSectionName">{{invInvtryUtils.translations['InvInvtryItem_sectionName_description.title']}}</label>
 		              		       <input type="text" ng-model="display.sectionName" id="createSectionName" name="createSectionName" class="form-control"
-		                              autocomplete="off" typeahead="stkSection as (stkSection.strgSection + ' : ' + stkSection.sectionName) for stkSection in invInvtryUtils.loadStkSectionArticleLotsByName($viewValue)"
+		                              autocomplete="off" typeahead="stkSection as (stkSection.sectionCode + ' : ' + stkSection.name) for stkSection in invInvtryUtils.loadStkSectionArticleLotsByName($viewValue)"
 		                              typeahead-loading="loading" typeahead-min-length="4" typeahead-on-select='onSectionSelected($item, $model, $label)'>
 		                   </div>
 		                   <div class="form-group col-lg-1">
