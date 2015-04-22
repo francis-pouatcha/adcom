@@ -53,11 +53,11 @@ public class InvInvtryManager {
 	@Inject
 	private StkArticleLotLookup articleLotLookup;
 	
-	public InvInvtry prepareInventory(InvInvtry invtry, String accessingUser) {
-		// Create the delivery object if necessary
+	public InvInvtry prepareInventory(InvInvtry invtry) {
+		// Create the inventory object if necessary
 		Date now = new Date();
 		invtry.setInvtryStatus(InvInvtryStatus.INITIALIZING);
-		return createInventoryObject(invtry, accessingUser, now);
+		return createInventoryObject(invtry,now);
 	}
 	
 	/**
@@ -335,7 +335,8 @@ public class InvInvtryManager {
 		return modified;
 	}
 
-	private InvInvtry createInventoryObject(InvInvtry inventory, String currentLoginName, Date now){
+	private InvInvtry createInventoryObject(InvInvtry inventory,Date now){
+		String currentLoginName = securityUtil.getCurrentLoginName();
 		if(StringUtils.isBlank(inventory.getId())){
 			if(StringUtils.isBlank(inventory.getAcsngUser()))
 				inventory.setAcsngUser(currentLoginName);

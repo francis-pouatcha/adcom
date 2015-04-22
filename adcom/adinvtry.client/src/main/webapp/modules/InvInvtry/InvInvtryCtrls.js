@@ -266,7 +266,7 @@ angular.module('AdInvtry')
     };
     
     service.loadStkSectionArticleLots = function(strgSection){
-        return genericResource.findByLikePromissed(service.stkarticlelot2strgsctnsUrlBase, 'strgSection', strgSection)
+        return genericResource.findByLikePromissed(service.stksectionsUrlBase, 'sectionCode', strgSection)
         .then(function(entitySearchResult){
             return entitySearchResult.resultList;
         });
@@ -293,7 +293,7 @@ angular.module('AdInvtry')
     };
     
     service.loadStkSectionArticleLotsByName = function(sectionName){
-        return genericResource.findByLikePromissed(service.stkarticlelot2strgsctnsUrlBase, 'sectionName', sectionName)
+        return genericResource.findByLikePromissed(service.stksectionsUrlBase, 'name', sectionName)
         .then(function(entitySearchResult){
             return entitySearchResult.resultList;
         });
@@ -490,7 +490,7 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
     		return;
     	}
     	
-        genericResource.findByLikePromissed(service.stksectionsUrlBase, 'sectionCode', $scope.searchInput.entity.section)
+        genericResource.findByLikePromissed(invInvtryUtils.stksectionsUrlBase, 'sectionCode', $scope.searchInput.entity.section)
         .then(function(entitySearchResult){
             var resultList = entitySearchResult.resultList;
             if(angular.isDefined(resultList) && resultList.length>0)
@@ -582,7 +582,7 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
     			$scope.display.acsngUser &&
     			($scope.invInvtry.acsngUser==$scope.display.acsngUser)){return;}
     	
-    	if($scope.invInvtry.acsngUser.length<3) return;
+    	if($scope.invInvtry.acsngUser && $scope.invInvtry.acsngUser.length<3) return;
     	// Read user
     	genericResource.findById(invInvtryUtils.loginnamessUrlBase,$scope.invInvtry.acsngUser)
     	.success(function(item){
@@ -591,7 +591,7 @@ function($scope,genericResource,invInvtryUtils,invInvtryState,$location,$rootSco
     	});
     };    
     $scope.onSectionSelectedInCreate = function(item,model,label){
-    	$scope.invInvtry.section=item.strgSection;
+    	$scope.invInvtry.section=item.sectionCode;
     	$scope.display.sectionName=item.name;
     };
 

@@ -119,7 +119,6 @@ public abstract class InvAbstractInvtry extends AbstractIdentifData {
 	@DateFormatPattern(pattern = "dd-MM-yyyy HH:mm")
 	private Date conflictDt;
 
-
 	public Date getPreparedDt() {
 		return preparedDt;
 	}
