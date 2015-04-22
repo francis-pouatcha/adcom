@@ -16,7 +16,7 @@
                     <div class="form-group">
                         <label class="col-lg-4 ">{{"AptAptmt_appointmentDate_description.title"|translate}} :</label>
                         <div class="col-lg-8" ng-class="{ 'has-error' : createAptAptmtForm.appointmentDate.$invalid }" >
-                            <input type="datetimes" date-time=""  view="date" views="['date']" format="dd-MM-yyyy-" 
+                            <input type="datetimes" date-time=""  view="date"  format="dd-MM-yyyy hh:mm:ss" 
 ng-model="aptAptmt.appointmentDate" name="appointmentDate" class="form-control"  required></input>
                             <p ng-show="createAptAptmtForm.appointmentDate.$error.required" class="help-block">appointmentDate est  requis !</p>
                         </div>

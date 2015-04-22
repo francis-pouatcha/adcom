@@ -60,7 +60,7 @@
                         <div class="form-group">
                             <label class="col-lg-4 ">{{"AptAptmt_appointmentDate_description.title"|translate}} :</label>
                             <div class="col-lg-8">
-                                <input type="text" ng-model="aptAptmtShowCtlr.aptAptmt.appointmentDate" name="appointmentDate" disabled class="form-control"  >
+                                <input type="text" ng-model="aptAptmtShowCtlr.aptAptmt.appointmentDate | date:'fullDate'" name="appointmentDate" disabled class="form-control"  >
 
                             </div>
                         </div>
