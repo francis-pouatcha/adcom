@@ -28,8 +28,7 @@ public class InvInvtryManagerClient {
 		invtryExcel.copyTo(invtry);
 		// New Holder
 //		this.invtryHolder = new InvInvtryHolder();
-		String currentLoginName = securityUtil.getCurrentLoginName();
-		invInvtry = invtryManager.prepareInventory(invtry, currentLoginName);
+		invInvtry = invtryManager.prepareInventory(invtry);
 //		this.invtryHolder.setInvtry(invtry);
 		// Process org units.
 	}

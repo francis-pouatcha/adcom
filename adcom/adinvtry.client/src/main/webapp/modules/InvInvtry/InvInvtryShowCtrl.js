@@ -222,8 +222,9 @@ angular.module('AdInvtry')
     	.success(function(invtryItem){
     		itemsResultHandler.replace(invtryItem);
     	})
-    	.error(function(error){
-    		$scope.error = error;
+    	.error(function(data){
+                console.log(data);
+    		//$scope.error = error;
     	});
     };
     
