@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adaptmt.jpa.AptAptmt;
+import org.adorsys.adaptmt.jpa.AptAptmtBsPtnr;
 import org.adorsys.adaptmt.repo.AptAptmtRepository;
 import org.adorsys.adbase.jpa.Login;
 import org.adorsys.adbase.security.SecurityUtil;
@@ -22,6 +23,9 @@ public class AptAptmtEJB {
 
 	@Inject
 	private SecurityUtil securityUtil;
+
+	@Inject
+	AptAptmtBsPtnrEJB aptAptmtBsPtnrEJB;
 
 	public AptAptmt create(AptAptmt entity) {
 
@@ -109,6 +113,20 @@ public class AptAptmtEJB {
 
 	public List<AptAptmt> findNextAptAptmt(String id) {
 		return repository.findNextAptAptmt(id).maxResults(2).getResultList();
+	}
+
+	public void findAptmtBsPtnr(String aptmtIdentify) {
+
+//		AptAptmtBsPtnr aptBsPtnr = aptAptmtBsPtnrEJB
+//				.findAptmtBsPtnr(aptmtIdentify);
+		/*
+		 * List<BpBnsPtnr> bpBnsPtnrs = new ArrayList<BpBnsPtnr>();
+		 * 
+		 * for (AptAptmtBsPtnr aptbpBnsPtnr : aptBsPtnr) { String identif =
+		 * aptbpBnsPtnr.getBsPtnrIdentify();
+		 * bpBnsPtnrs.add(bpBnsPtnrEJB.findById(identif)); }
+		 */
+//		return aptBsPtnr;
 	}
 
 }

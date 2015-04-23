@@ -22,6 +22,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.adorsys.adaptmt.jpa.AptAptmt;
+import org.adorsys.adaptmt.jpa.AptAptmtBsPtnr;
 import org.adorsys.adaptmt.jpa.AptAptmtSearchInput;
 import org.adorsys.adaptmt.jpa.AptAptmtSearchResult;
 import org.adorsys.adaptmt.jpa.AptAptmt_;
@@ -70,6 +71,16 @@ public class AptAptmtEndpoint {
 			return Response.status(Status.NOT_FOUND).build();
 		return Response.ok(detach(found)).build();
 	}
+
+	/* @GET
+	@Path("bnsptnrs/{id}")
+	@Produces({ "application/json", "application/xml" })
+	public Apt findAptAptmtBnsPtnrs(@PathParam("id") String id) {
+		List<AptAptmtBsPtnr> found = ejb.findAptmtBsPtnr(id);
+		if (found == null)
+			return Response.status(Status.NOT_FOUND).build();
+		return Response.ok(detachfound).build();
+	} */
 
 	@GET
 	@Produces({ "application/json", "application/xml" })

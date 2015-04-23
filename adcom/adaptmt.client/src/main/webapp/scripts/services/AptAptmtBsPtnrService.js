@@ -28,24 +28,32 @@ angular.module('adaptmt')
         return deferred.promise;
     };
     
-    service.loadAptAptmtBsptnrs = function(identif){
-       var deferred = $q.defer();
-        genericResource.findById(service.urlBase, identif).success(function(data){
+    service.loadAptAptmtBsptnr = function(aptmtIdentify){
+    	
+    	var searchInput = {
+				entity : {
+					aptmtIdentify : aptmtIdentify
+				},
+				fieldNames : [ "aptmtIdentify" ],
+				start : 0,
+				max:10
+			}
+    	
+    	var deferred = $q.defer();
+    	genericResource.findByLike(service.urlBase, searchInput).success(function(data){
             deferred.resolve(data);
         }).error(function(){
             deferred.reject("Can not update")
         });
-        return deferred.promise;
-    };
-    
-    service.loadAptAptmtBsptnrs = function(searchInput){
-       var deferred = $q.defer();
-        genericResource.findBy(service.urlBase, searchInput).success(function(data){
-            deferred.resolve(data);
-        }).error(function(){
-            deferred.reject("Can not update")
-        });
-        return deferred.promise;
+    	
+      /* var deferred = $q.defer();
+       $http.get(service.urlBase, searchInput)
+       .success(function(data){
+           deferred.resolve(data);
+       }).error(function(data){
+           deferred.reject("no more aptmtbnsptnr !")
+       });*/
+       return deferred.promise;
     };
     
     service.findAptAptmtBsptnrs = function(searchInput){

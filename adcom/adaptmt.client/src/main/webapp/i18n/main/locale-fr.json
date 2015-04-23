@@ -1,6 +1,7 @@
 {
 "Entity_create.title":"Création de Rendez-vous",
 "Entity_list.title":"Liste des Rendez-vous",
+"Entity_list_bnsptnr.title":"Liste des partenaires",
 "AptAptmt_title_description.text":"Titre du Rendez-vous",
 "AptAptmt_title_description.title":"Titre RDV",
 "AptAptmt_aptmtnNbr_description.text":"Numero du rendez-vous",
@@ -18,6 +19,11 @@
 "AptAptmt_createDate_description":"Date création",
 "AptAptmt_status_description":"Status du RDV",
 
+"AptAptmt_bnsPtnr_title":"partenaires du rendez-vous",
+"AptAptmt_BpBnsPtnr_ptnrNbr_description":"Partnernaire No.",
+"AptAptmt_BpBnsPtnr_ptnrType_description":"Type Partenaire",
+"AptAptmt_BpBnsPtnr_fullName_description":"Nom",
+"AptAptmt_BpBnsPtnr_country_description":"Pays",
 
 
 "Entity_create_Report.title":"Créer Rapport",

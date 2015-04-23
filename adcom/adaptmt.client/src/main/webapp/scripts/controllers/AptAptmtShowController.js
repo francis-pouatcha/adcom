@@ -11,6 +11,8 @@ angular.module("adaptmt")
         self.previous = previous;
         self.next = next;
         self.bnsPtnrIdentif = "";
+        self.aptAptmtBnsptnrs = [];
+        self.bnsptnrs = [];
 	
         function show(){
 
@@ -23,9 +25,80 @@ angular.module("adaptmt")
             })
 
         };
+        
+        function fetchBnsPtnrs(){
+        	
+            var aptmtIdentify = $routeParams.id;
+            /*
+            aptAptmtsService.loadAptAptmtBnsPtnrs(identif).then(function(result){
+            	console.log(" result " + result);
+                self.aptAptmtBnsptnrs = result;
+            });
+            bsnPtnrsProperty(); */
+            
+            aptAptmtBsPtnrService.loadAptAptmtBsptnr(aptmtIdentify).then(function(result){
+                var data = result.resultList;
+                console.log(data);
+                
+                    for(var i in data){
+                        console.log(data[i].id);
+                        self.aptAptmtBnsptnrs.push(data[i]);
+                    }
+                
+                for(var k in data){
+                
+                    var id = data[k].bsPtnrIdentify;
+                        console.log(" id to search : " + id);
+                        genericResource.findById(bpBnsPtnrUtils.urlBase, id)
+                        .success(function(data) {
+                            // store search data
+                            self.bnsptnrs.push(data);
+                            console.log(data);
+                        })
+                        .error(function(error){                                                                                         
+                            console.log(error);
+                        });
+                
+                }
+                
+                console.log( " new bnsptnrs at the success function : " + self.bnsptnrs);
+
+                
+            });
+            
+            console.log( " new bnsptnrs at the end : " + self.bnsptnrs);
+            
+        }
+                                    
+        /*function bsnPtnrsProperty(){
+            console.log(" start of function bsnPtnrsProperty with values : " + self.aptAptmtBnsptnrs );
+            console.log("  self.bnsptnrs : " + self.bnsptnrs);
+            
+            var data = self.aptAptmtBnsptnrs;
+            for(var k in data){
+                
+                    var id = data[k].bsPtnrIdentify;
+                        console.log(" id to search : " + id);
+                        genericResource.findById(bpBnsPtnrUtils.urlBase, id)
+                        .success(function(data) {
+                            // store search data
+                            self.bnsptnrs.push(data);
+                            console.log(data);
+                        })
+                        .error(function(error){                                                                                         
+                            console.log(error);
+                        });
+                
+            }
+            
+            console.log(" start of function bsnPtnrsProperty with values : " + self.aptAptmtBnsptnrs );
+            console.log("  self.bnsptnrs at the end : " + self.bnsptnrs);
+
+        }*/
                               
         function init(){
             show();
+            fetchBnsPtnrs();
         }
 
     init();
@@ -126,7 +199,6 @@ angular.module("adaptmt")
     	    	
     	    	for(var i in $scope.eventualBsnPtnrs()){
     	    		console.log(" partner with id : " +  $scope.eventualBsnPtnrs()[i].id + " checked ? : " + $scope.eventualBsnPtnrs()[i].checkOn);
-    	    		
     	    		var idIncome = $scope.eventualBsnPtnrs()[i].id;
     	    		if($scope.eventualBsnPtnrs()[i].checkOn == true){
     	    		
@@ -144,23 +216,19 @@ angular.module("adaptmt")
     	    		var entity = {aptmtIdentify: $routeParams.id, bsPtnrIdentify: $scope.confirmedBsnPtnrs[j].id};
     	    		sendToServer(entity);
     	    	}
-    	    	
+                
     	    	console.log($scope.confirmedBsnPtnrs);
     	    };
     	    
     	    
     	    function sendToServer(entity){
-    	    	
     	    	aptAptmtBsPtnrService.create(entity)
     			.then(function(result){
     	            console.log("entity : " + result + " has send successfully");
     	        },function(error){
     	        	console.log(error);
     	        });
-    	    	
     	    }
-    	    
-    	    
     	    
     	    // add bnsptnr to appointement
     	    

@@ -1,6 +1,7 @@
 {
 "Entity_create.title":"Creation of Appointment",
 "Entity_list.title":"List of Appointments",
+"Entity_list_bnsptnr.title":"List of partners",
 "AptAptmt_title_description.text":"Title of Appointment",
 "AptAptmt_title_description.title":"Title Apptmt",
 "AptAptmt_aptmtnNbr_description.text":"Number of Apptmt",
@@ -17,6 +18,13 @@
 "AptAptmt_parentIdentify_description.text":"parent RDV",
 "AptAptmt_createDate_description":"Creation Date",
 "AptAptmt_status_description":"Status of Aptm",
+
+
+"AptAptmt_bnsPtnr_title":"business partners of appointments",
+"AptAptmt_BpBnsPtnr_ptnrNbr_description":"Partner No.",
+"AptAptmt_BpBnsPtnr_ptnrType_description":"Partner Type",
+"AptAptmt_BpBnsPtnr_fullName_description":"Name",
+"AptAptmt_BpBnsPtnr_country_description":"Country",
 
 
 

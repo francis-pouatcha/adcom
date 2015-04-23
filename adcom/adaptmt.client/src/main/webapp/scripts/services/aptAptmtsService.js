@@ -48,6 +48,21 @@ angular.module('adaptmt')
         return deferred.promise;
     };
     
+     service.loadAptAptmtBnsPtnrs = function(identif){
+         var deferred = $q.defer();
+         
+         $http.get(service.urlBase + '/bnsptnrs/' + identif)
+         .success(function(data){
+             deferred.resolve(data);
+             console.log(" data to populate (success) : " + data);
+         }).error(function(data){
+              console.log(" data to populate (error) : " + data);
+             deferred.reject("Can not update BnsPtnrs of current AptAptmt !")
+         });
+         return deferred.promise;
+     }
+     
+    
     service.findAptAptmts = function(searchInput){
         var deferred = $q.defer();
         genericResource.findByLike(service.urlBase, searchInput)
