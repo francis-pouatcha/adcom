@@ -21,7 +21,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.adorsys.adcshdwr.jpa.CdrDsArtItemEvt;
+import org.adorsys.adcshdwr.jpa.CdrDsArtItem;
 import org.adorsys.adcshdwr.jpa.CdrDsArtItemSearchInput;
 import org.adorsys.adcshdwr.jpa.CdrDsArtItemSearchResult;
 import org.adorsys.adcshdwr.jpa.CdrDsArtItem_;
@@ -36,12 +36,12 @@ public class CdrDsArtItemEndpoint
 {
 
    @Inject
-   private CdrDsArtItemEvtEJB ejb;
+   private CdrDsArtItemEJB ejb;
 
    @POST
    @Consumes({ "application/json", "application/xml" })
    @Produces({ "application/json", "application/xml" })
-   public CdrDsArtItemEvt create(CdrDsArtItemEvt entity)
+   public CdrDsArtItem create(CdrDsArtItem entity)
    {
       return detach(ejb.create(entity));
    }
@@ -50,7 +50,7 @@ public class CdrDsArtItemEndpoint
    @Path("/{id}")
    public Response deleteById(@PathParam("id") String id)
    {
-      CdrDsArtItemEvt deleted = ejb.deleteById(id);
+      CdrDsArtItem deleted = ejb.deleteById(id);
       if (deleted == null)
          return Response.status(Status.NOT_FOUND).build();
 
@@ -61,7 +61,7 @@ public class CdrDsArtItemEndpoint
    @Path("/{id}")
    @Produces({ "application/json", "application/xml" })
    @Consumes({ "application/json", "application/xml" })
-   public CdrDsArtItemEvt update(CdrDsArtItemEvt entity)
+   public CdrDsArtItem update(CdrDsArtItem entity)
    {
       return detach(ejb.update(entity));
    }
@@ -71,7 +71,7 @@ public class CdrDsArtItemEndpoint
    @Produces({ "application/json", "application/xml" })
    public Response findById(@PathParam("id") String id)
    {
-      CdrDsArtItemEvt found = ejb.findById(id);
+      CdrDsArtItem found = ejb.findById(id);
       if (found == null)
          return Response.status(Status.NOT_FOUND).build();
       return Response.ok(detach(found)).build();
@@ -82,7 +82,7 @@ public class CdrDsArtItemEndpoint
    public CdrDsArtItemSearchResult listAll(@QueryParam("start") int start,
          @QueryParam("max") int max)
    {
-      List<CdrDsArtItemEvt> resultList = ejb.listAll(start, max);
+      List<CdrDsArtItem> resultList = ejb.listAll(start, max);
       CdrDsArtItemSearchInput searchInput = new CdrDsArtItemSearchInput();
       searchInput.setStart(start);
       searchInput.setMax(max);
@@ -103,9 +103,9 @@ public class CdrDsArtItemEndpoint
    @Consumes({ "application/json", "application/xml" })
    public CdrDsArtItemSearchResult findBy(CdrDsArtItemSearchInput searchInput)
    {
-      SingularAttribute<CdrDsArtItemEvt, ?>[] attributes = readSeachAttributes(searchInput);
+      SingularAttribute<CdrDsArtItem, ?>[] attributes = readSeachAttributes(searchInput);
       Long count = ejb.countBy(searchInput.getEntity(), attributes);
-      List<CdrDsArtItemEvt> resultList = ejb.findBy(searchInput.getEntity(),
+      List<CdrDsArtItem> resultList = ejb.findBy(searchInput.getEntity(),
             searchInput.getStart(), searchInput.getMax(), attributes);
       return new CdrDsArtItemSearchResult(count, detach(resultList),
             detach(searchInput));
@@ -116,7 +116,7 @@ public class CdrDsArtItemEndpoint
    @Consumes({ "application/json", "application/xml" })
    public Long countBy(CdrDsArtItemSearchInput searchInput)
    {
-      SingularAttribute<CdrDsArtItemEvt, ?>[] attributes = readSeachAttributes(searchInput);
+      SingularAttribute<CdrDsArtItem, ?>[] attributes = readSeachAttributes(searchInput);
       return ejb.countBy(searchInput.getEntity(), attributes);
    }
 
@@ -126,9 +126,9 @@ public class CdrDsArtItemEndpoint
    @Consumes({ "application/json", "application/xml" })
    public CdrDsArtItemSearchResult findByLike(CdrDsArtItemSearchInput searchInput)
    {
-      SingularAttribute<CdrDsArtItemEvt, ?>[] attributes = readSeachAttributes(searchInput);
+      SingularAttribute<CdrDsArtItem, ?>[] attributes = readSeachAttributes(searchInput);
       Long countLike = ejb.countByLike(searchInput.getEntity(), attributes);
-      List<CdrDsArtItemEvt> resultList = ejb.findByLike(searchInput.getEntity(),
+      List<CdrDsArtItem> resultList = ejb.findByLike(searchInput.getEntity(),
             searchInput.getStart(), searchInput.getMax(), attributes);
       return new CdrDsArtItemSearchResult(countLike, detach(resultList),
             detach(searchInput));
@@ -139,16 +139,16 @@ public class CdrDsArtItemEndpoint
    @Consumes({ "application/json", "application/xml" })
    public Long countByLike(CdrDsArtItemSearchInput searchInput)
    {
-      SingularAttribute<CdrDsArtItemEvt, ?>[] attributes = readSeachAttributes(searchInput);
+      SingularAttribute<CdrDsArtItem, ?>[] attributes = readSeachAttributes(searchInput);
       return ejb.countByLike(searchInput.getEntity(), attributes);
    }
 
    @SuppressWarnings("unchecked")
-   private SingularAttribute<CdrDsArtItemEvt, ?>[] readSeachAttributes(
+   private SingularAttribute<CdrDsArtItem, ?>[] readSeachAttributes(
          CdrDsArtItemSearchInput searchInput)
    {
       List<String> fieldNames = searchInput.getFieldNames();
-      List<SingularAttribute<CdrDsArtItemEvt, ?>> result = new ArrayList<SingularAttribute<CdrDsArtItemEvt, ?>>();
+      List<SingularAttribute<CdrDsArtItem, ?>> result = new ArrayList<SingularAttribute<CdrDsArtItem, ?>>();
       for (String fieldName : fieldNames)
       {
          Field[] fields = CdrDsArtItem_.class.getFields();
@@ -158,7 +158,7 @@ public class CdrDsArtItemEndpoint
             {
                try
                {
-                  result.add((SingularAttribute<CdrDsArtItemEvt, ?>) field.get(null));
+                  result.add((SingularAttribute<CdrDsArtItem, ?>) field.get(null));
                }
                catch (IllegalArgumentException e)
                {
@@ -176,7 +176,7 @@ public class CdrDsArtItemEndpoint
 
    
 
-   private CdrDsArtItemEvt detach(CdrDsArtItemEvt entity)
+   private CdrDsArtItem detach(CdrDsArtItem entity)
    {
       if (entity == null)
          return null;
@@ -184,12 +184,12 @@ public class CdrDsArtItemEndpoint
       return entity;
    }
 
-   private List<CdrDsArtItemEvt> detach(List<CdrDsArtItemEvt> list)
+   private List<CdrDsArtItem> detach(List<CdrDsArtItem> list)
    {
       if (list == null)
          return list;
-      List<CdrDsArtItemEvt> result = new ArrayList<CdrDsArtItemEvt>();
-      for (CdrDsArtItemEvt entity : list)
+      List<CdrDsArtItem> result = new ArrayList<CdrDsArtItem>();
+      for (CdrDsArtItem entity : list)
       {
          result.add(detach(entity));
       }

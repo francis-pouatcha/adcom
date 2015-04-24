@@ -5,7 +5,6 @@ import java.util.List;
 import org.adorsys.adcshdwr.jpa.CdrCshDrawer;
 import org.apache.deltaspike.data.api.EntityRepository;
 import org.apache.deltaspike.data.api.Query;
-import org.apache.deltaspike.data.api.QueryResult;
 import org.apache.deltaspike.data.api.Repository;
 
 @Repository(forEntity = CdrCshDrawer.class)

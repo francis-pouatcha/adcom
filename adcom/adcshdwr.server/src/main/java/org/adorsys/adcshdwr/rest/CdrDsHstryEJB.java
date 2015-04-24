@@ -3,9 +3,12 @@ package org.adorsys.adcshdwr.rest;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
 
+import org.adorsys.adbase.enums.BaseHistoryTypeEnum;
+import org.adorsys.adcshdwr.event.CdrDrctSalesClosedEvent;
 import org.adorsys.adcshdwr.jpa.CdrDsHstry;
 import org.adorsys.adcshdwr.repo.CdrDsHstryRepository;
 
@@ -16,9 +19,17 @@ public class CdrDsHstryEJB
    @Inject
    private CdrDsHstryRepository repository;
 
+	@Inject
+	@CdrDrctSalesClosedEvent
+	private Event<CdrDsHstry> cdrDrctSalesClosedEvent;
+   
    public CdrDsHstry create(CdrDsHstry entity)
    {
-      return repository.save(attach(entity));
+		CdrDsHstry cdrDsHstry = repository.save(attach(entity));
+		if (BaseHistoryTypeEnum.POSTED.name().equals(cdrDsHstry.getHstryType())) {
+			cdrDrctSalesClosedEvent.fire(cdrDsHstry);
+		}
+		return cdrDsHstry;
    }
 
    public CdrDsHstry deleteById(String id)

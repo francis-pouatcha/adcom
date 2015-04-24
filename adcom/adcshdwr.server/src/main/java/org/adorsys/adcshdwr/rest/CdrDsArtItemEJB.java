@@ -7,7 +7,6 @@ import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adcshdwr.jpa.CdrDsArtItem;
-import org.adorsys.adcshdwr.jpa.CdrDsArtItemEvt;
 import org.adorsys.adcshdwr.repo.CdrDsArtItemRepository;
 
 @Stateless
@@ -16,19 +15,19 @@ public class CdrDsArtItemEJB
 
 	@Inject
 	private CdrDsArtItemRepository repository;
-
-	@Inject
-	private CdrDsArtItemEvtEJB cdrDsArtItemEvtEJB;
+//
+//	@Inject
+//	private CdrDsArtItemEvtEJB cdrDsArtItemEvtEJB;
 	
 	public CdrDsArtItem create(CdrDsArtItem entity)
 	{
-		CdrDsArtItemEvt cdrDsArtItemEvt = new CdrDsArtItemEvt();
+//		CdrDsArtItemEvt cdrDsArtItemEvt = new CdrDsArtItemEvt();
 		entity = repository.save(attach(entity));
 		repository.flush();
-		entity.copyTo(cdrDsArtItemEvt);
-		cdrDsArtItemEvt.setId(entity.getId());
-		cdrDsArtItemEvt.setIdentif(entity.getIdentif());
-		cdrDsArtItemEvtEJB.create(cdrDsArtItemEvt);
+//		entity.copyTo(cdrDsArtItemEvt);
+//		cdrDsArtItemEvt.setId(entity.getId());
+//		cdrDsArtItemEvt.setIdentif(entity.getIdentif());
+//		cdrDsArtItemEvtEJB.create(cdrDsArtItemEvt);
 		
 		return entity;
 	}
@@ -39,7 +38,7 @@ public class CdrDsArtItemEJB
 		if (entity != null)
 		{
 			repository.remove(entity);
-			cdrDsArtItemEvtEJB.deleteById(id);
+//			cdrDsArtItemEvtEJB.deleteById(id);
 		}
 		
 		return entity;
@@ -47,12 +46,12 @@ public class CdrDsArtItemEJB
 
 	public CdrDsArtItem update(CdrDsArtItem entity)
 	{
-		CdrDsArtItemEvt cdrDsArtItemEvt = cdrDsArtItemEvtEJB.findById(entity.getId());
+//		CdrDsArtItemEvt cdrDsArtItemEvt = cdrDsArtItemEvtEJB.findById(entity.getId());
 		entity = repository.save(attach(entity));
-		if(cdrDsArtItemEvt != null) {
-			entity.copyTo(cdrDsArtItemEvt);
-			cdrDsArtItemEvtEJB.update(cdrDsArtItemEvt);
-		}
+//		if(cdrDsArtItemEvt != null) {
+//			entity.copyTo(cdrDsArtItemEvt);
+//			cdrDsArtItemEvtEJB.update(cdrDsArtItemEvt);
+//		}
 		return entity;
 	}
 
