@@ -78,6 +78,8 @@
 	"workspace_loginName":"Login Name",
 	"workspace_ouWsIdentif":"Workspace",
 	"workspace_admin":"ADMINISTRATION",
-	"workspace_logOut":"Logout"
+	"workspace_logOut":"Logout",
+    "Entity_From.title":"From",
+    "Entity_To.title":"To"
     
 }

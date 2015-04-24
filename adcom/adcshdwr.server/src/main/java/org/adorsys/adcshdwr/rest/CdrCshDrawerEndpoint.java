@@ -154,6 +154,16 @@ public class CdrCshDrawerEndpoint
       return cshDrawer;
    }
    
+   @POST
+   @Path("/closeCshDrawer")
+   @Consumes({ "application/json", "application/xml" })
+   @Produces({ "application/json", "application/xml" })
+   public CdrCshDrawer closeCshDrawer(CdrCshDrawer cshDrawer)
+   {
+      cshDrawer = ejb.closeCshDrawer(cshDrawer);
+      return cshDrawer;
+   }
+   
    @GET
    @Path("/getActive")
    @Produces({ "application/json", "application/xml" })
