@@ -1,5 +1,5 @@
 <div class="row" ng-cloak>
-        <div class="panel panel-default  ng-scope">
+        <!--<div class="panel panel-default  ng-scope">
             <div class="panel-heading no-collapse">
                 <div class="row">
                     <div class="col-lg-3">
@@ -29,10 +29,17 @@
                             </div>
                             <div class="col-lg-3">
                                 <div class="form-group">
-                                    <label class=" control-label" for="rcptNbr">{{commonTranslations.translations['Entity_From.title']}}</label>
+                                    <label class=" control-label" for="rcptNbr">{{commonTranslations.translations['Entity_To.title']}}</label>
                                     <div class="">
                                         <input type="text" id="rcptNbr" ng-model="searchInput.to" class="form-control">
                                     </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <button  ng-click="handleSearchRequestEvent()" class="btn btn-default " style="margin-top: 23px;" >
+                                        <i class="glyphicon glyphicon-search"></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -41,7 +48,7 @@
             </div>
 
         </div>
-
+-->
         <div class="panel panel-default ">
             <div class="panel-heading no-collapse"><b>{{cdrCshDrawerUtils.translations['CdrCshDrawer_description.title']}}</b></div>
             <div class="panel-body">

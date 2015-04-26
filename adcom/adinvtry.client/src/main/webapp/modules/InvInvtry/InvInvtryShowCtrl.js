@@ -314,8 +314,8 @@ angular.module('AdInvtry')
     
     $scope.onSectionSelectedInSearch = function(item,model,label){
     	$scope.searchInput.entity.section=item.strgSection;
-    	$scope.display.sectionName=item.sectionName;
-    	$scope.display.sectionCode=item.strgSection;
+    	$scope.display.sectionName=item.name;
+    	$scope.display.sectionCode=item.sectionCode;
     };
     
     $scope.onArticleLotChangedInSearch = function(){
