@@ -10,6 +10,7 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 import org.adorsys.adcore.jpa.AbstractMvmtData;
+import org.adorsys.adcore.utils.FinancialOps;
 import org.adorsys.javaext.description.Description;
 
 @Entity
@@ -73,6 +74,37 @@ public class CdrCshDrawer extends AbstractMvmtData {
 	@Column
 	@Description("CdrCshDrawer_ttlVchrOut_description")
 	private BigDecimal ttlVchrOut;
+	
+	
+	public void evlte() {
+		if(this.ttlCashIn==null)this.ttlCashIn=BigDecimal.ZERO;
+		this.ttlCashIn = this.initialAmt.add(this.ttlCash).add(this.ttlCheck).add(this.ttlCredCard);		
+	}
+
+	public void AddTtlCashOut(BigDecimal cashOut){
+		if(this.ttlCashOut==null)this.ttlCashOut =BigDecimal.ZERO;
+		this.ttlCashOut = this.ttlCashOut.add(cashOut);
+	}
+	public void AddTtlCash(BigDecimal cashAmount){
+		if(this.ttlCash==null)this.ttlCash =BigDecimal.ZERO;
+		this.ttlCash = this.ttlCash.add(cashAmount);
+	}
+	public void AddTtlCheck(BigDecimal checkAmount){
+		if(this.ttlCheck==null)this.ttlCheck =BigDecimal.ZERO;
+		this.ttlCheck = this.ttlCheck.add(checkAmount);
+	}
+	public void AddTtlCredCard(BigDecimal credcardAmount){
+		if(this.ttlCredCard==null)this.ttlCredCard =BigDecimal.ZERO;
+		this.ttlCredCard = this.ttlCredCard.add(credcardAmount);
+	}
+	public void AddTtlVchrIn(BigDecimal vchrInAmount){
+		if(this.ttlVchrIn==null)this.ttlVchrIn =BigDecimal.ZERO;
+		this.ttlVchrIn = this.ttlVchrIn.add(vchrInAmount);
+	}
+	public void AddTtlVchrOut(BigDecimal vchrOutAmount){
+		if(this.ttlVchrOut==null)this.ttlVchrOut =BigDecimal.ZERO;
+		this.ttlVchrOut = this.ttlVchrOut.add(vchrOutAmount);
+	}
 
 	public String getCdrNbr() {
 		return this.cdrNbr;

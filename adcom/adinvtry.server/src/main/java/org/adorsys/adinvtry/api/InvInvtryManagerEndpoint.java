@@ -28,7 +28,7 @@ public class InvInvtryManagerEndpoint
    @Consumes({ "application/json", "application/xml" })
    @Produces({ "application/json", "application/xml" })
    public InvInvtry newInventory(InvInvtry invtry){
-      return invtryManager.prepareInventory(invtry, invtry.getAcsngUser());
+      return invtryManager.prepareInventory(invtry);
    }
    
    @PUT

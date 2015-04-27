@@ -165,6 +165,19 @@ public abstract class InvAbstractInvtryItem extends AbstractIdentifData {
 	@NotNull
 	private String usalIndex;
 	
+	@Column
+	@Description("InvInvtry_editing_description")
+	private Boolean editing;
+
+
+	public Boolean getEditing() {
+		return editing;
+	}
+
+	public void setEditing(Boolean editing) {
+		this.editing = editing;
+	}
+	
 	@PrePersist
 	public void prePersist() {
 		super.prePersist();

@@ -4,11 +4,13 @@ import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adaptmt.jpa.AptAptmt;
 import org.adorsys.adaptmt.repo.AptAptmtRepository;
+import org.adorsys.adaptmt.shedules.AptAptmtOngoingEvent;
 import org.adorsys.adbase.jpa.Login;
 import org.adorsys.adbase.security.SecurityUtil;
 import org.adorsys.adcore.utils.SequenceGenerator;
@@ -22,6 +24,13 @@ public class AptAptmtEJB {
 
 	@Inject
 	private SecurityUtil securityUtil;
+
+	@Inject
+	AptAptmtBsPtnrEJB aptAptmtBsPtnrEJB;
+
+	@Inject
+	@AptAptmtOngoingEvent
+	private Event<AptAptmt> aptAptmtOngoinEvent;
 
 	public AptAptmt create(AptAptmt entity) {
 
@@ -37,7 +46,10 @@ public class AptAptmtEJB {
 		Login login = securityUtil.getConnectedUser();
 		entity.setCreatedUserId(login.getIdentif());
 
-		return repository.save(attach(entity));
+		AptAptmt aptAptmt = repository.save(attach(entity));
+		aptAptmtOngoinEvent.fire(aptAptmt);
+
+		return aptAptmt;
 	}
 
 	public AptAptmt deleteById(String id) {
@@ -109,6 +121,20 @@ public class AptAptmtEJB {
 
 	public List<AptAptmt> findNextAptAptmt(String id) {
 		return repository.findNextAptAptmt(id).maxResults(2).getResultList();
+	}
+
+	public void findAptmtBsPtnr(String aptmtIdentify) {
+
+		// AptAptmtBsPtnr aptBsPtnr = aptAptmtBsPtnrEJB
+		// .findAptmtBsPtnr(aptmtIdentify);
+		/*
+		 * List<BpBnsPtnr> bpBnsPtnrs = new ArrayList<BpBnsPtnr>();
+		 * 
+		 * for (AptAptmtBsPtnr aptbpBnsPtnr : aptBsPtnr) { String identif =
+		 * aptbpBnsPtnr.getBsPtnrIdentify();
+		 * bpBnsPtnrs.add(bpBnsPtnrEJB.findById(identif)); }
+		 */
+		// return aptBsPtnr;
 	}
 
 }

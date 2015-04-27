@@ -45,6 +45,7 @@ angular.module('AdCshdwr')
                     'CdrCshDrawer_ttlVchrIn_description.title',
                     'CdrCshDrawer_ttlVchrOut_description.text',
                     'CdrCshDrawer_ttlVchrOut_description.title',
+                    'CdrCshDrawer_close_description.title',
                  ])
                 .then(function (translations) {
                     service.translations = translations;
@@ -295,7 +296,7 @@ function ($scope, genericResource, cdrCshDrawerUtils, cdrCshDrawerState, $locati
 }])
     .controller('cdrCshDrawersCreateCtlr', ['$scope', 'cdrCshDrawerUtils', '$translate', 'genericResource', '$location', 'cdrCshDrawerState', 'commonTranslations',
         function ($scope, cdrCshDrawerUtils, $translate, genericResource, $location, cdrCshDrawerState, commonTranslations) {
-            $scope.cdrCshDrawer = {};
+            $scope.cdrCshDrawer = {};$scope.cdrCshDrawer.initialAmt = 0;
             $scope.create = create;
             $scope.error = "";
             $scope.cdrCshDrawerUtils = cdrCshDrawerUtils;
@@ -317,6 +318,7 @@ function ($scope, genericResource, cdrCshDrawerUtils, cdrCshDrawerState, $locati
             $scope.error = "";
             $scope.cdrCshDrawerUtils = cdrCshDrawerUtils;
             $scope.commonTranslations = commonTranslations;
+            $scope.decaissUIisOpen = false;
 
             init();
 
@@ -328,6 +330,17 @@ function ($scope, genericResource, cdrCshDrawerUtils, cdrCshDrawerState, $locati
                 });
             }
             $scope.close = function () {
-                //close the cashdrawer
+                genericResource.create(cdrCshDrawerUtils.urlBase + "/closeCshDrawer", $scope.cdrCshDrawer).success(function (result) {
+                    $scope.cdrCshDrawer = result;
+                    $location.path("/CdrCshDrawers/show/" + result.id);
+                }).error(function (error) {
+                    $scope.error = error;
+                });
             };
+            $scope.decaissUI = function(){
+                if($scope.decaissUIisOpen == false)
+                    $scope.decaissUIisOpen =true;
+                else
+                    $scope.decaissUIisOpen = false;
+            }
 }]);

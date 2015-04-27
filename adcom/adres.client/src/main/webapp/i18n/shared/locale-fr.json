@@ -82,8 +82,9 @@
 	"workspace_loginName":"Nom de Connexion",
 	"workspace_ouWsIdentif":"Espace de Travaille",
 	"workspace_admin":"ADMINISTRATION",
-	"workspace_logOut":"Deconnexion"
-    
+	"workspace_logOut":"Deconnexion",
+    "Entity_From.title":"From",
+    "Entity_To.title":"To"
     
     
 }
