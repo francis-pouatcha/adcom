@@ -83,7 +83,6 @@
 	<class>org.adorsys.adcshdwr.jpa.CdrAbstractPymntItem</class>
 	<class>org.adorsys.adcshdwr.jpa.CdrDrctSales</class>
 	<class>org.adorsys.adcshdwr.jpa.CdrDrctSalesEvt</class>
-	<class>org.adorsys.adcshdwr.jpa.CdrDsArtItemEvt</class>
 	<class>org.adorsys.adcshdwr.jpa.CdrDrctSalesEvtDataCstr</class>
 	<class>org.adorsys.adcshdwr.jpa.CdrDrctSalesEvtLease</class>
 	<class>org.adorsys.adcshdwr.jpa.CdrDsArtItem</class>
