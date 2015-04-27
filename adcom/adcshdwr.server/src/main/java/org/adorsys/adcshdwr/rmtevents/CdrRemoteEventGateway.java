@@ -35,7 +35,7 @@ public class CdrRemoteEventGateway {
 	@Inject
 	private CdrDrctSalesEvtLeaseEJB evtLeaseEJB;
 
-	public void handleInvtryPostedEvent(
+	public void handleDirectSalesClosedEvent(
 			@Observes @CdrDrctSalesClosedEvent CdrDsHstry dsHstry) {
 		// Move this operation to an event.
 		String evtName = dsHstry.getHstryType();

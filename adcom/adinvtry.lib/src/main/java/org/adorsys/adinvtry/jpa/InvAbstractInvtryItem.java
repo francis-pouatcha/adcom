@@ -45,6 +45,7 @@ public abstract class InvAbstractInvtryItem extends AbstractIdentifData {
 	
 	@Column
 	@Description("InvInvtryItem_section_description")
+	@NotNull
 	private String section;
 
 	@Column

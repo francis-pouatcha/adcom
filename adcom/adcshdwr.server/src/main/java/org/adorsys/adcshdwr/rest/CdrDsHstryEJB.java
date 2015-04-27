@@ -26,7 +26,7 @@ public class CdrDsHstryEJB
    public CdrDsHstry create(CdrDsHstry entity)
    {
 		CdrDsHstry cdrDsHstry = repository.save(attach(entity));
-		if (BaseHistoryTypeEnum.POSTED.name().equals(cdrDsHstry.getHstryType())) {
+		if (BaseHistoryTypeEnum.CLOSED.name().equals(cdrDsHstry.getHstryType())) {
 			cdrDrctSalesClosedEvent.fire(cdrDsHstry);
 		}
 		return cdrDsHstry;

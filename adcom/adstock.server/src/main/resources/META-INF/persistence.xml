@@ -75,6 +75,21 @@
     <class>org.adorsys.adstock.jpa.StkLotStockQty</class>
     <class>org.adorsys.adstock.jpa.StkArticleLot</class>
 	<class>org.adorsys.adstock.jpa.StkSection</class>
+	
+	<class>org.adorsys.adcshdwr.jpa.CdrAbstractDrctSales</class>
+	<class>org.adorsys.adcshdwr.jpa.CdrAbstractDsArtItem</class>
+	<class>org.adorsys.adcshdwr.jpa.CdrAbstractDsHstry</class>
+	<class>org.adorsys.adcshdwr.jpa.CdrAbstractPymnt</class>
+	<class>org.adorsys.adcshdwr.jpa.CdrAbstractPymntItem</class>
+	<class>org.adorsys.adcshdwr.jpa.CdrDrctSales</class>
+	<class>org.adorsys.adcshdwr.jpa.CdrDrctSalesEvt</class>
+	<class>org.adorsys.adcshdwr.jpa.CdrDsArtItemEvt</class>
+	<class>org.adorsys.adcshdwr.jpa.CdrDrctSalesEvtDataCstr</class>
+	<class>org.adorsys.adcshdwr.jpa.CdrDrctSalesEvtLease</class>
+	<class>org.adorsys.adcshdwr.jpa.CdrDsArtItem</class>
+	<class>org.adorsys.adcshdwr.jpa.CdrPymntEvt</class>
+	<class>org.adorsys.adcshdwr.jpa.CdrPymntItemEvt</class>
+	<class>org.adorsys.adcshdwr.jpa.CdrPymntObject</class>	
     
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
