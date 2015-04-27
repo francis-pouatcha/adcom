@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
 import javax.validation.constraints.NotNull;
 
 import org.adorsys.adcore.jpa.AbstractIdentifData;
@@ -33,6 +34,11 @@ public class CdrAbstractDsArtItem extends AbstractIdentifData {
 	@NotNull
 	private String artPic;
 
+	@Column
+	@Description("CdrDsArtItem_section_description")
+	@NotNull
+	private String section;
+	
 	@Column
 	@Description("CdrDsArtItem_soldQty_description")
 	@NotNull
@@ -83,6 +89,17 @@ public class CdrAbstractDsArtItem extends AbstractIdentifData {
 //	@NotNull
 	private String objctOrgUnit;
 
+	@Column
+	@Description("CdrDsArtItem_salIndex_description")
+	@NotNull
+	private String salIndex;
+	
+	@PrePersist
+	public void prePersist() {
+		super.prePersist();
+		salIndex = section + "_" + artPic + "_" + lotPic;
+	}
+	
 	public String getDsNbr() {
 		return this.dsNbr;
 	}
@@ -203,10 +220,32 @@ public class CdrAbstractDsArtItem extends AbstractIdentifData {
 		this.objctOrgUnit = objctOrgUnit;
 	}
 
+	
+	public String getSection() {
+		return section;
+	}
+
+	public void setSection(String section) {
+		this.section = section;
+	}
+
+	public String getSalIndex() {
+		return salIndex;
+	}
+
+	public void setSalIndex(String salIndex) {
+		this.salIndex = salIndex;
+	}
+
+	public static String toIdentifier(String dsNbr, String lotPic, String artPic, String section){
+		return dsNbr + "_" + lotPic + "_" + artPic + "_" + section;
+	}
+	
 	@Override
 	protected String makeIdentif() {
-		return dsNbr + "_" + lotPic + "_" + artPic;
+		return toIdentifier(dsNbr, lotPic, artPic, section);
 	}
+
 	/**
 	 * Use this method to check if this article item is in a good state.
 	 * i.e : soldQty > 0, rebate >=0, etc.
@@ -230,6 +269,7 @@ public class CdrAbstractDsArtItem extends AbstractIdentifData {
 		target.dsNbr=dsNbr;
 		target.lotPic=lotPic;
 		target.artPic=artPic;
+		target.section=section;
 		target.soldQty=soldQty;
 		target.returnedQty=returnedQty;
 		target.sppuPreTax=sppuPreTax;
@@ -242,6 +282,7 @@ public class CdrAbstractDsArtItem extends AbstractIdentifData {
 		target.vatAmount=vatAmount;
 		target.netSPTaxIncl=netSPTaxIncl;
 		target.objctOrgUnit=objctOrgUnit;
+		target.salIndex = salIndex;
 	}
 	
 	public boolean contentEquals(CdrAbstractDsArtItem target){
@@ -258,6 +299,7 @@ public class CdrAbstractDsArtItem extends AbstractIdentifData {
 		if(!BigDecimalUtils.numericEquals(target.vatPct,vatPct)) return false;
 		if(!StringUtils.equals(target.artPic,artPic)) return false;
 		if(!StringUtils.equals(target.artPic,artPic)) return false;
+		if(!StringUtils.equals(target.section,section)) return false;
 		if(!StringUtils.equals(target.dsNbr,dsNbr)) return false;
 		if(!StringUtils.equals(target.lotPic,lotPic)) return false;
 		if(!StringUtils.equals(target.objctOrgUnit,objctOrgUnit)) return false;

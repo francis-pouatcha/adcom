@@ -36,6 +36,11 @@
 			<artifactId>adinvtry.lib</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+        <dependency>
+			<groupId>org.adorsys.adcom</groupId>
+			<artifactId>adcshdwr.lib</artifactId>
+			<version>${project.version}</version>
+		</dependency>		
 		<dependency>
 			<groupId>org.adorsys.adcom</groupId>
 			<artifactId>adstock.lib</artifactId>
