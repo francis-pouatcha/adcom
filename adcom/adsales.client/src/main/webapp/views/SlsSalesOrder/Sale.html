@@ -43,7 +43,7 @@
                         </td>
                         <td>
                             <div ng-class="{ 'has-error' : OrderItemForm.artName.$invalid }" >
-                                <input type="text" class="form-control" select-on-click focus required id="artName" autocomplete="off" ng-model="saleCtlr.slsSalesOrderItemHolder.slsSOItem.artName"
+                                <input type="text" class="form-control" select-on-click required id="artName" autocomplete="off" ng-model="saleCtlr.slsSalesOrderItemHolder.slsSOItem.artName"
                                        typeahead="article as article.displayableStr for article in saleCtlr.findArticleByName($viewValue)"
                                        typeahead-loading="loading" typeahead-on-select='saleCtlr.onSelect($item, $model, $label)' name="artName" >
                             </div>

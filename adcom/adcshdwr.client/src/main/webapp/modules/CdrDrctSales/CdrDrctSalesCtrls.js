@@ -124,7 +124,6 @@ angular.module('AdCshdwr')
             return genericResource.findByLikePromissed(service.stkArtlot2strgsctnsUrlBase, 'artPic', artPic)
                 .then(function (entitySearchResult) {
                     var resultList = entitySearchResult.resultList;
-                    console.log(resultList);
                     var displayDatas = [];
                     angular.forEach(resultList, function (item) {
                         var artName = item.artName;
@@ -135,8 +134,9 @@ angular.module('AdCshdwr')
                             if (!artQties) artQties = [];
                             angular.forEach(artQties, function (artQty) {
                                 var displayableStr = "";
-                                displayable.artName = "Product (" + artName + ")";
-                                displayableStr += artName;
+                                displayable.artName = artName;
+                                displayableStr = artQty.artPic
+                                displayableStr += " - "+artName;
                                 if (artQty.lotPic) {
                                     displayable.lotPic = artQty.lotPic;
                                     displayableStr += "- lot (" + artQty.lotPic + ")";
@@ -149,6 +149,7 @@ angular.module('AdCshdwr')
                                     displayable.stockQty = artQty.stockQty;
                                     displayableStr += "- Qty (" + artQty.stockQty + ")";
                                 }
+                                displayableStr += " - ppuHT (" + sectionArticleLot.sppuHT + ")";
                                 displayable.artPic = artQty.artPic;
                                 displayable.sppuPreTax = sectionArticleLot.sppuHT;
                                 displayable.minSppuHT = sectionArticleLot.minSppuHT;
@@ -164,7 +165,6 @@ angular.module('AdCshdwr')
                             });
                         }
                     });
-                    console.log(displayDatas);
                     return displayDatas;
                 });
         }
@@ -180,7 +180,6 @@ angular.module('AdCshdwr')
             return genericResource.findByLikePromissed(service.stkArtlot2strgsctnsUrlBase, 'artName', artName)
                 .then(function (entitySearchResult) {
                     var resultList = entitySearchResult.resultList;
-                    console.log(resultList);
                     var displayDatas = [];
                     angular.forEach(resultList, function (item) {
                         var artName = item.artName;
@@ -191,20 +190,22 @@ angular.module('AdCshdwr')
                             if (!artQties) artQties = [];
                             angular.forEach(artQties, function (artQty) {
                                 var displayableStr = "";
-                                displayable.artName = "Product (" + artName + ")";
-                                displayableStr += artName;
+                                displayable.artName = artName;
+                                displayableStr = artQty.artPic
+                                displayableStr += " - "+artName;
                                 if (artQty.lotPic) {
                                     displayable.lotPic = artQty.lotPic;
-                                    displayableStr += "- lot (" + artQty.lotPic + ")";
+                                    displayableStr += " - lot (" + artQty.lotPic + ")";
                                 }
                                 if (artQty.section) {
                                     displayable.section = artQty.section;
-                                    displayableStr += "- section (" + artQty.section + ")";
+                                    displayableStr += " - section (" + artQty.section + ")";
                                 }
                                 if (artQty.stockQty) {
                                     displayable.stockQty = artQty.stockQty;
-                                    displayableStr += "- Qty (" + artQty.stockQty + ")";
+                                    displayableStr += " - Qty (" + artQty.stockQty + ")";
                                 }
+                                displayableStr += " - ppuHT (" + sectionArticleLot.sppuHT + ")";
                                 displayable.artPic = artQty.artPic;
                                 displayable.sppuPreTax = sectionArticleLot.sppuHT;
                                 displayable.minSppuHT = sectionArticleLot.minSppuHT;
@@ -220,7 +221,6 @@ angular.module('AdCshdwr')
                             });
                         }
                     });
-                    console.log(displayDatas);
                     return displayDatas;
                 });
         };
@@ -512,13 +512,38 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
             };
 
             $scope.saveAndLeave = function () {
+                if($scope.cdrDsArtHolder && $scope.cdrDsArtHolder.items.length > 0){
+                    computeCdrDsArtHolder();
+                    genericResource.create(cdrDrctSalesUtils.cdrdrctsalesmanager, $scope.cdrDsArtHolder).success(function (result) {
+                        $scope.cdrDsArtHolder = result;
+                        $location.path("/CdrDrctSales/show" + result.id);
+                    }).error(function (error) {
+                        $scope.error = error;
+                    });
+                }
+            };
+
+            function clear(){
+                $scope.cdrDsArtHolder = {
+                    cdrDrctSales: {},
+                    items: []
+                };
+                $scope.cdrDsArtItemHolder = {
+                    item: {}
+                };
+            }
+
+            $scope.save = function () {
                 computeCdrDsArtHolder();
                 genericResource.create(cdrDrctSalesUtils.cdrdrctsalesmanager, $scope.cdrDsArtHolder).success(function (result) {
-                    $scope.cdrDsArtHolder = result;
-                    $location.path("/CdrDrctSales/show" + result.id);
+                    clear();
                 }).error(function (error) {
                     $scope.error = error;
                 });
+            };
+
+            $scope.cancel = function () {
+                clear();
             };
 
             $scope.recompute = function () {
