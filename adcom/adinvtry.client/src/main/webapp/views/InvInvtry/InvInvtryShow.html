@@ -136,7 +136,7 @@
 	                <div class="row" >
 	                   <div class="form-group col-lg-2" ng-class="{ 'has-error' : invInvtryItemForm.sectionCode.$invalid }">
 	                       <label class=" control-label" for="sectionCode">{{invInvtryUtils.translations['InvInvtryItem_section_description.title']}}</label>
-               		       <input type="text" ng-model="searchInput.entity.section" id="sectionCode" name="sectionCode" class="form-control" required
+               		       <input type="text" ng-model="display.sectionCode" id="sectionCode" name="sectionCode" class="form-control" required
                                autocomplete="off" typeahead="stkSection as (stkSection.sectionCode + ' : ' + stkSection.name) for stkSection in invInvtryUtils.loadStkSectionArticleLots($viewValue)"
                                typeahead-loading="loading" typeahead-min-length="4" typeahead-on-select='onSectionSelectedInSearch($item, $model, $label)'>
 	                   </div>
@@ -225,9 +225,11 @@
                         	<span ng-show="!invtryItem.editing && !invtryItem.disableDt">
 	                        	<a ng-click="invtryItem.editing=true" class=""><i class="glyphicon glyphicon-edit"></i></a>
                         	</span>
-                        	<span ng-show="invtryItem.editing">
-	                        	<a ng-click="updateItem(invtryItem)" class=""><i class="glyphicon glyphicon-save"></i></a>
+<!--
+                        	<span ng-show="invtryitem.editing">
+	                        	<a ng-click="updateitem(invtryitem)" class=""><i class="glyphicon glyphicon-save"></i></a>
                         	</span>
+-->
                         	<span ng-show="!invtryItem.editing && invtryItem.disableDt" style="margin-left:10px">
 	                        	<a ng-click="enableItem(invtryItem)" class=""><i class="glyphicon glyphicon-edit"></i></a>
                         	</span>
