@@ -107,6 +107,7 @@
                             <tr>
                                 <th class="text-center">{{slsSalesOrderUtils.translations['SlsSalesOrder_soNbr_description.title']}}</th>
                                 <th class="text-center">{{slsSalesOrderUtils.translations['SlsSalesOrder_soStatus_description.title']}}</th>
+                                <th class="text-center">{{slsSalesOrderUtils.translations['SlsSalesOrder_soDt_description.title']}}</th>
                                 <th class="text-center">{{slsSalesOrderUtils.translations['SlsSalesOrder_acsngUser_description.title']}}</th>
                                 <th class="text-center">{{slsSalesOrderUtils.translations['SlsSalesOrder_netSPPreTax_description.title']}}</th>
                                 <th class="text-center">{{slsSalesOrderUtils.translations['SlsSalesOrder_vatAmount_description.title']}}</th>
@@ -118,9 +119,10 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr dir-paginate="slsSO in slsSalesOrders() | filter:q | itemsPerPage: itemPerPage()" >
+                            <tr dir-paginate="slsSO in slsSalesOrders | filter:q | itemsPerPage: itemPerPage()" >
                                 <td>{{slsSO.soNbr}}</td>
                                 <td>{{slsSalesOrderUtils.slsSOStatusI18nMsgTitleValue(slsSO.soStatus)}}</td>
+                                <td>{{slsSalesOrderUtils.formatDate(slsSO.soDt, null)}}</td>
                                 <td>{{slsSO.acsngUser}}</td>
                                 <td>{{slsSO.netSPPreTax}}</td>
                                 <td>{{slsSO.vatAmount}}</td>
@@ -128,7 +130,7 @@
                                 <td>{{slsSO.netSalesAmt}}</td>
                                 <td>{{slsSO.netAmtToPay}}</td>
                                 <td><a href="" ng-click="show(slsSO,$index)"><i class="glyphicon glyphicon-eye-open"></i></a></td>
-                                <td><a href="" ng-click="edit(slsSO,$index)"><i class="glyphicon glyphicon-edit"></i></a></td>
+                                <td><a href="" ng-click="edit(slsSO, slsSO.slsSOItems, $index)"><i class="glyphicon glyphicon-edit"></i></a></td>
                             </tr>
                             </tbody>
                         </table>

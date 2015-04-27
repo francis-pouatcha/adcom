@@ -17,12 +17,15 @@ angular.module('AdSales')
 .controller('saleCtlr',['$scope','$modal','saleUtils','slsSalesOrderState','genericResource','$routeParams','$location','$q',function($scope,$modal,saleUtils,slsSalesOrderState,genericResource,$routeParams,$location,$q){
     var self = this ;
     $scope.saleCtlr = self;
+    self.slsSalesOrder = slsSalesOrderState.resultHandler.entity();
+    console.log('SO: '+self.slsSalesOrder);
     self.slsSalesOrderHolder = {
         slsSalesOrder:{},
         slsSOItemsholder:[],
         slsSOPtnrsHolder:[]
     };
     if(slsSalesOrderState.slsSalesOrderHolder){
+        console.log('enter');
         self.slsSalesOrderHolder = slsSalesOrderState.slsSalesOrderHolder;
     }
     if(!self.slsSalesOrderHolder){
@@ -63,8 +66,13 @@ angular.module('AdSales')
     self.ptnrRole;
     self.findArticleByName = findArticleByName;
     self.findArticleByCip = findArticleByCip;
-
-        loadPtnrRole();
+    loadPtnrRole();
+    loadSO();
+    
+    
+    function loadSO(){
+        console.log("SO: "+self.slsSalesOrder);
+    }
 
     function loadBusinessPartner(val){
         return genericResource.findByLikePromissed(saleUtils.adbnsptnr, 'cpnyName', val)

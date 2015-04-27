@@ -2,13 +2,23 @@
     
 angular.module('AdSales')
 
-.factory('slsSalesOrderUtils',['sessionManager','$translate', 'commonTranslations','genericResource','$q',function(sessionManager,$translate,commonTranslations,genericResource,$q){
+.factory('slsSalesOrderUtils',['sessionManager','$translate', 'commonTranslations','$filter','genericResource','$q',function(sessionManager,$translate,commonTranslations,$filter,genericResource,$q){
     var service = {};
+    var dateFormat = $filter('date');
+    var defaultDatePattern = 'dd-MM-yyyy HH:mm';
 
     service.urlBase='/adsales.server/rest/slssalesorders';
     service.bnsptnrUrlBase='/adbnsptnr.server/rest/bpbnsptnrs';
     service.loginnamessUrlBase='/adbase.server/rest/loginnamess';
     service.slsSOItemsUrlBase='/adsales.server/rest/slssoitems';
+    
+    
+    service.formatDate= function(fieldName, inPattern){
+        var pattern = '';
+        if(!inPattern) pattern = defaultDatePattern;
+        else pattern = inPattern;
+        return dateFormat(fieldName, pattern, '');
+    };
     
     service.slsSOStatusI18nMsgTitleKey = function(enumKey){
     	return "SlsSalesStatus_"+enumKey+"_description.title";
@@ -159,21 +169,29 @@ angular.module('AdSales')
         slsSOPtnrsHolder:[]
     };
     service.saveSlsSalesOrderHolder= function(slsSOHolder){
+        console.log('Service:'+slsSOHolder);
         if(!service.slsSalesOrderHolder) return;
         angular.copy(slsSOHolder, service.slsSalesOrderHolder);
     }
     return service;
 
 }])
-.controller('slsSalesOrdersCtlr',['$scope','genericResource','slsSalesOrderUtils','slsSalesOrderState','$location' ,'$translate','$rootScope',
-function($scope,genericResource,slsSalesOrderUtils,slsSalesOrderState,$location,$translate,$rootScope){
+.controller('slsSalesOrdersCtlr',['$scope','genericResource','slsSalesOrderUtils','slsSalesOrderState','$location' ,'$translate','$filter','$rootScope',
+function($scope,genericResource,slsSalesOrderUtils,slsSalesOrderState,$location,$translate,$filter,$rootScope){
 
-    $scope.slsSalesOrders= [];
-    $scope.slsSalesOrderHolder = {
+    var slsSalesOrderHolder = {
         slsSalesOrder:{},
         slsSOItemsholder:[],
         slsSOPtnrsHolder:[]
     };
+    var orderBy = $filter('orderBy');
+    $scope.slsSalesOrders = [];
+    $scope.slsSOHolder = {
+        slsSalesOrder:{},
+        slsSOItemsholder:[],
+        slsSOPtnrsHolder:[]
+    };
+    $scope.items = [];
     $scope.slsSalesOrderItemHolder = {};
     $scope.slsSalesOrdersHolder=[];
     $scope.searchInput = slsSalesOrderState.resultHandler.searchInput();
@@ -190,19 +208,22 @@ function($scope,genericResource,slsSalesOrderUtils,slsSalesOrderState,$location,
     $scope.slsSalesOrderUtils=slsSalesOrderUtils;
     $scope.show=show;
     $scope.edit=edit;
-    translateSOStatus();
+    $scope.prepareSalesOrder=prepareSalesOrder;
+    orderSlsSalesOrders();
     fullFillSales();
     
     
-    function translateSOStatus(){
+    function orderSlsSalesOrders(){
+        console.log('Ventes: '+$scope.slsSalesOrders);
         for(var i=0; i<$scope.slsSalesOrders.length; i++){
-            $scope.slsSalesOrders[i].soStatus= slsSalesOrderUtils.slsSOStatusI18nMsgTitleValue($scope.slsSalesOrders[i].soStatus);
+            console.log('Date vente: '+$scope.slsSalesOrders[i].soDt);
         }
+        
+      // $scope.slsSalesOrders = $filter('orderBy')($scope.slsSalesOrders, '-soDt', false);
     }
     
     
     function fullFillSales(){
-        console.log('Partners: '+$scope.slsSalesOrders[1]);
         for(var i=0; i<$scope.slsSalesOrders.length; i++){
             $scope.slsSalesOrderHolder.slsSalesOrder=$scope.slsSalesOrders[i];
             $scope.slsSalesOrderHolder.slsSOItemsholder=$scope.slsSalesOrders[i].slsSOItems;
@@ -223,7 +244,7 @@ function($scope,genericResource,slsSalesOrderUtils,slsSalesOrderState,$location,
 
     function init(){
         if(slsSalesOrderState.resultHandler.hasEntities())return;
-        findByLike($scope.searchInput);
+        findByLike($scope.searchInput); 
     }
 
     function findByLike(searchInput){
@@ -293,25 +314,25 @@ function($scope,genericResource,slsSalesOrderUtils,slsSalesOrderState,$location,
 		}
 	}
 
-	function edit(slsSO, index){
+	function edit(slsSO, items, index){
 		if(slsSalesOrderState.resultHandler.selectedObject(slsSO) != -1){
-            prepareSalesOrder(slsSO);
-            slsSalesOrderState.saveSlsSalesOrderHolder($scope.slsSalesOrderHolder);
+            //$scope.slsSOHolder = prepareSalesOrder(slsSO, items);
+            //console.log('SalesOrderHolder: '+$scope.slsSOHolder.slsSOItemsholder);
+            //slsSalesOrderState.saveSlsSalesOrderHolder($scope.slsSOHolder);
 			$location.path('/SlsSalesOrders/edit/');
 		}
 	}
      
-    function prepareSalesOrder(slsSO){
-        $scope.slsSalesOrderHolder.slsSalesOrder= slsSO;
-        $scope.slsSalesOrderHolder.slsSOItemsholder= slsSO.slsSOItems;
-        console.log('Prepare Sales Order'+$scope.slsSalesOrderHolder.slsSOItemsholder);
-        /*for(var i=0; i<$scope.items; i++){
-            console.log('Iterate over SOItems');
-            $scope.slsSalesOrderItemHolder.slsSOItem = $scope.items[i];
-            console.log('Sales Order Item: '+$scope.slsSalesOrderItemHolder.slsSOItem);
-            $scope.slsSalesOrderHolder.slsSOItemsholder.push($scope.slsSalesOrderItemHolder.slsSOItem);
-        };*/
-        $scope.slsSalesOrderHolder.slsSOPtnrsHolder= slsSO.slsSOPtnrs;
+    function prepareSalesOrder(slsSO, items){
+        slsSalesOrderHolder.slsSalesOrder= slsSO;
+        var slsSalesOrderItemHolder = {slsSOItem:{}};
+        for(var i=0; i<items.length; i++){
+            slsSalesOrderItemHolder.slsSOItem = items[i];
+            slsSalesOrderHolder.slsSOItemsholder.push(slsSalesOrderItemHolder);                               
+        };
+        slsSalesOrderHolder.slsSOPtnrsHolder= slsSO.slsSOPtnrs;
+        console.log(slsSalesOrderHolder);
+        return slsSalesOrderHolder;
     }
 }])
 .controller('slsSalesOrderCreateCtlr',['$scope','slsSalesOrderUtils','$translate','genericResource','$location','slsSalesOrderState',
