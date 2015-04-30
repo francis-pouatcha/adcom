@@ -70,6 +70,10 @@ public class CdrDrctSalesEvtEJB
    {
       return repository.countLike(entity, attributes);
    }
+   public List<CdrDrctSalesEvt> findByEvtName(String evtName){
+	   return repository.findByEvtName(evtName);
+   }
+   
 
    private CdrDrctSalesEvt attach(CdrDrctSalesEvt entity)
    {

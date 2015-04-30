@@ -36,14 +36,15 @@ public class BpBnsPtnrEJB
 		   entity.setPtnrNbr(SequenceGenerator.getSequence(SequenceGenerator.BUSINESS_PARTNER_SEQUENCE_PREFIXE));
 	   }
 	   BpIndivPtnrName ptnrName = entity.getIndivPtnrName();
-	   BpLegalPtnrId ptnrId = entity.getLegalPtnrId();
 	   
+	   BpLegalPtnrId ptnrId = entity.getLegalPtnrId();
 	   if(BpPtnrType.INDIVIDUAL.equals(entity.getPtnrType()) && ptnrName!=null){
 		   entity.setFullName(ptnrName.makeFullName());
 	   } else if (BpPtnrType.LEGAL.equals(entity.getPtnrType()) && ptnrId!=null){
 		   entity.setFullName(ptnrId.getCpnyName());
+		   ptnrId.setShortName(entity.getFullName());
 	   }
-	   ptnrId.setShortName(entity.getFullName());
+	   
 	   
 	   if(entity.getCountryName()!=null && !StringUtils.equals(entity.getCtryOfRsdnc(), entity.getCountryName().getIso3())){
 		   entity.setCtryOfRsdnc(entity.getCountryName().getIso3());

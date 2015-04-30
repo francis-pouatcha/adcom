@@ -47,10 +47,6 @@ public class CdrDrctSalesManager {
 	@Inject
 	private SecurityUtil securityUtil;
 
-
-
-
-
 	public CdrDsArtHolder updateOrder(CdrDsArtHolder cdrDsArtHolder){
 		CdrDrctSales cdrDrctSales = cdrDsArtHolder.getCdrDrctSales();
 		CdrCshDrawer activeCshDrawer = cshDrawerEJB.getActiveCshDrawer();
@@ -62,7 +58,7 @@ public class CdrDrctSalesManager {
 		if(StringUtils.isBlank(cdrDrctSales.getId())) {
 			cdrDrctSales = cdrDrctSalesEJB.create(cdrDrctSales);;
 		}
-		boolean modified = false;
+//		boolean modified = false;
 		boolean itemModified = deleteHolders(cdrDsArtHolder);
 
 		List<CdrDsArtItemHolder> cdrDsArtItemHolders = cdrDsArtHolder.getItems();

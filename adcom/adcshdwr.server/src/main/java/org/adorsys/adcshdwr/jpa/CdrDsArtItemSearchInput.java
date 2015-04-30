@@ -19,7 +19,7 @@ public class CdrDsArtItemSearchInput
    /**
     * The entity holding search inputs.
     */
-   private CdrDsArtItemEvt entity;
+   private CdrDsArtItem entity;
 
    /**
     * The start cursor
@@ -36,12 +36,12 @@ public class CdrDsArtItemSearchInput
     */
    private List<String> fieldNames = new ArrayList<String>();
 
-   public CdrDsArtItemEvt getEntity()
+   public CdrDsArtItem getEntity()
    {
       return entity;
    }
 
-   public void setEntity(CdrDsArtItemEvt entity)
+   public void setEntity(CdrDsArtItem entity)
    {
       this.entity = entity;
    }

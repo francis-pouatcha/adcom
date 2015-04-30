@@ -16,7 +16,7 @@ public class CdrDsArtItemSearchResult
    /*
     * The result list.
     */
-   private List<CdrDsArtItemEvt> resultList;
+   private List<CdrDsArtItem> resultList;
 
    /*
     * The original search input object. For stateless clients.
@@ -28,7 +28,7 @@ public class CdrDsArtItemSearchResult
       super();
    }
 
-   public CdrDsArtItemSearchResult(Long count, List<CdrDsArtItemEvt> resultList,
+   public CdrDsArtItemSearchResult(Long count, List<CdrDsArtItem> resultList,
          CdrDsArtItemSearchInput searchInput)
    {
       super();
@@ -42,7 +42,7 @@ public class CdrDsArtItemSearchResult
       return count;
    }
 
-   public List<CdrDsArtItemEvt> getResultList()
+   public List<CdrDsArtItem> getResultList()
    {
       return resultList;
    }
@@ -57,7 +57,7 @@ public class CdrDsArtItemSearchResult
       this.count = count;
    }
 
-   public void setResultList(List<CdrDsArtItemEvt> resultList)
+   public void setResultList(List<CdrDsArtItem> resultList)
    {
       this.resultList = resultList;
    }

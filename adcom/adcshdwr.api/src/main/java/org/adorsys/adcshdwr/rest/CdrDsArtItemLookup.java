@@ -10,50 +10,10 @@ import org.adorsys.adcshdwr.jpa.CdrDsArtItem;
 import org.adorsys.adcshdwr.repo.CdrDsArtItemRepository;
 
 @Stateless
-public class CdrDsArtItemEJB
-{
+public class CdrDsArtItemLookup {
 
 	@Inject
 	private CdrDsArtItemRepository repository;
-//
-//	@Inject
-//	private CdrDsArtItemEvtEJB cdrDsArtItemEvtEJB;
-	
-	public CdrDsArtItem create(CdrDsArtItem entity)
-	{
-//		CdrDsArtItemEvt cdrDsArtItemEvt = new CdrDsArtItemEvt();
-		entity = repository.save(attach(entity));
-		repository.flush();
-//		entity.copyTo(cdrDsArtItemEvt);
-//		cdrDsArtItemEvt.setId(entity.getId());
-//		cdrDsArtItemEvt.setIdentif(entity.getIdentif());
-//		cdrDsArtItemEvtEJB.create(cdrDsArtItemEvt);
-		
-		return entity;
-	}
-
-	public CdrDsArtItem deleteById(String id)
-	{
-		CdrDsArtItem entity = repository.findBy(id);
-		if (entity != null)
-		{
-			repository.remove(entity);
-//			cdrDsArtItemEvtEJB.deleteById(id);
-		}
-		
-		return entity;
-	}
-
-	public CdrDsArtItem update(CdrDsArtItem entity)
-	{
-//		CdrDsArtItemEvt cdrDsArtItemEvt = cdrDsArtItemEvtEJB.findById(entity.getId());
-		entity = repository.save(attach(entity));
-//		if(cdrDsArtItemEvt != null) {
-//			entity.copyTo(cdrDsArtItemEvt);
-//			cdrDsArtItemEvtEJB.update(cdrDsArtItemEvt);
-//		}
-		return entity;
-	}
 
 	public CdrDsArtItem findById(String id)
 	{
@@ -90,16 +50,8 @@ public class CdrDsArtItemEJB
 		return repository.countLike(entity, attributes);
 	}
 
-	private CdrDsArtItem attach(CdrDsArtItem entity)
-	{
-		if (entity == null)
-			return null;
-
-		return entity;
-	}
-
-	public Long countByDsNbr(String poNbr){
-		return repository.findByDsNbr(poNbr).count();
+	public Long countByDsNbr(String dsNbr){
+		return repository.findByDsNbr(dsNbr).count();
 	}
 	public List<CdrDsArtItem> findByDsNbr(String dsNbr, int start, int max){
 		return repository.findByDsNbr(dsNbr).firstResult(start).maxResults(max).getResultList();
