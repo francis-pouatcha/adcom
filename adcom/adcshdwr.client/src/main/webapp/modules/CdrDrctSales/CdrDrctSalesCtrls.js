@@ -398,6 +398,7 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
             $scope.edit = edit;
             $scope.commonTranslations = commonTranslations;
             $scope.openCreateForm = openCreateForm;
+
             var translateChangeSuccessHdl = $rootScope.$on('$translateChangeSuccess', function () {
                 cdrDrctSalesUtils.translate();
             });
@@ -483,6 +484,7 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                 cdrDrctSales: {},
                 items: []
             };
+            $scope.showprint = false;
 
             function create() {};
 
@@ -532,16 +534,32 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                 $scope.cdrDsArtItemHolder = {
                     item: {}
                 };
+                $scope.showprint = false;
             }
 
             $scope.save = function () {
                 computeCdrDsArtHolder();
+                if(verifCdrDsArtHolder() == false){
+                    return;
+                }
                 genericResource.create(cdrDrctSalesUtils.cdrdrctsalesmanager, $scope.cdrDsArtHolder).success(function (result) {
-                    clear();
+                    $scope.showprint = true;
+                    $scope.cdrDsArtHolder = result;
                 }).error(function (error) {
                     $scope.error = error;
                 });
             };
+
+            function verifCdrDsArtHolder(){
+                if($scope.cdrDsArtHolder.cdrDrctSales.netSalesAmt > $scope.cdrDsArtHolder.paidAmt){
+                    $scope.error = "Montant paye est inferieur au montant de vente";
+                    return false;
+                }
+                if($scope.cdrDsArtHolder.cdrDrctSales.pymtDscntAmt > $scope.cdrDsArtHolder.cdrDrctSales.netSPPreTax){
+                    $scope.error = "Montant de l'escompte est superieur au montant de vente hors taxe";
+                    return false;
+                }
+            }
 
             $scope.cancel = function () {
                 clear();
@@ -549,6 +567,10 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
 
             $scope.recompute = function () {
                 computeCdrDsArtHolder();
+            };
+
+            $scope.printRequest = function(){
+
             };
 
             $scope.hasItem = function () {
@@ -592,7 +614,24 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
 
             function addItem(cdrDsArtItemHolder) {
                 if (isNotCorrect($scope.cdrDsArtItemHolder)) return;
-                if (cdrDsArtItemHolder.item.soldQty > cdrDsArtItemHolder.maxStockQty) return;
+                if (cdrDsArtItemHolder.item.soldQty > cdrDsArtItemHolder.maxStockQty){
+                    $scope.error ="Quantite Vendus superieur a la quantite en stock";
+                    return;
+                }
+                if (0 > cdrDsArtItemHolder.item.vatPct){
+                    $scope.error ="La TVA ne peut etre negatif";
+                    return;
+                }
+                if (cdrDsArtItemHolder.item.restockgFees > cdrDsArtItemHolder.item.sppuPreTax * parseInt(cdrDsArtItemHolder.item.soldQty)
+                    || cdrDsArtItemHolder.item.sppuPreTax * parseInt(cdrDsArtItemHolder.item.soldQty) == cdrDsArtItemHolder.item.restockgFees){
+                    $scope.error ="La frais de stockage ne peut etre superieur au montant de vente";
+                    return;
+                }
+                if (cdrDsArtItemHolder.item.rebate > cdrDsArtItemHolder.item.sppuPreTax * parseInt(cdrDsArtItemHolder.item.soldQty)
+                    || cdrDsArtItemHolder.item.sppuPreTax * parseInt(cdrDsArtItemHolder.item.soldQty) == cdrDsArtItemHolder.item.rebate){
+                    $scope.error ="La remise ne peut etre superieur au montant de vente";
+                    return;
+                }
                 var copy = angular.copy(cdrDsArtItemHolder)
                 var i = 0;
                 var items = $scope.cdrDsArtHolder.items;
@@ -630,7 +669,7 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                     var grossSPPTax = artItemHolder.item.sppuPreTax * artItemHolder.item.soldQty;
                     var netSPPreTax = grossSPPTax - totalRebate;
                     var vatAmount = netSPPreTax * (artItemHolder.item.vatPct / 100);
-                    var netSPTaxIncl = netSPPreTax + vatAmount;
+                    var netSPTaxIncl = netSPPreTax + vatAmount + artItemHolder.item.restockgFees;
                     artItemHolder.item.netSPPreTax = netSPPreTax;
                     artItemHolder.item.netSPTaxIncl = netSPTaxIncl;
                     artItemHolder.item.vatAmount = vatAmount;

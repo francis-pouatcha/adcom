@@ -57,7 +57,7 @@ public class CdrDrctSalesManager {
 			cdrDrctSales.setRcptNbr("-");
 		}
 		if(StringUtils.isBlank(cdrDrctSales.getId())) {
-			cdrDrctSales = cdrDrctSalesEJB.create(cdrDrctSales);;
+			cdrDrctSales = cdrDrctSalesEJB.create(cdrDrctSales);
 		}
 //		boolean modified = false;
 		boolean itemModified = deleteHolders(cdrDsArtHolder);
