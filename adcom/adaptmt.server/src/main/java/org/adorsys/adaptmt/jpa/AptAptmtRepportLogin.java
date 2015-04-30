@@ -2,67 +2,67 @@ package org.adorsys.adaptmt.jpa;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.validation.constraints.NotNull;
 
-import org.adorsys.adcore.jpa.AbstractEntity;
+import org.adorsys.adcore.jpa.AbstractTimedData;
 
 @Entity
-public class AptAptmtRepportLogin extends AbstractEntity
-{
+public class AptAptmtRepportLogin extends AbstractTimedData {
 
-   @Column
-   private String loginIdentify;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8717558433187769255L;
 
-   @Column
-   private String aptmtRepportIdentify;
+	@Column
+	@NotNull
+	private String aptmtIdentify;
 
+	@Column
+	@NotNull
+	private String loginIdentify;
 
-   @Override
-   public boolean equals(Object that)
-   {
-      if (this == that)
-      {
-         return true;
-      }
-      if (that == null)
-      {
-         return false;
-      }
-      if (getClass() != that.getClass())
-      {
-         return false;
-      }
+	@Override
+	public boolean equals(Object that) {
+		if (this == that) {
+			return true;
+		}
+		if (that == null) {
+			return false;
+		}
+		if (getClass() != that.getClass()) {
+			return false;
+		}
 
-      return super.equals(that);
-   }
+		return super.equals(that);
+	}
 
-   public String getLoginIdentify()
-   {
-      return this.loginIdentify;
-   }
+	public String getAptmtIdentify() {
+		return this.aptmtIdentify;
+	}
 
-   public void setLoginIdentify(final String loginIdentify)
-   {
-      this.loginIdentify = loginIdentify;
-   }
+	public void setAptmtIdentify(final String aptmtIdentify) {
+		this.aptmtIdentify = aptmtIdentify;
+	}
 
-   public String getAptmtRepportIdentify()
-   {
-      return this.aptmtRepportIdentify;
-   }
+	public String getLoginIdentify() {
+		return this.loginIdentify;
+	}
 
-   public void setAptmtRepportIdentify(final String aptmtRepportIdentify)
-   {
-      this.aptmtRepportIdentify = aptmtRepportIdentify;
-   }
+	public void setLoginIdentify(final String loginIdentify) {
+		this.loginIdentify = loginIdentify;
+	}
 
-   @Override
-   public String toString()
-   {
-      String result = getClass().getSimpleName() + " ";
-      if (loginIdentify != null && !loginIdentify.trim().isEmpty())
-         result += "loginIdentify: " + loginIdentify;
-      if (aptmtRepportIdentify != null && !aptmtRepportIdentify.trim().isEmpty())
-         result += ", aptmtRepportIdentify: " + aptmtRepportIdentify;
-      return result;
-   }
+	@Override
+	public String toString() {
+		return "AptAptmtLogin [aptmtIdentify=" + aptmtIdentify
+				+ ", loginIdentify=" + loginIdentify + "]";
+	}
+
+	@Override
+	protected String makeIdentif() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

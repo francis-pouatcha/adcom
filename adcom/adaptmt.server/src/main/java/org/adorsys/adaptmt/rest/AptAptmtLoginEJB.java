@@ -8,6 +8,7 @@ import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adaptmt.jpa.AptAptmtLogin;
 import org.adorsys.adaptmt.repo.AptAptmtLoginRepository;
+import org.adorsys.adcore.utils.SequenceGenerator;
 
 
 @Stateless
@@ -19,6 +20,9 @@ public class AptAptmtLoginEJB
 
 	   public AptAptmtLogin create(AptAptmtLogin entity)
 	   {
+		   entity.setIdentif(SequenceGenerator
+					.getSequence(SequenceGenerator.APPOINTMENTLOGIN_NUMBER_SEQUENCE_PREFIXE));
+		   
 	      return repository.save(attach(entity));
 	   }
 

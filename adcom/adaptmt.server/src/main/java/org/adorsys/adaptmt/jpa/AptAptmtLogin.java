@@ -4,67 +4,66 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 
-import org.adorsys.adcore.jpa.AbstractEntity;
+import org.adorsys.adcore.jpa.AbstractTimedData;
 
 @Entity
-public class AptAptmtLogin extends AbstractEntity
-{
+public class AptAptmtLogin extends AbstractTimedData {
 
-   @Column
-   @NotNull
-   private String aptmtIdentify;
+	private static final long serialVersionUID = 8717558433187769255L;
 
-   @Column
-   @NotNull
-   private String loginIdentify;
+	@Column
+	@NotNull
+	private String aptmtIdentify;
 
-   @Override
-   public boolean equals(Object that)
-   {
-      if (this == that)
-      {
-         return true;
-      }
-      if (that == null)
-      {
-         return false;
-      }
-      if (getClass() != that.getClass())
-      {
-         return false;
-      }
+	@Column
+	@NotNull
+	private String loginIdentify;
 
-      return super.equals(that);
-   }
+	@Override
+	public boolean equals(Object that) {
+		if (this == that) {
+			return true;
+		}
+		if (that == null) {
+			return false;
+		}
+		if (getClass() != that.getClass()) {
+			return false;
+		}
 
-   public String getAptmtIdentify()
-   {
-      return this.aptmtIdentify;
-   }
+		return super.equals(that);
+	}
 
-   public void setAptmtIdentify(final String aptmtIdentify)
-   {
-      this.aptmtIdentify = aptmtIdentify;
-   }
+	public String getAptmtIdentify() {
+		return this.aptmtIdentify;
+	}
 
-   public String getLoginIdentify()
-   {
-      return this.loginIdentify;
-   }
+	public void setAptmtIdentify(final String aptmtIdentify) {
+		this.aptmtIdentify = aptmtIdentify;
+	}
 
-   public void setLoginIdentify(final String loginIdentify)
-   {
-      this.loginIdentify = loginIdentify;
-   }
+	public String getLoginIdentify() {
+		return this.loginIdentify;
+	}
 
-   @Override
-   public String toString()
-   {
-      String result = getClass().getSimpleName() + " ";
-      if (aptmtIdentify != null && !aptmtIdentify.trim().isEmpty())
-         result += "aptmtIdentify: " + aptmtIdentify;
-      if (loginIdentify != null && !loginIdentify.trim().isEmpty())
-         result += ", loginIdentify: " + loginIdentify;
-      return result;
-   }
+	public void setLoginIdentify(final String loginIdentify) {
+		this.loginIdentify = loginIdentify;
+	}
+
+	@Override
+	public String toString() {
+		String result = getClass().getSimpleName() + " ";
+		if (aptmtIdentify != null && !aptmtIdentify.trim().isEmpty())
+			result += "aptmtIdentify: " + aptmtIdentify;
+		if (loginIdentify != null && !loginIdentify.trim().isEmpty())
+			result += ", loginIdentify: " + loginIdentify;
+		return result;
+	}
+
+	@Override
+	protected String makeIdentif() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

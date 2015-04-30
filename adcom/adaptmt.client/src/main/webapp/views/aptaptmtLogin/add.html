@@ -1,0 +1,164 @@
+<div class="container">
+
+	<div class="col-xs-offset-2 col-xs-8">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<b>{{ "Entity_createLogin.title"| translate}}</b>
+			</div>
+			<div class="panel-body">
+				<label class="error col-lg-offset-3 alert-danger">{{aptAptmtLoginCreateCtrl.error}}
+				</label>
+				<form name="createAptAptmtLoginForm" class="form-horizontal"
+					novalidate="">
+
+					<div class="form-group">
+						<label class="col-lg-4 ">{{"AptAptmt_title_description.title"|translate}}
+							:</label>
+						<div class="col-lg-8"
+							ng-class="{ 'has-error' : createAptAptmtLoginForm.aptmtIdentify.$invalid }">
+							<input class="form-control"
+								ng-model="aptAptmtLoginAddCtrl.aptAptmt.aptmtnNbr"
+								name="aptmtIdentify" disabled required>
+							<p
+								ng-show="createAptAptmtLoginForm.aptAptmtLogin.$error.required"
+								class="help-block">le title est requis !</p>
+						</div>
+					</div>
+					<div class="row">
+						<!-- 
+	<div class="col-lg-3">
+        <ng-include src="'views/menu.html'"  ></ng-include>
+	</div>
+	 -->
+						<div class="col-xs-offset-0 col-xs-12">
+
+							<div class="panel panel-default  ng-scope">
+								<div class="panel-heading no-collapse">
+									<div class="row">
+										<div class="col-lg-3">
+											<b>{{"Entity_search.title"|translate}}</b>
+										</div>
+									</div>
+
+								</div>
+								<div class="panel-body">
+									<div class="">
+										<form role="form" class="">
+											<div class="row">
+												<div class="col-lg-3">
+													<div class="form-group">
+														<label class=" control-label" for="">{{"Login_loginName_description"|translate}}</label>
+														<div class="">
+															<input type="text" id=""
+																ng-model="aptAptmtLoginAddCtrl.searchInput.entity.loginName"
+																class="form-control">
+														</div>
+													</div>
+												</div>
+												<div class="col-lg-3">
+													<div class="form-group">
+														<label class="control-label" for="">{{"Login_fullName_description"|translate}}</label>
+														<div class="">
+															<input type="text"
+																ng-model="aptAptmtLoginAddCtrl.searchInput.entity.fullName"
+																class="form-control">
+														</div>
+													</div>
+												</div>
+
+												<div class="col-lg-3">
+													<div class="form-group">
+														<label class="control-label">{{"Login_ouIdentif_description"|translate}}</label>
+														<div class="">
+															<select class="form-control"
+																ng-model="aptAptmtLoginAddCtrl.searchInput.entity.ouIdentif"
+																name="ouIdentif"
+																ng-options="orgUnit.identif as orgUnit.shortName for orgUnit in aptAptmtLoginAddCtrl.orgUnits">
+																<option></option>
+															</select>
+														</div>
+													</div>
+												</div>
+
+												<div class="col-lg-2">
+													<div class="form-group">
+														<button
+															ng-click="aptAptmtLoginAddCtrl.handleSearchRequestEvent()"
+															class="btn btn-default " style="margin-top: 23px;">
+															<i class="glyphicon glyphicon-search"></i>
+														</button>
+														<button
+															ng-click="aptAptmtLoginAddCtrl.handlePrintRequestEvent()"
+															class="btn btn-default " style="margin-top: 23px;">
+															<i class="glyphicon glyphicon-print"></i>
+														</button>
+
+													</div>
+												</div>
+											</div>
+
+										</form>
+									</div>
+								</div>
+
+							</div>
+
+							<div class="panel panel-default ">
+								<div class="panel-heading no-collapse">
+									<b>Resultat </b>
+								</div>
+								<div class="panel-body">
+									<div class="col-lg-12">
+										<div class="table-overflow-middle row">
+											<table
+												class="table table-bordered  table-striped pointer-element">
+												<thead>
+													<tr>
+														<th class="text-center">{{"Login_ouIdentif_description"|translate}}</th>
+														<th class="text-center">{{"Login_loginName_description"|translate}}</th>
+														<th class="text-center">{{"Login_email_description"|translate}}</th>
+														<th class="text-center">{{"Login_fullName_description"|translate}}</th>
+														<th></th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr ng-repeat="login in aptAptmtLoginAddCtrl.logins">
+
+														<td>{{login.ouIdentif}}</td>
+														<td>{{login.loginName}}</td>
+														<td>{{login.email}}</td>
+														<td>{{login.fullName }}</td>
+														<td><input type="checkbox" ng-model="login.checkOn"
+															name="checkOn" class="form-control" /></td>
+
+														<td>
+															<button ng-click="aptAptmtLoginAddCtrl.add(index,login);"
+																ng-disabled="" class="btn-default btn">
+																<i class="glyphicon glyphicon-save"></i> Add
+															</button>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+										<ul class="pull-right">
+											<pagination total-items="aptAptmtLoginAddCtrl.totalItems"
+												items-per-page="aptAptmtLoginAddCtrl.itemPerPage"
+												class="pagination-sm"
+												ng-model="aptAptmtLoginAddCtrl.currentPage"
+												ng-change="aptAptmtLoginAddCtrl.paginate()"></pagination>
+
+										</ul>
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+			</div>
+		</div>
+
+	</div>
+
+
+</div>

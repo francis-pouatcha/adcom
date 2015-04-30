@@ -1,13 +1,13 @@
-﻿(function () {
+(function () {
 	'use strict';
-	angular.module('adaptmt').controller('aptAptmtCancelController',aptAptmtCancelController);
+	angular.module('adaptmt').controller('aptAptmtReportController',aptAptmtReportController);
 
-	aptAptmtCancelController.$inject = ['$scope', 'aptAptmtRepportsService','$location','aptAptmtsService','$routeParams'];
+	aptAptmtReportController.$inject = ['$scope', 'aptAptmtRepportsService','$location','aptAptmtsService','$routeParams'];
 
-	function aptAptmtCancelController($scope,aptAptmtRepportsService, $location,aptAptmtsService,$routeParams){
+	function aptAptmtReportController($scope,aptAptmtRepportsService, $location,aptAptmtsService,$routeParams){
 		var self = this ;
 		self.AptAptmtRepport = {};
-		self.cancel = cancel;
+		self.Report = Report;
 		self.error = "";
 		self.aptAptmt = {};
 		self.aptAptmts = {};
@@ -19,6 +19,7 @@
 			aptAptmtsService.loadAptAptmt(identif).then(function(result){
 
 				self.aptAptmt = result;
+				self.aptAptmts = result;
 
 			})
 
@@ -38,22 +39,25 @@
 
 			});
 
-			self.AptAptmtRepport.title = "ANNULATION DU RENDEZ-VOUS";
+			self.AptAptmtRepport.title = "REPORT DU RENDEZ-VOUS";
 
 		};
 
 		init();
 
-		function cancel(){
-			if (self.aptAptmt.status != "FORTHCOMMING"){
-
-				self.error = error;
-			}
-			else{
+		function Report(){
+		
 				if (self.AptAptmtRepport.aptmtIdentify == null){
 					self.AptAptmtRepport.aptmtIdentify = self.aptAptmt.aptmtnNbr;
+					self.aptAptmts.parentIdentify = self.aptAptmt.aptmtnNbr;
+					
 				}
 				aptAptmtsService.cancel(self.aptAptmt).then(function(result){
+
+				},function(error){
+					self.error = error;
+				});
+				aptAptmtsService.create(self.aptAptmts).then(function(result){
 
 				},function(error){
 					self.error = error;
@@ -64,13 +68,11 @@
 					self.error = error;
 				});
 
-			}
+			
 
 		};
 
 
 	};
-
-
-
+	
 })();
