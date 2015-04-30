@@ -56,8 +56,8 @@
       <file leaf-file-name="SaleCtrl.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/adsales.client/src/main/webapp/modules/SlsSalesOrder/SaleCtrl.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="483" max-vertical-offset="5190">
-              <caret line="92" column="52" selection-start-line="92" selection-start-column="52" selection-end-line="92" selection-end-column="52" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="3858" max-vertical-offset="5205">
+              <caret line="262" column="68" selection-start-line="262" selection-start-column="68" selection-end-line="262" selection-end-column="68" />
               <folding />
             </state>
           </provider>
@@ -66,8 +66,8 @@
       <file leaf-file-name="createDrctSales.html" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/adcshdwr.client/src/main/webapp/views/CdrDrctSale/createDrctSales.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.7013575" vertical-offset="645" max-vertical-offset="2220">
-              <caret line="74" column="49" selection-start-line="74" selection-start-column="49" selection-end-line="74" selection-end-column="49" />
+            <state vertical-scroll-proportion="0.02354788" vertical-offset="0" max-vertical-offset="2235">
+              <caret line="1" column="50" selection-start-line="1" selection-start-column="50" selection-end-line="1" selection-end-column="50" />
               <folding>
                 <element signature="n#style#0;n#button#0;n#div#8;n#div#0;n#form#0;n#div#0;n#div#1;n#div#1;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#span#0;n#div#0;n#div#0;n#div#0;n#div#2;n#div#0;n#!!top" expanded="true" />
@@ -83,8 +83,8 @@
       <file leaf-file-name="CdrDrctSalesCtrls.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/adcshdwr.client/src/main/webapp/modules/CdrDrctSales/CdrDrctSalesCtrls.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-13.307693" vertical-offset="1724" max-vertical-offset="10080">
-              <caret line="138" column="64" selection-start-line="138" selection-start-column="64" selection-end-line="138" selection-end-column="64" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="7734" max-vertical-offset="10095">
+              <caret line="542" column="0" selection-start-line="542" selection-start-column="0" selection-end-line="542" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -122,7 +122,6 @@
         <option value="$PROJECT_DIR$/adsales.client/src/main/webapp/modules/SlsInvoice/SlsInvoiceRoute.js" />
         <option value="$PROJECT_DIR$/adsales.client/src/main/webapp/index.html" />
         <option value="$PROJECT_DIR$/adsales.client/src/main/webapp/views/SlsInvoice/SlsInvoiceNew.html" />
-        <option value="$PROJECT_DIR$/adsales.client/src/main/webapp/modules/SlsSalesOrder/SaleCtrl.js" />
         <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/PrcmtDeliveryCtrl.js" />
         <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/modules/PrcmtDeliverys/PrcmtDeliveryAddItemCtrl.js" />
         <option value="$PROJECT_DIR$/adprocmt.client/src/main/webapp/views/PrcmtDelivery/PrcmtDeliveryAddItem.html" />
@@ -146,10 +145,11 @@
         <option value="$PROJECT_DIR$/adcshdwr.client/src/main/webapp/modules/CdrCshDrawer/CdrCshDrawerCtrls.js" />
         <option value="$PROJECT_DIR$/adcshdwr.client/src/main/webapp/views/CdrCshDrawer/CdrCshDrawers.html" />
         <option value="$PROJECT_DIR$/adcshdwr.client/src/main/webapp/views/CdrCshDrawer/showCdrCshDrawer.html" />
-        <option value="$PROJECT_DIR$/adcshdwr.client/src/main/webapp/modules/CdrDrctSales/CdrDrctSalesCtrls.js" />
         <option value="$PROJECT_DIR$/adsales.client/src/main/webapp/views/SlsSalesOrder/Sale.html" />
         <option value="$PROJECT_DIR$/adcshdwr.client/src/main/webapp/scripts/directives/selectOnClick.js" />
         <option value="$PROJECT_DIR$/adcshdwr.client/src/main/webapp/index.html" />
+        <option value="$PROJECT_DIR$/adsales.client/src/main/webapp/modules/SlsSalesOrder/SaleCtrl.js" />
+        <option value="$PROJECT_DIR$/adcshdwr.client/src/main/webapp/modules/CdrDrctSales/CdrDrctSalesCtrls.js" />
         <option value="$PROJECT_DIR$/adcshdwr.client/src/main/webapp/views/CdrDrctSale/createDrctSales.html" />
       </list>
     </option>
@@ -739,6 +739,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="815" max-vertical-offset="4305">
           <caret line="71" column="42" selection-start-line="71" selection-start-column="28" selection-end-line="71" selection-end-column="42" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -975,22 +976,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/adcshdwr.client/src/main/webapp/modules/CdrDrctSales/CdrDrctSalesCtrls.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-13.307693" vertical-offset="1724" max-vertical-offset="10080">
-          <caret line="138" column="64" selection-start-line="138" selection-start-column="64" selection-end-line="138" selection-end-column="64" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/adsales.client/src/main/webapp/modules/SlsSalesOrder/SaleCtrl.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="483" max-vertical-offset="5190">
-          <caret line="92" column="52" selection-start-line="92" selection-start-column="52" selection-end-line="92" selection-end-column="52" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/adsales.client/src/main/webapp/views/SlsSalesOrder/Sale.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-9.375" vertical-offset="450" max-vertical-offset="2385">
@@ -1039,10 +1024,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/adsales.client/src/main/webapp/modules/SlsSalesOrder/SaleCtrl.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="3858" max-vertical-offset="5205">
+          <caret line="262" column="68" selection-start-line="262" selection-start-column="68" selection-end-line="262" selection-end-column="68" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adcshdwr.client/src/main/webapp/modules/CdrDrctSales/CdrDrctSalesCtrls.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="7734" max-vertical-offset="10095">
+          <caret line="542" column="0" selection-start-line="542" selection-start-column="0" selection-end-line="542" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/adcshdwr.client/src/main/webapp/views/CdrDrctSale/createDrctSales.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7013575" vertical-offset="645" max-vertical-offset="2220">
-          <caret line="74" column="49" selection-start-line="74" selection-start-column="49" selection-end-line="74" selection-end-column="49" />
+        <state vertical-scroll-proportion="0.02354788" vertical-offset="0" max-vertical-offset="2235">
+          <caret line="1" column="50" selection-start-line="1" selection-start-column="50" selection-end-line="1" selection-end-column="50" />
           <folding>
             <element signature="n#style#0;n#button#0;n#div#8;n#div#0;n#form#0;n#div#0;n#div#1;n#div#1;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#0;n#div#0;n#div#0;n#div#0;n#div#2;n#div#0;n#!!top" expanded="true" />

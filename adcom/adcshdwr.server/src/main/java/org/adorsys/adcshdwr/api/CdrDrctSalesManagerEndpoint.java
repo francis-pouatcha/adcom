@@ -9,6 +9,8 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
+import org.adorsys.adcshdwr.exceptions.AdException;
+
 /**
  * @author boriswaguia
  *
@@ -23,7 +25,7 @@ public class CdrDrctSalesManagerEndpoint {
 	@POST
 	@Consumes({ "application/json", "application/xml" })
 	@Produces({ "application/json", "application/xml" })
-	public CdrDsArtHolder save(CdrDsArtHolder cdrDsArtHolder) {
+	public CdrDsArtHolder save(CdrDsArtHolder cdrDsArtHolder) throws AdException {
 		return ejb.updateOrder(cdrDsArtHolder);
 	}
 }

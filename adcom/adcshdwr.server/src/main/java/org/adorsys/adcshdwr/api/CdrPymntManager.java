@@ -9,6 +9,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
+import org.adorsys.adcshdwr.exceptions.AdException;
 import org.adorsys.adcshdwr.jpa.CdrCshDrawer;
 import org.adorsys.adcshdwr.jpa.CdrPymnt;
 import org.adorsys.adcshdwr.jpa.CdrPymntItem;
@@ -38,10 +39,10 @@ public class CdrPymntManager {
 	@Inject
 	private CdrCshDrawerEJB cshDrawerEJB;
 	
-	public CdrPymntHolder saveAndClovePymt(CdrPymntHolder cdrPymntHolder) {
+	public CdrPymntHolder saveAndClovePymt(CdrPymntHolder cdrPymntHolder) throws AdException {
 		CdrPymnt cdrPymnt = cdrPymntHolder.getCdrPymnt();
 		CdrCshDrawer activeCshDrawer = cshDrawerEJB.getActiveCshDrawer();
-		if(activeCshDrawer == null) throw new IllegalStateException("No opened cash drawer found for this session, please open one");
+		if(activeCshDrawer == null) throw new AdException("No opened cash drawer found for this session, please open one");
 		cdrPymnt.setCdrNbr(activeCshDrawer.getCdrNbr());
 		if(StringUtils.isBlank(cdrPymnt.getId())) {
 			cdrPymnt = pymntEJB.create(cdrPymnt);
@@ -59,12 +60,12 @@ public class CdrPymntManager {
 				pymtItem.setPymntNbr(cdrPymnt.getPymntNbr());
 			// check presence of the article pic
 			if(StringUtils.isBlank(pymtItem.getPymntDocNbr()))
-				throw new IllegalStateException("Missing doc number identification code.");
+				throw new AdException("Missing doc number identification code.");
 
 			if(StringUtils.isNotBlank(pymtItem.getId())){
 				// todo check mdified
 				CdrPymntItem persPi = pymntItemEJB.findById(pymtItem.getId());
-				if(persPi==null) throw new IllegalStateException("Missing delivery item with id: " + pymtItem.getId());
+				if(persPi==null) throw new AdException("Missing delivery item with id: " + pymtItem.getId());
 				if(!pymtItem.contentEquals(persPi)){
 					pymtItem.copyTo(persPi);
 					pymtItem.evlte();

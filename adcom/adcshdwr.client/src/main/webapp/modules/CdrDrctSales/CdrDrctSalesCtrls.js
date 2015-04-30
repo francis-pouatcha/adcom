@@ -489,6 +489,7 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
             $scope.onArticleSelectedInSearch = function (item, model, label) {
                 $scope.cdrDsArtItemHolder.item.artPic = item.artPic;
                 $scope.cdrDsArtItemHolder.item.lotPic = item.lotPic;
+                $scope.cdrDsArtItemHolder.item.section = item.section;
                 $scope.cdrDsArtItemHolder.artName = item.artName;
                 $scope.cdrDsArtItemHolder.item.sppuPreTax = item.sppuPreTax;
                 if (!item.sppuPreTax) item.sppuPreTax = 0.0;
