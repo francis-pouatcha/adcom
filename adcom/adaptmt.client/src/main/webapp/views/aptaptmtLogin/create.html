@@ -1,0 +1,50 @@
+<div class="container">
+
+    <div class="col-xs-offset-2 col-xs-8">
+        <div class="panel panel-default">
+            <div class="panel-heading"><b>{{ "Entity_createLogin.title"| translate}}</b> </div>
+            <div class="panel-body">
+                <label class="error col-lg-offset-3 alert-danger" >{{aptAptmtLoginCreateCtrl.error}} </label>
+                <form  name="createAptAptmtLoginForm" class="form-horizontal" novalidate="">
+                	
+                    <div class="form-group">
+                        <label class="col-lg-4 ">{{"AptAptmt_title_description.title"|translate}} :</label>
+                        <div class="col-lg-8" ng-class="{ 'has-error' : createAptAptmtLoginForm.aptmtIdentify.$invalid }" >
+                             <select class="form-control" ng-model="aptAptmtLoginCreateCtrl.AptAptmtLogin.aptmtIdentify" name="aptmtIdentify" 	
+                                    ng-options="aptAptmts.identif as aptAptmts.title for aptAptmts in aptAptmtLoginCreateCtrl.aptAptmts" required>
+                            </select>
+                            <p ng-show="createAptAptmtLoginForm.aptAptmtLogin.$error.required" class="help-block">le title est  requis !</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-4 ">Login :</label>
+                        <div class="col-lg-8" ng-class="{ 'has-error' : createAptAptmtLoginForm.loginIdentify.$invalid }" >
+                            <input type="text"
+											ng-model="aptAptmtLoginCreateCtrl.AptAptmtLogin.loginIdentify"
+											name="loginIdentify"
+											id="loginIdentify"
+											class="form-control" autocomplete="off" required>
+											<!-- typeahead="loginName as login.loginName for login in aptAptmtLoginCreateCtrl.loadUsers($viewValue)"
+											typeahead-loading="loading" --> 
+                            <p ng-show="createAptAptmtLoginForm.loginIdentify.$error.required" class="help-block">erreur</p>
+                        </div>
+                    </div>
+                    
+
+
+                    <div class="form-group">
+                        <label class="col-lg-4"  > </label>
+                        <div class="col-lg-8" >
+                            <a class="btn-danger btn" href="#/aptaptmtReport"  ><i class="glyphicon glyphicon-remove" ></i> {{"Entity_cancel.title" | translate }}</a>
+                            <button ng-click="aptAptmtLoginCreateCtrl.create();" ng-disabled="createAptAptmtLoginForm.$invalid" class="btn-success btn"  ><i class="glyphicon glyphicon-save"></i>  {{"Entity_save.title" | translate }}</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+
+
+</div>

@@ -25,6 +25,9 @@
 "AptAptmt_BpBnsPtnr_fullName_description":"Nom",
 "AptAptmt_BpBnsPtnr_country_description":"Pays",
 
+"AptAptmt_appointmentDate_from_description":"De la Date",
+"AptAptmt_appointmentDate_to_description":"A la Date",
+
 
 "Entity_create_Report.title":"Créer Rapport",
 "Entity_list_Report.title":"Créer",

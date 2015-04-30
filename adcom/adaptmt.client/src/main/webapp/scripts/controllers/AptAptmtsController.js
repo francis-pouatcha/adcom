@@ -2,8 +2,8 @@
 
 angular.module("adaptmt")
 
-.controller('aptAptmtsController',['$scope','genericResource', '$translate', 'aptAptmtsService','$location','$rootScope',
-                                function($scope,genericResource, $translate, aptAptmtsService,$location,$rootScope){
+.controller('aptAptmtsController',['$scope','genericResource', '$translate', 'aptAptmtsService','$location','$rootScope', '$filter',
+                                function($scope,genericResource, $translate, aptAptmtsService,$location,$rootScope, $filter){
 	
    var self = this;
 	
@@ -32,6 +32,7 @@ angular.module("adaptmt")
        aptAptmtsService.loadAptAptmts(self.searchInput).then(function(entitySearchResult) {
     	   		self.aptAptmts = entitySearchResult.resultList;
     	   		self.totalItems = entitySearchResult.count ;
+													//    	   		console.log(" appointmentDate : " + $filter('date')(self.aptAptmts[2].appointmentDate, 'medium', 'GMT') + " creationDate : " + self.aptAptmts[2].creationDate);
             });
        
        console.log(self.totalItems);
@@ -40,34 +41,37 @@ angular.module("adaptmt")
    
    init();
    
-   function findByLike(searchInput){
-	   aptAptmtsService.findAptAptmts(searchInput).then(function(entitySearchResult) {
+   function findCustom(searchInput){
+	   aptAptmtsService.loadAptAptmts(searchInput).then(function(entitySearchResult) {
            self.aptAptmts = entitySearchResult.resultList;
            self.totalItems = entitySearchResult.count ;
        });
    }
 
    function processSearchInput(){
-       var fileName = [];
+       var fieldNames = [];
        if(self.searchInput.entity.title){
-           fileName.push('title') ;
+    	   fieldNames.push('title') ;
        }
        if(self.searchInput.entity.description){
-           fileName.push('description') ;
+    	   fieldNames.push('description') ;
        }
        if(self.searchInput.entity.createdUserId){
-           fileName.push('createdUserId') ;
+    	   fieldNames.push('createdUserId') ;
        }
        if(self.searchInput.entity.closedUserId){
-    	   fileName.push('closedUserId');
+    	   fieldNames.push('closedUserId');
        }
-       self.searchInput.fieldNames = fileName ;
+       if(self.searchInput.entity.appointmentDate){
+    	   fieldNames.push('appointmentDate');
+       }
+       self.searchInput.fieldNames = fieldNames ;
        return self.searchInput ;
    };
 
    function  handleSearchRequestEvent(){
         processSearchInput();
-       findByLike(self.searchInput);
+        findCustom(self.searchInput);
    };
    
    function paginate(){
@@ -111,6 +115,7 @@ angular.module("adaptmt")
    init();
 
 	$scope.create = function(){
+		console.log(" appointmentDate : " + $scope.aptAptmt.appointmentDate);
 		
 		aptAptmtsService.create($scope.aptAptmt)
 		.then(function(result){

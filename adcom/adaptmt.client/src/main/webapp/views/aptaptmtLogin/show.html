@@ -1,0 +1,56 @@
+<div class="container">
+
+    <div class="col-xs-offset-2 col-xs-8">
+
+        <div class="panel panel-default  ng-scope">
+            <div class="panel-heading no-collapse"><b>{{"Entity_show.title"|translate}}</b> </div>
+            <div class="panel-body">
+                    <form  name="showAptAptmtLoginForm" class="form-horizontal" novalidate >
+
+                        
+                        <div class="form-group">
+                            <label class="col-lg-4 ">{{"AptAptmt_title_description.title"|translate}} :</label>
+                            <div class="col-lg-8"  >
+                                <input type="text" ng-model="aptAptmtLoginShowCtrl.aptAptmtLogin.aptmtIdentify" name="aptmtIdentify" 
+                                 disabled class="form-control"  >
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-lg-4 ">{{"AptAptmt_login.text"|translate}} :</label>
+                            <div class="col-lg-8">
+                                <input type="text" ng-model="aptAptmtLoginShowCtrl.aptAptmtLogin.loginIdentify" name="loginIdentify" disabled class="form-control"  >
+
+                            </div>
+                        </div>
+
+                        
+
+
+                        <div class="form-group">
+
+                            <div class="col-lg-3">
+                                <a class="btn-default btn" ng-click="aptAptmtLoginShowCtrl.previous();" ><i class="glyphicon glyphicon-circle-arrow-left"></i> {{"Entity_previous.title"|translate}}</a>
+                            </div>
+
+                            <div class="col-lg-3" >
+                                <a class="btn-default btn" href="#/aptaptmtLogin"  ><i class="glyphicon glyphicon-remove" ></i> {{"Entity_cancel.title" | translate }}</a>
+                            </div>
+                            <div class="col-lg-3" >
+                                <a class="btn-default btn" href="#/aptaptmtLogin/update/{{aptAptmtLoginShowCtrl.aptAptmtLogin.id}}"  ><i class="glyphicon glyphicon-edit" ></i> Editer</a>
+                            </div>
+                            <div class="col-lg-3">
+                                <a class="btn-default btn" ng-click="aptAptmtLoginShowCtrl.next();" ><i class="fa glyphicon glyphicon-circle-arrow-right"></i> {{"Entity_next.title"|translate}}</a>
+                            </div>
+
+                        </div>
+                    </form>
+                
+            </div>
+
+        </div>
+
+    </div>
+    
+</div>

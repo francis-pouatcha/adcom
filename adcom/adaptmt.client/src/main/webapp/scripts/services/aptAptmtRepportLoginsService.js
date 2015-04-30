@@ -3,22 +3,35 @@
 angular.module('adaptmt')
 
 
-.factory('aptAptmtsService',['sessionManager','$translate','genericResource','$q', '$http',function(sessionManager,$translate,genericResource,$q,$http){
+.factory('aptAptmtRepportLoginsService',['sessionManager','$translate','genericResource','$q', '$http',function(sessionManager,$translate,genericResource,$q,$http){
     var service = {};
 
-    service.urlBase='/adaptmt.server/rest/aptaptmts';
+    service.urlBase='/adaptmt.server/rest/aptaptmtReportLogins';
+    service.loginsUrlBase='/adbase.server/rest/loginnamess';
     
     service.create = function(entity){
         var deferred = $q.defer();
         genericResource.create(service.urlBase, entity).success(function(data){
             deferred.resolve(data);
         }).error(function(error){
-            deferred.reject("Can not create, be sure that the aptAptmt name is !")
+            deferred.reject("Can not create, be sure that the AptAptmtReportLogin name is !")
         });
         return deferred.promise;
     };
+    
+    service.deleteById = function(entity){
+        var deferred = $q.defer();
+        genericResource.deleteById(service.urlBase, entity).success(function(data){
+            deferred.resolve(data);
+        }).error(function(error){
+            deferred.reject("Can not create, be sure that the AptAptmtReportLogin name is !")
+        });
+        return deferred.promise;
+    };
+    
+    
 
-    service.updateAptAptmt = function(entity){
+    service.updateAptAptmtReportLogin = function(entity){
         var deferred = $q.defer();
         genericResource.update(service.urlBase, entity).success(function(data){
             deferred.resolve(data);
@@ -28,7 +41,7 @@ angular.module('adaptmt')
         return deferred.promise;
     };
     
-    service.loadAptAptmt = function(identif){
+    service.loadAptAptmtReportLogin = function(identif){
        var deferred = $q.defer();
         genericResource.findById(service.urlBase, identif).success(function(data){
             deferred.resolve(data);
@@ -38,9 +51,9 @@ angular.module('adaptmt')
         return deferred.promise;
     };
     
-    service.loadAptAptmts = function(searchInput){
+    service.loadAptAptmtReportLogins = function(searchInput){
        var deferred = $q.defer();
-        genericResource.findCustom(service.urlBase, searchInput).success(function(data){
+        genericResource.findBy(service.urlBase, searchInput).success(function(data){
             deferred.resolve(data);
         }).error(function(){
             deferred.reject("Can not update")
@@ -48,22 +61,7 @@ angular.module('adaptmt')
         return deferred.promise;
     };
     
-     service.loadAptAptmtBnsPtnrs = function(identif){
-         var deferred = $q.defer();
-         
-         $http.get(service.urlBase + '/bnsptnrs/' + identif)
-         .success(function(data){
-             deferred.resolve(data);
-             console.log(" data to populate (success) : " + data);
-         }).error(function(data){
-              console.log(" data to populate (error) : " + data);
-             deferred.reject("Can not update BnsPtnrs of current AptAptmt !")
-         });
-         return deferred.promise;
-     }
-     
-    
-    service.findAptAptmts = function(searchInput){
+    service.findAptAptmtReportLogins = function(searchInput){
         var deferred = $q.defer();
         genericResource.findByLike(service.urlBase, searchInput)
             .success(function(data, status, headers, config){
@@ -74,7 +72,14 @@ angular.module('adaptmt')
         return deferred.promise;
     };
     
-    service.nextAptAptmt = function(id){
+    service.loadUsers = function(loginName){
+        return genericResource.findByLikePromissed(service.loginsUrlBase, 'loginName', loginName)
+        .then(function(entitySearchResult){
+            return entitySearchResult.resultList;
+        });
+    };
+    
+    service.nextAptAptmtReportLogin = function(id){
         var deferred = $q.defer();
         
         $http.get(service.urlBase+'/nextLogin/'+id)
@@ -86,7 +91,7 @@ angular.module('adaptmt')
         return deferred.promise;
     }
 
-    service.previousAptAptmt = function(id){
+    service.previousAptAptmtReportLogin = function(id){
         var deferred = $q.defer();
         
         $http.get(service.urlBase+'/previousLogin/'+id)
@@ -97,6 +102,7 @@ angular.module('adaptmt')
         });
         return deferred.promise;
     }
+    
 
 
     return service;
