@@ -11,7 +11,8 @@
         <div class="panel-body">
             <div class="">
                 <form role="form" class="">
-                    <div class="row">
+
+                    <div class="row" >
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label class=" control-label" for="dsNbr">{{cdrDrctSalesUtils.translations['CdrDrctSales_dsNbr_description.title']}}</label>
@@ -20,39 +21,31 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-lg-3">
                             <div class="form-group">
-                                <label class=" control-label" for="cashier">{{cdrDrctSalesUtils.translations['CdrDrctSales_cashier_description.title']}}</label>
+                                <label class=" control-label">{{cdrDrctSalesUtils.translations['CdrDrctSales_from_description.title']}}</label>
                                 <div class="">
-                                    <input type="text" id="cashier" ng-model="searchInput.entity.cashier" class="form-control">
+                                    <input type="datetime" date-time  view="date" min-view="date" views="['date']" dismiss="true" format="dd-MM-yyyy"
+                                           id="invceDtFrom" ng-model="searchInput.drctSalesDtFrom" class="form-control">
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-3">
                             <div class="form-group">
-                                <label class=" control-label" for="cdrNbr">{{cdrDrctSalesUtils.translations['CdrDrctSales_cdrNbr_description.title']}}</label>
+                                <label class=" control-label">{{cdrDrctSalesUtils.translations['CdrDrctSales_to_description.title']}}</label>
                                 <div class="">
-                                    <input type="text" id="cdrNbr " ng-model="searchInput.cdrNbr" class="form-control">
+                                    <input type="datetime" date-time  view="date" min-view="date" views="['date']" dismiss="true" format="dd-MM-yyyy"
+                                           id="invceDtTo" ng-model="searchInput.drctSalesDtTo" class="form-control">
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-lg-2">
                             <div class="form-group">
-                                <label class=" control-label" for="rcptNbr">{{cdrDrctSalesUtils.translations['CdrDrctSales_rcptNbr_description.title']}}</label>
-                                <div class="">
-                                    <input type="text" id="rcptNbr" ng-model="searchInput.rcptNbr" class="form-control">
-                                </div>
+                                <button  ng-click="processSearchInput()" class="btn btn-default " style="margin-top: 23px;" >
+                                    <i class="glyphicon glyphicon-search"></i>
+                                </button>
                             </div>
-                        </div>
-                        <div class="col-lg-3">
-                                <div class="form-group">
-                                    <button  ng-click="handleSearchRequestEvent()" class="btn btn-default " style="margin-top: 23px;" >
-                                        <i class="glyphicon glyphicon-search"></i>
-                                    </button>
-                                    <button  ng-click="handlePrintRequestEvent()" class="btn btn-default " style="margin-top: 23px;" >
-                                        <i class="glyphicon glyphicon-print"></i>
-                                    </button>
-                                </div>
                         </div>
                     </div>
                 </form>
@@ -88,7 +81,7 @@
                                 <th>{{cdrDrctSalesUtils.translations['CdrDrctSales_pymtDscntPct_description.title']}}</th>
                                 <th>{{cdrDrctSalesUtils.translations['CdrDrctSales_rcptNbr_description.title']}}</th>
                                 <th>{{cdrDrctSalesUtils.translations['CdrDrctSales_rcptPrntDt_description.title']}}</th>
-                                <th>{{cdrDrctSalesUtils.translations['CdrDrctSales_rdngDscntAm_description.title']}}</th>
+                                <th>{{cdrDrctSalesUtils.translations['CdrDrctSales_rdngDscntAmt_description.title']}}</th>
                                 <th>{{cdrDrctSalesUtils.translations['CdrDrctSales_rebate_description.title']}}</th>
                                 <th>{{cdrDrctSalesUtils.translations['CdrDrctSales_vatAmount_description.title']}}</th>
                                 <th></th>
@@ -99,7 +92,6 @@
                                 <td>{{cdrDrctSale.dsCur}}</td>
                                 <td>{{cdrDrctSale.dsNbr}}</td>
                                 <td>{{cdrDrctSale.grossSPPreTax}}</td>
-
                                 <td>{{cdrDrctSale.netAmtToPay}}</td>
                                 <td>{{cdrDrctSale.netSPPreTax}}</td>
                                 <td>{{cdrDrctSale.netSPTaxIncl}}</td>
