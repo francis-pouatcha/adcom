@@ -7,9 +7,11 @@ import javax.persistence.Entity;
 import javax.persistence.Transient;
 
 import org.adorsys.javaext.description.Description;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 @Entity
 @Description("SlsSalesOrder_description")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SlsSalesOrder extends SlsAbstractSalesOrder {
 	
 	private static final long serialVersionUID = -5379103455354065689L;

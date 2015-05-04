@@ -11,6 +11,7 @@ import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adbase.security.SecurityUtil;
 import org.adorsys.adcore.utils.SequenceGenerator;
+import org.adorsys.adcshdwr.exceptions.AdException;
 import org.adorsys.adcshdwr.jpa.CdrCshDrawer;
 import org.adorsys.adcshdwr.repo.CdrCshDrawerRepository;
 import org.apache.commons.lang3.StringUtils;
@@ -115,9 +116,9 @@ public class CdrCshDrawerEJB
 		return cshDrawer;
 	}
 	
-	public CdrCshDrawer closeCshDrawer(CdrCshDrawer cshDrawer) {
+	public CdrCshDrawer closeCshDrawer(CdrCshDrawer cshDrawer) throws AdException {
 		String loginName = securityUtil.getCurrentLoginName();
-		if(cshDrawer == null && !hasOpenedCshDrawer(loginName)) throw new IllegalStateException("No cash drawer to close.");
+		if(cshDrawer == null && !hasOpenedCshDrawer(loginName)) throw new AdException("No cash drawer to close.");
 		if(cshDrawer == null && hasOpenedCshDrawer(loginName)) {
 			cshDrawer = findOpenedCshDrawerByCashier(loginName).iterator().next();
 		}
@@ -157,12 +158,13 @@ public class CdrCshDrawerEJB
 	 * getActiveCshDrawer.
 	 *
 	 * @return
+	 * @throws AdException 
 	 */
-	public CdrCshDrawer getActiveCshDrawer() {
+	public CdrCshDrawer getActiveCshDrawer() throws AdException {
 		String loginName = securityUtil.getCurrentLoginName();
 		List<CdrCshDrawer> cshDrawers = findOpenedCshDrawerByCashier(loginName);
 		if(cshDrawers.isEmpty()) return null;
-		if(cshDrawers.size() > 1) throw new IllegalStateException("More than one active cash drawer for user "+loginName+"\r, the system"
+		if(cshDrawers.size() > 1) throw new AdException("More than one active cash drawer for user "+loginName+"\r, the system"
 				+ " can't find the default.");
 		return cshDrawers.iterator().next();
 	}

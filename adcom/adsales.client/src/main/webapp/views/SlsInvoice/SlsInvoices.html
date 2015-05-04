@@ -78,7 +78,7 @@
             <div class="panel-heading no-collapse"><b>{{slsInvoicesUtils.translations['Entity_Result.title']}}</b></div>
             <div class="panel-body">
                 <div class="col-lg-12">
-                    <div  class="row ">
+                    <!--<div  class="row ">
                       <div class="col-lg-6 col-lg-offset-3">
                         <div class="dropdown col-lg-3">
                           <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
@@ -100,13 +100,16 @@
                           </ul>
                         </div>
                        </div>
-                    </div>
+                    </div>-->
                     <div class="table-overflow-middle row">
                         <table class="table table-bordered  table-striped pointer-element" >
                             <thead>
+                             <div class="row">
+                              <div class="col-lg-3">
+                                 <input ng-model="q" id="search" class="form-control" placeholder="Recherche..."/>
+                              </div> 
+                             </div><br>
                             <tr>
-                                <th><input type="checkbox" ng-model="" ng-change="" />
-                                </th>
                                 <th class="text-center">
 {{slsInvoicesUtils.translations['SlsInvoice_invceNbr_description.title']}}</th>
                                 <th class="text-center">
@@ -125,8 +128,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="slsInvce in slsInvoices" >
-                                <td><input type="checkbox" /></td>
+                            <tr dir-paginate="slsInvce in slsInvoices | filter:q | itemsPerPage: itemPerPage()" >
                                 <td>{{slsInvce.invceNbr}}</td>
                                 <td>{{slsInvce.soNbr}}</td>
                                 <td>{{slsInvce.invceStatus}}</td>
