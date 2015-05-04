@@ -18,7 +18,6 @@ angular.module('AdSales')
     var self = this ;
     $scope.saleCtlr = self;
     self.slsSalesOrder = slsSalesOrderState.resultHandler.entity();
-    console.log('SO: '+self.slsSalesOrder);
     self.slsSalesOrderHolder = {
         slsSalesOrder:{},
         slsSOItemsholder:[],
@@ -239,7 +238,7 @@ angular.module('AdSales')
             });
         }
         function annulerCmd(){
-            clearSaleOrder();
+            cancelSaleOrder();
         }
         function newCmd(){
 
@@ -263,6 +262,11 @@ angular.module('AdSales')
                 }
             });
         }
+    
+        function cancelSaleOrder(){
+            $location.path('#/SlsSalesOrders');
+	    }
+     
         function clearSaleOrder(){
             self.slsSalesOrderHolder = {
                 slsSalesOrder:{},

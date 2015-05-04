@@ -36,8 +36,8 @@
                                 <div class="form-group">
                                     <label class=" control-label" tooltips="" tooltip-title="{{'SlsSalesOrder_soDtFrom_description.text' | translate}}" tooltip-side="top" for="soDtFrom">{{slsSalesOrderUtils.translations['SlsSalesOrder_soDtFrom_description.title']}}</label>
                                     <div class="">
-                                        <input type="datetime" date-time  view="date" min-view="date" views="['date']" dismiss="true" format="dd-MM-yyyy"
-                                               id="soDtFrom" ng-model="searchInput.soDtFrom" class="form-control">
+                                        <input type="datetime" date-time  view="date" min-view="date" views="['date']" dismiss="true" format="dd-MM-yyyy HH:mm"
+                                               id="soDtFrom" ng-model="searchInput.slsSODtFrom" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -45,8 +45,8 @@
                                 <div class="form-group">
                                     <label class=" control-label" tooltips="" tooltip-title="{{'SlsSalesOrder_soDtTo_description.text' | translate}}" tooltip-side="top" for="soDtTo">{{slsSalesOrderUtils.translations['SlsSalesOrder_soDtTo_description.title']}}</label>
                                     <div class="">
-                                        <input type="datetime" date-time  view="date" min-view="date" views="['date']" dismiss="true" format="dd-MM-yyyy"
-                                               id="soDtTo" ng-model="searchInput.soDtTo" class="form-control">
+                                        <input type="datetime" date-time  view="date" min-view="date" views="['date']" dismiss="true" format="dd-MM-yyyy HH:mm"
+                                               id="soDtTo" ng-model="searchInput.slsSODtTo" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -67,7 +67,7 @@
                             <div class="form-group">
                                <label class=" control-label" tooltips="" tooltip-title="{{'SlsSalesOrder_acsngUser_description.text' | translate}}" tooltip-side="top" for="acsngUser">{{slsSalesOrderUtils.translations['SlsSalesOrder_acsngUser_description.title']}}</label>
                                <div class="">
-                                <input type="text" id="acsngUser" ng-model="searchInput.acsngUser" autocomplete="off" typeahead="acsngUser as acsngUser.loginName for acsngUser in slsSalesOrderUtils.loadUsers($viewValue) | filter:$viewValue" typeahead-loading="loading" class="form-control">
+                                <input type="text" id="acsngUser" ng-model="searchParam.acsngUser" autocomplete="off" typeahead="acsngUser as acsngUser.loginName for acsngUser in slsSalesOrderUtils.loadUsers($viewValue) | filter:$viewValue" typeahead-loading="loading" class="form-control">
                                </div>
                             </div>
                             </div>
@@ -119,7 +119,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr dir-paginate="slsSO in slsSalesOrders | filter:q | itemsPerPage: itemPerPage()" >
+                            <tr dir-paginate="slsSO in slsSalesOrders() | filter:q | itemsPerPage: itemPerPage()" >
                                 <td>{{slsSO.soNbr}}</td>
                                 <td>{{slsSalesOrderUtils.slsSOStatusI18nMsgTitleValue(slsSO.soStatus)}}</td>
                                 <td>{{slsSalesOrderUtils.formatDate(slsSO.soDt, null)}}</td>

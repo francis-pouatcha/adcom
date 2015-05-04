@@ -193,6 +193,7 @@ function($scope,genericResource,slsSalesOrderUtils,slsSalesOrderState,$location,
     };
     $scope.items = [];
     $scope.slsSalesOrderItemHolder = {};
+    $scope.searchParam= {};
     $scope.slsSalesOrdersHolder=[];
     $scope.searchInput = slsSalesOrderState.resultHandler.searchInput();
     $scope.itemPerPage=slsSalesOrderState.resultHandler.itemPerPage;
@@ -214,11 +215,6 @@ function($scope,genericResource,slsSalesOrderUtils,slsSalesOrderState,$location,
     
     
     function orderSlsSalesOrders(){
-        console.log('Ventes: '+$scope.slsSalesOrders);
-        for(var i=0; i<$scope.slsSalesOrders.length; i++){
-            console.log('Date vente: '+$scope.slsSalesOrders[i].soDt);
-        }
-        
       // $scope.slsSalesOrders = $filter('orderBy')($scope.slsSalesOrders, '-soDt', false);
     }
     
@@ -258,6 +254,12 @@ function($scope,genericResource,slsSalesOrderUtils,slsSalesOrderState,$location,
         });
     }
     
+
+    function handleSearchRequestEvent(){
+    	processSearchInput();
+    	findCustom($scope.searchInput);
+    };
+    
     function findCustom(searchInput){
         genericResource.findCustom(slsSalesOrderUtils.urlBase, searchInput)
 		.success(function(entitySearchResult) {
@@ -267,8 +269,8 @@ function($scope,genericResource,slsSalesOrderUtils,slsSalesOrderState,$location,
         .error(function(error){
             $scope.error=error;
         });
-    }
-
+    };
+    
     function processSearchInput(){
         var fieldNames = [];
         if($scope.searchInput.entity.soNbr){
@@ -279,25 +281,25 @@ function($scope,genericResource,slsSalesOrderUtils,slsSalesOrderState,$location,
             $scope.searchInput.entity.soStatus= $scope.searchInput.entity.soStatus;
         	fieldNames.push('soStatus');
         }
-        if($scope.searchInput.soDtFrom) $scope.searchInput.soDtFrom= $scope.searchInput.soDtFrom;
-        if($scope.searchInput.soDtTo) $scope.searchInput.soDtTo= $scope.searchInput.soDtTo;
+        if($scope.searchInput.slsSODtFrom){
+            $scope.searchInput.slsSODtFrom = $scope.searchInput.slsSODtFrom;
+            console.log('Date from: '+$scope.searchInput.slsSODtFrom);
+        }
+        if($scope.searchInput.slsSODtTo){
+            $scope.searchInput.slsSODtTo = $scope.searchInput.slsSODtTo;
+            console.log('Date to: '+$scope.searchInput.slsSODtTo);
+        }
         
-        if($scope.searchInput.acsngUser){
-            $scope.searchInput.entity.acsngUser= $scope.searchInput.acsngUser.loginName;
-            fieldNames.push('loginName');
+        if($scope.searchParam.acsngUser){
+            $scope.searchInput.entity.acsngUser = $scope.searchParam.acsngUser.loginName;
+            fieldNames.push('acsngUser');
         }
         if($scope.searchInput.ptnr){
             $scope.searchInput.ptnrNbr= $scope.searchInput.ptnr.ptnrNbr;
         }
-        
         $scope.searchInput.fieldNames = fieldNames;
         return $scope.searchInput ;
-    };
-
-    function handleSearchRequestEvent(){
-    	processSearchInput();
-    	findCustom($scope.searchInput);
-    };
+      };
 
     function paginate(){
     	slsSalesOrderState.resultHandler.currentPage($scope.currentPage);
@@ -380,10 +382,17 @@ function($scope,genericResource,slsSalesOrderUtils,slsSalesOrderState,$location,
     $scope.maxSize =slsSalesOrderState.resultHandler.maxResult;
     $scope.slsSalesOrder.soDt = $filter('date')($scope.slsSalesOrder.soDt, 'dd-MM-yyyy HH:mm', '');
     $scope.error = "";
+    $scope.generateInvoice = generateInvoice;
     $scope.slsSalesOrderUtils=slsSalesOrderUtils;
     $scope.pageChangeHandler = function(num) {
       //nothing to do
     };
+    
+    
+    function generateInvoice(){
+        console.log("Generate invoice from sale");
+        // To do
+    }
     
     
     

@@ -101,11 +101,16 @@
                     </tabset>
                 </div>
                 <div class="row">
-                     <div class="text-center">
-                        <a class="btn-danger btn" href="#/SlsSalesOrders" >
-                            <i class="" ></i> {{slsSalesOrderUtils.translations['Entity_list.title']}}
-                         </a>
-                      </div>
+                    <div class="col-lg-offset-4 col-lg-4">
+                       <div class="text-center">
+                        <a class="btn btn-danger" href="#/SlsSalesOrders" >
+                         <i class="glyphicon glyphicon-list"><!-- --></i>{{slsSalesOrderUtils.translations['Entity_list.title']}}
+                        </a>
+                        <button class="btn btn-primary" ng-click="generateInvoice()">
+                            <i class="glyphicon glyphicon-plus"></i>Creer facture
+                        </button>
+                       </div>        
+                    </div>
                 </div>
              </div>
         </div>
