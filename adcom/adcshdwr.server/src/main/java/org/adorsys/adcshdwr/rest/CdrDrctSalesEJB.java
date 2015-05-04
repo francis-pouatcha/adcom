@@ -127,7 +127,9 @@ public class CdrDrctSalesEJB
 				qBuilder.append(andClause);
 			}
 			qBuilder.append("e.rcptPrntDt<:drctSalesDtTo");
-		}	
+		}
+		//securityUtil.getConnectedUser().
+		
 		return qBuilder;
 	}
 
