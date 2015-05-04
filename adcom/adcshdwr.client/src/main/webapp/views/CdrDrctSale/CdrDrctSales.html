@@ -97,7 +97,7 @@
                             <tr ng-repeat="cdrDrctSale in cdrDrctSales" ng-dblclick="editItem">
                                 <td>{{cdrDrctSale.cashier}}</td>
                                 <td>{{cdrDrctSale.dsCur}}</td>
-                                <td>{{cdrDrctSale.dsNb}}</td>
+                                <td>{{cdrDrctSale.dsNbr}}</td>
                                 <td>{{cdrDrctSale.grossSPPreTax}}</td>
 
                                 <td>{{cdrDrctSale.netAmtToPay}}</td>
@@ -108,7 +108,7 @@
                                 <td>{{cdrDrctSale.pymtDscntPct}}</td>
                                 <td>{{cdrDrctSale.rcptNbr}}</td>
                                 <td>{{cdrDrctSale.rcptPrntDt  | date:'yyyy-MM-dd HH:mm'}}</td>
-                                <td>{{cdrDrctSale.rdngDscntAm}}</td>
+                                <td>{{cdrDrctSale.rdngDscntAmt}}</td>
                                 <td>{{cdrDrctSale.rebate}}</td>
                                 <td>{{cdrDrctSale.vatAmount}}</td>
                                 <td><a href="#/CdrDrctSales/show/{{cdrDrctSale.id}}"><i class="glyphicon glyphicon-eye-open"></i></a>

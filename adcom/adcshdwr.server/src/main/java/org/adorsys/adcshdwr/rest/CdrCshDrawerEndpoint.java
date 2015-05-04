@@ -21,6 +21,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.adorsys.adcshdwr.exceptions.AdException;
 import org.adorsys.adcshdwr.jpa.CdrCshDrawer;
 import org.adorsys.adcshdwr.jpa.CdrCshDrawerSearchInput;
 import org.adorsys.adcshdwr.jpa.CdrCshDrawerSearchResult;
@@ -158,7 +159,7 @@ public class CdrCshDrawerEndpoint
    @Path("/closeCshDrawer")
    @Consumes({ "application/json", "application/xml" })
    @Produces({ "application/json", "application/xml" })
-   public CdrCshDrawer closeCshDrawer(CdrCshDrawer cshDrawer)
+   public CdrCshDrawer closeCshDrawer(CdrCshDrawer cshDrawer) throws AdException
    {
       cshDrawer = ejb.closeCshDrawer(cshDrawer);
       return cshDrawer;
@@ -167,7 +168,7 @@ public class CdrCshDrawerEndpoint
    @GET
    @Path("/getActive")
    @Produces({ "application/json", "application/xml" })
-   public CdrCshDrawer findActive() {
+   public CdrCshDrawer findActive() throws AdException {
 	   CdrCshDrawer cdrCshDrawer = ejb.getActiveCshDrawer();
 	   return cdrCshDrawer;
    }

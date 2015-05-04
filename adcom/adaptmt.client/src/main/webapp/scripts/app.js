@@ -6,7 +6,7 @@ angular
 				[ 'ngRoute', 'ngCookies', 'ui.bootstrap', 'SessionManager',
 						'AuthInterceptor', 'ngSanitize',
 						'pascalprecht.translate', 'NavBar', 'ngResource',
-						'datePicker', 'ADUtils', 'httpProgress', 'AdBnsptnr' ])
+						'datePicker', 'ADUtils', 'httpProgress', 'AdBnsptnr', 'AdBase' ])
 
 		.constant('APP_CONFIG', {
 			'appName' : 'Appointment',
@@ -124,6 +124,69 @@ angular
 												templateUrl : 'views/aptaptmt/cancel.html',
 												controller : 'aptAptmtCancelController',
 												controllerAs : 'aptAptmtCancelCtrl',
+												module : 'adaptmt'
+											})
+									.when(
+											'/aptaptmt/report/:id',
+											{
+												templateUrl : 'views/aptaptmt/report.html',
+												controller : 'aptAptmtReportController',
+												controllerAs : 'aptAptmtReportCtrl',
+												module : 'adaptmt'
+											})
+									.when(
+											'/aptaptmt/close/:id',
+											{
+												templateUrl : 'views/aptaptmt/close.html',
+												controller : 'aptAptmtCloseController',
+												controllerAs : 'aptAptmtCloseCtrl',
+												module : 'adaptmt'
+											})
+									.when(
+											'/aptaptmtLogin/create',
+											{
+												templateUrl : 'views/aptaptmtLogin/create.html',
+												controller : 'aptAptmtLoginCreateController',
+												controllerAs : 'aptAptmtLoginCreateCtrl'
+											})
+									.when(
+											'/aptaptmtLogin/show/:id',
+											{
+												templateUrl : 'views/aptaptmtLogin/show.html',
+												controller : 'aptAptmtLoginShowController',
+												controllerAs : 'aptAptmtLoginShowCtrl'
+											})
+
+									.when(
+											'/aptaptmtLogin/edit',
+											{
+												templateUrl : 'views/aptaptmtLogin/edit.html',
+												controller : 'aptAptmtRepportLoginController',
+												controllerAs : 'aptAptmtRepportLoginCtrl'
+											})
+
+									.when(
+											'/aptaptmtLogin',
+											{
+												templateUrl : 'views/aptaptmtLogin/aptaptmtLogins.html',
+												controller : 'aptAptmtLoginsController',
+												controllerAs : 'aptAptmtLoginsCtrl'
+											})
+
+									.when(
+											'/aptaptmtLogin/update/:id',
+											{
+												templateUrl : 'views/aptaptmtLogin/update.html',
+												controller : 'aptAptmtLoginUpdateController',
+												controllerAs : 'aptAptmtLoginUpdateCtlr',
+												module : 'adaptmt'
+											})
+									.when(
+											'/aptaptmtLogin/add/:id',
+											{
+												templateUrl : 'views/aptaptmtLogin/add.html',
+												controller : 'aptAptmtLoginAddController',
+												controllerAs : 'aptAptmtLoginAddCtrl',
 												module : 'adaptmt'
 											})
 

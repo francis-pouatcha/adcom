@@ -1,173 +1,203 @@
 <div class="container">
 
-    <div class="col-xs-offset-2 col-xs-8">
 
-<!-- sho business parterns of appointment -->
- <div class="panel panel-default">
- 
-            <div class="panel-heading">
-                    <span><b>{{"AptAptmt_bnsPtnr_title" | translate}}</b></span>
-			       	<button class="glyphicon glyphicon-collapse-down pull-right" data-toggle="collapse" data-parent="#showAptAptmtBnsPtnrPanel" data-target="#showAptAptmtBnsPtnrToggle"></button>
-            </div>
-        	<div class="panel-collapse collapse" id="showAptAptmtBnsPtnrToggle">
-	            <div class="panel-body">
-	          			<div class="col-lg-12">
-	          				
-	          				<div class="table-overflow-middle row">
-                    <b>{{"Entity_list_bnsptnr.title"|translate}}</b>
-                        <table class="table table-bordered  table-striped pointer-element" >
-                            <thead>
-                            <tr>
-                                <th class="text-center">{{"AptAptmt_BpBnsPtnr_ptnrNbr_description" | translate}}</th>
-                                <th class="text-center">{{"AptAptmt_BpBnsPtnr_fullName_description" | translate}}</th>
-                                <th class="text-center">{{"AptAptmt_BpBnsPtnr_ptnrType_description" | translate}}</th>
-                                <th class="text-center">{{"AptAptmt_BpBnsPtnr_country_description" | translate}}</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr ng-repeat="aptBnsptnr in aptAptmtShowCtlr.bnsptnrs" >
-                                <td>{{aptBnsptnr.ptnrNbr}}</td>
-                                <td>{{aptBnsptnr.fullName}}</td>
-                                <td>{{aptBnsptnr.ptnrType}}</td>
-                                <td>{{aptBnsptnr.countryName.name}}</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-	          				
-	          				
-	          			</div>
-	          	</div>
-	        </div>
-          
-   </div>
-          
-        <div class="panel panel-default  ng-scope">
-            <div class="panel-heading no-collapse"><b>{{"Entity_show.title"|translate}}</b> </div>
-            <div class="panel-body">
-                    <form  name="showAptAptmtForm" class="form-horizontal" novalidate >
+	<div class="col-xs-3">
 
-                        
-                        
-                        <div class="form-group">
-                            <label class="col-lg-4 ">{{"AptAptmt_title_description.title"|translate}} :</label>
-                            <div class="col-lg-8"  >
-                                <input type="text" ng-model="aptAptmtShowCtlr.aptAptmt.title" name="title" disabled class="form-control"  >
+		<div class="panel panel-default ">
+			<div class="panel-heading no-collapse">
+				<b>{{"Entity_show.title"|translate}}</b>
+			</div>
+			<div class="panel-body">
+				<accordion close-others="oneAtATime"> <accordion-group
+					is-open="status.open"> <accordion-heading>
+				Rapport <i class="pull-right glyphicon"
+					ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+				</accordion-heading> <a class="btn-default btn"
+					ng-disabled="aptAptmtShowCtlr.controlIfCancelable();"
+					href="#/aptaptmtRepport/add/{{aptAptmtShowCtlr.id}}">Ajouter
+					Rapport</a> <a class="btn-default btn"
+					ng-disabled="aptAptmtShowCtlr.controlIfCancelable();"
+					href="#/aptaptmtRepport/list/{{aptAptmtShowCtlr.id}}">Liste des
+					Rapports </a> </accordion-group> <accordion-group is-open="status.openTwo">
+				<accordion-heading> Participations<i
+					class="pull-right glyphicon"
+					ng-class="{'glyphicon-chevron-down': status.openTwo, 'glyphicon-chevron-right': !status.openTwo}"></i>
+				</accordion-heading> <a class="btn-default btn"
+					ng-disabled="aptAptmtShowCtlr.controlIfCancelable();"
+					href="#/aptaptmtLogin/add/{{aptAptmtShowCtlr.id}}">Ajouter
+					Participant</a> <a class="btn-default btn" ng-disabled="" ng-click=""
+					href="">Participants conviés </a> </accordion-group> <accordion-group
+					is-open="status.openThree"> <accordion-heading>
+				RDV<i class="pull-right glyphicon"
+					ng-class="{'glyphicon-chevron-down': status.openThree, 'glyphicon-chevron-right': !status.openThree}"></i>
+				</accordion-heading> <a class="btn-default btn"
+					ng-disabled="aptAptmtShowCtlr.controlIfCancelable();"
+					href="#/aptaptmt/cancel/{{aptAptmtShowCtlr.id}}">Annuler RDV</a> <a
+					class="btn-default btn"
+					ng-disabled="aptAptmtShowCtlr.controlIfCancelable();"
+					href="#/aptaptmt/close/{{aptAptmtShowCtlr.id}}">Cloturé RDV </a> </accordion-group> </accordion>
+			</div>
+		</div>
 
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-lg-4 ">{{"AptAptmt_appointmentDate_description.title"|translate}} :</label>
-                            <div class="col-lg-8">
-                                <input type="text" ng-model="aptAptmtShowCtlr.aptAptmt.appointmentDate | date:'fullDate'" name="appointmentDate" disabled class="form-control"  >
-
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-lg-4">{{ "AptAptmt_description.title"| translate}} :</label>
-                            <div class="col-lg-8">
-                                <input type="text" ng-model="aptAptmtShowCtlr.aptAptmt.description" name="description" disabled class="form-control"  >
-
-                            </div>
-                            
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-lg-4 ">{{ "AptAptmt_locality_description.title"| translate}} :</label>
-                            <div class="col-lg-8">
-                                <input type="text" ng-model="aptAptmtShowCtlr.aptAptmt.locality" name="locality" disabled class="form-control"  >
-
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-lg-4 ">{{ "AptAptmt_parentIdentify_description.title"| translate}} :</label>
-                            <div class="col-lg-8"  >
-                                <input type="text" ng-model="aptAptmtShowCtlr.aptAptmt.parentIdentify" disabled name="parentIdentify" class="form-control" >
-
-                            </div>
-                        </div>
-                        
+	</div>
 
 
-                        <div class="form-group">
 
-                            <div class="col-lg-3">
-                                <a class="btn-default btn" ng-click="aptAptmtShowCtlr.previous();" ><i class="glyphicon glyphicon-circle-arrow-left"></i> {{"Entity_previous.title"|translate}}</a>
-                            </div>
+	<div class="col-xs-9">
 
-                            <div class="col-lg-3" >
-                                <a class="btn-default btn" href="#/"  ><i class="glyphicon glyphicon-remove" ></i> {{"Entity_cancel.title" | translate }}</a>
-                            </div>
-                            <div class="col-lg-3" >
-                                <a class="btn-default btn" href="#/aptaptmt/update/{{aptAptmtShowCtlr.aptAptmt.id}}"  ><i class="glyphicon glyphicon-edit" ></i> Editer</a>
-                            </div>
-                            <div class="col-lg-3">
-                                <a class="btn-default btn" ng-click="aptAptmtShowCtlr.next();" ><i class="fa glyphicon glyphicon-circle-arrow-right"></i> {{"Entity_next.title"|translate}}</a>
-                            </div>
+		<!-- sho business parterns of appointment -->
+		<div class="panel panel-default">
 
-                        </div>
-                        
-                        <div class="form-group">
+			<div class="panel-heading">
+				<span><b>{{"AptAptmt_bnsPtnr_title" | translate}}</b></span>
+				<button class="glyphicon glyphicon-collapse-down pull-right"
+					data-toggle="collapse" data-parent="#showAptAptmtBnsPtnrPanel"
+					data-target="#showAptAptmtBnsPtnrToggle"></button>
+			</div>
+			<div class="panel-collapse collapse" id="showAptAptmtBnsPtnrToggle">
+				<div class="panel-body">
+					<div class="col-lg-12">
 
-                            <div class="col-lg-4">
-                                <a class="btn-default btn" href="#/aptaptmtRepport/add/{{aptAptmtShowCtlr.aptAptmt.id}}" ><i class="btn-success btn"></i> Ajouter Rapport</a>
-                            </div>
+						<div class="table-overflow-middle row">
+							<b>{{"Entity_list_bnsptnr.title"|translate}}</b>
+							<table
+								class="table table-bordered  table-striped pointer-element">
+								<thead>
+									<tr>
+										<th class="text-center">{{"AptAptmt_BpBnsPtnr_ptnrNbr_description"
+											| translate}}</th>
+										<th class="text-center">{{"AptAptmt_BpBnsPtnr_fullName_description"
+											| translate}}</th>
+										<th class="text-center">{{"AptAptmt_BpBnsPtnr_ptnrType_description"
+											| translate}}</th>
+										<th class="text-center">{{"AptAptmt_BpBnsPtnr_country_description"
+											| translate}}</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="aptBnsptnr in aptAptmtShowCtlr.bnsptnrs">
+										<td>{{aptBnsptnr.ptnrNbr}}</td>
+										<td>{{aptBnsptnr.fullName}}</td>
+										<td>{{aptBnsptnr.ptnrType}}</td>
+										<td>{{aptBnsptnr.countryName.name}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 
-                            <div class="col-lg-4" >
-                                <a class="btn-default btn" href="#/aptaptmtRepport/list/{{aptAptmtShowCtlr.aptAptmt.id}}"  ><i class="btn-success btn" ></i> Liste des Rapports</a>
-                            </div>
-                            <div class="col-lg-4" >
-                                <a class="btn-default btn" href="#/"  ><i class="btn-success btn" ></i>Imprimer Rapport</a>
-                            </div>
 
-                        </div>
-                        
-                         <div class="form-group">
+					</div>
+				</div>
+			</div>
 
-                            <div class="col-lg-4">
-                                <a class="btn-default btn" ng-click="" ><i class="btn-success btn"></i> Ajouter un participant</a>
-                            </div>
-                             <div class="col-lg-4">
-                                <a class="btn-default btn" href="#/" ><i class="btn-success btn"></i> Participants conviés </a>
-                            </div>
-                            
-                            <div class="col-lg-4" >
-                                <a class="btn-default btn" href="#/"  ><i class="btn-success btn" ></i>Business Partner conviés</a>
-                            </div>
+		</div>
 
-                        </div>
-                        
-                        <div class="form-group">
+		<div class="panel panel-default  ng-scope">
+			<div class="panel-heading no-collapse">
+				<b>{{"Entity_show.title"|translate}}</b>
+			</div>
+			<div class="panel-body">
+				<form name="showAptAptmtForm" class="form-horizontal" novalidate>
 
-                            <div class="col-lg-4">
-                                <a class="btn-default btn" href="#/aptaptmt/cancel/{{aptAptmtShowCtlr.aptAptmt.id}}" ><i class="btn-success btn"></i> Annuler RDV</a>
-                            </div>
-                             <div class="col-lg-4">
-                                <a class="btn-default btn" href="#/" ><i class="btn-success btn"></i> Reporter RDV</a>
-                            </div>
-                            
-                            <div class="col-lg-4" >
-                                <a class="btn-default btn" href="#/"  ><i class="btn-success btn" ></i>Cloturé RDV</a>
-                            </div>
 
-                        </div>
-                        
-                        <div class="form-group">
-                        	
-                        	 <div class="page-body">
-                    			<button class="btn btn-primary" ng-click="showBsnPtnrForm()"> Choose Partner </button>
-                			</div>
-                        
-                        </div>
-                    </form>
-                
-            </div>
 
-        </div>
+					<div class="form-group">
+						<label class="col-lg-4 ">{{"AptAptmt_title_description.title"|translate}}
+							:</label>
+						<div class="col-lg-8">
+							<input type="text" ng-model="aptAptmtShowCtlr.aptAptmt.title"
+								name="title" disabled class="form-control">
 
-    </div>
-    
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-lg-4 ">{{"AptAptmt_appointmentDate_description.title"|translate}}
+							:</label>
+						<div class="col-lg-8">
+							<input type="text" name="appointmentDate" disabled
+								ng-model="aptAptmtShowCtlr.aptAptmt.appointmentDate | date:'fullDate'"
+								class="form-control">
+
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-lg-4">{{ "AptAptmt_description.title"|
+							translate}} :</label>
+						<div class="col-lg-8">
+							<input type="text"
+								ng-model="aptAptmtShowCtlr.aptAptmt.description"
+								name="description" disabled class="form-control">
+
+						</div>
+
+					</div>
+
+					<div class="form-group">
+						<label class="col-lg-4 ">{{
+							"AptAptmt_locality_description.title"| translate}} :</label>
+						<div class="col-lg-8">
+							<input type="text" ng-model="aptAptmtShowCtlr.aptAptmt.locality"
+								name="locality" disabled class="form-control">
+
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-lg-4 ">{{
+							"AptAptmt_parentIdentify_description.title"| translate}} :</label>
+						<div class="col-lg-8">
+							<input type="text"
+								ng-model="aptAptmtShowCtlr.aptAptmt.parentIdentify" disabled
+								name="parentIdentify" class="form-control">
+
+						</div>
+					</div>
+
+
+
+					<div class="form-group">
+
+						<div class="col-lg-3">
+							<a class="btn-default btn"
+								ng-click="aptAptmtShowCtlr.previous();"><i
+								class="glyphicon glyphicon-circle-arrow-left"></i>
+								{{"Entity_previous.title"|translate}}</a>
+						</div>
+
+						<div class="col-lg-3">
+							<a class="btn-default btn" href="#/"><i
+								class="glyphicon glyphicon-remove"></i> {{"Entity_cancel.title"
+								| translate }}</a>
+						</div>
+						<div class="col-lg-3">
+							<a class="btn-default btn"
+								href="#/aptaptmt/update/{{aptAptmtShowCtlr.aptAptmt.id}}"><i
+								class="glyphicon glyphicon-edit"></i> Editer</a>
+						</div>
+						<div class="col-lg-3">
+							<a class="btn-default btn" ng-click="aptAptmtShowCtlr.next();"><i
+								class="fa glyphicon glyphicon-circle-arrow-right"></i>
+								{{"Entity_next.title"|translate}}</a>
+						</div>
+
+					</div>
+
+					<div class="form-group">
+
+						<div class="page-body">
+							<button class="btn btn-primary" ng-click="showBsnPtnrForm()">
+								Choose Partner</button>
+						</div>
+
+					</div>
+				</form>
+
+			</div>
+
+		</div>
+
+	</div>
+
 </div>

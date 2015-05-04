@@ -23,7 +23,6 @@ public class CdrDsArtItemEJB
 	{
 //		CdrDsArtItemEvt cdrDsArtItemEvt = new CdrDsArtItemEvt();
 		entity = repository.save(attach(entity));
-		repository.flush();
 //		entity.copyTo(cdrDsArtItemEvt);
 //		cdrDsArtItemEvt.setId(entity.getId());
 //		cdrDsArtItemEvt.setIdentif(entity.getIdentif());

@@ -13,6 +13,9 @@ angular.module("adaptmt")
         self.bnsPtnrIdentif = "";
         self.aptAptmtBnsptnrs = [];
         self.bnsptnrs = [];
+        self.controlIfCancelable = controlIfCancelable;
+    	self.controlIfCloturable = controlIfCloturable;
+    	self.id = $routeParams.id;
 	
         function show(){
 
@@ -70,38 +73,34 @@ angular.module("adaptmt")
             
         }
                                     
-        /*function bsnPtnrsProperty(){
-            console.log(" start of function bsnPtnrsProperty with values : " + self.aptAptmtBnsptnrs );
-            console.log("  self.bnsptnrs : " + self.bnsptnrs);
-            
-            var data = self.aptAptmtBnsptnrs;
-            for(var k in data){
-                
-                    var id = data[k].bsPtnrIdentify;
-                        console.log(" id to search : " + id);
-                        genericResource.findById(bpBnsPtnrUtils.urlBase, id)
-                        .success(function(data) {
-                            // store search data
-                            self.bnsptnrs.push(data);
-                            console.log(data);
-                        })
-                        .error(function(error){                                                                                         
-                            console.log(error);
-                        });
-                
-            }
-            
-            console.log(" start of function bsnPtnrsProperty with values : " + self.aptAptmtBnsptnrs );
-            console.log("  self.bnsptnrs at the end : " + self.bnsptnrs);
-
-        }*/
-                              
         function init(){
             show();
             fetchBnsPtnrs();
+            controlIfCancelable();
+    		controlIfCloturable();
         }
 
     init();
+    
+    function controlIfCancelable(){
+		if (self.aptAptmt.status != "FORTHCOMMING"){
+			self.error = "This appointment is cancel";
+			return true
+		}
+		else{
+			return false
+		}
+	}
+
+	function controlIfCloturable(){
+		if (self.aptAptmt.status != "ONGOING"){
+			self.error = "This appointment is cancel";
+			return true
+		}
+		else{
+			return false
+		}
+	}
     
     function previous(){
         self.error = "";
@@ -122,6 +121,16 @@ angular.module("adaptmt")
         })
 
     }
+    
+    function Close(){	
+
+		self.aptAptmt.status = "CLOSED";
+		self.aptmtAptmt.
+		aptAptmtsService.close($scope.aptAptmt).then(function(result){
+			$location.path('/aptaptmt/show/' + result.id);
+		})
+
+	};
     
     $scope.showBsnPtnrForm = function () {
         $scope.message = "Show Business Partner Form Button Clicked";

@@ -1,7 +1,6 @@
 package org.adorsys.adaptmt.jpa;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -14,12 +13,12 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  */
 @XmlRootElement
-public class AptAptmtSearchInput {
+public class AptAptmtRepportLoginSearchInput {
 
 	/**
 	 * The entity holding search inputs.
 	 */
-	private AptAptmt entity;
+	private AptAptmtRepportLogin entity;
 
 	/**
 	 * The start cursor
@@ -36,17 +35,11 @@ public class AptAptmtSearchInput {
 	 */
 	private List<String> fieldNames = new ArrayList<String>();
 
-	private Date appointmentDt;
-
-	private Date appointmentToDt;
-
-	private Date appointmentFromDt;
-
-	public AptAptmt getEntity() {
+	public AptAptmtRepportLogin getEntity() {
 		return entity;
 	}
 
-	public void setEntity(AptAptmt entity) {
+	public void setEntity(AptAptmtRepportLogin entity) {
 		this.entity = entity;
 	}
 
@@ -72,33 +65,5 @@ public class AptAptmtSearchInput {
 
 	public void setMax(int max) {
 		this.max = max;
-	}
-
-	public Date getAppointmentDt() {
-		return appointmentDt;
-	}
-
-	public void setAppointmentDt(Date appointmentDt) {
-		this.appointmentDt = appointmentDt;
-	}
-
-	public Date getAppointmentToDt() {
-		return appointmentToDt;
-	}
-
-	public void setAppointmentToDt(Date appointmentToDt) {
-		this.appointmentToDt = appointmentToDt;
-	}
-
-	public Date getAppointmentFromDt() {
-		return appointmentFromDt;
-	}
-
-	public void setAppointmentFromDt(Date appointmentFromDt) {
-		this.appointmentFromDt = appointmentFromDt;
-	}
-
-	public boolean noSpecialParams(){
-		return appointmentDt==null && appointmentToDt==null && appointmentFromDt==null;
 	}
 }

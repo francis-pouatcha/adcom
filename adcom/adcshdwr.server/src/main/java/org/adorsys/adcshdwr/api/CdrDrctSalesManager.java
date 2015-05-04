@@ -14,6 +14,7 @@ import org.adorsys.adbase.enums.BaseHistoryTypeEnum;
 import org.adorsys.adbase.enums.BaseProcStepEnum;
 import org.adorsys.adbase.security.SecurityUtil;
 import org.adorsys.adcore.auth.TermWsUserPrincipal;
+import org.adorsys.adcshdwr.exceptions.AdException;
 import org.adorsys.adcshdwr.jpa.CdrCshDrawer;
 import org.adorsys.adcshdwr.jpa.CdrDrctSales;
 import org.adorsys.adcshdwr.jpa.CdrDsArtItem;
@@ -47,16 +48,16 @@ public class CdrDrctSalesManager {
 	@Inject
 	private SecurityUtil securityUtil;
 
-	public CdrDsArtHolder updateOrder(CdrDsArtHolder cdrDsArtHolder){
+	public CdrDsArtHolder updateOrder(CdrDsArtHolder cdrDsArtHolder) throws AdException{
 		CdrDrctSales cdrDrctSales = cdrDsArtHolder.getCdrDrctSales();
 		CdrCshDrawer activeCshDrawer = cshDrawerEJB.getActiveCshDrawer();
-		if(activeCshDrawer == null) throw new IllegalStateException("No opened cash drawer found for this session, please open one.");
+		if(activeCshDrawer == null) throw new AdException("No opened cash drawer found for this session, please open one.");
 		cdrDrctSales.setCdrNbr(activeCshDrawer.getCdrNbr());
 		if(StringUtils.isBlank(cdrDrctSales.getRcptNbr())) {
 			cdrDrctSales.setRcptNbr("-");
 		}
 		if(StringUtils.isBlank(cdrDrctSales.getId())) {
-			cdrDrctSales = cdrDrctSalesEJB.create(cdrDrctSales);;
+			cdrDrctSales = cdrDrctSalesEJB.create(cdrDrctSales);
 		}
 //		boolean modified = false;
 		boolean itemModified = deleteHolders(cdrDsArtHolder);
@@ -71,11 +72,11 @@ public class CdrDrctSalesManager {
 				cdrDsArtItem.setDsNbr(cdrDrctSales.getDsNbr());
 			// check presence of the article pic
 			if(StringUtils.isBlank(cdrDsArtItem.getArtPic()))
-				throw new IllegalStateException("Missing article identification code.");
+				throw new AdException("Missing article identification code.");
 
 			if(StringUtils.isNotBlank(cdrDsArtItem.getId())){
 				CdrDsArtItem persDi = cdrDsArtItemEJB.findById(cdrDsArtItem.getId());
-				if(persDi==null) throw new IllegalStateException("Missing directsales item with id: " + cdrDsArtItem.getId());
+				if(persDi==null) throw new AdException("Missing directsales item with id: " + cdrDsArtItem.getId());
 				if(!cdrDsArtItem.contentEquals(persDi)){
 					cdrDsArtItem.copyTo(persDi);
 					cdrDsArtItem = cdrDsArtItemEJB.update(persDi);
@@ -169,7 +170,7 @@ public class CdrDrctSalesManager {
 		cdrDrctSales.evlte();
 	}
 
-	public CdrDsArtHolder closeSales(CdrDsArtHolder cdrDsArtHolder){
+	public CdrDsArtHolder closeSales(CdrDsArtHolder cdrDsArtHolder) throws AdException{
 		cdrDsArtHolder = updateOrder(cdrDsArtHolder);
 		CdrDrctSales cdrDrctSales = cdrDsArtHolder.getCdrDrctSales();
 		recomputeOrder(cdrDrctSales);

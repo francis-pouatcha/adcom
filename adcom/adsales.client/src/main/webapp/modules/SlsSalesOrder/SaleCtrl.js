@@ -147,6 +147,7 @@ angular.module('AdSales')
     function onSelect(item,model,label){
         self.slsSalesOrderItemHolder.slsSOItem.artPic = item.artPic;
         self.slsSalesOrderItemHolder.slsSOItem.artName = item.artName;
+        self.slsSalesOrderItemHolder.slsSOItem.section = item.section;
         self.slsSalesOrderItemHolder.slsSOItem.lotPic = item.lotPic;
         self.slsSalesOrderItemHolder.slsSOItem.sppuPreTax = item.sppuPreTax;
         self.slsSalesOrderItemHolder.slsSOItem.sppuCur = item.sppuCur;
