@@ -47,7 +47,6 @@ public abstract class SlsAbstractSOItem extends AbstractIdentifData {
 
 	@Transient
 	@Description("SlsSOItem_stkQty_description")
-	@NotNull
 	private BigDecimal stkQty;
 
 	

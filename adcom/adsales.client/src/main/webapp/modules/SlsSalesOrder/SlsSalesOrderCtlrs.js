@@ -2,13 +2,23 @@
     
 angular.module('AdSales')
 
-.factory('slsSalesOrderUtils',['sessionManager','$translate', 'commonTranslations','genericResource','$q',function(sessionManager,$translate,commonTranslations,genericResource,$q){
+.factory('slsSalesOrderUtils',['sessionManager','$translate', 'commonTranslations','$filter','genericResource','$q',function(sessionManager,$translate,commonTranslations,$filter,genericResource,$q){
     var service = {};
+    var dateFormat = $filter('date');
+    var defaultDatePattern = 'dd-MM-yyyy HH:mm';
 
     service.urlBase='/adsales.server/rest/slssalesorders';
     service.bnsptnrUrlBase='/adbnsptnr.server/rest/bpbnsptnrs';
     service.loginnamessUrlBase='/adbase.server/rest/loginnamess';
     service.slsSOItemsUrlBase='/adsales.server/rest/slssoitems';
+    
+    
+    service.formatDate= function(fieldName, inPattern){
+        var pattern = '';
+        if(!inPattern) pattern = defaultDatePattern;
+        else pattern = inPattern;
+        return dateFormat(fieldName, pattern, '');
+    };
     
     service.slsSOStatusI18nMsgTitleKey = function(enumKey){
     	return "SlsSalesStatus_"+enumKey+"_description.title";
@@ -153,18 +163,37 @@ angular.module('AdSales')
     service.resultHandler.slsSOItems=[];
     service.resultHandler.slsSOPtnrs=[];
     service.resultHandler.maxResult=10;
-    return service;
-
-}])
-.controller('slsSalesOrdersCtlr',['$scope','genericResource','slsSalesOrderUtils','slsSalesOrderState','$location' ,'$translate','$rootScope',
-function($scope,genericResource,slsSalesOrderUtils,slsSalesOrderState,$location,$translate,$rootScope){
-
-    $scope.slsSalesOrders= [];
-    $scope.slsSalesOrderHolder = {
+    service.slsSalesOrderHolder = {
         slsSalesOrder:{},
         slsSOItemsholder:[],
         slsSOPtnrsHolder:[]
     };
+    service.saveSlsSalesOrderHolder= function(slsSOHolder){
+        console.log('Service:'+slsSOHolder);
+        if(!service.slsSalesOrderHolder) return;
+        angular.copy(slsSOHolder, service.slsSalesOrderHolder);
+    }
+    return service;
+
+}])
+.controller('slsSalesOrdersCtlr',['$scope','genericResource','slsSalesOrderUtils','slsSalesOrderState','$location' ,'$translate','$filter','$rootScope',
+function($scope,genericResource,slsSalesOrderUtils,slsSalesOrderState,$location,$translate,$filter,$rootScope){
+
+    var slsSalesOrderHolder = {
+        slsSalesOrder:{},
+        slsSOItemsholder:[],
+        slsSOPtnrsHolder:[]
+    };
+    var orderBy = $filter('orderBy');
+    $scope.slsSalesOrders = [];
+    $scope.slsSOHolder = {
+        slsSalesOrder:{},
+        slsSOItemsholder:[],
+        slsSOPtnrsHolder:[]
+    };
+    $scope.items = [];
+    $scope.slsSalesOrderItemHolder = {};
+    $scope.searchParam= {};
     $scope.slsSalesOrdersHolder=[];
     $scope.searchInput = slsSalesOrderState.resultHandler.searchInput();
     $scope.itemPerPage=slsSalesOrderState.resultHandler.itemPerPage;
@@ -180,19 +209,17 @@ function($scope,genericResource,slsSalesOrderUtils,slsSalesOrderState,$location,
     $scope.slsSalesOrderUtils=slsSalesOrderUtils;
     $scope.show=show;
     $scope.edit=edit;
-    translateSOStatus();
+    $scope.prepareSalesOrder=prepareSalesOrder;
+    orderSlsSalesOrders();
     fullFillSales();
     
     
-    function translateSOStatus(){
-        for(var i=0; i<$scope.slsSalesOrders.length; i++){
-            $scope.slsSalesOrders[i].soStatus= slsSalesOrderUtils.slsSOStatusI18nMsgTitleValue($scope.slsSalesOrders[i].soStatus);
-        }
+    function orderSlsSalesOrders(){
+      // $scope.slsSalesOrders = $filter('orderBy')($scope.slsSalesOrders, '-soDt', false);
     }
     
     
     function fullFillSales(){
-        console.log('Partners: '+$scope.slsSalesOrders[1]);
         for(var i=0; i<$scope.slsSalesOrders.length; i++){
             $scope.slsSalesOrderHolder.slsSalesOrder=$scope.slsSalesOrders[i];
             $scope.slsSalesOrderHolder.slsSOItemsholder=$scope.slsSalesOrders[i].slsSOItems;
@@ -213,7 +240,7 @@ function($scope,genericResource,slsSalesOrderUtils,slsSalesOrderState,$location,
 
     function init(){
         if(slsSalesOrderState.resultHandler.hasEntities())return;
-        findByLike($scope.searchInput);
+        findByLike($scope.searchInput); 
     }
 
     function findByLike(searchInput){
@@ -227,11 +254,11 @@ function($scope,genericResource,slsSalesOrderUtils,slsSalesOrderState,$location,
         });
     }
     
-    
-    function findInMemory(resultItems){
-        slsSalesOrderState.resultHandler.searchResult(resultItems)
-        
-    }
+
+    function handleSearchRequestEvent(){
+    	processSearchInput();
+    	findCustom($scope.searchInput);
+    };
     
     function findCustom(searchInput){
         genericResource.findCustom(slsSalesOrderUtils.urlBase, searchInput)
@@ -242,8 +269,8 @@ function($scope,genericResource,slsSalesOrderUtils,slsSalesOrderState,$location,
         .error(function(error){
             $scope.error=error;
         });
-    }
-
+    };
+    
     function processSearchInput(){
         var fieldNames = [];
         if($scope.searchInput.entity.soNbr){
@@ -254,25 +281,25 @@ function($scope,genericResource,slsSalesOrderUtils,slsSalesOrderState,$location,
             $scope.searchInput.entity.soStatus= $scope.searchInput.entity.soStatus;
         	fieldNames.push('soStatus');
         }
-        if($scope.searchInput.soDtFrom) $scope.searchInput.soDtFrom= $scope.searchInput.soDtFrom;
-        if($scope.searchInput.soDtTo) $scope.searchInput.soDtTo= $scope.searchInput.soDtTo;
+        if($scope.searchInput.slsSODtFrom){
+            $scope.searchInput.slsSODtFrom = $scope.searchInput.slsSODtFrom;
+            console.log('Date from: '+$scope.searchInput.slsSODtFrom);
+        }
+        if($scope.searchInput.slsSODtTo){
+            $scope.searchInput.slsSODtTo = $scope.searchInput.slsSODtTo;
+            console.log('Date to: '+$scope.searchInput.slsSODtTo);
+        }
         
-        if($scope.searchInput.acsngUser){
-            $scope.searchInput.entity.acsngUser= $scope.searchInput.acsngUser.loginName;
-            fieldNames.push('loginName');
+        if($scope.searchParam.acsngUser){
+            $scope.searchInput.entity.acsngUser = $scope.searchParam.acsngUser.loginName;
+            fieldNames.push('acsngUser');
         }
         if($scope.searchInput.ptnr){
             $scope.searchInput.ptnrNbr= $scope.searchInput.ptnr.ptnrNbr;
         }
-        
         $scope.searchInput.fieldNames = fieldNames;
         return $scope.searchInput ;
-    };
-
-    function handleSearchRequestEvent(){
-    	processSearchInput();
-    	findCustom($scope.searchInput);
-    };
+      };
 
     function paginate(){
     	slsSalesOrderState.resultHandler.currentPage($scope.currentPage);
@@ -289,11 +316,26 @@ function($scope,genericResource,slsSalesOrderUtils,slsSalesOrderState,$location,
 		}
 	}
 
-	function edit(slsSO, index){
+	function edit(slsSO, items, index){
 		if(slsSalesOrderState.resultHandler.selectedObject(slsSO) != -1){
+            //$scope.slsSOHolder = prepareSalesOrder(slsSO, items);
+            //console.log('SalesOrderHolder: '+$scope.slsSOHolder.slsSOItemsholder);
+            //slsSalesOrderState.saveSlsSalesOrderHolder($scope.slsSOHolder);
 			$location.path('/SlsSalesOrders/edit/');
 		}
 	}
+     
+    function prepareSalesOrder(slsSO, items){
+        slsSalesOrderHolder.slsSalesOrder= slsSO;
+        var slsSalesOrderItemHolder = {slsSOItem:{}};
+        for(var i=0; i<items.length; i++){
+            slsSalesOrderItemHolder.slsSOItem = items[i];
+            slsSalesOrderHolder.slsSOItemsholder.push(slsSalesOrderItemHolder);                               
+        };
+        slsSalesOrderHolder.slsSOPtnrsHolder= slsSO.slsSOPtnrs;
+        console.log(slsSalesOrderHolder);
+        return slsSalesOrderHolder;
+    }
 }])
 .controller('slsSalesOrderCreateCtlr',['$scope','slsSalesOrderUtils','$translate','genericResource','$location','slsSalesOrderState',
         function($scope,slsSalesOrderUtils,$translate,genericResource,$location,slsSalesOrderState){
@@ -340,10 +382,17 @@ function($scope,genericResource,slsSalesOrderUtils,slsSalesOrderState,$location,
     $scope.maxSize =slsSalesOrderState.resultHandler.maxResult;
     $scope.slsSalesOrder.soDt = $filter('date')($scope.slsSalesOrder.soDt, 'dd-MM-yyyy HH:mm', '');
     $scope.error = "";
+    $scope.generateInvoice = generateInvoice;
     $scope.slsSalesOrderUtils=slsSalesOrderUtils;
     $scope.pageChangeHandler = function(num) {
       //nothing to do
     };
+    
+    
+    function generateInvoice(){
+        console.log("Generate invoice from sale");
+        // To do
+    }
     
     
     

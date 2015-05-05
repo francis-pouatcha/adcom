@@ -2,7 +2,7 @@
     <div style="margin-bottom: 20px" >
         <!--<a class="btn btn-default"  ng-click="saleCtlr.previous()" ng-disabled="saleCtlr.index==0" ><i class="glyphicon glyphicon-chevron-left"></i> Previous</a>
         <a class="btn btn-default" ng-click="saleCtlr.next()" ng-disabled="saleCtlr.index==saleCtlr.tabLength()-1 || saleCtlr.tabLength()==0" >Next <i class="glyphicon glyphicon-chevron-right"></i></a>-->
-        <a class="btn btn-danger" ng-click="saleCtlr.annulerCmd()" ><i class="glyphicon glyphicon-trash" ></i> Anuller la commande</a>
+        <a class="btn btn-danger" ng-click="saleCtlr.annulerCmd()" ><i class="glyphicon glyphicon-trash" ></i> Annuler la commande</a>
         <a class="btn btn-default" ng-click="saleCtlr.newCmd()"  ><i class="glyphicon glyphicon-plus" ></i> Nouvelle commande</a>
         <a class="btn btn-warning" ng-click="saleCtlr.addBptnr()"><i class="glyphicon glyphicon-user" ></i> {{saleCtlr.slsSalesOrderHolder.slsSOPtnrsHolder[0].slsSOPtnr.ptnrNbr}}</a>
         <label>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.soDt | date:'medium'}}</label>
