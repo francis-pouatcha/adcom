@@ -26,6 +26,8 @@ import org.adorsys.adcshdwr.jpa.CdrCshDrawer;
 import org.adorsys.adcshdwr.jpa.CdrCshDrawerSearchInput;
 import org.adorsys.adcshdwr.jpa.CdrCshDrawerSearchResult;
 import org.adorsys.adcshdwr.jpa.CdrCshDrawer_;
+import org.adorsys.adcshdwr.jpa.CdrDrctSales;
+import org.adorsys.adcshdwr.jpa.CdrDrctSalesSearchResult;
 
 /**
  * 
@@ -180,6 +182,19 @@ public class CdrCshDrawerEndpoint
 	   List<CdrCshDrawer> cdrCshDrawers = ejb.findPreviousCdrCshDrawer();
 	   return cdrCshDrawers;
    }
+   
+   @POST
+   @Path("/findCustom")
+   @Produces({ "application/json", "application/xml" })
+   @Consumes({ "application/json", "application/xml" })
+   public CdrCshDrawerSearchResult findCustom(CdrCshDrawerSearchInput searchInput)
+   {
+	   Long count = ejb.countCustom(searchInput);
+	   List<CdrCshDrawer> resultList = ejb.findCustom(searchInput);
+	   return new CdrCshDrawerSearchResult(count, detach(resultList),
+			   detach(searchInput));
+   }
+
 
    @SuppressWarnings("unchecked")
    private SingularAttribute<CdrCshDrawer, ?>[] readSeachAttributes(

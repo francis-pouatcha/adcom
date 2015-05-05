@@ -446,7 +446,7 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
             function handlePrintRequestEvent() {}
 
             function paginate() {
-                $scope.searchInput = cdrDrctSaleState.paginate();
+                $scope.searchInput = cdrDrctSalesState.paginate();
                 findCustom($scope.searchInput);
             };
 

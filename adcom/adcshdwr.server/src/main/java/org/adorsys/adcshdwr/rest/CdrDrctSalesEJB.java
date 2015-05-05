@@ -93,9 +93,9 @@ public class CdrDrctSalesEJB
 	
 
 	private StringBuilder preprocessQuery(String findOrCount, CdrDrctSalesSearchInput searchInput){
-		CdrDrctSales entity = searchInput.getEntity();
-
-		String whereClause = " WHERE ";
+		CdrDrctSales entity = searchInput.getEntity();	
+		
+		String whereClause = " WHERE  ";
 		String andClause = " AND ";
 
 		StringBuilder qBuilder = new StringBuilder(findOrCount);
@@ -128,7 +128,15 @@ public class CdrDrctSalesEJB
 			}
 			qBuilder.append("e.rcptPrntDt<:drctSalesDtTo");
 		}
-		//securityUtil.getConnectedUser().
+		if(!securityUtil.hasWorkspace("manager")){
+			if(!whereSet){
+				qBuilder.append(whereClause);
+				whereSet = true;
+			} else {
+				qBuilder.append(andClause);
+			}
+			qBuilder.append("e.cashier=:cashier");
+		}
 		
 		return qBuilder;
 	}
@@ -146,6 +154,9 @@ public class CdrDrctSalesEJB
 		}
 		if(searchInput.getDrctSalesDtTo()!=null){
 			query.setParameter("drctSalesDtTo", searchInput.getDrctSalesDtTo());
+		}
+		if(!securityUtil.hasWorkspace("manager")){
+			query.setParameter("cashier", securityUtil.getCurrentLoginName());
 		}
 	}
 	public CdrDrctSales findById(String id)
