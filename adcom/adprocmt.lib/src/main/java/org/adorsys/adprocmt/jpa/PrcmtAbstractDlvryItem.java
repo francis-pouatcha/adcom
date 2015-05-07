@@ -109,6 +109,13 @@ public abstract class PrcmtAbstractDlvryItem extends AbstractIdentifData {
 	@Column
 	@Description("PrcmtDlvryItem_freeQty_description")
 	private BigDecimal freeQty;
+	
+	/*
+	 * the quantity of stock at the moment of delivery
+	 */
+	@Column
+	@Description("PrcmtDlvryItem_stkQtyPreDlvry_description")
+	private BigDecimal stkQtyPreDlvry;
 
 	/*
 	 * The quantity on the invoice. This might be less the the quantity delivered or
@@ -280,6 +287,14 @@ public abstract class PrcmtAbstractDlvryItem extends AbstractIdentifData {
 
 	public BigDecimal getFreeQty() {
 		return this.freeQty;
+	}
+
+	public BigDecimal getStkQtyPreDlvry() {
+		return stkQtyPreDlvry;
+	}
+
+	public void setStkQtyPreDlvry(BigDecimal stkQtyPreDlvry) {
+		this.stkQtyPreDlvry = stkQtyPreDlvry;
 	}
 
 	public void setFreeQty(final BigDecimal freeQty) {

@@ -21,7 +21,7 @@ public class CdrDsPymntItemEJB
    public CdrDsPymntItem create(CdrDsPymntItem entity)
    {
 	   if (StringUtils.isBlank(entity.getPymntDocNbr())) {
-			entity.setDsNbr(SequenceGenerator
+			entity.setPymntDocNbr(SequenceGenerator
 					.getSequence(SequenceGenerator.PAYMENT_DS_SEQUENCE_PREFIXE));
 		}
       return repository.save(attach(entity));

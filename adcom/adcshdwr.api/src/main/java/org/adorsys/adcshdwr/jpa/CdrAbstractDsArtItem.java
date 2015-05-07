@@ -33,6 +33,10 @@ public class CdrAbstractDsArtItem extends AbstractIdentifData {
 	@Description("CdrDsArtItem_artPic_description")
 	@NotNull
 	private String artPic;
+	
+	@Column
+	@Description("CdrDsArtItem_artName_description")
+	private String artName;
 
 	@Column
 	@Description("CdrDsArtItem_section_description")
@@ -118,6 +122,14 @@ public class CdrAbstractDsArtItem extends AbstractIdentifData {
 
 	public String getArtPic() {
 		return this.artPic;
+	}
+
+	public String getArtName() {
+		return artName;
+	}
+
+	public void setArtName(String artName) {
+		this.artName = artName;
 	}
 
 	public void setArtPic(final String artPic) {
