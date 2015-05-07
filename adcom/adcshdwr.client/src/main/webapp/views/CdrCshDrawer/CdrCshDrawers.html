@@ -79,7 +79,7 @@
                                 <td>{{cdrCshDrawer.cdrNbr}}</td>
                                 <td>{{cdrCshDrawer.closedBy}}</td>
                                 <td>{{cdrCshDrawer.clsngDt | date:'yyyy-MM-dd HH:mm'}}</td>
-                                <td>{{cdrCshDrawer.initialAmt}}</td>
+                                <td>{{cdrCshDrawer.initialAmt  | currencyAccounting:"XAF":"4"}}</td>
                                 <td>{{cdrCshDrawer.opngDt | date:'yyyy-MM-dd HH:mm'}}</td>
                                 <td>{{cdrCshDrawer.ttlCashIn}}</td>
                                 <td>{{cdrCshDrawer.ttlCashOut}}</td>
@@ -87,7 +87,7 @@
                                 <td>{{cdrCshDrawer.ttlCheck}}</td>
                                 <td>{{cdrCshDrawer.ttlCredCard}}</td>
                                 <td>{{cdrCshDrawer.ttlVchrIn}}</td>
-                                <td>{{cdrCshDrawer.ttlVchrOut}}</td>
+                                <td>{{cdrCshDrawer.ttlVchrOut  | currencyAccounting:"XAF":"4"}}</td>
                                 <td><a href="#/CdrCshDrawers/show/{{cdrCshDrawer.id}}" ><i class="glyphicon glyphicon-eye-open"></i></a></td>
                             </tr>
                             </tbody>

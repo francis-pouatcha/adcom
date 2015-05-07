@@ -339,6 +339,7 @@ function($scope,genericResource,cdrUtils,cdrState,$location,$rootScope){
     $scope.cdrUtils=cdrUtils;
     $scope.show=show;
     $scope.edit=edit;
+    $scope.cur = "XAF";
 
 	var translateChangeSuccessHdl = $rootScope.$on('$translateChangeSuccess', function () {
 		cdrUtils.translate();

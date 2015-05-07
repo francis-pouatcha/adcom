@@ -73,7 +73,7 @@
                                 <td>{{cdrPymnt.pymntNbr}}</td>
                                 <td>{{cdrPymnt.pymntDt | date:'yyyy-MM-dd HH:mm'}}</td>
                                 <td>{{cdrPymnt.valueDt | date:'yyyy-MM-dd HH:mm'}}</td>
-                                <td>{{cdrPymnt.amt}}</td>
+                                <td>{{cdrPymnt.amt | currencyAccounting:cur:"2"}}</td>
                                 <td>{{cdrPymnt.cashier}}</td>
                                 <td>{{cdrPymnt.cdrNbr}}</td>
                                 <td>{{cdrPymnt.paidBy}}</td>
