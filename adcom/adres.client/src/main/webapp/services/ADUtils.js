@@ -29,8 +29,132 @@ angular.module('ADUtils',[])
         }
     };
 })
+.directive('roundConverter', function () {
+	
+	function isInvalid(number) {
+		return (/[^\d^,^.]/).test(number);
+	}
+	
+	function unformat(number, O) {
+		return accounting.unformat(accounting.toFixed(number, O));
+	}
+	
+	function makeParserOrFormatter(ngModel, f, decimals) {
+		return function (value) {
+			if (ngModel.$isEmpty(value)) {
+				return value;
+		}
+		
+		if (isInvalid(value)) {
+			ngModel.$setValidity('numberFormat', false);
+			return undefined;
+		}
+		
+		ngModel.$setValidity('numberFormat', true);
+			return f(value, decimals);
+		};
+	}
+	
+	function makeEventHandler(element, ngModel, f, decimals) {
+		return function () {
+			var value = element.val();
+			
+			if (ngModel.$invalid || ngModel.$isEmpty(value)) {
+				return;
+			}
+			element.val(f(value, decimals));
+		};
+	}
+	
+	return {
+		require: 'ngModel',
+		restrict: 'A',
+		link: function (scope, element, attrs, ngModel) {
+			var decimals = 0;
+			ngModel.$render = function () {
+				if (ngModel.$isEmpty(ngModel.$viewValue)) {
+					return;
+				}
+				
+				element.val(accounting.formatNumber(ngModel.$viewValue, decimals));
+			};
+			
+			ngModel.$formatters.unshift(makeParserOrFormatter(ngModel, accounting.formatNumber, decimals));
+			ngModel.$parsers.unshift(makeParserOrFormatter(ngModel, unformat, decimals));
+			element.on('change blur', makeEventHandler(element, ngModel, accounting.formatNumber, decimals));
+			element.on('focus', makeEventHandler(element, ngModel, unformat, decimals));
+			
+			element.on('$destroy', function () {
+				 element.off('change blur focus');
+			});
+		}
+	};
+})
+.filter('simplePrice', function() {
+    return function(number) {
+   	  number = accounting.toFixed(number, 0);
+      return accounting.formatNumber(number, { precision : 0, thousand: " ", decimal : "."});
+    };
+  })
+  .filter('moneyFilter', [ function() {
+    return function(inputValue) {
+
+        function addCommas(number, decimals, dec_point, thousands_sep)
+        {
+            number = (number + '')
+                .replace(/[^0-9+\-Ee.]/g, '');
+            var n = !isFinite(+number) ? 0 : +number,
+                prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+                sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+                dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+                s = '',
+                toFixedFix = function(n, prec) {
+                    var k = Math.pow(10, prec);
+                    return '' + (Math.round(n * k) / k)
+                        .toFixed(prec);
+                };
+            // Fix for IE parseFloat(0.55).toFixed(0) = 0;
+            s = (prec ? toFixedFix(n, prec) : '' + Math.round(n))
+                .split('.');
+            if (s[0].length > 3) {
+                s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+            }
+            if ((s[1] || '')
+                .length < prec) {
+                s[1] = s[1] || '';
+                s[1] += new Array(prec - s[1].length + 1)
+                    .join('0');
+            }
+            return s.join(dec);
+
+        }
+
+        var format = addCommas(inputValue,0,'.',' ')
+
+        return format;
+    };
+}])
 .filter('currencyAccounting', function() {
-    return function(number, currencyCode, floatV) {
+    return function(number, currencyCode) {
+    	
+    	accounting.settings = {
+    			currency: {
+    				symbol : "XAF",   // default currency symbol is '$'
+    				format: "%v %s", // controls output: %s = symbol, %v =
+										// value/number (can be object: see
+										// below)
+    				decimal : ".",  // decimal point separator
+    				thousand: " ",  // thousands separator
+    				precision : 0   // decimal places
+    			},
+    			number: {
+    				precision : 0,  // default precision on numbers is 0
+    				thousand: " ",
+    				decimal : "."
+    			}
+    		};
+    	
+   	  number = accounting.toFixed(number, 0);
       var currency = {
     	XAF: "XAF",
     	EUR: "€",
@@ -39,35 +163,55 @@ angular.module('ADUtils',[])
       },
       thousand, decimal, format, precision;
       
-      if(floatV === "undefined")
-    	  precision = 2;
-      else
-    	  precision = floatV;
+	 /*
+		 * if ($.inArray(currencyCode, ["XAF", "EUR", "NGN","USD"]) >= 0) {
+		 * thousand = " "; format = "%v %s"; } else { thousand = " "; format =
+		 * "%v %s"; };
+		 */
       
-      console.log("currency code is not defined : " + currencyCode);
-      
-	  if ($.inArray(currencyCode, ["XAF", "EUR", "NGN","USD"]) >= 0) {
-        thousand = " ";
-        decimal = ",";
-        format = "%v %s";
-      } else {
-        thousand = "";
-        decimal = ".";
-        format = "%v %s";
-      };
-      
-      console.log("currency code is not defined : " + currencyCode);
-      
-      if(currencyCode === "undefined"){
-          return accounting.formatMoney(number, "AAA", precision, thousand, decimal, format);
+      if(currency[currencyCode] === "undefined"){
+    	  return accounting.formatMoney(number, { symbol: "XAF",  format: "%v %s", thousand: " ", precision : 0 });
       }
       
-      return accounting.formatMoney(number, currency[currencyCode], precision, thousand, decimal, format);
+      return accounting.formatMoney(number, { symbol: currency[currencyCode],  format: "%v %s", thousand: " ", precision : 0 });
     };
+  })
+  .directive('inputCurrency', function ($filter, $locale) {
+    return {
+        terminal: true,
+        restrict: 'A',        
+        require: '?ngModel',
+        link: function (scope, element, attrs, ngModel) {
+        	element.bind('blur', function () {                                
+                element.val(accounting.toFixed(ngModel.$modelValue, 0));
+            });   
+        }
+       };
   })
 .directive('priceStyle', function () {
     return function (scope, element, attrs) {
     	element.css("color", "#357EBD");
+    	element.css("font-weight","bold");
+    	element.css("font-size", "20px");
+    };
+})
+.directive('priceRed', function () {
+    return function (scope, element, attrs) {
+    	element.css("color", "#D9534F");
+    	element.css("font-weight","bold");
+    	element.css("font-size", "20px");
+    };
+})
+.directive('priceBlack', function () {
+    return function (scope, element, attrs) {
+    	element.css("color", "#333");
+    	element.css("font-weight","bold");
+    	element.css("font-size", "20px");
+    };
+})
+.directive('priceGreen', function () {
+    return function (scope, element, attrs) {
+    	element.css("color", "#47A447");
     	element.css("font-weight","bold");
     	element.css("font-size", "20px");
     };
@@ -283,7 +427,7 @@ angular.module('ADUtils',[])
     service.deleteById = function(urlBase, entityId){
         return $http.delete(urlBase+'/'+entityId);
     };
-    //execute a simple get
+    // execute a simple get
     service.get = function(urlBase) {
         return $http.get(urlBase);
     }
@@ -329,7 +473,7 @@ angular.module('ADUtils',[])
         	
     		searchResultVar.count = searchResultIn.count;
     		
-//    		displayInfoVar = {};
+// displayInfoVar = {};
     		
     		angular.copy(searchResultIn.resultList, searchResultVar.resultList);
     		

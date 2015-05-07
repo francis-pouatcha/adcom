@@ -110,10 +110,10 @@
                             <td>{{'SlsSalesOrder_netSalesAmt_description.title' | translate}}</td>
                         </tr>
                         <tr>
-                            <td price-style="price-style"><b>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.netSPPreTax | currencyAccounting:"XAF":"2"}}</b></td>
-                            <td price-style="price-style"><b>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.pymtDscntAm | currencyAccounting:"XAF":"2"}}</b></td>
-                            <td price-style="price-style"><b>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.vatAmount | currencyAccounting:"XAF":"2"}}</b></td>
-                            <td price-style="price-style"><b>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.netSalesAmt | currencyAccounting:"XAF":"2"}}</b></td>
+                            <td price-style="price-style"><b>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.netSPPreTax | currencyAccounting:cur}}</b></td>
+                            <td price-style="price-style"><b>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.pymtDscntAm | currencyAccounting:cur}}</b></td>
+                            <td price-style="price-style"><b>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.vatAmount | currencyAccounting:cur}}</b></td>
+                            <td price-style="price-style"><b>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.netSalesAmt | currencyAccounting:cur}}</b></td>
                         </tr>
                     </table>
                 </div>
