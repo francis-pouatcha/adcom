@@ -31,6 +31,7 @@ public class SequenceGenerator {
 	public static final String DIRECT_SALES_SEQUENCE_PREFIXE = "DS";
 	public static final String BUSINESS_PARTNER_LEGAL_SEQUENCE_PREFIXE = "BPL";
 	public static final String APPOINTMENTLOGIN_NUMBER_SEQUENCE_PREFIXE = "ALOG";
+	public static final String PAYMENT_DS_SEQUENCE_PREFIXE = "PDS";
 
 	static long time = 0l;// the time corresponding to the 01.01.2014 00:00:00:00 ...
 	static {

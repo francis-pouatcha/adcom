@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
 import org.adorsys.adbase.enums.BaseHistoryTypeEnum;
@@ -20,6 +21,9 @@ import org.adorsys.adcshdwr.jpa.CdrDrctSales;
 import org.adorsys.adcshdwr.jpa.CdrDsArtItem;
 import org.adorsys.adcshdwr.jpa.CdrDsHstry;
 import org.adorsys.adcshdwr.jpa.CdrDsInfo;
+import org.adorsys.adcshdwr.jpa.CdrPymntMode;
+import org.adorsys.adcshdwr.payementevent.DirectSale;
+import org.adorsys.adcshdwr.payementevent.PaymentEvent;
 import org.adorsys.adcshdwr.rest.CdrCshDrawerEJB;
 import org.adorsys.adcshdwr.rest.CdrDrctSalesEJB;
 import org.adorsys.adcshdwr.rest.CdrDsArtItemEJB;
@@ -47,6 +51,10 @@ public class CdrDrctSalesManager {
 
 	@Inject
 	private SecurityUtil securityUtil;
+	
+	@Inject
+    @DirectSale
+    Event<PaymentEvent> directSaleEvent;
 
 	public CdrDsArtHolder updateOrder(CdrDsArtHolder cdrDsArtHolder) throws AdException{
 		CdrDrctSales cdrDrctSales = cdrDsArtHolder.getCdrDrctSales();
@@ -119,6 +127,8 @@ public class CdrDrctSalesManager {
 			recomputeOrder(cdrDrctSales);
 			//			cdrDrctSales.setPoStatus(BaseProcessStatusEnum.ONGOING.name());
 			cdrDrctSales = cdrDrctSalesEJB.update(cdrDrctSales);
+			PaymentEvent paymentEvent = new PaymentEvent(CdrPymntMode.CASH, cdrDrctSales.getNetAmtToPay(), cdrDsArtHolder.getPaidAmt(), new Date(), cdrDrctSales.getDsNbr());
+			directSaleEvent.fire(paymentEvent);
 			cdrDsArtHolder.setCdrDrctSales(cdrDrctSales);
 		}
 		/*		if(modified || itemModified){

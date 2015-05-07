@@ -73,7 +73,7 @@
                     <span class="col-lg-2"><input placeholder="{{cdrDrctSalesUtils.translations['CdrDrctSales_pymtDscntPct_description.title']}}" ng-change="pymtDscntPctChanged()" type="text" ng-model="cdrDsArtHolder.cdrDrctSales.pymtDscntPct" class="form-control" /></span>
                     <span class="col-lg-2"><input type="text" placeholder="{{cdrDrctSalesUtils.translations['CdrDrctSales_paidAmt_description.title']}}" class="form-control" ng-model="cdrDsArtHolder.paidAmt" ng-change="paidAmtChanged()" /></span>
                     <div class="col-lg-3 btn-group">
-                        <button ng-click="save()" class="btn btn-primary"><i class="glyphicon glyphicon-save" ></i> {{commonTranslations.translations['Entity_save.title']}}</button>
+                        <button ng-click="save()" ng-show="!showprint" class="btn btn-primary"><i class="glyphicon glyphicon-save" ></i> {{commonTranslations.translations['Entity_save.title']}}</button>
                         <!--<button ng-click=""  style="margin-top: 23px;" class="btn">{{commonTranslations.translations['Entity_save.title']}}</button>
                         <button ng-click="recompute()"  style="margin-top: 23px;" class="btn">{{cdrDrctSalesUtils.translations['Entity_recompute.title']}}</button>-->
                         <a class="btn-default btn" ng-click="cancel()"><i class="glyphicon glyphicon-plus" ></i> Nouvelle vente</a>
@@ -148,7 +148,7 @@
                         <td>{{cdrDsArtItem.item.vatAmount}}</td>
                         <td>{{cdrDsArtItem.item.netSPTaxIncl}}</td>
                         <td>{{cdrDsArtItem.item.sppuCur}}</td>
-                        <td><button class="" ng-click="editItem($index)"><i class="glyphicon glyphicon-edit"></i></button></td>
+                        <td><button class="" ng-show="!showprint" ng-click="editItem($index)"><i class="glyphicon glyphicon-edit"></i></button></td>
                     </tr>
                 </tbody>
             </table>

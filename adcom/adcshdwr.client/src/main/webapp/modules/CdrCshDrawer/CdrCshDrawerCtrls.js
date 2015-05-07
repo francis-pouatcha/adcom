@@ -67,6 +67,7 @@ angular.module('AdCshdwr')
 
         var service = {};
         var selectedIndexVar = -1;
+        var searchResult = {};
         service.selectedIndex = function (selectedIndexIn) {
             if (selectedIndexIn) selectedIndexVar = selectedIndexIn;
             return selectedIndexVar;
@@ -201,6 +202,13 @@ angular.module('AdCshdwr')
 
             return service.invInvtry();
         };
+
+        service.searchResult = function (srchRslt) {
+            if (srchRslt) {
+                searchResult = srchRslt;
+            }
+            return searchResult;
+        };
         return service;
 
 }])
@@ -233,7 +241,21 @@ function ($scope, genericResource, cdrCshDrawerUtils, cdrCshDrawerState, $locati
 
             init();
 
-            function handleSearchRequestEvent() {
+    function findCustom(searchInput) {
+        genericResource.findCustom(cdrCshDrawerUtils.urlBase, searchInput)
+            .success(function (entitySearchResult) {
+                // store search
+                cdrCshDrawerState.searchResult(entitySearchResult);
+                //$scope.searchInput = cdrDrctSalesState.searchResult().searchInput;
+                 $scope.cdrDrctSales = cdrCshDrawerState.searchResult().resultList;
+            })
+            .error(function (error) {
+                $scope.error = error;
+            });
+    }
+
+
+    function handleSearchRequestEvent() {
                 if ($scope.searchInput.acsngUser) {
                     $scope.searchInput.entity.acsngUser = $scope.searchInput.acsngUser.loginName;
                 } else {
@@ -247,12 +269,12 @@ function ($scope, genericResource, cdrCshDrawerUtils, cdrCshDrawerState, $locati
             }
 
             function paginate() {
-                $scope.searchInput = invInvtryState.paginate();
+                $scope.searchInput = cdrCshDrawerState.paginate();
                 findCustom($scope.searchInput);
             };
 
             function paginate() {
-                $scope.searchInput = invInvtryState.paginate();
+                $scope.searchInput = cdrCshDrawerState.paginate();
                 findCustom($scope.searchInput);
             }
 

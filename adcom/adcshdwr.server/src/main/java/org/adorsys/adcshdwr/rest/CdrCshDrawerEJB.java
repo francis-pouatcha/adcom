@@ -7,12 +7,17 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adbase.security.SecurityUtil;
 import org.adorsys.adcore.utils.SequenceGenerator;
 import org.adorsys.adcshdwr.exceptions.AdException;
 import org.adorsys.adcshdwr.jpa.CdrCshDrawer;
+import org.adorsys.adcshdwr.jpa.CdrCshDrawerSearchInput;
+import org.adorsys.adcshdwr.jpa.CdrCshDrawer;
+import org.adorsys.adcshdwr.jpa.CdrCshDrawerSearchInput;
 import org.adorsys.adcshdwr.repo.CdrCshDrawerRepository;
 import org.apache.commons.lang3.StringUtils;
 
@@ -173,6 +178,100 @@ public class CdrCshDrawerEJB
 		String loginName = securityUtil.getCurrentLoginName();
 		List<CdrCshDrawer> previous = repository.findPrevious(loginName);
 		return previous;
+	}
+
+	private static final String FIND_CUSTOM_QUERY = "SELECT e FROM CdrCshDrawer AS e";
+	private static final String COUNT_CUSTOM_QUERY = "SELECT count(e.id) FROM CdrCshDrawer AS e";
+	
+	public Long countCustom(CdrCshDrawerSearchInput searchInput) {
+		StringBuilder qBuilder = preprocessQuery(COUNT_CUSTOM_QUERY, searchInput);
+		TypedQuery<Long> query = em.createQuery(qBuilder.toString(), Long.class);
+		setParameters(searchInput, query);
+		return query.getSingleResult();
+	}
+
+	public List<CdrCshDrawer> findCustom(CdrCshDrawerSearchInput searchInput) {
+		StringBuilder qBuilder = preprocessQuery(FIND_CUSTOM_QUERY, searchInput);
+		TypedQuery<CdrCshDrawer> query = em.createQuery(qBuilder.toString(), CdrCshDrawer.class);
+		setParameters(searchInput, query);
+
+		int start = searchInput.getStart();
+		int max = searchInput.getMax();
+
+		if(start < 0)  start = 0;
+		query.setFirstResult(start);
+		if(max >= 1) 
+			query.setMaxResults(max);
+		
+		return query.getResultList();
+	}
+	
+	private StringBuilder preprocessQuery(String findOrCount, CdrCshDrawerSearchInput searchInput){
+		CdrCshDrawer entity = searchInput.getEntity();	
+		
+		String whereClause = " WHERE  ";
+		String andClause = " AND ";
+
+		StringBuilder qBuilder = new StringBuilder(findOrCount);
+		boolean whereSet = false;
+		
+		if(StringUtils.isNotBlank(entity.getCashier())){
+			if(!whereSet){
+				qBuilder.append(whereClause);
+				whereSet = true;
+			} else {
+				qBuilder.append(andClause);
+			}
+			qBuilder.append("e.cashier=:cashier");
+		}
+		if(searchInput.getFrom()!=null){
+			if(!whereSet){
+				qBuilder.append(whereClause);
+				whereSet = true;
+			} else {
+				qBuilder.append(andClause);
+			}
+			qBuilder.append("e.opngDt>:from");
+		}
+		if(searchInput.getTo()!=null){
+			if(!whereSet){
+				qBuilder.append(whereClause);
+				whereSet = true;
+			} else {
+				qBuilder.append(andClause);
+			}
+			qBuilder.append("e.opngDt<:to");
+		}
+		if(!securityUtil.hasWorkspace("manager")){
+			if(!whereSet){
+				qBuilder.append(whereClause);
+				whereSet = true;
+			} else {
+				qBuilder.append(andClause);
+			}
+			qBuilder.append("e.cashier=:cashier");
+		}
+		
+		return qBuilder;
+	}
+
+	
+	public void setParameters(CdrCshDrawerSearchInput searchInput, Query query)
+	{
+		CdrCshDrawer entity = searchInput.getEntity();
+
+		if(StringUtils.isNotBlank(entity.getCashier())){
+			query.setParameter("cashier", entity.getCashier());
+		}
+		if(searchInput.getFrom()!=null){
+			query.setParameter("from", searchInput.getFrom());
+		}
+		if(searchInput.getTo()!=null){
+			query.setParameter("to", searchInput.getTo());
+		}
+		if(!securityUtil.hasWorkspace("manager")){
+			query.setParameter("cashier", securityUtil.getCurrentLoginName());
+		}
 	}
 	
 }

@@ -98,7 +98,9 @@ angular.module('AdCshdwr')
                     'CdrDrctSales_vatAmount_description.text',
                     'CdrDrctSales_vatAmount_description.title',
                     'CdrDrctSales_paidAmt_description.title',
-                    'CdrDrctSales_changeAmt_description.title'
+                    'CdrDrctSales_changeAmt_description.title',
+                    'CdrDrctSales_from_description.title',
+                    'CdrDrctSales_to_description.title'
                  ])
                 .then(function (translations) {
                     service.translations = translations;
@@ -389,7 +391,7 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
             $scope.maxSize = cdrDrctSalesState.maxSize;
             $scope.cdrCshDrawers = cdrDrctSalesState.cdrCshDrawers;
             $scope.selectedIndex = cdrDrctSalesState.selectedIndex;
-            $scope.handleSearchRequestEvent = handleSearchRequestEvent;
+            $scope.processSearchInput = processSearchInput;
             $scope.handlePrintRequestEvent = handlePrintRequestEvent;
             $scope.paginate = paginate;
             $scope.error = "";
@@ -409,19 +411,23 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
 
             init();
 
-            function processSearchInput(searchInput) {
-                if (angular.isDefined(searchInput.entity.dsNbr ) && searchInput.entity.dsNbr ) {
-                    searchInput.fieldNames.push('dsNbr ');
+            function processSearchInput() {
+                var searchInput = {
+                    entity: {},
+                    fieldNames: [],
+                    start: 0,
+                    max: 25
+                };
+                if (angular.isDefined($scope.searchInput.entity.dsNbr ) && $scope.searchInput.entity.dsNbr ) {
+                    searchInput.entity.dsNbr = $scope.searchInput.entity.dsNbr;
                 }
-                if (angular.isDefined(searchInput.entity.cashier ) && searchInput.entity.cashier ) {
-                    searchInput.fieldNames.push('cashier');
-                }
-                if (angular.isDefined(searchInput.entity.cdrNbr ) && searchInput.entity.cdrNbr ) {
-                    searchInput.fieldNames.push('cdrNbr');
-                }
-                if (angular.isDefined(searchInput.entity.rcptNbr ) && searchInput.entity.rcptNbr ) {
-                    searchInput.fieldNames.push('rcptNbr');
-                }
+                if($scope.searchInput.drctSalesDtFrom)
+                    searchInput.drctSalesDtFrom = $scope.searchInput.drctSalesDtFrom;
+
+                if($scope.searchInput.drctSalesDtTo)
+                    searchInput.drctSalesDtTo = $scope.searchInput.drctSalesDtTo;
+
+                findCustom(searchInput);
             }
 
             function findCustom(searchInput) {
@@ -429,7 +435,7 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                     .success(function (entitySearchResult) {
                         // store search
                         cdrDrctSalesState.searchResult(entitySearchResult);
-                        $scope.searchInput = cdrDrctSalesState.searchResult().searchInput;
+                        //$scope.searchInput = cdrDrctSalesState.searchResult().searchInput;
                         $scope.cdrDrctSales = cdrDrctSalesState.searchResult().resultList;
                     })
                     .error(function (error) {
@@ -437,22 +443,13 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                     });
             }
 
-            function handleSearchRequestEvent() {
-                processSearchInput($scope.searchInput);
-                findCustom($scope.searchInput);
-            }
-
             function handlePrintRequestEvent() {}
 
             function paginate() {
-                $scope.searchInput = cdrDrctSaleState.paginate();
+                $scope.searchInput = cdrDrctSalesState.paginate();
                 findCustom($scope.searchInput);
             };
 
-            function paginate() {
-                $scope.searchInput = cdrDrctSaleState.paginate();
-                findCustom($scope.searchInput);
-            }
 
             function init() {
                 findCustom($scope.searchInput);
@@ -537,6 +534,7 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                     item: {}
                 };
                 $scope.showprint = false;
+                $scope.error="";
             }
 
             $scope.save = function () {
@@ -547,13 +545,14 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                 genericResource.create(cdrDrctSalesUtils.cdrdrctsalesmanager, $scope.cdrDsArtHolder).success(function (result) {
                     $scope.showprint = true;
                     $scope.cdrDsArtHolder = result;
+                    $scope.error = "";
                 }).error(function (error) {
                     $scope.error = error;
                 });
             };
 
             function verifCdrDsArtHolder(){
-                if($scope.cdrDsArtHolder.cdrDrctSales.netSalesAmt > $scope.cdrDsArtHolder.paidAmt){
+                if($scope.cdrDsArtHolder.cdrDrctSales.netSalesAmt > $scope.cdrDsArtHolder.paidAmt || !$scope.cdrDsArtHolder.paidAmt){
                     $scope.error = "Montant paye est inferieur au montant de vente";
                     return false;
                 }
@@ -653,6 +652,7 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                     }
                 }
                 computeCdrDsArtHolder();
+                $scope.error = "";
                 $scope.cdrDsArtItemHolder = clearObject($scope.cdrDsArtItemHolder);
             }
 
@@ -668,10 +668,12 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
 
                 angular.forEach(items, function (artItemHolder) {
                     var totalRebate = 0.0;
-                    if (artItemHolder.item.rebate) totalRebate = artItemHolder.item.rebate * artItemHolder.item.soldQty;
-                    var grossSPPTax = artItemHolder.item.sppuPreTax * artItemHolder.item.soldQty;
+                    if (artItemHolder.item.rebate) totalRebate = parseInt(artItemHolder.item.rebate) * parseInt(artItemHolder.item.soldQty);
+                    var grossSPPTax = artItemHolder.item.sppuPreTax * parseInt(artItemHolder.item.soldQty);
                     var netSPPreTax = grossSPPTax - totalRebate;
                     var vatAmount = netSPPreTax * (artItemHolder.item.vatPct / 100);
+                    if(!artItemHolder.item.restockgFees)
+                        artItemHolder.item.restockgFees = 0.0;
                     var netSPTaxIncl = netSPPreTax + vatAmount + artItemHolder.item.restockgFees;
                     artItemHolder.item.netSPPreTax = netSPPreTax;
                     artItemHolder.item.netSPTaxIncl = netSPTaxIncl;
