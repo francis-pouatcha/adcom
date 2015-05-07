@@ -773,6 +773,10 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                                      }
 
                                      function addItem(cdrDsArtItemHolder) {
+                                         if (cdrDsArtItemHolder.item.returnedQty > cdrDsArtItemHolder.item.soldQty){
+                                             $scope.error ="Quantite retourne superieur a la quantite vendue";
+                                             return;
+                                         }
 
                                          var copy = angular.copy(cdrDsArtItemHolder)
                                          var i = 0;

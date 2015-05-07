@@ -27,6 +27,7 @@ import org.adorsys.adcshdwr.jpa.CdrPymntMode;
 import org.adorsys.adcshdwr.payementevent.DirectSale;
 import org.adorsys.adcshdwr.payementevent.PaymentEvent;
 import org.adorsys.adcshdwr.rest.CdrCshDrawerEJB;
+import org.adorsys.adcshdwr.rest.CdrCstmrVchrEJB;
 import org.adorsys.adcshdwr.rest.CdrDrctSalesEJB;
 import org.adorsys.adcshdwr.rest.CdrDsArtItemEJB;
 import org.adorsys.adcshdwr.rest.CdrDsHstryEJB;
@@ -58,8 +59,12 @@ public class CdrDrctSalesManager {
 	@Inject
     @DirectSale
     Event<PaymentEvent> directSaleEvent;
+	
 	@Inject
 	CdrDsPymntItemEJB cdrDsPymntItemEJB;
+	
+	@Inject
+	CdrCstmrVchrEJB cdrCstmrVchrEJB;
 
 	public CdrDsArtHolder updateOrder(CdrDsArtHolder cdrDsArtHolder) throws AdException{
 		CdrDrctSales cdrDrctSales = cdrDsArtHolder.getCdrDrctSales();
@@ -247,13 +252,18 @@ public class CdrDrctSalesManager {
 	}
 
 
-	public CdrDsArtHolder returnProduct(CdrDsArtHolder cdrDsArtHolder) {
+	public CdrDsArtHolder returnProduct(CdrDsArtHolder cdrDsArtHolder) throws AdException {
 		List<CdrDsArtItemHolder> items = cdrDsArtHolder.getItems();
+		Boolean returned = false;
 		for(CdrDsArtItemHolder item:items){
 			if(item.getItem().getReturnedQty() != null && item.getItem().getReturnedQty().compareTo(BigDecimal.ZERO) == 1 ){
 				cdrDsArtItemEJB.update(item.getItem());
+				returned = true;
 			}
 		}	
+		if(returned==true){
+			cdrCstmrVchrEJB.generateVoucher(cdrDsArtHolder);
+		}
 		return cdrDsArtHolder;
 	}
 

@@ -69,6 +69,22 @@ public class CdrCstmrVchr extends AbstractIdentifData {
 	@Column
 	@Description("CdrCstmrVchr_restAmt_description")
 	private BigDecimal restAmt;
+	
+	public void AddAmtUsed(BigDecimal amtUsed){
+		if(this.amtUsed==null)this.amtUsed =BigDecimal.ZERO;
+		this.amtUsed = this.amtUsed.add(amtUsed);
+	}
+	
+	public void evlte(){
+		if(this.amt==null)this.amt=BigDecimal.ZERO;
+		if(this.amtUsed==null)this.amtUsed=BigDecimal.ZERO;
+		if(this.restAmt==null)this.restAmt=BigDecimal.ZERO;
+		this.restAmt = this.amt.add(this.amtUsed.negate());
+		if(this.restAmt.compareTo(BigDecimal.ZERO) == 0)
+			this.settled = true;
+		else
+			this.settled = false;
+	}
 
 	public String getVchrNbr() {
 		return this.vchrNbr;
