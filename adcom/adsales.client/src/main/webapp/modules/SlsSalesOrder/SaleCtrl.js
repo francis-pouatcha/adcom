@@ -14,9 +14,11 @@ angular.module('AdSales')
 
         return service;
   }])
-.controller('saleCtlr',['$scope','$modal','saleUtils','slsSalesOrderState','genericResource','$routeParams','$location','$q',function($scope,$modal,saleUtils,slsSalesOrderState,genericResource,$routeParams,$location,$q){
+.controller('saleCtlr',['$scope','$modal','saleUtils','slsSalesOrderState','genericResource','$routeParams','$location','$q', 'conversionPrice',function($scope,$modal,saleUtils,slsSalesOrderState,genericResource,$routeParams,$location,$q,conversionPrice){
     var self = this ;
     $scope.saleCtlr = self;
+    $scope.cur = "XAF";
+    $scope.conversionPrice = conversionPrice;
     self.slsSalesOrder = slsSalesOrderState.resultHandler.entity();
     self.slsSalesOrderHolder = {
         slsSalesOrder:{},
@@ -36,6 +38,7 @@ angular.module('AdSales')
         self.slsSalesOrderHolder.slsSalesOrder.rebate = 0;
         self.slsSalesOrderHolder.slsSalesOrder.netSalesAmt = 0;
         self.slsSalesOrderHolder.slsSalesOrder.soStatus = 'INITIATED';
+        self.slsSalesOrderHolder.slsSalesOrder.soCur = $scope.cur;
      }
         
     self.slsSalesOrderHolderTab = [];

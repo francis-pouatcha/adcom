@@ -93,10 +93,15 @@
                             <input  type="text" class="form-control" ng-model="saleCtlr.slsSalesOrderHolder.slsSalesOrder.pymtDscntPct" >
                         </div>
                     </div>
-                <div class="col-lg-2" style="margin-top: 24px">
+                <div class="col-lg-1" style="margin-top: 24px">
                     <input  type="submit" class="btn btn-primary" value="Apply" ng-click="saleCtlr.totalAmount()">
                 </div>
-                <div class="col-lg-4 col-lg-offset-3" style="margin-top: -24px" >
+                
+                 <div class="col-lg-2">
+                        <select class="form-control" ng-model="cur" ng-options="cur for cur in conversionPrice.currency"></select>
+                 </div>
+                 
+                <div class="col-lg-5 col-lg-offset-3" style="margin-top: -24px" >
                     <table class="table table-bordered  table-striped" style="text-align: center">
                         <tr>
                             <td>{{'SlsSalesOrder_netSPPreTax_description.text' | translate}}</td>
@@ -105,10 +110,10 @@
                             <td>{{'SlsSalesOrder_netSalesAmt_description.title' | translate}}</td>
                         </tr>
                         <tr>
-                            <td price-style="price-style"><b>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.netSPPreTax | currencyAccounting:"XAF":"4"}}</b></td>
-                            <td price-style="price-style"><b>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.pymtDscntAm | currencyAccounting:"XAF":"4"}}</b></td>
-                            <td price-style="price-style"><b>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.vatAmount | currencyAccounting:"XAF":"4"}}</b></td>
-                            <td price-style="price-style"><b>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.netSalesAmt | currencyAccounting:"XAF":"4"}}</b></td>
+                            <td price-style="price-style"><b>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.netSPPreTax | currencyAccounting:"XAF":"2"}}</b></td>
+                            <td price-style="price-style"><b>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.pymtDscntAm | currencyAccounting:"XAF":"2"}}</b></td>
+                            <td price-style="price-style"><b>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.vatAmount | currencyAccounting:"XAF":"2"}}</b></td>
+                            <td price-style="price-style"><b>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.netSalesAmt | currencyAccounting:"XAF":"2"}}</b></td>
                         </tr>
                     </table>
                 </div>
