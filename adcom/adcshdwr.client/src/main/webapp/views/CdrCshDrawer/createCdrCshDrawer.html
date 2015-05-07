@@ -6,12 +6,12 @@
             <form name="CdrCshDrawerForm" id="CdrCshDrawerForm" novalidate="" class="form-horizontal">
                 <div class="form-group">
                     <label for="initialAmt" class="col-sm-2 control-label">{{cdrCshDrawerUtils.translations['CdrCshDrawer_initialAmt_description.title']}} :</label>
+
                     <div class="col-sm-4"> 
-                        <input type="text" required class="form-control" id="initialAmt" placeholder="{{cdrCshDrawerUtils.translations['CdrCshDrawer_initialAmt_description.title']}}" autocomplete="off" name="initialAmt" ng-model="cdrCshDrawer.initialAmt" id="initialAmt" />
+                        <input type="text" required class="form-control"  placeholder="{{cdrCshDrawerUtils.translations['CdrCshDrawer_initialAmt_description.title']}}" autocomplete="off" name="initialAmt" ng-model="cdrCshDrawer.initialAmt" id="initialAmt" />
+                        <span price-style="price-style">{{cdrCshDrawer.initialAmt | simplePrice}}</span>
                     </div>
-                    <div class="col-sm-4">
-                    	<span price-style="price-style"> {{cdrCshDrawer.initialAmt | simplePrice}} </span>
-                    </div>
+                    
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-3">

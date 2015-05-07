@@ -45,7 +45,7 @@ angular.module('AdCshdwr')
                     'CdrCshDrawer_ttlVchrIn_description.title',
                     'CdrCshDrawer_ttlVchrOut_description.text',
                     'CdrCshDrawer_ttlVchrOut_description.title',
-                    'CdrCshDrawer_close_description.title',
+                    'CdrCshDrawer_close_description.title'
                  ])
                 .then(function (translations) {
                     service.translations = translations;

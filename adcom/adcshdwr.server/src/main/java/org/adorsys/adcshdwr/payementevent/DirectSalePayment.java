@@ -37,6 +37,7 @@ public class DirectSalePayment {
 		dsPymntItem.setRcvdAmt(pymtEvt.getRcvdAmt());
 		dsPymntItem.setDsNbr(pymtEvt.getSaleNbr());
 		dsPymntItem.setPymntMode(pymtEvt.getPymntMode());
+		dsPymntItem.setPymntDocType("Direct_Sale_Payment");
 		dsPymntItem.soustractDiffAmt();
 		dsPymntItem = cdrDsPymntItemEJB.create(dsPymntItem);		
 		//update cshDrawer

@@ -5,7 +5,11 @@ import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 
 import org.adorsys.adcshdwr.exceptions.AdException;
-
+/**
+ * 
+ * @author guymoyo
+ *
+ */
 @Stateless
 public class PaymentHandler {
 	

@@ -492,6 +492,7 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                 $scope.cdrDsArtItemHolder.item.lotPic = item.lotPic;
                 $scope.cdrDsArtItemHolder.item.section = item.section;
                 $scope.cdrDsArtItemHolder.artName = item.artName;
+                $scope.cdrDsArtItemHolder.item.artName = item.artName;
                 $scope.cdrDsArtItemHolder.item.sppuPreTax = item.sppuPreTax;
                 if (!item.sppuPreTax) item.sppuPreTax = 0.0;
                 if (!item.salesVatAmt) item.salesVatAmt = 0.0;
@@ -558,6 +559,10 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                 }
                 if($scope.cdrDsArtHolder.cdrDrctSales.pymtDscntAmt > $scope.cdrDsArtHolder.cdrDrctSales.netSPPreTax){
                     $scope.error = "Montant de l'escompte est superieur au montant de vente hors taxe";
+                    return false;
+                }
+                if(!($scope.cdrDsArtHolder.items.length > 0)){
+                    $scope.error = "Aucune ligne de vente existante";
                     return false;
                 }
             }
@@ -698,17 +703,97 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                 $scope.cdrDsArtHolder.cdrDrctSales.dsCur = currency;
             }
 }])
-    .controller('cdrDrctSalesEditCtlr', ['$scope', 'genericResource', '$location', 'cdrDrctSalesUtils', 'cdrDrctSalesState', 'commonTranslations',
-                                 function ($scope, genericResource, $location, cdrDrctSalesUtils, cdrDrctSalesState, commonTranslations) {
-            $scope.cdrCshDrawer = cdrDrctSalesState.cdrCshDrawer;
+    .controller('cdrDrctSalesShowCtlr', ['$scope', 'genericResource', '$location', 'cdrDrctSalesUtils', 'cdrDrctSalesState', 'commonTranslations','$routeParams',
+                                 function ($scope, genericResource, $location, cdrDrctSalesUtils, cdrDrctSalesState, commonTranslations, $routeParams) {
+            $scope.cdrDsArtHolder = {
+                         cdrDrctSales: {},
+                         items: []
+            };
             $scope.error = "";
             $scope.cdrDrctSalesUtils = cdrDrctSalesUtils;
             $scope.commonTranslations = commonTranslations;
 
             init();
 
-            function init() {}
-            $scope.close = function () {
-                //close the cashdrawer
-            };
+            function init() {
+                var id = $routeParams.id;
+                genericResource.findById(cdrDrctSalesUtils.cdrdrctsalesmanager, id)
+                    .success(function (entitySearchResult) {
+                        $scope.cdrDsArtHolder=entitySearchResult;
+                    })
+                    .error(function (error) {
+                        $scope.error = error;
+                    });
+            }
+
+                                     $scope.addItem = function () {
+                                         addItem($scope.cdrDsArtItemHolder);
+                                     };
+
+                                     $scope.cdrDsArtItems = function () {
+                                         return $scope.cdrDsArtItemHolder.items;
+                                     };
+
+                                     $scope.editItem = function (index) {
+                                         $scope.cdrDsArtItemHolder = angular.copy($scope.cdrDsArtHolder.items[index]);
+                                     };
+
+                                     function clear(){
+                                         $scope.cdrDsArtHolder = {
+                                             cdrDrctSales: {},
+                                             items: []
+                                         };
+                                         $scope.cdrDsArtItemHolder = {
+                                             item: {}
+                                         };
+                                         $scope.showprint = false;
+                                         $scope.error="";
+                                     }
+
+                                     $scope.save = function () {
+                                         genericResource.create(cdrDrctSalesUtils.cdrdrctsalesmanager+"/returnProduct", $scope.cdrDsArtHolder).success(function (result) {
+                                             $scope.showprint = true;
+                                             $scope.cdrDsArtHolder = result;
+                                             $scope.error = "";
+                                         }).error(function (error) {
+                                             $scope.error = error;
+                                         });
+                                     };
+
+
+                                     $scope.printRequest = function(){
+
+                                     };
+
+                                     function clearObject(anObject) {
+                                         anObject = {
+                                             item: {}
+                                         };
+                                         return anObject;
+                                     }
+
+                                     function addItem(cdrDsArtItemHolder) {
+
+                                         var copy = angular.copy(cdrDsArtItemHolder)
+                                         var i = 0;
+                                         var items = $scope.cdrDsArtHolder.items;
+                                         if (items.length == 0) {
+                                             $scope.cdrDsArtHolder.items.push(copy);
+                                         } else {
+                                             var found = false;
+                                             angular.forEach(items, function (artItemHolder) {
+                                                 if ((artItemHolder.item.artPic == copy.item.artPic) && (artItemHolder.artName == copy.artName)) {
+                                                     items[i] = copy;
+                                                     found = true;
+                                                 }
+                                                 i += 1;
+                                             });
+                                             if (!found) {
+                                                 $scope.cdrDsArtHolder.items.push(copy);
+                                             }
+                                         }
+                                         $scope.error = "";
+                                         $scope.cdrDsArtItemHolder = clearObject($scope.cdrDsArtItemHolder);
+                                     }
+
 }]);

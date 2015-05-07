@@ -4,6 +4,7 @@
 package org.adorsys.adcshdwr.api;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.adorsys.adcshdwr.jpa.CdrDrctSales;
@@ -18,7 +19,7 @@ public class CdrDsArtHolder {
 	private BigDecimal paidAmt;//amt given by the customer
 	private BigDecimal changeAmt;//change 
 	
-	private List<CdrDsArtItemHolder> items;
+	private List<CdrDsArtItemHolder> items = new ArrayList<CdrDsArtItemHolder>();
 
 	public CdrDrctSales getCdrDrctSales() {
 		return cdrDrctSales;

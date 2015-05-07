@@ -23,6 +23,7 @@
                 <tr>
                     <th class="clo-lg-2">CIP</th>
                     <th class="col-lg-3">Designation</th>
+                    <th>Qte stock</th>
                     <th>Qte</th>
                     <th>Qte Gratuite</th>
                     <th>prix Achat</th>
@@ -51,6 +52,11 @@
                                        typeahead-loading="loading" typeahead-on-select='prcmtDeliveryAddItemCtlr.onSelect($item, $model, $label)' name="artName" >
                                 </div>
                             </td>
+                        <td>
+                            <div >
+                                <input type="text" class="form-control" disabled name="stkQtyPreDlvry" id="stkQtyPreDlvry" ng-model="prcmtDeliveryAddItemCtlr.prcmtDeliveryItemHolder.dlvryItem.stkQtyPreDlvry" >
+                            </div>
+                        </td>
                             <td>
                                 <div >
                                     <input type="text" class="form-control" name="qtyDlvrd" id="qtyDlvrd" ng-model="prcmtDeliveryAddItemCtlr.prcmtDeliveryItemHolder.dlvryItem.qtyDlvrd" >
@@ -176,7 +182,7 @@
                     <tr ng-repeat="prcmtDeliveryItemHolder in prcmtDeliveryAddItemCtlr.prcmtDeliveryItemHolders"  >
                         <td>{{prcmtDeliveryItemHolder.dlvryItem.artPic}}</td>
                         <td>{{prcmtDeliveryItemHolder.dlvryItem.artName}}</td>
-                        <td></td>
+                        <td>{{prcmtDeliveryItemHolder.dlvryItem.stkQtyPreDlvry}}</td>
                         <td>{{prcmtDeliveryItemHolder.dlvryItem.qtyDlvrd}}</td>
                         <td>{{prcmtDeliveryItemHolder.dlvryItem.freeQty}}</td>
                         <td>{{prcmtDeliveryItemHolder.dlvryItem.pppuPreTax}}</td>
