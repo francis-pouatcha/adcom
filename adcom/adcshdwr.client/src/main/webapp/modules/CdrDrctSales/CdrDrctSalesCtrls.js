@@ -465,13 +465,15 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
 
             function openCreateForm() {}
 }])
-    .controller('cdrDrctSalesCreateCtlr', ['$scope', 'cdrDrctSalesUtils', '$translate', 'genericResource', '$location', 'cdrDrctSalesState', 'commonTranslations',
-        function ($scope, cdrDrctSalesUtils, $translate, genericResource, $location, cdrDrctSalesState, commonTranslations) {
+    .controller('cdrDrctSalesCreateCtlr', ['$scope', 'cdrDrctSalesUtils', 'conversionPrice', '$translate', 'genericResource', '$location', 'cdrDrctSalesState', 'commonTranslations',
+        function ($scope, cdrDrctSalesUtils, conversionPrice, $translate, genericResource, $location, cdrDrctSalesState, commonTranslations) {
             $scope.cdrCshDrawer = {
                 cdrDrctSales: {}
             };
             $scope.create = create;
             $scope.error = "";
+            $scope.cur = "XAF";
+            $scope.conversionPrice = conversionPrice;
             $scope.cdrDrctSalesUtils = cdrDrctSalesUtils;
             $scope.commonTranslations = commonTranslations;
             $scope.cdrDsArtItemHolder = {
@@ -667,6 +669,7 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                 var totalNetSPPreTax = 0.0;
                 var totalNetSPTaxIncl = 0.0;
                 var totalGrossSPPreTax = 0.0;
+                var currency = $scope.cur;
 
                 angular.forEach(items, function (artItemHolder) {
                     var totalRebate = 0.0;
@@ -680,6 +683,7 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                     artItemHolder.item.netSPPreTax = netSPPreTax;
                     artItemHolder.item.netSPTaxIncl = netSPTaxIncl;
                     artItemHolder.item.vatAmount = vatAmount;
+                    artItemHolder.item.sppuCur = $scope.cur;
                     //update the global sale object
                     totalGrossSPPreTax += grossSPPTax;
                     totalNetSPPreTax += netSPPreTax;
@@ -696,6 +700,7 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                 $scope.cdrDsArtHolder.cdrDrctSales.netSPPreTax = totalNetSPPreTax;
                 $scope.cdrDsArtHolder.cdrDrctSales.netSPTaxIncl = totalNetSPTaxIncl;
                 $scope.cdrDsArtHolder.cdrDrctSales.vatAmount = totalVatAmount;
+                $scope.cdrDsArtHolder.cdrDrctSales.dsCur = currency;
             }
 }])
     .controller('cdrDrctSalesShowCtlr', ['$scope', 'genericResource', '$location', 'cdrDrctSalesUtils', 'cdrDrctSalesState', 'commonTranslations','$routeParams',

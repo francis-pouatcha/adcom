@@ -69,7 +69,7 @@
 
                 <div class="row">
                     <span class="col-lg-3" style="font-size:17px;">{{cdrDrctSalesUtils.translations['CdrDrctSales_netSPPreTax_description.title']}}: </span>
-                    <span class="col-lg-2">{{cdrDsArtHolder.cdrDrctSales.netSPPreTax}}</span>
+                    <span class="col-lg-2" price-style="price-style">{{cdrDsArtHolder.cdrDrctSales.netSPPreTax | currencyAccounting:cur:"4"}}</span>
                     <span class="col-lg-2"><input placeholder="{{cdrDrctSalesUtils.translations['CdrDrctSales_pymtDscntPct_description.title']}}" ng-change="pymtDscntPctChanged()" type="text" ng-model="cdrDsArtHolder.cdrDrctSales.pymtDscntPct" class="form-control" /></span>
                     <span class="col-lg-2"><input type="text" placeholder="{{cdrDrctSalesUtils.translations['CdrDrctSales_paidAmt_description.title']}}" class="form-control" ng-model="cdrDsArtHolder.paidAmt" ng-change="paidAmtChanged()" /></span>
                     <div class="col-lg-3 btn-group">
@@ -82,12 +82,12 @@
 
                 <div class="row">
                     <span class="col-lg-3" style="font-size:17px;">{{cdrDrctSalesUtils.translations['CdrDrctSales_vatAmount_description.title']}}: </span>
-                    <span class="col-lg-2">{{cdrDsArtHolder.cdrDrctSales.vatAmount}}</span>
+                    <span class="col-lg-2" price-style="price-style">{{cdrDsArtHolder.cdrDrctSales.vatAmount | currencyAccounting:cur:"4"}}</span>
                 </div>
 
                 <div class="row">
                     <span class="col-lg-3" style="font-size:17px;">{{cdrDrctSalesUtils.translations['CdrDrctSales_netSPTaxIncl_description.title']}}: </span>
-                    <span class="col-lg-2">{{cdrDsArtHolder.cdrDrctSales.netSPTaxIncl}}</span>
+                    <span class="col-lg-2" price-style="price-style">{{cdrDsArtHolder.cdrDrctSales.netSPTaxIncl | currencyAccounting:cur:"4"}}</span>
                     <span class="col-lg-2"><input type="text" placeholder="{{cdrDrctSalesUtils.translations['CdrDrctSales_pymtDscntAmt_description.title']}}" ng-change="pymtDscntAmtChanged()" class="form-control" ng-model="cdrDsArtHolder.cdrDrctSales.pymtDscntAmt"/></span>
                     <span class="col-lg-2"><input type="text" placeholder="{{cdrDrctSalesUtils.translations['CdrDrctSales_changeAmt_description.title']}}" class="form-control" ng-model="cdrDsArtHolder.changeAmt" disabled /></span>
                     <span class="col-lg-2">
@@ -99,7 +99,12 @@
                 </div>
                 <div class="row">
                     <span class="col-lg-3" style="font-size:17px;">{{cdrDrctSalesUtils.translations['CdrDrctSales_netSalesAmt_description.title']}}: </span>
-                    <span class="col-lg-2">{{cdrDsArtHolder.cdrDrctSales.netSalesAmt}}</span>
+                    <span class="col-lg-2" price-style="price-style">{{cdrDsArtHolder.cdrDrctSales.netSalesAmt | currencyAccounting:cur:"4"}}</span>
+                    <span class="col-lg-2" style="font-size:17px;">Currency (XAF) : </span>
+
+                    <div class="col-lg-2">
+                        <select class="form-control" ng-model="cur" ng-options="cur for cur in conversionPrice.currency"></select>
+                    </div>
                 </div>
 
         </div>
@@ -124,6 +129,7 @@
                         <th class="col-lg-1">{{cdrDrctSalesUtils.translations['CdrDsArtItem_restockgFees_description.title']}}</th>
                         <th class="col-lg-1">{{cdrDrctSalesUtils.translations['CdrDsArtItem_vatAmount_description.title']}}</th>
                         <th class="col-lg-1">{{cdrDrctSalesUtils.translations['CdrDsArtItem_netSPTaxIncl_description.title']}}</th>
+                        <th class="col-lg-1">{{cdrDrctSalesUtils.translations['CdrDsArtItem_sppuCur_description.title']}}</th>
                         <th>
                         </th>
                     </tr>
@@ -141,6 +147,7 @@
                         <td>{{cdrDsArtItem.item.restockgFees}}</td>
                         <td>{{cdrDsArtItem.item.vatAmount}}</td>
                         <td>{{cdrDsArtItem.item.netSPTaxIncl}}</td>
+                        <td>{{cdrDsArtItem.item.sppuCur}}</td>
                         <td><button class="" ng-show="!showprint" ng-click="editItem($index)"><i class="glyphicon glyphicon-edit"></i></button></td>
                     </tr>
                 </tbody>

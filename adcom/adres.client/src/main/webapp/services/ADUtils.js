@@ -29,6 +29,49 @@ angular.module('ADUtils',[])
         }
     };
 })
+.filter('currencyAccounting', function() {
+    return function(number, currencyCode, floatV) {
+      var currency = {
+    	XAF: "XAF",
+    	EUR: "€",
+    	NGN: "₦",
+        USD: "$"
+      },
+      thousand, decimal, format, precision;
+      
+      if(floatV === "undefined")
+    	  precision = 2;
+      else
+    	  precision = floatV;
+      
+      console.log("currency code is not defined : " + currencyCode);
+      
+	  if ($.inArray(currencyCode, ["XAF", "EUR", "NGN","USD"]) >= 0) {
+        thousand = " ";
+        decimal = ",";
+        format = "%v %s";
+      } else {
+        thousand = "";
+        decimal = ".";
+        format = "%v %s";
+      };
+      
+      console.log("currency code is not defined : " + currencyCode);
+      
+      if(currencyCode === "undefined"){
+          return accounting.formatMoney(number, "AAA", precision, thousand, decimal, format);
+      }
+      
+      return accounting.formatMoney(number, currency[currencyCode], precision, thousand, decimal, format);
+    };
+  })
+.directive('priceStyle', function () {
+    return function (scope, element, attrs) {
+    	element.css("color", "#357EBD");
+    	element.css("font-weight","bold");
+    	element.css("font-size", "20px");
+    };
+})
 .factory('adUtils',['$location',function($location){
     var service = {};
     service.loadApp = function(contextRoot){
@@ -490,5 +533,18 @@ angular.module('ADUtils',[])
     };
     
     return service;
+}])
+.factory('conversionPrice',['$translate',function($translate){
+	var service={};
+	
+	service.currency=[
+	    	"XAF",
+	    	"EUR",
+	    	"NGN",
+	        "USD"
+	      ];
+    
+    return service;
+	
 }]);
 

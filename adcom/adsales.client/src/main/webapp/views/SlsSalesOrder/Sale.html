@@ -105,10 +105,10 @@
                             <td>{{'SlsSalesOrder_netSalesAmt_description.title' | translate}}</td>
                         </tr>
                         <tr>
-                            <td><b>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.netSPPreTax}} CFA</b></td>
-                            <td><b>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.pymtDscntAmt}} CFA</b></td>
-                            <td><b>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.vatAmount}} CFA</b></td>
-                            <td><b>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.netSalesAmt}} CFA</b></td>
+                            <td price-style="price-style"><b>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.netSPPreTax | currencyAccounting:"XAF":"4"}}</b></td>
+                            <td price-style="price-style"><b>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.pymtDscntAm | currencyAccounting:"XAF":"4"}}</b></td>
+                            <td price-style="price-style"><b>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.vatAmount | currencyAccounting:"XAF":"4"}}</b></td>
+                            <td price-style="price-style"><b>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.netSalesAmt | currencyAccounting:"XAF":"4"}}</b></td>
                         </tr>
                     </table>
                 </div>
