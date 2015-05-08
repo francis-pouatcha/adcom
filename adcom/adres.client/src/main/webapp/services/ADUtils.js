@@ -96,44 +96,6 @@ angular.module('ADUtils',[])
       return accounting.formatNumber(number, { precision : 0, thousand: " ", decimal : "."});
     };
   })
-  .filter('moneyFilter', [ function() {
-    return function(inputValue) {
-
-        function addCommas(number, decimals, dec_point, thousands_sep)
-        {
-            number = (number + '')
-                .replace(/[^0-9+\-Ee.]/g, '');
-            var n = !isFinite(+number) ? 0 : +number,
-                prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
-                sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
-                dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
-                s = '',
-                toFixedFix = function(n, prec) {
-                    var k = Math.pow(10, prec);
-                    return '' + (Math.round(n * k) / k)
-                        .toFixed(prec);
-                };
-            // Fix for IE parseFloat(0.55).toFixed(0) = 0;
-            s = (prec ? toFixedFix(n, prec) : '' + Math.round(n))
-                .split('.');
-            if (s[0].length > 3) {
-                s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
-            }
-            if ((s[1] || '')
-                .length < prec) {
-                s[1] = s[1] || '';
-                s[1] += new Array(prec - s[1].length + 1)
-                    .join('0');
-            }
-            return s.join(dec);
-
-        }
-
-        var format = addCommas(inputValue,0,'.',' ')
-
-        return format;
-    };
-}])
 .filter('currencyAccounting', function() {
     return function(number, currencyCode) {
     	
@@ -163,12 +125,6 @@ angular.module('ADUtils',[])
       },
       thousand, decimal, format, precision;
       
-	 /*
-		 * if ($.inArray(currencyCode, ["XAF", "EUR", "NGN","USD"]) >= 0) {
-		 * thousand = " "; format = "%v %s"; } else { thousand = " "; format =
-		 * "%v %s"; };
-		 */
-      
       if(currency[currencyCode] === "undefined"){
     	  return accounting.formatMoney(number, { symbol: "XAF",  format: "%v %s", thousand: " ", precision : 0 });
       }
@@ -176,44 +132,24 @@ angular.module('ADUtils',[])
       return accounting.formatMoney(number, { symbol: currency[currencyCode],  format: "%v %s", thousand: " ", precision : 0 });
     };
   })
-  .directive('inputCurrency', function ($filter, $locale) {
-    return {
-        terminal: true,
-        restrict: 'A',        
-        require: '?ngModel',
-        link: function (scope, element, attrs, ngModel) {
-        	element.bind('blur', function () {                                
-                element.val(accounting.toFixed(ngModel.$modelValue, 0));
-            });   
-        }
-       };
-  })
 .directive('priceStyle', function () {
     return function (scope, element, attrs) {
-    	element.css("color", "#357EBD");
-    	element.css("font-weight","bold");
-    	element.css("font-size", "20px");
+    	element.addClass('default-style');
     };
 })
 .directive('priceRed', function () {
     return function (scope, element, attrs) {
-    	element.css("color", "#D9534F");
-    	element.css("font-weight","bold");
-    	element.css("font-size", "20px");
+        element.addClass('red-style');
     };
 })
 .directive('priceBlack', function () {
     return function (scope, element, attrs) {
-    	element.css("color", "#333");
-    	element.css("font-weight","bold");
-    	element.css("font-size", "20px");
+        element.addClass('black-style');
     };
 })
 .directive('priceGreen', function () {
     return function (scope, element, attrs) {
-    	element.css("color", "#47A447");
-    	element.css("font-weight","bold");
-    	element.css("font-size", "20px");
+        element.addClass('green-style');
     };
 })
 .factory('adUtils',['$location',function($location){

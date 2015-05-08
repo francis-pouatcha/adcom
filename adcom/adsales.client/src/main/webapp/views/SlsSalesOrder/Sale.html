@@ -84,20 +84,20 @@
                   <div class="col-lg-2">
                         <div class="form-group">
                             <label for="">{{'SlsSalesOrder_pymtDscntAmt_description.title' | translate}}</label><br/>
-                            <input  type="text" class="form-control" ng-model="saleCtlr.slsSalesOrderHolder.slsSalesOrder.pymtDscntAmt" >
+                            <input  type="text" class="form-control" ng-model="saleCtlr.slsSalesOrderHolder.slsSalesOrder.pymtDscntAmt" price-green="price-green" round-converter="round-converter"/>
                         </div>
                   </div>
                     <div class="col-lg-2">
                         <div class="form-group">
                             <label for="">{{'SlsSalesOrder_pymtDscntPct_description.title' | translate}}</label><br/>
-                            <input  type="text" class="form-control" ng-model="saleCtlr.slsSalesOrderHolder.slsSalesOrder.pymtDscntPct" >
+                            <input  type="text" class="form-control" ng-model="saleCtlr.slsSalesOrderHolder.slsSalesOrder.pymtDscntPct" price-green="price-green" round-converter="round-converter" />
                         </div>
                     </div>
                 <div class="col-lg-1" style="margin-top: 24px">
                     <input  type="submit" class="btn btn-primary" value="Apply" ng-click="saleCtlr.totalAmount()">
                 </div>
                 
-                 <div class="col-lg-2">
+                 <div class="col-lg-2" style="margin-top: 24px">
                         <select class="form-control" ng-model="cur" ng-options="cur for cur in conversionPrice.currency"></select>
                  </div>
                  
