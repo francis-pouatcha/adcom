@@ -3,43 +3,35 @@
  */
 package org.adorsys.adcshdwr.api;
 
-import java.util.ArrayList;
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
-import org.adorsys.adcshdwr.exceptions.AdException;
-import org.adorsys.adcshdwr.jpa.CdrCshDrawer;
 import org.adorsys.adcshdwr.jpa.CdrPymnt;
 import org.adorsys.adcshdwr.jpa.CdrPymntItem;
-import org.adorsys.adcshdwr.jpa.CdrPymntObject;
-import org.adorsys.adcshdwr.rest.CdrCshDrawerEJB;
-import org.adorsys.adcshdwr.rest.CdrPymntEJB;
+import org.adorsys.adcshdwr.payementevent.IndirectSale;
+import org.adorsys.adcshdwr.payementevent.PaymentEvent;
 import org.adorsys.adcshdwr.rest.CdrPymntItemEJB;
-import org.adorsys.adcshdwr.rest.CdrPymntObjectEJB;
-import org.apache.commons.lang3.StringUtils;
 
 /**
- * @author boriswaguia
+ * @author guymoyo
  *
  */
 @Stateless
 public class CdrPymntManager {
 
 	@Inject
-	private CdrPymntEJB pymntEJB;
-
-	@Inject
 	private CdrPymntItemEJB pymntItemEJB;
-	
+		
 	@Inject
-	private CdrPymntObjectEJB pymntObjectEJB;
+    @IndirectSale
+    Event<PaymentEvent> indirectSaleEvent;
 	
-	@Inject
-	private CdrCshDrawerEJB cshDrawerEJB;
-	
-	public CdrPymntHolder saveAndClovePymt(CdrPymntHolder cdrPymntHolder) throws AdException {
+	/*public CdrPymntHolder saveAndClovePymt(CdrPymntHolder cdrPymntHolder) throws AdException {
 		CdrPymnt cdrPymnt = cdrPymntHolder.getCdrPymnt();
 		CdrCshDrawer activeCshDrawer = cshDrawerEJB.getActiveCshDrawer();
 		if(activeCshDrawer == null) throw new AdException("No opened cash drawer found for this session, please open one");
@@ -126,7 +118,7 @@ public class CdrPymntManager {
 			//			createModifiedOrderHistory(cdrPymnt);
 		}
 		return cdrPymntHolder;
-	}
+	}*/
 
 	/**
 	 * recomputeOrder.
@@ -155,27 +147,16 @@ public class CdrPymntManager {
 	 * @param cdrPymntHolder
 	 * @return
 	 */
-	private boolean deleteHolders(CdrPymntHolder cdrPymntHolder) {
-		List<CdrPymntItemHolder> pymtItems = cdrPymntHolder.getPymtItems();
+
+	public CdrPymntHolder savePymt(CdrPymntHolder cdrPymntHolder) {
+		if(cdrPymntHolder.getRcvdAmt() == null || BigDecimal.ZERO.compareTo(cdrPymntHolder.getRcvdAmt()) == 1)
+			cdrPymntHolder.setRcvdAmt(cdrPymntHolder.getAmt());
 		
-		List<CdrPymntItemHolder> piToRemove = new ArrayList<CdrPymntItemHolder>();
-		boolean modified = false;
-		for (CdrPymntItemHolder itemHolder : pymtItems) {
-			if(itemHolder.isDeleted()){
-				CdrPymntItem pymtItem = itemHolder.getPymtItem();
-				String id = StringUtils.isNotBlank(pymtItem.getId())?pymtItem.getId():"";
-				if(StringUtils.isNotBlank(id)){
-					pymntItemEJB.deleteById(id);
-					modified = true;
-					CdrPymntObject persPo = pymntObjectEJB.findByOrigItemNbr(pymtItem.getIdentif());
-					if(persPo != null) {
-						pymntObjectEJB.deleteById(persPo.getId());
-					}
-				}
-				piToRemove.add(itemHolder);
-			}
-		}
-		pymtItems.removeAll(piToRemove);
-		return modified;
+		PaymentEvent paymentEvent = new PaymentEvent(cdrPymntHolder.getPymntMode(), cdrPymntHolder.getAmt(), cdrPymntHolder.getRcvdAmt(),
+				new Date(), cdrPymntHolder.getInvceNbr(), cdrPymntHolder.getVchrNbr(), cdrPymntHolder.getPymntNbr());	
+		indirectSaleEvent.fire(paymentEvent);
+		
+		//search pymtHolder and return
+		return cdrPymntHolder;
 	}
 }

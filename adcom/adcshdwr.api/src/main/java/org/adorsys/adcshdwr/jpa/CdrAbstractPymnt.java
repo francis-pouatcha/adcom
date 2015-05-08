@@ -27,6 +27,11 @@ public abstract class CdrAbstractPymnt extends AbstractIdentifData {
 	@Description("CdrPymnt_pymntNbr_description")
 	@NotNull
 	private String pymntNbr;
+	
+	@Column
+	@Description("CdrPymnt_invNbr_description")
+	@NotNull
+	private String invNbr;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Description("CdrPymnt_pymntDt_description")
@@ -53,12 +58,12 @@ public abstract class CdrAbstractPymnt extends AbstractIdentifData {
 
 	@Column
 	@Description("CdrPymnt_paidBy_description")
-	@NotNull
+	//@NotNull
 	private String paidBy;
 
 	@Column
 	@Description("CdrPymnt_rcptNbr_description")
-	@NotNull
+	//@NotNull
 	private String rcptNbr;
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -103,6 +108,14 @@ public abstract class CdrAbstractPymnt extends AbstractIdentifData {
 
 	public void setCashier(final String cashier) {
 		this.cashier = cashier;
+	}
+
+	public String getInvNbr() {
+		return invNbr;
+	}
+
+	public void setInvNbr(String invNbr) {
+		this.invNbr = invNbr;
 	}
 
 	public String getCdrNbr() {
