@@ -388,7 +388,7 @@ angular.module('ADUtils',[])
 	    		fieldNames:[]
 	    	},
 	    	// not exposed to the server environment.
-	    	currentPage:currentPageVar,itemPerPage:itemPerPageVar,selectedIndex:-1,
+	    	currentPage:currentPageVar,itemPerPage:itemPerPageVar,selectedIndex:-1
         };
         var searchResultVar = angular.copy(nakedSearchResult);
         var keyField = keyFieldIn;

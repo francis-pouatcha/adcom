@@ -13,13 +13,13 @@
                         <div class="form-group col-lg-2">
                             <label class=" control-label" for="searchArtPic">{{cdrDrctSalesUtils.translations['CdrDsArtItem_artPic_description.title']}}</label>
                             <div ng-class="{ 'has-error' : cdrDsArtItemSearchForm.searchArtPic.$invalid }" >
-                                <input type="text" disabled class="form-control" select-on-click focus  name="searchArtPic" id="searchArtPic"  autocomplete="off" ng-model="cdrDsArtItemHolder.item.artPic" typeahead="displayable as displayable.displayableStr for displayable in cdrDrctSalesUtils.loadArticleLotByPic($viewValue)" typeahead-loading="loading" typeahead-on-select='onArticleSelectedInSearch($item, $model, $label)'>
+                                <input type="text" disabled required class="form-control" select-on-click focus  name="searchArtPic" id="searchArtPic"  autocomplete="off" ng-model="cdrDsArtItemHolder.item.artPic" typeahead="displayable as displayable.displayableStr for displayable in cdrDrctSalesUtils.loadArticleLotByPic($viewValue)" typeahead-loading="loading" typeahead-on-select='onArticleSelectedInSearch($item, $model, $label)'>
                             </div>
                          </div>
                         <div class="form-group col-lg-3">
                             <label class=" control-label" for="searchArtName">{{cdrDrctSalesUtils.translations['CdrDsArtItem_artName_description.title']}}</label>
                             <div ng-class="{ 'has-error' : cdrDsArtItemSearchForm.searchArtName.$invalid }" >
-                                <input type="text" disabled select-on-click focus class="form-control" id="searchArtName"   autocomplete="off" ng-model="cdrDsArtItemHolder.artName" typeahead="displayable as displayable.displayableStr for displayable in cdrDrctSalesUtils.loadArticlesByName($viewValue)" typeahead-loading="loading" typeahead-on-select='onArticleSelectedInSearch($item, $model, $label)' name="searchArtName">
+                                <input type="text" disabled required select-on-click focus class="form-control" id="searchArtName"   autocomplete="off" ng-model="cdrDsArtItemHolder.artName" typeahead="displayable as displayable.displayableStr for displayable in cdrDrctSalesUtils.loadArticlesByName($viewValue)" typeahead-loading="loading" typeahead-on-select='onArticleSelectedInSearch($item, $model, $label)' name="searchArtName">
                             </div>
                         </div>
                         <div class="form-group col-lg-2">
@@ -79,7 +79,7 @@
                         <button ng-click="save()" ng-show="!showprint" class="btn btn-primary"><i class="glyphicon glyphicon-save" ></i> {{commonTranslations.translations['Entity_save.title']}}</button>
                         <!--<button ng-click=""  style="margin-top: 23px;" class="btn">{{commonTranslations.translations['Entity_save.title']}}</button>
                         <button ng-click="recompute()"  style="margin-top: 23px;" class="btn">{{cdrDrctSalesUtils.translations['Entity_recompute.title']}}</button>-->
-                        <a class="btn-default btn" href="#/CdrCshDrawers"><i class="glyphicon" ></i> Annuler</a>
+                        <a class="btn-default btn" href="#/CdrCshDrawers"><i class="glyphicon" ></i> Liste des ventes</a>
                     </div>
                 </div>
 
@@ -94,7 +94,7 @@
                     <span class="col-lg-2"><input type="text" disabled placeholder="{{cdrDrctSalesUtils.translations['CdrDrctSales_pymtDscntAmt_description.title']}}"  class="form-control" ng-model="cdrDsArtHolder.cdrDrctSales.pymtDscntAmt"/></span>
                     <span class="col-lg-2"><input type="text" placeholder="{{cdrDrctSalesUtils.translations['CdrDrctSales_changeAmt_description.title']}}" class="form-control" ng-model="cdrDsArtHolder.changeAmt" disabled /></span>
                     <span class="col-lg-2">
-                        <a class="btn-default btn btn-large" ng-show="showprint" ng-click="printRequest()"><i class="glyphicon glyphicon-print" ></i> {{commonTranslations.translations['Entity_print.title']}}</a>
+                        <a class="btn-default btn btn-large" ng-show="showprint" ng-click="printRequest()"><i class="glyphicon glyphicon-print" ></i> Imprimer l'Avoir</a>
                     </span>
                     <span ng-show="showprint" class="label label-success">
                         retour succes!
