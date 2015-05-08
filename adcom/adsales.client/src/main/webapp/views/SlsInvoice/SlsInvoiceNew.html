@@ -135,7 +135,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="invoiceItemHolder in slsInvoiceNewCtlr.slsInvoiceHolder.slsInvceItemsholder" >
+                <tr ng-repeat="invoiceItemHolder in slsInvoiceNewCtlr.slsInvoiceHolder.slsInvceItemsholder">
                     <td>{{invoiceItemHolder.slsInvceItem.artPic}}</td>
                     <td>{{invoiceItemHolder.slsInvceItem.artName}}</td>
                     <td>{{invoiceItemHolder.slsInvceItem.qty}}</td>
@@ -148,7 +148,12 @@
                     <td><a ng-click="slsInvoiceNewCtlr.deleteItem($index)" class=""><i class="glyphicon glyphicon-trash"></i></a></td>
                 </tr>
                 </tbody>
-            </table>
+              </table>
+            <!--<div class="text-center">
+              <dir-pagination-controls max-size="maxSize" boundary-links="true" direction-links="true" on-page-change="pageChangeHandler(newPageNumber)" template-url="views/SlsInvoice/dirPagination.tpl.html">
+              </dir-pagination-controls>
+            </div>-->
         </div>
+        
     </div>
 </div>

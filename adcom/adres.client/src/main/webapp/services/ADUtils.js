@@ -29,8 +29,10 @@ angular.module('ADUtils',[])
         }
     };
 })
-.factory('adUtils',['$location',function($location){
+.factory('adUtils',['$location','$filter',function($location,$filter){
     var service = {};
+    var defaultDatePattern = 'dd-MM-yyyy HH:mm';
+    var dateFormat = $filter('date');
     service.loadApp = function(contextRoot){
 		var absUrl = $location.protocol() + '://' + $location.host();
 		var port = $location.port();
@@ -65,6 +67,12 @@ angular.module('ADUtils',[])
     };
     service.isNumber = function (n) {
     	return !isNaN(parseFloat(n)) && isFinite(n);
+    };
+    service.formatDate= function(fieldName, inPattern){
+        var pattern = '';
+        if(!inPattern) pattern = defaultDatePattern;
+        else pattern = inPattern;
+        return dateFormat(fieldName, pattern, '');
     };
     return service;
 }])

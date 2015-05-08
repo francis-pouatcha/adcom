@@ -15,14 +15,29 @@ angular.module('AdSales')
 
         return service;
   }])
-.controller('slsInvoiceNewCtlr',['$scope','$modal','SlsInvoiceUtils','genericResource','$routeParams','$location','$q',function($scope,$modal,SlsInvoiceUtils,genericResource,$routeParams,$location,$q){
+.controller('slsInvoiceNewCtlr',['$scope','$modal','SlsInvoiceUtils', 'slsSalesOrderState','genericResource','$routeParams','$location','$q',function($scope,$modal,SlsInvoiceUtils,slsSalesOrderState,genericResource,$routeParams,$location,$q){
     var self = this ;
     $scope.slsInvoiceNewCtlr = self;
+    self.showBtnClose = true;
     self.slsInvoiceHolder = {
         slsInvoice:{},
         slsInvceItemsholder:[],
         slsInvcePtnrsHolder:[]
     };
+    if(slsSalesOrderState.slsInvoiceHolder){
+        angular.copy(slsSalesOrderState.slsInvoiceHolder.slsInvoice, self.slsInvoiceHolder.slsInvoice);
+        angular.copy(slsSalesOrderState.slsInvoiceHolder.slsInvceItemsholder, self.slsInvoiceHolder.slsInvceItemsholder);
+        angular.copy(slsSalesOrderState.slsInvoiceHolder.slsInvcePtnrsHolder, self.slsInvoiceHolder.slsInvcePtnrsHolder);
+        clearSlsSOState();
+        if(self.slsInvoiceHolder.slsInvceItemsholder) self.showBtnClose = false;
+     }
+      function clearSlsSOState(){
+          slsSalesOrderState.slsInvoiceHolder.slsInvoice = {};
+          slsSalesOrderState.slsInvoiceHolder.slsInvceItemsholder = [];
+          slsSalesOrderState.slsInvoiceHolder.slsInvcePtnrsHolder = [];
+      }
+    
+    if(!self.slsInvoiceHolder){
         self.slsInvoiceHolder.slsInvoice.invceDt = new Date();
         self.slsInvoiceHolder.slsInvoice.grossSPPreTax = 0;
         self.slsInvoiceHolder.slsInvoice.netSPPreTax = 0;
@@ -31,6 +46,12 @@ angular.module('AdSales')
         self.slsInvoiceHolder.slsInvoice.rebate = 0;
         self.slsInvoiceHolder.slsInvoice.netSalesAmt = 0;
         self.slsInvoiceHolder.slsInvoice.invceStatus = 'INITIATED';
+    }
+    
+    /*$scope.itemPerPage=slsSalesOrderState.resultHandler.itemPerPage;
+    $scope.currentPage=slsSalesOrderState.resultHandler.currentPage();
+    $scope.maxSize =slsSalesOrderState.resultHandler.maxResult;*/
+    
     self.slsInvoiceHolderTab = [];
     self.slsInvoiceItemHolder = {};
     self.error = "";
@@ -54,13 +75,15 @@ angular.module('AdSales')
     self.tabLength = tabLength;
     self.ModalInstanceAddBptrnCtrl = ModalInstanceAddBptrnCtrl;
     self.totalAmount = totalAmount;
-     self.showBtnClose = true;
-     self.ptnrRole;
-     self.findArticleByName = findArticleByName;
-     self.findArticleByCip = findArticleByCip;
+    self.ptnrRole;
+    self.findArticleByName = findArticleByName;
+    self.findArticleByCip = findArticleByCip;
+    loadPtnrRole();
 
-        loadPtnrRole();
-
+     $scope.pageChangeHandler = function(num) {
+      //Simple Pagination
+    };
+    
     function loadBusinessPartner(val){
         return genericResource.findByLikePromissed(SlsInvoiceUtils.adbnsptnr, 'cpnyName', val)
             .then(function(entitySearchResult){
