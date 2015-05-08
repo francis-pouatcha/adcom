@@ -114,7 +114,7 @@ angular.module('AdProcmt').controller('prcmtDeliveryAddItemCtlr',['$scope','$rou
         self.prcmtDeliveryItemHolder.dlvryItem.sppuCur = item.sppuCur;
         self.prcmtDeliveryItemHolder.dlvryItem.vatPct = item.vatPct;
         self.prcmtDeliveryItemHolder.dlvryItem.vatSalesPct = item.vatSalesPct;
-        self.prcmtDeliveryItemHolder.dlvryItem.stkQty =item.stockQty;
+        self.prcmtDeliveryItemHolder.dlvryItem.stkQtyPreDlvry =item.stockQty;
         self.prcmtDeliveryItemHolder.dlvryItem.minSppuHT = item.minSppuHT;
         self.prcmtDeliveryItemHolder.dlvryItem.salesWrntyDys = item.salesWrntyDys;
         self.prcmtDeliveryItemHolder.dlvryItem.salesRtrnDays = item.salesRtrnDays;

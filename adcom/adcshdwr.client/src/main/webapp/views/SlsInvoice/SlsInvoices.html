@@ -92,12 +92,12 @@
                                 <td>{{slsInvoice.rebate}}</td>
                                 <td>{{slsInvoice.netSPPreTax}}</td>
                                 <td>{{slsInvoice.vatAmount}}</td>
-                                <td>{{slsInvoice.netSPTaxIncl}}</td>
+                                <td>{{slsInvoice.netSPTaxIncl | currencyAccounting:slsInvoice.invceCur:"4"}}</td>
                                 <td>{{slsInvoice.pymtDscntPct}}</td>
                                 <td>{{slsInvoice.pymtDscntAmt}}</td>
                                 <td>{{slsInvoice.netSalesAmt}}</td>
                                 <td>{{slsInvoice.rdngDscntAmt}}</td>
-                                <td>{{slsInvoice.netAmtToPay}}</td>
+                                <td>{{slsInvoice.netAmtToPay | currencyAccounting:slsInvoice.invceCur:"4"}}</td>
                                 <td>{{slsInvoice.ptnrNbr}}</td>
                                 <td><a href="#/SlsInvoices/show/{{slsInvoice.id}}" ><i class="glyphicon glyphicon-eye-open"></i></a></td>
                                 <td><a href="#/SlsInvoices/edit/{{slsInvoice.id}}" ><i class="glyphicon glyphicon-edit"></i></a></td>

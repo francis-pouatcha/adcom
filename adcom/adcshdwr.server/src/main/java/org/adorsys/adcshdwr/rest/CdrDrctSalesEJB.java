@@ -1,5 +1,6 @@
 package org.adorsys.adcshdwr.rest;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -38,6 +39,7 @@ public class CdrDrctSalesEJB
 		entity.setCashier(securityUtil.getCurrentLoginName());
 		entity.setId(entity.getDsNbr());
 		entity.setIdentif(entity.getDsNbr());
+		entity.setRcptPrntDt(new Date());
 		entity = repository.save(attach(entity));
 		repository.flush();
 		return entity;
@@ -91,15 +93,15 @@ public class CdrDrctSalesEJB
 	
 
 	private StringBuilder preprocessQuery(String findOrCount, CdrDrctSalesSearchInput searchInput){
-		CdrDrctSales entity = searchInput.getEntity();
-
-		String whereClause = " WHERE ";
+		CdrDrctSales entity = searchInput.getEntity();	
+		
+		String whereClause = " WHERE  ";
 		String andClause = " AND ";
 
 		StringBuilder qBuilder = new StringBuilder(findOrCount);
 		boolean whereSet = false;
 		
-		if(searchInput.getFieldNames().contains("dsNbr") && StringUtils.isNotBlank(entity.getDsNbr())){
+		if(StringUtils.isNotBlank(entity.getDsNbr())){
 			if(!whereSet){
 				qBuilder.append(whereClause);
 				whereSet = true;
@@ -108,7 +110,25 @@ public class CdrDrctSalesEJB
 			}
 			qBuilder.append("e.dsNbr=:dsNbr");
 		}
-		if(searchInput.getFieldNames().contains("cashier") && StringUtils.isNotBlank(entity.getCashier())){
+		if(searchInput.getDrctSalesDtFrom()!=null){
+			if(!whereSet){
+				qBuilder.append(whereClause);
+				whereSet = true;
+			} else {
+				qBuilder.append(andClause);
+			}
+			qBuilder.append("e.rcptPrntDt>:drctSalesDtFrom");
+		}
+		if(searchInput.getDrctSalesDtTo()!=null){
+			if(!whereSet){
+				qBuilder.append(whereClause);
+				whereSet = true;
+			} else {
+				qBuilder.append(andClause);
+			}
+			qBuilder.append("e.rcptPrntDt<:drctSalesDtTo");
+		}
+		if(!securityUtil.hasWorkspace("manager")){
 			if(!whereSet){
 				qBuilder.append(whereClause);
 				whereSet = true;
@@ -117,24 +137,7 @@ public class CdrDrctSalesEJB
 			}
 			qBuilder.append("e.cashier=:cashier");
 		}
-		if(searchInput.getFieldNames().contains("cdrNbr") && entity.getCdrNbr()!=null){
-			if(!whereSet){
-				qBuilder.append(whereClause);
-				whereSet = true;
-			} else {
-				qBuilder.append(andClause);
-			}
-			qBuilder.append("e.cdrNbr=:cdrNbr");
-		}
-		if(searchInput.getFieldNames().contains("rcptNbr") && StringUtils.isNotBlank(entity.getRcptNbr())){
-			if(!whereSet){
-				qBuilder.append(whereClause);
-				whereSet = true;
-			} else {
-				qBuilder.append(andClause);
-			}
-			qBuilder.append("LOWER(e.rcptNbr) LIKE(LOWER(:rcptNbr))");
-		}
+		
 		return qBuilder;
 	}
 
@@ -143,17 +146,17 @@ public class CdrDrctSalesEJB
 	{
 		CdrDrctSales entity = searchInput.getEntity();
 
-		if(searchInput.getFieldNames().contains("dsNbr") && StringUtils.isNotBlank(entity.getDsNbr())){
+		if(StringUtils.isNotBlank(entity.getDsNbr())){
 			query.setParameter("dsNbr", entity.getDsNbr());
 		}
-		if(searchInput.getFieldNames().contains("cashier") && StringUtils.isNotBlank(entity.getCashier())){
-			query.setParameter("cashier", entity.getCashier());
+		if(searchInput.getDrctSalesDtFrom()!=null){
+			query.setParameter("drctSalesDtFrom", searchInput.getDrctSalesDtFrom());
 		}
-		if(searchInput.getFieldNames().contains("cdrNbr") && StringUtils.isNotBlank(entity.getCdrNbr())){
-			query.setParameter("cdrNbr", entity.getCdrNbr());
+		if(searchInput.getDrctSalesDtTo()!=null){
+			query.setParameter("drctSalesDtTo", searchInput.getDrctSalesDtTo());
 		}
-		if(searchInput.getFieldNames().contains("rcptNbr") && StringUtils.isNotBlank(entity.getRcptNbr())){
-			query.setParameter("rcptNbr", "%"+entity.getRcptNbr()+"%");
+		if(!securityUtil.hasWorkspace("manager")){
+			query.setParameter("cashier", securityUtil.getCurrentLoginName());
 		}
 	}
 	public CdrDrctSales findById(String id)

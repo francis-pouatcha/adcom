@@ -38,6 +38,11 @@ public abstract class SlsAbstractSOItem extends AbstractIdentifData {
 	@Description("SlsSOItem_artName_description")
 	@NotNull
 	private String artName;
+	
+	@Column
+	@Description("CdrDsArtItem_section_description")
+	@NotNull
+	private String section;
 
 
 	@Transient
@@ -136,6 +141,14 @@ public abstract class SlsAbstractSOItem extends AbstractIdentifData {
 
 	public BigDecimal getRebatePct() {
 		return rebatePct;
+	}
+
+	public String getSection() {
+		return section;
+	}
+
+	public void setSection(String section) {
+		this.section = section;
 	}
 
 	public void setRebatePct(BigDecimal rebatePct) {

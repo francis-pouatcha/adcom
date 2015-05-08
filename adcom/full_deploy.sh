@@ -72,6 +72,7 @@ cp adcshdwr.client/target/adcshdwr.client.war $JBOSS_HOME/standalone/deployments
 cp adacc.client/target/adacc.client.war $JBOSS_HOME/standalone/deployments/
 cp adlogin.client/target/adlogin.client.war $JBOSS_HOME/standalone/deployments/
 cp adaptmt.client/target/adaptmt.client.war $JBOSS_HOME/standalone/deployments/
+cp admanager.client/target/admanager.client.war $JBOSS_HOME/standalone/deployments/
 
 echo 'copying the .xls file'
 cp adcom.configuration/jboss-eap-6.3/adcom/adbase/data/adbase.xls $JBOSS_HOME/adcom/adbase/data/

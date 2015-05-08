@@ -205,7 +205,6 @@ angular.module("adaptmt")
     	    // add bnsptnr to appointement
     	    
     	    function addBnsPtnr(){
-    	    	
     	    	for(var i in $scope.eventualBsnPtnrs()){
     	    		console.log(" partner with id : " +  $scope.eventualBsnPtnrs()[i].id + " checked ? : " + $scope.eventualBsnPtnrs()[i].checkOn);
     	    		var idIncome = $scope.eventualBsnPtnrs()[i].id;

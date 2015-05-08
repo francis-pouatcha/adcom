@@ -117,8 +117,8 @@
                 <td><a href="#/CdrCstmrVchrs/edit/{{result.id}}">{{result.cdrNbr}}</a></td>
                 <td><a href="#/CdrCstmrVchrs/edit/{{result.id}}">{{result.prntDt| date:'yyyy-MM-dd HH:mm:ss Z'}}</a></td>
                 <td><a href="#/CdrCstmrVchrs/edit/{{result.id}}">{{result.amtUsed}}</a></td>
-                <td><a href="#/CdrCstmrVchrs/edit/{{result.id}}">{{result.settled}}</a></td>
-                <td><a href="#/CdrCstmrVchrs/edit/{{result.id}}">{{result.restAmt}}</a></td>
+                <td><a href="#/CdrCstmrVchrs/edit/{{result.id}}">{{result.settled | currencyAccounting:slsInvoice.invceCur:"4"}}</a></td>
+                <td><a href="#/CdrCstmrVchrs/edit/{{result.id}}">{{result.restAmt | currencyAccounting:slsInvoice.invceCur:"4"}}</a></td>
             </tr>
         </tbody>
     </table>

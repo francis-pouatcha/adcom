@@ -3,6 +3,7 @@ package org.adorsys.adbase.security;
 import java.security.Principal;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -13,11 +14,14 @@ import javax.inject.Inject;
 import org.adorsys.adbase.jpa.Login;
 import org.adorsys.adbase.jpa.OrgUnit;
 import org.adorsys.adbase.jpa.OuWorkspace;
+import org.adorsys.adbase.jpa.UserWorkspace;
 import org.adorsys.adbase.repo.LoginRepository;
+import org.adorsys.adbase.repo.UserWorkspaceRepository;
 import org.adorsys.adbase.rest.OrgUnitEJB;
 import org.adorsys.adbase.rest.SecUserSessionEJB;
 import org.adorsys.adcore.auth.SecurityActions;
 import org.adorsys.adcore.auth.TermWsUserPrincipal;
+import org.apache.deltaspike.data.api.QueryResult;
 
 @Stateless
 public class SecurityUtil {
@@ -30,6 +34,9 @@ public class SecurityUtil {
 	
 	@Inject
 	private LoginRepository loginRepository;
+	
+	@Inject
+	private UserWorkspaceRepository userWorkspaceRepository;
 	
 	@Inject
 	private OrgUnitEJB orgUnitEJB;
@@ -56,6 +63,17 @@ public class SecurityUtil {
 		List<Login> resultList = loginRepository.findByIdentif(loginName).maxResults(1).getResultList();
 		if(resultList.isEmpty()) throw new IllegalStateException("user with name not found: " + loginName);
 		return resultList.iterator().next();
+	}
+	
+	public Boolean hasWorkspace(String workspace){
+		String currentLoginName = getCurrentLoginName();
+		String ouIdentif = getCurrentOrgUnit().getIdentif();
+		String userWsIdentif = ouIdentif + "_" + workspace + "_" + ouIdentif + "_" + currentLoginName;
+		List<UserWorkspace> result = userWorkspaceRepository.findByIdentif(userWsIdentif, new Date()).getResultList();
+		if(result.isEmpty())
+			return false;
+		
+		return true;
 	}
 	
 //	public SecUserSession getCurrentSecUserSession() {

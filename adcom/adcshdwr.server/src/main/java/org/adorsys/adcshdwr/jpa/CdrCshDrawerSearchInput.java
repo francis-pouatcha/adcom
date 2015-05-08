@@ -1,6 +1,7 @@
 package org.adorsys.adcshdwr.jpa;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -20,6 +21,10 @@ public class CdrCshDrawerSearchInput
     * The entity holding search inputs.
     */
    private CdrCshDrawer entity;
+   
+   private Date from;
+   
+   private Date to;
 
    /**
     * The start cursor
@@ -61,7 +66,23 @@ public class CdrCshDrawerSearchInput
       return start;
    }
 
-   public void setStart(int start)
+   public Date getFrom() {
+	return from;
+}
+
+public void setFrom(Date from) {
+	this.from = from;
+}
+
+public Date getTo() {
+	return to;
+}
+
+public void setTo(Date to) {
+	this.to = to;
+}
+
+public void setStart(int start)
    {
       this.start = start;
    }

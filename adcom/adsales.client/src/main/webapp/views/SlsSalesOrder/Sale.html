@@ -84,19 +84,24 @@
                   <div class="col-lg-2">
                         <div class="form-group">
                             <label for="">{{'SlsSalesOrder_pymtDscntAmt_description.title' | translate}}</label><br/>
-                            <input  type="text" class="form-control" ng-model="saleCtlr.slsSalesOrderHolder.slsSalesOrder.pymtDscntAmt" >
+                            <input  type="text" class="form-control" ng-model="saleCtlr.slsSalesOrderHolder.slsSalesOrder.pymtDscntAmt" price-green="price-green" round-converter="round-converter"/>
                         </div>
                   </div>
                     <div class="col-lg-2">
                         <div class="form-group">
                             <label for="">{{'SlsSalesOrder_pymtDscntPct_description.title' | translate}}</label><br/>
-                            <input  type="text" class="form-control" ng-model="saleCtlr.slsSalesOrderHolder.slsSalesOrder.pymtDscntPct" >
+                            <input  type="text" class="form-control" ng-model="saleCtlr.slsSalesOrderHolder.slsSalesOrder.pymtDscntPct" price-green="price-green" round-converter="round-converter" />
                         </div>
                     </div>
-                <div class="col-lg-2" style="margin-top: 24px">
+                <div class="col-lg-1" style="margin-top: 24px">
                     <input  type="submit" class="btn btn-primary" value="Apply" ng-click="saleCtlr.totalAmount()">
                 </div>
-                <div class="col-lg-4 col-lg-offset-3" style="margin-top: -24px" >
+                
+                 <div class="col-lg-2" style="margin-top: 24px">
+                        <select class="form-control" ng-model="cur" ng-options="cur for cur in conversionPrice.currency"></select>
+                 </div>
+                 
+                <div class="col-lg-5 col-lg-offset-3" style="margin-top: -24px" >
                     <table class="table table-bordered  table-striped" style="text-align: center">
                         <tr>
                             <td>{{'SlsSalesOrder_netSPPreTax_description.text' | translate}}</td>
@@ -105,10 +110,10 @@
                             <td>{{'SlsSalesOrder_netSalesAmt_description.title' | translate}}</td>
                         </tr>
                         <tr>
-                            <td><b>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.netSPPreTax}} CFA</b></td>
-                            <td><b>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.pymtDscntAmt}} CFA</b></td>
-                            <td><b>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.vatAmount}} CFA</b></td>
-                            <td><b>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.netSalesAmt}} CFA</b></td>
+                            <td price-style="price-style"><b>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.netSPPreTax | currencyAccounting:cur}}</b></td>
+                            <td price-style="price-style"><b>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.pymtDscntAm | currencyAccounting:cur}}</b></td>
+                            <td price-style="price-style"><b>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.vatAmount | currencyAccounting:cur}}</b></td>
+                            <td price-style="price-style"><b>{{saleCtlr.slsSalesOrderHolder.slsSalesOrder.netSalesAmt | currencyAccounting:cur}}</b></td>
                         </tr>
                     </table>
                 </div>

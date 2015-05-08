@@ -6,8 +6,10 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
 
+import org.adorsys.adcore.utils.SequenceGenerator;
 import org.adorsys.adcshdwr.jpa.CdrDsPymntItem;
 import org.adorsys.adcshdwr.repo.CdrDsPymntItemRepository;
+import org.apache.commons.lang3.StringUtils;
 
 @Stateless
 public class CdrDsPymntItemEJB
@@ -18,6 +20,10 @@ public class CdrDsPymntItemEJB
 
    public CdrDsPymntItem create(CdrDsPymntItem entity)
    {
+	   if (StringUtils.isBlank(entity.getPymntDocNbr())) {
+			entity.setPymntDocNbr(SequenceGenerator
+					.getSequence(SequenceGenerator.PAYMENT_DS_SEQUENCE_PREFIXE));
+		}
       return repository.save(attach(entity));
    }
 
@@ -78,4 +84,8 @@ public class CdrDsPymntItemEJB
 
       return entity;
    }
+
+	public List<CdrDsPymntItem> findByDsNbr(String saleNbr) {
+		return repository.findByDsNbr(saleNbr);	
+	}
 }

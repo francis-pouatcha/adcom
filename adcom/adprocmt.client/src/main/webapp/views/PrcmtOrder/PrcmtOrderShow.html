@@ -38,14 +38,14 @@
                         <td>
                             <div ng-class="{ 'has-error' : PrcmtProcOrderItemForm.artPic.$invalid }" >
                                 <input type="text" ng- class="form-control" select-on-click name="artPic" id="artPic" required autocomplete="off" ng-model="prcmtOrderShowCtlr.prcmtOrderItemHolder.prcmtPOItem.artPic"
-                                       typeahead="article as article.pic for article in prcmtOrderShowCtlr.loadArticlesByCipLike($viewValue)"
+                                       typeahead="article as article.displayableStr for article in prcmtOrderShowCtlr.loadArticlesByCipLike($viewValue)"
                                        typeahead-loading="loading" typeahead-template-url="views/PrcmtDelivery/CatalTypeaheadTemplate.html" typeahead-on-select='prcmtOrderShowCtlr.onSelect($item, $model, $label)' >
                             </div>
                         </td>
                         <td>
                             <div ng-class="{ 'has-error' : PrcmtProcOrderItemForm.artName.$invalid }" >
                                 <input type="text" class="form-control" select-on-click focus required id="artName" autocomplete="off" ng-model="prcmtOrderShowCtlr.prcmtOrderItemHolder.prcmtPOItem.artName"
-                                       typeahead="article as article.features.artName for article in prcmtOrderShowCtlr.loadArticlesByNameLike($viewValue)"
+                                       typeahead="article as article.displayableStr for article in prcmtOrderShowCtlr.loadArticlesByNameLike($viewValue)"
                                        typeahead-loading="loading" typeahead-on-select='prcmtOrderShowCtlr.onSelect($item, $model, $label)' name="artName" >
                             </div>
                         </td>
@@ -129,7 +129,7 @@
                 <tr ng-repeat="orderItemHolder in prcmtOrderShowCtlr.prcmtOrderHolder.poItems" >
                     <td>{{orderItemHolder.prcmtPOItem.artPic}}</td>
                     <td>{{orderItemHolder.prcmtPOItem.artName}}</td>
-                    <td></td>
+                    <td>{{orderItemHolder.prcmtPOItem.stkQtyPreOrder}}</td>
                     <td>{{orderItemHolder.prcmtPOItem.qtyOrdered}}</td>
                     <td>{{orderItemHolder.prcmtPOItem.freeQty}}</td>
                     <td>{{orderItemHolder.prcmtPOItem.pppuPreTax}}</td>

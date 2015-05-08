@@ -40,7 +40,7 @@
     <module>adcom.test</module>
     <module>adaptmt.server</module>
     <module>adaptmt.client</module>
-    
+    <module>admanager.client</module>
     
   </modules>
   <scm>

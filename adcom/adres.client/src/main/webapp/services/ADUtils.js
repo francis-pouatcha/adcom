@@ -29,6 +29,129 @@ angular.module('ADUtils',[])
         }
     };
 })
+.directive('roundConverter', function () {
+	
+	function isInvalid(number) {
+		return (/[^\d^,^.]/).test(number);
+	}
+	
+	function unformat(number, O) {
+		return accounting.unformat(accounting.toFixed(number, O));
+	}
+	
+	function makeParserOrFormatter(ngModel, f, decimals) {
+		return function (value) {
+			if (ngModel.$isEmpty(value)) {
+				return value;
+		}
+		
+		if (isInvalid(value)) {
+			ngModel.$setValidity('numberFormat', false);
+			return undefined;
+		}
+		
+		ngModel.$setValidity('numberFormat', true);
+			return f(value, decimals);
+		};
+	}
+	
+	function makeEventHandler(element, ngModel, f, decimals) {
+		return function () {
+			var value = element.val();
+			
+			if (ngModel.$invalid || ngModel.$isEmpty(value)) {
+				return;
+			}
+			element.val(f(value, decimals));
+		};
+	}
+	
+	return {
+		require: 'ngModel',
+		restrict: 'A',
+		link: function (scope, element, attrs, ngModel) {
+			var decimals = 0;
+			ngModel.$render = function () {
+				if (ngModel.$isEmpty(ngModel.$viewValue)) {
+					return;
+				}
+				
+				element.val(accounting.formatNumber(ngModel.$viewValue, decimals));
+			};
+			
+			ngModel.$formatters.unshift(makeParserOrFormatter(ngModel, accounting.formatNumber, decimals));
+			ngModel.$parsers.unshift(makeParserOrFormatter(ngModel, unformat, decimals));
+			element.on('change blur', makeEventHandler(element, ngModel, accounting.formatNumber, decimals));
+			element.on('focus', makeEventHandler(element, ngModel, unformat, decimals));
+			
+			element.on('$destroy', function () {
+				 element.off('change blur focus');
+			});
+		}
+	};
+})
+.filter('simplePrice', function() {
+    return function(number) {
+   	  number = accounting.toFixed(number, 0);
+      return accounting.formatNumber(number, { precision : 0, thousand: " ", decimal : "."});
+    };
+  })
+.filter('currencyAccounting', function() {
+    return function(number, currencyCode) {
+    	
+    	accounting.settings = {
+    			currency: {
+    				symbol : "XAF",   // default currency symbol is '$'
+    				format: "%v %s", // controls output: %s = symbol, %v =
+										// value/number (can be object: see
+										// below)
+    				decimal : ".",  // decimal point separator
+    				thousand: " ",  // thousands separator
+    				precision : 0   // decimal places
+    			},
+    			number: {
+    				precision : 0,  // default precision on numbers is 0
+    				thousand: " ",
+    				decimal : "."
+    			}
+    		};
+    	
+   	  number = accounting.toFixed(number, 0);
+      var currency = {
+    	XAF: "XAF",
+    	EUR: "€",
+    	NGN: "₦",
+        USD: "$"
+      },
+      thousand, decimal, format, precision;
+      
+      if(currency[currencyCode] === "undefined"){
+    	  return accounting.formatMoney(number, { symbol: "XAF",  format: "%v %s", thousand: " ", precision : 0 });
+      }
+      
+      return accounting.formatMoney(number, { symbol: currency[currencyCode],  format: "%v %s", thousand: " ", precision : 0 });
+    };
+  })
+.directive('priceStyle', function () {
+    return function (scope, element, attrs) {
+    	element.addClass('default-style');
+    };
+})
+.directive('priceRed', function () {
+    return function (scope, element, attrs) {
+        element.addClass('red-style');
+    };
+})
+.directive('priceBlack', function () {
+    return function (scope, element, attrs) {
+        element.addClass('black-style');
+    };
+})
+.directive('priceGreen', function () {
+    return function (scope, element, attrs) {
+        element.addClass('green-style');
+    };
+})
 .factory('adUtils',['$location','$filter',function($location,$filter){
     var service = {};
     var defaultDatePattern = 'dd-MM-yyyy HH:mm';
@@ -248,7 +371,7 @@ angular.module('ADUtils',[])
     service.deleteById = function(urlBase, entityId){
         return $http.delete(urlBase+'/'+entityId);
     };
-    //execute a simple get
+    // execute a simple get
     service.get = function(urlBase) {
         return $http.get(urlBase);
     }
@@ -273,7 +396,7 @@ angular.module('ADUtils',[])
 	    		fieldNames:[]
 	    	},
 	    	// not exposed to the server environment.
-	    	currentPage:currentPageVar,itemPerPage:itemPerPageVar,selectedIndex:-1,
+	    	currentPage:currentPageVar,itemPerPage:itemPerPageVar,selectedIndex:-1
         };
         var searchResultVar = angular.copy(nakedSearchResult);
         var keyField = keyFieldIn;
@@ -294,7 +417,7 @@ angular.module('ADUtils',[])
         	
     		searchResultVar.count = searchResultIn.count;
     		
-//    		displayInfoVar = {};
+// displayInfoVar = {};
     		
     		angular.copy(searchResultIn.resultList, searchResultVar.resultList);
     		
@@ -498,5 +621,18 @@ angular.module('ADUtils',[])
     };
     
     return service;
+}])
+.factory('conversionPrice',['$translate',function($translate){
+	var service={};
+	
+	service.currency=[
+	    	"XAF",
+	    	"EUR",
+	    	"NGN",
+	        "USD"
+	      ];
+    
+    return service;
+	
 }]);
 

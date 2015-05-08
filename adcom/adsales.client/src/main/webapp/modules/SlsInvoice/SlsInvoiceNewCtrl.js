@@ -15,10 +15,12 @@ angular.module('AdSales')
 
         return service;
   }])
-.controller('slsInvoiceNewCtlr',['$scope','$modal','SlsInvoiceUtils', 'slsSalesOrderState','genericResource','$routeParams','$location','$q',function($scope,$modal,SlsInvoiceUtils,slsSalesOrderState,genericResource,$routeParams,$location,$q){
+.controller('slsInvoiceNewCtlr',['$scope','$modal','SlsInvoiceUtils','slsSalesOrderState','genericResource','$routeParams','$location','$q', 'conversionPrice',function($scope,$modal,SlsInvoiceUtils,slsSalesOrderState,genericResource,$routeParams,$location,$q,conversionPrice){
     var self = this ;
     $scope.slsInvoiceNewCtlr = self;
     self.showBtnClose = true;
+    $scope.cur = "XAF";
+    $scope.conversionPrice = conversionPrice;
     self.slsInvoiceHolder = {
         slsInvoice:{},
         slsInvceItemsholder:[],

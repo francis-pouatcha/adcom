@@ -3,11 +3,13 @@
  */
 package org.adorsys.adcshdwr.api;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
 import org.adorsys.adbase.enums.BaseHistoryTypeEnum;
@@ -20,15 +22,21 @@ import org.adorsys.adcshdwr.jpa.CdrDrctSales;
 import org.adorsys.adcshdwr.jpa.CdrDsArtItem;
 import org.adorsys.adcshdwr.jpa.CdrDsHstry;
 import org.adorsys.adcshdwr.jpa.CdrDsInfo;
+import org.adorsys.adcshdwr.jpa.CdrDsPymntItem;
+import org.adorsys.adcshdwr.jpa.CdrPymntMode;
+import org.adorsys.adcshdwr.payementevent.DirectSale;
+import org.adorsys.adcshdwr.payementevent.PaymentEvent;
 import org.adorsys.adcshdwr.rest.CdrCshDrawerEJB;
+import org.adorsys.adcshdwr.rest.CdrCstmrVchrEJB;
 import org.adorsys.adcshdwr.rest.CdrDrctSalesEJB;
 import org.adorsys.adcshdwr.rest.CdrDsArtItemEJB;
 import org.adorsys.adcshdwr.rest.CdrDsHstryEJB;
+import org.adorsys.adcshdwr.rest.CdrDsPymntItemEJB;
 import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author boriswaguia
- *
+ *@author guymoyo
  */
 @Stateless
 public class CdrDrctSalesManager {
@@ -47,6 +55,16 @@ public class CdrDrctSalesManager {
 
 	@Inject
 	private SecurityUtil securityUtil;
+	
+	@Inject
+    @DirectSale
+    Event<PaymentEvent> directSaleEvent;
+	
+	@Inject
+	CdrDsPymntItemEJB cdrDsPymntItemEJB;
+	
+	@Inject
+	CdrCstmrVchrEJB cdrCstmrVchrEJB;
 
 	public CdrDsArtHolder updateOrder(CdrDsArtHolder cdrDsArtHolder) throws AdException{
 		CdrDrctSales cdrDrctSales = cdrDsArtHolder.getCdrDrctSales();
@@ -119,6 +137,8 @@ public class CdrDrctSalesManager {
 			recomputeOrder(cdrDrctSales);
 			//			cdrDrctSales.setPoStatus(BaseProcessStatusEnum.ONGOING.name());
 			cdrDrctSales = cdrDrctSalesEJB.update(cdrDrctSales);
+			PaymentEvent paymentEvent = new PaymentEvent(CdrPymntMode.CASH, cdrDrctSales.getNetAmtToPay(), cdrDsArtHolder.getPaidAmt(), new Date(), cdrDrctSales.getDsNbr());
+			directSaleEvent.fire(paymentEvent);
 			cdrDsArtHolder.setCdrDrctSales(cdrDrctSales);
 		}
 		/*		if(modified || itemModified){
@@ -211,6 +231,40 @@ public class CdrDrctSalesManager {
 		cdrDsHstry.setProcStep(BaseProcStepEnum.CLOSING.name());
 		cdrDsHstry.makeHistoryId(true);
 		cdrDsHstryEJB.create(cdrDsHstry);
+	}
+
+
+	public CdrDsArtHolder findCdrDsArtHolder(String id) {
+		CdrDsArtHolder cdrDsArtHolder = new CdrDsArtHolder();
+		CdrDrctSales cdrDrctSales = cdrDrctSalesEJB.findById(id);
+		cdrDsArtHolder.setCdrDrctSales(cdrDrctSales);
+		List<CdrDsArtItem> listItem = cdrDsArtItemEJB.findByDsNbr(cdrDrctSales.getDsNbr());
+		for(CdrDsArtItem item:listItem){
+			CdrDsArtItemHolder cdrDsArtItemHolder = new CdrDsArtItemHolder();
+			cdrDsArtItemHolder.setItem(item);
+			cdrDsArtItemHolder.setArtName(item.getArtName());
+			cdrDsArtHolder.getItems().add(cdrDsArtItemHolder);
+		}
+		CdrDsPymntItem cdrDsPymntItem = cdrDsPymntItemEJB.findByDsNbr(cdrDrctSales.getDsNbr()).get(0);
+		cdrDsArtHolder.setPaidAmt(cdrDsPymntItem.getRcvdAmt());
+		cdrDsArtHolder.setChangeAmt(cdrDsPymntItem.getDiffAmt());		
+		return cdrDsArtHolder;
+	}
+
+
+	public CdrDsArtHolder returnProduct(CdrDsArtHolder cdrDsArtHolder) throws AdException {
+		List<CdrDsArtItemHolder> items = cdrDsArtHolder.getItems();
+		Boolean returned = false;
+		for(CdrDsArtItemHolder item:items){
+			if(item.getItem().getReturnedQty() != null && item.getItem().getReturnedQty().compareTo(BigDecimal.ZERO) == 1 ){
+				cdrDsArtItemEJB.update(item.getItem());
+				returned = true;
+			}
+		}	
+		if(returned==true){
+			cdrCstmrVchrEJB.generateVoucher(cdrDsArtHolder);
+		}
+		return cdrDsArtHolder;
 	}
 
 }

@@ -103,6 +103,14 @@ public class CdrDsPymntItem extends AbstractIdentifData {
 	public void setDiffAmt(final BigDecimal diffAmt) {
 		this.diffAmt = diffAmt;
 	}
+	
+	public void soustractDiffAmt() {
+		if(this.amt == null) this.amt = BigDecimal.ZERO;
+		if(this.rcvdAmt == null) this.rcvdAmt = BigDecimal.ZERO;
+		if(this.diffAmt == null) this.diffAmt = BigDecimal.ZERO;
+		this.diffAmt = this.diffAmt.add(rcvdAmt);
+		this.diffAmt = this.diffAmt.add(amt.negate());
+	}
 
 	@Override
 	protected String makeIdentif() {

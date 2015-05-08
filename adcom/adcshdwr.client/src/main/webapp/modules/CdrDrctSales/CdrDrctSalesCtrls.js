@@ -98,7 +98,9 @@ angular.module('AdCshdwr')
                     'CdrDrctSales_vatAmount_description.text',
                     'CdrDrctSales_vatAmount_description.title',
                     'CdrDrctSales_paidAmt_description.title',
-                    'CdrDrctSales_changeAmt_description.title'
+                    'CdrDrctSales_changeAmt_description.title',
+                    'CdrDrctSales_from_description.title',
+                    'CdrDrctSales_to_description.title'
                  ])
                 .then(function (translations) {
                     service.translations = translations;
@@ -389,7 +391,7 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
             $scope.maxSize = cdrDrctSalesState.maxSize;
             $scope.cdrCshDrawers = cdrDrctSalesState.cdrCshDrawers;
             $scope.selectedIndex = cdrDrctSalesState.selectedIndex;
-            $scope.handleSearchRequestEvent = handleSearchRequestEvent;
+            $scope.processSearchInput = processSearchInput;
             $scope.handlePrintRequestEvent = handlePrintRequestEvent;
             $scope.paginate = paginate;
             $scope.error = "";
@@ -409,19 +411,23 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
 
             init();
 
-            function processSearchInput(searchInput) {
-                if (angular.isDefined(searchInput.entity.dsNbr ) && searchInput.entity.dsNbr ) {
-                    searchInput.fieldNames.push('dsNbr ');
+            function processSearchInput() {
+                var searchInput = {
+                    entity: {},
+                    fieldNames: [],
+                    start: 0,
+                    max: 25
+                };
+                if (angular.isDefined($scope.searchInput.entity.dsNbr ) && $scope.searchInput.entity.dsNbr ) {
+                    searchInput.entity.dsNbr = $scope.searchInput.entity.dsNbr;
                 }
-                if (angular.isDefined(searchInput.entity.cashier ) && searchInput.entity.cashier ) {
-                    searchInput.fieldNames.push('cashier');
-                }
-                if (angular.isDefined(searchInput.entity.cdrNbr ) && searchInput.entity.cdrNbr ) {
-                    searchInput.fieldNames.push('cdrNbr');
-                }
-                if (angular.isDefined(searchInput.entity.rcptNbr ) && searchInput.entity.rcptNbr ) {
-                    searchInput.fieldNames.push('rcptNbr');
-                }
+                if($scope.searchInput.drctSalesDtFrom)
+                    searchInput.drctSalesDtFrom = $scope.searchInput.drctSalesDtFrom;
+
+                if($scope.searchInput.drctSalesDtTo)
+                    searchInput.drctSalesDtTo = $scope.searchInput.drctSalesDtTo;
+
+                findCustom(searchInput);
             }
 
             function findCustom(searchInput) {
@@ -429,7 +435,7 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                     .success(function (entitySearchResult) {
                         // store search
                         cdrDrctSalesState.searchResult(entitySearchResult);
-                        $scope.searchInput = cdrDrctSalesState.searchResult().searchInput;
+                        //$scope.searchInput = cdrDrctSalesState.searchResult().searchInput;
                         $scope.cdrDrctSales = cdrDrctSalesState.searchResult().resultList;
                     })
                     .error(function (error) {
@@ -437,22 +443,13 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                     });
             }
 
-            function handleSearchRequestEvent() {
-                processSearchInput($scope.searchInput);
-                findCustom($scope.searchInput);
-            }
-
             function handlePrintRequestEvent() {}
 
             function paginate() {
-                $scope.searchInput = cdrDrctSaleState.paginate();
+                $scope.searchInput = cdrDrctSalesState.paginate();
                 findCustom($scope.searchInput);
             };
 
-            function paginate() {
-                $scope.searchInput = cdrDrctSaleState.paginate();
-                findCustom($scope.searchInput);
-            }
 
             function init() {
                 findCustom($scope.searchInput);
@@ -468,13 +465,15 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
 
             function openCreateForm() {}
 }])
-    .controller('cdrDrctSalesCreateCtlr', ['$scope', 'cdrDrctSalesUtils', '$translate', 'genericResource', '$location', 'cdrDrctSalesState', 'commonTranslations',
-        function ($scope, cdrDrctSalesUtils, $translate, genericResource, $location, cdrDrctSalesState, commonTranslations) {
+    .controller('cdrDrctSalesCreateCtlr', ['$scope', 'cdrDrctSalesUtils', 'conversionPrice', '$translate', 'genericResource', '$location', 'cdrDrctSalesState', 'commonTranslations',
+        function ($scope, cdrDrctSalesUtils, conversionPrice, $translate, genericResource, $location, cdrDrctSalesState, commonTranslations) {
             $scope.cdrCshDrawer = {
                 cdrDrctSales: {}
             };
             $scope.create = create;
             $scope.error = "";
+            $scope.cur = "XAF";
+            $scope.conversionPrice = conversionPrice;
             $scope.cdrDrctSalesUtils = cdrDrctSalesUtils;
             $scope.commonTranslations = commonTranslations;
             $scope.cdrDsArtItemHolder = {
@@ -493,6 +492,7 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                 $scope.cdrDsArtItemHolder.item.lotPic = item.lotPic;
                 $scope.cdrDsArtItemHolder.item.section = item.section;
                 $scope.cdrDsArtItemHolder.artName = item.artName;
+                $scope.cdrDsArtItemHolder.item.artName = item.artName;
                 $scope.cdrDsArtItemHolder.item.sppuPreTax = item.sppuPreTax;
                 if (!item.sppuPreTax) item.sppuPreTax = 0.0;
                 if (!item.salesVatAmt) item.salesVatAmt = 0.0;
@@ -535,6 +535,7 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                     item: {}
                 };
                 $scope.showprint = false;
+                $scope.error="";
             }
 
             $scope.save = function () {
@@ -545,18 +546,23 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                 genericResource.create(cdrDrctSalesUtils.cdrdrctsalesmanager, $scope.cdrDsArtHolder).success(function (result) {
                     $scope.showprint = true;
                     $scope.cdrDsArtHolder = result;
+                    $scope.error = "";
                 }).error(function (error) {
                     $scope.error = error;
                 });
             };
 
             function verifCdrDsArtHolder(){
-                if($scope.cdrDsArtHolder.cdrDrctSales.netSalesAmt > $scope.cdrDsArtHolder.paidAmt){
+                if($scope.cdrDsArtHolder.cdrDrctSales.netSalesAmt > $scope.cdrDsArtHolder.paidAmt || !$scope.cdrDsArtHolder.paidAmt){
                     $scope.error = "Montant paye est inferieur au montant de vente";
                     return false;
                 }
                 if($scope.cdrDsArtHolder.cdrDrctSales.pymtDscntAmt > $scope.cdrDsArtHolder.cdrDrctSales.netSPPreTax){
                     $scope.error = "Montant de l'escompte est superieur au montant de vente hors taxe";
+                    return false;
+                }
+                if(!($scope.cdrDsArtHolder.items.length > 0)){
+                    $scope.error = "Aucune ligne de vente existante";
                     return false;
                 }
             }
@@ -651,6 +657,7 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                     }
                 }
                 computeCdrDsArtHolder();
+                $scope.error = "";
                 $scope.cdrDsArtItemHolder = clearObject($scope.cdrDsArtItemHolder);
             }
 
@@ -662,17 +669,21 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                 var totalNetSPPreTax = 0.0;
                 var totalNetSPTaxIncl = 0.0;
                 var totalGrossSPPreTax = 0.0;
+                var currency = $scope.cur;
 
                 angular.forEach(items, function (artItemHolder) {
                     var totalRebate = 0.0;
-                    if (artItemHolder.item.rebate) totalRebate = artItemHolder.item.rebate * artItemHolder.item.soldQty;
-                    var grossSPPTax = artItemHolder.item.sppuPreTax * artItemHolder.item.soldQty;
+                    if (artItemHolder.item.rebate) totalRebate = parseInt(artItemHolder.item.rebate) * parseInt(artItemHolder.item.soldQty);
+                    var grossSPPTax = artItemHolder.item.sppuPreTax * parseInt(artItemHolder.item.soldQty);
                     var netSPPreTax = grossSPPTax - totalRebate;
                     var vatAmount = netSPPreTax * (artItemHolder.item.vatPct / 100);
+                    if(!artItemHolder.item.restockgFees)
+                        artItemHolder.item.restockgFees = 0.0;
                     var netSPTaxIncl = netSPPreTax + vatAmount + artItemHolder.item.restockgFees;
                     artItemHolder.item.netSPPreTax = netSPPreTax;
                     artItemHolder.item.netSPTaxIncl = netSPTaxIncl;
                     artItemHolder.item.vatAmount = vatAmount;
+                    artItemHolder.item.sppuCur = $scope.cur;
                     //update the global sale object
                     totalGrossSPPreTax += grossSPPTax;
                     totalNetSPPreTax += netSPPreTax;
@@ -689,19 +700,104 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                 $scope.cdrDsArtHolder.cdrDrctSales.netSPPreTax = totalNetSPPreTax;
                 $scope.cdrDsArtHolder.cdrDrctSales.netSPTaxIncl = totalNetSPTaxIncl;
                 $scope.cdrDsArtHolder.cdrDrctSales.vatAmount = totalVatAmount;
+                $scope.cdrDsArtHolder.cdrDrctSales.dsCur = currency;
             }
 }])
-    .controller('cdrDrctSalesEditCtlr', ['$scope', 'genericResource', '$location', 'cdrDrctSalesUtils', 'cdrDrctSalesState', 'commonTranslations',
-                                 function ($scope, genericResource, $location, cdrDrctSalesUtils, cdrDrctSalesState, commonTranslations) {
-            $scope.cdrCshDrawer = cdrDrctSalesState.cdrCshDrawer;
+    .controller('cdrDrctSalesShowCtlr', ['$scope', 'genericResource', '$location', 'cdrDrctSalesUtils', 'cdrDrctSalesState', 'commonTranslations','$routeParams',
+                                 function ($scope, genericResource, $location, cdrDrctSalesUtils, cdrDrctSalesState, commonTranslations, $routeParams) {
+            $scope.cdrDsArtHolder = {
+                         cdrDrctSales: {},
+                         items: []
+            };
             $scope.error = "";
             $scope.cdrDrctSalesUtils = cdrDrctSalesUtils;
             $scope.commonTranslations = commonTranslations;
 
             init();
 
-            function init() {}
-            $scope.close = function () {
-                //close the cashdrawer
-            };
+            function init() {
+                var id = $routeParams.id;
+                genericResource.findById(cdrDrctSalesUtils.cdrdrctsalesmanager, id)
+                    .success(function (entitySearchResult) {
+                        $scope.cdrDsArtHolder=entitySearchResult;
+                    })
+                    .error(function (error) {
+                        $scope.error = error;
+                    });
+            }
+
+                                     $scope.addItem = function () {
+                                         addItem($scope.cdrDsArtItemHolder);
+                                     };
+
+                                     $scope.cdrDsArtItems = function () {
+                                         return $scope.cdrDsArtItemHolder.items;
+                                     };
+
+                                     $scope.editItem = function (index) {
+                                         $scope.cdrDsArtItemHolder = angular.copy($scope.cdrDsArtHolder.items[index]);
+                                     };
+
+                                     function clear(){
+                                         $scope.cdrDsArtHolder = {
+                                             cdrDrctSales: {},
+                                             items: []
+                                         };
+                                         $scope.cdrDsArtItemHolder = {
+                                             item: {}
+                                         };
+                                         $scope.showprint = false;
+                                         $scope.error="";
+                                     }
+
+                                     $scope.save = function () {
+                                         genericResource.create(cdrDrctSalesUtils.cdrdrctsalesmanager+"/returnProduct", $scope.cdrDsArtHolder).success(function (result) {
+                                             $scope.showprint = true;
+                                             $scope.cdrDsArtHolder = result;
+                                             $scope.error = "";
+                                         }).error(function (error) {
+                                             $scope.error = error;
+                                         });
+                                     };
+
+
+                                     $scope.printRequest = function(){
+
+                                     };
+
+                                     function clearObject(anObject) {
+                                         anObject = {
+                                             item: {}
+                                         };
+                                         return anObject;
+                                     }
+
+                                     function addItem(cdrDsArtItemHolder) {
+                                         if (cdrDsArtItemHolder.item.returnedQty > cdrDsArtItemHolder.item.soldQty){
+                                             $scope.error ="Quantite retourne superieur a la quantite vendue";
+                                             return;
+                                         }
+
+                                         var copy = angular.copy(cdrDsArtItemHolder)
+                                         var i = 0;
+                                         var items = $scope.cdrDsArtHolder.items;
+                                         if (items.length == 0) {
+                                             $scope.cdrDsArtHolder.items.push(copy);
+                                         } else {
+                                             var found = false;
+                                             angular.forEach(items, function (artItemHolder) {
+                                                 if ((artItemHolder.item.artPic == copy.item.artPic) && (artItemHolder.artName == copy.artName)) {
+                                                     items[i] = copy;
+                                                     found = true;
+                                                 }
+                                                 i += 1;
+                                             });
+                                             if (!found) {
+                                                 $scope.cdrDsArtHolder.items.push(copy);
+                                             }
+                                         }
+                                         $scope.error = "";
+                                         $scope.cdrDsArtItemHolder = clearObject($scope.cdrDsArtItemHolder);
+                                     }
+
 }]);

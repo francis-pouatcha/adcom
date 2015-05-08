@@ -84,19 +84,24 @@
                   <div class="col-lg-2">
                         <div class="form-group">
                             <label>{{'SlsInvoice_pymtDscntAmt_description.title' | translate}}</label><br/>
-                            <input  type="text" class="form-control" ng-model="slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.pymtDscntAmt" >
+                            <input  type="text" class="form-control" ng-model="slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.pymtDscntAmt" price-green="price-green" round-converter='round-converter' />
                         </div>
                   </div>
                     <div class="col-lg-2">
                         <div class="form-group">
                             <label >{{'SlsInvoice_pymtDscntPct_description.title' | translate}}</label><br/>
-                            <input  type="text" class="form-control" ng-model="slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.pymtDscntPct" >
+                            <input  type="text" class="form-control" ng-model="slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.pymtDscntPct" price-green="price-green" round-converter='round-converter' />
                         </div>
                     </div>
-                <div class="col-lg-2" style="margin-top: 24px">
+                <div class="col-lg-1" style="margin-top: 24px">
                     <input  type="submit" class="btn btn-primary" value="Apply" ng-click="slsInvoiceNewCtlr.totalAmount()">
                 </div>
-                <div class="col-lg-4 col-lg-offset-3" style="margin-top: -24px" >
+                
+                 <div class="col-lg-2" style="margin-top: 24px">
+                        <select class="form-control" ng-model="cur" ng-options="cur for cur in conversionPrice.currency"></select>
+                 </div>
+                    
+                <div class="col-lg-5 col-lg-offset-3" style="margin-top: -24px" >
                     <table class="table table-bordered  table-striped" style="text-align: center">
                         <tr>
                             <td>{{'SlsInvoice_netSPPreTax_description.text' | translate}}</td>
@@ -105,10 +110,10 @@
                             <td>{{'SlsInvoice_netSalesAmt_description.title' | translate}}</td>
                         </tr>
                         <tr>
-                            <td><b>{{slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.netSPPreTax}} CFA</b></td>
-                            <td><b>{{slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.pymtDscntAmt}} CFA</b></td>
-                            <td><b>{{slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.vatAmount}} CFA</b></td>
-                            <td><b>{{slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.netSalesAmt}} CFA</b></td>
+                            <td price-style="price-style">{{slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.netSPPreTax | currencyAccounting:cur}}</td>
+                            <td price-style="price-style">{{slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.pymtDscntAmt | currencyAccounting:cur}}</td>
+                            <td price-style="price-style">{{slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.vatAmount | currencyAccounting:cur}}</td>
+                            <td price-style="price-style">{{slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.netSalesAmt | currencyAccounting:cur}}</td>
                         </tr>
                     </table>
                 </div>
