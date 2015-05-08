@@ -1,7 +1,9 @@
 package org.adorsys.adsales.jpa;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -98,6 +100,13 @@ public class SlsInvoice extends AbstractIdentifData {
 	@Column
 	private String creatingUsr;
 	
+	@Transient
+	private List<SlsInvceItem> slsInvceItems = new ArrayList<SlsInvceItem>();
+	
+	@Transient
+	private List<SlsInvcePtnr> slsInvcePtnrs = new ArrayList<SlsInvcePtnr>();
+	
+	
 	
 	public void clearAmts() {
 		this.grossSPPreTax=BigDecimal.ZERO;
@@ -167,6 +176,21 @@ public class SlsInvoice extends AbstractIdentifData {
 		target.vatAmount = vatAmount;
 	}
 	
+	public List<SlsInvceItem> getSlsInvceItems() {
+		return slsInvceItems;
+	}
+	
+	public void setSlsInvceItems(List<SlsInvceItem> slsInvceItems) {
+		this.slsInvceItems = slsInvceItems;
+	}
+	
+	public List<SlsInvcePtnr> getSlsInvcePtnrs() {
+		return slsInvcePtnrs;
+	}
+	
+	public void setSlsInvcePtnrs(List<SlsInvcePtnr> slsInvcePtnrs) {
+		this.slsInvcePtnrs = slsInvcePtnrs;
+	}
 
 	public String getCreatingUsr() {
 		return creatingUsr;
@@ -312,6 +336,8 @@ public class SlsInvoice extends AbstractIdentifData {
 	public void setPtnrNbr(String ptnrNbr) {
 		this.ptnrNbr = ptnrNbr;
 	}
+	
+	
 
 	@Override
 	protected String makeIdentif() {

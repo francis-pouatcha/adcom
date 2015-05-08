@@ -26,7 +26,7 @@ public abstract class AbstractEntityHistory extends AbstractEntity {
 
 	@Column
 	@Description("AbstractEntityHistory_entStatus_description")
-	@NotNull
+	//@NotNull
 	private String entStatus;
 
 	@Temporal(TemporalType.TIMESTAMP)

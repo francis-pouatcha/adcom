@@ -1,6 +1,7 @@
 package org.adorsys.adcshdwr.rest;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -36,6 +37,7 @@ public class CdrCstmrVchrEJB
 			entity.setVchrNbr(SequenceGenerator
 					.getSequence(SequenceGenerator.VOUCHER_SEQUENCE_PREFIXE));
 		}
+	   entity.setPrntDt(new Date());
 	   entity.setCashier(securityUtil.getCurrentLoginName());
       return repository.save(attach(entity));
    }
@@ -96,6 +98,10 @@ public class CdrCstmrVchrEJB
          return null;
 
       return entity;
+   }
+   
+   public List<CdrCstmrVchr> findByVchrNbr(String vchrNbr){
+	   return repository.findByVchrNbr(vchrNbr);
    }
 
 	public void generateVoucher(CdrDsArtHolder cdrDsArtHolder) throws AdException {

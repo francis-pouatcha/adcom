@@ -2,10 +2,8 @@
     
 angular.module('AdSales')
 
-.factory('slsSalesOrderUtils',['sessionManager','$translate', 'commonTranslations','$filter','genericResource','$q',function(sessionManager,$translate,commonTranslations,$filter,genericResource,$q){
+.factory('slsSalesOrderUtils',['sessionManager','$translate', 'commonTranslations','$filter', 'adUtils','genericResource','$q',function(sessionManager,$translate,commonTranslations,$filter,adUtils,genericResource,$q){
     var service = {};
-    var dateFormat = $filter('date');
-    var defaultDatePattern = 'dd-MM-yyyy HH:mm';
 
     service.urlBase='/adsales.server/rest/slssalesorders';
     service.bnsptnrUrlBase='/adbnsptnr.server/rest/bpbnsptnrs';
@@ -14,11 +12,8 @@ angular.module('AdSales')
     
     
     service.formatDate= function(fieldName, inPattern){
-        var pattern = '';
-        if(!inPattern) pattern = defaultDatePattern;
-        else pattern = inPattern;
-        return dateFormat(fieldName, pattern, '');
-    };
+        return adUtils.formatDate(fieldName, inPattern);
+    }
     
     service.slsSOStatusI18nMsgTitleKey = function(enumKey){
     	return "SlsSalesStatus_"+enumKey+"_description.title";
@@ -168,10 +163,22 @@ angular.module('AdSales')
         slsSOItemsholder:[],
         slsSOPtnrsHolder:[]
     };
+    service.slsInvoiceHolder = {
+        slsInvoice:{},
+        slsInvceItemsholder:[],
+        slsInvcePtnrsHolder:[]
+    };
+    service.getSlsInvoiceHolder = function(){
+        return angular.copy(service.slsInvoiceHolder);
+    }
     service.saveSlsSalesOrderHolder= function(slsSOHolder){
-        console.log('Service:'+slsSOHolder);
-        if(!service.slsSalesOrderHolder) return;
+        if(!slsSOHolder) return;
         angular.copy(slsSOHolder, service.slsSalesOrderHolder);
+    }
+    
+    service.saveSlsInvoiceHolder= function(slsInvHolder){
+        if(!slsInvHolder) return;
+        angular.copy(slsInvHolder, service.slsInvoiceHolder);        
     }
     return service;
 
@@ -380,18 +387,87 @@ function($scope,genericResource,slsSalesOrderUtils,slsSalesOrderState,$location,
     $scope.itemPerPage=slsSalesOrderState.resultHandler.itemPerPage;
     $scope.currentPage=slsSalesOrderState.resultHandler.currentPage();
     $scope.maxSize =slsSalesOrderState.resultHandler.maxResult;
-    $scope.slsSalesOrder.soDt = $filter('date')($scope.slsSalesOrder.soDt, 'dd-MM-yyyy HH:mm', '');
     $scope.error = "";
     $scope.generateInvoice = generateInvoice;
     $scope.slsSalesOrderUtils=slsSalesOrderUtils;
+    
+    var slsSOHolder = {
+        slsSalesOrder:{},
+        slsSOItemsholder:[],
+        slsSOPtnrsHolder:[]
+    };
+    
+    var slsInvceHolder = {
+        slsInvoice:{},
+        slsInvceItemsholder:[],
+        slsInvcePtnrsHolder:[]
+    };
+    
     $scope.pageChangeHandler = function(num) {
-      //nothing to do
+      //Simple Pagination
     };
     
     
-    function generateInvoice(){
-        console.log("Generate invoice from sale");
-        // To do
+    function generateInvoice(slsSO){
+        convertSlsSOToSlsInvoice(slsSO);
+        convertSlsSOItemsToSlsInvoiceItems(slsSO);
+        convertSlsSOPtnrsToSlsInvoicePtnrs(slsSO);
+        slsSalesOrderState.saveSlsInvoiceHolder(slsInvceHolder);
+        $location.path('/SlsInvoices/new');
+    }
+    
+    function convertSlsSOToSlsInvoice(slsSO){
+         slsSOHolder.slsSalesOrder= slsSO;
+         slsInvceHolder.slsInvoice.invceNbr = '';
+         slsInvceHolder.slsInvoice.invceStatus = 'INITIATED';
+         slsInvceHolder.slsInvoice.invceType = 'PROFORMAT';
+         slsInvceHolder.slsInvoice.soNbr = slsSOHolder.slsSalesOrder.soNbr;
+         slsInvceHolder.slsInvoice.invceCur = slsSOHolder.slsSalesOrder.soCur;
+         slsInvceHolder.slsInvoice.invceDt = new Date();
+         slsInvceHolder.slsInvoice.creatingUsr = slsSOHolder.slsSalesOrder.acsngUser;
+         slsInvceHolder.slsInvoice.grossSPPreTax = slsSOHolder.slsSalesOrder.grossSPPreTax;
+         slsInvceHolder.slsInvoice.rebate = slsSOHolder.slsSalesOrder.rebate;
+         slsInvceHolder.slsInvoice.netSPPreTax = slsSOHolder.slsSalesOrder.netSPPreTax;
+         slsInvceHolder.slsInvoice.vatAmount = slsSOHolder.slsSalesOrder.vatAmount;
+         slsInvceHolder.slsInvoice.netSPTaxIncl = slsSOHolder.slsSalesOrder.netSPTaxIncl;
+         slsInvceHolder.slsInvoice.pymtDscntPct = slsSOHolder.slsSalesOrder.pymtDscntPct;
+         slsInvceHolder.slsInvoice.pymtDscntAmt = slsSOHolder.slsSalesOrder.pymtDscntAmt;
+         slsInvceHolder.slsInvoice.netSalesAmt = slsSOHolder.slsSalesOrder.netSalesAmt;
+         slsInvceHolder.slsInvoice.rdngDscntAmt = slsSOHolder.slsSalesOrder.rdngDscntAmt;
+         slsInvceHolder.slsInvoice.netAmtToPay = slsSOHolder.slsSalesOrder.netAmtToPay;
+    }
+    
+    function convertSlsSOItemsToSlsInvoiceItems(slsSO){
+        for(var i=0; i < slsSO.slsSOItems.length; i++){
+            var slsInvceItemHolder = {slsInvceItem: {}};
+            slsInvceItemHolder.slsInvceItem.invNbr = '';
+            slsInvceItemHolder.slsInvceItem.lotPic = slsSO.slsSOItems[i].lotPic;
+            slsInvceItemHolder.slsInvceItem.artPic = slsSO.slsSOItems[i].artPic;
+            slsInvceItemHolder.slsInvceItem.artName = slsSO.slsSOItems[i].artName;
+            slsInvceItemHolder.slsInvceItem.qty = slsSO.slsSOItems[i].deliveredQty;
+            slsInvceItemHolder.slsInvceItem.stkQty = slsSO.slsSOItems[i].stkQty;
+            slsInvceItemHolder.slsInvceItem.sppuCur = slsSO.slsSOItems[i].sppuCur;
+            slsInvceItemHolder.slsInvceItem.sppuPreTax = slsSO.slsSOItems[i].sppuPreTax;
+            slsInvceItemHolder.slsInvceItem.grossSPPreTax = slsSO.slsSOItems[i].grossSPPreTax;
+            slsInvceItemHolder.slsInvceItem.rebate = slsSO.slsSOItems[i].rebate;
+            slsInvceItemHolder.slsInvceItem.rebatePct = slsSO.slsSOItems[i].rebatePct;
+            slsInvceItemHolder.slsInvceItem.netSPPreTax = slsSO.slsSOItems[i].netSPPreTax;
+            slsInvceItemHolder.slsInvceItem.vatPct = slsSO.slsSOItems[i].vatPct;
+            slsInvceItemHolder.slsInvceItem.vatAmount = slsSO.slsSOItems[i].vatAmount;
+            slsInvceItemHolder.slsInvceItem.netSPTaxIncl = slsSO.slsSOItems[i].netSPTaxIncl;
+            slsInvceItemHolder.slsInvceItem.objctOrgUnit = slsSO.slsSOItems[i].objctOrgUnit;
+            slsInvceHolder.slsInvceItemsholder.push(slsInvceItemHolder);
+        }
+    }
+    
+    function convertSlsSOPtnrsToSlsInvoicePtnrs(slsSO){
+       for(var i=0; i < slsSO.slsSOPtnrs.length; i++){
+            var slsInvcePtnrHolder = {slsInvcePtnr: {}};
+           slsInvcePtnrHolder.slsInvcePtnr.invceNbr = '';
+           slsInvcePtnrHolder.slsInvcePtnr.ptnrNbr = slsSO.slsSOPtnrs[i].ptnrNbr;
+           slsInvcePtnrHolder.slsInvcePtnr.roleInInvce = slsSO.slsSOPtnrs[i].roleInSO;
+           slsInvceHolder.slsInvcePtnrsHolder.push(slsInvcePtnrHolder);
+       }
     }
     
     

@@ -37,6 +37,9 @@ public class SlsInvoiceEndpoint
 
    @Inject
    private SlsInvoiceEJB ejb;
+   
+   @Inject
+   private SlsInvoiceHolderEJB holderEJB;
 
    @POST
    @Consumes({ "application/json", "application/xml" })
@@ -130,7 +133,8 @@ public class SlsInvoiceEndpoint
       Long countLike = ejb.countByLike(searchInput.getEntity(), attributes);
       List<SlsInvoice> resultList = ejb.findByLike(searchInput.getEntity(),
             searchInput.getStart(), searchInput.getMax(), attributes);
-      return new SlsInvoiceSearchResult(countLike, detach(resultList),
+      List<SlsInvoice> resultList2 = holderEJB.reloadSlsInvoices(resultList);
+      return new SlsInvoiceSearchResult(countLike, detach(resultList2),
             detach(searchInput));
    }
    
