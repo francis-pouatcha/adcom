@@ -193,12 +193,7 @@ public class CdrDrctSalesManager {
 	public CdrDsArtHolder closeSales(CdrDsArtHolder cdrDsArtHolder) throws AdException{
 		cdrDsArtHolder = updateOrder(cdrDsArtHolder);
 		CdrDrctSales cdrDrctSales = cdrDsArtHolder.getCdrDrctSales();
-		recomputeOrder(cdrDrctSales);
-		//		procOrder.setPoStatus(BaseProcessStatusEnum.CLOSED.name());
-		cdrDrctSales = cdrDrctSalesEJB.update(cdrDrctSales);
-		cdrDsArtHolder.setCdrDrctSales(cdrDrctSales);
-		createClosedSalesHistory(cdrDrctSales);// closed, no need processor?
-
+		createClosedSalesHistory(cdrDrctSales);
 		return cdrDsArtHolder;
 	}
 

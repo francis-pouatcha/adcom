@@ -14,9 +14,9 @@ import org.adorsys.adcshdwr.exceptions.AdException;
 public class PaymentHandler {
 	
 	@Inject
-	DirectSalePayment directSalePayment;
+	DirectSalePaymentImpl directSalePayment;
 	@Inject
-	IndirectSalePayment indirectSalePayment;
+	IndirectSalePaymentImpl indirectSalePayment;
 	
 	public void directSalePayment(@Observes @DirectSale PaymentEvent event) throws AdException {
 		

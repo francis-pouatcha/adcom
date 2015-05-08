@@ -11,10 +11,6 @@ import javax.ws.rs.Produces;
 
 import org.adorsys.adcshdwr.exceptions.AdException;
 
-/**
- * @author boriswaguia
- *
- */
 @Path("/cdrpymntmanager")
 public class CdrPymntManagerEndPoint {
 	@Inject
@@ -25,6 +21,6 @@ public class CdrPymntManagerEndPoint {
 	@Consumes({ "application/json", "application/xml" })
 	@Produces({ "application/json", "application/xml" })
 	public CdrPymntHolder save(CdrPymntHolder cdrPymntHolder) throws AdException {
-		return ejb.saveAndClovePymt(cdrPymntHolder);
+		return ejb.savePymt(cdrPymntHolder);
 	}
 }

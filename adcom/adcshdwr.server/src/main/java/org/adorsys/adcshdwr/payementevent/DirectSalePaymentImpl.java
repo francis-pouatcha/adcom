@@ -14,7 +14,7 @@ import org.adorsys.adcshdwr.rest.CdrDsPymntItemEJB;
 import org.apache.commons.lang3.StringUtils;
 
 @Stateless
-public class DirectSalePayment {
+public class DirectSalePaymentImpl {
 	
 	@Inject
 	CdrDsPymntItemEJB cdrDsPymntItemEJB;
@@ -25,8 +25,10 @@ public class DirectSalePayment {
 		
 		if(pymtEvt == null) throw new AdException("No Payment");
 		if(StringUtils.isBlank(pymtEvt.getSaleNbr())) throw new AdException("No Direct Sale Number");
+		if(pymtEvt.getAmt() == null) throw new AdException("No Amount to pay");
+		if(pymtEvt.getRcvdAmt() == null) throw new AdException("No Recieved amount");
 		if(BigDecimal.ZERO.compareTo(pymtEvt.getAmt()) == 1) throw new AdException("Amount Net to pay less than 0");
-		if(BigDecimal.ZERO.compareTo(pymtEvt.getRcvdAmt()) == 1) throw new AdException("Received Amount less than 0");
+		if(BigDecimal.ZERO.compareTo(pymtEvt.getRcvdAmt()) == 1) throw new AdException("Received Amount less than 0");	
 		if(pymtEvt.getAmt().compareTo(pymtEvt.getRcvdAmt()) == 1) throw new AdException("Received Amount less than Amount Net to Pay");
 		
 		List<CdrDsPymntItem> dsPymntItems = cdrDsPymntItemEJB.findByDsNbr(pymtEvt.getSaleNbr());
