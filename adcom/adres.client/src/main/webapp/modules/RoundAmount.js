@@ -8,6 +8,7 @@
 function RoundAmount(amount) {
 
     this.amount = amount;
+    this.roundAmount = Math.ceil(amount);
     this.nbreIncrease = 0;
     this.finalAmount = 0;
 
@@ -22,7 +23,7 @@ RoundAmount.prototype.multipleOfFive = function() {
     var isMultiple = false;
 
     while (!isMultiple) {
-        if ((this.amount % 5 == 0)) {
+        if ((this.roundAmount % 5 == 0)) {
             isMultiple = true;
         }
         else {
@@ -30,5 +31,5 @@ RoundAmount.prototype.multipleOfFive = function() {
         }
     }
 
-    this.amount += this.nbreIncrease;
+    this.finalAmount = this.roundAmount + this.nbreIncrease;
 }
