@@ -24,7 +24,6 @@ import javax.ws.rs.core.Response.Status;
 import org.adorsys.adcshdwr.jpa.CdrCstmrVchr;
 import org.adorsys.adcshdwr.jpa.CdrCstmrVchrSearchInput;
 import org.adorsys.adcshdwr.jpa.CdrCstmrVchrSearchResult;
-import org.adorsys.adcshdwr.jpa.CdrCstmrVchr_;
 
 /**
  * 
@@ -64,6 +63,15 @@ public class CdrCstmrVchrEndpoint
    public CdrCstmrVchr update(CdrCstmrVchr entity)
    {
       return detach(ejb.update(entity));
+   }
+   
+   @PUT
+   @Path("/cancel/{id}")
+   @Produces({ "application/json", "application/xml" })
+   @Consumes({ "application/json", "application/xml" })
+   public CdrCstmrVchr cancel(CdrCstmrVchr entity)
+   {
+      return detach(ejb.cancel(entity));
    }
 
    @GET
@@ -132,6 +140,18 @@ public class CdrCstmrVchrEndpoint
             searchInput.getStart(), searchInput.getMax(), attributes);
       return new CdrCstmrVchrSearchResult(countLike, detach(resultList),
             detach(searchInput));
+   }
+   
+   @POST
+   @Path("/findCustom")
+   @Produces({ "application/json", "application/xml" })
+   @Consumes({ "application/json", "application/xml" })
+   public CdrCstmrVchrSearchResult findCustom(CdrCstmrVchrSearchInput searchInput)
+   {
+	   Long count = ejb.countCustom(searchInput);
+	   List<CdrCstmrVchr> resultList = ejb.findCustom(searchInput);
+	   return new CdrCstmrVchrSearchResult(count, detach(resultList),
+			   detach(searchInput));
    }
 
    @POST

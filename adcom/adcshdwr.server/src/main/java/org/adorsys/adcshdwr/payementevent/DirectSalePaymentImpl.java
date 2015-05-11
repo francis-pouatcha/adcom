@@ -12,7 +12,11 @@ import org.adorsys.adcshdwr.jpa.CdrDsPymntItem;
 import org.adorsys.adcshdwr.rest.CdrCshDrawerEJB;
 import org.adorsys.adcshdwr.rest.CdrDsPymntItemEJB;
 import org.apache.commons.lang3.StringUtils;
-
+/**
+* 
+* @author guymoyo
+*
+*/
 @Stateless
 public class DirectSalePaymentImpl {
 	

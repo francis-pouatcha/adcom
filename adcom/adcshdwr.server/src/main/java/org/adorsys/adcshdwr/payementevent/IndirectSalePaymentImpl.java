@@ -18,6 +18,12 @@ import org.adorsys.adcshdwr.rest.CdrPymntEJB;
 import org.adorsys.adcshdwr.rest.CdrPymntItemEJB;
 import org.apache.commons.lang3.StringUtils;
 
+/**
+* 
+* @author guymoyo
+*
+*/
+
 @Stateless
 public class IndirectSalePaymentImpl {
 
