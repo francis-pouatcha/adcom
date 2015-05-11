@@ -16,8 +16,6 @@ import org.adorsys.adcore.utils.SequenceGenerator;
 import org.adorsys.adcshdwr.exceptions.AdException;
 import org.adorsys.adcshdwr.jpa.CdrCshDrawer;
 import org.adorsys.adcshdwr.jpa.CdrCshDrawerSearchInput;
-import org.adorsys.adcshdwr.jpa.CdrCshDrawer;
-import org.adorsys.adcshdwr.jpa.CdrCshDrawerSearchInput;
 import org.adorsys.adcshdwr.repo.CdrCshDrawerRepository;
 import org.apache.commons.lang3.StringUtils;
 

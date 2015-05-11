@@ -26,8 +26,6 @@ import org.adorsys.adcshdwr.jpa.CdrCshDrawer;
 import org.adorsys.adcshdwr.jpa.CdrCshDrawerSearchInput;
 import org.adorsys.adcshdwr.jpa.CdrCshDrawerSearchResult;
 import org.adorsys.adcshdwr.jpa.CdrCshDrawer_;
-import org.adorsys.adcshdwr.jpa.CdrDrctSales;
-import org.adorsys.adcshdwr.jpa.CdrDrctSalesSearchResult;
 
 /**
  * 

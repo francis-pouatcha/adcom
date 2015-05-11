@@ -17,7 +17,6 @@ import org.adorsys.adcshdwr.api.CdrDsArtHolder;
 import org.adorsys.adcshdwr.api.CdrDsArtItemHolder;
 import org.adorsys.adcshdwr.exceptions.AdException;
 import org.adorsys.adcshdwr.jpa.CdrCshDrawer;
-import org.adorsys.adcshdwr.jpa.CdrCstmrVchrSearchInput;
 import org.adorsys.adcshdwr.jpa.CdrCstmrVchr;
 import org.adorsys.adcshdwr.jpa.CdrCstmrVchrSearchInput;
 import org.adorsys.adcshdwr.jpa.CdrDrctSales;
