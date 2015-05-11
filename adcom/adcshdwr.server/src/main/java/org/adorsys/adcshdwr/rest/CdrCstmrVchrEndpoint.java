@@ -22,6 +22,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.adorsys.adcshdwr.jpa.CdrCstmrVchr;
+import org.adorsys.adcshdwr.jpa.CdrCstmrVchr_;
 import org.adorsys.adcshdwr.jpa.CdrCstmrVchrSearchInput;
 import org.adorsys.adcshdwr.jpa.CdrCstmrVchrSearchResult;
 

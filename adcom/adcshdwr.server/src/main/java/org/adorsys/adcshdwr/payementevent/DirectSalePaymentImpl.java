@@ -21,9 +21,9 @@ import org.apache.commons.lang3.StringUtils;
 public class DirectSalePaymentImpl {
 	
 	@Inject
-	CdrDsPymntItemEJB cdrDsPymntItemEJB;
+	private CdrDsPymntItemEJB cdrDsPymntItemEJB;
 	@Inject
-	CdrCshDrawerEJB cdrCshDrawerEJB;
+	private CdrCshDrawerEJB cdrCshDrawerEJB;
 	
 	public void pay(PaymentEvent pymtEvt) throws AdException{
 		

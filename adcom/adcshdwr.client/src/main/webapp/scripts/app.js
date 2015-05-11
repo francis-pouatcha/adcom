@@ -7,11 +7,11 @@ angular.module('AdCshdwr', [
       'SessionManager',
       'AuthInterceptor',
       'ngSanitize',
-      'pascalprecht.translate',
       'NavBar',
        'ngResource',
        'datePicker',
        'ADUtils',
+        'pascalprecht.translate',
        'httpProgress'
 ])
 .constant('APP_CONFIG',{

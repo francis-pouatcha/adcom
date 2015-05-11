@@ -14,6 +14,7 @@ import javax.validation.constraints.NotNull;
 
 import org.adorsys.adcore.jpa.AbstractIdentifData;
 import org.adorsys.adcore.utils.FinancialOps;
+import org.adorsys.adcore.utils.RoundAmount;
 import org.adorsys.javaext.description.Description;
 
 
@@ -234,7 +235,8 @@ public class CdrAbstractDrctSales extends AbstractIdentifData {
 		this.netSPPreTax=BigDecimal.ZERO;
 		this.vatAmount=BigDecimal.ZERO;
 		this.netSPTaxIncl=BigDecimal.ZERO;
-
+		this.netSalesAmt=BigDecimal.ZERO;
+		this.netAmtToPay=BigDecimal.ZERO;
 	}
 
 	public void copyTo(CdrAbstractDrctSales target){
@@ -283,15 +285,20 @@ public class CdrAbstractDrctSales extends AbstractIdentifData {
 
 	public void evlte() {
 		
-		if(this.pymtDscntPct==null){
-			this.pymtDscntPct = BigDecimal.ZERO;
-			this.pymtDscntAmt = FinancialOps.amtFromPrct(this.netSPTaxIncl, this.pymtDscntPct, this.dsCur);
-		}
-		if(this.pymtDscntAmt==null) this.pymtDscntAmt=BigDecimal.ZERO;
+
+		if(this.pymtDscntPct!=null)
+			this.pymtDscntAmt = FinancialOps.amtFromPrct(this.netSPPreTax, this.pymtDscntPct, this.dsCur);
 		
-		this.netSalesAmt = FinancialOps.substract(this.netSPTaxIncl, this.pymtDscntAmt, this.dsCur);
-		
-		if(this.rdngDscntAmt==null) this.rdngDscntAmt=BigDecimal.ZERO;
-		this.netAmtToPay = FinancialOps.substract(this.netSPTaxIncl, this.rdngDscntAmt, this.dsCur);
+	if(this.pymtDscntAmt==null) this.pymtDscntAmt=BigDecimal.ZERO;
+	
+	this.netSalesAmt = FinancialOps.substract(this.netSPTaxIncl, this.pymtDscntAmt, this.dsCur);
+	
+	RoundAmount roundAmount = new RoundAmount();
+	roundAmount.roundIt(this.netSalesAmt);
+	this.netAmtToPay = roundAmount.getAmount();
+	this.rdngDscntAmt = roundAmount.getRoundDiscount();
+	
+	/*if(this.rdngDscntAmt==null) this.rdngDscntAmt=BigDecimal.ZERO;
+	this.netAmtToPay = FinancialOps.add(this.netSalesAmt, this.rdngDscntAmt, this.dsCur);*/
 	}
 }

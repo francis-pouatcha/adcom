@@ -10,4 +10,5 @@ import org.apache.deltaspike.data.api.Repository;
 public interface CdrPymntRepository extends EntityRepository<CdrPymnt, String>
 {
 	List<CdrPymnt> findByPymntNbr(String pymntNbr);
+	List<CdrPymnt> findByInvNbr(String invNbr);
 }

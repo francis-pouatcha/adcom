@@ -120,4 +120,8 @@ public class CdrPymntEJB
 	public List<CdrPymnt> findByPymntNbr(String pymntNbr){
 		return repository.findByPymntNbr(pymntNbr);
 	}
+	
+	public List<CdrPymnt> findByInvNbr(String invNbr){
+		return repository.findByInvNbr(invNbr);
+	}
 }

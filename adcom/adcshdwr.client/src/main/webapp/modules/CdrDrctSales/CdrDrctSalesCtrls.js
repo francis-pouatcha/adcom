@@ -527,6 +527,8 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
             };
 
             function clear(){
+                $scope.cdrDsArtHolder=null;
+                $scope.cdrDsArtHolder = {};
                 $scope.cdrDsArtHolder = {
                     cdrDrctSales: {},
                     items: []
@@ -539,7 +541,7 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
             }
 
             $scope.save = function () {
-                computeCdrDsArtHolder();
+                //computeCdrDsArtHolder();
                 if(verifCdrDsArtHolder() == false){
                     return;
                 }
@@ -553,7 +555,7 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
             };
 
             function verifCdrDsArtHolder(){
-                if($scope.cdrDsArtHolder.cdrDrctSales.netSalesAmt > $scope.cdrDsArtHolder.paidAmt || !$scope.cdrDsArtHolder.paidAmt){
+                if($scope.cdrDsArtHolder.cdrDrctSales.netAmtToPay > $scope.cdrDsArtHolder.paidAmt || !$scope.cdrDsArtHolder.paidAmt){
                     $scope.error = "Montant paye est inferieur au montant de vente";
                     return false;
                 }
@@ -587,17 +589,25 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                 if (!$scope.cdrDsArtHolder.cdrDrctSales.pymtDscntPct) return;
                 $scope.cdrDsArtHolder.cdrDrctSales.pymtDscntAmt = ($scope.cdrDsArtHolder.cdrDrctSales.pymtDscntPct * $scope.cdrDsArtHolder.cdrDrctSales.netSPPreTax) / 100;
                 $scope.cdrDsArtHolder.cdrDrctSales.netSalesAmt = $scope.cdrDsArtHolder.cdrDrctSales.netSPTaxIncl - $scope.cdrDsArtHolder.cdrDrctSales.pymtDscntAmt;
+                var netSalesAmt = $scope.cdrDsArtHolder.cdrDrctSales.netSalesAmt;
+                roundAmountObject.roundAmount(netSalesAmt);
+                $scope.cdrDsArtHolder.cdrDrctSales.netAmtToPay = roundAmountObject.amount;
+                $scope.cdrDsArtHolder.cdrDrctSales.rdngDscntAmt =roundAmountObject.roundDiscount;
             };
 
             $scope.pymtDscntAmtChanged = function () {
                 if (!$scope.cdrDsArtHolder.cdrDrctSales.pymtDscntAmt) return;
                 $scope.cdrDsArtHolder.cdrDrctSales.pymtDscntPct = ($scope.cdrDsArtHolder.cdrDrctSales.pymtDscntAmt * 100) / $scope.cdrDsArtHolder.cdrDrctSales.netSPPreTax;
                 $scope.cdrDsArtHolder.cdrDrctSales.netSalesAmt = $scope.cdrDsArtHolder.cdrDrctSales.netSPTaxIncl - $scope.cdrDsArtHolder.cdrDrctSales.pymtDscntAmt; //update the netSPTaxIncl
+                var netSalesAmt = $scope.cdrDsArtHolder.cdrDrctSales.netSalesAmt;
+                roundAmountObject.roundAmount(netSalesAmt);
+                $scope.cdrDsArtHolder.cdrDrctSales.netAmtToPay = roundAmountObject.amount;
+                $scope.cdrDsArtHolder.cdrDrctSales.rdngDscntAmt =roundAmountObject.roundDiscount;
             };
 
             $scope.paidAmtChanged = function () {
                 if (!$scope.cdrDsArtHolder.paidAmt) return;
-                $scope.cdrDsArtHolder.changeAmt = $scope.cdrDsArtHolder.paidAmt - $scope.cdrDsArtHolder.cdrDrctSales.netSalesAmt;
+                $scope.cdrDsArtHolder.changeAmt = $scope.cdrDsArtHolder.paidAmt - $scope.cdrDsArtHolder.cdrDrctSales.netAmtToPay;
             }
 
             function clearObject(anObject) {
@@ -657,6 +667,7 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                     }
                 }
                 computeCdrDsArtHolder();
+                $scope.pymtDscntPctChanged();
                 $scope.error = "";
                 $scope.cdrDsArtItemHolder = clearObject($scope.cdrDsArtItemHolder);
             }
@@ -696,12 +707,37 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                     totalNetSPPreTax = totalNetSPPreTax - $scope.cdrDsArtHolder.cdrDrctSales.rebate;
                 }
                 $scope.cdrDsArtHolder.cdrDrctSales.netSalesAmt = totalNetSalesAmt;
-                $scope.cdrDsArtHolder.cdrDrctSales.netAmtToPay = totalNetSalesAmt;
+                roundAmountObject.roundAmount(totalNetSalesAmt);
+                $scope.cdrDsArtHolder.cdrDrctSales.netAmtToPay = roundAmountObject.amount;
+                $scope.cdrDsArtHolder.cdrDrctSales.rdngDscntAmt =roundAmountObject.roundDiscount;
                 $scope.cdrDsArtHolder.cdrDrctSales.netSPPreTax = totalNetSPPreTax;
                 $scope.cdrDsArtHolder.cdrDrctSales.netSPTaxIncl = totalNetSPTaxIncl;
                 $scope.cdrDsArtHolder.cdrDrctSales.vatAmount = totalVatAmount;
                 $scope.cdrDsArtHolder.cdrDrctSales.dsCur = currency;
             }
+
+
+
+            var roundAmountObject = {};
+            roundAmountObject.amount;
+            roundAmountObject.roundDiscount;
+
+            roundAmountObject.roundAmount = function(amount){
+                this.roundDiscount = 0;
+                roundAmountObject.amount = Math.round(amount);
+                var isMultiple = false;
+                while (!isMultiple) {
+                    if ((this.amount % 5 == 0)) {
+                        isMultiple = true;
+                    }
+                    else {
+                        this.roundDiscount++;
+                        this.amount++;
+                    }
+                }
+
+            }
+
 }])
     .controller('cdrDrctSalesShowCtlr', ['$scope', 'genericResource', '$location', 'cdrDrctSalesUtils', 'cdrDrctSalesState', 'commonTranslations','$routeParams',
                                  function ($scope, genericResource, $location, cdrDrctSalesUtils, cdrDrctSalesState, commonTranslations, $routeParams) {

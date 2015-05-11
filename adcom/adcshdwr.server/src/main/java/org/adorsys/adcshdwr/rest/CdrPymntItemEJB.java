@@ -116,4 +116,8 @@ public class CdrPymntItemEJB
 	public List<CdrPymntItem> findByPymntNbr(String pymntNbr, int start, int max) {
 		return repository.findByPymntNbr(pymntNbr).firstResult(start).maxResults(max).getResultList();
 	}
+	
+	public List<CdrPymntItem> findByPymntNbr(String pymntNbr) {
+		return repository.findByPymntNbr(pymntNbr).getResultList();
+	}
 }

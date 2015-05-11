@@ -28,13 +28,13 @@ import org.apache.commons.lang3.StringUtils;
 public class IndirectSalePaymentImpl {
 
 	@Inject
-	CdrPymntItemEJB cdrPymntItemEJB;
+	private CdrPymntItemEJB cdrPymntItemEJB;
 	@Inject
-	CdrCshDrawerEJB cdrCshDrawerEJB;
+	private CdrCshDrawerEJB cdrCshDrawerEJB;
 	@Inject
-	CdrPymntEJB cdrPymntEJB;
+	private CdrPymntEJB cdrPymntEJB;
 	@Inject
-	CdrCstmrVchrEJB cdrCstmrVchrEJB;
+	private CdrCstmrVchrEJB cdrCstmrVchrEJB;
 	
 	public void pay(PaymentEvent pymtEvt) throws AdException{
 		

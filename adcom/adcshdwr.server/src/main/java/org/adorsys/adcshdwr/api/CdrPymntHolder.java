@@ -4,6 +4,7 @@
 package org.adorsys.adcshdwr.api;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.adorsys.adcshdwr.jpa.CdrPymntItem;
@@ -23,7 +24,7 @@ public class CdrPymntHolder {
 	
 	private String vchrNbr;
 	
-	private List<CdrPymntItem> cdrPymntItem;
+	private List<CdrPymntItem> cdrPymntItem = new ArrayList<CdrPymntItem>();
 
 	public BigDecimal getAmt() {
 		return amt;
