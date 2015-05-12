@@ -20,35 +20,32 @@ angular.module('Admanager')
 
         service.translate = function () {
             $translate([
-                    'CdrCshDrawer_cashier_description.text',
-                    'CdrCshDrawer_cashier_description.title',
-                    'CdrCshDrawer_cdrNbr_description.text',
-                    'CdrCshDrawer_cdrNbr_description.title',
-                    'CdrCshDrawer_closedBy_description.text',
-                    'CdrCshDrawer_closedBy_description.title',
-                    'CdrCshDrawer_clsngDt_description.text',
-                    'CdrCshDrawer_clsngDt_description.title',
-                    'CdrCshDrawer_description.text',
-                    'CdrCshDrawer_description.title',
-                    'CdrCshDrawer_initialAmt_description.text',
-                    'CdrCshDrawer_initialAmt_description.title',
-                    'CdrCshDrawer_opngDt_description.text',
-                    'CdrCshDrawer_opngDt_description.title',
-                    'CdrCshDrawer_ttlCashIn_description.text',
-                    'CdrCshDrawer_ttlCashIn_description.title',
-                    'CdrCshDrawer_ttlCashOut_description.text',
-                    'CdrCshDrawer_ttlCashOut_description.title',
-                    'CdrCshDrawer_ttlCash_description.text',
-                    'CdrCshDrawer_ttlCash_description.title',
-                    'CdrCshDrawer_ttlCheck_description.text',
-                    'CdrCshDrawer_ttlCheck_description.title',
-                    'CdrCshDrawer_ttlCredCard_description.text',
-                    'CdrCshDrawer_ttlCredCard_description.title',
-                    'CdrCshDrawer_ttlVchrIn_description.text',
-                    'CdrCshDrawer_ttlVchrIn_description.title',
-                    'CdrCshDrawer_ttlVchrOut_description.text',
-                    'CdrCshDrawer_ttlVchrOut_description.title',
-                    'CdrCshDrawer_close_description.title'
+                    'CdrCstmrVchr_amtUsed_description.text',
+                    'CdrCstmrVchr_amtUsed_description.title',
+                    'CdrCstmrVchr_amt_description.text',
+                    'CdrCstmrVchr_amt_description.title',
+                    'CdrCstmrVchr_canceled_description.text',
+                    'CdrCstmrVchr_canceled_description.title',
+                    'CdrCstmrVchr_cashier_description.text',
+                    'CdrCstmrVchr_cashier_description.title',
+                    'CdrCstmrVchr_cdrNbr_description.text',
+                    'CdrCstmrVchr_cdrNbr_description.title',
+                    'CdrCstmrVchr_cstmrName_description.text',
+                    'CdrCstmrVchr_cstmrName_description.title',
+                    'CdrCstmrVchr_cstmrNbr_description.text',
+                    'CdrCstmrVchr_cstmrNbr_description.title',
+                    'CdrCstmrVchr_description.text',
+                    'CdrCstmrVchr_description.title',
+                    'CdrCstmrVchr_dsNbr_description.text',
+                    'CdrCstmrVchr_dsNbr_description.title',
+                    'CdrCstmrVchr_prntDt_description.text',
+                    'CdrCstmrVchr_prntDt_description.title',
+                    'CdrCstmrVchr_restAmt_description.text',
+                    'CdrCstmrVchr_restAmt_description.title',
+                    'CdrCstmrVchr_settled_description.text',
+                    'CdrCstmrVchr_settled_description.title',
+                    'CdrCstmrVchr_vchrNbr_description.text',
+                    'CdrCstmrVchr_vchrNbr_description.title'
                  ])
                 .then(function (translations) {
                     service.translations = translations;
@@ -65,7 +62,7 @@ function ($scope, genericResource, CdrCstmrVchrUtils, $location, $rootScope, com
             $scope.totalItems;
             $scope.currentPage = 1;
             $scope.maxSize = 5;
-            $scope.cdrCshDrawers = [];
+            $scope.cdrCstmrVchrs = [];
             $scope.selectedIndex  ;
             $scope.handleSearchRequestEvent = handleSearchRequestEvent;
             $scope.handlePrintRequestEvent = handlePrintRequestEvent;
@@ -76,7 +73,7 @@ function ($scope, genericResource, CdrCstmrVchrUtils, $location, $rootScope, com
             $scope.commonTranslations = commonTranslations;
             
             var translateChangeSuccessHdl = $rootScope.$on('$translateChangeSuccess', function () {
-                CshDrawerUtils.translate();
+            	CdrCstmrVchrUtils.translate();
             });
 
             $scope.$on('$destroy', function () {
@@ -88,8 +85,8 @@ function ($scope, genericResource, CdrCstmrVchrUtils, $location, $rootScope, com
     function findCustom(searchInput) {
         genericResource.findCustom(CdrCstmrVchrUtils.cdrCstmr, searchInput)
             .success(function (entitySearchResult) {
-				$scope.cdrCshDrawers = entitySearchResult.resultList;
-				console.log("that is the list of cdrCstmrVchrs : " + entitySearchResult + " or can be : " + $scope.cdrCshDrawers );
+				$scope.cdrCstmrVchrs = entitySearchResult.resultList;
+				console.log("that is the list of cdrCstmrVchrs : " + entitySearchResult + " or can be : " + $scope.cdrCstmrVchrs );
             })
             .error(function (error) {
                 $scope.error = error;
@@ -135,6 +132,7 @@ function ($scope, genericResource, CdrCstmrVchrUtils, $location, $rootScope, com
                  entity:{},
                  fieldNames:[],
                  start:0,
+                 max:25,
                  max:self.itemPerPage
              }
     	 

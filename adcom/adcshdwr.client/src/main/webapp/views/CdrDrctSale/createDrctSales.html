@@ -100,10 +100,9 @@
                 <div class="row"  style="padding-top: 15px;">
                     <span class="col-lg-3" style="font-size:17px;">{{cdrDrctSalesUtils.translations['CdrDrctSales_netSalesAmt_description.title']}}: </span>
                     <span class="col-lg-2" price-red="price-red" style="font-size: 25px;">{{cdrDsArtHolder.cdrDrctSales.netSalesAmt | currencyAccounting:cur}}</span>
-                    <span class="col-lg-2" style="font-size:17px;">Currency (XAF) : </span>
 
                     <div class="col-lg-2">
-                        <select class="form-control" ng-model="cur" ng-options="cur for cur in conversionPrice.currency"></select>
+                        Currency (XAF) : <select class="form-control" ng-model="cur" ng-options="cur for cur in conversionPrice.currency"></select>
                     </div>
                 </div>
 
