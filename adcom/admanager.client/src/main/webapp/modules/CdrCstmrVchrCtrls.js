@@ -7,15 +7,29 @@ angular.module('Admanager')
         service.cdrCstmr = '/adcshdwr.server/rest/cdrcstmrvchrs';
         service.login = '/adbase.server/rest/logins';
         service.language = sessionManager.language;
-
         service.currentWsUser = sessionManager.userWsData();
-
+        	
+        service.loadCdrCstmrVchr = function(value){
+            return genericResource.findByLikePromissed(service.cdrCstmr, "vchrNbr", value)
+                .then(function (entitySearchResult) {
+                    return entitySearchResult.resultList;
+                })
+        }
         service.loadLogin = function(value){
             return genericResource.findByLikePromissed(service.login, "loginName", value)
                 .then(function (entitySearchResult) {
                     return entitySearchResult.resultList;
                 })
-
+        }
+        
+        service.updateCdrCstmrVchr = function(entity){
+        	 var deferred = $q.defer();
+             genericResource.update(service.cdrCstmr, entity).success(function(data){
+                 deferred.resolve(data);
+             }).error(function(){
+                 deferred.reject("Can not update")
+             });
+             return deferred.promise;
         }
 
         service.translate = function () {
@@ -67,6 +81,7 @@ function ($scope, genericResource, CdrCstmrVchrUtils, $location, $rootScope, com
             $scope.handleSearchRequestEvent = handleSearchRequestEvent;
             $scope.handlePrintRequestEvent = handlePrintRequestEvent;
             $scope.paginate = paginate;
+            $scope.cancelCdrCstmrVchr = cancelCdrCstmrVchr;
             $scope.error = "";
             $scope.CdrCstmrVchrUtils = CdrCstmrVchrUtils;
             
@@ -137,6 +152,24 @@ function ($scope, genericResource, CdrCstmrVchrUtils, $location, $rootScope, com
              }
     	 
         findCustom($scope.searchInput);
+    }
+    
+    function cancelCdrCstmrVchr(item){
+    	
+    	if(item.canceled === true){
+    		console.log('true value for cancel entity');
+    		item.canceled = false;
+    	}
+    	else if(item.canceled === false){
+	    		console.log('false value for cancel entity');
+	    		item.canceled = true;
+    	}
+    	
+    	CdrCstmrVchrUtils.updateCdrCstmrVchr(item).then(function(result){
+        	console.log(" update of -------------------> : " + result.id + " are canceled : " + result.canceled);
+        })
+        
+    	init();
     }
 
 
