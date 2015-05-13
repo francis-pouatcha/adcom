@@ -43,32 +43,25 @@ public class CdrPymntManager {
 		PaymentEvent paymentEvent = new PaymentEvent(cdrPymntHolder.getPymntMode(), cdrPymntHolder.getAmt(), cdrPymntHolder.getRcvdAmt(),
 				new Date(), cdrPymntHolder.getInvceNbr(), cdrPymntHolder.getVchrNbr(), cdrPymntHolder.getPymntNbr());	
 		
-		try {
 			indirectSaleEvent.fire(paymentEvent);
-		} catch (Exception e) {
-			throw new AdException(e.getMessage());
-		}	
-		//search pymtHolder and return
-		List<CdrPymnt> listCdrPymnt = cdrPymntEJB.findByInvNbr(paymentEvent.getSaleNbr());
-		String pymntNbr = listCdrPymnt.get(0).getPymntNbr();
-		cdrPymntHolder.setPymntNbr(pymntNbr);
-		List<CdrPymntItem> lsitItem = pymntItemEJB.findByPymntNbr(pymntNbr);
-		cdrPymntHolder.getCdrPymntItem().clear();
-		cdrPymntHolder.getCdrPymntItem().addAll(lsitItem);
-		return cdrPymntHolder;
+		
+			return invPymt(cdrPymntHolder.getInvceNbr());
 	}
 
 
 	public CdrPymntHolder invPymt(String invNbr) {
 		CdrPymntHolder cdrPymntHolder = new CdrPymntHolder();
+		cdrPymntHolder.setInvceNbr(invNbr);
 		List<CdrPymnt> listCdrPymnt = cdrPymntEJB.findByInvNbr(invNbr);
 		if(listCdrPymnt.isEmpty()) return cdrPymntHolder;
 		
-		String pymntNbr = listCdrPymnt.get(0).getPymntNbr();
+		CdrPymnt cdrPymnt = listCdrPymnt.get(0);
+		cdrPymntHolder.setCdrPymnt(cdrPymnt);
+		String pymntNbr = cdrPymnt.getPymntNbr();
 		cdrPymntHolder.setPymntNbr(pymntNbr);
 		List<CdrPymntItem> lsitItem = pymntItemEJB.findByPymntNbr(pymntNbr);
-		cdrPymntHolder.getCdrPymntItem().clear();
-		cdrPymntHolder.getCdrPymntItem().addAll(lsitItem);
+		cdrPymntHolder.getCdrPymntItems().clear();
+		cdrPymntHolder.getCdrPymntItems().addAll(lsitItem);
 		return cdrPymntHolder;
 	}
 }

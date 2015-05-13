@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.adorsys.adcshdwr.jpa.CdrPymnt;
 import org.adorsys.adcshdwr.jpa.CdrPymntItem;
 import org.adorsys.adcshdwr.jpa.CdrPymntMode;
 
@@ -24,7 +25,9 @@ public class CdrPymntHolder {
 	
 	private String vchrNbr;
 	
-	private List<CdrPymntItem> cdrPymntItem = new ArrayList<CdrPymntItem>();
+	private CdrPymnt cdrPymnt;
+	
+	private List<CdrPymntItem> cdrPymntItems = new ArrayList<CdrPymntItem>();
 
 	public BigDecimal getAmt() {
 		return amt;
@@ -74,12 +77,20 @@ public class CdrPymntHolder {
 		this.vchrNbr = vchrNbr;
 	}
 
-	public List<CdrPymntItem> getCdrPymntItem() {
-		return cdrPymntItem;
+	public List<CdrPymntItem> getCdrPymntItems() {
+		return cdrPymntItems;
 	}
 
-	public void setCdrPymntItem(List<CdrPymntItem> cdrPymntItem) {
-		this.cdrPymntItem = cdrPymntItem;
+	public void setCdrPymntItems(List<CdrPymntItem> cdrPymntItems) {
+		this.cdrPymntItems = cdrPymntItems;
+	}
+
+	public CdrPymnt getCdrPymnt() {
+		return cdrPymnt;
+	}
+
+	public void setCdrPymnt(CdrPymnt cdrPymnt) {
+		this.cdrPymnt = cdrPymnt;
 	}
 
 	

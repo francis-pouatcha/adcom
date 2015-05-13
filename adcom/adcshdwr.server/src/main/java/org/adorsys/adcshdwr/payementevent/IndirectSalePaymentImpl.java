@@ -46,6 +46,7 @@ public class IndirectSalePaymentImpl {
 		if(BigDecimal.ZERO.compareTo(pymtEvt.getRcvdAmt()) == 1) throw new AdException("Received Amount less than 0");
 		if(pymtEvt.getAmt().compareTo(pymtEvt.getRcvdAmt()) == 1) throw new AdException("Received Amount less than Amount Net to Pay");
 		
+		
 		CdrCshDrawer activeCshDrawer = cdrCshDrawerEJB.getActiveCshDrawer();
 		if(activeCshDrawer == null) throw new AdException("No open cash drawer");
 		
@@ -60,6 +61,7 @@ public class IndirectSalePaymentImpl {
 			cdrPymnt = list.get(0);
 		}
 		
+		if(pymtEvt.getPymntMode()==null) pymtEvt.setPymntMode(CdrPymntMode.CASH);
 		if(pymtEvt.getPymntMode().equals(CdrPymntMode.VOUCHER)){
 			if(StringUtils.isBlank(pymtEvt.getVchrNbr())) throw new AdException("No Voucher number");
 			List<CdrCstmrVchr> listVcher = cdrCstmrVchrEJB.findByVchrNbr(pymtEvt.getVchrNbr());
@@ -74,22 +76,21 @@ public class IndirectSalePaymentImpl {
 		CdrPymntItem pymntItem = new CdrPymntItem();
 		pymntItem.setAmt(pymtEvt.getAmt());
 		pymntItem.setRcvdAmt(pymtEvt.getRcvdAmt());
-		pymntItem.setPymntDocNbr(cdrPymnt.getPymntNbr());
+		pymntItem.setPymntNbr(cdrPymnt.getPymntNbr());
 		pymntItem.setPymntMode(pymtEvt.getPymntMode());
 		pymntItem.setPymntDocType("InDirect_Sale_Payment");
 		pymntItem.evlte();
-		pymntItem = cdrPymntItemEJB.create(pymntItem);		
-			
+		pymntItem = cdrPymntItemEJB.create(pymntItem);	
+		
+		//update payment
+		cdrPymnt.addAmnt(pymntItem.getAmt());
+		cdrPymnt = cdrPymntEJB.update(cdrPymnt);	
 		//update cshDrawer
 		switch (pymtEvt.getPymntMode()) {
-		case VOUCHER:
-			activeCshDrawer.AddTtlVchrIn(pymntItem.getAmt());
-		case CASH:
-			activeCshDrawer.AddTtlCash(pymntItem.getAmt());
-		case CHECK:
-			activeCshDrawer.AddTtlCheck(pymntItem.getAmt());
-		case CREDIT_CARD:
-			activeCshDrawer.AddTtlCredCard(pymntItem.getAmt());
+		case VOUCHER: activeCshDrawer.AddTtlVchrIn(pymntItem.getAmt());break;
+		case CASH: activeCshDrawer.AddTtlCash(pymntItem.getAmt());break;
+		case CHECK: activeCshDrawer.AddTtlCheck(pymntItem.getAmt());break;
+		case CREDIT_CARD: activeCshDrawer.AddTtlCredCard(pymntItem.getAmt());break;
 		}
 		activeCshDrawer.evlte();
 		cdrCshDrawerEJB.update(activeCshDrawer);

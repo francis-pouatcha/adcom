@@ -33,10 +33,6 @@ public abstract class CdrAbstractPymnt extends AbstractIdentifData {
 	@NotNull
 	private String invNbr;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Description("CdrPymnt_pymntDt_description")
-	@NotNull
-	private Date pymntDt;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Description("CdrPymnt_valueDt_description")
@@ -78,13 +74,6 @@ public abstract class CdrAbstractPymnt extends AbstractIdentifData {
 		this.pymntNbr = pymntNbr;
 	}
 
-	public Date getPymntDt() {
-		return this.pymntDt;
-	}
-
-	public void setPymntDt(final Date pymntDt) {
-		this.pymntDt = pymntDt;
-	}
 
 	public Date getValueDt() {
 		return this.valueDt;
@@ -175,8 +164,8 @@ public abstract class CdrAbstractPymnt extends AbstractIdentifData {
 	}
 	
 	public void copyTo(CdrAbstractPymnt target) {
+		target.invNbr = invNbr;
 		target.pymntNbr=pymntNbr;
-		target.pymntDt=pymntDt;
 		target.valueDt=valueDt;
 		target.amt=amt;
 		target.cashier=cashier;

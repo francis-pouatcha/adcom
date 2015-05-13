@@ -35,7 +35,6 @@ public class CdrPymntEJB
 		}
 		entity.setCashier(securityUtil.getCurrentLoginName());
 		Date pymntDt = new Date();
-		entity.setPymntDt(pymntDt);
 		entity.setValueDt(pymntDt);//TODO : is it the pymnt date ?
 		if(StringUtils.isBlank(entity.getPaidBy())) {
 			entity.setPaidBy("--Auto--");//maybe a direct sales

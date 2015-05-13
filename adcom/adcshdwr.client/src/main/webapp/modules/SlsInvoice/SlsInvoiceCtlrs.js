@@ -7,6 +7,7 @@ angular.module('AdCshdwr')
 
     service.urlBase='/adsales.server/rest/slsinvoices';
     service.bnsptnrUrlBase='/adbnsptnr.server/rest/bpbnsptnrs';
+    service.urlCdrpymntManager='/adcshdwr.server/rest/cdrpymntmanager';
     
     service.formatDate= function(fieldName, inPattern){
         return adUtils.formatDate(fieldName, inPattern);
@@ -26,6 +27,21 @@ angular.module('AdCshdwr')
       {enumKey:'RESUMED', translKey:'SlsInvceStatus_RESUMED_description.title'},
       {enumKey:'CLOSED', translKey:'SlsInvceStatus_CLOSED_description.title'}
     ];
+
+        service.cdrPymntModeI18nMsgTitleKey = function(enumKey){
+            return "CdrPymntMode"+enumKey+"_description.title";
+        };
+
+        service.cdrPymntModeI18nMsgTitleValue = function(enumKey){
+            return service.translations[service.cdrPymntModeI18nMsgTitleKey(enumKey)];
+        };
+
+        service.cdrPymntModes = [
+            {enumKey:'CASH', translKey:'CdrPymntMode_CASH_description.title'},
+            {enumKey:'CHECK', translKey:'CdrPymntMode_CHECK_description.title'},
+            {enumKey:'CREDIT_CARD', translKey:'CdrPymntMode_CREDIT_CARD_description.title'},
+            {enumKey:'VOUCHER', translKey:'CdrPymntMode_VOUCHER_description.title'}
+        ];
     
     service.language=sessionManager.language;
     
@@ -118,6 +134,11 @@ angular.module('AdCshdwr')
                     'SlsInvceStatus_ONGOING_description.title',
                     'SlsInvceStatus_RESUMED_description.title',
                     'SlsInvceStatus_SUSPENDED_description.title',
+
+                    'CdrPymntMode_CASH_description.title',
+                    'CdrPymntMode_CHECK_description.title',
+                    'CdrPymntMode_CREDIT_CARD_description.title',
+                    'CdrPymntMode_VOUCHER_description.title',
                     
     	            'Entity_show.title',
     	            'Entity_previous.title',
@@ -130,7 +151,29 @@ angular.module('AdCshdwr')
     	            'Entity_search.title',
     	            'Entity_cancel.title',
     	            'Entity_save.title',
-                    'Entity_print.title'
+                    'Entity_print.title',
+
+            'CdrPymntItem_amt_description.text',
+            'CdrPymntItem_amt_description.title',
+            'CdrPymntItem_description.text',
+            'CdrPymntItem_description.title',
+            'CdrPymntItem_diffAmt_description.text',
+            'CdrPymntItem_diffAmt_description.title',
+            'CdrPymntItem_pymntDocNbr_description.text',
+            'CdrPymntItem_pymntDocNbr_description.title',
+            'CdrPymntItem_pymntDocType_description.text',
+            'CdrPymntItem_pymntDocType_description.title',
+            'CdrPymntItem_pymntMode_description.text',
+            'CdrPymntItem_pymntMode_description.title',
+            'CdrPymntItem_pymntNbr_description.text',
+            'CdrPymntItem_pymntNbr_description.title',
+            'CdrPymntItem_rcvdAmt_description.text',
+            'CdrPymntItem_rcvdAmt_description.title',
+
+            'CdrCstmrVchr_vchrNbr_description.title',
+
+            'CdrPymnt_description.title',
+            'CdrPymnt_amt_description.title'
     	            ])
 		 .then(function (translations) {
 			 service.translations = translations;
@@ -187,7 +230,6 @@ function($scope,genericResource,cdrSlsInvoicesUtils,cdrSlsInvoicesState,$locatio
     init();
 
     function init(){
-        console.log('Factures: '+$scope.slsInvoices);
         if(cdrSlsInvoicesState.resultHandler.hasEntities())return;
         findByLike($scope.searchInput);
     }
@@ -292,11 +334,56 @@ function($scope,genericResource,cdrSlsInvoicesUtils,cdrSlsInvoicesState,$locatio
     $scope.maxSize =cdrSlsInvoicesState.resultHandler.maxResult;
     $scope.error = "";
     $scope.cdrSlsInvoicesUtils=cdrSlsInvoicesUtils;
-                                     
+    $scope.cdrPymntHolder = {cdrPymntItems:[]};
+    $scope.voucherMode = false;
+
+    init();
+    function init(){
+        var invNbr = $scope.slsInvoice.invceNbr;
+
+        genericResource.findById(cdrSlsInvoicesUtils.urlCdrpymntManager, invNbr)
+            .success(function(cdrPymntHolder){
+                $scope.cdrPymntHolder=cdrPymntHolder;
+                if(!$scope.cdrPymntHolder.cdrPymnt){
+                    $scope.cdrPymntHolder.cdrPymnt = {};
+                    $scope.cdrPymntHolder.cdrPymnt.amt = 0.0;
+                }
+                $scope.cdrPymntHolder.amt = $scope.slsInvoice.netAmtToPay - $scope.cdrPymntHolder.cdrPymnt.amt;
+            })
+            .error(function(error){
+                $scope.error = error;
+            });
+    }
+
+    $scope.addPymt = function(){
+        var totalPymt = $scope.cdrPymntHolder.cdrPymnt.amt + parseInt($scope.cdrPymntHolder.amt);
+        console.log(totalPymt);
+        if(totalPymt > $scope.slsInvoice.netAmtToPay){
+            $scope.error = "montant paiement superieur au montant net a payer";
+            return ;
+        }
+        genericResource.create(cdrSlsInvoicesUtils.urlCdrpymntManager, $scope.cdrPymntHolder)
+            .success(function(cdrPymntHolder){
+                $scope.cdrPymntHolder=cdrPymntHolder;
+                $scope.cdrPymntHolder.amt = $scope.slsInvoice.netAmtToPay - $scope.cdrPymntHolder.cdrPymnt.amt;
+            })
+            .error(function(error){
+                $scope.error = error;
+            });
+    }
+
+    $scope.pymtModeChanged = function(){
+        if($scope.cdrPymntHolder.pymntMode=='VOUCHER'){
+            $scope.voucherMode = true;
+        }else{
+            $scope.voucherMode = false;
+        }
+
+    }
+
     $scope.pageChangeHandler = function(num) {
       //Simple Pagination
     };
-    
     $scope.previous = function (){
         var bp = cdrSlsInvoicesState.resultHandler.previous();
         if(bp){

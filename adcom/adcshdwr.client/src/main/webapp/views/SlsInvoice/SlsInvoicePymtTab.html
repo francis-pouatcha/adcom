@@ -1,37 +1,80 @@
 <div>
-    <table class="table table-bordered table-striped">
+
+    <table class="table table-bordered  table-striped pointer-element" >
         <thead>
-            <div class="row">
-                <div class="col-lg-3">
-                      <input ng-model="q" id="search" class="form-control" placeholder="Recherche..."/>
-                </div> 
-            </div><br>
+        <div class="row">
+            <div class="col-lg-offset-2">
+                <label>{{cdrSlsInvoicesUtils.translations['CdrPymnt_amt_description.title']}}:</label>
+                <b>{{cdrPymntHolder.cdrPymnt.amt | currencyAccounting:cur:"2"}}</b>
+            </div>
+        </div><hr/>
+        <div class="row" >
+            <div class="col-lg-2">
+                <div class="form-group">
+                    <label class=" control-label">{{cdrSlsInvoicesUtils.translations['CdrPymntItem_amt_description.title']}}</label>
+                    <div class="">
+                        <input type="text" id="amt" ng-model="cdrPymntHolder.amt" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="form-group">
+                    <label class=" control-label">{{cdrSlsInvoicesUtils.translations['CdrPymntItem_rcvdAmt_description.title']}}</label>
+                    <div class="">
+                        <input type="text" id="rcvdAmt" ng-model="cdrPymntHolder.rcvdAmt" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="form-group">
+                    <label class=" control-label">{{cdrSlsInvoicesUtils.translations['CdrPymntItem_pymntMode_description.title']}}</label>
+                    <div class="">
+                        <select ng-change="pymtModeChanged()" ng-options="cdrPymntMode.enumKey as cdrSlsInvoicesUtils.translations[cdrPymntMode.translKey] for cdrPymntMode in cdrSlsInvoicesUtils.cdrPymntModes"
+                             id="pymntMode" ng-model="cdrPymntHolder.pymntMode" class="form-control">
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2" ng-show="voucherMode" >
+                <div class="form-group">
+                    <label class=" control-label">{{cdrSlsInvoicesUtils.translations['CdrCstmrVchr_vchrNbr_description.title']}}</label>
+                    <div class="">
+                        <input type="text" id="vchrNbr" ng-model="cdrPymntHolder.vchrNbr" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2">
+            <div class="form-group">
+                <button class="btn btn-default" style="margin-top: 23px" ng-click="addPymt()">
+                    <i class="glyphicon glyphicon-plus" ></i>
+                    {{cdrSlsInvoicesUtils.translations['Entity_save.title']}}
+                </button>
+            </div>
+        </div>
+        </div>
         <tr>
-            <th>{{cdrSlsInvoicesUtils.translations['SlsInvceItem_artPic_description.title']}}</th>
-            <th>{{cdrSlsInvoicesUtils.translations['SlsInvceItem_artName_description.title']}}</th>
-            <th>{{cdrSlsInvoicesUtils.translations['SlsInvceItem_qty_description.title']}}</th>
-            <th>{{cdrSlsInvoicesUtils.translations['SlsInvceItem_sppuPreTax_description.title']}}</th>
-            <th>{{cdrSlsInvoicesUtils.translations['SlsInvceItem_netSPPreTax_description.title']}}</th>
-            <th>{{cdrSlsInvoicesUtils.translations['SlsInvceItem_vatAmount_description.title']}}</th>
-            <th>{{cdrSlsInvoicesUtils.translations['SlsInvceItem_rebate_description.title']}}</th>
-            <th>{{cdrSlsInvoicesUtils.translations['SlsInvceItem_netSPTaxIncl_description.title']}}</th>
+            <th>{{cdrSlsInvoicesUtils.translations['CdrPymntItem_pymntNbr_description.title']}}</th>
+            <th>{{cdrSlsInvoicesUtils.translations['CdrPymntItem_pymntMode_description.title']}}</th>
+            <th>{{cdrSlsInvoicesUtils.translations['CdrPymntItem_pymntDocType_description.title']}}</th>
+            <th>{{cdrSlsInvoicesUtils.translations['CdrPymntItem_pymntDocNbr_description.title']}}</th>
+            <th>Date</th>
+            <th>{{cdrSlsInvoicesUtils.translations['CdrPymntItem_amt_description.title']}}</th>
+            <th>{{cdrSlsInvoicesUtils.translations['CdrPymntItem_rcvdAmt_description.title']}}</th>
+            <th>{{cdrSlsInvoicesUtils.translations['CdrPymntItem_diffAmt_description.title']}}</th>
         </tr>
         </thead>
         <tbody>
-            <tr dir-paginate="slsInvceItem in slsInvoice.slsInvceItems | filter:q | itemsPerPage: itemPerPage()" current-page="currentPage">
-                <td>{{slsInvceItem.artPic}}</td>
-                <td>{{slsInvceItem.artName}}</td>
-                <td>{{slsInvceItem.qty}}</td>
-                <td>{{slsInvceItem.sppuPreTax}}</td>
-                <td>{{slsInvceItem.netSPPreTax}}</td>
-                <td>{{slsInvceItem.vatAmount}}</td>
-                <td>{{slsInvceItem.rebate}}</td>
-                <td>{{slsInvceItem.netSPTaxIncl}}</td>
-            </tr>
+        <tbody>
+        <tr ng-repeat="result in cdrPymntHolder.cdrPymntItems">
+            <td>{{result.pymntNbr}}</td>
+            <td>{{result.pymntMode}}</td>
+            <td>{{result.pymntDocType}}</td>
+            <td>{{result.pymntDocNbr}}</td>
+            <td>{{result.pymntDt | date:"yyyy-mm-dd"}}</td>
+            <td>{{result.amt | currencyAccounting:"XAF":"4"}}</td>
+            <td>{{result.rcvdAmt | currencyAccounting:"XAF":"4"}}</td>
+            <td>{{result.diffAmt | currencyAccounting:"XAF":"4"}}</td>
+        </tr>
         </tbody>
     </table>
-    <div class="text-center">
-      <dir-pagination-controls max-size="maxSize" boundary-links="true" direction-links="true" on-page-change="pageChangeHandler(newPageNumber)" template-url="views/SlsInvoice/dirPagination.tpl.html">
-      </dir-pagination-controls>
-    </div>
 </div>
