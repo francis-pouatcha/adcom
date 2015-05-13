@@ -47,7 +47,8 @@ public class DirectSalePaymentImpl {
 		dsPymntItem.soustractDiffAmt();
 		dsPymntItem = cdrDsPymntItemEJB.create(dsPymntItem);		
 		//update cshDrawer
-		CdrCshDrawer activeCshDrawer = cdrCshDrawerEJB.getActiveCshDrawer();
+		CdrCshDrawer activeCshDrawer;
+		activeCshDrawer = cdrCshDrawerEJB.getActiveCshDrawer();
 		activeCshDrawer.AddTtlCash(dsPymntItem.getAmt());
 		activeCshDrawer.evlte();
 		cdrCshDrawerEJB.update(activeCshDrawer);

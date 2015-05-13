@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.enterprise.event.Event;
+import javax.enterprise.event.ObserverException;
 import javax.inject.Inject;
 
 import org.adorsys.adbase.enums.BaseHistoryTypeEnum;
@@ -139,6 +140,7 @@ public class CdrDrctSalesManager {
 			cdrDrctSales = cdrDrctSalesEJB.update(cdrDrctSales);
 			PaymentEvent paymentEvent = new PaymentEvent(CdrPymntMode.CASH, cdrDrctSales.getNetAmtToPay(), cdrDsArtHolder.getPaidAmt(), new Date(), cdrDrctSales.getDsNbr());
 			directSaleEvent.fire(paymentEvent);
+					
 			cdrDsArtHolder.setCdrDrctSales(cdrDrctSales);
 		}
 		/*		if(modified || itemModified){

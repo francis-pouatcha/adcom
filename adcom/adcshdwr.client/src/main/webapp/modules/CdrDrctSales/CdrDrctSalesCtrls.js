@@ -683,14 +683,15 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                 var currency = $scope.cur;
 
                 angular.forEach(items, function (artItemHolder) {
-                    var totalRebate = 0.0;
-                    if (artItemHolder.item.rebate) totalRebate = parseInt(artItemHolder.item.rebate) * parseInt(artItemHolder.item.soldQty);
+
+                    if (!artItemHolder.item.rebate) artItemHolder.item.rebate = 0.0;
                     var grossSPPTax = artItemHolder.item.sppuPreTax * parseInt(artItemHolder.item.soldQty);
-                    var netSPPreTax = grossSPPTax - totalRebate;
-                    var vatAmount = netSPPreTax * (artItemHolder.item.vatPct / 100);
+                    var netSPPreTax = grossSPPTax - parseInt(artItemHolder.item.rebate);
                     if(!artItemHolder.item.restockgFees)
                         artItemHolder.item.restockgFees = 0.0;
-                    var netSPTaxIncl = netSPPreTax + vatAmount + artItemHolder.item.restockgFees;
+                    netSPPreTax = netSPPreTax + parseInt(artItemHolder.item.restockgFees);
+                    var vatAmount = netSPPreTax * (artItemHolder.item.vatPct / 100);
+                    var netSPTaxIncl = netSPPreTax + vatAmount;
                     artItemHolder.item.netSPPreTax = netSPPreTax;
                     artItemHolder.item.netSPTaxIncl = netSPTaxIncl;
                     artItemHolder.item.vatAmount = vatAmount;

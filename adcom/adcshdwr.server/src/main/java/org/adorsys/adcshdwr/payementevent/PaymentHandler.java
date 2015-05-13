@@ -20,7 +20,8 @@ public class PaymentHandler {
 	
 	public void directSalePayment(@Observes @DirectSale PaymentEvent event) throws AdException {
 		
-		directSalePayment.pay(event);
+				directSalePayment.pay(event);
+				
     }
 	
 	public void indirectSalePayment(@Observes @IndirectSale PaymentEvent event) throws AdException {

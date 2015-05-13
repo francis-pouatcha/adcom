@@ -322,6 +322,8 @@ public class CdrAbstractDsArtItem extends AbstractIdentifData {
 		consolidate();
 		grossSPPreTax = sppuPreTax.multiply(soldQty);
 		netSPPreTax = FinancialOps.substract(grossSPPreTax, rebate, sppuCur);
+		netSPPreTax = FinancialOps.add(netSPPreTax, restockgFees, sppuCur);
+		
 		if(this.netSPPreTax.compareTo(BigDecimal.ZERO)<=0){
 			this.vatPct = BigDecimal.ZERO;
 			this.vatAmount = BigDecimal.ZERO;
