@@ -18,7 +18,7 @@
         </tr>
         </thead>
         <tbody>
-            <tr dir-paginate="slsInvceItem in slsInvoice.slsInvceItems | filter:q | itemsPerPage: itemPerPage()" current-page="currentPage">
+            <tr ng-repeat="slsInvceItem in slsInvoice.slsInvceItems">
                 <td>{{slsInvceItem.artPic}}</td>
                 <td>{{slsInvceItem.artName}}</td>
                 <td>{{slsInvceItem.qty}}</td>
@@ -30,8 +30,4 @@
             </tr>
         </tbody>
     </table>
-    <div class="text-center">
-      <dir-pagination-controls max-size="maxSize" boundary-links="true" direction-links="true" on-page-change="pageChangeHandler(newPageNumber)" template-url="views/SlsInvoice/dirPagination.tpl.html">
-      </dir-pagination-controls>
-    </div>
 </div>
