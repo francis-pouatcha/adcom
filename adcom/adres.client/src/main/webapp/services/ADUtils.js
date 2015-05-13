@@ -90,6 +90,11 @@ angular.module('ADUtils',[])
 		}
 	};
 })
+.filter('yesNo', function() {
+    return function(input) {
+        return input ? 'true' : 'false';
+    };
+})
 .filter('simplePrice', function() {
     return function(number) {
    	  number = accounting.toFixed(number, 0);

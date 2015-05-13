@@ -23,7 +23,7 @@
 					class="pull-right glyphicon"
 					ng-class="{'glyphicon-chevron-down': status.openTwo, 'glyphicon-chevron-right': !status.openTwo}"></i>
 				</accordion-heading> <a class="btn-default btn"
-					ng-disabled="aptAptmtShowCtlr.controlIfCancelable();"
+					
 					href="#/aptaptmtLogin/add/{{aptAptmtShowCtlr.id}}">Ajouter
 					Participant</a> <a class="btn-default btn" ng-disabled="" ng-click=""
 					href="">Participants conviés </a> </accordion-group> <accordion-group
@@ -34,7 +34,6 @@
 					ng-disabled="aptAptmtShowCtlr.controlIfCancelable();"
 					href="#/aptaptmt/cancel/{{aptAptmtShowCtlr.id}}">Annuler RDV</a> <a
 					class="btn-default btn"
-					ng-disabled="aptAptmtShowCtlr.controlIfCancelable();"
 					href="#/aptaptmt/close/{{aptAptmtShowCtlr.id}}">Cloturé RDV </a> </accordion-group> </accordion>
 			</div>
 		</div>

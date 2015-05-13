@@ -22,6 +22,7 @@ angular.module('Admanager', [
          function($routeProvider,$httpProvider,$translateProvider,$translatePartialLoaderProvider) {
     $routeProvider
     .when('/',{templateUrl:'views/CshDrawers.html',controller:'CshDrawerCtrls'})
+    .when('/cdrCstmrVchr',{templateUrl:'views/CdrCstmrVchrs.html',controller:'CdrCstmrVchrCtrls'})
     .otherwise({redirectTo: '/'});
     
     $httpProvider.defaults.withCredentials = true;

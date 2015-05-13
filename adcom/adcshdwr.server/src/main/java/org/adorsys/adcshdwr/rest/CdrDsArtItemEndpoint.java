@@ -26,6 +26,7 @@ import org.adorsys.adcshdwr.jpa.CdrDsArtItemSearchInput;
 import org.adorsys.adcshdwr.jpa.CdrDsArtItemSearchResult;
 import org.adorsys.adcshdwr.jpa.CdrDsArtItem_;
 
+
 /**
  * 
  */
