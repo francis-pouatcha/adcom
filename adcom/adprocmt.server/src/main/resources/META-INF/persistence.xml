@@ -38,6 +38,7 @@
 	<class>org.adorsys.adbase.jpa.BaseSttlmtOp</class>    
 	<class>org.adorsys.adbase.jpa.BaseCountryName</class>
 	<class>org.adorsys.adbase.jpa.BaseBatchEvt</class>
+	<class>org.adorsys.adbase.jpa.BaseConfig</class>
     
     <class>org.adorsys.adprocmt.jpa.PrcmtAbstractDelivery</class>
     <class>org.adorsys.adprocmt.jpa.PrcmtAbstractDlvrHstry</class>
@@ -67,6 +68,8 @@
     <class>org.adorsys.adstock.jpa.StkLotStockQty</class>
     <class>org.adorsys.adstock.jpa.StkArticleLot</class>
 	<class>org.adorsys.adstock.jpa.StkSection</class>
+	
+	<class>org.adorsys.adcshdwr.jpa.CdrDsArtItem</class>
     
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>

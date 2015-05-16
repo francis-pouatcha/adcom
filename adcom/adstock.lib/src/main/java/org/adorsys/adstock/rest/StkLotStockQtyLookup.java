@@ -159,4 +159,13 @@ public class StkLotStockQtyLookup {
 				.findByArtPicAndLotPicAndSectionAndSeq(artPic, lotPic, section,
 						seqNbr).orderDesc("seqNbr").getResultList();
 	}
+	
+	public BigDecimal countStockByArtPic(String artPic){
+		return repository.countStockByArtPic(artPic);
+	}
+
+	public List<StkLotStockQty> itemsShortage(BigDecimal nbrOfItems) {
+		
+		return repository.itemsShortage().maxResults(nbrOfItems.intValue()).getResultList();
+	}
 }

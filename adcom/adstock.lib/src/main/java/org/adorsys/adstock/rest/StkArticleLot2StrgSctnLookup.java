@@ -69,6 +69,11 @@ public class StkArticleLot2StrgSctnLookup
 	   return detachHelper.detachStrSections(found);
    }
    
+   public List<StkArticleLot2StrgSctn> findByArtPic(String artPic){
+	   List<StkArticleLot2StrgSctn> found = repository.findByArtPic(artPic).getResultList();
+	   return detachHelper.detachStrSections(found);
+   }
+   
    public List<StkArticleLot2StrgSctn> findByArtPicAndLotPic(String artPic, String lotPic){
 	   List<StkArticleLot2StrgSctn> found = repository.findByArtPicAndLotPic(artPic, lotPic);
 	   return detachHelper.detachStrSections(found);

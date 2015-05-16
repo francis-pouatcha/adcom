@@ -50,8 +50,8 @@ public class PrcmtOrderManager {
 		
 		PrcmtProcOrder prcmtProcOrder = prcmtOrderEJB.createCustom(prcmtOrder);
 		TriggerModeExecuter triggerModeExecuter = triggerModeHandlerFactoryProducer.getTriggerModeHandlerFactory().findHandler(prcmtOrder.getPoTriggerMode());
-		PrcmtOrderHolder prcmtOrderHolder = triggerModeExecuter.executeTriggerMode(prcmtProcOrder);
-		return prcmtOrderHolder;
+		PrcmtOrderHolder prcmtOrderHolder = triggerModeExecuter.executeTriggerMode(prcmtProcOrder);	
+		return updateOrder(prcmtOrderHolder);
 	}
 
 	public PrcmtOrderHolder updateOrder(PrcmtOrderHolder prcmtOrderHolder){

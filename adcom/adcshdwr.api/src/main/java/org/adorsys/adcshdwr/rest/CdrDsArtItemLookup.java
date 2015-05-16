@@ -1,5 +1,6 @@
 package org.adorsys.adcshdwr.rest;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -59,5 +60,9 @@ public class CdrDsArtItemLookup {
 
 	public List<CdrDsArtItem> findByDsNbr(String dsNbr){
 		return repository.findByDsNbr(dsNbr).getResultList();
+	}
+	
+	public List<CdrDsArtItem> topSales(BigDecimal nbrOfItems){
+		return repository.topSales().maxResults(nbrOfItems.intValue()).getResultList();
 	}
 }
