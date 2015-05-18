@@ -100,7 +100,22 @@ angular.module('AdCshdwr')
                     'CdrDrctSales_paidAmt_description.title',
                     'CdrDrctSales_changeAmt_description.title',
                     'CdrDrctSales_from_description.title',
-                    'CdrDrctSales_to_description.title'
+                    'CdrDrctSales_to_description.title',
+
+                    'Entity_show.title',
+                    'Entity_previous.title',
+                    'Entity_list.title',
+                    'Entity_next.title',
+                    'Entity_edit.title',
+                    'Entity_create.title',
+                    'Entity_update.title',
+                    'Entity_Result.title',
+                    'Entity_search.title',
+                    'Entity_cancel.title',
+                    'Entity_save.title',
+                    'Entity_By.title',
+                    'Entity_saveleave.title',
+                    'Entity_add.title'
                  ])
                 .then(function (translations) {
                     service.translations = translations;

@@ -209,7 +209,7 @@ angular.module('ADUtils',[])
 	service.translations=[];
     service.translate = function(){
     	$translate([
-    	     'current_language',
+            'current_language',
             'Entity_leave.title',
             'Entity_change.title',
             'Entity_activate.title',
