@@ -10,7 +10,6 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.enterprise.event.Event;
-import javax.enterprise.event.ObserverException;
 import javax.inject.Inject;
 
 import org.adorsys.adbase.enums.BaseHistoryTypeEnum;
@@ -27,6 +26,7 @@ import org.adorsys.adcshdwr.jpa.CdrDsPymntItem;
 import org.adorsys.adcshdwr.jpa.CdrPymntMode;
 import org.adorsys.adcshdwr.payementevent.DirectSale;
 import org.adorsys.adcshdwr.payementevent.PaymentEvent;
+import org.adorsys.adcshdwr.payementevent.PymntValidator;
 import org.adorsys.adcshdwr.rest.CdrCshDrawerEJB;
 import org.adorsys.adcshdwr.rest.CdrCstmrVchrEJB;
 import org.adorsys.adcshdwr.rest.CdrDrctSalesEJB;
@@ -66,6 +66,8 @@ public class CdrDrctSalesManager {
 	
 	@Inject
 	CdrCstmrVchrEJB cdrCstmrVchrEJB;
+	@Inject
+	private PymntValidator pymntValidator;
 
 	public CdrDsArtHolder updateOrder(CdrDsArtHolder cdrDsArtHolder) throws AdException{
 		CdrDrctSales cdrDrctSales = cdrDsArtHolder.getCdrDrctSales();
@@ -139,8 +141,8 @@ public class CdrDrctSalesManager {
 			//			cdrDrctSales.setPoStatus(BaseProcessStatusEnum.ONGOING.name());
 			cdrDrctSales = cdrDrctSalesEJB.update(cdrDrctSales);
 			PaymentEvent paymentEvent = new PaymentEvent(CdrPymntMode.CASH, cdrDrctSales.getNetAmtToPay(), cdrDsArtHolder.getPaidAmt(), new Date(), cdrDrctSales.getDsNbr());
-			directSaleEvent.fire(paymentEvent);
-					
+			pymntValidator.check(paymentEvent);
+			directSaleEvent.fire(paymentEvent);			
 			cdrDsArtHolder.setCdrDrctSales(cdrDrctSales);
 		}
 		/*		if(modified || itemModified){

@@ -287,6 +287,10 @@ angular.module('ADUtils',[])
         return $http.post(urlBase+'/findByLike',entitySearchInput);
     };
 
+        service.builfReport = function(urlBase, entitySearchInput){
+            return $http.post(urlBase, entitySearchInput,{responseType: 'arraybuffer'});
+        };
+
     service.findByLikePromissed = function (urlBase, fieldName, fieldValue){
     	if(angular.isUndefined(urlBase) || !urlBase ||
     		angular.isUndefined(fieldName) || !fieldName || 
@@ -639,5 +643,28 @@ angular.module('ADUtils',[])
     
     return service;
 	
-}]);
+}])
+    .factory('fileExtractor',['$window',function($window){
+        var  service = {
+            extractFile : extractFile,
+            saveFile:saveFile
+
+        };
+        return service ;
+        //////////////////////////////////////////////////////////////////////////////////////////////////
+        function extractFile(data,fileType)
+        {
+            var file = new Blob([data], {type: fileType});
+            var fileURL = URL.createObjectURL(file);
+            $window.open(fileURL);
+        }
+
+        function saveFile(data,fileType,fileName)
+        {
+            var file = new Blob([data], {type: fileType});
+            saveAs(file, fileName);
+        }
+
+    }]);
+
 

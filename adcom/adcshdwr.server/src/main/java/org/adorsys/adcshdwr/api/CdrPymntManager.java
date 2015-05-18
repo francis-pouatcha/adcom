@@ -16,6 +16,7 @@ import org.adorsys.adcshdwr.jpa.CdrPymnt;
 import org.adorsys.adcshdwr.jpa.CdrPymntItem;
 import org.adorsys.adcshdwr.payementevent.IndirectSale;
 import org.adorsys.adcshdwr.payementevent.PaymentEvent;
+import org.adorsys.adcshdwr.payementevent.PymntValidator;
 import org.adorsys.adcshdwr.rest.CdrPymntEJB;
 import org.adorsys.adcshdwr.rest.CdrPymntItemEJB;
 
@@ -34,6 +35,8 @@ public class CdrPymntManager {
 	private CdrPymntEJB cdrPymntEJB;
 	@Inject
 	private CdrPymntItemEJB pymntItemEJB;
+	@Inject
+	private PymntValidator pymntValidator;
 	
 
 	public CdrPymntHolder savePymt(CdrPymntHolder cdrPymntHolder) throws AdException {
@@ -42,7 +45,7 @@ public class CdrPymntManager {
 		
 		PaymentEvent paymentEvent = new PaymentEvent(cdrPymntHolder.getPymntMode(), cdrPymntHolder.getAmt(), cdrPymntHolder.getRcvdAmt(),
 				new Date(), cdrPymntHolder.getInvceNbr(), cdrPymntHolder.getVchrNbr(), cdrPymntHolder.getPymntNbr());	
-			//pymntValidator.isValid(paymentEvent);
+			pymntValidator.check(paymentEvent);
 			indirectSaleEvent.fire(paymentEvent);
 		
 			return invPymt(cdrPymntHolder.getInvceNbr());

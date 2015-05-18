@@ -1,5 +1,7 @@
 package org.adorsys.adcshdwr.rest;
 
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +11,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -18,6 +21,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
@@ -26,6 +30,9 @@ import org.adorsys.adcshdwr.jpa.CdrCshDrawer;
 import org.adorsys.adcshdwr.jpa.CdrCshDrawerSearchInput;
 import org.adorsys.adcshdwr.jpa.CdrCshDrawerSearchResult;
 import org.adorsys.adcshdwr.jpa.CdrCshDrawer_;
+import org.adorsys.adcshdwr.jpa.CdrCstmrVchr;
+import org.adorsys.adcshdwr.jpa.CdrCstmrVchrSearchInput;
+import org.adorsys.adcshdwr.pdfreport.PdfReportTemplate;
 
 /**
  * 
@@ -38,6 +45,8 @@ public class CdrCshDrawerEndpoint
 
    @Inject
    private CdrCshDrawerEJB ejb;
+   @Inject
+	private PdfReportTemplate<CdrCshDrawer> pdfReportTemplate;
 
    @POST
    @Consumes({ "application/json", "application/xml" })
@@ -192,6 +201,35 @@ public class CdrCshDrawerEndpoint
 	   return new CdrCshDrawerSearchResult(count, detach(resultList),
 			   detach(searchInput));
    }
+   
+   
+   @POST
+	@Path("/cshdwrreport.pdf")
+	@Consumes({ "application/json", "application/xml" })
+	@Produces({ "application/json", "application/xml","application/pdf","application/octet-stream" })
+	public Response buildCshdwrreportPdfReport(CdrCshDrawerSearchInput searchInput,@Context HttpServletResponse response) throws AdException 
+	{
+		List<CdrCshDrawer> resultList = ejb.findCustom(searchInput);
+		 OutputStream os = null ;
+		try {
+			ByteArrayOutputStream baos = pdfReportTemplate.build(resultList, CdrCshDrawer.class);
+           // the contentlength
+           response.setContentLength(baos.size());
+           // write ByteArrayOutputStream to the ServletOutputStream
+           os = response.getOutputStream();
+           baos.writeTo(os);
+           os.flush();
+           os.close();
+			  
+		} catch (Exception e) {
+			throw new AdException("Error printing");
+		}
+	
+		return	Response.ok(os).
+		header("Content-Disposition",
+				"attachment; filename=localitiesreport.pdf")
+		 .build();
+	}
 
 
    @SuppressWarnings("unchecked")
