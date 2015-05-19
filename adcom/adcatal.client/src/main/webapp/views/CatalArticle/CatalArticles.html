@@ -83,7 +83,7 @@
                                 <td>{{catalArticle.pic}}</td>
                                 <td>{{catalArticle.features.artName}}</td>
                                 <td>{{catalArticle.stockQty}}</td>
-                                <td>{{catalArticle.sppu}}</td>
+                                <td>{{catalArticle.sppu | currencyAccounting:sppuCurrIso3}}</td>
                                 <td>{{catalArticle.vatRate}}</td>
                                 <td>{{catalArticle.familyFeatures.familyName}}</td>
                                 <td><a href="#/CatalArticles/show/{{catalArticle.pic}}" ><i class="glyphicon glyphicon-eye-open"></i></a></td>

@@ -16,7 +16,7 @@ import org.adorsys.adbase.enums.BaseHistoryTypeEnum;
 import org.adorsys.adbase.enums.BaseProcStepEnum;
 import org.adorsys.adbase.security.SecurityUtil;
 import org.adorsys.adcore.auth.TermWsUserPrincipal;
-import org.adorsys.adcshdwr.exceptions.AdException;
+import org.adorsys.adcore.exceptions.AdException;
 import org.adorsys.adcshdwr.jpa.CdrCshDrawer;
 import org.adorsys.adcshdwr.jpa.CdrDrctSales;
 import org.adorsys.adcshdwr.jpa.CdrDsArtItem;
@@ -26,6 +26,7 @@ import org.adorsys.adcshdwr.jpa.CdrDsPymntItem;
 import org.adorsys.adcshdwr.jpa.CdrPymntMode;
 import org.adorsys.adcshdwr.payementevent.DirectSale;
 import org.adorsys.adcshdwr.payementevent.PaymentEvent;
+import org.adorsys.adcshdwr.payementevent.PymntValidator;
 import org.adorsys.adcshdwr.rest.CdrCshDrawerEJB;
 import org.adorsys.adcshdwr.rest.CdrCstmrVchrEJB;
 import org.adorsys.adcshdwr.rest.CdrDrctSalesEJB;
@@ -65,6 +66,8 @@ public class CdrDrctSalesManager {
 	
 	@Inject
 	CdrCstmrVchrEJB cdrCstmrVchrEJB;
+	@Inject
+	private PymntValidator pymntValidator;
 
 	public CdrDsArtHolder updateOrder(CdrDsArtHolder cdrDsArtHolder) throws AdException{
 		CdrDrctSales cdrDrctSales = cdrDsArtHolder.getCdrDrctSales();
@@ -138,7 +141,8 @@ public class CdrDrctSalesManager {
 			//			cdrDrctSales.setPoStatus(BaseProcessStatusEnum.ONGOING.name());
 			cdrDrctSales = cdrDrctSalesEJB.update(cdrDrctSales);
 			PaymentEvent paymentEvent = new PaymentEvent(CdrPymntMode.CASH, cdrDrctSales.getNetAmtToPay(), cdrDsArtHolder.getPaidAmt(), new Date(), cdrDrctSales.getDsNbr());
-			directSaleEvent.fire(paymentEvent);
+			pymntValidator.check(paymentEvent);
+			directSaleEvent.fire(paymentEvent);			
 			cdrDsArtHolder.setCdrDrctSales(cdrDrctSales);
 		}
 		/*		if(modified || itemModified){
@@ -193,12 +197,7 @@ public class CdrDrctSalesManager {
 	public CdrDsArtHolder closeSales(CdrDsArtHolder cdrDsArtHolder) throws AdException{
 		cdrDsArtHolder = updateOrder(cdrDsArtHolder);
 		CdrDrctSales cdrDrctSales = cdrDsArtHolder.getCdrDrctSales();
-		recomputeOrder(cdrDrctSales);
-		//		procOrder.setPoStatus(BaseProcessStatusEnum.CLOSED.name());
-		cdrDrctSales = cdrDrctSalesEJB.update(cdrDrctSales);
-		cdrDsArtHolder.setCdrDrctSales(cdrDrctSales);
-		createClosedSalesHistory(cdrDrctSales);// closed, no need processor?
-
+		createClosedSalesHistory(cdrDrctSales);
 		return cdrDsArtHolder;
 	}
 

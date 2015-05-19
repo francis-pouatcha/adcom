@@ -1,14 +1,17 @@
 package org.adorsys.adcshdwr.rest;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
 
+import org.adorsys.adcore.utils.SequenceGenerator;
 import org.adorsys.adcshdwr.jpa.CdrPymntItem;
 import org.adorsys.adcshdwr.jpa.CdrPymntItemEvt;
 import org.adorsys.adcshdwr.repo.CdrPymntItemRepository;
+import org.apache.commons.lang3.StringUtils;
 
 @Stateless
 public class CdrPymntItemEJB
@@ -22,6 +25,11 @@ public class CdrPymntItemEJB
 	
 	public CdrPymntItem create(CdrPymntItem entity)
 	{
+		if (StringUtils.isBlank(entity.getPymntDocNbr())) {
+			entity.setPymntDocNbr(SequenceGenerator
+					.getSequence(SequenceGenerator.PAYMENT_SEQUENCE_PREFIX));
+		}
+		entity.setPymntDt(new Date());
 		entity = repository.save(attach(entity));
 		CdrPymntItemEvt pymntItemEvt = new CdrPymntItemEvt();
 		entity.copyTo(pymntItemEvt);
@@ -115,5 +123,9 @@ public class CdrPymntItemEJB
 	 */
 	public List<CdrPymntItem> findByPymntNbr(String pymntNbr, int start, int max) {
 		return repository.findByPymntNbr(pymntNbr).firstResult(start).maxResults(max).getResultList();
+	}
+	
+	public List<CdrPymntItem> findByPymntNbr(String pymntNbr) {
+		return repository.findByPymntNbr(pymntNbr).getResultList();
 	}
 }

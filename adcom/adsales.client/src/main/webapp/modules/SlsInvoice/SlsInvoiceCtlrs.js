@@ -2,11 +2,30 @@
     
 angular.module('AdSales')
 
-.factory('slsInvoicesUtils',['sessionManager','$translate','genericResource','$q',function(sessionManager,$translate,genericResource,$q){
+.factory('slsInvoicesUtils',['sessionManager','$translate','adUtils','genericResource','$q',function(sessionManager,$translate,adUtils,genericResource,$q){
     var service = {};
 
     service.urlBase='/adsales.server/rest/slsinvoices';
     service.bnsptnrUrlBase='/adbnsptnr.server/rest/bpbnsptnrs';
+    
+    service.formatDate= function(fieldName, inPattern){
+        return adUtils.formatDate(fieldName, inPattern);
+    }
+    
+    service.slsInvceStatusI18nMsgTitleKey = function(enumKey){
+    	return "SlsInvceStatus_"+enumKey+"_description.title";
+    };
+    
+    service.slsInvceStatusI18nMsgTitleValue = function(enumKey){
+    	return service.translations[service.slsInvceStatusI18nMsgTitleKey(enumKey)];
+    };
+    
+    service.slsInvceStatus = [
+      {enumKey:'SUSPENDED', translKey:'SlsInvceStatus_SUSPENDED_description.title'},
+      {enumKey:'ONGOING', translKey:'SlsInvceStatus_ONGOING_description.title'},
+      {enumKey:'RESUMED', translKey:'SlsInvceStatus_RESUMED_description.title'},
+      {enumKey:'CLOSED', translKey:'SlsInvceStatus_CLOSED_description.title'}
+    ];
     
     service.language=sessionManager.language;
     
@@ -52,8 +71,53 @@ angular.module('AdSales')
                     'SlsInvoice_invceDtTo_description.text',
                     'SlsInvoice_invceDtTo_description.title',
                     
+                    'SlsInvceItem_artPic_description.text',
+                    'SlsInvceItem_artPic_description.title',
+                    'SlsInvceItem_artName_description.text',
+                    'SlsInvceItem_artName_description.title',
+                    'SlsInvceItem_description.text',
+                    'SlsInvceItem_description.title',
+                    'SlsInvceItems_description.text',
+                    'SlsInvceItems_description.title',
+                    'SlsInvceItem_grossSPPreTax_description.text',
+                    'SlsInvceItem_grossSPPreTax_description.title',
+                    'SlsInvceItem_invNbr_description.text',
+                    'SlsInvceItem_invNbr_description.title',
+                    'SlsInvceItem_lotPic_description.text',
+                    'SlsInvceItem_lotPic_description.title',
+                    'SlsInvceItem_netSPPreTax_description.text',
+                    'SlsInvceItem_netSPPreTax_description.title',
+                    'SlsInvceItem_netSPTaxIncl_description.text',
+                    'SlsInvceItem_netSPTaxIncl_description.title',
+                    'SlsInvceItem_objctOrgUnit_description.text',
+                    'SlsInvceItem_objctOrgUnit_description.title',
+                    'SlsInvceItem_qty_description.text',
+                    'SlsInvceItem_qty_description.title',
+                    'SlsInvceItem_rebate_description.text',
+                    'SlsInvceItem_rebate_description.title',
+                    'SlsInvceItem_sppuCur_description.text',
+                    'SlsInvceItem_sppuCur_description.title',
+                    'SlsInvceItem_sppuPreTax_description.text',
+                    'SlsInvceItem_sppuPreTax_description.title',
+                    'SlsInvceItem_vatAmount_description.text',
+                    'SlsInvceItem_vatAmount_description.title',
+                    'SlsInvceItem_vatPct_description.text',
+                    'SlsInvceItem_vatPct_description.title',
+                    
                     'SlsInvcePtnr_description.text',
                     'SlsInvcePtnr_description.title',
+                    'SlsInvcePtnrs_description.title',
+                    'SlsInvcePtnr_invceNbr_description.text',
+                    'SlsInvcePtnr_invceNbr_description.title',
+                    'SlsInvcePtnr_ptnrNbr_description.text',
+                    'SlsInvcePtnr_ptnrNbr_description.title',
+                    'SlsInvcePtnr_roleInInvce_description.text',
+                    'SlsInvcePtnr_roleInInvce_description.title',
+                    
+                    'SlsInvceStatus_CLOSED_description.title',
+                    'SlsInvceStatus_ONGOING_description.title',
+                    'SlsInvceStatus_RESUMED_description.title',
+                    'SlsInvceStatus_SUSPENDED_description.title',
                     
     	            'Entity_show.title',
     	            'Entity_previous.title',
@@ -111,13 +175,6 @@ function($scope,genericResource,slsInvoicesUtils,slsInvoicesState,$location,$roo
     $scope.slsInvoicesUtils=slsInvoicesUtils;
     $scope.show=show;
     $scope.edit=edit;
-    
-    // test initialization
-    $scope.slsInvoices= [
-    {invceNbr:"INV001",soNbr:"SO001",invceStatus:"EN_COURS",ptnrNbr:"PART001",invceDt:"01-04-2015",netSPPreTax:"2000",netSPTaxIncl:"2500",netAmtToPay:"2500"},
-    {invceNbr:"INV002",soNbr:"SO002",invceStatus:"EN_COURS",ptnrNbr:"PART002",invceDt:"02-04-2015",netSPPreTax:"3000",netSPTaxIncl:"3500",netAmtToPay:"3500"},
-    {invceNbr:"INV003",soNbr:"SO003",invceStatus:"EN_COURS",ptnrNbr:"PART003",invceDt:"03-04-2015",netSPPreTax:"4000",netSPTaxIncl:"4500",netAmtToPay:"4500"}
-    ];
 
 	var translateChangeSuccessHdl = $rootScope.$on('$translateChangeSuccess', function () {
 		slsInvoicesUtils.translate();
@@ -135,9 +192,8 @@ function($scope,genericResource,slsInvoicesUtils,slsInvoicesState,$location,$roo
     }
 
     function findByLike(searchInput){
-		genericResource.findByLike(slsInvoicesUtils.urlSearchBase, searchInput)
+		genericResource.findByLike(slsInvoicesUtils.urlBase, searchInput)
 		.success(function(entitySearchResult) {
-			// store search
 			slsInvoicesState.resultHandler.searchResult(entitySearchResult);
 		})
         .error(function(error){
@@ -171,6 +227,12 @@ function($scope,genericResource,slsInvoicesUtils,slsInvoicesState,$location,$roo
     	findCustom($scope.searchInput);
     };
     
+    function handleListRequestEvent(){
+        processSearchInput();
+    	findCustom($scope.searchInput);
+        $location.path('/SlsInvoices');
+    }
+    
     function findCustom(searchInput){
         genericResource.findCustom(slsInvoicesUtils.urlBase, searchInput)
 		.success(function(entitySearchResult) {
@@ -192,7 +254,7 @@ function($scope,genericResource,slsInvoicesUtils,slsInvoicesState,$location,$roo
 	}
 	
 	function show(slsInv, index){
-		if(slsInvoicesState.resultHandler.selectedObject(slsInv)){
+		if(slsInvoicesState.resultHandler.selectedObject(slsInv)!= -1){
 			$location.path('/SlsInvoices/show/');
 		}
 	}
@@ -223,9 +285,16 @@ function($scope,genericResource,slsInvoicesUtils,slsInvoicesState,$location,$roo
 }])
 .controller('slsInvoicesShowCtlr',['$scope','genericResource','$location','slsInvoicesUtils','slsInvoicesState','$rootScope',
                                  function($scope,genericResource,$location,slsInvoicesUtils,slsInvoicesState,$rootScope){
-    $scope.slsInvce = slsInvoicesState.resultHandler.entity();
+    $scope.slsInvoice = slsInvoicesState.resultHandler.entity();
+    $scope.itemPerPage=slsInvoicesState.resultHandler.itemPerPage;
+    $scope.currentPage=slsInvoicesState.resultHandler.currentPage();
+    $scope.maxSize =slsInvoicesState.resultHandler.maxResult;
     $scope.error = "";
     $scope.slsInvoicesUtils=slsInvoicesUtils;
+                                     
+    $scope.pageChangeHandler = function(num) {
+      //Simple Pagination
+    };
     
     $scope.previous = function (){
         var bp = slsInvoicesState.resultHandler.previous();

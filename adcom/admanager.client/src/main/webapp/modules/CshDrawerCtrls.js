@@ -207,8 +207,8 @@ angular.module('Admanager')
         return service;
 
 }])
-    .controller('CshDrawerCtrls', ['$scope', 'genericResource', 'CshDrawerUtils', 'CshDrawerState', '$location', '$rootScope', 'commonTranslations',
-function ($scope, genericResource, CshDrawerUtils, CshDrawerState, $location, $rootScope, commonTranslations) {
+    .controller('CshDrawerCtrls', ['$scope', 'genericResource', 'CshDrawerUtils', 'CshDrawerState', '$location', '$rootScope', 'commonTranslations','fileExtractor',
+function ($scope, genericResource, CshDrawerUtils, CshDrawerState, $location, $rootScope, commonTranslations,fileExtractor) {
 
             $scope.searchInput = CshDrawerState.searchInput();
             $scope.itemPerPage = CshDrawerState.itemPerPage;
@@ -266,7 +266,11 @@ function ($scope, genericResource, CshDrawerUtils, CshDrawerState, $location, $r
             }
 
             function handlePrintRequestEvent() {
-                // To do
+                genericResource.builfReport(CshDrawerUtils.cshdwr+'/cshdwrreport.pdf', $scope.searchInput).success(function(data){
+                    fileExtractor.extractFile(data,"application/pdf");
+                }).error(function (error) {
+                    $scope.error = error;
+                });
             }
 
             function paginate() {

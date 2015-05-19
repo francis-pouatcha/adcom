@@ -3,7 +3,11 @@ package org.adorsys.adprocmt.trigger;
 import java.util.HashMap;
 
 import javax.ejb.Stateless;
-
+/**
+ * 
+ * @author guymoyo
+ *
+ */
 @Stateless
 public class TriggerModeHandlerFactory {
 

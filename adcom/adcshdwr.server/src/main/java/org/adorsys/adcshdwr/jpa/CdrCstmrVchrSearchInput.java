@@ -1,6 +1,7 @@
 package org.adorsys.adcshdwr.jpa;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -30,6 +31,10 @@ public class CdrCstmrVchrSearchInput
     * The max number of records to return.
     */
    private int max = -1;
+   
+   private Date from;
+   
+   private Date to;
 
    /**
     * The field names to be included in the search.
@@ -41,7 +46,15 @@ public class CdrCstmrVchrSearchInput
       return entity;
    }
 
-   public void setEntity(CdrCstmrVchr entity)
+   public Date getFrom() {
+	return from;
+}
+
+public void setFrom(Date from) {
+	this.from = from;
+}
+
+public void setEntity(CdrCstmrVchr entity)
    {
       this.entity = entity;
    }
@@ -66,7 +79,15 @@ public class CdrCstmrVchrSearchInput
       this.start = start;
    }
 
-   public int getMax()
+   public Date getTo() {
+	return to;
+}
+
+public void setTo(Date to) {
+	this.to = to;
+}
+
+public int getMax()
    {
       return max;
    }

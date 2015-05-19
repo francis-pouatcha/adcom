@@ -3,179 +3,68 @@
  */
 package org.adorsys.adcshdwr.api;
 
-import java.util.ArrayList;
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
-import org.adorsys.adcshdwr.exceptions.AdException;
-import org.adorsys.adcshdwr.jpa.CdrCshDrawer;
+import org.adorsys.adcore.exceptions.AdException;
 import org.adorsys.adcshdwr.jpa.CdrPymnt;
 import org.adorsys.adcshdwr.jpa.CdrPymntItem;
-import org.adorsys.adcshdwr.jpa.CdrPymntObject;
-import org.adorsys.adcshdwr.rest.CdrCshDrawerEJB;
+import org.adorsys.adcshdwr.payementevent.IndirectSale;
+import org.adorsys.adcshdwr.payementevent.PaymentEvent;
+import org.adorsys.adcshdwr.payementevent.PymntValidator;
 import org.adorsys.adcshdwr.rest.CdrPymntEJB;
 import org.adorsys.adcshdwr.rest.CdrPymntItemEJB;
-import org.adorsys.adcshdwr.rest.CdrPymntObjectEJB;
-import org.apache.commons.lang3.StringUtils;
 
 /**
- * @author boriswaguia
+ * @author guymoyo
  *
  */
 @Stateless
 public class CdrPymntManager {
 
+	
 	@Inject
-	private CdrPymntEJB pymntEJB;
-
+    @IndirectSale
+    private Event<PaymentEvent> indirectSaleEvent;
+	@Inject
+	private CdrPymntEJB cdrPymntEJB;
 	@Inject
 	private CdrPymntItemEJB pymntItemEJB;
-	
 	@Inject
-	private CdrPymntObjectEJB pymntObjectEJB;
+	private PymntValidator pymntValidator;
 	
-	@Inject
-	private CdrCshDrawerEJB cshDrawerEJB;
-	
-	public CdrPymntHolder saveAndClovePymt(CdrPymntHolder cdrPymntHolder) throws AdException {
-		CdrPymnt cdrPymnt = cdrPymntHolder.getCdrPymnt();
-		CdrCshDrawer activeCshDrawer = cshDrawerEJB.getActiveCshDrawer();
-		if(activeCshDrawer == null) throw new AdException("No opened cash drawer found for this session, please open one");
-		cdrPymnt.setCdrNbr(activeCshDrawer.getCdrNbr());
-		if(StringUtils.isBlank(cdrPymnt.getId())) {
-			cdrPymnt = pymntEJB.create(cdrPymnt);
-		}
-		boolean modified = false;
-		boolean itemModified = deleteHolders(cdrPymntHolder);
 
-		List<CdrPymntItemHolder> pymtItems = cdrPymntHolder.getPymtItems();
-		if(pymtItems == null) pymtItems = new ArrayList<CdrPymntItemHolder>();
-
-		for (CdrPymntItemHolder itemHolder : pymtItems) {
-			CdrPymntItem pymtItem = itemHolder.getPymtItem();
-
-			if(StringUtils.isBlank(pymtItem.getPymntNbr()))
-				pymtItem.setPymntNbr(cdrPymnt.getPymntNbr());
-			// check presence of the article pic
-			if(StringUtils.isBlank(pymtItem.getPymntDocNbr()))
-				throw new AdException("Missing doc number identification code.");
-
-			if(StringUtils.isNotBlank(pymtItem.getId())){
-				// todo check mdified
-				CdrPymntItem persPi = pymntItemEJB.findById(pymtItem.getId());
-				if(persPi==null) throw new AdException("Missing delivery item with id: " + pymtItem.getId());
-				if(!pymtItem.contentEquals(persPi)){
-					pymtItem.copyTo(persPi);
-					pymtItem.evlte();
-					pymtItem = pymntItemEJB.update(persPi);
-					itemModified = true;
-					CdrPymntObject persPo = pymntObjectEJB.findByOrigItemNbr(persPi.getIdentif());
-					if(persPo != null) {
-						CdrPymntObject pymntObject = pymtItem.toPymntObject();
-						pymntObject.copyTo(persPo);
-						persPo = pymntObjectEJB.update(persPo);
-					}
-				}
-				
-			} else {
-				if (StringUtils.isNotBlank(pymtItem.getPymntNbr())) {
-					CdrPymntItem persDi = pymntItemEJB.findById(pymtItem.getPymntNbr());
-					if(persDi!=null){
-						if(!pymtItem.contentEquals(persDi)){
-							pymtItem.copyTo(persDi);
-							pymtItem.evlte();
-							pymtItem = pymntItemEJB.update(persDi);
-							itemModified = true;
-							//update the pymnt object
-							CdrPymntObject persPo = pymntObjectEJB.findByOrigItemNbr(pymtItem.getIdentif());
-							if(persPo != null) {
-								CdrPymntObject pymntObject = pymtItem.toPymntObject();
-								pymntObject.copyTo(persPo);
-								persPo = pymntObjectEJB.update(persPo);
-							}
-						}
-					} else {
-						pymtItem.evlte();
-						pymtItem.setPymntNbr(cdrPymnt.getPymntNbr());
-						pymtItem = pymntItemEJB.create(pymtItem);
-						itemModified = true;						
-						CdrPymntObject pymntObject = pymtItem.toPymntObject();
-						pymntObject = pymntObjectEJB.create(pymntObject);
-					}
-				} else {
-					pymtItem.evlte();
-					pymtItem = pymntItemEJB.create(pymtItem);
-					itemModified = true;
-					CdrPymntObject pymntObject = pymtItem.toPymntObject();
-					pymntObject = pymntObjectEJB.create(pymntObject);
-				}
-			}
-
-			itemHolder.setPymtItem(pymtItem);
-		}
-
-		if(itemModified){
-			recomputePymt(cdrPymnt);
-			//			cdrPymnt.setPoStatus(BaseProcessStatusEnum.ONGOING.name());
-			cdrPymnt = pymntEJB.update(cdrPymnt);
-			cdrPymntHolder.setCdrPymnt(cdrPymnt);
-		}
-		if(modified || itemModified){
-			//			createModifiedOrderHistory(cdrPymnt);
-		}
-		return cdrPymntHolder;
-	}
-
-	/**
-	 * recomputeOrder.
-	 *
-	 * @param cdrPymnt
-	 */
-	private void recomputePymt(CdrPymnt cdrPymnt) {
-		// update CdrPmnt object.
-		String pymntNbr = cdrPymnt.getPymntNbr();
-		Long count = pymntItemEJB.countByPymntNbr(pymntNbr);
-		int start = 0;
-		int max = 100;
-		cdrPymnt.clearAmts();
-		while(start<=count){
-			List<CdrPymntItem> list = pymntItemEJB.findByPymntNbr(pymntNbr, start, max);
-			start +=max;
-			for (CdrPymntItem pymntItem : list) {
-				cdrPymnt.addAmnt(pymntItem.getAmt());
-			}
-		}
-	}
-
-	/**
-	 * deleteHolders.
-	 *
-	 * @param cdrPymntHolder
-	 * @return
-	 */
-	private boolean deleteHolders(CdrPymntHolder cdrPymntHolder) {
-		List<CdrPymntItemHolder> pymtItems = cdrPymntHolder.getPymtItems();
+	public CdrPymntHolder savePymt(CdrPymntHolder cdrPymntHolder) throws AdException {
+		if(cdrPymntHolder.getRcvdAmt() == null || BigDecimal.ZERO.compareTo(cdrPymntHolder.getRcvdAmt()) == 1)
+			cdrPymntHolder.setRcvdAmt(cdrPymntHolder.getAmt());
 		
-		List<CdrPymntItemHolder> piToRemove = new ArrayList<CdrPymntItemHolder>();
-		boolean modified = false;
-		for (CdrPymntItemHolder itemHolder : pymtItems) {
-			if(itemHolder.isDeleted()){
-				CdrPymntItem pymtItem = itemHolder.getPymtItem();
-				String id = StringUtils.isNotBlank(pymtItem.getId())?pymtItem.getId():"";
-				if(StringUtils.isNotBlank(id)){
-					pymntItemEJB.deleteById(id);
-					modified = true;
-					CdrPymntObject persPo = pymntObjectEJB.findByOrigItemNbr(pymtItem.getIdentif());
-					if(persPo != null) {
-						pymntObjectEJB.deleteById(persPo.getId());
-					}
-				}
-				piToRemove.add(itemHolder);
-			}
-		}
-		pymtItems.removeAll(piToRemove);
-		return modified;
+		PaymentEvent paymentEvent = new PaymentEvent(cdrPymntHolder.getPymntMode(), cdrPymntHolder.getAmt(), cdrPymntHolder.getRcvdAmt(),
+				new Date(), cdrPymntHolder.getInvceNbr(), cdrPymntHolder.getVchrNbr(), cdrPymntHolder.getPymntNbr());	
+			pymntValidator.check(paymentEvent);
+			indirectSaleEvent.fire(paymentEvent);
+		
+			return invPymt(cdrPymntHolder.getInvceNbr());
+	}
+
+
+	public CdrPymntHolder invPymt(String invNbr) {
+		CdrPymntHolder cdrPymntHolder = new CdrPymntHolder();
+		cdrPymntHolder.setInvceNbr(invNbr);
+		List<CdrPymnt> listCdrPymnt = cdrPymntEJB.findByInvNbr(invNbr);
+		if(listCdrPymnt.isEmpty()) return cdrPymntHolder;
+		
+		CdrPymnt cdrPymnt = listCdrPymnt.get(0);
+		cdrPymntHolder.setCdrPymnt(cdrPymnt);
+		String pymntNbr = cdrPymnt.getPymntNbr();
+		cdrPymntHolder.setPymntNbr(pymntNbr);
+		List<CdrPymntItem> lsitItem = pymntItemEJB.findByPymntNbr(pymntNbr);
+		cdrPymntHolder.getCdrPymntItems().clear();
+		cdrPymntHolder.getCdrPymntItems().addAll(lsitItem);
+		return cdrPymntHolder;
 	}
 }

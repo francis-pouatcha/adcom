@@ -5,7 +5,7 @@ angular.module('AdStock')
 .factory('stkArticleLotUtils',['sessionManager','$translate','genericResource','$q',function(sessionManager,$translate,genericResource,$q){
     var service = {};
 
-    service.urlBase='/adstock.server/rest/stksections';
+    service.urlBase='/adstock.server/rest/stkarticlelots';
 
     service.language=sessionManager.language;
     
@@ -26,6 +26,23 @@ angular.module('AdStock')
     	            'StkArticleLot_lotQtyDt_description.title',
     	            'StkArticleLot_sppuTaxIncl_description.title',
     	            'StkArticleLot_expirDt_description.title',
+                    'StkArticleLot_stkgDt_description.title',
+                    'StkArticleLot_sppuHT_description.title',
+                    'StkArticleLot_sppuCur_description.title',
+                    'StkArticleLot_supplierPic_description.title',
+                    'StkArticleLot_minSppuHT_description.title',
+                    'StkArticleLot_vatSalesPct_description.title',
+                    'StkArticleLot_salesWrntyDys_description.title',
+                    'StkArticleLot_salesRtrnDays_description.title',
+                    'StkArticleLot_pppuHT_description.title',
+                    'StkArticleLot_pppuCur_description.title',
+                    'StkArticleLot_vatPurchPct_description.title',
+                    'StkArticleLot_purchWrntyDys_description.title',
+                    'StkArticleLot_purchWrntyDt_description.title',
+                    'StkArticleLot_purchRtrnDays_description.title',
+                    'StkArticleLot_purchRtrnDt_description.title',
+                    'StkArticleLot_closedDt_description.title',
+                    'StkArticleLot_artFeatures_artName_description.title',
 
     	            'Entity_show.title',
     	            'Entity_previous.title',
@@ -100,6 +117,7 @@ angular.module('AdStock')
 
     var service = {
     };
+
     var activeTabVar="stkSubSection";
 
     var stkSubSectionActiveVar=true;
@@ -286,6 +304,8 @@ function($scope,genericResource,stkArticleLotUtils,stkArticleLotState,$location,
     $scope.selectedIndex=stkArticleLotState.selectedIndex;
     $scope.error = "";
     $scope.stkArticleLotUtils=stkArticleLotUtils;
+    $scope.stkArticleLotState = stkArticleLotState;
+
 
 	var translateChangeSuccessHdl = $rootScope.$on('$translateChangeSuccess', function () {
 		stkArticleLotUtils.translate();
@@ -305,7 +325,7 @@ function($scope,genericResource,stkArticleLotUtils,stkArticleLotState,$location,
     function findByLike(searchInput){
 		genericResource.findByLike(stkArticleLotUtils.urlBase, searchInput)
 		.success(function(entitySearchResult) {
-			// store search
+			// store search in state
 			stkArticleLotState.consumeSearchResult(searchInput,entitySearchResult);
 		})
         .error(function(error){
@@ -315,14 +335,14 @@ function($scope,genericResource,stkArticleLotUtils,stkArticleLotState,$location,
 
     function processSearchInput(){
         var fieldNames = [];
-        if($scope.searchInput.entity.sectionCode && !fieldNames['sectionCode'])
-        	fieldNames.push('sectionCode');
-        if($scope.searchInput.entity.name && !fieldNames['name'])
-        	fieldNames.push('name');
-        if($scope.searchInput.entity.wharehouse && !fieldNames['wharehouse'])
-        	fieldNames.push('wharehouse');
-        if($scope.searchInput.entity.parentCode && !fieldNames['parentCode'])
-        	fieldNames.push('parentCode');
+        if($scope.searchInput.entity.lotPic && !fieldNames['lotPic'])
+        	fieldNames.push('lotPic');
+        if($scope.searchInput.entity.artPic && !fieldNames['artPic'])
+        	fieldNames.push('artPic');
+        if($scope.searchInput.entity.supplierPic && !fieldNames['supplierPic'])
+        	fieldNames.push('supplierPic');
+        if($scope.searchInput.entity.supplier && !fieldNames['supplier'])
+        	fieldNames.push('supplier');
         $scope.searchInput.fieldNames = fieldNames;
         return $scope.searchInput;
     };
@@ -353,42 +373,6 @@ function($scope,genericResource,stkArticleLotUtils,stkArticleLotState,$location,
 		}
 	}
 }])
-.controller('stkArticleLotCreateCtlr',['$scope','stkArticleLotUtils','$translate','genericResource','$location','stkArticleLotState',
-        function($scope,stkArticleLotUtils,$translate,genericResource,$location,stkArticleLotState){
-    $scope.stkArticleLot = stkArticleLotState.stkArticleLot();
-    $scope.create = create;
-    $scope.error = "";
-    $scope.stkArticleLotUtils=stkArticleLotUtils;
-
-    function create(){
-    	genericResource.create(stkArticleLotUtils.urlBase, $scope.stkArticleLot)
-    	.success(function(stkArticleLot){
-    		if(stkArticleLotState.push(stkArticleLot)){
-    			$location.path('/StkArticleLots/show/');
-    		}
-    	})
-    	.error(function(error){
-    		$scope.error = error;
-    	});
-    };
-}])
-.controller('stkArticleLotEditCtlr',['$scope','genericResource','$location','stkArticleLotUtils','stkArticleLotState',
-                                 function($scope,genericResource,$location,stkArticleLotUtils,stkArticleLotState){
-    $scope.stkArticleLot = stkArticleLotState.stkArticleLot();
-    $scope.error = "";
-    $scope.stkArticleLotUtils=stkArticleLotUtils;
-    $scope.update = function (){
-    	genericResource.update(stkArticleLotUtils.urlBase, $scope.stkArticleLot)
-    	.success(function(stkArticleLot){
-    		if(stkArticleLotState.replace(stkArticleLot)){
-    			$location.path('/StkArticleLots/show/');
-    		}
-        })
-    	.error(function(error){
-            $scope.error = error;
-        });
-    };
-}])
 .controller('stkArticleLotShowCtlr',['$scope','genericResource','$location','stkArticleLotUtils','stkArticleLotState','$rootScope',
                                  function($scope,genericResource,$location,stkArticleLotUtils,stkArticleLotState,$rootScope){
     $scope.stkArticleLot = stkArticleLotState.stkArticleLot();
@@ -415,9 +399,7 @@ function($scope,genericResource,stkArticleLotUtils,stkArticleLotState,$location,
     $scope.tabSelected = function(tabName){
     	stkArticleLotState.tabSelected(tabName);
     };
-    $scope.edit =function(){
-        $location.path('/StkArticleLots/edit/');
-    };
+
 }])
 .factory('stkSubSectionsState',['stkArticleLotState',function(stkArticleLotState){
 	

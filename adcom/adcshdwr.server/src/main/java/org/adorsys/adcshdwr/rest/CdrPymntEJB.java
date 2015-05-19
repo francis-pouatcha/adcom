@@ -28,10 +28,13 @@ public class CdrPymntEJB
 	
 	public CdrPymnt create(CdrPymnt entity)
 	{
-		entity.setCdrNbr(SequenceGenerator.getSequence(SequenceGenerator.PAYMENT_SEQUENCE_PREFIX));
+		//entity.setCdrNbr(SequenceGenerator.getSequence(SequenceGenerator.PAYMENT_SEQUENCE_PREFIX));
+		if (StringUtils.isBlank(entity.getPymntNbr())) {
+			entity.setPymntNbr(SequenceGenerator
+					.getSequence(SequenceGenerator.PAYMENT_SEQUENCE_PREFIX));
+		}
 		entity.setCashier(securityUtil.getCurrentLoginName());
 		Date pymntDt = new Date();
-		entity.setPymntDt(pymntDt);
 		entity.setValueDt(pymntDt);//TODO : is it the pymnt date ?
 		if(StringUtils.isBlank(entity.getPaidBy())) {
 			entity.setPaidBy("--Auto--");//maybe a direct sales
@@ -111,5 +114,13 @@ public class CdrPymntEJB
 			return null;
 
 		return entity;
+	}
+	
+	public List<CdrPymnt> findByPymntNbr(String pymntNbr){
+		return repository.findByPymntNbr(pymntNbr);
+	}
+	
+	public List<CdrPymnt> findByInvNbr(String invNbr){
+		return repository.findByInvNbr(invNbr);
 	}
 }

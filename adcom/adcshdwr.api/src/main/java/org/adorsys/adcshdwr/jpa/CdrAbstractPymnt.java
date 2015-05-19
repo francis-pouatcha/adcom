@@ -27,11 +27,12 @@ public abstract class CdrAbstractPymnt extends AbstractIdentifData {
 	@Description("CdrPymnt_pymntNbr_description")
 	@NotNull
 	private String pymntNbr;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@Description("CdrPymnt_pymntDt_description")
+	
+	@Column
+	@Description("CdrPymnt_invNbr_description")
 	@NotNull
-	private Date pymntDt;
+	private String invNbr;
+
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Description("CdrPymnt_valueDt_description")
@@ -53,12 +54,12 @@ public abstract class CdrAbstractPymnt extends AbstractIdentifData {
 
 	@Column
 	@Description("CdrPymnt_paidBy_description")
-	@NotNull
+	//@NotNull
 	private String paidBy;
 
 	@Column
 	@Description("CdrPymnt_rcptNbr_description")
-	@NotNull
+	//@NotNull
 	private String rcptNbr;
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -73,13 +74,6 @@ public abstract class CdrAbstractPymnt extends AbstractIdentifData {
 		this.pymntNbr = pymntNbr;
 	}
 
-	public Date getPymntDt() {
-		return this.pymntDt;
-	}
-
-	public void setPymntDt(final Date pymntDt) {
-		this.pymntDt = pymntDt;
-	}
 
 	public Date getValueDt() {
 		return this.valueDt;
@@ -103,6 +97,14 @@ public abstract class CdrAbstractPymnt extends AbstractIdentifData {
 
 	public void setCashier(final String cashier) {
 		this.cashier = cashier;
+	}
+
+	public String getInvNbr() {
+		return invNbr;
+	}
+
+	public void setInvNbr(String invNbr) {
+		this.invNbr = invNbr;
 	}
 
 	public String getCdrNbr() {
@@ -162,8 +164,8 @@ public abstract class CdrAbstractPymnt extends AbstractIdentifData {
 	}
 	
 	public void copyTo(CdrAbstractPymnt target) {
+		target.invNbr = invNbr;
 		target.pymntNbr=pymntNbr;
-		target.pymntDt=pymntDt;
 		target.valueDt=valueDt;
 		target.amt=amt;
 		target.cashier=cashier;

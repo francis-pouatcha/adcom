@@ -3,7 +3,11 @@ package org.adorsys.adprocmt.trigger;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
+/**
+ * 
+ * @author guymoyo
+ *
+ */
 @Singleton
 public class TriggerModeHandlerFactoryProducer {
  

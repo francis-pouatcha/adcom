@@ -11,11 +11,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
-import org.adorsys.adcshdwr.exceptions.AdException;
+import org.adorsys.adcore.exceptions.AdException;
 
 /**
  * @author boriswaguia
- *
+ *@author guymoyo
  */
 @Path("/cdrdrctsalesmanager")
 public class CdrDrctSalesManagerEndpoint {
@@ -28,7 +28,7 @@ public class CdrDrctSalesManagerEndpoint {
 	@Consumes({ "application/json", "application/xml" })
 	@Produces({ "application/json", "application/xml" })
 	public CdrDsArtHolder save(CdrDsArtHolder cdrDsArtHolder) throws AdException {
-		return ejb.updateOrder(cdrDsArtHolder);
+		return ejb.closeSales(cdrDsArtHolder);
 	}
 	
 	 	@GET

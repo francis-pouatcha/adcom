@@ -5,7 +5,11 @@ import javax.inject.Singleton;
 import org.adorsys.adprocmt.api.PrcmtOrderHolder;
 import org.adorsys.adprocmt.jpa.PrcmtProcOrder;
 import org.adorsys.adprocmt.spi.dflt.ProcmtPOTriggerModeEnum;
-
+/**
+ * 
+ * @author guymoyo
+ *
+ */
 @Singleton
 public class ManualTriggerModeHandler implements TriggerModeExecuter {
 

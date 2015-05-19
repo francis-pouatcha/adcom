@@ -1,20 +1,15 @@
-/**
- * 
- */
 package org.adorsys.adcshdwr.api;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
-import org.adorsys.adcshdwr.exceptions.AdException;
+import org.adorsys.adcore.exceptions.AdException;
 
-/**
- * @author boriswaguia
- *
- */
 @Path("/cdrpymntmanager")
 public class CdrPymntManagerEndPoint {
 	@Inject
@@ -25,6 +20,14 @@ public class CdrPymntManagerEndPoint {
 	@Consumes({ "application/json", "application/xml" })
 	@Produces({ "application/json", "application/xml" })
 	public CdrPymntHolder save(CdrPymntHolder cdrPymntHolder) throws AdException {
-		return ejb.saveAndClovePymt(cdrPymntHolder);
+		return ejb.savePymt(cdrPymntHolder);
 	}
+	
+	   @GET
+	   @Path("/{invNbr}")
+	   @Produces({ "application/json", "application/xml" })
+	   public CdrPymntHolder invPymt(@PathParam("invNbr") String invNbr)
+	   {
+	     return ejb.invPymt(invNbr);
+	   }
 }

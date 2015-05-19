@@ -14,6 +14,7 @@ import org.adorsys.adsales.repo.SlsSOItemRepository;
 import org.adorsys.adsales.repo.SlsSOPtnrRepository;
 
 /**
+ * @author Hsimo
  * class SlsSalesOrderHolderEJB for retrieving partners and items
  */
 @Stateless

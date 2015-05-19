@@ -8,7 +8,6 @@ import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adcshdwr.jpa.CdrPymntObject;
 import org.adorsys.adcshdwr.repo.CdrPymntObjectRepository;
-import org.apache.deltaspike.data.api.QueryResult;
 
 @Stateless
 public class CdrPymntObjectEJB

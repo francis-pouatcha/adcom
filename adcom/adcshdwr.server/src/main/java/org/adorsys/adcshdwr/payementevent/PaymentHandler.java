@@ -4,7 +4,7 @@ import javax.ejb.Stateless;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 
-import org.adorsys.adcshdwr.exceptions.AdException;
+import org.adorsys.adcore.exceptions.AdException;
 /**
  * 
  * @author guymoyo
@@ -14,13 +14,14 @@ import org.adorsys.adcshdwr.exceptions.AdException;
 public class PaymentHandler {
 	
 	@Inject
-	DirectSalePayment directSalePayment;
+	DirectSalePaymentImpl directSalePayment;
 	@Inject
-	IndirectSalePayment indirectSalePayment;
+	IndirectSalePaymentImpl indirectSalePayment;
 	
 	public void directSalePayment(@Observes @DirectSale PaymentEvent event) throws AdException {
 		
-		directSalePayment.pay(event);
+				directSalePayment.pay(event);
+				
     }
 	
 	public void indirectSalePayment(@Observes @IndirectSale PaymentEvent event) throws AdException {

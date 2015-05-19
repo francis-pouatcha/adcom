@@ -130,13 +130,6 @@
 														<td>{{login.fullName }}</td>
 														<td><input type="checkbox" ng-model="login.checkOn"
 															name="checkOn" class="form-control" /></td>
-
-														<td>
-															<button ng-click="aptAptmtLoginAddCtrl.add(index,login);"
-																ng-disabled="" class="btn-default btn">
-																<i class="glyphicon glyphicon-save"></i> Add
-															</button>
-														</td>
 													</tr>
 												</tbody>
 											</table>
@@ -150,6 +143,18 @@
 
 										</ul>
 									</div>
+									<div class="form-group">
+										<div class="col-lg-8">
+											<a class="btn-danger btn" href="#/"><i
+												class="glyphicon glyphicon-remove"></i>
+												{{"Entity_cancel.title" | translate }}</a>
+											<button ng-click="aptAptmtLoginAddCtrl.add();"
+												class="btn-success btn">
+												<i class="glyphicon glyphicon-save"></i>
+												{{"Entity_save.title" | translate }}
+											</button>
+										</div>
+									</div>
 
 								</div>
 							</div>
@@ -159,6 +164,4 @@
 		</div>
 
 	</div>
-
-
 </div>

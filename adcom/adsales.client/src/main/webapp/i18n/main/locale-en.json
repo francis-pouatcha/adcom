@@ -37,8 +37,12 @@
 
 "SlsInvceItem_artPic_description.text":"The article code",
 "SlsInvceItem_artPic_description.title":"Article PIC",
+"SlsInvceItem_artName_description.text":"The article Name",
+"SlsInvceItem_artName_description.title":"Article Name",
 "SlsInvceItem_description.text":"An invoice item.",
 "SlsInvceItem_description.title":"Invoice Item",
+"SlsInvceItems_description.text":"Products of invoices",
+"SlsInvceItems_description.title":"products",
 "SlsInvceItem_grossSPPreTax_description.text":"Gross Sales Amount Pre Tax",
 "SlsInvceItem_grossSPPreTax_description.title":"Gross Sales Amount Pre Tax",
 "SlsInvceItem_invNbr_description.text":"Invoice  Number",
@@ -65,7 +69,9 @@
 "SlsInvceItem_vatPct_description.title":"VAT Rate",
 
 "SlsInvcePtnr_description.text":"A invoice involved partner.",
-"SlsInvcePtnr_description.title":"Customer",
+"SlsInvcePtnr_description.title":"Partner",
+"SlsInvcePtnrs_description.text":"Partners of invoice",
+"SlsInvcePtnrs_description.title":"Partners",
 "SlsInvcePtnr_invceNbr_description.text":"The invoice number.",
 "SlsInvcePtnr_invceNbr_description.title":"Invoice Number",
 "SlsInvcePtnr_ptnrNbr_description.text":"Party Identifier",

@@ -4,10 +4,13 @@
 package org.adorsys.adcshdwr.jpa;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Enumerated;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 import org.adorsys.adcore.jpa.AbstractIdentifData;
@@ -43,6 +46,11 @@ public abstract class CdrAbstractPymntItem extends AbstractIdentifData{
 	@Column
 	@Description("CdrPymntItem_pymntDocNbr_description")
 	private String pymntDocNbr;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Description("CdrPymnt_pymntDt_description")
+	@NotNull
+	private Date pymntDt;
 
 	@Column
 	@Description("CdrPymntItem_amt_description")
@@ -97,6 +105,14 @@ public abstract class CdrAbstractPymntItem extends AbstractIdentifData{
 		this.amt = amt;
 	}
 
+	public Date getPymntDt() {
+		return pymntDt;
+	}
+
+	public void setPymntDt(Date pymntDt) {
+		this.pymntDt = pymntDt;
+	}
+
 	public BigDecimal getRcvdAmt() {
 		return this.rcvdAmt;
 	}
@@ -142,6 +158,7 @@ public abstract class CdrAbstractPymntItem extends AbstractIdentifData{
 	 */
 	public void copyTo(CdrAbstractPymntItem target) {
 		target.pymntNbr=pymntNbr;
+		target.pymntDt = pymntDt;
 		target.pymntMode=pymntMode;
 		target.pymntDocType=pymntDocType;
 		target.pymntDocNbr=pymntDocNbr;
