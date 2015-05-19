@@ -97,13 +97,12 @@
                         vente succes!
                     </span>
                 </div>
-<<
+
                 <div class="row">
                     <span class="col-lg-3" style="font-size:17px;">{{cdrDrctSalesUtils.translations['CdrDrctSales_netAmtToPay_description.title']}}: </span>
                     <span class="col-lg-2" price-red="price-red">{{cdrDsArtHolder.cdrDrctSales.netAmtToPay | currencyAccounting:cur}}</span>
-                    <span class="col-lg-2" style="font-size:17px;">Currency (XAF) : </span>
-==                  <div class="col-lg-2">
-                        Currency (XAF) : <select class="form-control" ng-model="cur" ng-options="cur for cur in conversionPrice.currency"></select>
+                  <div class="col-lg-2">
+                        <select class="form-control" ng-model="cur" ng-options="cur for cur in conversionPrice.currency"></select>
                     </div>
                 </div>
 
