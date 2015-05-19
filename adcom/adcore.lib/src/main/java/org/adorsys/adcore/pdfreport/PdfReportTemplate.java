@@ -78,13 +78,13 @@ public class PdfReportTemplate<T> {
 	 * @throws DocumentException
 	 *             the document exception
 	 */
-	public void setup (Class<T> entityKlass, String username) throws DocumentException {
+	public void setup (Class<T> entityKlass, String username, String lang) throws DocumentException {
 		this.username = username;
 		this.userDate = new Date() ;
 		
 		pdfUtil.setEntity(entityKlass);
-		fieldsName = pdfUtil.getFieldsName();
-		klassName = pdfUtil.getKlassName();
+		fieldsName = pdfUtil.getFieldsName(lang);
+		klassName = pdfUtil.getKlassName(lang);
 
 		document = new Document(PageSize.A4.rotate(),5,5,5,5);
 		try {
@@ -121,8 +121,8 @@ public class PdfReportTemplate<T> {
 	 * @param entityKlass
 	 * @throws DocumentException
 	 */
-	public ByteArrayOutputStream build(List<T> items, Class<T> entityKlass, String username) throws DocumentException{
-		setup(entityKlass, username);
+	public ByteArrayOutputStream build(List<T> items, Class<T> entityKlass, String username, String lang) throws DocumentException{
+		setup(entityKlass, username, lang);
 		addItems(items);
 		closeDocument();
 		return baos;
@@ -173,7 +173,7 @@ public class PdfReportTemplate<T> {
 		PdfPCell pdfPCell;
 		for(String fieldName:fieldsName){		
 			pdfPCell = new PdfPCell();
-			pdfPCell.setFixedHeight(23f);
+			pdfPCell.setFixedHeight(43f);
 			pdfPCell.addElement(new Phrase(fieldName,boldFont));
 			reportTable.addCell(pdfPCell);
 		}

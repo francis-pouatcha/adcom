@@ -211,11 +211,13 @@ public class CdrCshDrawerEndpoint
 	@Consumes({ "application/json", "application/xml" })
 	@Produces({ "application/json", "application/xml","application/pdf","application/octet-stream" })
 	public Response buildCshdwrreportPdfReport(CdrCshDrawerSearchInput searchInput,@Context HttpServletResponse response) throws AdException 
-	{	String loginName = securityUtil.getCurrentLoginName();
+	{	
+	   	String loginName = securityUtil.getCurrentLoginName();
+		String lang = securityUtil.getUserLange();
 		List<CdrCshDrawer> resultList = ejb.findCustom(searchInput);
 		 OutputStream os = null ;
 		try {
-			ByteArrayOutputStream baos = pdfReportTemplate.build(resultList, CdrCshDrawer.class,loginName);
+			ByteArrayOutputStream baos = pdfReportTemplate.build(resultList, CdrCshDrawer.class,loginName, lang);
            // the contentlength
            response.setContentLength(baos.size());
            // write ByteArrayOutputStream to the ServletOutputStream

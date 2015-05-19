@@ -117,10 +117,11 @@ public class CdrCstmrVchrEndpoint {
 	public Response buildVoucherPdfReport(CdrCstmrVchrSearchInput searchInput,@Context HttpServletResponse response) throws AdException 
 	{
 		String loginName = securityUtil.getCurrentLoginName();
+		String lang = securityUtil.getUserLange();
 		List<CdrCstmrVchr> resultList = ejb.findCustom(searchInput);
 		 OutputStream os = null ;
 		try {
-			ByteArrayOutputStream baos = pdfReportTemplate.build(resultList, CdrCstmrVchr.class, loginName);
+			ByteArrayOutputStream baos = pdfReportTemplate.build(resultList, CdrCstmrVchr.class, loginName,lang);
             // the contentlength
             response.setContentLength(baos.size());
             // write ByteArrayOutputStream to the ServletOutputStream

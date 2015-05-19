@@ -38,7 +38,8 @@ public class PdfUtil<T> {
 		this.entityKlass = entity;
 	}
 
-	public List<String> getFieldsName() {
+	public List<String> getFieldsName(String lang) {
+		pdfI18n.registerKlass(entityKlass);
 		List<String> listStr = new ArrayList<String>();
 		fieldsName.clear();
 		PropertyDescriptor[] descriptors = PropertyUtils.getPropertyDescriptors(entityKlass);
@@ -50,15 +51,15 @@ public class PdfUtil<T> {
 			 String propertyTypeName = descriptors[i].getPropertyType().getName();		
 			if(propertyTypeName.equals("java.util.Date") || propertyTypeName.equals("java.lang.String") || propertyTypeName.equals("java.math.BigDecimal")){
 				fieldsName.add(name);
-				listStr.add(pdfI18n.internationalize(name));
+				listStr.add(pdfI18n.internationalize(name, lang));
 			}		
 		}
 		return listStr;
 	}
 
-	public String getKlassName() {
+	public String getKlassName(String lang) {
 		
-		return pdfI18n.internationalize(entityKlass.getSimpleName());
+		return pdfI18n.internationalize(entityKlass.getSimpleName(), lang);
 	}
 
 	public List<String> fieldValues(T entity) {
