@@ -11,7 +11,7 @@ import javax.ejb.Stateless;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
-import org.adorsys.adcshdwr.exceptions.AdException;
+import org.adorsys.adcore.exceptions.AdException;
 import org.adorsys.adcshdwr.jpa.CdrPymnt;
 import org.adorsys.adcshdwr.jpa.CdrPymntItem;
 import org.adorsys.adcshdwr.payementevent.IndirectSale;

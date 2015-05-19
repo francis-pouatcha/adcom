@@ -1,15 +1,13 @@
-package org.adorsys.adcshdwr.pdfreport;
+package org.adorsys.adcore.pdfreport;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
-import org.adorsys.adbase.security.SecurityUtil;
 import org.adorsys.adcore.utils.DateUtil;
 
 import com.itextpdf.text.Chunk;
@@ -34,8 +32,7 @@ import com.itextpdf.text.pdf.draw.LineSeparator;
 @Stateless
 public class PdfReportTemplate<T> {
 	
-	@Inject
-	SecurityUtil securityUtil;
+	
 	@Inject
 	PdfUtil<T> pdfUtil;
 	
@@ -81,8 +78,8 @@ public class PdfReportTemplate<T> {
 	 * @throws DocumentException
 	 *             the document exception
 	 */
-	public void setup (Class<T> entityKlass) throws DocumentException {
-		this.username = securityUtil.getCurrentLoginName();
+	public void setup (Class<T> entityKlass, String username) throws DocumentException {
+		this.username = username;
 		this.userDate = new Date() ;
 		
 		pdfUtil.setEntity(entityKlass);
@@ -124,8 +121,8 @@ public class PdfReportTemplate<T> {
 	 * @param entityKlass
 	 * @throws DocumentException
 	 */
-	public ByteArrayOutputStream build(List<T> items, Class<T> entityKlass) throws DocumentException{
-		setup(entityKlass);
+	public ByteArrayOutputStream build(List<T> items, Class<T> entityKlass, String username) throws DocumentException{
+		setup(entityKlass, username);
 		addItems(items);
 		closeDocument();
 		return baos;

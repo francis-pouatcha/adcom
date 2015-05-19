@@ -16,7 +16,7 @@ import org.adorsys.adbase.enums.BaseHistoryTypeEnum;
 import org.adorsys.adbase.enums.BaseProcStepEnum;
 import org.adorsys.adbase.security.SecurityUtil;
 import org.adorsys.adcore.auth.TermWsUserPrincipal;
-import org.adorsys.adcshdwr.exceptions.AdException;
+import org.adorsys.adcore.exceptions.AdException;
 import org.adorsys.adcshdwr.jpa.CdrCshDrawer;
 import org.adorsys.adcshdwr.jpa.CdrDrctSales;
 import org.adorsys.adcshdwr.jpa.CdrDsArtItem;

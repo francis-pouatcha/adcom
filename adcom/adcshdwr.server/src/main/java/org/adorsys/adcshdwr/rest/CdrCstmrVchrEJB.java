@@ -12,10 +12,10 @@ import javax.persistence.TypedQuery;
 import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adbase.security.SecurityUtil;
+import org.adorsys.adcore.exceptions.AdException;
 import org.adorsys.adcore.utils.SequenceGenerator;
 import org.adorsys.adcshdwr.api.CdrDsArtHolder;
 import org.adorsys.adcshdwr.api.CdrDsArtItemHolder;
-import org.adorsys.adcshdwr.exceptions.AdException;
 import org.adorsys.adcshdwr.jpa.CdrCshDrawer;
 import org.adorsys.adcshdwr.jpa.CdrCstmrVchr;
 import org.adorsys.adcshdwr.jpa.CdrCstmrVchrSearchInput;

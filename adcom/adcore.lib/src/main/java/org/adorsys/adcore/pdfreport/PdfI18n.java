@@ -1,4 +1,4 @@
-package org.adorsys.adcshdwr.pdfreport;
+package org.adorsys.adcore.pdfreport;
 
 import javax.ejb.Stateless;
 /**

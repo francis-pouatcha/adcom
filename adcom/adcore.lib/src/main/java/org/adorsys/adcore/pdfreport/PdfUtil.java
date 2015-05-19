@@ -1,4 +1,4 @@
-package org.adorsys.adcshdwr.pdfreport;
+package org.adorsys.adcore.pdfreport;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;

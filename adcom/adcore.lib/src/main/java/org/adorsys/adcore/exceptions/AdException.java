@@ -1,4 +1,4 @@
-package org.adorsys.adcshdwr.exceptions;
+package org.adorsys.adcore.exceptions;
 
 import java.io.Serializable;
 /**

@@ -3,7 +3,7 @@ package org.adorsys.adcshdwr.payementevent;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
-import org.adorsys.adcshdwr.exceptions.AdException;
+import org.adorsys.adcore.exceptions.AdException;
 import org.adorsys.adcshdwr.jpa.CdrCshDrawer;
 import org.adorsys.adcshdwr.jpa.CdrDsPymntItem;
 import org.adorsys.adcshdwr.rest.CdrCshDrawerEJB;

@@ -25,13 +25,13 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.adorsys.adcshdwr.exceptions.AdException;
+import org.adorsys.adbase.security.SecurityUtil;
+import org.adorsys.adcore.exceptions.AdException;
+import org.adorsys.adcore.pdfreport.PdfReportTemplate;
 import org.adorsys.adcshdwr.jpa.CdrCstmrVchr;
-import org.adorsys.adcshdwr.jpa.CdrCstmrVchr_;
 import org.adorsys.adcshdwr.jpa.CdrCstmrVchrSearchInput;
 import org.adorsys.adcshdwr.jpa.CdrCstmrVchrSearchResult;
-import org.adorsys.adcshdwr.pdfreport.PdfReportTemplate;
-
+import org.adorsys.adcshdwr.jpa.CdrCstmrVchr_;
 
 
 /**
@@ -46,6 +46,8 @@ public class CdrCstmrVchrEndpoint {
 	private CdrCstmrVchrEJB ejb;
 	@Inject
 	private PdfReportTemplate<CdrCstmrVchr> pdfReportTemplate;
+	@Inject
+	private SecurityUtil securityUtil;
 
 	@POST
 	@Consumes({ "application/json", "application/xml" })
@@ -114,10 +116,11 @@ public class CdrCstmrVchrEndpoint {
 	@Produces({ "application/json", "application/xml","application/pdf","application/octet-stream" })
 	public Response buildVoucherPdfReport(CdrCstmrVchrSearchInput searchInput,@Context HttpServletResponse response) throws AdException 
 	{
+		String loginName = securityUtil.getCurrentLoginName();
 		List<CdrCstmrVchr> resultList = ejb.findCustom(searchInput);
 		 OutputStream os = null ;
 		try {
-			ByteArrayOutputStream baos = pdfReportTemplate.build(resultList, CdrCstmrVchr.class);
+			ByteArrayOutputStream baos = pdfReportTemplate.build(resultList, CdrCstmrVchr.class, loginName);
             // the contentlength
             response.setContentLength(baos.size());
             // write ByteArrayOutputStream to the ServletOutputStream
