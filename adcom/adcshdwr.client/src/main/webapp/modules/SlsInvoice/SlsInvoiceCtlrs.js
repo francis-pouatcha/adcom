@@ -366,6 +366,7 @@ function($scope,genericResource,cdrSlsInvoicesUtils,cdrSlsInvoicesState,$locatio
             .success(function(cdrPymntHolder){
                 $scope.cdrPymntHolder=cdrPymntHolder;
                 $scope.cdrPymntHolder.amt = $scope.slsInvoice.netAmtToPay - $scope.cdrPymntHolder.cdrPymnt.amt;
+                $scope.error = "";
             })
             .error(function(error){
                 $scope.error = error;

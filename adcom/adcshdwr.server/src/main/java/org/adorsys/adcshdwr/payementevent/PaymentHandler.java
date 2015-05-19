@@ -4,7 +4,7 @@ import javax.ejb.Stateless;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 
-import org.adorsys.adcshdwr.exceptions.AdException;
+import org.adorsys.adcore.exceptions.AdException;
 /**
  * 
  * @author guymoyo

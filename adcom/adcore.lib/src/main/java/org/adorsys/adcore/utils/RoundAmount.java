@@ -1,7 +1,11 @@
 package org.adorsys.adcore.utils;
 
 import java.math.BigDecimal;
-
+/**
+ * 
+ * @author guymoyo
+ *
+ */
 public  class RoundAmount {
 		
 	private BigDecimal amount;

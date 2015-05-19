@@ -71,8 +71,8 @@ angular.module('Admanager')
         service.translate();
         return service;
 }])
-.controller('CdrCstmrVchrCtrls', ['$scope', 'genericResource', 'CdrCstmrVchrUtils', '$location', '$rootScope', 'commonTranslations',
-function ($scope, genericResource, CdrCstmrVchrUtils, $location, $rootScope, commonTranslations) {
+.controller('CdrCstmrVchrCtrls', ['$scope', 'genericResource', 'CdrCstmrVchrUtils', '$location', '$rootScope', 'commonTranslations','fileExtractor',
+function ($scope, genericResource, CdrCstmrVchrUtils, $location, $rootScope, commonTranslations, fileExtractor) {
 
             $scope.searchInput = {};
             $scope.itemPerPage = 25;
@@ -131,7 +131,12 @@ function ($scope, genericResource, CdrCstmrVchrUtils, $location, $rootScope, com
 	}
 
     function handlePrintRequestEvent() {
-        // To do
+        genericResource.builfReport(CdrCstmrVchrUtils.cdrCstmr+'/voucherreport.pdf', $scope.searchInput).success(function(data){
+            console.log(data);
+            fileExtractor.extractFile(data,"application/pdf");
+        }).error(function (error) {
+            $scope.error = error;
+        });
     }
 
     function paginate() {
@@ -150,7 +155,6 @@ function ($scope, genericResource, CdrCstmrVchrUtils, $location, $rootScope, com
                  entity:{},
                  fieldNames:[],
                  start:0,
-                 max:25,
                  max:self.itemPerPage
              }
     	 
