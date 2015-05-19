@@ -6,7 +6,7 @@
                     <div class="form-group">
                         <label class=" control-label" for="lotPic">{{stkArticleLotUtils.translations['StkArticleLot_lotPic_description.title']}}</label>
                         <div class="">
-                            <input type="text" id="lotPic" lotPic"" ng-model="searchInput.entity.lotPic" class="form-control">
+                            <input type="text" id="lotPic" ng-model="searchInput.entity.lotPic" class="form-control">
                         </div>
                     </div>
                 </div>
@@ -20,17 +20,9 @@
                 </div>
                 <div class="col-lg-3">
                     <div class="form-group">
-                        <label class=" control-label" for="artName">{{stkArticleLotUtils.translations['StkArticleLot_artName_description.title']}}</label>
+                        <label class=" control-label" for="supplierPic">{{stkArticleLotUtils.translations['StkArticleLot_supplierPic_description.title']}}</label>
                         <div class="">
-                            <input type="text" id="artName" ng-model="searchInput.artName" class="form-control">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="form-group">
-                        <label class=" control-label" for="familyName">{{stkArticleLotUtils.translations['StkArticleLot_familyName_description.title']}}</label>
-                        <div class="">
-                            <input type="text" id="familyName" ng-model="searchInput.familyName" class="form-control">
+                            <input type="text" id="supplierPic" ng-model="searchInpu.entity.supplierPic" class="form-control">
                         </div>
                     </div>
                 </div>
@@ -38,59 +30,14 @@
                     <div class="form-group">
                         <label class=" control-label" for="supplier">{{stkArticleLotUtils.translations['StkArticleLot_supplier_description.title']}}</label>
                         <div class="">
-                            <input type="text" id="supplier" ng-model="searchInput.supplier" class="form-control">
+                            <input type="text" id="supplier" ng-model="searchInput.entity.supplier" class="form-control">
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3">
-                    <div class="form-group">
-                        <label class=" control-label" for="expirDtFrom">{{stkArticleLotUtils.translations['StkArticleLot_expirDtFrom_description.title']}}</label>
-                        <div class="">
-                            <input type="text" id="expirDtFrom" ng-model="searchInput.expirDtFrom" class="form-control">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="form-group">
-                        <label class=" control-label" for="expirDtTo">{{stkArticleLotUtils.translations['StkArticleLot_expirDtTo_description.title']}}</label>
-                        <div class="">
-                            <input type="text" id="expirDtTo" ng-model="searchInput.expirDtTo" class="form-control">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2">
-                    <div class="form-group">
-                        <label class=" control-label" for="purchWrntyDtFrom">{{stkArticleLotUtils.translations['StkArticleLot_purchWrntyDtFrom_description.title']}}</label>
-                        <div class="">
-                            <input type="text" id="purchWrntyDtFrom" ng-model="searchInput.purchWrntyDtFrom" class="form-control">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2">
-                    <div class="form-group">
-                        <label class=" control-label" for="purchWrntyDtTo">{{stkArticleLotUtils.translations['StkArticleLot_purchWrntyDtTo_description.title']}}</label>
-                        <div class="">
-                            <input type="text" id="purchWrntyDtTo" ng-model="searchInput.purchWrntyDtTo" class="form-control">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2">
-                    <div class="form-group">
-                        <label class=" control-label" for="purchRtrnDtFrom">{{stkArticleLotUtils.translations['StkArticleLot_purchRtrnDtFrom_description.title']}}</label>
-                        <div class="">
-                            <input type="text" id="purchRtrnDtFrom" ng-model="searchInput.purchRtrnDtFrom" class="form-control">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2">
-                    <div class="form-group">
-                        <label class=" control-label" for="purchRtrnDtTo">{{stkArticleLotUtils.translations['StkArticleLot_purchRtrnDtTo_description.title']}}</label>
-                        <div class="">
-                            <input type="text" id="purchRtrnDtTo" ng-model="searchInput.purchRtrnDtTo" class="form-control">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2">
+
+
+
+                <div class="col-lg-2 pull-right">
                     <div class="form-group">
                         <button  ng-click="handleSearchRequestEvent()" class="btn btn-default " style="margin-top: 23px;" >
                             <i class="glyphicon glyphicon-search"></i>
@@ -111,26 +58,26 @@
                      <tr>
                          <th class="text-center">{{stkArticleLotUtils.translations['StkArticleLot_lotPic_description.title']}}</th>
                          <th class="text-center">{{stkArticleLotUtils.translations['StkArticleLot_artPic_description.title']}}</th>
-                         <th class="text-center">{{stkArticleLotUtils.translations['StkArticleLot_artName_description.title']}}</th>
+                         <th class="text-center">{{stkArticleLotUtils.translations['StkArticleLot_artFeatures_artName_description.title']}}</th>
                          <th class="text-center">{{stkArticleLotUtils.translations['StkArticleLot_lotQty_description.title']}}</th>
                          <th class="text-center">{{stkArticleLotUtils.translations['StkArticleLot_lotQtyDt_description.title']}}</th>
                          <th class="text-center">{{stkArticleLotUtils.translations['StkArticleLot_sppuTaxIncl_description.title']}}</th>
+                         <th class="text-center">{{stkArticleLotUtils.translations['StkArticleLot_closedDt_description.title']}}</th>
                          <th class="text-center">{{stkArticleLotUtils.translations['StkArticleLot_expirDt_description.title']}}</th>
-                         <th></th>
                          <th></th>
                      </tr>
                      </thead>
                      <tbody>
-                     <tr ng-repeat="stkArticleLot in stkArticleLots()" >
+                     <tr ng-repeat="stkArticleLot in stkArticleLotState.stkArticleLots()" >
 				         <td>{{stkArticleLot.lotPic}}</td>
 				         <td>{{stkArticleLot.artPic}}</td>
 				         <td>{{stkArticleLot.artFeatures.artName}}</td>
 			             <td>{{stkArticleLot.lotQty}}</td>
 			             <td>{{stkArticleLot.lotQtyDt|date:'dd MM yyyy'}}</td>
 			             <td>{{stkArticleLot.sppuTaxIncl}}</td>
+                         <td>{{stkArticleLot.closedDt|date:'dd MM yyyy'}}</td>
 			             <td>{{stkArticleLot.expirDt|date:'dd MM yyyy'}}</td>
                          <td><a href="" ng-click="show(stkArticleLot,$index)"><i class="glyphicon glyphicon-eye-open"></i></a></td>
-                         <td><a href="" ng-click="edit(stkArticleLot,$index)"><i class="glyphicon glyphicon-edit"></i></a></td>
                      </tr>
                      </tbody>
                  </table>

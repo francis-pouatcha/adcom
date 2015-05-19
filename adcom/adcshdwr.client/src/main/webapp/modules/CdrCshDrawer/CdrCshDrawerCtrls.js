@@ -60,7 +60,8 @@ angular.module('AdCshdwr')
                     'Entity_save.title',
                     'Entity_By.title',
                     'Entity_saveleave.title',
-                    'Entity_add.title'
+                    'Entity_add.title',
+                    'Entity_back.title'
                  ])
                 .then(function (translations) {
                     service.translations = translations;

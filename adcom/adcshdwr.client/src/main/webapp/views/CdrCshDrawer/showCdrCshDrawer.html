@@ -1,6 +1,6 @@
 <div class="container" ng-cloak>
     <div class="panel panel-default">
-        <div class="panel-heading"><b>{{commonTranslations.translations['Entity_show.title']}}</b> </div>
+        <div class="panel-heading"><b>{{cdrCshDrawerUtils.translations['Entity_show.title']}}</b> </div>
         <div class="panel-body">
             <label class="error col-lg-offset-3 alert-danger">{{error}} </label>
             <form id="CdrCshDrawerForm" name="CdrCshDrawerForm" class="form-horizontal">
@@ -84,8 +84,8 @@
                 </div>-->
                 <div class="control-group">
                     <div class="controls">
-                        <button style="margin-top: 27px" ng-show="cdrCshDrawer.clsngDt == null" id="saveCdrCshDrawer" name="saveCdrCshDrawer" class="btn btn-primary" ng-click="close()"><i class="glyphicon glyphicon-ok"></i> {{cdrCshDrawerUtils.translations['CdrCshDrawer_close_description.title']}}</button>
-                        <a style="margin-top: 27px" class="btn btn-danger" href="#/CdrCshDrawers"><i class="glyphicon glyphicon-chevron-left"></i> {{commonTranslations.translations['Entity_back.title']}}</a>
+                        <button style="margin-top: 27px" ng-show="cdrCshDrawer.clsngDt == null" id="saveCdrCshDrawer" name="saveCdrCshDrawer" class="btn btn-primary col-lg-offset-1" ng-click="close()"><i class="glyphicon glyphicon-ok"></i> {{cdrCshDrawerUtils.translations['CdrCshDrawer_close_description.title']}}</button>
+                        <a style="margin-top: 27px" class="btn btn-danger col-lg-offset-2" href="#/CdrCshDrawers"><i class="glyphicon glyphicon-chevron-left"></i> {{cdrCshDrawerUtils.translations['Entity_back.title']}}</a>
                         <!--<button style="margin-top: 27px"  class="btn btn-default" ng-show="cdrCshDrawer.clsngDt == null" ng-click="decaissUI()"><i class="glyphicon glyphicon-th"></i> Decaissement</button>-->
                     </div>
                 <div>
