@@ -35,13 +35,15 @@
     <module>adsales.server</module>
     <module>adcshdwr.server</module>
     <module>adterm.server</module>
-    <module>adcom.all</module>
-    <module>adcom.configuration</module>
-    <module>adcom.test</module>
     <module>adaptmt.server</module>
     <module>adaptmt.client</module>
     <module>admanager.client</module>
-    
+    <module>adcost.server</module>
+    <module>adcom.all</module>
+    <module>adcom.configuration</module>
+    <module>adcom.test</module>
+
+    <module>adacc.lib</module>
   </modules>
   <scm>
     <connection>scm:git:https://github.com/francis-pouatcha/adcom.git</connection>
