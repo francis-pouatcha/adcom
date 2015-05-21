@@ -34,8 +34,25 @@
                         </div>
                     </div>
                 </div>
-
-
+                
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label class=" control-label" for="from">{{stkArticleLotUtils.translations['StkArticleLot_expirDt_description.title']}} : {{stkArticleLotUtils.translations['Entity_From.title']}}</label>
+                        <div class="">
+                            <input type="datetime" date-time  view="date" min-view="date" views="['date']" dismiss="true" format="dd-MM-yyyy"
+                                                ng-model="searchInput.from" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label class=" control-label" for="to">{{stkArticleLotUtils.translations['StkArticleLot_expirDt_description.title']}} : {{stkArticleLotUtils.translations['Entity_To.title']}}</label>
+                        <div class="">
+                            <input type="datetime" date-time  view="date" min-view="date" views="['date']" dismiss="true" format="dd-MM-yyyy"
+                                                ng-model="searchInput.to" class="form-control">
+                        </div>
+                    </div>
+                </div>
 
                 <div class="col-lg-2 pull-right">
                     <div class="form-group">

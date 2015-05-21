@@ -4,16 +4,28 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.persistence.metamodel.SingularAttribute;
 
+import org.adorsys.adbase.security.SecurityUtil;
 import org.adorsys.adstock.jpa.StkArticleLot;
+import org.adorsys.adstock.jpa.StkArticleLotSearchInput;
 import org.adorsys.adstock.repo.StkArticleLotRepository;
+import org.apache.commons.lang3.StringUtils;
 
 @Stateless
 public class StkArticleLotEJB {
 
 	@Inject
 	private StkArticleLotRepository repository;
+
+	@Inject
+	private SecurityUtil securityUtil;
+
+	@Inject
+	private EntityManager em;
 
 	public StkArticleLot create(StkArticleLot entity) {
 		return repository.save(attach(entity));
@@ -86,15 +98,136 @@ public class StkArticleLotEJB {
 		return repository.findLotPicByArtPic(artPic);
 	}
 
-//	public List<String> findIdByDlvryNbr(String dlvryNbr) {
-//		return repository.findIdByDlvryNbr(dlvryNbr);
-//	}
-//
-//	public Long countByDlvryNbr(String dlvryNbr) {
-//		return repository.countByDlvryNbr(dlvryNbr);
-//	}
-//
-//	public List<String> findIdByDlvryItemNbr(String dlvryItemNbr) {
-//		return repository.findIdByDlvryItemNbr(dlvryItemNbr);
-//	}
+	private static final String FIND_CUSTOM_QUERY = "SELECT e FROM StkArticleLot AS e";
+	private static final String COUNT_CUSTOM_QUERY = "SELECT count(e.id) FROM StkArticleLot AS e";
+
+	public Long countCustom(StkArticleLotSearchInput searchInput) {
+		StringBuilder qBuilder = preprocessQuery(COUNT_CUSTOM_QUERY,
+				searchInput);
+		TypedQuery<Long> query = em
+				.createQuery(qBuilder.toString(), Long.class);
+		setParameters(searchInput, query);
+		return query.getSingleResult();
+	}
+
+	public List<StkArticleLot> findCustom(StkArticleLotSearchInput searchInput) {
+		StringBuilder qBuilder = preprocessQuery(FIND_CUSTOM_QUERY, searchInput);
+		TypedQuery<StkArticleLot> query = em.createQuery(qBuilder.toString(),
+				StkArticleLot.class);
+		setParameters(searchInput, query);
+
+		int start = searchInput.getStart();
+		int max = searchInput.getMax();
+
+		if (start < 0)
+			start = 0;
+		query.setFirstResult(start);
+		if (max >= 1)
+			query.setMaxResults(max);
+
+		return query.getResultList();
+	}
+
+	private StringBuilder preprocessQuery(String findOrCount,
+			StkArticleLotSearchInput searchInput) {
+		StkArticleLot entity = searchInput.getEntity();
+
+		String whereClause = " WHERE  ";
+		String andClause = " AND ";
+
+		StringBuilder qBuilder = new StringBuilder(findOrCount);
+		boolean whereSet = false;
+
+		if (StringUtils.isNotBlank(entity.getLotPic())) {
+			if (!whereSet) {
+				qBuilder.append(whereClause);
+				whereSet = true;
+			} else {
+				qBuilder.append(andClause);
+			}
+			qBuilder.append("e.lotPic=:lotPic");
+		}
+		if (StringUtils.isNotBlank(entity.getArtPic())) {
+			if (!whereSet) {
+				qBuilder.append(whereClause);
+				whereSet = true;
+			} else {
+				qBuilder.append(andClause);
+			}
+			qBuilder.append("e.artPic=:artPic");
+		}
+		if (StringUtils.isNotBlank(entity.getSupplierPic())) {
+			if (!whereSet) {
+				qBuilder.append(whereClause);
+				whereSet = true;
+			} else {
+				qBuilder.append(andClause);
+			}
+			qBuilder.append("e.supplierPic=:supplierPic");
+		}
+		if (StringUtils.isNotBlank(entity.getSupplier())) {
+			if (!whereSet) {
+				qBuilder.append(whereClause);
+				whereSet = true;
+			} else {
+				qBuilder.append(andClause);
+			}
+			qBuilder.append("e.supplier=:supplier");
+		}
+		if (searchInput.getFrom() != null) {
+			if (!whereSet) {
+				qBuilder.append(whereClause);
+				whereSet = true;
+			} else {
+				qBuilder.append(andClause);
+			}
+			qBuilder.append("e.expirDt>:from");
+		}
+		if (searchInput.getTo() != null) {
+			if (!whereSet) {
+				qBuilder.append(whereClause);
+				whereSet = true;
+			} else {
+				qBuilder.append(andClause);
+			}
+			qBuilder.append("e.expirDt<:to");
+		}
+
+		return qBuilder;
+	}
+
+	public void setParameters(StkArticleLotSearchInput searchInput, Query query) {
+		StkArticleLot entity = searchInput.getEntity();
+
+		if (StringUtils.isNotBlank(entity.getLotPic())) {
+			query.setParameter("lotPic", entity.getLotPic());
+		}
+		if (StringUtils.isNotBlank(entity.getArtPic())) {
+			query.setParameter("artPic", entity.getArtPic());
+		}
+		if (StringUtils.isNotBlank(entity.getSupplierPic())) {
+			query.setParameter("supplierPic", entity.getSupplierPic());
+		}
+		if (StringUtils.isNotBlank(entity.getSupplier())) {
+			query.setParameter("supplier", entity.getSupplier());
+		}
+		if (searchInput.getFrom() != null) {
+			query.setParameter("from", searchInput.getFrom());
+		}
+		if (searchInput.getTo() != null) {
+			query.setParameter("to", searchInput.getTo());
+		}
+	}
+
+	// public List<String> findIdByDlvryNbr(String dlvryNbr) {
+	// return repository.findIdByDlvryNbr(dlvryNbr);
+	// }
+	//
+	// public Long countByDlvryNbr(String dlvryNbr) {
+	// return repository.countByDlvryNbr(dlvryNbr);
+	// }
+	//
+	// public List<String> findIdByDlvryItemNbr(String dlvryItemNbr) {
+	// return repository.findIdByDlvryItemNbr(dlvryItemNbr);
+	// }
 }
