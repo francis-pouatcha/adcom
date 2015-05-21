@@ -1,5 +1,7 @@
 package org.adorsys.adinvtry.rest;
 
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +11,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -17,16 +20,20 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.adorsys.adbase.security.SecurityUtil;
+import org.adorsys.adcore.exceptions.AdException;
+import org.adorsys.adcore.pdfreport.PdfReportTemplate;
 import org.adorsys.adinvtry.jpa.InvInvtryItem;
+import org.adorsys.adinvtry.jpa.InvInvtryItem_;
 import org.adorsys.adinvtry.jpa.InvInvtryItemList;
 import org.adorsys.adinvtry.jpa.InvInvtryItemListSearchInput;
 import org.adorsys.adinvtry.jpa.InvInvtryItemListSearchResult;
 import org.adorsys.adinvtry.jpa.InvInvtryItemSearchInput;
 import org.adorsys.adinvtry.jpa.InvInvtryItemSearchResult;
-import org.adorsys.adinvtry.jpa.InvInvtryItem_;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -40,6 +47,11 @@ public class InvInvtryItemEndpoint
 
    @Inject
    private InvInvtryItemEJB ejb;
+   @Inject
+	private PdfReportTemplate<InvInvtryItem> pdfReportTemplate;
+   @Inject
+	private SecurityUtil securityUtil;
+
 
    @POST
    @Consumes({ "application/json", "application/xml" })
@@ -88,6 +100,35 @@ public class InvInvtryItemEndpoint
    {
       return ejb.count();
    }
+   
+   @GET
+ 	@Path("/invintryreport.pdf/{invNbr}")
+ 	@Produces({ "application/json", "application/xml","application/pdf","application/octet-stream" })
+ 	public Response buildCshdwrreportPdfReport(@PathParam("invNbr") String invNbr,@Context HttpServletResponse response) throws AdException 
+ 	{	
+ 	   	String loginName = securityUtil.getCurrentLoginName();
+ 		String lang = securityUtil.getUserLange();
+ 		List<InvInvtryItem> resultList = ejb.findByInvtryNbr(invNbr);
+ 		 OutputStream os = null ;
+ 		try {
+ 			ByteArrayOutputStream baos = pdfReportTemplate.build(resultList, InvInvtryItem.class,loginName, lang);
+          // the contentlength
+          response.setContentLength(baos.size());
+          // write ByteArrayOutputStream to the ServletOutputStream
+          os = response.getOutputStream();
+          baos.writeTo(os);
+          os.flush();
+          os.close();
+ 			  
+ 		} catch (Exception e) {
+ 			throw new AdException("Error printing");
+ 		}
+ 	
+ 		return	Response.ok(os).
+ 		header("Content-Disposition",
+ 				"attachment; filename=localitiesreport.pdf")
+ 		 .build();
+ 	}
 
    @POST
    @Path("/findBy")

@@ -10,6 +10,7 @@
         <p class="">
             <a class=" btn btn-default" href="#/PrcmtOrders"  type="button">Cancel</a>
             <button class=" btn btn-primary" ng-click="prcmtOrderShowCtlr.transform()" ng-show="!prcmtOrderShowCtlr.closeStatus" type="button">{{'transform_to_delivery' | translate}}</button>
+            <a class=" btn btn-primary" ng-click="prcmtOrderShowCtlr.handlePrintRequestEvent()" ng-show="!prcmtOrderShowCtlr.closeStatus" ><i class="glyphicon glyphicon-print" ></i> {{'print' | translate}}</a>
             <button class=" btn btn-primary" ng-click="prcmtOrderShowCtlr.save()" ng-show="prcmtOrderShowCtlr.closeStatus" type="button">{{'save' | translate}}</button>
             <button class=" btn btn-primary" ng-click="prcmtOrderShowCtlr.close()" ng-show="prcmtOrderShowCtlr.closeStatus" type="button">{{'save_and_close' | translate}}</button>
         </p>

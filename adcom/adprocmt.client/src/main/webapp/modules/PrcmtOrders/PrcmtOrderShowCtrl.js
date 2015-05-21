@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('AdProcmt').controller('prcmtOrderShowCtlr',['$scope','ProcmtUtils','PrcmtOrderState','PrcmtDeliveryState','genericResource','$routeParams','$location','$q',function($scope,ProcmtUtils,PrcmtOrderState,PrcmtDeliveryState,genericResource,$routeParams,$location,$q){
+angular.module('AdProcmt').controller('prcmtOrderShowCtlr',['$scope','ProcmtUtils','PrcmtOrderState','PrcmtDeliveryState','genericResource','$routeParams','$location','$q','fileExtractor',function($scope,ProcmtUtils,PrcmtOrderState,PrcmtDeliveryState,genericResource,$routeParams,$location,$q,fileExtractor){
     var self = this ;
     $scope.prcmtOrderShowCtlr = self;
     self.prcmtOrderHolder = {
@@ -30,6 +30,7 @@ angular.module('AdProcmt').controller('prcmtOrderShowCtlr',['$scope','ProcmtUtil
     self.loadBusinessPartner = loadBusinessPartner;
     self.poItemsDeleted = [];
     self.transform = transform;
+    self.handlePrintRequestEvent =handlePrintRequestEvent;
 
     load();
 
@@ -211,7 +212,17 @@ angular.module('AdProcmt').controller('prcmtOrderShowCtlr',['$scope','ProcmtUtil
     }
 
     function addItem(){
-        self.prcmtOrderHolder.poItems.unshift(self.prcmtOrderItemHolder);
+        var found = false;
+        for(var i=0;i<self.prcmtOrderHolder.poItems.length;i++){
+            if(self.prcmtOrderHolder.poItems[i].prcmtPOItem.artPic==self.prcmtOrderItemHolder.prcmtPOItem.artPic){
+                self.prcmtOrderHolder.poItems[i].prcmtPOItem.qtyOrdered = parseInt(self.prcmtOrderHolder.poItems[i].prcmtPOItem.qtyOrdered) + parseInt(self.prcmtOrderItemHolder.prcmtPOItem.qtyOrdered);
+                found = true;
+                break;
+            }
+        }
+        if(!found){
+            self.prcmtOrderHolder.poItems.unshift(self.prcmtOrderItemHolder);
+        }
         self.prcmtOrderItemHolder = {};
         $('#artName').focus();
     }
@@ -235,6 +246,14 @@ angular.module('AdProcmt').controller('prcmtOrderShowCtlr',['$scope','ProcmtUtil
 
     function showLess(){
         self.show = false;
+    }
+
+    function handlePrintRequestEvent() {
+        genericResource.builfReportGet(ProcmtUtils.urlpoitems+'/orderreport.pdf',self.prcmtOrderHolder.prcmtProcOrder.poNbr).success(function(data){
+            fileExtractor.extractFile(data,"application/pdf");
+        }).error(function (error) {
+            $scope.error = error;
+        });
     }
 
 }]);

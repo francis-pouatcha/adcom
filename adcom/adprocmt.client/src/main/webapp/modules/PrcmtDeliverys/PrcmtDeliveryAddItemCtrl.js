@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('AdProcmt').controller('prcmtDeliveryAddItemCtlr',['$scope','$routeParams','$location','$q','ProcmtUtils','genericResource','PrcmtDeliveryState',function($scope,$routeParams,$location,$q,ProcmtUtils,genericResource,PrcmtDeliveryState){
+angular.module('AdProcmt').controller('prcmtDeliveryAddItemCtlr',['$scope','$routeParams','$location','$q','ProcmtUtils','genericResource','PrcmtDeliveryState','fileExtractor',function($scope,$routeParams,$location,$q,ProcmtUtils,genericResource,PrcmtDeliveryState,fileExtractor){
     var self = this ;
     $scope.prcmtDeliveryAddItemCtlr = self;
     self.prcmtDelivery = {};
@@ -34,6 +34,7 @@ angular.module('AdProcmt').controller('prcmtDeliveryAddItemCtlr',['$scope','$rou
     self.loadBusinessPartner = loadBusinessPartner;
     self.loadOrgUnit = loadOrgUnit;
     self.loadstkSection = loadstkSection;
+    self.handlePrintRequestEvent =handlePrintRequestEvent;
 
     load();
 
@@ -222,7 +223,18 @@ angular.module('AdProcmt').controller('prcmtDeliveryAddItemCtlr',['$scope','$rou
             self.prcmtDeliveryItemHolder.strgSctns = [];
             self.prcmtDeliveryItemHolder.strgSctns.push(strgSctnHolder);
         }
-        self.prcmtDeliveryItemHolders.unshift(self.prcmtDeliveryItemHolder);
+
+        var found = false;
+        for(var i=0;i<self.prcmtDeliveryItemHolders.length;i++){
+            if(self.prcmtDeliveryItemHolders[i].dlvryItem.artPic==self.prcmtDeliveryItemHolder.dlvryItem.artPic){
+                self.prcmtDeliveryItemHolders[i].dlvryItem.qtyDlvrd = parseInt(self.prcmtDeliveryItemHolders[i].dlvryItem.qtyDlvrd) + parseInt(self.prcmtDeliveryItemHolder.dlvryItem.qtyDlvrd);
+                found = true;
+                break;
+            }
+        }
+        if(!found){
+            self.prcmtDeliveryItemHolders.unshift(self.prcmtDeliveryItemHolder);
+        }
         //CLEAR
         self.prcmtDeliveryItemHolder = {dlvryItem:{},recvngOus:[],strgSctns:[]};
         self.taux = "";
@@ -276,6 +288,14 @@ angular.module('AdProcmt').controller('prcmtDeliveryAddItemCtlr',['$scope','$rou
 
     function showLess(){
         self.show = false;
+    }
+
+    function handlePrintRequestEvent() {
+        genericResource.builfReportGet(ProcmtUtils.urlBase+'/deliveryreport.pdf',self.prcmtDelivery.dlvryNbr).success(function(data){
+            fileExtractor.extractFile(data,"application/pdf");
+        }).error(function (error) {
+            $scope.error = error;
+        });
     }
 
 }]);

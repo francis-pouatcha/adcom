@@ -10,6 +10,7 @@
         </h4>
         <p class="">
             <a class=" btn btn-default" href="#/"  type="button">Cancel</a>
+            <a class=" btn btn-primary" ng-click="prcmtDeliveryAddItemCtlr.handlePrintRequestEvent()" ng-show="!prcmtDeliveryAddItemCtlr.closeStatus" ><i class="glyphicon glyphicon-print" ></i> {{'print' | translate}}</a>
             <button class=" btn btn-primary" ng-click="prcmtDeliveryAddItemCtlr.save()" ng-show="prcmtDeliveryAddItemCtlr.closeStatus" type="button">{{'save' | translate}}</button>
             <button class=" btn btn-primary" ng-click="prcmtDeliveryAddItemCtlr.close()" ng-show="prcmtDeliveryAddItemCtlr.closeStatus" type="button">{{'save_and_close' | translate}}</button>
         </p>
@@ -179,15 +180,15 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="prcmtDeliveryItemHolder in prcmtDeliveryAddItemCtlr.prcmtDeliveryItemHolders"  >
-                        <td>{{prcmtDeliveryItemHolder.dlvryItem.artPic}}</td>
-                        <td>{{prcmtDeliveryItemHolder.dlvryItem.artName}}</td>
-                        <td>{{prcmtDeliveryItemHolder.dlvryItem.stkQtyPreDlvry}}</td>
-                        <td>{{prcmtDeliveryItemHolder.dlvryItem.qtyDlvrd}}</td>
-                        <td>{{prcmtDeliveryItemHolder.dlvryItem.freeQty}}</td>
-                        <td>{{prcmtDeliveryItemHolder.dlvryItem.pppuPreTax}}</td>
-                        <td>{{prcmtDeliveryItemHolder.dlvryItem.sppuPreTax}}</td>
-                        <td>{{prcmtDeliveryItemHolder.dlvryItem.expirDt | date: 'dd-MM-yyyy'}}</td>
+                    <tr ng-repeat="itemHolder in prcmtDeliveryAddItemCtlr.prcmtDeliveryItemHolders"  >
+                        <td>{{itemHolder.dlvryItem.artPic}}</td>
+                        <td>{{itemHolder.dlvryItem.artName}}</td>
+                        <td>{{itemHolder.dlvryItem.stkQtyPreDlvry}}</td>
+                        <td>{{itemHolder.dlvryItem.qtyDlvrd}}</td>
+                        <td>{{itemHolder.dlvryItem.freeQty}}</td>
+                        <td>{{itemHolder.dlvryItem.pppuPreTax}}</td>
+                        <td>{{itemHolder.dlvryItem.sppuPreTax}}</td>
+                        <td>{{itemHolder.dlvryItem.expirDt | date: 'dd-MM-yyyy'}}</td>
                         <td><a ng-show="prcmtDeliveryAddItemCtlr.closeStatus" ng-click="prcmtDeliveryAddItemCtlr.editItem($index)" class=""><i class="glyphicon glyphicon-edit"></i></a></td>
                         <td><a ng-show="prcmtDeliveryAddItemCtlr.closeStatus" ng-click="prcmtDeliveryAddItemCtlr.deleteItem($index)" class=""><i class="glyphicon glyphicon-trash"></i></a></td>
                     </tr>

@@ -40,7 +40,7 @@ public class MostSoldTriggerModeHandler implements TriggerModeExecuter {
 		PrcmtOrderHolder prcmtProcOrderHolder = new PrcmtOrderHolder();
 		prcmtProcOrderHolder.setPrcmtProcOrder(prcmtProcOrder);
 		
-		List<CdrDsArtItem> topSales = cdrDsArtItemLookup.topSales(new BigDecimal(100));
+		List<CdrDsArtItem> topSales = cdrDsArtItemLookup.topSales(new BigDecimal(40));
 		for(CdrDsArtItem saleItem:topSales){
 			PrcmtPOItem prcmtPOItem = new PrcmtPOItem();
 			BigDecimal stkQtyPreOrder = stkLotStockQtyLookup.countStockByArtPic(saleItem.getArtPic());
