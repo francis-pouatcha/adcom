@@ -1,6 +1,7 @@
 package org.adorsys.adstock.jpa;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -35,6 +36,38 @@ public class StkMvntSearchInput
     * The field names to be included in the search.
     */
    private List<String> fieldNames = new ArrayList<String>();
+   
+   
+   private Date mvntDateFrom;
+   
+   private Date mvntDateTo;
+   
+   private String artName;
+   
+   
+   public String getArtName() {
+	return artName;
+   }
+   
+   public void setArtName(String artName) {
+	this.artName = artName;
+   }
+   
+   public Date getMvntDateFrom() {
+	return mvntDateFrom;
+   }
+   
+   public Date getMvntDateTo() {
+	return mvntDateTo;
+   }
+   
+   public void setMvntDateFrom(Date mvntDateFrom) {
+	this.mvntDateFrom = mvntDateFrom;
+   }
+   
+   public void setMvntDateTo(Date mvntDateTo) {
+	this.mvntDateTo = mvntDateTo;
+   }
 
    public StkMvnt getEntity()
    {

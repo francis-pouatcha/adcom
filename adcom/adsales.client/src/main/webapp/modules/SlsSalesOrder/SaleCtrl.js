@@ -144,7 +144,7 @@ angular.module('AdSales')
         function loadPtnrRole(){
             genericResource.listAll(saleUtils.sale+'/listAllPtnrRole').success(function(data){
                 self.ptnrRole = data;
-            })
+            });
         }
 
     function onSelect(item,model,label){

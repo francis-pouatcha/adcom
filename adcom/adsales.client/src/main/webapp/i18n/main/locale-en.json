@@ -52,7 +52,7 @@
 "SlsInvceItem_netSPPreTax_description.text":"Net Sales Amount Pre Tax",
 "SlsInvceItem_netSPPreTax_description.title":"Net Sales Amount Pre Tax",
 "SlsInvceItem_netSPTaxIncl_description.text":"Sales Amount Tax Included",
-"SlsInvceItem_netSPTaxIncl_description.title":"Sales Amount Tax Included",
+"SlsInvceItem_netSPTaxIncl_description.title":"Amount Tax Included",
 "SlsInvceItem_objctOrgUnit_description.text":"Object Organization Unit of invoiced object",
 "SlsInvceItem_objctOrgUnit_description.title":"Object Organization Unit",
 "SlsInvceItem_qty_description.text":"The quantity purchased in this line.",

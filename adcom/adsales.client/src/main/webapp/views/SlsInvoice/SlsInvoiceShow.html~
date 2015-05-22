@@ -2,7 +2,11 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <b>{{slsInvoicesUtils.translations['Entity_show.title']}}</b>
+<<<<<<< HEAD
                 <b> {{slsInvoicesUtils.translations['SlsInvoice_description.title']}}</b>
+=======
+                <b> {{slsInvoicesUtils.translations['SlsInvoice_description.title']}}</b> 
+>>>>>>> c1292266fa5347afba110a45f89db4d27e1d4945
             </div>
             <div class="panel-body">
                 <label class="error alert-danger" >{{cdrSlsInvoicesShowCtlr.error}} </label>

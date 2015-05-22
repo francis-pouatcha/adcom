@@ -65,6 +65,11 @@ public class StkMvntEJB
    {
       return repository.findByLike(entity, start, max, attributes);
    }
+   
+   public List<StkMvnt> findCustom(StkMvnt entity, int start, int max, SingularAttribute<StkMvnt, ?>[] attributes)
+   {
+      return repository.findByLike(entity, start, max, attributes);
+   }
 
    public Long countByLike(StkMvnt entity, SingularAttribute<StkMvnt, ?>[] attributes)
    {

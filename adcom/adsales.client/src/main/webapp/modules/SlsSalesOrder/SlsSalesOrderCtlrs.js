@@ -265,7 +265,13 @@ function($scope,genericResource,slsSalesOrderUtils,slsSalesOrderState,$location,
     function handleSearchRequestEvent(){
     	processSearchInput();
     	findCustom($scope.searchInput);
+        //clearSODtSearchInput($scope.searchInput);
     };
+    
+    function clearSODtSearchInput(input){
+        input.slsSODtFrom = '';
+        input.slsSODtTo = '';
+    }
     
     function findCustom(searchInput){
         genericResource.findCustom(slsSalesOrderUtils.urlBase, searchInput)
@@ -406,6 +412,11 @@ function($scope,genericResource,slsSalesOrderUtils,slsSalesOrderState,$location,
     $scope.pageChangeHandler = function(num) {
       //Simple Pagination
     };
+    
+    $scope.checkSOPartners = function(slsSOPtnrs){
+        if(slsSOPtnrs && slsSOPtnrs.length>0) console.log('OK');
+        return (slsSOPtnrs && slsSOPtnrs.length>0);
+    }
     
     
     function generateInvoice(slsSO){

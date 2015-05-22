@@ -108,6 +108,7 @@ public class SlsSalesOrderManagerClient {
 			slsSOItem.setSppuCur(lotSection.getSectionArticleLot().getSppuCur());
 			slsSOItem.setSppuPreTax(lotSection.getSectionArticleLot().getSppuHT());
 			slsSOItem.setVatPct(lotSection.getSectionArticleLot().getVatSalesPct());
+			slsSOItem.setSection(lotSection.getSectionName());
 		}
 
 	}
