@@ -149,7 +149,8 @@ public class SlsInvoiceEndpoint
       }
       Long count = ejb.countCustom(searchInput);
  	 List<SlsInvoice> resultList = ejb.findCustom(searchInput);
- 	 return new SlsInvoiceSearchResult(count, detach(resultList), detach(searchInput));
+ 	List<SlsInvoice> resultList2 = holderEJB.reloadSlsInvoices(resultList);
+ 	 return new SlsInvoiceSearchResult(count, detach(resultList2), detach(searchInput));
      
    }
 

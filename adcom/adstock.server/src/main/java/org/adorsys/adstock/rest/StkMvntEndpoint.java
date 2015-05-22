@@ -133,6 +133,20 @@ public class StkMvntEndpoint
       return new StkMvntSearchResult(countLike, detach(resultList),
             detach(searchInput));
    }
+   
+   @POST
+   @Path("/findCustom")
+   @Produces({ "application/json", "application/xml" })
+   @Consumes({ "application/json", "application/xml" })
+   public StkMvntSearchResult findCustom(StkMvntSearchInput searchInput)
+   {
+      SingularAttribute<StkMvnt, ?>[] attributes = readSeachAttributes(searchInput);
+      Long countLike = ejb.countByLike(searchInput.getEntity(), attributes);
+      List<StkMvnt> resultList = ejb.findByLike(searchInput.getEntity(),
+            searchInput.getStart(), searchInput.getMax(), attributes);
+      return new StkMvntSearchResult(countLike, detach(resultList),
+            detach(searchInput));
+   }
 
    @POST
    @Path("/countByLike")

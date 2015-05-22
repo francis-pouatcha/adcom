@@ -52,7 +52,7 @@
 "SlsInvceItem_netSPPreTax_description.text":"Montant Net Vente Hors Taxes",
 "SlsInvceItem_netSPPreTax_description.title":"Montant Net Vente HT",
 "SlsInvceItem_netSPTaxIncl_description.text":"Le montant de la vente toute taxe comprise.",
-"SlsInvceItem_netSPTaxIncl_description.title":"Montant Vente TTC",
+"SlsInvceItem_netSPTaxIncl_description.title":"Montant TTC",
 "SlsInvceItem_objctOrgUnit_description.text":"Unité Organisationelle de l objet facturé",
 "SlsInvceItem_objctOrgUnit_description.title":"Unité Organisationelle",
 "SlsInvceItem_qty_description.text":"La quantité achetée dans cette ligne.",

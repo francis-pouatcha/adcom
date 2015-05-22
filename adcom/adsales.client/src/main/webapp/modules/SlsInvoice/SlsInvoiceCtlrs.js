@@ -12,6 +12,11 @@ angular.module('AdSales')
         return adUtils.formatDate(fieldName, inPattern);
     }
     
+    service.actualDate = function(inPattern){
+        var currentDate = new Date();
+        return adUtils.formatDate(currentDate, inPattern);
+    }
+    
     service.slsInvceStatusI18nMsgTitleKey = function(enumKey){
     	return "SlsInvceStatus_"+enumKey+"_description.title";
     };
@@ -291,16 +296,51 @@ function($scope,genericResource,slsInvoicesUtils,slsInvoicesState,$location,$roo
     $scope.maxSize =slsInvoicesState.resultHandler.maxResult;
     $scope.error = "";
     $scope.slsInvoicesUtils=slsInvoicesUtils;
+    $scope.handlePrintPreviewInvoice=handlePrintPreviewInvoice;
+    $scope.printPdf=printPdf;
                                      
     $scope.pageChangeHandler = function(num) {
       //Simple Pagination
     };
+    
+                                     
+    function handlePrintPreviewInvoice(slsInvce){
+		if(slsInvoicesState.resultHandler.selectedObject(slsInvce) != -1){
+			$location.path('/SlsInvoices/print/preview/');
+		}
+	}
+                                     
+     function printPdf(el){                      
+           var DocumentContainer = document.getElementById(el);
+            var html = '<html><head>'+
+                       '<link rel="stylesheet" type="text/css" href="styles/custom.css">'+
+                       '</head><body style="background:#ffffff; font-size: 3px;">'+
+                        DocumentContainer.innerHTML+
+                       '<iframe name="print_frame" width="0" height="0" frameborder="0" title="Adcom" src="Adcom"> </iframe>'+
+                       '</body></html>';
+            var WindowObject = window.open("", "PrintWindow",
+                    "width=750,height=650,top=200,left=10,toolbars=no,scrollbars=yes,status=no,resizable=yes");
+            WindowObject.document.writeln(html);
+            WindowObject.document.close();
+            WindowObject.focus();
+            WindowObject.print();
+            WindowObject.close();
+        }
     
     $scope.previous = function (){
         var bp = slsInvoicesState.resultHandler.previous();
         if(bp){
             $scope.bpBnsPtnr=bp;
             slsInvoicesState.tabSelected();
+        }
+    }
+    
+    $scope.checkInvcePartners = function(invcePtnrs){
+        if(invcePtnrs && invcePtnrs.length>0){
+            return true;
+        }
+        else{
+            return false;
         }
     }
 

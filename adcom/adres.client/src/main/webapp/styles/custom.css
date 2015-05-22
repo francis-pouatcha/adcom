@@ -5,8 +5,11 @@
     padding-right: 0;
 }
 
-.margBott10{
+.row-space{ 
+    margin-bottom:20px; 
+}
 
+.margBott10{
     margin-bottom: 10px;
 }
 
