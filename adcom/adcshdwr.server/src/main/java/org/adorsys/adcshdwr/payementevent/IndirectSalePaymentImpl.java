@@ -1,12 +1,11 @@
 package org.adorsys.adcshdwr.payementevent;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
-import org.adorsys.adcshdwr.exceptions.AdException;
+import org.adorsys.adcore.exceptions.AdException;
 import org.adorsys.adcshdwr.jpa.CdrCshDrawer;
 import org.adorsys.adcshdwr.jpa.CdrCstmrVchr;
 import org.adorsys.adcshdwr.jpa.CdrPymnt;
@@ -38,17 +37,7 @@ public class IndirectSalePaymentImpl {
 	
 	public void pay(PaymentEvent pymtEvt) throws AdException{
 		
-		if(pymtEvt == null) throw new AdException("No Payment");
-		if(StringUtils.isBlank(pymtEvt.getSaleNbr())) throw new AdException("No Sale Number");
-		if(pymtEvt.getAmt() == null) throw new AdException("No Amount to pay");
-		if(pymtEvt.getRcvdAmt() == null) throw new AdException("No Recieved amount");
-		if(BigDecimal.ZERO.compareTo(pymtEvt.getAmt()) == 1) throw new AdException("Amount Net to pay less than 0");
-		if(BigDecimal.ZERO.compareTo(pymtEvt.getRcvdAmt()) == 1) throw new AdException("Received Amount less than 0");
-		if(pymtEvt.getAmt().compareTo(pymtEvt.getRcvdAmt()) == 1) throw new AdException("Received Amount less than Amount Net to Pay");
-		
-		
 		CdrCshDrawer activeCshDrawer = cdrCshDrawerEJB.getActiveCshDrawer();
-		if(activeCshDrawer == null) throw new AdException("No open cash drawer");
 		
 		CdrPymnt cdrPymnt = new CdrPymnt();
 		if(StringUtils.isBlank(pymtEvt.getPymntNbr())) {	
@@ -57,17 +46,13 @@ public class IndirectSalePaymentImpl {
 		    cdrPymnt = cdrPymntEJB.create(cdrPymnt);
 		}else{
 			List<CdrPymnt> list = cdrPymntEJB.findByPymntNbr(pymtEvt.getPymntNbr());
-			if(list.isEmpty()) throw new AdException("Incorrect Payment Number");
 			cdrPymnt = list.get(0);
 		}
 		
 		if(pymtEvt.getPymntMode()==null) pymtEvt.setPymntMode(CdrPymntMode.CASH);
 		if(pymtEvt.getPymntMode().equals(CdrPymntMode.VOUCHER)){
-			if(StringUtils.isBlank(pymtEvt.getVchrNbr())) throw new AdException("No Voucher number");
 			List<CdrCstmrVchr> listVcher = cdrCstmrVchrEJB.findByVchrNbr(pymtEvt.getVchrNbr());
-			if(listVcher.isEmpty()) throw new AdException("No Voucher found with this number");
 			CdrCstmrVchr cdrCstmrVchr = listVcher.get(0);
-			if(pymtEvt.getAmt().compareTo(cdrCstmrVchr.getRestAmt()) == 1) throw new AdException("Voucher amount less than amount to pay");
 			cdrCstmrVchr.AddAmtUsed(pymtEvt.getAmt());
 			cdrCstmrVchr.evlte();
 			cdrCstmrVchrEJB.update(cdrCstmrVchr);

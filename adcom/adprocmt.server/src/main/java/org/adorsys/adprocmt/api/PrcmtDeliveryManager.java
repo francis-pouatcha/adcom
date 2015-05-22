@@ -123,7 +123,7 @@ public class PrcmtDeliveryManager {
 		if(itemModified){
 			// Create or update the delivery.
 			recomputeDelivery(delivery);
-			delivery.setDlvryStatus(BaseProcessStatusEnum.ONGOING.name());
+			//delivery.setDlvryStatus(BaseProcessStatusEnum.ONGOING.name());
 			delivery = deliveryEJB.update(delivery);
 			deliveryHolder.setDelivery(delivery);		
 		}
@@ -360,13 +360,15 @@ public class PrcmtDeliveryManager {
 	public PrcmtDeliveryHolder closeDelivery(PrcmtDeliveryHolder deliveryHolder){
 		deliveryHolder = updateDelivery(deliveryHolder);
 		PrcmtDelivery delivery = deliveryHolder.getDelivery();
-
-		recomputeDelivery(delivery);
-		delivery.setDlvryStatus(BaseProcessStatusEnum.CLOSING.name());
-		delivery = deliveryEJB.update(delivery);
+		delivery = deliveryEJB.findByIdentif(delivery.getIdentif());
+		//recomputeDelivery(delivery);
+		if(!StringUtils.equals(delivery.getDlvryStatus(), BaseProcessStatusEnum.CLOSING.name())
+				&& !StringUtils.equals(delivery.getDlvryStatus(), BaseProcessStatusEnum.CLOSED.name())){
+			delivery.setDlvryStatus(BaseProcessStatusEnum.CLOSING.name());
+			delivery = deliveryEJB.update(delivery);	
+			createClosingDeliveryHistory(delivery);// Status closing
+		}	
 		deliveryHolder.setDelivery(delivery);
-		createClosingDeliveryHistory(delivery);// Status closing
-
 		return deliveryHolder;
 	}	
 

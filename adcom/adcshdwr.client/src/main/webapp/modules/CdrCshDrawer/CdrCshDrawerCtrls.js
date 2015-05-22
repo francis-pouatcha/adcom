@@ -45,7 +45,23 @@ angular.module('AdCshdwr')
                     'CdrCshDrawer_ttlVchrIn_description.title',
                     'CdrCshDrawer_ttlVchrOut_description.text',
                     'CdrCshDrawer_ttlVchrOut_description.title',
-                    'CdrCshDrawer_close_description.title'
+                    'CdrCshDrawer_close_description.title',
+
+                    'Entity_show.title',
+                    'Entity_previous.title',
+                    'Entity_list.title',
+                    'Entity_next.title',
+                    'Entity_edit.title',
+                    'Entity_create.title',
+                    'Entity_update.title',
+                    'Entity_Result.title',
+                    'Entity_search.title',
+                    'Entity_cancel.title',
+                    'Entity_save.title',
+                    'Entity_By.title',
+                    'Entity_saveleave.title',
+                    'Entity_add.title',
+                    'Entity_back.title'
                  ])
                 .then(function (translations) {
                     service.translations = translations;
@@ -60,6 +76,7 @@ angular.module('AdCshdwr')
             });
             return deferred.promise;
         }
+
         service.translate();
         return service;
 }])

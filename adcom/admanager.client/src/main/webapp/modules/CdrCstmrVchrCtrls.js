@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('Admanager')
-    .factory('CdrCstmrVchrUtils', ['sessionManager', '$translate', 'genericResource', '$q', function (sessionManager, $translate, genericResource, $q) {
+    .factory('CdrCstmrVchrUtils', ['sessionManager', '$translate', 'genericResource', '$q', '$http', function (sessionManager, $translate, genericResource, $q, $http) {
         var service = {};
 
         service.cdrCstmr = '/adcshdwr.server/rest/cdrcstmrvchrs';
@@ -22,14 +22,17 @@ angular.module('Admanager')
                 })
         }
         
-        service.updateCdrCstmrVchr = function(entity){
-        	 var deferred = $q.defer();
-             genericResource.update(service.cdrCstmr, entity).success(function(data){
-                 deferred.resolve(data);
-             }).error(function(){
-                 deferred.reject("Can not update")
-             });
-             return deferred.promise;
+        service.cancelCdrCstmrVchr = function(entity){
+            var deferred = $q.defer();
+
+            $http.put(service.cdrCstmr + '/cancel/' + entity.id, entity)
+                .success(function(data){
+                    deferred.resolve(data);
+                }).error(function(data){
+                    deferred.reject("Can not cancel CdrCstmrVchr !");
+                });
+
+            return deferred.promise;
         }
 
         service.translate = function () {
@@ -68,8 +71,8 @@ angular.module('Admanager')
         service.translate();
         return service;
 }])
-.controller('CdrCstmrVchrCtrls', ['$scope', 'genericResource', 'CdrCstmrVchrUtils', '$location', '$rootScope', 'commonTranslations',
-function ($scope, genericResource, CdrCstmrVchrUtils, $location, $rootScope, commonTranslations) {
+.controller('CdrCstmrVchrCtrls', ['$scope', 'genericResource', 'CdrCstmrVchrUtils', '$location', '$rootScope', 'commonTranslations','fileExtractor',
+function ($scope, genericResource, CdrCstmrVchrUtils, $location, $rootScope, commonTranslations, fileExtractor) {
 
             $scope.searchInput = {};
             $scope.itemPerPage = 25;
@@ -128,7 +131,12 @@ function ($scope, genericResource, CdrCstmrVchrUtils, $location, $rootScope, com
 	}
 
     function handlePrintRequestEvent() {
-        // To do
+        genericResource.builfReport(CdrCstmrVchrUtils.cdrCstmr+'/voucherreport.pdf', $scope.searchInput).success(function(data){
+            console.log(data);
+            fileExtractor.extractFile(data,"application/pdf");
+        }).error(function (error) {
+            $scope.error = error;
+        });
     }
 
     function paginate() {
@@ -147,7 +155,6 @@ function ($scope, genericResource, CdrCstmrVchrUtils, $location, $rootScope, com
                  entity:{},
                  fieldNames:[],
                  start:0,
-                 max:25,
                  max:self.itemPerPage
              }
     	 
@@ -155,23 +162,18 @@ function ($scope, genericResource, CdrCstmrVchrUtils, $location, $rootScope, com
     }
     
     function cancelCdrCstmrVchr(item){
-    	
     	if(item.canceled === true){
-    		console.log('true value for cancel entity');
-    		item.canceled = false;
+    		console.log(' cannot reactivated CdrCstmrVchr ');
     	}
-    	else if(item.canceled === false){
-	    		console.log('false value for cancel entity');
-	    		item.canceled = true;
-    	}
-    	
-    	CdrCstmrVchrUtils.updateCdrCstmrVchr(item).then(function(result){
-        	console.log(" update of -------------------> : " + result.id + " are canceled : " + result.canceled);
-        })
-        
-    	init();
-    }
 
+        if(item.canceled === false) {
+            // item.canceled = true;
+            CdrCstmrVchrUtils.cancelCdrCstmrVchr(item).then(function (result) {
+                console.log(" canceled of -------------------> : " + item);
+            })
+        }
+        init();
+    }
 
 }]);
   

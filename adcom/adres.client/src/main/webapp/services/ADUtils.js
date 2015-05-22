@@ -209,7 +209,7 @@ angular.module('ADUtils',[])
 	service.translations=[];
     service.translate = function(){
     	$translate([
-    	     'current_language',
+            'current_language',
             'Entity_leave.title',
             'Entity_change.title',
             'Entity_activate.title',
@@ -286,6 +286,14 @@ angular.module('ADUtils',[])
     service.findByLike = function(urlBase, entitySearchInput){
         return $http.post(urlBase+'/findByLike',entitySearchInput);
     };
+
+        service.builfReport = function(urlBase, entitySearchInput){
+            return $http.post(urlBase, entitySearchInput,{responseType: 'arraybuffer'});
+        };
+
+        service.builfReportGet = function(urlBase, id){
+            return $http.get(urlBase+"/"+id,{responseType: 'arraybuffer'});
+        };
 
     service.findByLikePromissed = function (urlBase, fieldName, fieldValue){
     	if(angular.isUndefined(urlBase) || !urlBase ||
@@ -639,5 +647,28 @@ angular.module('ADUtils',[])
     
     return service;
 	
-}]);
+}])
+    .factory('fileExtractor',['$window',function($window){
+        var  service = {
+            extractFile : extractFile,
+            saveFile:saveFile
+
+        };
+        return service ;
+        //////////////////////////////////////////////////////////////////////////////////////////////////
+        function extractFile(data,fileType)
+        {
+            var file = new Blob([data], {type: fileType});
+            var fileURL = URL.createObjectURL(file);
+            $window.open(fileURL);
+        }
+
+        function saveFile(data,fileType,fileName)
+        {
+            var file = new Blob([data], {type: fileType});
+            saveAs(file, fileName);
+        }
+
+    }]);
+
 

@@ -109,9 +109,9 @@
 								<td>{{cdrCstmrVchr.amtUsed}}</td>
 								<td>{{cdrCstmrVchr.settled}}</td>
 								<td>{{cdrCstmrVchr.restAmt}}</td>
-								<td><span class="btn btn-info"
+								<td><a class="btn btn-info" ng-disabled="cdrCstmrVchr.canceled"
 									ng-click="cancelCdrCstmrVchr(cdrCstmrVchr);">
-										{{cdrCstmrVchr.canceled | yesNo}} </span></td>
+										{{cdrCstmrVchr.canceled | yesNo}} </a></td>
 							</tr>
 						</tbody>
 					</table>

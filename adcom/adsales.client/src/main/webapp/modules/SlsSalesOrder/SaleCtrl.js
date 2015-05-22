@@ -210,7 +210,17 @@ angular.module('AdSales')
     }
         
     function addItem(){
-        self.slsSalesOrderHolder.slsSOItemsholder.unshift(self.slsSalesOrderItemHolder);
+        var found = false;
+        for(var i=0;i<self.slsSalesOrderHolder.slsSOItemsholder.length;i++){
+            if(self.slsSalesOrderHolder.slsSOItemsholder[i].slsSOItem.artPic==self.slsSalesOrderItemHolder.slsSOItem.artPic){
+                self.slsSalesOrderHolder.slsSOItemsholder[i].slsSOItem.orderedQty = parseInt(self.slsSalesOrderHolder.slsSOItemsholder[i].slsSOItem.orderedQty) + parseInt(self.slsSalesOrderItemHolder.slsSOItem.orderedQty);
+                found = true;
+                break;
+            }
+        }
+        if(!found){
+            self.slsSalesOrderHolder.slsSOItemsholder.unshift(self.slsSalesOrderItemHolder);
+        }
         self.slsSalesOrderItemHolder = {};
         totalAmount();
         $('#artName').focus();

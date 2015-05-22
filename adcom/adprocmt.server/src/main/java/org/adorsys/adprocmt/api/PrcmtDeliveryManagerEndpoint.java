@@ -19,7 +19,7 @@ public class PrcmtDeliveryManagerEndpoint
 
    @Inject
    private PrcmtDeliveryManager deliveryManager; 
-
+  
    @POST
    @Path("/update")
    @Consumes({ "application/json", "application/xml" })
@@ -43,4 +43,6 @@ public class PrcmtDeliveryManagerEndpoint
    {
 	   return deliveryManager.findDelivery(id);
    }
+   
+   
 }

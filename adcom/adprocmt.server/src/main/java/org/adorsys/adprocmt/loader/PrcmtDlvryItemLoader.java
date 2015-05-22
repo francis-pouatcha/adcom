@@ -43,7 +43,8 @@ public class PrcmtDlvryItemLoader extends AbstractObjectLoader<PrcmtDlvryItemExc
 
 	@Override
 	protected void done() {
-		dlvryManagerClient.done();
+		//dlvryManagerClient.done();
+		dlvryManagerClient.update();
 	}
 	
 	
