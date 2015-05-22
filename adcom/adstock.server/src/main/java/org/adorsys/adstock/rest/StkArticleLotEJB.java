@@ -33,7 +33,13 @@ public class StkArticleLotEJB {
 	private EntityManager em;
 
 	public StkArticleLot create(StkArticleLot entity) {
+
+		entity.setId(entity.getLotPic());
+		if(StringUtils.isBlank(entity.getIdentif())){
+			entity.setIdentif(entity.getLotPic());
+		}
 		return populateStkArticleLot(repository.save(attach(entity)));
+
 	}
 
 	public StkArticleLot deleteById(String id) {

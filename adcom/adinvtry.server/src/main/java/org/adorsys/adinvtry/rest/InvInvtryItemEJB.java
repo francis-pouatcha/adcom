@@ -177,6 +177,10 @@ public class InvInvtryItemEJB
 	public List<InvInvtryItem> findByInvtryNbr(String invtryNbr, int start, int max) {
 		return repository.findByInvtryNbr(invtryNbr).firstResult(start).maxResults(max).getResultList();
 	}
+	
+	public List<InvInvtryItem> findByInvtryNbr(String invtryNbr) {
+		return repository.findByInvtryNbr(invtryNbr).getResultList();
+	}
 
 	public Long countByInvtryNbr(String invtryNbr) {
 		return repository.countByInvtryNbr(invtryNbr);

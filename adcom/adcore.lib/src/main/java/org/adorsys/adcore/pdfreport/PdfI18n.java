@@ -32,7 +32,11 @@ public class PdfI18n {
 	}
 	
 	public String internationalize(String key, String lang) {	
-		return translations.get(key).get(lang).get(0);
+		try {
+			return translations.get(key).get(lang).get(0);
+		} catch (Exception e) {
+			return key;
+		}
 	}
 	
 	private void load(Class<?> klass) {

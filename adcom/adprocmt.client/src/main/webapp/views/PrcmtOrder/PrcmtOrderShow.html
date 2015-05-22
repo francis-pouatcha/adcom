@@ -5,11 +5,13 @@
             <b>{{"PrcmtProcOrder_netAmtToPay_description.title" | translate}}:</b> {{prcmtOrderShowCtlr.prcmtOrderHolder.prcmtProcOrder.netAmtToPay}} cfa,
             <b>{{"PrcmtProcOrder_netPPTaxIncl_description.title" | translate}}:</b> {{prcmtOrderShowCtlr.prcmtOrderHolder.prcmtProcOrder.netPPTaxIncl}} cfa,
             <b>{{"PrcmtProcOrder_creatingUsr_description.title" | translate}}: </b> {{prcmtOrderShowCtlr.prcmtOrderHolder.prcmtProcOrder.creatingUsr}},
-            <b> Status: </b> <label class="label-primary">{{prcmtOrderShowCtlr.prcmtOrderHolder.prcmtProcOrder.poStatus}}</label>
+            <b> Status: </b> <label class="label label-primary">{{prcmtOrderShowCtlr.prcmtOrderHolder.prcmtProcOrder.poStatus}}</label>
+            <label class="label label-warning col-xs-offset-1">{{prcmtDeliveryAddItemCtlr.running}}</label>
         </h4>
         <p class="">
             <a class=" btn btn-default" href="#/PrcmtOrders"  type="button">Cancel</a>
             <button class=" btn btn-primary" ng-click="prcmtOrderShowCtlr.transform()" ng-show="!prcmtOrderShowCtlr.closeStatus" type="button">{{'transform_to_delivery' | translate}}</button>
+            <a class=" btn btn-primary" ng-click="prcmtOrderShowCtlr.handlePrintRequestEvent()" ng-show="!prcmtOrderShowCtlr.closeStatus" ><i class="glyphicon glyphicon-print" ></i> {{'print' | translate}}</a>
             <button class=" btn btn-primary" ng-click="prcmtOrderShowCtlr.save()" ng-show="prcmtOrderShowCtlr.closeStatus" type="button">{{'save' | translate}}</button>
             <button class=" btn btn-primary" ng-click="prcmtOrderShowCtlr.close()" ng-show="prcmtOrderShowCtlr.closeStatus" type="button">{{'save_and_close' | translate}}</button>
         </p>

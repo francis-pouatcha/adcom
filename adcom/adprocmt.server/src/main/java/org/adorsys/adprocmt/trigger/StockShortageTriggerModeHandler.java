@@ -41,7 +41,7 @@ public class StockShortageTriggerModeHandler implements TriggerModeExecuter {
 		PrcmtOrderHolder prcmtProcOrderHolder = new PrcmtOrderHolder();
 		prcmtProcOrderHolder.setPrcmtProcOrder(prcmtProcOrder);
 		
-		List<StkLotStockQty> itemsShortage = stkLotStockQtyLookup.itemsShortage(new BigDecimal(100));
+		List<StkLotStockQty> itemsShortage = stkLotStockQtyLookup.itemsShortage(new BigDecimal(40));
 		for(StkLotStockQty itemStock:itemsShortage){
 			PrcmtPOItem prcmtPOItem = new PrcmtPOItem();
 			PrcmtOrderItemHolder prcmtOrderItemHolder = new PrcmtOrderItemHolder();		

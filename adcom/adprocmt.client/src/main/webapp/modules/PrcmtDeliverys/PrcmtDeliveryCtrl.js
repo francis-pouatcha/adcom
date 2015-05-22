@@ -13,6 +13,7 @@ angular.module('AdProcmt')
         service.stkArtlot2strgsctnsUrlBase = '/adstock.server/rest/stkarticlelot2strgsctns';
         service.urlPrcmtOrder='/adprocmt.server/rest/prcmtprocorders';
         service.urlManageOrder='/adprocmt.server/rest/order';
+        service.urlpoitems = '/adprocmt.server/rest/prcmtpoitems';
 
         return service;
 }])

@@ -173,7 +173,7 @@ public class PdfReportTemplate<T> {
 		PdfPCell pdfPCell;
 		for(String fieldName:fieldsName){		
 			pdfPCell = new PdfPCell();
-			pdfPCell.setFixedHeight(43f);
+			pdfPCell.setFixedHeight(38f);
 			pdfPCell.addElement(new Phrase(fieldName,boldFont));
 			reportTable.addCell(pdfPCell);
 		}
