@@ -35,6 +35,7 @@ angular.module('AdProcmt').controller('prcmtDeliveryAddItemCtlr',['$scope','$rou
     self.loadOrgUnit = loadOrgUnit;
     self.loadstkSection = loadstkSection;
     self.handlePrintRequestEvent =handlePrintRequestEvent;
+    self.running="";
 
     load();
 
@@ -178,26 +179,96 @@ angular.module('AdProcmt').controller('prcmtDeliveryAddItemCtlr',['$scope','$rou
     }
 
     function save(){
+        self.running ="Veuillez patientez, l'enregistrement se poursuit ...";
         var prcmtDeliveryHolder = {};
         prcmtDeliveryHolder.delivery = self.prcmtDelivery;
         prcmtDeliveryHolder.deliveryItems = self.prcmtDeliveryItemHolders;
         for(var i=0;i<self.prcmtDeliveryItemHoldersDeleted.length;i++){
                 prcmtDeliveryHolder.deliveryItems.push(self.prcmtDeliveryItemHoldersDeleted[i])
             }
-        genericResource.customMethod(ProcmtUtils.urlManagerDelivery+'/update',prcmtDeliveryHolder).success(function(data){
-            self.prcmtDelivery = data.delivery;
-            self.prcmtDeliveryItemHolders = data.deliveryItems;
+
+        var start=0;
+        var max=3;
+        var requests = [];
+        while(start<prcmtDeliveryHolder.deliveryItems.length){
+            var data = {
+                delivery:{},
+                deliveryItems:[]
+            };
+            data.delivery = prcmtDeliveryHolder.delivery;
+            for(var i=start;i<start+max;i++){
+                if(prcmtDeliveryHolder.deliveryItems[i])
+                    data.deliveryItems.push(prcmtDeliveryHolder.deliveryItems[i]);
+            }
+            start +=max;
+            var request = genericResource.customMethod(ProcmtUtils.urlManagerDelivery+'/update',data);
+            requests.push(request);
+        }
+        $q.all(requests).then(function(result) {
+            var prcmtDeliveryHolderTmp={
+                delivery:{},
+                deliveryItems:[]
+            };
+            angular.forEach(result, function(response) {
+                prcmtDeliveryHolderTmp.delivery = response.data.delivery;
+                for(var i=0;i<response.data.deliveryItems.length;i++){
+                    prcmtDeliveryHolderTmp.deliveryItems.push(response.data.deliveryItems[i]);
+                }
+            });
+
+            return prcmtDeliveryHolderTmp;
+        }).then(function(tmpResult) {
+            self.running ="";
+            self.prcmtDelivery = tmpResult.delivery;
+            self.prcmtDeliveryItemHolders = tmpResult.deliveryItems;
         });
     }
 
     function close () {
+        self.running ="Veuillez patientez, l'enregistrement se poursuit ...";
         var prcmtDeliveryHolder = {};
         prcmtDeliveryHolder.delivery = self.prcmtDelivery;
         prcmtDeliveryHolder.deliveryItems = self.prcmtDeliveryItemHolders;
-        genericResource.customMethod(ProcmtUtils.urlManagerDelivery+'/close',prcmtDeliveryHolder).success(function(data){
+
+        for(var i=0;i<self.prcmtDeliveryItemHoldersDeleted.length;i++){
+            prcmtDeliveryHolder.deliveryItems.push(self.prcmtDeliveryItemHoldersDeleted[i])
+        }
+
+        var start=0;
+        var max=3;
+        var requests = [];
+        while(start<prcmtDeliveryHolder.deliveryItems.length){
+            var data = {
+                delivery:{},
+                deliveryItems:[]
+            };
+            data.delivery = prcmtDeliveryHolder.delivery;
+            for(var i=start;i<start+max;i++){
+                if(prcmtDeliveryHolder.deliveryItems[i])
+                    data.deliveryItems.push(prcmtDeliveryHolder.deliveryItems[i]);
+            }
+            start +=max;
+            var request = genericResource.customMethod(ProcmtUtils.urlManagerDelivery+'/close',data);
+            requests.push(request);
+        }
+        $q.all(requests).then(function(result) {
+            var prcmtDeliveryHolderTmp={
+                delivery:{},
+                deliveryItems:[]
+            };
+            angular.forEach(result, function(response) {
+                prcmtDeliveryHolderTmp.delivery = response.data.delivery;
+                for(var i=0;i<response.data.deliveryItems.length;i++){
+                    prcmtDeliveryHolderTmp.deliveryItems.push(response.data.deliveryItems[i]);
+                }
+            });
+
+            return prcmtDeliveryHolderTmp;
+        }).then(function(tmpResult) {
+            self.running ="";
             self.closeStatus = false;
-            self.prcmtDelivery = data.delivery;
-            self.prcmtDeliveryItemHolders = data.deliveryItems;
+            self.prcmtDelivery = tmpResult.delivery;
+            self.prcmtDeliveryItemHolders = tmpResult.deliveryItems;
         });
     }
 

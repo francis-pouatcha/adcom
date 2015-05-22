@@ -6,7 +6,8 @@
             <b>{{"PrcmtDelivery_grossPPPreTax_description.title" | translate}}:</b> {{prcmtDeliveryAddItemCtlr.prcmtDelivery.grossPPPreTax}} cfa,
             <b>{{"PrcmtDelivery_netPPTaxIncl_description.title" | translate}}:</b> {{prcmtDeliveryAddItemCtlr.prcmtDelivery.netPPTaxIncl}} cfa,
             <b>{{"PrcmtDelivery_creatingUsr_description.title" | translate}}: </b> {{prcmtDeliveryAddItemCtlr.prcmtDelivery.creatingUsr}},
-            <b> Status: </b> <label class="label-primary">{{prcmtDeliveryAddItemCtlr.prcmtDelivery.dlvryStatus}}</label>
+            <b> Status: </b> <label class="label label-primary">{{prcmtDeliveryAddItemCtlr.prcmtDelivery.dlvryStatus}}</label>
+            <label class="label label-warning col-xs-offset-1">{{prcmtDeliveryAddItemCtlr.running}}</label>
         </h4>
         <p class="">
             <a class=" btn btn-default" href="#/"  type="button">Cancel</a>

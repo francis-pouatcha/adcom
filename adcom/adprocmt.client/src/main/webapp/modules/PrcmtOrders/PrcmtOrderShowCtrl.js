@@ -31,6 +31,7 @@ angular.module('AdProcmt').controller('prcmtOrderShowCtlr',['$scope','ProcmtUtil
     self.poItemsDeleted = [];
     self.transform = transform;
     self.handlePrintRequestEvent =handlePrintRequestEvent;
+    self.running ="";
 
     load();
 
@@ -218,6 +219,7 @@ angular.module('AdProcmt').controller('prcmtOrderShowCtlr',['$scope','ProcmtUtil
     }*/
 
     function save(){
+        self.running ="Veuillez patientez, l'enregistrement se poursuit ...";
         for(var i=0;i<self.poItemsDeleted.length;i++){
             self.prcmtOrderHolder.poItems.push(self.poItemsDeleted[i])
         }
@@ -252,11 +254,13 @@ angular.module('AdProcmt').controller('prcmtOrderShowCtlr',['$scope','ProcmtUtil
             });
             return prcmtOrderHolderTmp;
         }).then(function(tmpResult) {
+            self.running ="";
             self.prcmtOrderHolder = tmpResult;
         });
     }
 
     function close () {
+        self.running ="Veuillez patientez, l'enregistrement se poursuit ...";
         for(var i=0;i<self.poItemsDeleted.length;i++){
             self.prcmtOrderHolder.poItems.push(self.poItemsDeleted[i])
         }
@@ -292,6 +296,7 @@ angular.module('AdProcmt').controller('prcmtOrderShowCtlr',['$scope','ProcmtUtil
         }).then(function(tmpResult) {
             self.prcmtOrderHolder = tmpResult;
             self.closeStatus = false;
+            self.running ="";
         });
     }
 

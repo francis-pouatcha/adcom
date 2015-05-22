@@ -8,6 +8,7 @@ import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adstock.jpa.StkArticleLot;
 import org.adorsys.adstock.repo.StkArticleLotRepository;
+import org.apache.commons.lang3.StringUtils;
 
 @Stateless
 public class StkArticleLotEJB {
@@ -16,6 +17,10 @@ public class StkArticleLotEJB {
 	private StkArticleLotRepository repository;
 
 	public StkArticleLot create(StkArticleLot entity) {
+		entity.setId(entity.getLotPic());
+		if(StringUtils.isBlank(entity.getIdentif())){
+			entity.setIdentif(entity.getLotPic());
+		}
 		return repository.save(attach(entity));
 	}
 
