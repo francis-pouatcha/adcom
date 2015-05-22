@@ -10,6 +10,8 @@ import javax.persistence.TypedQuery;
 import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adbase.security.SecurityUtil;
+import org.adorsys.adcatal.jpa.CatalArtFeatMapping;
+import org.adorsys.adcatal.rest.CatalArtFeatMappingReaderEJB;
 import org.adorsys.adstock.jpa.StkArticleLot;
 import org.adorsys.adstock.jpa.StkArticleLotSearchInput;
 import org.adorsys.adstock.repo.StkArticleLotRepository;
@@ -25,10 +27,13 @@ public class StkArticleLotEJB {
 	private SecurityUtil securityUtil;
 
 	@Inject
+	CatalArtFeatMappingReaderEJB catalArtFeatMappingReaderEJB;
+
+	@Inject
 	private EntityManager em;
 
 	public StkArticleLot create(StkArticleLot entity) {
-		return repository.save(attach(entity));
+		return populateStkArticleLot(repository.save(attach(entity)));
 	}
 
 	public StkArticleLot deleteById(String id) {
@@ -36,19 +41,23 @@ public class StkArticleLotEJB {
 		if (entity != null) {
 			repository.remove(entity);
 		}
-		return entity;
+		return populateStkArticleLot(entity);
 	}
 
 	public StkArticleLot update(StkArticleLot entity) {
-		return repository.save(attach(entity));
+		return populateStkArticleLot(repository.save(attach(entity)));
 	}
 
 	public StkArticleLot findById(String id) {
-		return repository.findBy(id);
+		return populateStkArticleLot(repository.findBy(id));
 	}
 
 	public List<StkArticleLot> listAll(int start, int max) {
-		return repository.findAll(start, max);
+		List<StkArticleLot> stkArticleLots = repository.findAll(start, max);
+		for (StkArticleLot stkArticleLot : stkArticleLots) {
+			stkArticleLot = populateStkArticleLot(stkArticleLot);
+		}
+		return stkArticleLots;
 	}
 
 	public Long count() {
@@ -57,7 +66,12 @@ public class StkArticleLotEJB {
 
 	public List<StkArticleLot> findBy(StkArticleLot entity, int start, int max,
 			SingularAttribute<StkArticleLot, ?>[] attributes) {
-		return repository.findBy(entity, start, max, attributes);
+		List<StkArticleLot> stkArticleLots = repository.findBy(entity, start,
+				max, attributes);
+		for (StkArticleLot stkArticleLot : stkArticleLots) {
+			stkArticleLot = populateStkArticleLot(stkArticleLot);
+		}
+		return stkArticleLots;
 	}
 
 	public Long countBy(StkArticleLot entity,
@@ -67,7 +81,13 @@ public class StkArticleLotEJB {
 
 	public List<StkArticleLot> findByLike(StkArticleLot entity, int start,
 			int max, SingularAttribute<StkArticleLot, ?>[] attributes) {
-		return repository.findByLike(entity, start, max, attributes);
+
+		List<StkArticleLot> stkArticleLots = repository.findByLike(entity,
+				start, max, attributes);
+		for (StkArticleLot stkArticleLot : stkArticleLots) {
+			stkArticleLot = populateStkArticleLot(stkArticleLot);
+		}
+		return stkArticleLots;
 	}
 
 	public Long countByLike(StkArticleLot entity,
@@ -82,16 +102,39 @@ public class StkArticleLotEJB {
 		return entity;
 	}
 
+	public StkArticleLot populateStkArticleLot(StkArticleLot entity) {
+		String langIso2 = securityUtil.getUserLange();
+		List<String> listLangIso2 = securityUtil.getUserLangePrefs();
+		if (StringUtils.isBlank(langIso2)) {
+			langIso2 = listLangIso2.get(0);
+		}
+		String identif = CatalArtFeatMapping.toIdentif(entity.getArtPic(),
+				langIso2);
+		CatalArtFeatMapping catalArtFeatMapp = catalArtFeatMappingReaderEJB
+				.findByIdentif(identif);
+
+		entity.setArtFeatures(catalArtFeatMapp);
+		return entity;
+	}
+
 	public StkArticleLot findByIdentif(String identif) {
 		List<StkArticleLot> resultList = repository.findByIdentif(identif)
 				.maxResults(1).getResultList();
 		if (resultList.isEmpty())
 			return null;
-		return resultList.iterator().next();
+
+		StkArticleLot stkArtLot = populateStkArticleLot(resultList.iterator()
+				.next());
+		return stkArtLot;
 	}
 
 	public List<StkArticleLot> findByArtPicLike(String artPick) {
-		return repository.findByArtPicLike(artPick);
+		List<StkArticleLot> stkArticleLots = repository
+				.findByArtPicLike(artPick);
+		for (StkArticleLot stkArticleLot : stkArticleLots) {
+			stkArticleLot = populateStkArticleLot(stkArticleLot);
+		}
+		return stkArticleLots;
 	}
 
 	public List<String> findLotPicByArtPic(String artPic) {
@@ -125,7 +168,11 @@ public class StkArticleLotEJB {
 		if (max >= 1)
 			query.setMaxResults(max);
 
-		return query.getResultList();
+		List<StkArticleLot> stkArticleLots = query.getResultList();
+		for (StkArticleLot stkArticleLot : stkArticleLots) {
+			stkArticleLot = populateStkArticleLot(stkArticleLot);
+		}
+		return stkArticleLots;
 	}
 
 	private StringBuilder preprocessQuery(String findOrCount,
