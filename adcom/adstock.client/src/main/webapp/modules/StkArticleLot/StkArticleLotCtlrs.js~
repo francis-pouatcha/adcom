@@ -414,7 +414,7 @@ function($scope,genericResource,stkArticleLotUtils,stkArticleLotState,$location,
     $scope.stkArticleLotUtils=stkArticleLotUtils;
     $scope.stkSubSectionActive=stkArticleLotState.stkSubSectionActive();
     $scope.stkArticleLotArticleLotActive=stkArticleLotState.stkArticleLotArticleLotActive();
-    $scope.unitPrice = $scope.stkArticleLot.sppuHT;
+    $scope.unitPrice = 0;
     
     $scope.previous = function (){
         var ent = stkArticleLotState.previous();
@@ -449,20 +449,18 @@ function($scope,genericResource,stkArticleLotUtils,stkArticleLotState,$location,
          });
      };
 
-     function EditUnitPriceController($scope, $modalInstance, unitPrice) {
-    	 $scope.unitPrice = unitPrice;
-    	 
-    	 
+     function EditUnitPriceController($scope, $modalInstance) {
+
          $scope.updateStkArtLot = function () {
-        	 $scope.stkArticleLot.sppuHT = $scope.unitPrice;
-             genericResource.update(stkArticleLotUtils.urlBase, $scope.stkArticleLot)
-                 .success(function (stkArticleLot) {
-                	 $scope.stkArticleLot = stkArticleLot;
-                	 $scope.cancel();
+             /* $scope.bpPtnrIdDtls.ptnrNbr = bpBnsPtnr.ptnrNbr;
+             genericResource.create(bpInsuredUtils.urlBase, $scope.bpPtnrIdDtls)
+                 .success(function (bpPtnrIdDtls) {
+                     bpPtnrIdDtlssState.push(bpPtnrIdDtls);
+                     $modalInstance.dismiss('cancel');
                  })
                  .error(function(data, status){
                      $scope.error= status + " " + data;
-                 }); 
+                 }); */
          };
 
          $scope.cancel = function () {
