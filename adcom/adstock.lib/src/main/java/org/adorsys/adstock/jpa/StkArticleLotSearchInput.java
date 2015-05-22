@@ -1,6 +1,7 @@
 package org.adorsys.adstock.jpa;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -29,6 +30,10 @@ public class StkArticleLotSearchInput {
 	 * The max number of records to return.
 	 */
 	private int max = -1;
+	
+	private Date from;
+	   
+	private Date to;
 
 	/**
 	 * The field names to be included in the search.
@@ -100,6 +105,21 @@ public class StkArticleLotSearchInput {
 		this.artPics = artPics;
 	}
 
+	public Date getFrom() {
+		return from;
+	}
+
+	public void setFrom(Date from) {
+		this.from = from;
+	}
+
+	public Date getTo() {
+		return to;
+	}
+
+	public void setTo(Date to) {
+		this.to = to;
+	}
 
 	/**
 	 * isFindByNameRange.
