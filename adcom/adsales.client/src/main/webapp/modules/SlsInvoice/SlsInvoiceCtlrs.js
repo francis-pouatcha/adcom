@@ -42,6 +42,10 @@ angular.module('AdSales')
                     'SlsInvoice_invceDt_description.title',
                     'SlsInvoice_invceNbr_description.text',
                     'SlsInvoice_invceNbr_description.title',
+                    'SlsInvoice_invcePaid_description.text',
+                    'SlsInvoice_invcePaid_description.title',
+                    'SlsInvoice_invceDelivered_description.text',
+                    'SlsInvoice_invceDelivered_description.title',
                     'SlsInvoice_invceStatus_description.text',
                     'SlsInvoice_invceStatus_description.title',
                     'SlsInvoice_invceType_description.text',
@@ -212,6 +216,14 @@ function($scope,genericResource,slsInvoicesUtils,slsInvoicesState,$location,$roo
             $scope.searchInput.entity.invceNbr= $scope.searchInput.entity.invceNbr;
         	fieldNames.push('invceNbr');
         }
+        if($scope.searchInput.entity.invcePaid === true ){
+            $scope.searchInput.entity.invcePaid = $scope.searchInput.entity.invcePaid;
+            fieldNames.push('invcePaid');
+        }
+        if($scope.searchInput.entity.invceDelivered === true){
+            $scope.searchInput.entity.invceDelivered= $scope.searchInput.entity.invceDelivered;
+            fieldNames.push('invceDelivered');
+        }
         if($scope.searchInput.invceDtFrom) $scope.searchInput.invceDtFrom= $scope.searchInput.invceDtFrom;
         if($scope.searchInput.invceDtTo) $scope.searchInput.invceDtTo= $scope.searchInput.invceDtTo;
         if($scope.searchInput.ptnr){
@@ -318,4 +330,20 @@ function($scope,genericResource,slsInvoicesUtils,slsInvoicesState,$location,$roo
         $location.path('/SlsInvoices/edit/');
     };
 
+     $scope.delivered = function(){
+         if($scope.slsInvoice.invceDelivered === false) {
+             $scope.slsInvoice.invceDelivered = true;
+             $scope.update();
+         }
+     };
+
+    $scope.update = function(){
+        genericResource.update(slsInvoicesUtils.urlBase, $scope.slsInvoice)
+            .success(function(slsInvoice){
+                $scope.slsInvoice = slsInvoice;
+            })
+            .error(function(error){
+                $scope.error = error;
+            });
+    };
 }]);

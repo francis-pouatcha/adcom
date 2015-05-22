@@ -1,8 +1,8 @@
 <div class="container">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <b>{{cdrSlsInvoicesUtils.translations['Entity_show.title']}}</b>
-                <b> {{cdrSlsInvoicesUtils.translations['SlsInvoice_description.title']}}</b> 
+                <b>{{slsInvoicesUtils.translations['Entity_show.title']}}</b>
+                <b> {{slsInvoicesUtils.translations['SlsInvoice_description.title']}}</b>
             </div>
             <div class="panel-body">
                 <label class="error alert-danger" >{{cdrSlsInvoicesShowCtlr.error}} </label>
@@ -81,9 +81,28 @@
                             <div class="col-lg-2" >
                                 <input type="text" value="{{slsInvoice.netAmtToPay}}" name="netAmtToPay" class="form-control" disabled>
                             </div>
-                            
-                            
-                          </div>
+                         </div>
+
+                        <div class=" form-group ">
+                            <label class="col-lg-2 ">{{slsInvoicesUtils.translations['SlsInvoice_invcePaid_description.title']}} :</label>
+                            <div class="col-lg-2" >
+                                <input type="text" value="{{slsInvoice.invcePaid | yesNo}}" name="invcePaid" class="form-control" disabled>
+                            </div>
+                            <label class="col-lg-2">{{slsInvoicesUtils.translations['SlsInvoice_invceDelivered_description.title']}} :</label>
+                            <div class="col-lg-2" >
+                                <input type="text" value="{{slsInvoice.invceDelivered | yesNo}}" name="invceDelivered" class="form-control" disabled>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <div class="text-center">
+                                    <a class="btn btn-info  btn-lg btn-block" ng-click="delivered();" ng-disabled="slsInvoice.invceDelivered">
+                                        Delivered
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+
                 </form>
                 <br><br>
                 <div  class="row">

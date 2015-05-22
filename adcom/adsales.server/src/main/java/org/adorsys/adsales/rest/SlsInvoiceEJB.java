@@ -37,6 +37,8 @@ public class SlsInvoiceEJB
 		}
 		entity.setId(entity.getInvceNbr());
 		entity.setIdentif(entity.getInvceNbr());	
+		entity.setInvceDelivered(false);
+		entity.setInvcePaid(false);
 		entity = repository.save(attach(entity));
 		
 		//generate event
@@ -128,6 +130,24 @@ public StringBuilder preprocessQuery(String findOrCount, SlsInvoiceSearchInput s
 			}
 			qBuilder.append("s.invceNbr=:invceNbr");
 		}
+		if(searchInput.getFieldNames().contains("invcePaid") && StringUtils.isNotBlank(String.valueOf(entity.getInvcePaid()))){
+			if(!whereSet){
+				qBuilder.append(whereClause);
+				whereSet = true;
+			} else {
+				qBuilder.append(andClause);
+			}
+			qBuilder.append("s.invcePaid=:invcePaid");
+		}
+		if(searchInput.getFieldNames().contains("invceDelivered") && StringUtils.isNotBlank(String.valueOf(entity.getInvceDelivered()))){
+			if(!whereSet){
+				qBuilder.append(whereClause);
+				whereSet = true;
+			} else {
+				qBuilder.append(andClause);
+			}
+			qBuilder.append("s.invceDelivered=:invceDelivered");
+		}
 		if(searchInput.getInvceDtFrom()!=null){
 			if(!whereSet){
 				qBuilder.append(whereClause);
@@ -157,6 +177,12 @@ public StringBuilder preprocessQuery(String findOrCount, SlsInvoiceSearchInput s
 		}
 	   if(searchInput.getFieldNames().contains("invceNbr") && StringUtils.isNotBlank(entity.getSoNbr())){
 			query.setParameter("invceNbr", entity.getInvceNbr());
+		}
+	   if(searchInput.getFieldNames().contains("invcePaid") && StringUtils.isNotBlank(String.valueOf(entity.getInvcePaid()))){
+			query.setParameter("invcePaid", entity.getInvcePaid());
+		}
+	   if(searchInput.getFieldNames().contains("invceDelivered") && StringUtils.isNotBlank(String.valueOf(entity.getInvceDelivered()))){
+			query.setParameter("invceDelivered", entity.getInvceDelivered());
 		}
 		
 		if(searchInput.getInvceDtFrom()!=null){

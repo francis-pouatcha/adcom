@@ -32,12 +32,20 @@ public class SlsInvoice extends AbstractIdentifData {
 	@Description("SlsInvoice_invceNbr_description")
 	@NotNull
 	private String invceNbr;
-
+	
 	@Column
 	@Description("SlsInvoice_soNbr_description")
 	//@NotNull
 	private String soNbr;
 
+	@Column
+	@Description("SlsInvoice_invcePaid_description")
+	private boolean invcePaid;
+	
+	@Column
+	@Description("SlsInvoice_invceDelivered_description")
+	private boolean invceDelivered;
+	
 	@Column
 	@Description("SlsInvoice_invceStatus_description")
 	@NotNull
@@ -222,6 +230,24 @@ public class SlsInvoice extends AbstractIdentifData {
 
 	public void setSoNbr(final String soNbr) {
 		this.soNbr = soNbr;
+	}
+	
+	
+
+	public boolean getInvcePaid() {
+		return invcePaid;
+	}
+
+	public void setInvcePaid(boolean invcePaid) {
+		this.invcePaid = invcePaid;
+	}
+
+	public boolean getInvceDelivered() {
+		return invceDelivered;
+	}
+
+	public void setInvceDelivered(boolean invceDelivered) {
+		this.invceDelivered = invceDelivered;
 	}
 
 	public String getInvceStatus() {
