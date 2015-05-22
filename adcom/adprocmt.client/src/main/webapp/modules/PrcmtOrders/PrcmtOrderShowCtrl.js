@@ -184,22 +184,113 @@ angular.module('AdProcmt').controller('prcmtOrderShowCtlr',['$scope','ProcmtUtil
         self.prcmtOrderItemHolder.prcmtPOItem.stkQtyPreOrder =item.stockQty;
     }
 
+    /*function save(){
+        for(var i=0;i<self.poItemsDeleted.length;i++){
+            self.prcmtOrderHolder.poItems.push(self.poItemsDeleted[i])
+        }
+
+        var start=0;
+        var max=5;
+        var prcmtOrderHolderTmp={
+            prcmtProcOrder:{},
+            poItems:[]
+        };
+        while(start<self.prcmtOrderHolder.poItems.length){
+            var data = {
+                prcmtProcOrder:{},
+                poItems:[]
+            };
+            data.prcmtProcOrder = self.prcmtOrderHolder.prcmtProcOrder;
+            for(var i=start;i<start+max;i++){
+                if(self.prcmtOrderHolder.poItems[i])
+                    data.poItems.push(self.prcmtOrderHolder.poItems[i]);
+            }
+            start +=max;
+            savePrcmtPromise(data).then(function(result){
+                prcmtOrderHolderTmp.prcmtProcOrder = result.prcmtProcOrder;
+                self.prcmtOrderHolder.prcmtProcOrder = result.prcmtProcOrder;//if not javax.persistence.OptimisticLockException, new version always
+                for(var i=0;i<result.poItems.length;i++){
+                    prcmtOrderHolderTmp.poItems.push(result.poItems[i]);
+                }
+            })
+        }
+        self.prcmtOrderHolder = prcmtOrderHolderTmp;
+    }*/
+
     function save(){
         for(var i=0;i<self.poItemsDeleted.length;i++){
             self.prcmtOrderHolder.poItems.push(self.poItemsDeleted[i])
         }
-        genericResource.customMethod(ProcmtUtils.urlManageOrder+'/update',self.prcmtOrderHolder).success(function(data){
-            self.prcmtOrderHolder = data;
-        });
 
+        var start=0;
+        var max=5;
+        var requests = [];
+        while(start<self.prcmtOrderHolder.poItems.length){
+            var data = {
+                prcmtProcOrder:{},
+                poItems:[]
+            };
+            data.prcmtProcOrder = self.prcmtOrderHolder.prcmtProcOrder;
+            for(var i=start;i<start+max;i++){
+                if(self.prcmtOrderHolder.poItems[i])
+                    data.poItems.push(self.prcmtOrderHolder.poItems[i]);
+            }
+            start +=max;
+            var request = genericResource.customMethod(ProcmtUtils.urlManageOrder+'/update',data);
+            requests.push(request);
+        }
+        $q.all(requests).then(function(result) {
+            var prcmtOrderHolderTmp={
+                prcmtProcOrder:{},
+                poItems:[]
+            };
+            angular.forEach(result, function(response) {
+                prcmtOrderHolderTmp.prcmtProcOrder = response.data.prcmtProcOrder;
+                for(var i=0;i<response.data.poItems.length;i++){
+                       prcmtOrderHolderTmp.poItems.push(response.data.poItems[i]);
+                }
+            });
+            return prcmtOrderHolderTmp;
+        }).then(function(tmpResult) {
+            self.prcmtOrderHolder = tmpResult;
+        });
     }
 
     function close () {
         for(var i=0;i<self.poItemsDeleted.length;i++){
             self.prcmtOrderHolder.poItems.push(self.poItemsDeleted[i])
         }
-        genericResource.customMethod(ProcmtUtils.urlManageOrder+'/close',self.prcmtOrderHolder).success(function(data){
-            self.prcmtOrderHolder = data;
+        var start=0;
+        var max=5;
+        var requests = [];
+        while(start<self.prcmtOrderHolder.poItems.length){
+            var data = {
+                prcmtProcOrder:{},
+                poItems:[]
+            };
+            data.prcmtProcOrder = self.prcmtOrderHolder.prcmtProcOrder;
+            for(var i=start;i<start+max;i++){
+                if(self.prcmtOrderHolder.poItems[i])
+                    data.poItems.push(self.prcmtOrderHolder.poItems[i]);
+            }
+            start +=max;
+            var request = genericResource.customMethod(ProcmtUtils.urlManageOrder+'/close',data);
+            requests.push(request);
+        }
+        $q.all(requests).then(function(result) {
+            var prcmtOrderHolderTmp={
+                prcmtProcOrder:{},
+                poItems:[]
+            };
+            angular.forEach(result, function(response) {
+                prcmtOrderHolderTmp.prcmtProcOrder = response.data.prcmtProcOrder;
+                for(var i=0;i<response.data.poItems.length;i++){
+                    prcmtOrderHolderTmp.poItems.push(response.data.poItems[i]);
+                }
+            });
+            return prcmtOrderHolderTmp;
+        }).then(function(tmpResult) {
+            self.prcmtOrderHolder = tmpResult;
             self.closeStatus = false;
         });
     }
