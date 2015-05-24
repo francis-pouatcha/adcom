@@ -51,6 +51,7 @@ angular.module('AdSales')
                     'SlsInvoice_invcePaid_description.title',
                     'SlsInvoice_invceDelivered_description.text',
                     'SlsInvoice_invceDelivered_description.title',
+                    'SlsInvoice_delivered_description.text',
                     'SlsInvoice_invceStatus_description.text',
                     'SlsInvoice_invceStatus_description.title',
                     'SlsInvoice_invceType_description.text',

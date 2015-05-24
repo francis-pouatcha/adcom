@@ -95,6 +95,7 @@
   "SlsInvoice_invcePaid_description.title":"Facture Payée",
   "SlsInvoice_invceDelivered_description.text":"Facture livrée",
   "SlsInvoice_invceDelivered_description.title":"Facture livrée",
+  "SlsInvoice_delivered_description.text":"livré Facture",
 "SlsInvoice_invceStatus_description.text":"état de cette facture.",
 "SlsInvoice_invceStatus_description.title":"Status",
 "SlsInvoice_invceType_description.text":"Le type de cette facture.",

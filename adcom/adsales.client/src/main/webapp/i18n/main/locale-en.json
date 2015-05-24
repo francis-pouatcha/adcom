@@ -95,6 +95,7 @@
     "SlsInvoice_invcePaid_description.title":"Invoice  Paid",
     "SlsInvoice_invceDelivered_description.text":"Invoice  Delivered",
     "SlsInvoice_invceDelivered_description.title":"Invoice  Delivered",
+    "SlsInvoice_delivered_description.text":"delivered invoice",
 "SlsInvoice_invceStatus_description.text":"The status of this invoice.",
 "SlsInvoice_invceStatus_description.title":"Status",
 "SlsInvoice_invceType_description.text":"The type of this invoice.",

@@ -57,6 +57,11 @@ public class SlsInvoiceEJB
 
    public SlsInvoice update(SlsInvoice entity)
    {
+	  SlsInvoice slsInvoice = findById(entity.getId());
+	  if(slsInvoice.getInvceDelivered())
+		  entity.setInvceDelivered(true);
+	  if(slsInvoice.getInvcePaid())
+		  entity.setInvcePaid(true);
       return repository.save(attach(entity));
    }
 
