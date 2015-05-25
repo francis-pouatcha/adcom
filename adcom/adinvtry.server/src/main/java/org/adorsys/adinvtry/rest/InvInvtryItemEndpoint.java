@@ -111,7 +111,7 @@ public class InvInvtryItemEndpoint
  		List<InvInvtryItem> resultList = ejb.findByInvtryNbr(invNbr);
  		 OutputStream os = null ;
  		try {
- 			ByteArrayOutputStream baos = pdfReportTemplate.build(resultList, InvInvtryItem.class,loginName, lang);
+ 			ByteArrayOutputStream baos = pdfReportTemplate.build(resultList, InvInvtryItem.class, null, loginName, lang);
           // the contentlength
           response.setContentLength(baos.size());
           // write ByteArrayOutputStream to the ServletOutputStream

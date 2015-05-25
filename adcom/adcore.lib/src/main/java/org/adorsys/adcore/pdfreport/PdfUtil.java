@@ -56,6 +56,20 @@ public class PdfUtil<T> {
 		}
 		return listStr;
 	}
+	
+	public List<String> getFieldsName(List<String> fields, String lang) {
+		pdfI18n.registerKlass(entityKlass);
+		List<String> listStr = new ArrayList<String>();
+		fieldsName.clear();
+		
+		for(String str:fields){	 
+			if("id".equals(str) || "version".equals(str) || "class".equals(str) || "identif".equals(str))
+				continue;
+				fieldsName.add(str);
+				listStr.add(pdfI18n.internationalize(str, lang));			
+		}
+		return listStr;
+	}
 
 	public String getKlassName(String lang) {
 		

@@ -81,8 +81,18 @@ public class PrcmtDeliveryEndpoint
 		String lang = securityUtil.getUserLange();
 		List<PrcmtDlvryItem> resultList = prcmtDlvryItemEJB.findByDlvryNbr(dlvryNbr);
 		 OutputStream os = null ;
+		 List<String> fields = new ArrayList<String>();
+		 fields.add("lotPic");
+		 fields.add("artPic");
+		 fields.add("artName");
+		 fields.add("qtyDlvrd");
+		 fields.add("freeQty");
+		 fields.add("stkQtyPreDlvry");
+		 fields.add("sppuPreTax");
+		 fields.add("expirDt");
+		 fields.add("supplier");
 		try {
-			ByteArrayOutputStream baos = pdfReportTemplate.build(resultList, PrcmtDlvryItem.class,loginName, lang);
+			ByteArrayOutputStream baos = pdfReportTemplate.build(resultList, PrcmtDlvryItem.class, fields, loginName, lang);
          // the contentlength
          response.setContentLength(baos.size());
          // write ByteArrayOutputStream to the ServletOutputStream
