@@ -60,13 +60,32 @@
                         </div>
                         <div class="row">
                             <div class="col-lg-3">
-                            <div class="form-group">
-                               <label class=" control-label" tooltips="" tooltip-title="{{'SlsInvcePtnr_description.text' | translate}}" tooltip-side="top" for="ptnr">{{slsInvoicesUtils.translations['SlsInvcePtnr_description.title']}}</label>
-                               <div class="">
-                                <input type="text" name="ptnr" id="ptnr" ng-model="searchInput.ptnr" autocomplete="off" typeahead="ptnr as ptnr.fullName for ptnr in slsInvoicesUtils.loadPartnersByName($viewValue) | filter:$viewValue" typeahead-loading="loading" class="form-control">
-                               </div>
+                                <div class="form-group">
+                                   <label class=" control-label" tooltips="" tooltip-title="{{'SlsInvcePtnr_description.text' | translate}}" tooltip-side="top" for="ptnr">{{slsInvoicesUtils.translations['SlsInvcePtnr_description.title']}}</label>
+                                   <div class="">
+                                    <input type="text" name="ptnr" id="ptnr" ng-model="searchInput.ptnr" autocomplete="off" typeahead="ptnr as ptnr.fullName for ptnr in slsInvoicesUtils.loadPartnersByName($viewValue) | filter:$viewValue" typeahead-loading="loading" class="form-control">
+                                   </div>
+                                </div>
                             </div>
+
+                            <div class="form-inline">
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label class="control-label" tooltips="" tooltip-title="{{'SlsInvoice_invcePaid_description.text' | translate}}" tooltip-side="top" for="invcePaid">{{slsInvoicesUtils.translations['SlsInvoice_invcePaid_description.title']}}</label>
+                                            <input type="checkbox" id="invcePaid" name="invcePaid" ng-model="searchInput.entity.invcePaid" class="form-control" >
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label class=" control-label" tooltips="" tooltip-title="{{'SlsInvoice_invceDelivered_description.text' | translate}}" tooltip-side="top" for="invceDelivered">{{slsInvoicesUtils.translations['SlsInvoice_invceDelivered_description.title']}}</label>
+                                            <input type="checkbox" id="invceDelivered" name="invceDelivered" ng-model="searchInput.entity.invceDelivered" class="form-control" >
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+
                         </div>
 
                     </form>
@@ -126,6 +145,8 @@
                                 <th class="text-center">{{slsInvoicesUtils.translations['SlsInvoice_netSPPreTax_description.title']}}</th>
                                 <th class="text-center">{{slsInvoicesUtils.translations['SlsInvoice_netSPTaxIncl_description.title']}}</th>
                                 <th class="text-center">{{slsInvoicesUtils.translations['SlsInvoice_netAmtToPay_description.title']}}</th>
+                                <th class="text-center">{{slsInvoicesUtils.translations['SlsInvoice_invcePaid_description.title']}}</th>
+                                <th class="text-center">{{slsInvoicesUtils.translations['SlsInvoice_invceDelivered_description.title']}}</th>
                                 <th></th>
                                 <th></th>
                             </tr>
@@ -139,6 +160,8 @@
                                 <td>{{slsInvce.netSPPreTax}}</td>
                                 <td>{{slsInvce.netSPTaxIncl}}</td>
                                 <td>{{slsInvce.netAmtToPay}}</td>
+                                <td> <label> {{slsInvce.invcePaid | yesNo}} </label> </td>
+                                <td> <label> {{slsInvce.invceDelivered | yesNo}} </label> </td>
                                 <td><a href="" ng-click="show(slsInvce,$index)"><i class="glyphicon glyphicon-eye-open"></i></a></td>
                                 <td><a href="" ng-click="edit(slsInvce,$index)"><i class="glyphicon glyphicon-edit"></i></a></td>
                             </tr>
