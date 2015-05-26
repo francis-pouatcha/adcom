@@ -68,6 +68,15 @@ public class SlsInvoiceEndpoint
    {
       return detach(ejb.update(entity));
    }
+   
+   @PUT
+   @Path("/livre/{id}")
+   @Produces({ "application/json", "application/xml" })
+   @Consumes({ "application/json", "application/xml" })
+   public SlsInvoice saleDelivery(SlsInvoice entity)
+   {
+      return ejb.saleDelivery(entity);
+   }
 
    @GET
    @Path("/{id}")

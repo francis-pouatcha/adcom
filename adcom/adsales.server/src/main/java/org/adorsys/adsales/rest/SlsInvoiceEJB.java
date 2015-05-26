@@ -40,8 +40,6 @@ public class SlsInvoiceEJB
 		entity.setInvceDelivered(false);
 		entity.setInvcePaid(false);
 		entity = repository.save(attach(entity));
-		
-		//generate event
 		return entity;
    }
 
@@ -228,5 +226,12 @@ public StringBuilder preprocessQuery(String findOrCount, SlsInvoiceSearchInput s
 		setParameters(searchInput, query);
 		return query.getSingleResult();
 	}
+
+public SlsInvoice saleDelivery(SlsInvoice entity) {
+	entity.setInvceDelivered(true);
+	entity = repository.save(entity);
+	
+	return entity;
+}
    
 }
