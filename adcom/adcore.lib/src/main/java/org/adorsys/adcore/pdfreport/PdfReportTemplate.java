@@ -78,12 +78,16 @@ public class PdfReportTemplate<T> {
 	 * @throws DocumentException
 	 *             the document exception
 	 */
-	public void setup (Class<T> entityKlass, String username, String lang) throws DocumentException {
+	public void setup (Class<T> entityKlass, String username, String lang, List<String> fields) throws DocumentException {
 		this.username = username;
 		this.userDate = new Date() ;
 		
 		pdfUtil.setEntity(entityKlass);
-		fieldsName = pdfUtil.getFieldsName(lang);
+		if(fields!=null && !fields.isEmpty())
+			fieldsName = pdfUtil.getFieldsName(fields,lang);
+		else
+			fieldsName = pdfUtil.getFieldsName(lang);
+		
 		klassName = pdfUtil.getKlassName(lang);
 
 		document = new Document(PageSize.A4.rotate(),5,5,5,5);
@@ -121,8 +125,8 @@ public class PdfReportTemplate<T> {
 	 * @param entityKlass
 	 * @throws DocumentException
 	 */
-	public ByteArrayOutputStream build(List<T> items, Class<T> entityKlass, String username, String lang) throws DocumentException{
-		setup(entityKlass, username, lang);
+	public ByteArrayOutputStream build(List<T> items, Class<T> entityKlass, List<String> fields, String username, String lang) throws DocumentException{
+		setup(entityKlass, username, lang, fields);
 		addItems(items);
 		closeDocument();
 		return baos;
@@ -151,7 +155,7 @@ public class PdfReportTemplate<T> {
 		PdfPCell pdfPCell;
 		for(String value:fieldsValue){	
 			 pdfPCell = new PdfPCell();
-			pdfPCell.setFixedHeight(20f);
+			pdfPCell.setFixedHeight(30f);
 			pdfPCell.addElement(new Phrase(value,font));
 			reportTable.addCell(pdfPCell);
 		}

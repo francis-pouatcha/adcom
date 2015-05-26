@@ -119,8 +119,18 @@ public class PrcmtPOItemEndpoint
   		String lang = securityUtil.getUserLange();
   		List<PrcmtPOItem> resultList = ejb.findByPoNbr(poNbr);
   		 OutputStream os = null ;
+  		
+  		List<String> fields = new ArrayList<String>();
+		 fields.add("artPic");
+		 fields.add("artName");
+		 fields.add("qtyOrdered");
+		 fields.add("freeQty");
+		 fields.add("stkQtyPreOrder");
+		 fields.add("pppuPreTax");
+		 fields.add("strgSection");
+		 fields.add("supplier");
   		try {
-  			ByteArrayOutputStream baos = pdfReportTemplate.build(resultList, PrcmtPOItem.class,loginName, lang);
+  			ByteArrayOutputStream baos = pdfReportTemplate.build(resultList, PrcmtPOItem.class, fields, loginName, lang);
            // the contentlength
            response.setContentLength(baos.size());
            // write ByteArrayOutputStream to the ServletOutputStream
