@@ -60,8 +60,8 @@
                             </div>
                         </td>
                             <td>
-                                <div >
-                                    <input type="text" class="form-control" name="qtyDlvrd" id="qtyDlvrd" ng-model="prcmtDeliveryAddItemCtlr.prcmtDeliveryItemHolder.dlvryItem.qtyDlvrd" >
+                                <div ng-class="{ 'has-error' : prcmtDeliveryItemForm.qtyDlvrd.$invalid }" >
+                                    <input type="text" class="form-control" required name="qtyDlvrd" id="qtyDlvrd" ng-model="prcmtDeliveryAddItemCtlr.prcmtDeliveryItemHolder.dlvryItem.qtyDlvrd" >
                                 </div>
                             </td>
                             <td><input type="text" class="form-control" ng-model="prcmtDeliveryAddItemCtlr.prcmtDeliveryItemHolder.dlvryItem.freeQty" ></td>
@@ -72,7 +72,7 @@
                             </td>
                             <td><input type="text" class="form-control" ng-model="prcmtDeliveryAddItemCtlr.prcmtDeliveryItemHolder.dlvryItem.sppuPreTax" ></td>
                             <td><input type="text" class="form-control" ng-model="prcmtDeliveryAddItemCtlr.taux" ng-change="prcmtDeliveryAddItemCtlr.tauxMultiplicateur()" ></td>
-                            <td><input type="text" class="form-control" ng-model="prcmtDeliveryAddItemCtlr.prcmtDeliveryItemHolder.dlvryItem.expirDt" placeholder="MMYY" ></td>
+                            <td><input type="text" class="form-control" ng-model="prcmtDeliveryAddItemCtlr.prcmtDeliveryItemHolder.dlvryItem.expirDt" placeholder="MM/YYYY" ></td>
                             <td><button class="btn btn-primary" ng-enter="prcmtDeliveryAddItemCtlr.addItem()" ng-disabled="prcmtDeliveryItemForm.$invalid" ng-click="prcmtDeliveryAddItemCtlr.addItem()" ><i class="glyphicon glyphicon-plus"></i> Add</button></td>
 
                     </tr>
