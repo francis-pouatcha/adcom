@@ -159,50 +159,16 @@
                     </div>
                 </form>
 
-                <div  class="row ">
-                    <tabset justified="true">
-                        <tab heading="{{'CatalPicMapping_description.title' | translate}}">
-                            <br/>
-                            <div ng-include="'views/CatalArticle/CatalPicMappings.html'" />
-                        </tab>
-
-                        <tab heading="{{'CatalArtFeatMapping_description.title' | translate}}">
-                            <br/>
-                            <div ng-include="'views/CatalArticle/CatalArtFeatMappings.html'" />
-                        </tab>
-
-                        <tab heading="{{'CatalArtManufSupp_description.title' | translate}}">
-                            <br />
-                            <div ng-include="'views/CatalArticle/CatalArtManufSupp.html'"></div>
-                        </tab>
-                        <tab heading="{{'CatalArtEquivalence_description.title' | translate}}">
-                            <br />
-                            <div ng-include="'views/CatalArticle/CatalArtEquivalence.html'"></div>
-                        </tab>
-                        <tab heading="{{'CatalProductFamily_description.title' | translate}}">
-                            <br />
-                            <div ng-include="'views/CatalArticle/CatalArt2ProductFamily.html'"></div>
-                        </tab>
-                        <tab heading="{{'CatalArtDetailConfig_description.title' | translate}}">
-                            <br />
-                            <div ng-include="'views/CatalArticle/CatalArtDetailConfig.html'"></div>
-                        </tab>
-                    </tabset>
-                </div>
                 <hr/>
+
                 <div class="row">
-                    <div class="col-lg-3">
-                        <a class="btn-default btn" ng-click="catalArticlesCtlr.previousArticle(catalArticlesCtlr.catalArticle.pic)" ><i class="glyphicon glyphicon-chevron-left"></i> {{'Entity_previous.title' | translate}}</a>
+
+                    <div class="col-lg-3 col-lg-offset-5">
+                        <button  ng-click="catalArticlesCtlr.showArticle(catalArticlesCtlr.catalArticle.pic)" class="btn btn-danger " >
+                            <i class="" ></i> {{'List' | translate}}
+                        </button>
                     </div>
-                    <div class="col-lg-3">
-                        <a class="btn-danger btn" href="#" ng-click="catalArticlesCtlr.showArticle(catalArticlesCtlr.catalArticle.pic)"><i class="" ></i> {{'List' | translate}}</a>
-                    </div>
-                    <div class="col-lg-3">
-                        <a class="btn-default btn" ng-click="catalArticlesCtlr.nextArticle(catalArticlesCtlr.catalArticle.pic)" >{{'Entity_next.title' | translate}} <i class="glyphicon glyphicon-chevron-right" ></i></a>
-                    </div>
-                    <div class="col-lg-3">
-                        <a class="btn-primary btn" href="#/CatalArticles/edit/{{catalArticlesCtlr.catalArticle.pic}}" ><i class="glyphicon glyphicon-edit"></i> {{'Entity_edit.title' | translate}}</a>
-                    </div>
+
                 </div>
 
             </div>
