@@ -232,9 +232,17 @@ angular.module('AdSales')
 
         if(self.slsInvoiceHolder.slsInvoice.pymtDscntPct){
             self.slsInvoiceHolder.slsInvoice.pymtDscntAmt = self.slsInvoiceHolder.slsInvoice.netSPPreTax*self.slsInvoiceHolder.slsInvoice.pymtDscntPct/100;
+            if(self.slsInvoiceHolder.slsInvoice.pymtDscntAmt > self.slsInvoiceHolder.slsInvoice.netSPTaxIncl){
+                $scope.error="L'escompte ne doit pas etre superieur au montant de vente";
+                return;
+            }
             self.slsInvoiceHolder.slsInvoice.netSalesAmt =self.slsInvoiceHolder.slsInvoice.netSPTaxIncl -(self.slsInvoiceHolder.slsInvoice.netSPPreTax*self.slsInvoiceHolder.slsInvoice.pymtDscntPct/100);
         }else{
             if(self.slsInvoiceHolder.slsInvoice.pymtDscntAmt){
+                if(self.slsInvoiceHolder.slsInvoice.pymtDscntAmt > self.slsInvoiceHolder.slsInvoice.netSPTaxIncl){
+                    $scope.error="L'escompte ne doit pas etre superieur au montant de vente";
+                    return;
+                }
                 self.slsInvoiceHolder.slsInvoice.netSalesAmt=self.slsInvoiceHolder.slsInvoice.netSPTaxIncl - parseInt(self.slsInvoiceHolder.slsInvoice.pymtDscntAmt);
                 self.slsInvoiceHolder.slsInvoice.pymtDscntPct = self.slsInvoiceHolder.slsInvoice.pymtDscntPct*100/self.slsInvoiceHolder.slsInvoice.netSPPreTax;
             }
@@ -242,7 +250,7 @@ angular.module('AdSales')
         if(!self.slsInvoiceHolder.slsInvoice.pymtDscntAmt && !self.slsInvoiceHolder.slsInvoice.pymtDscntPct){
             self.slsInvoiceHolder.slsInvoice.netSalesAmt = self.slsInvoiceHolder.slsInvoice.netSPTaxIncl;
         }
-
+        $scope.error="";
     }
         
     function addItem(){
@@ -305,6 +313,7 @@ angular.module('AdSales')
             genericResource.customMethod(SlsInvoiceUtils.invoice+'/processInvoice',self.slsInvoiceHolder).success(function(data){
                 clearSaleOrder();
             });
+            $scope.error="";
         }
         function annulerCmd(){
             clearSaleOrder();
