@@ -111,13 +111,12 @@ public class InvInvtryItemEndpoint
  		List<InvInvtryItem> resultList = ejb.findByInvtryNbr(invNbr);
  		 OutputStream os = null ;
  		List<String> fields = new ArrayList<String>();
-		 fields.add("invtryNbr");
+		 fields.add("section");
 		 fields.add("lotPic");
 		 fields.add("artPic");
 		 fields.add("artName");
-		 fields.add("expectedQty");
 		 fields.add("asseccedQty");
-		 fields.add("acsngDt");
+		 fields.add("expirDt");
 		 fields.add("acsngUser");
  		try {
  			ByteArrayOutputStream baos = pdfReportTemplate.build(resultList, InvInvtryItem.class, fields, loginName, lang);

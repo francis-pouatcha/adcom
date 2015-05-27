@@ -160,8 +160,14 @@
                                 <td>{{slsInvce.netSPPreTax}}</td>
                                 <td>{{slsInvce.netSPTaxIncl}}</td>
                                 <td>{{slsInvce.netAmtToPay}}</td>
-                                <td> <label> {{slsInvce.invcePaid | yesNo}} </label> </td>
-                                <td> <label> {{slsInvce.invceDelivered | yesNo}} </label> </td>
+                                <td>
+                                    <label ng-show="slsInvce.invcePaid" class="label label-success">PAYE</label>
+                                    <label ng-show="!slsInvce.invcePaid" class="label label-danger">NON PAYE</label>
+                                </td>
+                                <td>
+                                    <label ng-show="slsInvce.invceDelivered" class="label label-success">LIVRE</label>
+                                    <label ng-show="!slsInvce.invceDelivered" class="label label-danger">NON LIVRE</label>
+                                </td>
                                 <td><a href="" ng-click="show(slsInvce,$index)"><i class="glyphicon glyphicon-eye-open"></i></a></td>
                                 <td><a href="" ng-click="edit(slsInvce,$index)"><i class="glyphicon glyphicon-edit"></i></a></td>
                             </tr>
