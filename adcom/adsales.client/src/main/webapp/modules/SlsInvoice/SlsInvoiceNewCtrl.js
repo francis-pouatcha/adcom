@@ -80,6 +80,7 @@ angular.module('AdSales')
     self.ptnrRole;
     self.findArticleByName = findArticleByName;
     self.findArticleByCip = findArticleByCip;
+    self.remise = remise;
     loadPtnrRole();
 
      $scope.pageChangeHandler = function(num) {
@@ -170,6 +171,31 @@ angular.module('AdSales')
         calculAmount();
     }
 
+
+        function remise(){
+            if(!self.slsInvoiceItemHolder.slsInvceItem.qty || self.slsInvoiceItemHolder.slsInvceItem.qty==0){
+                $scope.error ="Entrer la quantite a commander";
+                return;
+            }
+            if(self.slsInvoiceItemHolder.slsInvceItem.rebate){
+                if (self.slsInvoiceItemHolder.slsInvceItem.rebate > self.slsInvoiceItemHolder.slsInvceItem.sppuPreTax * parseInt(self.slsInvoiceItemHolder.slsInvceItem.qty)
+                    || self.slsInvoiceItemHolder.slsInvceItem.sppuPreTax * parseInt(self.slsInvoiceItemHolder.slsInvceItem.qty) == self.slsInvoiceItemHolder.slsInvceItem.rebate){
+                    $scope.error ="La remise ne peut etre superieur au montant de vente";
+                    return;
+                }
+            }else{
+                if(self.slsInvoiceItemHolder.slsInvceItem.rebatePct){
+                    if (self.slsInvoiceItemHolder.slsInvceItem.rebate > self.slsInvoiceItemHolder.slsInvceItem.sppuPreTax * parseInt(self.slsInvoiceItemHolder.slsInvceItem.qty)
+                        || self.slsInvoiceItemHolder.slsInvceItem.sppuPreTax * parseInt(self.slsInvoiceItemHolder.slsInvceItem.qty) == self.slsInvoiceItemHolder.slsInvceItem.rebate){
+                        $scope.error ="La remise ne peut etre superieur au montant de vente";
+                        return;
+                    }
+                }
+            }
+            calculAmount();
+            $scope.error="";
+        }
+
         function calculAmount() {
             if(self.slsInvoiceItemHolder.slsInvceItem.qty){
                 self.slsInvoiceItemHolder.slsInvceItem.grossSPPreTax = self.slsInvoiceItemHolder.slsInvceItem.sppuPreTax*self.slsInvoiceItemHolder.slsInvceItem.qty;
@@ -189,12 +215,12 @@ angular.module('AdSales')
             }
         }
     function totalAmount(){
-        self.slsInvoiceHolder.slsInvoice.grossSPPreTax = 0;
-        self.slsInvoiceHolder.slsInvoice.rebate = 0;
-        self.slsInvoiceHolder.slsInvoice.netSPPreTax = 0;
-        self.slsInvoiceHolder.slsInvoice.vatAmount = 0;
-        self.slsInvoiceHolder.slsInvoice.netSPTaxIncl = 0;
-        self.slsInvoiceHolder.slsInvoice.netSalesAmt = 0;
+        self.slsInvoiceHolder.slsInvoice.grossSPPreTax = 0.0;
+        self.slsInvoiceHolder.slsInvoice.rebate = 0.0;
+        self.slsInvoiceHolder.slsInvoice.netSPPreTax = 0.0;
+        self.slsInvoiceHolder.slsInvoice.vatAmount = 0.0;
+        self.slsInvoiceHolder.slsInvoice.netSPTaxIncl = 0.0;
+        self.slsInvoiceHolder.slsInvoice.netSalesAmt = 0.0;
 
         angular.forEach(self.slsInvoiceHolder.slsInvceItemsholder, function (value, key) {
             self.slsInvoiceHolder.slsInvoice.grossSPPreTax = self.slsInvoiceHolder.slsInvoice.grossSPPreTax + value.slsInvceItem.grossSPPreTax;
@@ -204,13 +230,15 @@ angular.module('AdSales')
             self.slsInvoiceHolder.slsInvoice.netSPTaxIncl = self.slsInvoiceHolder.slsInvoice.netSPTaxIncl + value.slsInvceItem.netSPTaxIncl;
         })
 
-        if(self.slsInvoiceHolder.slsInvoice.pymtDscntPct)
+        if(self.slsInvoiceHolder.slsInvoice.pymtDscntPct){
+            self.slsInvoiceHolder.slsInvoice.pymtDscntAmt = self.slsInvoiceHolder.slsInvoice.netSPPreTax*self.slsInvoiceHolder.slsInvoice.pymtDscntPct/100;
             self.slsInvoiceHolder.slsInvoice.netSalesAmt =self.slsInvoiceHolder.slsInvoice.netSPTaxIncl -(self.slsInvoiceHolder.slsInvoice.netSPPreTax*self.slsInvoiceHolder.slsInvoice.pymtDscntPct/100);
-
-        if(self.slsInvoiceHolder.slsInvoice.pymtDscntAmt){
-            self.slsInvoiceHolder.slsInvoice.netSalesAmt=self.slsInvoiceHolder.slsInvoice.netSPTaxIncl - parseInt(self.slsInvoiceHolder.slsInvoice.pymtDscntAmt);
+        }else{
+            if(self.slsInvoiceHolder.slsInvoice.pymtDscntAmt){
+                self.slsInvoiceHolder.slsInvoice.netSalesAmt=self.slsInvoiceHolder.slsInvoice.netSPTaxIncl - parseInt(self.slsInvoiceHolder.slsInvoice.pymtDscntAmt);
+                self.slsInvoiceHolder.slsInvoice.pymtDscntPct = self.slsInvoiceHolder.slsInvoice.pymtDscntPct*100/self.slsInvoiceHolder.slsInvoice.netSPPreTax;
+            }
         }
-
         if(!self.slsInvoiceHolder.slsInvoice.pymtDscntAmt && !self.slsInvoiceHolder.slsInvoice.pymtDscntPct){
             self.slsInvoiceHolder.slsInvoice.netSalesAmt = self.slsInvoiceHolder.slsInvoice.netSPTaxIncl;
         }
@@ -218,6 +246,24 @@ angular.module('AdSales')
     }
         
     function addItem(){
+        if (!self.slsInvoiceItemHolder || angular.isUndefined(self.slsInvoiceItemHolder) || (!self.slsInvoiceItemHolder.slsInvceItem.artPic && 1 > self.slsInvoiceItemHolder.slsInvceItem.qty)) {
+            $scope.error ="Entrer correctement les donnees";
+            return;
+        }
+        if (self.slsInvoiceItemHolder.slsInvceItem.qty > self.slsInvoiceItemHolder.slsInvceItem.stkQty){
+            $scope.error ="Quantite Vendus superieur a la quantite en stock";
+            return;
+        }
+        if (0 > self.slsInvoiceItemHolder.slsInvceItem.vatPct){
+            $scope.error ="La TVA ne peut etre negatif";
+            return;
+        }
+        if (self.slsInvoiceItemHolder.slsInvceItem.rebate > self.slsInvoiceItemHolder.slsInvceItem.sppuPreTax * parseInt(self.slsInvoiceItemHolder.slsInvceItem.qty)
+            || self.slsInvoiceItemHolder.slsInvceItem.sppuPreTax * parseInt(self.slsInvoiceItemHolder.slsInvceItem.qty) == self.slsInvoiceItemHolder.slsInvceItem.rebate){
+            $scope.error ="La remise ne peut etre superieur au montant de vente";
+            return;
+        }
+
         var found = false;
         for(var i=0;i<self.slsInvoiceHolder.slsInvceItemsholder.length;i++){
             if(self.slsInvoiceHolder.slsInvceItemsholder[i].slsInvceItem.artPic==self.slsInvoiceItemHolder.slsInvceItem.artPic){
@@ -233,6 +279,7 @@ angular.module('AdSales')
         totalAmount();
         $('#artName').focus();
         enableCloseCmd();
+        $scope.error="";
     }
     function deleteItem(index){
         var slsInvoiceItemHolderDeleted = {};

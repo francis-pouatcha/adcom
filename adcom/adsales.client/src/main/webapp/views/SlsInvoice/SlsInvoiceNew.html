@@ -61,10 +61,10 @@
                             </div>
                         </td>
                         <td>
-                            <input type="text" class="form-control" name="rebate" ng-change="slsInvoiceNewCtlr.calculAmount()" ng-model="slsInvoiceNewCtlr.slsInvoiceItemHolder.slsInvceItem.rebate" >
+                            <input type="text" class="form-control" name="rebate" ng-change="slsInvoiceNewCtlr.remise()" ng-model="slsInvoiceNewCtlr.slsInvoiceItemHolder.slsInvceItem.rebate" >
                         </td>
                         <td>
-                            <input type="text" class="form-control" name="rebatePct" ng-change="slsInvoiceNewCtlr.calculAmount()" ng-model="slsInvoiceNewCtlr.slsInvoiceItemHolder.slsInvceItem.rebatePct" placeholder="%" >
+                            <input type="text" class="form-control" name="rebatePct" ng-change="slsInvoiceNewCtlr.remise()" ng-model="slsInvoiceNewCtlr.slsInvoiceItemHolder.slsInvceItem.rebatePct" placeholder="%" >
                         </td>
                         <td>
                             <div >
@@ -85,7 +85,9 @@
                         <div class="form-group">
                             <label>{{'SlsInvoice_pymtDscntAmt_description.title' | translate}}</label><br/>
                             <input  type="text" class="form-control" ng-model="slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.pymtDscntAmt" price-green="price-green" round-converter='round-converter' />
-                        </div>
+                        </div><br/>
+                      <labe class="label label-warning" >{{error}}</labe>
+
                   </div>
                     <div class="col-lg-2">
                         <div class="form-group">
