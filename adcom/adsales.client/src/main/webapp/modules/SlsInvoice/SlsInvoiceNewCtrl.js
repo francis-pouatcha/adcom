@@ -81,6 +81,7 @@ angular.module('AdSales')
     self.findArticleByName = findArticleByName;
     self.findArticleByCip = findArticleByCip;
     self.remise = remise;
+    self.saveCmd = saveCmd;
     loadPtnrRole();
 
      $scope.pageChangeHandler = function(num) {
@@ -310,13 +311,31 @@ angular.module('AdSales')
             for(var i=0;i<self.slsInvceItemsholderDeleted.length;i++){
                 self.prcmtOrderHolder.poItems.push(self.slsInvceItemsholderDeleted[i])
             }
-            genericResource.customMethod(SlsInvoiceUtils.invoice+'/processInvoice',self.slsInvoiceHolder).success(function(data){
-                clearSaleOrder();
+            genericResource.customMethod(SlsInvoiceUtils.invoice+'/clotureInvoice',self.slsInvoiceHolder).success(function(data){
+                self.slsInvoiceHolder=data;
+            }).error(function(error){
+                $scope.error=error;
             });
-            $scope.error="";
+
+        }
+
+        function saveCmd(){
+            for(var i=0;i<self.slsInvceItemsholderDeleted.length;i++){
+                self.prcmtOrderHolder.poItems.push(self.slsInvceItemsholderDeleted[i])
+            }
+
+            genericResource.customMethod(SlsInvoiceUtils.invoice+'/saveInvoice',self.slsInvoiceHolder).success(function(data){
+                self.slsInvoiceHolder=data;
+            }).error(function(error){
+                $scope.error=error;
+            });
         }
         function annulerCmd(){
-            clearSaleOrder();
+            genericResource.customMethod(SlsInvoiceUtils.invoice+'/cancelInvoice',self.slsInvoiceHolder).success(function(data){
+                self.slsInvoiceHolder=data;
+            }).error(function(error){
+                $scope.error=error;
+            });
         }
         function newCmd(){
 
@@ -364,9 +383,10 @@ angular.module('AdSales')
             }
             $scope.roleInInvces = self.ptnrRole;
             $scope.addBptrn = function(){
-                console.log('hello');
                 var slsInvcePtnrHolder = {};
                 slsInvcePtnrHolder.slsInvcePtnr = $scope.slsInvcePtnr;
+                console.log(self.slsInvoiceHolder.slsInvoice.invceNbr);
+                slsInvcePtnrHolder.slsInvcePtnr.invceNbr = self.slsInvoiceHolder.slsInvoice.invceNbr;
                 $scope.slsInvcePtnrsHolder.push(slsInvcePtnrHolder);
                 $scope.slsInvcePtnr = {};
 

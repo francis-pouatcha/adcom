@@ -14,6 +14,7 @@ import org.adorsys.adbase.enums.BaseProcStepEnum;
 import org.adorsys.adbase.enums.BaseProcessStatusEnum;
 import org.adorsys.adbase.security.SecurityUtil;
 import org.adorsys.adcore.auth.TermWsUserPrincipal;
+import org.adorsys.adcore.exceptions.AdException;
 import org.adorsys.adcore.jpa.CurrencyEnum;
 import org.adorsys.adsales.jpa.SlsInvceHistory;
 import org.adorsys.adsales.jpa.SlsInvceItem;
@@ -40,7 +41,7 @@ public class SlsInvoiceManager {
 	private SlsInvcePtnrEJB slsInvcePtnrEJB;
 	
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-	public SlsInvoiceHolder processInvoice(SlsInvoiceHolder invoiceHolder) {
+	public SlsInvoiceHolder processInvoice(SlsInvoiceHolder invoiceHolder) throws AdException {
 		
 		String currentLoginName = securityUtil.getCurrentLoginName();
 		Date now = new Date();
@@ -66,12 +67,12 @@ public class SlsInvoiceManager {
 				invceItem.setInvNbr(slsInvoice.getInvceNbr());
 			// check presence of the article pic
 			if(StringUtils.isBlank(invceItem.getArtPic()))
-				throw new IllegalStateException("Missing article identification code.");
+				throw new AdException("Missing article identification code.");
 
 			if(StringUtils.isNotBlank(invceItem.getId())){
 				// todo check mdified
 				   SlsInvceItem persInvce = slsInvceItemEJB.findById(invceItem.getId());
-				if(persInvce==null) throw new IllegalStateException("Missing slsInvoice item with id: " + invceItem.getId());
+				if(persInvce==null) throw new AdException("Missing slsInvoice item with id: " + invceItem.getId());
 				if(!invceItem.contentEquals(persInvce)){
 					invceItem.copyTo(persInvce);
 					invceItem.evlte();
@@ -239,10 +240,70 @@ public class SlsInvoiceManager {
 		invoiceHstry.makeHistoryId(true);
 		slsInvceHistoryEJB.create(invoiceHstry);
 	}
+	
+	private void createClosedinvoiceHistory(SlsInvoice slsInvoice) {
+		TermWsUserPrincipal callerPrincipal = securityUtil.getCallerPrincipal();
+		SlsInvceHistory invoiceHstry = new SlsInvceHistory();
+		invoiceHstry.setComment(BaseHistoryTypeEnum.CLOSED.name());
+		invoiceHstry.setAddtnlInfo(SlsInvoiceInfo.prinInfo(slsInvoice));
+		invoiceHstry.setEntIdentif(slsInvoice.getId());
+		invoiceHstry.setEntStatus(slsInvoice.getInvceStatus());
+		invoiceHstry.setHstryDt(new Date());
+		invoiceHstry.setHstryType(BaseHistoryTypeEnum.CLOSED.name());
+		
+		invoiceHstry.setOrignLogin(callerPrincipal.getName());
+		invoiceHstry.setOrignWrkspc(callerPrincipal.getWorkspaceId());
+		invoiceHstry.setProcStep(BaseHistoryTypeEnum.CLOSED.name());
+		invoiceHstry.makeHistoryId(true);
+		slsInvceHistoryEJB.create(invoiceHstry);
+	}
+	
+	private void createCancelinvoiceHistory(SlsInvoice slsInvoice) {
+		TermWsUserPrincipal callerPrincipal = securityUtil.getCallerPrincipal();
+		SlsInvceHistory invoiceHstry = new SlsInvceHistory();
+		invoiceHstry.setComment(BaseHistoryTypeEnum.CANCELED.name());
+		invoiceHstry.setAddtnlInfo(SlsInvoiceInfo.prinInfo(slsInvoice));
+		invoiceHstry.setEntIdentif(slsInvoice.getId());
+		invoiceHstry.setEntStatus(slsInvoice.getInvceStatus());
+		invoiceHstry.setHstryDt(new Date());
+		invoiceHstry.setHstryType(BaseHistoryTypeEnum.CANCELED.name());
+		
+		invoiceHstry.setOrignLogin(callerPrincipal.getName());
+		invoiceHstry.setOrignWrkspc(callerPrincipal.getWorkspaceId());
+		invoiceHstry.setProcStep(BaseHistoryTypeEnum.CANCELED.name());
+		invoiceHstry.makeHistoryId(true);
+		slsInvceHistoryEJB.create(invoiceHstry);
+	}
 
 	public SlsInvoiceHolder findInvoice(String id) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public SlsInvoiceHolder saveInvoice(SlsInvoiceHolder slsInvoiceHolder) throws AdException {
+				return processInvoice(slsInvoiceHolder);
+	}
+
+	public SlsInvoiceHolder clotureInvoice(SlsInvoiceHolder slsInvoiceHolder) throws AdException {
+		slsInvoiceHolder = processInvoice(slsInvoiceHolder);
+		SlsInvoice slsInvoice = slsInvoiceHolder.getSlsInvoice();
+		slsInvoice.setInvceStatus(BaseProcessStatusEnum.CLOSED.name());
+		slsInvoice = slsInvoiceEJB.update(slsInvoice);
+		slsInvoiceHolder.setSlsInvoice(slsInvoice);
+		createClosedinvoiceHistory(slsInvoice);
+		return slsInvoiceHolder;
+	}
+
+	public SlsInvoiceHolder cancelInvoice(SlsInvoiceHolder slsInvoiceHolder) throws AdException {
+		SlsInvoice slsInvoice = slsInvoiceHolder.getSlsInvoice();
+		if(slsInvoice.getInvcePaid() || slsInvoice.getInvceDelivered())
+			throw new AdException("Facture paye ou livre, vous ne pouvez suspendre");
+		
+		slsInvoice.setInvceStatus(BaseProcessStatusEnum.SUSPENDED.name());
+		slsInvoice = slsInvoiceEJB.update(slsInvoice);
+		slsInvoiceHolder.setSlsInvoice(slsInvoice);
+		createCancelinvoiceHistory(slsInvoice);
+		return slsInvoiceHolder;
 	}
 
 }

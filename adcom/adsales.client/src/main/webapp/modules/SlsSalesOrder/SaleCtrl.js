@@ -309,6 +309,7 @@ angular.module('AdSales')
             $scope.addBptrn = function(){
                 var slsSOPtnrHolder = {};
                 slsSOPtnrHolder.slsSOPtnr = $scope.slsSOPtnr;
+                slsSOPtnrHolder.slsSOPtnr.soNbr = self.slsSalesOrderHolder.slsSalesOrder.soNbr;
                 $scope.slsSOPtnrsHolder.push(slsSOPtnrHolder);
                 $scope.slsSOPtnr = {};
 
