@@ -82,7 +82,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="catalArticle in catalArticlesCtlr.catalArticles" >
+                            <tr ng-repeat="catalArticle in catalArticlesCtlr.catalArticles | filter : catalArticlesCtlr.searchInput.entity" >
                                 <td>{{catalArticle.pic}}</td>
                                 <td>{{catalArticle.features.artName}}</td>
                                 <td>{{catalArticle.stockQty}}</td>
@@ -121,7 +121,7 @@
                             <input type="text" ng-model="catalArticlesCtlr.catalArticle.pic" name="pic" class="form-control" disabled >
                         </div>
                         <label class="col-lg-2">{{"CatalArticle_articleName_description.title"| translate}} :</label>
-                        <div class="col-lg-5" ng-class="{ 'has-error' : catalArticleForm.articleName.$invalid }" >
+                        <div class="col-lg-5" ng-class="{ 'has-error' : catalArticleForm.articleName.$invalid }">
                             <input type="text" ng-model="catalArticlesCtlr.catalArticle.features.artName" name="articleName" class="form-control" disabled >
                         </div>
                     </div>
