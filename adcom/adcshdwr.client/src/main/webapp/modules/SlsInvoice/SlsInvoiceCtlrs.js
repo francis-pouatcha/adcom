@@ -356,6 +356,11 @@ function($scope,genericResource,cdrSlsInvoicesUtils,cdrSlsInvoicesState,$locatio
     }
 
     $scope.addPymt = function(){
+        if($scope.slsInvoice.invceStatus!='CLOSED'){
+            $scope.error = "La facture n'est pas cloture";
+            return;
+        }
+
         if(!$scope.cdrPymntHolder.amt || $scope.cdrPymntHolder.amt == 0) return;
         var totalPymt = $scope.cdrPymntHolder.cdrPymnt.amt + parseInt($scope.cdrPymntHolder.amt);
         if(totalPymt > $scope.slsInvoice.netAmtToPay){
