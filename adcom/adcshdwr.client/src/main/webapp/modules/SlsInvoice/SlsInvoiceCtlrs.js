@@ -356,8 +356,13 @@ function($scope,genericResource,cdrSlsInvoicesUtils,cdrSlsInvoicesState,$locatio
     }
 
     $scope.addPymt = function(){
+        if($scope.slsInvoice.invceStatus!='CLOSED'){
+            $scope.error = "La facture n'est pas cloture";
+            return;
+        }
+
+        if(!$scope.cdrPymntHolder.amt || $scope.cdrPymntHolder.amt == 0) return;
         var totalPymt = $scope.cdrPymntHolder.cdrPymnt.amt + parseInt($scope.cdrPymntHolder.amt);
-        console.log(totalPymt);
         if(totalPymt > $scope.slsInvoice.netAmtToPay){
             $scope.error = "montant paiement superieur au montant net a payer";
             return ;
@@ -366,6 +371,13 @@ function($scope,genericResource,cdrSlsInvoicesUtils,cdrSlsInvoicesState,$locatio
             .success(function(cdrPymntHolder){
                 $scope.cdrPymntHolder=cdrPymntHolder;
                 $scope.cdrPymntHolder.amt = $scope.slsInvoice.netAmtToPay - $scope.cdrPymntHolder.cdrPymnt.amt;
+                if($scope.cdrPymntHolder.amt == 0){
+                    $scope.slsInvoice.invcePaid = true;
+                    genericResource.update(cdrSlsInvoicesUtils.urlBase, $scope.slsInvoice)
+                        .success(function(invoice){
+                            $scope.slsInvoice =invoice;
+                        })
+                }
                 $scope.error = "";
             })
             .error(function(error){

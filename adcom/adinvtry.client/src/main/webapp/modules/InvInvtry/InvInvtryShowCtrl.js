@@ -1,8 +1,8 @@
 'use strict';
     
 angular.module('AdInvtry')
-.controller('invInvtryShowCtlr',['$scope','invInvtryManagerResource','$location','invInvtryUtils','invInvtryState','$rootScope','genericResource','$routeParams','searchResultHandler','adUtils',
-                                 function($scope,invInvtryManagerResource,$location,invInvtryUtils,invInvtryState,$rootScope,genericResource,$routeParams,searchResultHandler,adUtils){
+.controller('invInvtryShowCtlr',['$scope','invInvtryManagerResource','$location','invInvtryUtils','invInvtryState','$rootScope','genericResource','$routeParams','searchResultHandler','adUtils','fileExtractor',
+                                 function($scope,invInvtryManagerResource,$location,invInvtryUtils,invInvtryState,$rootScope,genericResource,$routeParams,searchResultHandler,adUtils,fileExtractor){
     $scope.invInvtry = invInvtryState.resultHandler.entity();
     $scope.error = "";
     $scope.invInvtryUtils=invInvtryUtils;
@@ -124,7 +124,11 @@ angular.module('AdInvtry')
     };
 
 	$scope.handlePrintRequestEvent = function(){
-        // To do
+        genericResource.builfReportGet(invInvtryUtils.invinvtrysUrlBase+'/invintryreport.pdf',$scope.invInvtry.invtryNbr).success(function(data){
+            fileExtractor.extractFile(data,"application/pdf");
+        }).error(function (error) {
+            $scope.error = error;
+        });
 	}
 	$scope.handleResetRequestEvent = function(){
 		$scope.searchInput = itemsResultHandler.newSearchInput();	

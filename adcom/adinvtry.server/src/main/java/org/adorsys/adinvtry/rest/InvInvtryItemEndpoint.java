@@ -110,8 +110,16 @@ public class InvInvtryItemEndpoint
  		String lang = securityUtil.getUserLange();
  		List<InvInvtryItem> resultList = ejb.findByInvtryNbr(invNbr);
  		 OutputStream os = null ;
+ 		List<String> fields = new ArrayList<String>();
+		 fields.add("section");
+		 fields.add("lotPic");
+		 fields.add("artPic");
+		 fields.add("artName");
+		 fields.add("asseccedQty");
+		 fields.add("expirDt");
+		 fields.add("acsngUser");
  		try {
- 			ByteArrayOutputStream baos = pdfReportTemplate.build(resultList, InvInvtryItem.class,loginName, lang);
+ 			ByteArrayOutputStream baos = pdfReportTemplate.build(resultList, InvInvtryItem.class, fields, loginName, lang);
           // the contentlength
           response.setContentLength(baos.size());
           // write ByteArrayOutputStream to the ServletOutputStream

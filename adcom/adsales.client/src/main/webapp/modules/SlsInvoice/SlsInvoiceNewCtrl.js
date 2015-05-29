@@ -80,6 +80,8 @@ angular.module('AdSales')
     self.ptnrRole;
     self.findArticleByName = findArticleByName;
     self.findArticleByCip = findArticleByCip;
+    self.remise = remise;
+    self.saveCmd = saveCmd;
     loadPtnrRole();
 
      $scope.pageChangeHandler = function(num) {
@@ -116,33 +118,35 @@ angular.module('AdSales')
                         var artQties = sectionArticleLot.artQties;
                         if(!artQties) artQties = [];
                         angular.forEach(artQties, function(artQty){
-                            var displayableStr = "";
-                            displayable.artName = artName;
-                            displayableStr = artQty.artPic
-                            displayableStr += " - "+artName;
-                            if(artQty.lotPic) {
-                                displayable.lotPic = artQty.lotPic;
-                            }
-                            if(artQty.section) {
-                                displayable.section = artQty.section;
-                                displayableStr += " - "+artQty.section;
-                            }
-                            if(artQty.stockQty) {
-                                displayable.stockQty = artQty.stockQty;
-                                displayableStr += " - Qty ("+artQty.stockQty+")";
-                            }
-                            displayable.artPic = artQty.artPic;
-                            displayable.sppuPreTax = sectionArticleLot.sppuHT;
-                            displayable.minSppuHT = sectionArticleLot.minSppuHT;
-                            displayable.sppuTaxIncl = sectionArticleLot.sppuTaxIncl;
-                            displayable.sppuCur = sectionArticleLot.sppuCur;
-                            displayable.vatPct = sectionArticleLot.vatSalesPct;
-                            displayable.salesVatAmt = sectionArticleLot.salesVatAmt;
-                            displayable.salesWrntyDys = sectionArticleLot.salesWrntyDys;
-                            displayable.salesRtrnDays = sectionArticleLot.salesRtrnDays;
+                            if (artQty.stockQty && artQty.stockQty > 0){
+                                var displayableStr = "";
+                                displayable.artName = artName;
+                                displayableStr = artQty.artPic
+                                displayableStr += " - "+artName;
+                                if(artQty.lotPic) {
+                                    displayable.lotPic = artQty.lotPic;
+                                }
+                                if(artQty.section) {
+                                    displayable.section = artQty.section;
+                                    displayableStr += " - "+artQty.section;
+                                }
+                                if(artQty.stockQty) {
+                                    displayable.stockQty = artQty.stockQty;
+                                    displayableStr += " - Qty ("+artQty.stockQty+")";
+                                }
+                                displayable.artPic = artQty.artPic;
+                                displayable.sppuPreTax = sectionArticleLot.sppuHT;
+                                displayable.minSppuHT = sectionArticleLot.minSppuHT;
+                                displayable.sppuTaxIncl = sectionArticleLot.sppuTaxIncl;
+                                displayable.sppuCur = sectionArticleLot.sppuCur;
+                                displayable.vatPct = sectionArticleLot.vatSalesPct;
+                                displayable.salesVatAmt = sectionArticleLot.salesVatAmt;
+                                displayable.salesWrntyDys = sectionArticleLot.salesWrntyDys;
+                                displayable.salesRtrnDays = sectionArticleLot.salesRtrnDays;
 
-                            displayable.displayableStr = displayableStr;
-                            displayDatas.push(displayable);
+                                displayable.displayableStr = displayableStr;
+                                displayDatas.push(displayable);
+                            }
                         });
                     }
                 });
@@ -168,6 +172,31 @@ angular.module('AdSales')
         calculAmount();
     }
 
+
+        function remise(){
+            if(!self.slsInvoiceItemHolder.slsInvceItem.qty || self.slsInvoiceItemHolder.slsInvceItem.qty==0){
+                $scope.error ="Entrer la quantite a commander";
+                return;
+            }
+            if(self.slsInvoiceItemHolder.slsInvceItem.rebate){
+                if (self.slsInvoiceItemHolder.slsInvceItem.rebate > self.slsInvoiceItemHolder.slsInvceItem.sppuPreTax * parseInt(self.slsInvoiceItemHolder.slsInvceItem.qty)
+                    || self.slsInvoiceItemHolder.slsInvceItem.sppuPreTax * parseInt(self.slsInvoiceItemHolder.slsInvceItem.qty) == self.slsInvoiceItemHolder.slsInvceItem.rebate){
+                    $scope.error ="La remise ne peut etre superieur au montant de vente";
+                    return;
+                }
+            }else{
+                if(self.slsInvoiceItemHolder.slsInvceItem.rebatePct){
+                    if (self.slsInvoiceItemHolder.slsInvceItem.rebate > self.slsInvoiceItemHolder.slsInvceItem.sppuPreTax * parseInt(self.slsInvoiceItemHolder.slsInvceItem.qty)
+                        || self.slsInvoiceItemHolder.slsInvceItem.sppuPreTax * parseInt(self.slsInvoiceItemHolder.slsInvceItem.qty) == self.slsInvoiceItemHolder.slsInvceItem.rebate){
+                        $scope.error ="La remise ne peut etre superieur au montant de vente";
+                        return;
+                    }
+                }
+            }
+            calculAmount();
+            $scope.error="";
+        }
+
         function calculAmount() {
             if(self.slsInvoiceItemHolder.slsInvceItem.qty){
                 self.slsInvoiceItemHolder.slsInvceItem.grossSPPreTax = self.slsInvoiceItemHolder.slsInvceItem.sppuPreTax*self.slsInvoiceItemHolder.slsInvceItem.qty;
@@ -187,12 +216,12 @@ angular.module('AdSales')
             }
         }
     function totalAmount(){
-        self.slsInvoiceHolder.slsInvoice.grossSPPreTax = 0;
-        self.slsInvoiceHolder.slsInvoice.rebate = 0;
-        self.slsInvoiceHolder.slsInvoice.netSPPreTax = 0;
-        self.slsInvoiceHolder.slsInvoice.vatAmount = 0;
-        self.slsInvoiceHolder.slsInvoice.netSPTaxIncl = 0;
-        self.slsInvoiceHolder.slsInvoice.netSalesAmt = 0;
+        self.slsInvoiceHolder.slsInvoice.grossSPPreTax = 0.0;
+        self.slsInvoiceHolder.slsInvoice.rebate = 0.0;
+        self.slsInvoiceHolder.slsInvoice.netSPPreTax = 0.0;
+        self.slsInvoiceHolder.slsInvoice.vatAmount = 0.0;
+        self.slsInvoiceHolder.slsInvoice.netSPTaxIncl = 0.0;
+        self.slsInvoiceHolder.slsInvoice.netSalesAmt = 0.0;
 
         angular.forEach(self.slsInvoiceHolder.slsInvceItemsholder, function (value, key) {
             self.slsInvoiceHolder.slsInvoice.grossSPPreTax = self.slsInvoiceHolder.slsInvoice.grossSPPreTax + value.slsInvceItem.grossSPPreTax;
@@ -202,20 +231,48 @@ angular.module('AdSales')
             self.slsInvoiceHolder.slsInvoice.netSPTaxIncl = self.slsInvoiceHolder.slsInvoice.netSPTaxIncl + value.slsInvceItem.netSPTaxIncl;
         })
 
-        if(self.slsInvoiceHolder.slsInvoice.pymtDscntPct)
+        if(self.slsInvoiceHolder.slsInvoice.pymtDscntPct){
+            self.slsInvoiceHolder.slsInvoice.pymtDscntAmt = self.slsInvoiceHolder.slsInvoice.netSPPreTax*self.slsInvoiceHolder.slsInvoice.pymtDscntPct/100;
+            if(self.slsInvoiceHolder.slsInvoice.pymtDscntAmt > self.slsInvoiceHolder.slsInvoice.netSPTaxIncl){
+                $scope.error="L'escompte ne doit pas etre superieur au montant de vente";
+                return;
+            }
             self.slsInvoiceHolder.slsInvoice.netSalesAmt =self.slsInvoiceHolder.slsInvoice.netSPTaxIncl -(self.slsInvoiceHolder.slsInvoice.netSPPreTax*self.slsInvoiceHolder.slsInvoice.pymtDscntPct/100);
-
-        if(self.slsInvoiceHolder.slsInvoice.pymtDscntAmt){
-            self.slsInvoiceHolder.slsInvoice.netSalesAmt=self.slsInvoiceHolder.slsInvoice.netSPTaxIncl - parseInt(self.slsInvoiceHolder.slsInvoice.pymtDscntAmt);
+        }else{
+            if(self.slsInvoiceHolder.slsInvoice.pymtDscntAmt){
+                if(self.slsInvoiceHolder.slsInvoice.pymtDscntAmt > self.slsInvoiceHolder.slsInvoice.netSPTaxIncl){
+                    $scope.error="L'escompte ne doit pas etre superieur au montant de vente";
+                    return;
+                }
+                self.slsInvoiceHolder.slsInvoice.netSalesAmt=self.slsInvoiceHolder.slsInvoice.netSPTaxIncl - parseInt(self.slsInvoiceHolder.slsInvoice.pymtDscntAmt);
+                self.slsInvoiceHolder.slsInvoice.pymtDscntPct = self.slsInvoiceHolder.slsInvoice.pymtDscntPct*100/self.slsInvoiceHolder.slsInvoice.netSPPreTax;
+            }
         }
-
         if(!self.slsInvoiceHolder.slsInvoice.pymtDscntAmt && !self.slsInvoiceHolder.slsInvoice.pymtDscntPct){
             self.slsInvoiceHolder.slsInvoice.netSalesAmt = self.slsInvoiceHolder.slsInvoice.netSPTaxIncl;
         }
-
+        $scope.error="";
     }
         
     function addItem(){
+        if (!self.slsInvoiceItemHolder || angular.isUndefined(self.slsInvoiceItemHolder) || (!self.slsInvoiceItemHolder.slsInvceItem.artPic && 1 > self.slsInvoiceItemHolder.slsInvceItem.qty)) {
+            $scope.error ="Entrer correctement les donnees";
+            return;
+        }
+        if (self.slsInvoiceItemHolder.slsInvceItem.qty > self.slsInvoiceItemHolder.slsInvceItem.stkQty){
+            $scope.error ="Quantite Vendus superieur a la quantite en stock";
+            return;
+        }
+        if (0 > self.slsInvoiceItemHolder.slsInvceItem.vatPct){
+            $scope.error ="La TVA ne peut etre negatif";
+            return;
+        }
+        if (self.slsInvoiceItemHolder.slsInvceItem.rebate > self.slsInvoiceItemHolder.slsInvceItem.sppuPreTax * parseInt(self.slsInvoiceItemHolder.slsInvceItem.qty)
+            || self.slsInvoiceItemHolder.slsInvceItem.sppuPreTax * parseInt(self.slsInvoiceItemHolder.slsInvceItem.qty) == self.slsInvoiceItemHolder.slsInvceItem.rebate){
+            $scope.error ="La remise ne peut etre superieur au montant de vente";
+            return;
+        }
+
         var found = false;
         for(var i=0;i<self.slsInvoiceHolder.slsInvceItemsholder.length;i++){
             if(self.slsInvoiceHolder.slsInvceItemsholder[i].slsInvceItem.artPic==self.slsInvoiceItemHolder.slsInvceItem.artPic){
@@ -231,6 +288,7 @@ angular.module('AdSales')
         totalAmount();
         $('#artName').focus();
         enableCloseCmd();
+        $scope.error="";
     }
     function deleteItem(index){
         var slsInvoiceItemHolderDeleted = {};
@@ -253,12 +311,31 @@ angular.module('AdSales')
             for(var i=0;i<self.slsInvceItemsholderDeleted.length;i++){
                 self.prcmtOrderHolder.poItems.push(self.slsInvceItemsholderDeleted[i])
             }
-            genericResource.customMethod(SlsInvoiceUtils.invoice+'/processInvoice',self.slsInvoiceHolder).success(function(data){
-                clearSaleOrder();
+            genericResource.customMethod(SlsInvoiceUtils.invoice+'/clotureInvoice',self.slsInvoiceHolder).success(function(data){
+                self.slsInvoiceHolder=data;
+            }).error(function(error){
+                $scope.error=error;
+            });
+
+        }
+
+        function saveCmd(){
+            for(var i=0;i<self.slsInvceItemsholderDeleted.length;i++){
+                self.prcmtOrderHolder.poItems.push(self.slsInvceItemsholderDeleted[i])
+            }
+
+            genericResource.customMethod(SlsInvoiceUtils.invoice+'/saveInvoice',self.slsInvoiceHolder).success(function(data){
+                self.slsInvoiceHolder=data;
+            }).error(function(error){
+                $scope.error=error;
             });
         }
         function annulerCmd(){
-            clearSaleOrder();
+            genericResource.customMethod(SlsInvoiceUtils.invoice+'/cancelInvoice',self.slsInvoiceHolder).success(function(data){
+                self.slsInvoiceHolder=data;
+            }).error(function(error){
+                $scope.error=error;
+            });
         }
         function newCmd(){
 
@@ -306,9 +383,10 @@ angular.module('AdSales')
             }
             $scope.roleInInvces = self.ptnrRole;
             $scope.addBptrn = function(){
-                console.log('hello');
                 var slsInvcePtnrHolder = {};
                 slsInvcePtnrHolder.slsInvcePtnr = $scope.slsInvcePtnr;
+                console.log(self.slsInvoiceHolder.slsInvoice.invceNbr);
+                slsInvcePtnrHolder.slsInvcePtnr.invceNbr = self.slsInvoiceHolder.slsInvoice.invceNbr;
                 $scope.slsInvcePtnrsHolder.push(slsInvcePtnrHolder);
                 $scope.slsInvcePtnr = {};
 

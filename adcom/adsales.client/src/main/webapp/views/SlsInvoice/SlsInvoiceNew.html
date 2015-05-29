@@ -2,18 +2,29 @@
     <div style="margin-bottom: 20px" >
         <!--<a class="btn btn-default"  ng-click="slsInvoiceNewCtlr.previous()" ng-disabled="slsInvoiceNewCtlr.index==0" ><i class="glyphicon glyphicon-chevron-left"></i> Previous</a>
         <a class="btn btn-default" ng-click="slsInvoiceNewCtlr.next()" ng-disabled="slsInvoiceNewCtlr.index==slsInvoiceNewCtlr.tabLength()-1 || slsInvoiceNewCtlr.tabLength()==0" >Next <i class="glyphicon glyphicon-chevron-right"></i></a>-->
-        <a class="btn btn-danger" ng-click="slsInvoiceNewCtlr.annulerCmd()" ><i class="glyphicon glyphicon-trash" ></i> Anuller la facture</a>
+        <a class="btn btn-danger"
+           ng-show="slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.invcePaid==false
+           && slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.invceDelivered==false
+          && slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.invceStatus!='INITIATED'"
+           ng-click="slsInvoiceNewCtlr.annulerCmd()" ><i class="glyphicon glyphicon-trash" ></i> Suspendre la facture</a>
         <a class="btn btn-default" ng-click="slsInvoiceNewCtlr.newCmd()"  ><i class="glyphicon glyphicon-plus" ></i> Nouvelle facture</a>
         <a class="btn btn-warning" ng-click="slsInvoiceNewCtlr.addBptnr()"><i class="glyphicon glyphicon-user" ></i> {{slsInvoiceNewCtlr.slsInvoiceHolder.slsInvcePtnrsHolder[0].slsInvcePtnr.ptnrNbr}}</a>
         <label>{{slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.invceDt | date:'medium'}}</label>
-        <a class="btn btn-primary col-lg-offset-1" ng-disabled="slsInvoiceNewCtlr.showBtnClose" ng-click="slsInvoiceNewCtlr.cloturerCmd()"><i class="glyphicon glyphicon-ok" ></i> Cloturer la facture</a>
+        <a class="btn btn-primary col-lg-offset-1"
+           ng-disabled="slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.invceStatus=='CLOSED'
+           || slsInvoiceNewCtlr.slsInvoiceHolder.slsInvceItemsholder.length==0
+           slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.invceStatus=='SUSPENDED'" ng-click="slsInvoiceNewCtlr.saveCmd()"><i class="glyphicon glyphicon-save" ></i> Enregistrer la facture</a>
+        <a class="btn btn-primary" ng-disabled="slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.invceStatus=='CLOSED'
+        || slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.invceStatus=='SUSPENDED'
+        || slsInvoiceNewCtlr.slsInvoiceHolder.slsInvceItemsholder.length==0" ng-click="slsInvoiceNewCtlr.cloturerCmd()"><i class="glyphicon glyphicon-ok" ></i> Cloturer la facture</a>
+        <a class="btn btn-default col-lg-offset-1" href="#/SlsInvoices" ><i class="glyphicon glyphicon-list" ></i> Liste</a>
     </div>
     <form name="invoiceItemForm" id="invoiceItemForm" novalidate >
     <div class="panel panel-default" >
         <div class="panel-heading">
             <b>Ajouter une ligne de facture</b>
             ---- N# : {{slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.invceNbr}}
-            ---- Status : <label class="bg-warning" >{{slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.invceStatus}}</label>
+            ---- Status : <label class="label label-success" >{{slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.invceStatus}}</label>
         </div>
         <div class="panel-body">
                 <table class="table table-bordered  table-striped">
@@ -61,10 +72,10 @@
                             </div>
                         </td>
                         <td>
-                            <input type="text" class="form-control" name="rebate" ng-change="slsInvoiceNewCtlr.calculAmount()" ng-model="slsInvoiceNewCtlr.slsInvoiceItemHolder.slsInvceItem.rebate" >
+                            <input type="text" class="form-control" name="rebate" ng-change="slsInvoiceNewCtlr.remise()" ng-model="slsInvoiceNewCtlr.slsInvoiceItemHolder.slsInvceItem.rebate" >
                         </td>
                         <td>
-                            <input type="text" class="form-control" name="rebatePct" ng-change="slsInvoiceNewCtlr.calculAmount()" ng-model="slsInvoiceNewCtlr.slsInvoiceItemHolder.slsInvceItem.rebatePct" placeholder="%" >
+                            <input type="text" class="form-control" name="rebatePct" ng-change="slsInvoiceNewCtlr.remise()" ng-model="slsInvoiceNewCtlr.slsInvoiceItemHolder.slsInvceItem.rebatePct" placeholder="%" >
                         </td>
                         <td>
                             <div >
@@ -85,7 +96,9 @@
                         <div class="form-group">
                             <label>{{'SlsInvoice_pymtDscntAmt_description.title' | translate}}</label><br/>
                             <input  type="text" class="form-control" ng-model="slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.pymtDscntAmt" price-green="price-green" round-converter='round-converter' />
-                        </div>
+                        </div><br/>
+                      <labe class="label label-danger" >{{error}}</labe>
+
                   </div>
                     <div class="col-lg-2">
                         <div class="form-group">

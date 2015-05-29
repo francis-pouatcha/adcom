@@ -106,33 +106,35 @@ angular.module('AdSales')
                         var artQties = sectionArticleLot.artQties;
                         if(!artQties) artQties = [];
                         angular.forEach(artQties, function(artQty){
-                            var displayableStr = "";
-                            displayable.artName = artName;
-                            displayableStr = artQty.artPic
-                            displayableStr += " - "+artName;
-                            if(artQty.lotPic) {
-                                displayable.lotPic = artQty.lotPic;
-                            }
-                            if(artQty.section) {
-                                displayable.section = artQty.section;
-                                displayableStr += " - "+artQty.section;
-                            }
-                            if(artQty.stockQty) {
-                                displayable.stockQty = artQty.stockQty;
-                                displayableStr += " - Qty ("+artQty.stockQty+")";
-                            }
-                            displayable.artPic = artQty.artPic;
-                            displayable.sppuPreTax = sectionArticleLot.sppuHT;
-                            displayable.minSppuHT = sectionArticleLot.minSppuHT;
-                            displayable.sppuTaxIncl = sectionArticleLot.sppuTaxIncl;
-                            displayable.sppuCur = sectionArticleLot.sppuCur;
-                            displayable.vatPct = sectionArticleLot.vatSalesPct;
-                            displayable.salesVatAmt = sectionArticleLot.salesVatAmt;
-                            displayable.salesWrntyDys = sectionArticleLot.salesWrntyDys;
-                            displayable.salesRtrnDays = sectionArticleLot.salesRtrnDays;
+                            if (artQty.stockQty && artQty.stockQty > 0) {
+                                var displayableStr = "";
+                                displayable.artName = artName;
+                                displayableStr = artQty.artPic
+                                displayableStr += " - " + artName;
+                                if (artQty.lotPic) {
+                                    displayable.lotPic = artQty.lotPic;
+                                }
+                                if (artQty.section) {
+                                    displayable.section = artQty.section;
+                                    displayableStr += " - " + artQty.section;
+                                }
+                                if (artQty.stockQty) {
+                                    displayable.stockQty = artQty.stockQty;
+                                    displayableStr += " - Qty (" + artQty.stockQty + ")";
+                                }
+                                displayable.artPic = artQty.artPic;
+                                displayable.sppuPreTax = sectionArticleLot.sppuHT;
+                                displayable.minSppuHT = sectionArticleLot.minSppuHT;
+                                displayable.sppuTaxIncl = sectionArticleLot.sppuTaxIncl;
+                                displayable.sppuCur = sectionArticleLot.sppuCur;
+                                displayable.vatPct = sectionArticleLot.vatSalesPct;
+                                displayable.salesVatAmt = sectionArticleLot.salesVatAmt;
+                                displayable.salesWrntyDys = sectionArticleLot.salesWrntyDys;
+                                displayable.salesRtrnDays = sectionArticleLot.salesRtrnDays;
 
-                            displayable.displayableStr = displayableStr;
-                            displayDatas.push(displayable);
+                                displayable.displayableStr = displayableStr;
+                                displayDatas.push(displayable);
+                            }
                         });
                     }
                 });
@@ -307,6 +309,7 @@ angular.module('AdSales')
             $scope.addBptrn = function(){
                 var slsSOPtnrHolder = {};
                 slsSOPtnrHolder.slsSOPtnr = $scope.slsSOPtnr;
+                slsSOPtnrHolder.slsSOPtnr.soNbr = self.slsSalesOrderHolder.slsSalesOrder.soNbr;
                 $scope.slsSOPtnrsHolder.push(slsSOPtnrHolder);
                 $scope.slsSOPtnr = {};
 
