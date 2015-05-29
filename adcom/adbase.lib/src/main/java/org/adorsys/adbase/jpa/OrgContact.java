@@ -190,6 +190,11 @@ public class OrgContact extends AbstractTimedData {
 	protected String makeIdentif() {
 		return ouIdentif + contactIndex;
 	}
+	
+	// This method is used for construct an address from a Contact
+	public String getAdress(){
+		return street+", "+city +", "+region+", "+country;
+	}
 
 	@Override
 	public String toString() {

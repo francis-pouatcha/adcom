@@ -11,6 +11,7 @@ import java.util.Date;
 public class DateUtil {
 
 	public final static String  DATE_FORMAT_SHORT = "dd-MM-yyyy";
+	public final static String DATE_TIME_FORMAT="dd-MM-yyyy HH:mm";
 	
 	public static  String transform(Date validFrom,String pattern) {
 		String validFromStr = format(validFrom, pattern);

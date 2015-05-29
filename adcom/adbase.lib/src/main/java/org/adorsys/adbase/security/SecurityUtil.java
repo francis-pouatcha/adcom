@@ -12,11 +12,13 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import org.adorsys.adbase.jpa.Login;
+import org.adorsys.adbase.jpa.OrgContact;
 import org.adorsys.adbase.jpa.OrgUnit;
 import org.adorsys.adbase.jpa.OuWorkspace;
 import org.adorsys.adbase.jpa.UserWorkspace;
 import org.adorsys.adbase.repo.LoginRepository;
 import org.adorsys.adbase.repo.UserWorkspaceRepository;
+import org.adorsys.adbase.rest.OrgContactEJB;
 import org.adorsys.adbase.rest.OrgUnitEJB;
 import org.adorsys.adbase.rest.SecUserSessionEJB;
 import org.adorsys.adcore.auth.SecurityActions;
@@ -40,6 +42,7 @@ public class SecurityUtil {
 	
 	@Inject
 	private OrgUnitEJB orgUnitEJB;
+	
 	
 	public TermWsUserPrincipal getCallerPrincipal(){
 		Principal callerPrincipal = sessionContext.getCallerPrincipal();
@@ -98,6 +101,17 @@ public class SecurityUtil {
 		}
 		return orgUnit;
 	}
+	
+//	public OrgContact getCurrentOrgContact(){
+//		TermWsUserPrincipal callerPrincipal = getCallerPrincipal();
+//		String workspaceId = callerPrincipal.getWorkspaceId();
+//		OuWorkspace ouWorkspace = OuWorkspace.toOuWorkspace(workspaceId);
+//		OrgContact orgContact = orgContactEJB.findByIdentif(ouWorkspace.getTargetOuIdentif(), new Date());
+//		if(orgContact==null){
+//			throw new IllegalStateException("The orgContact should not be null");
+//		}
+//		return orgContact;
+//	}
 
 	public String getUserLange() {
 		TermWsUserPrincipal userPrincipal = getCallerPrincipal();

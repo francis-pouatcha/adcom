@@ -64,10 +64,14 @@ public class CdrDrctSalesManager {
 	@Inject
 	CdrDsPymntItemEJB cdrDsPymntItemEJB;
 	
+	
 	@Inject
 	CdrCstmrVchrEJB cdrCstmrVchrEJB;
 	@Inject
 	private PymntValidator pymntValidator;
+	
+	@Inject
+	private CdrDrctSalesPrinterEJB salesPrinterEJB;
 
 	public CdrDsArtHolder updateOrder(CdrDsArtHolder cdrDsArtHolder) throws AdException{
 		CdrDrctSales cdrDrctSales = cdrDsArtHolder.getCdrDrctSales();
@@ -75,7 +79,7 @@ public class CdrDrctSalesManager {
 		if(activeCshDrawer == null) throw new AdException("No opened cash drawer found for this session, please open one.");
 		cdrDrctSales.setCdrNbr(activeCshDrawer.getCdrNbr());
 		if(StringUtils.isBlank(cdrDrctSales.getRcptNbr())) {
-			cdrDrctSales.setRcptNbr("-");
+			cdrDrctSales.setRcptNbr("0000");
 		}
 		if(StringUtils.isBlank(cdrDrctSales.getId())) {
 			cdrDrctSales = cdrDrctSalesEJB.create(cdrDrctSales);
@@ -142,7 +146,11 @@ public class CdrDrctSalesManager {
 			cdrDrctSales = cdrDrctSalesEJB.update(cdrDrctSales);
 			PaymentEvent paymentEvent = new PaymentEvent(CdrPymntMode.CASH, cdrDrctSales.getNetAmtToPay(), cdrDsArtHolder.getPaidAmt(), new Date(), cdrDrctSales.getDsNbr());
 			pymntValidator.check(paymentEvent);
-			directSaleEvent.fire(paymentEvent);			
+			directSaleEvent.fire(paymentEvent);	
+			
+			//Inject an EJB for printing ticket pdf 
+			salesPrinterEJB.printReceiptPdf(cdrDrctSales);
+			
 			cdrDsArtHolder.setCdrDrctSales(cdrDrctSales);
 		}
 		/*		if(modified || itemModified){
@@ -265,5 +273,7 @@ public class CdrDrctSalesManager {
 		}
 		return cdrDsArtHolder;
 	}
+	
+	
 
 }
