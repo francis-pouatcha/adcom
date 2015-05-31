@@ -89,7 +89,7 @@ public class SlsInvcePtnrEJB
 			String roleInSO) {
 		
 		SlsInvcePtnr slsInvcePtnr = new SlsInvcePtnr();
-		slsInvcePtnr.setInvceNbr(invoice.getSoNbr());
+		slsInvcePtnr.setInvceNbr(invoice.getInvceNbr());
 		slsInvcePtnr.setPtnrNbr(ptnrNbr);
 		slsInvcePtnr.setRoleInInvce(roleInSO);
 		return repository.save(slsInvcePtnr);

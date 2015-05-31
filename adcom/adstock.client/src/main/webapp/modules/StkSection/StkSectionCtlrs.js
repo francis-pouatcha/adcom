@@ -1,4 +1,4 @@
-﻿'use strict';
+'use strict';
     
 angular.module('AdStock')
 
@@ -18,6 +18,8 @@ angular.module('AdStock')
     	            'StkSection_wharehouse_description.title',
     	            'StkSection_stkSubSection_description.title',
     	            'StkSection_stkArticleLot_description.title',
+                    
+                    'StkSections_description.title',
 
     	            'Entity_show.title',
     	            'Entity_previous.title',

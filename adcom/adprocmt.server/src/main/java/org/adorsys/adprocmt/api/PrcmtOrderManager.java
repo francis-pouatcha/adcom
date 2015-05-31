@@ -56,6 +56,7 @@ public class PrcmtOrderManager {
 
 	public PrcmtOrderHolder updateOrder(PrcmtOrderHolder prcmtOrderHolder){
 		PrcmtProcOrder prcmtOrder = prcmtOrderHolder.getPrcmtProcOrder();
+		prcmtOrder = prcmtOrderEJB.findByPoNbr(prcmtOrder.getPoNbr());//flush the entity, to avoid opstimic exception
 		
 		boolean modified = false;
 		boolean itemModified = deleteHolders(prcmtOrderHolder);
@@ -196,12 +197,14 @@ public class PrcmtOrderManager {
 	public PrcmtOrderHolder closeOrder(PrcmtOrderHolder prcmtOrderHolder){
 		prcmtOrderHolder = updateOrder(prcmtOrderHolder);
 		PrcmtProcOrder procOrder = prcmtOrderHolder.getPrcmtProcOrder();
-		recomputeOrder(procOrder);
-		procOrder.setPoStatus(BaseProcessStatusEnum.CLOSED.name());
-		procOrder = prcmtOrderEJB.update(procOrder);
+		procOrder = prcmtOrderEJB.findByPoNbr(procOrder.getPoNbr());
+		//recomputeOrder(procOrder);
+		if(!StringUtils.equals(BaseProcessStatusEnum.CLOSED.name(), procOrder.getPoStatus())){
+			procOrder.setPoStatus(BaseProcessStatusEnum.CLOSED.name());
+			procOrder = prcmtOrderEJB.update(procOrder);	
+			createClosedOrderHistory(procOrder);// closed, no need processor?
+		}
 		prcmtOrderHolder.setPrcmtProcOrder(procOrder);
-		createClosedOrderHistory(procOrder);// closed, no need processor?
-
 		return prcmtOrderHolder;
 	}
 	

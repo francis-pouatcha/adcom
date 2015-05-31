@@ -7,6 +7,8 @@ angular.module('AdStock')
 
     service.urlBase='/adstock.server/rest/stkarticlelots';
 
+    service.urlCatalArticle='/adcatal.server/rest/catalarticles';
+
     service.language=sessionManager.language;
     
     service.translate = function(){
@@ -55,7 +57,9 @@ angular.module('AdStock')
     	            'Entity_search.title',
     	            'Entity_cancel.title',
     	            'Entity_save.title',
-    	            'Entity_notfound.title'
+    	            'Entity_notfound.title',
+    	            'Entity_To.title',
+    	            'Entity_From.title'
     	            
     	            ])
 		 .then(function (translations) {
@@ -292,8 +296,8 @@ angular.module('AdStock')
     return service;
 
 }])
-.controller('stkArticleLotsCtlr',['$scope','genericResource','stkArticleLotUtils','stkArticleLotState','$location','$rootScope',
-function($scope,genericResource,stkArticleLotUtils,stkArticleLotState,$location,$rootScope){
+.controller('stkArticleLotsCtlr',['$scope','genericResource','stkArticleLotUtils','stkArticleLotState','$location','$rootScope', 'catalArticleResource',
+function($scope,genericResource,stkArticleLotUtils,stkArticleLotState,$location,$rootScope,catalArticleResource){
 
     $scope.searchInput = stkArticleLotState.searchInput();
     $scope.itemPerPage=stkArticleLotState.itemPerPage;
@@ -318,8 +322,9 @@ function($scope,genericResource,stkArticleLotUtils,stkArticleLotState,$location,
     init();
 
     function init(){
+    	var searchInput = stkArticleLotState.searchInput();
         if(stkArticleLotState.hasStkArticleLots())return;
-        findByLike($scope.searchInput);
+        findCustom(searchInput);
     }
 
     function findByLike(searchInput){
@@ -332,6 +337,34 @@ function($scope,genericResource,stkArticleLotUtils,stkArticleLotState,$location,
             $scope.error=error;
         });
     }
+    
+    function findCustom(searchInput) {
+        genericResource.findCustom(stkArticleLotUtils.urlBase, searchInput)
+            .success(function (entitySearchResult) {
+                // store search
+            	stkArticleLotState.consumeSearchResult(searchInput,entitySearchResult);
+            })
+            .error(function (error) {
+                $scope.error = error;
+            });
+    }
+
+    /* function findArtNameLike(){
+        var listStkArtLots = stkArticleLotState.stkArticleLots();
+        var pic;
+        for(var k in listStkArtLots){entitySearchResult
+            pic = listStkArtLots[k].artPic;
+
+            catalArticleResource.findByIdentif(pic)
+                .success(function(data){
+                    self.catalArticle = data.features.artName;   // *****************************************
+                })
+                .error(function(error){
+                    self.error = error;
+                });
+
+        }
+    } */
 
     function processSearchInput(){
         var fieldNames = [];
@@ -343,13 +376,14 @@ function($scope,genericResource,stkArticleLotUtils,stkArticleLotState,$location,
         	fieldNames.push('supplierPic');
         if($scope.searchInput.entity.supplier && !fieldNames['supplier'])
         	fieldNames.push('supplier');
+        
         $scope.searchInput.fieldNames = fieldNames;
         return $scope.searchInput;
     };
 
     $scope.handleSearchRequestEvent = function(){
     	processSearchInput();
-    	findByLike($scope.searchInput);
+    	findCustom($scope.searchInput);
     };
 
     $scope.paginate = function(){
@@ -373,13 +407,14 @@ function($scope,genericResource,stkArticleLotUtils,stkArticleLotState,$location,
 		}
 	}
 }])
-.controller('stkArticleLotShowCtlr',['$scope','genericResource','$location','stkArticleLotUtils','stkArticleLotState','$rootScope',
-                                 function($scope,genericResource,$location,stkArticleLotUtils,stkArticleLotState,$rootScope){
+.controller('stkArticleLotShowCtlr',['$scope','genericResource','$location','stkArticleLotUtils','stkArticleLotState','$rootScope', '$modal',
+                                 function($scope,genericResource,$location,stkArticleLotUtils,stkArticleLotState,$rootScope,$modal){
     $scope.stkArticleLot = stkArticleLotState.stkArticleLot();
     $scope.error = "";
     $scope.stkArticleLotUtils=stkArticleLotUtils;
     $scope.stkSubSectionActive=stkArticleLotState.stkSubSectionActive();
     $scope.stkArticleLotArticleLotActive=stkArticleLotState.stkArticleLotArticleLotActive();
+    $scope.unitPrice = $scope.stkArticleLot.sppuHT;
     
     $scope.previous = function (){
         var ent = stkArticleLotState.previous();
@@ -399,6 +434,41 @@ function($scope,genericResource,stkArticleLotUtils,stkArticleLotState,$location,
     $scope.tabSelected = function(tabName){
     	stkArticleLotState.tabSelected(tabName);
     };
+
+    $scope.EditUnitPrice = function () {
+          var modalInstance = $modal.open({
+             templateUrl: 'views/StkArticleLot/UpdateModal.html',
+             controller: EditUnitPriceController,
+             windowClass: 'unit-price-modal',
+             scope: $scope,
+             resolve: {
+                 unitPrice: function () {
+                     return $scope.unitPrice;
+                 }
+             }
+         });
+     };
+
+     function EditUnitPriceController($scope, $modalInstance, unitPrice) {
+    	 $scope.unitPrice = unitPrice;
+    	 
+    	 
+         $scope.updateStkArtLot = function () {
+        	 $scope.stkArticleLot.sppuHT = $scope.unitPrice;
+             genericResource.update(stkArticleLotUtils.urlBase, $scope.stkArticleLot)
+                 .success(function (stkArticleLot) {
+                	 $scope.stkArticleLot = stkArticleLot;
+                	 $scope.cancel();
+                 })
+                 .error(function(data, status){
+                     $scope.error= status + " " + data;
+                 }); 
+         };
+
+         $scope.cancel = function () {
+             $modalInstance.dismiss('cancel');
+         };
+     }
 
 }])
 .factory('stkSubSectionsState',['stkArticleLotState',function(stkArticleLotState){

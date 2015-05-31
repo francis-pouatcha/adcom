@@ -11,7 +11,8 @@ angular.module('AdStock', [
       'NavBar',
        'ngResource',
        'datePicker',
-       'ADUtils'
+       'ADUtils',
+        'AdCatal'
 ])
 .constant('APP_CONFIG',{
 	'appName':'Stock',

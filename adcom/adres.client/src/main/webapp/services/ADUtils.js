@@ -291,6 +291,10 @@ angular.module('ADUtils',[])
             return $http.post(urlBase, entitySearchInput,{responseType: 'arraybuffer'});
         };
 
+        service.builfReportGet = function(urlBase, id){
+            return $http.get(urlBase+"/"+id,{responseType: 'arraybuffer'});
+        };
+
     service.findByLikePromissed = function (urlBase, fieldName, fieldValue){
     	if(angular.isUndefined(urlBase) || !urlBase ||
     		angular.isUndefined(fieldName) || !fieldName || 

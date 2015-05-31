@@ -51,8 +51,8 @@
     "Entity_Result.title":"Résultat",
     "Entity_By.title":"Par",
     "Entity_Of.title":"Du",
-    "Entity_From.title":"From",
-    "Entity_To.title":"To",
+    "Entity_From.title":"Du",
+    "Entity_To.title":"Au",
     "Entity_required.title":"Requis",
     "Entity_list.title":"Liste",
     "Entity_type_to_select.title":"Saisir pour sélectioner",
@@ -82,9 +82,5 @@
 	"workspace_loginName":"Nom de Connexion",
 	"workspace_ouWsIdentif":"Espace de Travaille",
 	"workspace_admin":"ADMINISTRATION",
-	"workspace_logOut":"Deconnexion",
-    "Entity_From.title":"From",
-    "Entity_To.title":"To"
-    
-    
+	"workspace_logOut":"Deconnexion"
 }

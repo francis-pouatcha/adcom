@@ -8,7 +8,7 @@
         </div>
         <div class=panel-body"">
             <div>
-                <form name="cdrDsArtItemSearchForm" id="cdrDsArtItemSearchForm" novalidate>
+                <form role="form" name="cdrDsArtItemSearchForm" id="cdrDsArtItemSearchForm" novalidate>
                     <div class="row">
                         <div class="form-group col-lg-2">
                             <label class=" control-label" for="searchArtPic">{{cdrDrctSalesUtils.translations['CdrDsArtItem_artPic_description.title']}}</label>
@@ -53,10 +53,16 @@
                             <input disabled value="{{cdrDsArtItemHolder.maxStockQty}}" type="text" ng- class="form-control" name="maxStockQty" id="maxStockQty" autocomplete="off">
                         </div>
                         <div class="form-group col-lg-1">
-                            <button ng-click="addItem()" ng-disabled="cdrDsArtItemSearchForm.$invalid" class="btn btn-default " style="margin-top: 23px;">
+                            <button ng-click="addItem()" ng-enter="addItem()" ng-disabled="cdrDsArtItemSearchForm.$invalid" class="btn btn-default " style="margin-top: 23px;">
                                 <i class="glyphicon glyphicon-check"></i>
                             </button>
                         </div>
+                        <div class="form-group col-lg-2">
+                            <button  ng-click="fetchCatalArticles()" class="btn btn-default " style="margin-top: 23px;" >
+                                <i class="glyphicon glyphicon-search"></i> {{cdrDrctSalesUtils.translations['Entity_search.title']}} Articles
+                            </button>
+                        </div>
+
 
                     </div>
                 </form>
@@ -70,8 +76,14 @@
                 <div class="row">
                     <span class="col-lg-3" style="font-size:17px;">{{cdrDrctSalesUtils.translations['CdrDrctSales_netSPPreTax_description.title']}}: </span>
                     <span class="col-lg-2" price-style="price-style">{{cdrDsArtHolder.cdrDrctSales.netSPPreTax | currencyAccounting:cur}}</span>
-                    <span class="col-lg-2"><input price-black="price-black" placeholder="{{cdrDrctSalesUtils.translations['CdrDrctSales_pymtDscntPct_description.title']}}" ng-change="pymtDscntPctChanged()" type="text" ng-model="cdrDsArtHolder.cdrDrctSales.pymtDscntPct" class="form-control"  /></span>
-                    <span class="col-lg-2"><input type="text" price-green="price-green" placeholder="{{cdrDrctSalesUtils.translations['CdrDrctSales_paidAmt_description.title']}}" class="form-control" ng-model="cdrDsArtHolder.paidAmt" ng-change="paidAmtChanged()"  /></span>
+                    <span class="col-lg-2">
+                    	<label>{{cdrDrctSalesUtils.translations['CdrDrctSales_pymtDscntPct_description.title']}} :</label>
+                    	<input price-black="price-black" ng-change="pymtDscntPctChanged()" type="text" ng-model="cdrDsArtHolder.cdrDrctSales.pymtDscntPct" class="form-control"  />
+                    </span>
+                    <span class="col-lg-2 form">
+                    	<label>{{cdrDrctSalesUtils.translations['CdrDrctSales_paidAmt_description.title']}} : </label>
+                    	<input type="text" price-green="price-green" class="form-control" ng-model="cdrDsArtHolder.paidAmt" ng-change="paidAmtChanged()"  />
+                    </span>
                     <div class="col-lg-3 btn-group">
                         <button ng-click="save()" ng-show="!showprint" class="btn btn-primary"><i class="glyphicon glyphicon-save" ></i> {{'Entity_save.title'|translate}}</button>
                         <!--<button ng-click=""  style="margin-top: 23px;" class="btn">{{commonTranslations.translations['Entity_save.title']}}</button>
@@ -88,8 +100,14 @@
                 <div class="row">
                     <span class="col-lg-3" style="font-size:17px;">{{cdrDrctSalesUtils.translations['CdrDrctSales_netSPTaxIncl_description.title']}}: </span>
                     <span class="col-lg-2" price-style="price-style">{{cdrDsArtHolder.cdrDrctSales.netSPTaxIncl | currencyAccounting:cur}}</span>
-                    <span class="col-lg-2"><input type="text" price-black="price-black" placeholder="{{cdrDrctSalesUtils.translations['CdrDrctSales_pymtDscntAmt_description.title']}}" ng-change="pymtDscntAmtChanged()" class="form-control" ng-model="cdrDsArtHolder.cdrDrctSales.pymtDscntAmt"  /></span>
-                    <span class="col-lg-2"><input type="text" price-red="price-red" placeholder="{{cdrDrctSalesUtils.translations['CdrDrctSales_changeAmt_description.title']}}" class="form-control" ng-model="cdrDsArtHolder.changeAmt" disabled /></span>
+                    <span class="col-lg-2">
+                    	<label>{{cdrDrctSalesUtils.translations['CdrDrctSales_pymtDscntAmt_description.title']}} :</label>
+                    	<input type="text" price-black="price-black" ng-change="pymtDscntAmtChanged()" class="form-control" ng-model="cdrDsArtHolder.cdrDrctSales.pymtDscntAmt"  />
+                    </span>
+                    <span class="col-lg-2">
+                    	<label>{{cdrDrctSalesUtils.translations['CdrDrctSales_changeAmt_description.title']}} :</label>
+                    	<input type="text" price-red="price-red" class="form-control" ng-model="cdrDsArtHolder.changeAmt" disabled />
+                    </span>
                     <span class="col-lg-2">
                         <a class="btn-default btn btn-large" ng-show="showprint" ng-click="printRequest()"><i class="glyphicon glyphicon-print" ></i>  {{'Entity_print.title' | translate}}</a>
                     </span>
@@ -148,6 +166,7 @@
                         <td>{{cdrDsArtItem.item.netSPTaxIncl}}</td>
                         <td>{{cdrDsArtItem.item.sppuCur}}</td>
                         <td><button class="" ng-show="!showprint" ng-click="editItem($index)"><i class="glyphicon glyphicon-edit"></i></button></td>
+                        <td><button class="" ng-show="!showprint" ng-click="deleteItem($index)"><i class="glyphicon glyphicon-trash"></i></button></td>
                     </tr>
                 </tbody>
             </table>

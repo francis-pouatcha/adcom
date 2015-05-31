@@ -125,6 +125,16 @@ public class BpBnsPtnrEJB
    {
       return detach(repository.findAll(start, max));
    }
+   
+   public List<BpBnsPtnr> findByPtnrNbr(String ptnrNbr){
+	   return detach(repository.findByPtnrNbr(ptnrNbr).getResultList());
+   }
+   
+   public List<BpBnsPtnr> findByFullName(String fullName){
+	   return detach(repository.findByFullName(fullName).getResultList());
+   }
+   
+   
 
    public Long count()
    {

@@ -160,7 +160,6 @@ Module.directive('datePicker', ['datePickerConfig', function datePickerDirective
       before: '=?'
     },
     link: function (scope, element, attrs) {
-
       scope.date = new Date(scope.model || new Date());
       scope.views = datePickerConfig.views.concat();
       scope.view = attrs.view || datePickerConfig.view;
@@ -498,6 +497,7 @@ Module.directive('dateTime', ['$compile', '$document', '$filter', 'dateTimeConfi
           evt.preventDefault();
         });
       }
+      
 
       element.bind('focus', showPicker);
       element.bind('blur', clear);

@@ -9,8 +9,10 @@ import javax.persistence.Enumerated;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
+import org.adorsys.adcatal.jpa.CatalArtFeatMapping;
 import org.adorsys.adcore.jpa.AbstractMvmtData;
 import org.adorsys.javaext.description.Description;
 
@@ -29,6 +31,8 @@ public abstract class StkAbstractStkMvnt extends AbstractMvmtData {
 	@Description("StkMvnt_artPic_description")
 	@NotNull
 	private String artPic;
+	
+	
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Description("StkMvnt_mvntDt_description")
@@ -80,6 +84,23 @@ public abstract class StkAbstractStkMvnt extends AbstractMvmtData {
 	@Column
 	@Description("StkMvnt_origDocNbrs_description")
 	private String origDocNbrs;
+	
+	
+	/*
+	 * The name of this article in the language of the user.
+	 */
+	@Transient
+	private CatalArtFeatMapping artFeatures;
+	
+	
+	
+	public CatalArtFeatMapping getArtFeatures() {
+		return artFeatures;
+	}
+	
+	public void setArtFeatures(CatalArtFeatMapping artFeatures) {
+		this.artFeatures = artFeatures;
+	}
 
 	public String getLotPic() {
 		return this.lotPic;

@@ -86,6 +86,6 @@ public class CdrDsPymntItemEJB
    }
 
 	public List<CdrDsPymntItem> findByDsNbr(String saleNbr) {
-		return repository.findByDsNbr(saleNbr);	
+		return repository.findByDsNbr(saleNbr).getResultList();	
 	}
 }

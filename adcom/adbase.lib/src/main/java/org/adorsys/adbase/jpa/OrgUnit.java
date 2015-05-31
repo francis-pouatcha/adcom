@@ -3,6 +3,7 @@ package org.adorsys.adbase.jpa;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.adorsys.adcore.jpa.AbstractTimedData;
@@ -39,6 +40,10 @@ public class OrgUnit extends AbstractTimedData {
 	@Description("OrgUnit_shortName_description")
 	@NotNull
 	private String shortName;
+	
+	// Data for printing
+	@Transient
+	private OrgContact contact;
 
 	public String getCtryIso3() {
 		return this.ctryIso3;
@@ -78,6 +83,14 @@ public class OrgUnit extends AbstractTimedData {
 
 	public void setParentIdentif(String parentIdentif) {
 		this.parentIdentif = parentIdentif;
+	}
+
+	public OrgContact getContact() {
+		return contact;
+	}
+
+	public void setContact(OrgContact contact) {
+		this.contact = contact;
 	}
 
 	@Override

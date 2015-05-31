@@ -12,6 +12,11 @@ angular.module('AdSales')
         return adUtils.formatDate(fieldName, inPattern);
     }
     
+    service.actualDate = function(inPattern){
+        var currentDate = new Date();
+        return adUtils.formatDate(currentDate, inPattern);
+    }
+    
     service.slsInvceStatusI18nMsgTitleKey = function(enumKey){
     	return "SlsInvceStatus_"+enumKey+"_description.title";
     };
@@ -42,6 +47,11 @@ angular.module('AdSales')
                     'SlsInvoice_invceDt_description.title',
                     'SlsInvoice_invceNbr_description.text',
                     'SlsInvoice_invceNbr_description.title',
+                    'SlsInvoice_invcePaid_description.text',
+                    'SlsInvoice_invcePaid_description.title',
+                    'SlsInvoice_invceDelivered_description.text',
+                    'SlsInvoice_invceDelivered_description.title',
+                    'SlsInvoice_delivered_description.text',
                     'SlsInvoice_invceStatus_description.text',
                     'SlsInvoice_invceStatus_description.title',
                     'SlsInvoice_invceType_description.text',
@@ -212,6 +222,14 @@ function($scope,genericResource,slsInvoicesUtils,slsInvoicesState,$location,$roo
             $scope.searchInput.entity.invceNbr= $scope.searchInput.entity.invceNbr;
         	fieldNames.push('invceNbr');
         }
+        if($scope.searchInput.entity.invcePaid === true ){
+            $scope.searchInput.entity.invcePaid = $scope.searchInput.entity.invcePaid;
+            fieldNames.push('invcePaid');
+        }
+        if($scope.searchInput.entity.invceDelivered === true){
+            $scope.searchInput.entity.invceDelivered= $scope.searchInput.entity.invceDelivered;
+            fieldNames.push('invceDelivered');
+        }
         if($scope.searchInput.invceDtFrom) $scope.searchInput.invceDtFrom= $scope.searchInput.invceDtFrom;
         if($scope.searchInput.invceDtTo) $scope.searchInput.invceDtTo= $scope.searchInput.invceDtTo;
         if($scope.searchInput.ptnr){
@@ -291,16 +309,52 @@ function($scope,genericResource,slsInvoicesUtils,slsInvoicesState,$location,$roo
     $scope.maxSize =slsInvoicesState.resultHandler.maxResult;
     $scope.error = "";
     $scope.slsInvoicesUtils=slsInvoicesUtils;
+    $scope.handlePrintPreviewInvoice=handlePrintPreviewInvoice;
+    $scope.printPdf=printPdf;
                                      
     $scope.pageChangeHandler = function(num) {
       //Simple Pagination
     };
+    
+                                     
+    function handlePrintPreviewInvoice(slsInvce){
+		if(slsInvoicesState.resultHandler.selectedObject(slsInvce) != -1){
+			$location.path('/SlsInvoices/print/preview/');
+		}
+	}
+                                     
+     function printPdf(el){                      
+           var DocumentContainer = document.getElementById(el);
+            var html = '<html><head>'+
+                       '<link rel="stylesheet" type="text/css" href="styles/print/custom.css">'+
+                       '<link rel="stylesheet" type="text/css" href="styles/print/bootstrap.min.css">'+
+                       '</head><body style="background:#ffffff; font-size: 10px;">'+
+                        DocumentContainer.innerHTML+
+                       '<iframe name="print_frame" width="0" height="0" frameborder="0" title="Adcom" src="Adcom"> </iframe>'+
+                       '</body></html>';
+            var WindowObject = window.open("", "PrintWindow",
+                    "width=750,height=650,top=200,left=10,toolbars=no,scrollbars=yes,status=no,resizable=yes");
+            WindowObject.document.writeln(html);
+            WindowObject.document.close();
+            WindowObject.focus();
+            WindowObject.print();
+            WindowObject.close();
+        }
     
     $scope.previous = function (){
         var bp = slsInvoicesState.resultHandler.previous();
         if(bp){
             $scope.bpBnsPtnr=bp;
             slsInvoicesState.tabSelected();
+        }
+    }
+    
+    $scope.checkInvcePartners = function(invcePtnrs){
+        if(invcePtnrs && invcePtnrs.length>0){
+            return true;
+        }
+        else{
+            return false;
         }
     }
 
@@ -318,4 +372,20 @@ function($scope,genericResource,slsInvoicesUtils,slsInvoicesState,$location,$roo
         $location.path('/SlsInvoices/edit/');
     };
 
+     $scope.delivered = function(){
+         if($scope.slsInvoice.invceDelivered === false) {
+             $scope.slsInvoice.invceDelivered = true;
+             $scope.update();
+         }
+     };
+
+    $scope.update = function(){
+        genericResource.update(slsInvoicesUtils.urlBase, $scope.slsInvoice)
+            .success(function(slsInvoice){
+                $scope.slsInvoice = slsInvoice;
+            })
+            .error(function(error){
+                $scope.error = error;
+            });
+    };
 }]);

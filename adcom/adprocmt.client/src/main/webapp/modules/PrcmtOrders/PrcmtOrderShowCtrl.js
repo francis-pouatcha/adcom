@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('AdProcmt').controller('prcmtOrderShowCtlr',['$scope','ProcmtUtils','PrcmtOrderState','PrcmtDeliveryState','genericResource','$routeParams','$location','$q',function($scope,ProcmtUtils,PrcmtOrderState,PrcmtDeliveryState,genericResource,$routeParams,$location,$q){
+angular.module('AdProcmt').controller('prcmtOrderShowCtlr',['$scope','ProcmtUtils','PrcmtOrderState','PrcmtDeliveryState','genericResource','$routeParams','$location','$q','fileExtractor',function($scope,ProcmtUtils,PrcmtOrderState,PrcmtDeliveryState,genericResource,$routeParams,$location,$q,fileExtractor){
     var self = this ;
     $scope.prcmtOrderShowCtlr = self;
     self.prcmtOrderHolder = {
@@ -30,6 +30,8 @@ angular.module('AdProcmt').controller('prcmtOrderShowCtlr',['$scope','ProcmtUtil
     self.loadBusinessPartner = loadBusinessPartner;
     self.poItemsDeleted = [];
     self.transform = transform;
+    self.handlePrintRequestEvent =handlePrintRequestEvent;
+    self.running ="";
 
     load();
 
@@ -183,23 +185,118 @@ angular.module('AdProcmt').controller('prcmtOrderShowCtlr',['$scope','ProcmtUtil
         self.prcmtOrderItemHolder.prcmtPOItem.stkQtyPreOrder =item.stockQty;
     }
 
-    function save(){
+    /*function save(){
         for(var i=0;i<self.poItemsDeleted.length;i++){
             self.prcmtOrderHolder.poItems.push(self.poItemsDeleted[i])
         }
-        genericResource.customMethod(ProcmtUtils.urlManageOrder+'/update',self.prcmtOrderHolder).success(function(data){
-            self.prcmtOrderHolder = data;
-        });
 
+        var start=0;
+        var max=5;
+        var prcmtOrderHolderTmp={
+            prcmtProcOrder:{},
+            poItems:[]
+        };
+        while(start<self.prcmtOrderHolder.poItems.length){
+            var data = {
+                prcmtProcOrder:{},
+                poItems:[]
+            };
+            data.prcmtProcOrder = self.prcmtOrderHolder.prcmtProcOrder;
+            for(var i=start;i<start+max;i++){
+                if(self.prcmtOrderHolder.poItems[i])
+                    data.poItems.push(self.prcmtOrderHolder.poItems[i]);
+            }
+            start +=max;
+            savePrcmtPromise(data).then(function(result){
+                prcmtOrderHolderTmp.prcmtProcOrder = result.prcmtProcOrder;
+                self.prcmtOrderHolder.prcmtProcOrder = result.prcmtProcOrder;//if not javax.persistence.OptimisticLockException, new version always
+                for(var i=0;i<result.poItems.length;i++){
+                    prcmtOrderHolderTmp.poItems.push(result.poItems[i]);
+                }
+            })
+        }
+        self.prcmtOrderHolder = prcmtOrderHolderTmp;
+    }*/
+
+    function save(){
+        self.running ="Veuillez patientez, l'enregistrement se poursuit ...";
+        for(var i=0;i<self.poItemsDeleted.length;i++){
+            self.prcmtOrderHolder.poItems.push(self.poItemsDeleted[i])
+        }
+
+        var start=0;
+        var max=5;
+        var requests = [];
+        while(start<self.prcmtOrderHolder.poItems.length){
+            var data = {
+                prcmtProcOrder:{},
+                poItems:[]
+            };
+            data.prcmtProcOrder = self.prcmtOrderHolder.prcmtProcOrder;
+            for(var i=start;i<start+max;i++){
+                if(self.prcmtOrderHolder.poItems[i])
+                    data.poItems.push(self.prcmtOrderHolder.poItems[i]);
+            }
+            start +=max;
+            var request = genericResource.customMethod(ProcmtUtils.urlManageOrder+'/update',data);
+            requests.push(request);
+        }
+        $q.all(requests).then(function(result) {
+            var prcmtOrderHolderTmp={
+                prcmtProcOrder:{},
+                poItems:[]
+            };
+            angular.forEach(result, function(response) {
+                prcmtOrderHolderTmp.prcmtProcOrder = response.data.prcmtProcOrder;
+                for(var i=0;i<response.data.poItems.length;i++){
+                       prcmtOrderHolderTmp.poItems.push(response.data.poItems[i]);
+                }
+            });
+            return prcmtOrderHolderTmp;
+        }).then(function(tmpResult) {
+            self.running ="";
+            self.prcmtOrderHolder = tmpResult;
+        });
     }
 
     function close () {
+        self.running ="Veuillez patientez, l'enregistrement se poursuit ...";
         for(var i=0;i<self.poItemsDeleted.length;i++){
             self.prcmtOrderHolder.poItems.push(self.poItemsDeleted[i])
         }
-        genericResource.customMethod(ProcmtUtils.urlManageOrder+'/close',self.prcmtOrderHolder).success(function(data){
-            self.prcmtOrderHolder = data;
+        var start=0;
+        var max=5;
+        var requests = [];
+        while(start<self.prcmtOrderHolder.poItems.length){
+            var data = {
+                prcmtProcOrder:{},
+                poItems:[]
+            };
+            data.prcmtProcOrder = self.prcmtOrderHolder.prcmtProcOrder;
+            for(var i=start;i<start+max;i++){
+                if(self.prcmtOrderHolder.poItems[i])
+                    data.poItems.push(self.prcmtOrderHolder.poItems[i]);
+            }
+            start +=max;
+            var request = genericResource.customMethod(ProcmtUtils.urlManageOrder+'/close',data);
+            requests.push(request);
+        }
+        $q.all(requests).then(function(result) {
+            var prcmtOrderHolderTmp={
+                prcmtProcOrder:{},
+                poItems:[]
+            };
+            angular.forEach(result, function(response) {
+                prcmtOrderHolderTmp.prcmtProcOrder = response.data.prcmtProcOrder;
+                for(var i=0;i<response.data.poItems.length;i++){
+                    prcmtOrderHolderTmp.poItems.push(response.data.poItems[i]);
+                }
+            });
+            return prcmtOrderHolderTmp;
+        }).then(function(tmpResult) {
+            self.prcmtOrderHolder = tmpResult;
             self.closeStatus = false;
+            self.running ="";
         });
     }
 
@@ -211,7 +308,17 @@ angular.module('AdProcmt').controller('prcmtOrderShowCtlr',['$scope','ProcmtUtil
     }
 
     function addItem(){
-        self.prcmtOrderHolder.poItems.unshift(self.prcmtOrderItemHolder);
+        var found = false;
+        for(var i=0;i<self.prcmtOrderHolder.poItems.length;i++){
+            if(self.prcmtOrderHolder.poItems[i].prcmtPOItem.artPic==self.prcmtOrderItemHolder.prcmtPOItem.artPic){
+                self.prcmtOrderHolder.poItems[i].prcmtPOItem.qtyOrdered = parseInt(self.prcmtOrderHolder.poItems[i].prcmtPOItem.qtyOrdered) + parseInt(self.prcmtOrderItemHolder.prcmtPOItem.qtyOrdered);
+                found = true;
+                break;
+            }
+        }
+        if(!found){
+            self.prcmtOrderHolder.poItems.unshift(self.prcmtOrderItemHolder);
+        }
         self.prcmtOrderItemHolder = {};
         $('#artName').focus();
     }
@@ -235,6 +342,14 @@ angular.module('AdProcmt').controller('prcmtOrderShowCtlr',['$scope','ProcmtUtil
 
     function showLess(){
         self.show = false;
+    }
+
+    function handlePrintRequestEvent() {
+        genericResource.builfReportGet(ProcmtUtils.urlpoitems+'/orderreport.pdf',self.prcmtOrderHolder.prcmtProcOrder.poNbr).success(function(data){
+            fileExtractor.extractFile(data,"application/pdf");
+        }).error(function (error) {
+            $scope.error = error;
+        });
     }
 
 }]);

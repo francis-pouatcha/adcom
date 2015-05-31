@@ -68,6 +68,15 @@ public class SlsInvoiceEndpoint
    {
       return detach(ejb.update(entity));
    }
+   
+   @PUT
+   @Path("/livre/{id}")
+   @Produces({ "application/json", "application/xml" })
+   @Consumes({ "application/json", "application/xml" })
+   public SlsInvoice saleDelivery(SlsInvoice entity)
+   {
+      return ejb.saleDelivery(entity);
+   }
 
    @GET
    @Path("/{id}")
@@ -149,7 +158,8 @@ public class SlsInvoiceEndpoint
       }
       Long count = ejb.countCustom(searchInput);
  	 List<SlsInvoice> resultList = ejb.findCustom(searchInput);
- 	 return new SlsInvoiceSearchResult(count, detach(resultList), detach(searchInput));
+ 	List<SlsInvoice> resultList2 = holderEJB.reloadSlsInvoices(resultList);
+ 	 return new SlsInvoiceSearchResult(count, detach(resultList2), detach(searchInput));
      
    }
 
