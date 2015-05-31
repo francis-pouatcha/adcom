@@ -4,9 +4,13 @@
     <description>Forge Persistence Unit</description>
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
     <jta-data-source>java:jboss/datasources/ADDS</jta-data-source>
+
+    <jar-file>lib/adcore.lib-${project.version}.jar</jar-file>
+    <jar-file>lib/adbase.lib-${project.version}.jar</jar-file>
+
     <class>org.adorsys.adcore.jpa.AbstractEntity</class>
     <class>org.adorsys.adcore.jpa.AbstractIdentifData</class>
-    <class>org.adorsys.adcore.jpa.AbstractTimedData</class>
+
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.hbm2ddl.auto" value="create-drop"/>

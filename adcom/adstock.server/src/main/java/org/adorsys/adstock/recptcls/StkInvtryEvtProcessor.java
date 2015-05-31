@@ -11,13 +11,13 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
+import org.adorsys.adinvtry.jpa.InvInvtry;
 import org.adorsys.adinvtry.jpa.InvInvtryEvt;
-import org.adorsys.adinvtry.jpa.InvInvtryEvtData;
 import org.adorsys.adinvtry.jpa.InvInvtryEvtLease;
-import org.adorsys.adinvtry.jpa.InvInvtryItemEvtData;
-import org.adorsys.adinvtry.rest.InvInvtryEvtDataEJB;
+import org.adorsys.adinvtry.jpa.InvInvtryItem;
+import org.adorsys.adinvtry.repo.InvInvtryItemRepository;
+import org.adorsys.adinvtry.repo.InvInvtryRepository;
 import org.adorsys.adinvtry.rest.InvInvtryEvtLeaseEJB;
-import org.adorsys.adinvtry.rest.InvInvtryItemEvtDataEJB;
 import org.adorsys.adstock.jpa.StkInvtryItemHstry;
 import org.adorsys.adstock.rest.StkInvtryItemHstryEJB;
 import org.apache.commons.lang3.time.DateUtils;
@@ -33,9 +33,9 @@ import org.apache.commons.lang3.time.DateUtils;
 public class StkInvtryEvtProcessor {
 
 	@Inject
-	private InvInvtryEvtDataEJB evtDataEJB;
+	private InvInvtryRepository invInvtryRepository;
 	@Inject
-	private InvInvtryItemEvtDataEJB itemEvtDataEJB;
+	private InvInvtryItemRepository invInvtryItemRepository;
 	@Inject
 	private StkInvtryItemEvtProcessor itemEvtProcessor;
 	@Inject
@@ -78,22 +78,22 @@ public class StkInvtryEvtProcessor {
 		if(leaseId==null) return;
 				
 		String entIdentif = invtryEvt.getEntIdentif();
-		InvInvtryEvtData invtryEvtData = evtDataEJB.findById(entIdentif);
+		InvInvtry invtryEvtData = invInvtryRepository.findBy(entIdentif);
 		if(invtryEvtData==null) {
 			evtProcessorHelper.closeEvtLease(processId, leaseId, invtryEvt);
 			return;
 		}
 		
 		String invtryNbr = invtryEvtData.getInvtryNbr();
-		Long evtDataCount = itemEvtDataEJB.countByInvtryNbr(invtryNbr);
+		Long evtDataCount = invInvtryItemRepository.countByInvtryNbr(invtryNbr);
 		
 		int start = 0;
 		int max = 100;
 		List<String> itemEventDataToProcess = new ArrayList<String>();
 		while(start<=evtDataCount){
-			List<InvInvtryItemEvtData> list = itemEvtDataEJB.findByInvtryNbr(invtryNbr, start, max);
+			List<InvInvtryItem> list = invInvtryItemRepository.findByInvtryNbr(invtryNbr).firstResult(start).maxResults(max).getResultList();
 			start +=max;
-			for (InvInvtryItemEvtData itemEvtData : list) {
+			for (InvInvtryItem itemEvtData : list) {
 				StkInvtryItemHstry invtryItemEvt = invtryItemHstryEJB.findById(itemEvtData.getIdentif());
 				if(invtryItemEvt!=null) continue;// processed.
 				itemEventDataToProcess.add(itemEvtData.getId());

@@ -11,7 +11,6 @@ import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
 import org.adorsys.adinvtry.jpa.InvInvtryItem;
-import org.adorsys.adinvtry.jpa.InvInvtryItemEvtData;
 import org.adorsys.adinvtry.jpa.InvInvtryItemList;
 import org.adorsys.adinvtry.repo.InvInvtryItemRepository;
 
@@ -23,17 +22,12 @@ public class InvInvtryItemHelperEJB
 	private InvInvtryItemRepository repository;
 
 	@Inject
-	private InvInvtryItemEvtDataEJB itemEvtDataEJB;
-
-	@Inject
 	@InvInconsistentInvtryEvent
 	private Event<String> inconsistentInvtryEvent;
 
 	private InvInvtryItem internalUpdate(InvInvtryItem invtryItem){
 		invtryItem = repository.save(attach(invtryItem));
-		InvInvtryItemEvtData itemEvtData = itemEvtDataEJB.findById(invtryItem.getId());
-		invtryItem.copyTo(itemEvtData);
-		itemEvtDataEJB.update(itemEvtData);
+
 		return invtryItem;
 	}
 
@@ -65,7 +59,6 @@ public class InvInvtryItemHelperEJB
 		if (entity != null)
 		{
 			repository.remove(entity);
-			itemEvtDataEJB.deleteById(id);
 		}
 		return entity;
 	}

@@ -8,13 +8,13 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import org.adorsys.adcore.utils.BigDecimalUtils;
+import org.adorsys.adprocmt.jpa.PrcmtDelivery;
 import org.adorsys.adprocmt.jpa.PrcmtDeliveryEvt;
-import org.adorsys.adprocmt.jpa.PrcmtDeliveryEvtData;
-import org.adorsys.adprocmt.jpa.PrcmtDlvryItem2OuEvtData;
-import org.adorsys.adprocmt.jpa.PrcmtDlvryItem2StrgSctnEvtData;
-import org.adorsys.adprocmt.jpa.PrcmtDlvryItemEvtData;
-import org.adorsys.adprocmt.rest.PrcmtDeliveryEvtDataEJB;
-import org.adorsys.adprocmt.rest.PrcmtDlvryItemEvtDataEJB;
+import org.adorsys.adprocmt.jpa.PrcmtDlvryItem;
+import org.adorsys.adprocmt.jpa.PrcmtDlvryItem2Ou;
+import org.adorsys.adprocmt.jpa.PrcmtDlvryItem2StrgSctn;
+import org.adorsys.adprocmt.rest.PrcmtDeliveryEJB;
+import org.adorsys.adprocmt.rest.PrcmtDlvryItemEJB;
 import org.adorsys.adstock.jpa.StkAbstractArticleLot;
 import org.adorsys.adstock.jpa.StkArticleLot;
 import org.adorsys.adstock.jpa.StkArticleLot2Ou;
@@ -39,9 +39,9 @@ import org.adorsys.adstock.rest.StkSectionEJB;
 @Stateless
 public class StkDeliveryItemEvtProcessor {
 	@Inject
-	private PrcmtDeliveryEvtDataEJB evtDataEJB;
+	private PrcmtDeliveryEJB evtDataEJB;
 	@Inject
-	private PrcmtDlvryItemEvtDataEJB itemEvtDataEJB;
+	private PrcmtDlvryItemEJB itemEvtDataEJB;
 	@Inject
 	private StkDlvryItemHstryEJB dlvryItemHstryEJB;
 	@Inject
@@ -56,10 +56,10 @@ public class StkDeliveryItemEvtProcessor {
 	private StkSectionEJB sectionEJB;
 
 	public void process(String itemEvtDataId, PrcmtDeliveryEvt deliveryEvt) {
-		PrcmtDlvryItemEvtData itemEvtData = itemEvtDataEJB.findById(itemEvtDataId);
+		PrcmtDlvryItem itemEvtData = itemEvtDataEJB.findById(itemEvtDataId);
 		if(itemEvtData==null) return;
 		
-		PrcmtDeliveryEvtData deliveryEvtData = evtDataEJB.findById(itemEvtData.getDlvryNbr());
+		PrcmtDelivery deliveryEvtData = evtDataEJB.findById(itemEvtData.getDlvryNbr());
 		if(deliveryEvtData==null) return;
 
 		StkDlvryItemHstry hstry = dlvryItemHstryEJB.findById(itemEvtData.getDlvryItemNbr());
@@ -106,8 +106,8 @@ public class StkDeliveryItemEvtProcessor {
 			stkArticleLot = articleLotEJB.update(stkArticleLot);
 		}
 				
-		List<PrcmtDlvryItem2OuEvtData> ouEvtDataList = itemEvtDataEJB.listDlvryItem2OuEvtData(itemEvtData.getDlvryItemNbr());
-		for (PrcmtDlvryItem2OuEvtData evtData : ouEvtDataList) {
+		List<PrcmtDlvryItem2Ou> ouEvtDataList = itemEvtDataEJB.listDlvryItem2Ou(itemEvtData.getDlvryItemNbr());
+		for (PrcmtDlvryItem2Ou evtData : ouEvtDataList) {
 			StkArticleLot2Ou ou = new StkArticleLot2Ou();
 			ou.setArtPic(stkArticleLot.getArtPic());
 			ou.setLotPic(stkArticleLot.getLotPic());
@@ -116,9 +116,9 @@ public class StkDeliveryItemEvtProcessor {
 			articleLot2OuEJB.create(ou);
 		}
 		
-		List<PrcmtDlvryItem2StrgSctnEvtData> strgSctnEvtDataList = itemEvtDataEJB.listDlvryItem2StrgSctnEvtData(itemEvtData.getDlvryItemNbr());
+		List<PrcmtDlvryItem2StrgSctn> strgSctnEvtDataList = itemEvtDataEJB.listDlvryItem2StrgSctn(itemEvtData.getDlvryItemNbr());
 		BigDecimal stored = BigDecimal.ZERO;
-		for (PrcmtDlvryItem2StrgSctnEvtData strgSctnEvtData : strgSctnEvtDataList) {
+		for (PrcmtDlvryItem2StrgSctn strgSctnEvtData : strgSctnEvtDataList) {
 			StkArticleLot2StrgSctn strgSctn = new StkArticleLot2StrgSctn();
 			strgSctn.setArtPic(stkArticleLot.getArtPic());
 			strgSctn.setLotPic(stkArticleLot.getLotPic());

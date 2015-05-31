@@ -1,6 +1,23 @@
 #This script is used to make a full projet deployemnt.
 #Please set the $ADCOM_HOME environment variable in your profile.
 #as follow
+
+# Check JBOSS_HOME
+if [ "x$JBOSS_HOME" = "x" ]; then
+
+   echo ""
+   echo "   WARNING:  JBOSS_HOME is not defined. set the env property JBOSS_HOME before calling this script."
+   echo ""
+   sleep 2s
+	
+	exit
+else 
+
+   echo ""
+   echo "             JBOSS_HOME: $JBOSS_HOME"
+	
+fi
+
 #export $ADCOM_HOME=/path/to/your/adcom
 # Setup ADCOM_HOME
 RESOLVED_ADCOM_HOME=`cd "."; pwd`
