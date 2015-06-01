@@ -23,6 +23,10 @@ angular.module('Admanager', [
     $routeProvider
     .when('/',{templateUrl:'views/CshDrawers.html',controller:'CshDrawerCtrls'})
     .when('/cdrCstmrVchr',{templateUrl:'views/CdrCstmrVchrs.html',controller:'CdrCstmrVchrCtrls'})
+    .when('/loginRebate',{templateUrl:'views/LoginRebate/LoginRebates.html',controller:'LoginRebateCtrls'})
+    .when('/loginRebate/create',{templateUrl:'views/LoginRebate/create.html',controller:'LoginRebateCreateCtrls'})
+    .when('/loginRebate/show/:identif',{templateUrl:'views/LoginRebate/show.html',controller:'LoginRebateShowCtrls'})
+    .when('/loginRebate/update/:identif',{templateUrl:'views/LoginRebate/update.html',controller:'LoginRebateUpdateCtrls'})
     .otherwise({redirectTo: '/'});
     
     $httpProvider.defaults.withCredentials = true;

@@ -21,12 +21,10 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.adorsys.adbase.jpa.LocalitySearchInput;
-import org.adorsys.adbase.jpa.LocalitySearchResult;
 import org.adorsys.adbase.jpa.PricingCurrRate;
+import org.adorsys.adbase.jpa.PricingCurrRate_;
 import org.adorsys.adbase.jpa.PricingCurrRateSearchInput;
 import org.adorsys.adbase.jpa.PricingCurrRateSearchResult;
-import org.adorsys.adbase.jpa.PricingCurrRate_;
 
 /**
  * 

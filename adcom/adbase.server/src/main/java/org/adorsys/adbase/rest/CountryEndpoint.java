@@ -24,9 +24,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.adorsys.adbase.jpa.Country;
+import org.adorsys.adbase.jpa.Country_;
 import org.adorsys.adbase.jpa.CountrySearchInput;
 import org.adorsys.adbase.jpa.CountrySearchResult;
-import org.adorsys.adbase.jpa.Country_;
 
 /**
  * 

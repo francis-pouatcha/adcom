@@ -1,6 +1,6 @@
 package org.adorsys.adbase.rest;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.Field; 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,9 +26,9 @@ import org.adorsys.adbase.dto.OrgUnitDto;
 import org.adorsys.adbase.dto.OrgUnitDtoService;
 import org.adorsys.adbase.exception.NotFoundOrNotActifEntityException;
 import org.adorsys.adbase.jpa.OrgUnit;
+import org.adorsys.adbase.jpa.OrgUnit_;
 import org.adorsys.adbase.jpa.OrgUnitSearchInput;
 import org.adorsys.adbase.jpa.OrgUnitSearchResult;
-import org.adorsys.adbase.jpa.OrgUnit_;
 import org.adorsys.adbase.security.SecurityUtil;
 
 /**

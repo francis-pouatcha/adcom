@@ -26,9 +26,9 @@ import org.adorsys.adbase.dto.OrgContactDto;
 import org.adorsys.adbase.dto.OrgContactDtoService;
 import org.adorsys.adbase.exception.NotFoundOrNotActifEntityException;
 import org.adorsys.adbase.jpa.OrgContact;
+import org.adorsys.adbase.jpa.OrgContact_;
 import org.adorsys.adbase.jpa.OrgContactSearchInput;
 import org.adorsys.adbase.jpa.OrgContactSearchResult;
-import org.adorsys.adbase.jpa.OrgContact_;
 
 /**
  * 

@@ -12,6 +12,7 @@
     <class>org.adorsys.adbase.jpa.Country</class>
     <class>org.adorsys.adbase.jpa.Locality</class>
     <class>org.adorsys.adbase.jpa.Login</class>
+    <class>org.adorsys.adbase.jpa.LoginRebate</class>
     <class>org.adorsys.adbase.jpa.OrgContact</class>
     <class>org.adorsys.adbase.jpa.OrgUnit</class>
     <class>org.adorsys.adbase.jpa.OuType</class>
