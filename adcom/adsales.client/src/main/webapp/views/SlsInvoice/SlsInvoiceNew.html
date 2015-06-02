@@ -13,11 +13,11 @@
         <a class="btn btn-primary col-lg-offset-1"
            ng-disabled="slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.invceStatus=='CLOSED'
            || slsInvoiceNewCtlr.slsInvoiceHolder.slsInvceItemsholder.length==0
-           slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.invceStatus=='SUSPENDED'" ng-click="slsInvoiceNewCtlr.saveCmd()"><i class="glyphicon glyphicon-save" ></i> Enregistrer la facture</a>
+           || slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.invceStatus=='SUSPENDED'" ng-click="slsInvoiceNewCtlr.saveCmd()"><i class="glyphicon glyphicon-save" ></i> Enregistrer la facture</a>
         <a class="btn btn-primary" ng-disabled="slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.invceStatus=='CLOSED'
         || slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.invceStatus=='SUSPENDED'
         || slsInvoiceNewCtlr.slsInvoiceHolder.slsInvceItemsholder.length==0" ng-click="slsInvoiceNewCtlr.cloturerCmd()"><i class="glyphicon glyphicon-ok" ></i> Cloturer la facture</a>
-        <a class="btn btn-default col-lg-offset-1" href="#/SlsInvoices" ><i class="glyphicon glyphicon-list" ></i> Liste</a>
+        <a class="btn btn-default" href="#/SlsInvoices" ><i class="glyphicon glyphicon-list" ></i> Liste</a>
     </div>
     <form name="invoiceItemForm" id="invoiceItemForm" novalidate >
     <div class="panel panel-default" >
