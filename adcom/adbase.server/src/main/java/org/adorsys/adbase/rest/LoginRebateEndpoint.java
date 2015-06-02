@@ -88,7 +88,7 @@ public class LoginRebateEndpoint {
 	@GET
 	@Path("previousLogin/{loginName}")
 	@Produces({ "application/json", "application/xml" })
-	public Response previousLogin(@PathParam("loginName") String loginName) {
+	public Response previousLoginRebate(@PathParam("loginName") String loginName) {
 		List<LoginRebate> found;
 		try {
 			found = ejb.findPreviousLogin(loginName);
@@ -104,7 +104,7 @@ public class LoginRebateEndpoint {
 	@GET
 	@Path("nextLogin/{loginName}")
 	@Produces({ "application/json", "application/xml" })
-	public Response nextLogin(@PathParam("loginName") String loginName) {
+	public Response nextLoginRebate(@PathParam("loginName") String loginName) {
 		List<LoginRebate> found;
 		try {
 			found = ejb.findNextLogin(loginName);

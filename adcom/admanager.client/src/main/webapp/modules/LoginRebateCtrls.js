@@ -56,6 +56,28 @@ angular.module('Admanager')
 
           };
 
+        service.nextLoginRebate = function(id){
+            var deferred = $q.defer();
+            $http.get(service.loginRebate+'/nextLogin/'+id)
+                .success(function(data){
+                    deferred.resolve(data);
+                }).error(function(data){
+                    deferred.reject("no more loginRebate !")
+                });
+            return deferred.promise;
+        };
+
+        service.previousLoginRebate = function(id){
+            var deferred = $q.defer();
+            $http.get(service.loginRebate+'/previousLogin/'+id)
+                .success(function(data){
+                    deferred.resolve(data);
+                }).error(function(data){
+                    deferred.reject("no more loginRebate !")
+                });
+            return deferred.promise;
+        };
+
         service.translate = function () {
             $translate([
                     'LoginRebate_loginName_description.title',
