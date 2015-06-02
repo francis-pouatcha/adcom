@@ -17,13 +17,10 @@ import org.adorsys.adbase.jpa.BaseBatchEvt;
 import org.adorsys.adbase.rest.BaseBatchEvtEJB;
 import org.adorsys.adinvtry.event.InvInvtryPostedEvent;
 import org.adorsys.adinvtry.jpa.InvInvtryEvt;
-import org.adorsys.adinvtry.jpa.InvInvtryEvtDataCstr;
 import org.adorsys.adinvtry.jpa.InvInvtryEvtLease;
 import org.adorsys.adinvtry.jpa.InvInvtryHstry;
-import org.adorsys.adinvtry.rest.InvInvtryEvtDataEJB;
 import org.adorsys.adinvtry.rest.InvInvtryEvtEJB;
 import org.adorsys.adinvtry.rest.InvInvtryEvtLeaseEJB;
-import org.adorsys.adinvtry.rest.InvInvtryItemEvtDataEJB;
 import org.apache.commons.lang3.time.DateUtils;
 
 @Stateless
@@ -35,12 +32,6 @@ public class InvRemoteEventGateway {
 	@Inject
 	private InvInvtryEvtEJB evtEJB;
 
-	@Inject
-	private InvInvtryEvtDataEJB evtDataEJB;
-
-	@Inject
-	private InvInvtryItemEvtDataEJB itemEvtDataEJB;
-	
 	@Inject
 	private BaseBatchEvtEJB batchEvtEJB;
 
@@ -86,29 +77,9 @@ public class InvRemoteEventGateway {
 			for (InvInvtryEvtLease lease : leases) {
 				evtLeaseEJB.deleteById(lease.getId());
 			}
-			
-			// remove event data
-			evtDataEJB.deleteById(evt.getEntIdentif());
-			
+
 			// remove evt
 			evtEJB.deleteById(evt.getId());
-		}
-	}
-
-	@Schedule(minute = "*/35", second="1/35" ,hour="*", persistent=false)
-	@AccessTimeout(unit=TimeUnit.MINUTES, value=10)
-	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-	public void cleanUp() {
-		Date now = new Date();
-		List<InvInvtryEvtDataCstr> listDeleted = evtDataEJB
-				.listDeleted(now, 20);
-		for (InvInvtryEvtDataCstr cstr : listDeleted) {
-			Long count = itemEvtDataEJB.countByInvtryNbr(cstr.getEntIdentif());
-			if (count <= 0) {
-				evtDataEJB.deleteCstr(cstr.getId());
-			} else {
-				itemEvtDataEJB.deleteByInvtryNbr(cstr.getEntIdentif(), 100);
-			}
 		}
 	}
 }

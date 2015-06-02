@@ -13,7 +13,6 @@ import javax.persistence.metamodel.SingularAttribute;
 import org.adorsys.adinvtry.jpa.InvInvtry;
 import org.adorsys.adinvtry.jpa.InvInvtryGap;
 import org.adorsys.adinvtry.jpa.InvInvtryItem;
-import org.adorsys.adinvtry.jpa.InvInvtryItemEvtData;
 import org.adorsys.adinvtry.jpa.InvInvtryItemList;
 import org.adorsys.adinvtry.repo.InvInvtryItemRepository;
 import org.apache.commons.lang3.StringUtils;
@@ -25,8 +24,6 @@ public class InvInvtryItemEJB
 	@Inject
 	private InvInvtryItemRepository repository;
 
-	@Inject
-	private InvInvtryItemEvtDataEJB itemEvtDataEJB;
 	@Inject
 	private InvInvtryItemHelperEJB itemHelperEJB;
 	@Inject
@@ -63,10 +60,7 @@ public class InvInvtryItemEJB
 		}
 
 		InvInvtryItem invtryItem = repository.save(attach(entity));
-		InvInvtryItemEvtData itemEvtData = new InvInvtryItemEvtData();
-		invtryItem.copyTo(itemEvtData);
-		itemEvtData.setIdentif(invtryItem.getIdentif());
-		itemEvtDataEJB.create(itemEvtData);
+
 		return invtryItem;
 	}
 
@@ -126,9 +120,6 @@ public class InvInvtryItemEJB
 	
 	private InvInvtryItem internalUpdate(InvInvtryItem invtryItem){
 		invtryItem = repository.save(attach(invtryItem));
-		InvInvtryItemEvtData itemEvtData = itemEvtDataEJB.findById(invtryItem.getId());
-		invtryItem.copyTo(itemEvtData);
-		itemEvtDataEJB.update(itemEvtData);
 		return invtryItem;
 	}
 

@@ -6,11 +6,11 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import org.adorsys.adcore.utils.BigDecimalUtils;
+import org.adorsys.adinvtry.jpa.InvInvtry;
 import org.adorsys.adinvtry.jpa.InvInvtryEvt;
-import org.adorsys.adinvtry.jpa.InvInvtryEvtData;
-import org.adorsys.adinvtry.jpa.InvInvtryItemEvtData;
-import org.adorsys.adinvtry.rest.InvInvtryEvtDataEJB;
-import org.adorsys.adinvtry.rest.InvInvtryItemEvtDataEJB;
+import org.adorsys.adinvtry.jpa.InvInvtryItem;
+import org.adorsys.adinvtry.repo.InvInvtryItemRepository;
+import org.adorsys.adinvtry.repo.InvInvtryRepository;
 import org.adorsys.adstock.jpa.StkAbstractArticleLot;
 import org.adorsys.adstock.jpa.StkArticleLot;
 import org.adorsys.adstock.jpa.StkArticleLot2StrgSctn;
@@ -32,10 +32,12 @@ import org.adorsys.adstock.rest.StkSectionEJB;
  */
 @Stateless
 public class StkInvtryItemEvtProcessor {
+
 	@Inject
-	private InvInvtryEvtDataEJB evtDataEJB;
+	private InvInvtryRepository invInvtryRepository;
 	@Inject
-	private InvInvtryItemEvtDataEJB itemEvtDataEJB;
+	private InvInvtryItemRepository invInvtryItemRepository;
+
 	@Inject
 	private StkLotStockQtyEJB lotStockQtyEJB;
 	@Inject
@@ -48,10 +50,10 @@ public class StkInvtryItemEvtProcessor {
 	private StkSectionEJB sectionEJB;
 
 	public void process(String itemEvtDataId, InvInvtryEvt invtryEvt) {
-		InvInvtryItemEvtData itemEvtData = itemEvtDataEJB.findById(itemEvtDataId);
+		InvInvtryItem itemEvtData = invInvtryItemRepository.findBy(itemEvtDataId);
 		if(itemEvtData==null) return;
 
-		InvInvtryEvtData invtryEvtData = evtDataEJB.findById(itemEvtData.getInvtryNbr());
+		InvInvtry invtryEvtData = invInvtryRepository.findBy(itemEvtData.getInvtryNbr());
 		if(invtryEvtData==null) return;
 
 		StkInvtryItemHstry hstry = invtryItemHstryEJB.findById(itemEvtData.getIdentif());

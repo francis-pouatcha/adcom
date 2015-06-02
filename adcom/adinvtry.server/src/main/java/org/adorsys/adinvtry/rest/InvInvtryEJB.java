@@ -13,7 +13,6 @@ import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adcore.utils.SequenceGenerator;
 import org.adorsys.adinvtry.jpa.InvInvtry;
-import org.adorsys.adinvtry.jpa.InvInvtryEvtData;
 import org.adorsys.adinvtry.jpa.InvInvtrySearchInput;
 import org.adorsys.adinvtry.jpa.InvInvtryStatus;
 import org.adorsys.adinvtry.jpa.InvInvtryType;
@@ -28,9 +27,6 @@ public class InvInvtryEJB
 	@Inject
 	private InvInvtryRepository repository;
 
-	@Inject
-	private InvInvtryEvtDataEJB invtryEvtDataEJB;
-	
 	@Inject
 	private InvInvtryItemEJB itemEJB;
 
@@ -54,11 +50,7 @@ public class InvInvtryEJB
 			entity.setInvInvtryType(InvInvtryType.FREE_INV);
 
 		InvInvtry save = repository.save(attach(entity));
-		InvInvtryEvtData invtryEvtData = new InvInvtryEvtData();
-		save.copyTo(invtryEvtData);
-		invtryEvtData.setId(save.getId());
-		invtryEvtData.setIdentif(save.getIdentif());
-		invtryEvtDataEJB.create(invtryEvtData);
+
 		return save;
 	}
 
@@ -71,10 +63,6 @@ public class InvInvtryEJB
 			// count invtryItems
 			Long itemsCount = itemEJB.countByInvtryNbr(entity.getInvtryNbr());
 			if(itemsCount>0)itemEJB.removeByInvtryNbr(entity.getInvtryNbr());
-			
-			// count evt data.
-			invtryEvtDataEJB.deleteById(id);
-			
 
 			itemsCount = itemEJB.countByInvtryNbr(entity.getInvtryNbr());
 			if(itemsCount<=0) {
@@ -89,12 +77,6 @@ public class InvInvtryEJB
 
 	public InvInvtry update(InvInvtry entity)
 	{
-		InvInvtryEvtData invtryEvtData = invtryEvtDataEJB.findByIdentif(entity.getIdentif());
-		if(invtryEvtData != null) {
-			entity.copyTo(invtryEvtData);
-			invtryEvtDataEJB.update(invtryEvtData);
-			
-		}
 		return repository.save(attach(entity));
 	}
 
