@@ -1,49 +1,49 @@
 'use strict';
 
 angular.module('Admanager')
-    .factory('LoginRebateUtils', ['sessionManager', '$translate', 'genericResource', '$q', '$http', function (sessionManager, $translate, genericResource, $q, $http) {
+    .factory('LoginConfigurationUtils', ['sessionManager', '$translate', 'genericResource', '$q', '$http', function (sessionManager, $translate, genericResource, $q, $http) {
         var service = {};
 
-        service.loginRebate = '/adbase.server/rest/loginrebates';
+        service.loginConfiguration = '/adbase.server/rest/loginconfigurations';
         service.login = '/adbase.server/rest/logins';
         service.language = sessionManager.language;
 
         service.create = function(entity){
             var deferred = $q.defer();
-            genericResource.create(service.loginRebate, entity).success(function(data){
+            genericResource.create(service.loginConfiguration, entity).success(function(data){
                 deferred.resolve(data);
             }).error(function(error){
-                deferred.reject("Can not create, be sure that the loginRebate is correct !")
+                deferred.reject("Can not create, be sure that the loginConfiguration is correct !")
             });
             return deferred.promise;
         };
         
         service.update = function(entity){
             var deferred = $q.defer();
-            genericResource.update(service.loginRebate, entity).success(function(data){
+            genericResource.update(service.loginConfiguration, entity).success(function(data){
                 deferred.resolve(data);
             }).error(function(){
-                deferred.reject("Can not update loginRebate")
+                deferred.reject("Can not update loginConfiguration")
             });
             return deferred.promise;
         };
         
-        service.loadLoginRebate = function(identif){
+        service.loadLoginConfiguration = function(identif){
             var deferred = $q.defer();
-             genericResource.findById(service.loginRebate, identif).success(function(data){
+             genericResource.findById(service.loginConfiguration, identif).success(function(data){
                  deferred.resolve(data);
              }).error(function(){
-                 deferred.reject("Can not load loginRebate")
+                 deferred.reject("Can not load loginConfiguration")
              });
              return deferred.promise;
          };
          
-         service.loadLoginRebates = function(searchInput){
+         service.loadLoginConfigurations = function(searchInput){
              var deferred = $q.defer();
-              genericResource.findByLike(service.loginRebate, searchInput).success(function(data){
+              genericResource.findByLike(service.loginConfiguration, searchInput).success(function(data){
                   deferred.resolve(data);
               }).error(function(){
-                  deferred.reject("Can not load loginRebates")
+                  deferred.reject("Can not load loginConfigurations")
               });
               return deferred.promise;
           };
@@ -56,34 +56,34 @@ angular.module('Admanager')
 
           };
 
-        service.nextLoginRebate = function(id){
+        service.nextLoginConfiguration = function(id){
             var deferred = $q.defer();
-            $http.get(service.loginRebate+'/nextLogin/'+id)
+            $http.get(service.loginConfiguration+'/nextLogin/'+id)
                 .success(function(data){
                     deferred.resolve(data);
                 }).error(function(data){
-                    deferred.reject("no more loginRebate !")
+                    deferred.reject("no more loginConfiguration !")
                 });
             return deferred.promise;
         };
 
-        service.previousLoginRebate = function(id){
+        service.previousLoginConfiguration = function(id){
             var deferred = $q.defer();
-            $http.get(service.loginRebate+'/previousLogin/'+id)
+            $http.get(service.loginConfiguration+'/previousLogin/'+id)
                 .success(function(data){
                     deferred.resolve(data);
                 }).error(function(data){
-                    deferred.reject("no more loginRebate !")
+                    deferred.reject("no more loginConfiguration !")
                 });
             return deferred.promise;
         };
 
         service.translate = function () {
             $translate([
-                    'LoginRebate_loginName_description.title',
-                    'LoginRebate_loginName_description.text',
-                    'LoginRebate_maxRebate_description.title',
-                    'LoginRebate_maxRebate_description.text',
+                    'LoginConfiguration_loginName_description.title',
+                    'LoginConfiguration_loginName_description.text',
+                    'LoginConfiguration_maxRebate_description.title',
+                    'LoginConfiguration_maxRebate_description.text',
                     
                     'Entity_show.title',
                     'Entity_previous.title',
@@ -107,14 +107,14 @@ angular.module('Admanager')
         service.translate();
         return service;
 }])
-.controller('LoginRebateCtrls', ['$scope', 'genericResource', 'LoginRebateUtils',
-function ($scope, genericResource, LoginRebateUtils) {
+.controller('LoginConfigurationCtrls', ['$scope', 'genericResource', 'LoginConfigurationUtils',
+function ($scope, genericResource, LoginConfigurationUtils) {
 
 	$scope.searchInput = {};
-	$scope.loginRebates = [];
+	$scope.loginConfigurations = [];
 	$scope.totalItems = 0;
-    $scope.LoginRebateUtils = LoginRebateUtils;
-	$scope.loginRebatesearchResults = {};
+    $scope.LoginConfigurationUtils = LoginConfigurationUtils;
+	$scope.loginConfigurationsearchResults = {};
 	$scope.itemPerPage=25;
 	$scope.currentPage = 1;
 	$scope.maxSize = 5 ;
@@ -136,8 +136,8 @@ function ($scope, genericResource, LoginRebateUtils) {
    init();
    
    function findByLike(searchInput){
-	   LoginRebateUtils.loadLoginRebates(searchInput).then(function(entitySearchResult) {
-		   $scope.loginRebates = entitySearchResult.resultList;
+	   LoginConfigurationUtils.loadLoginConfigurations(searchInput).then(function(entitySearchResult) {
+		   $scope.loginConfigurations = entitySearchResult.resultList;
        	   $scope.totalItems = entitySearchResult.count;
        });
    }
@@ -146,9 +146,6 @@ function ($scope, genericResource, LoginRebateUtils) {
        var fieldNames = [];
        if($scope.searchInput.entity.loginName){
     	   fieldNames.push('loginName') ;
-       }
-       if($scope.searchInput.entity.maxRebate){
-    	   fieldNames.push('maxRebate') ;
        }
        $scope.searchInput.fieldNames = fieldNames ;
        return $scope.searchInput;
@@ -172,32 +169,32 @@ function ($scope, genericResource, LoginRebateUtils) {
 
 
 }])
-.controller('LoginRebateCreateCtrls', ['$scope', 'genericResource', 'LoginRebateUtils', '$location',
-function ($scope, genericResource, LoginRebateUtils, $location) {
+.controller('LoginConfigurationCreateCtrls', ['$scope', 'genericResource', 'LoginConfigurationUtils', '$location',
+function ($scope, genericResource, LoginConfigurationUtils, $location) {
 
-	$scope.loginRebate = {};
+	$scope.loginConfiguration = {};
 	$scope.create = create;
 	$scope.error = "";
-    $scope.LoginRebateUtils = LoginRebateUtils;
+    $scope.LoginConfigurationUtils = LoginConfigurationUtils;
 
     function create(){
-    	LoginRebateUtils.create($scope.loginRebate).then(function(result){
-             $location.path('/loginRebate/show/'+result.identif);
+    	LoginConfigurationUtils.create($scope.loginConfiguration).then(function(result){
+             $location.path('/loginConfiguration/show/'+result.identif);
          },function(error){
         	 $scope.error = error;
          })
      };
 
 }])
-.controller('LoginRebateShowCtrls', ['$scope', 'LoginRebateUtils', '$location', '$routeParams',
-function ($scope, LoginRebateUtils, $location, $routeParams) {
+.controller('LoginConfigurationShowCtrls', ['$scope', 'LoginConfigurationUtils', '$location', '$routeParams',
+function ($scope, LoginConfigurationUtils, $location, $routeParams) {
 
-	$scope.loginRebate = {};
+	$scope.loginConfiguration = {};
 	$scope.show = show;
 	$scope.previous = previous;
 	$scope.next = next;
 	$scope.error = "";
-    $scope.LoginRebateUtils = LoginRebateUtils;
+    $scope.LoginConfigurationUtils = LoginConfigurationUtils;
 
     init();
 
@@ -207,15 +204,15 @@ function ($scope, LoginRebateUtils, $location, $routeParams) {
 
     function show(){
         var identif = $routeParams.identif ;
-        LoginRebateUtils.loadLoginRebate(identif).then(function(result){
-        	$scope.loginRebate = result;
+        LoginConfigurationUtils.loadLoginConfiguration(identif).then(function(result){
+        	$scope.loginConfiguration = result;
         })
     };
     
     function previous(){
     	$scope.error = "";
-    	LoginRebateUtils.previousLoginRebate($scope.loginRebate.loginName).then(function(result){
-    		$scope.loginRebate = result;
+    	LoginConfigurationUtils.previousLoginConfiguration($scope.loginConfiguration.loginName).then(function(result){
+    		$scope.loginConfiguration = result;
         },function(error){
         	$scope.error = error;
         })
@@ -223,44 +220,44 @@ function ($scope, LoginRebateUtils, $location, $routeParams) {
 
     function next(){
     	$scope.error = "";
-    	LoginRebateUtils.nextLoginRebate($scope.loginRebate.loginName).then(function(result){
-    		$scope.loginRebate = result;
+    	LoginConfigurationUtils.nextLoginConfiguration($scope.loginConfiguration.loginName).then(function(result){
+    		$scope.loginConfiguration = result;
         },function(error){
         	$scope.error = error;
         })
     };
 
 }])
-.controller('LoginRebateUpdateCtrls', ['$scope', 'genericResource', 'LoginRebateUtils', '$location', '$routeParams',
-function ($scope, genericResource, LoginRebateUtils, $location, $routeParams) {
+.controller('LoginConfigurationUpdateCtrls', ['$scope', 'genericResource', 'LoginConfigurationUtils', '$location', '$routeParams',
+function ($scope, genericResource, LoginConfigurationUtils, $location, $routeParams) {
 
-	$scope.loginRebate = {};
+	$scope.loginConfiguration = {};
 	$scope.edit = edit;
 	$scope.error = "";
-    $scope.LoginRebateUtils = LoginRebateUtils;
+    $scope.LoginConfigurationUtils = LoginConfigurationUtils;
 
-       function edit(){
-    	   LoginRebateUtils.update($scope.loginRebate).then(function(result){
-               $location.path('/loginRebate/show/'+result.identif);
-           },function(error){
-        	   $scope.error = error;
-           })
-       };
+   function edit(){
+	   LoginConfigurationUtils.update($scope.loginConfiguration).then(function(result){
+           $location.path('/loginConfiguration/show/'+result.identif);
+       },function(error){
+    	   $scope.error = error;
+       })
+   };
 
-       init();
+   init();
 
-       function init(){
-           load();
-       }
+   function init(){
+       load();
+   }
 
-       function load(){
-           var identif = $routeParams.identif ;
-           LoginRebateUtils.loadLoginRebate(identif).then(function(result){
-        	   $scope.loginRebate = result;
-           },function(error){
-        	   $scope.error = error;
-           })
-       };
+   function load(){
+       var identif = $routeParams.identif ;
+       LoginConfigurationUtils.loadLoginConfiguration(identif).then(function(result){
+    	   $scope.loginConfiguration = result;
+       },function(error){
+    	   $scope.error = error;
+       })
+   };
 
 }]);
   

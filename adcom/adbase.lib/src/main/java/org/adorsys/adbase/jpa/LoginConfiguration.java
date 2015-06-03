@@ -13,19 +13,19 @@ import org.adorsys.javaext.description.Description;
 import org.apache.commons.lang3.StringUtils;
 
 @Entity
-@Table(name = "BaseLoginRebate")
-@Description("LoginRebate_description")
-public class LoginRebate extends AbstractTimedData {
+@Table(name = "BaseLoginConfiguration")
+@Description("LoginConfiguration_description")
+public class LoginConfiguration extends AbstractTimedData {
 
 	private static final long serialVersionUID = 5322018832893287944L;
 
 	@Column
-	@Description("LoginRebate_loginName_description")
+	@Description("LoginConfiguration_loginName_description")
 	@NotNull
 	private String loginName;
 
 	@Column
-	@Description("LoginRebates_maxRebate_description")
+	@Description("LoginConfiguration_maxRebate_description")
 	@NotNull
 	private BigDecimal maxRebate;
 

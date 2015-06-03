@@ -5,7 +5,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class LoginRebateSearchResult
+public class LoginConfigurationSearchResult
 {
 
    /*
@@ -16,20 +16,20 @@ public class LoginRebateSearchResult
    /*
     * The result list.
     */
-   private List<LoginRebate> resultList;
+   private List<LoginConfiguration> resultList;
 
    /*
     * The original search input object. For stateless clients.
     */
-   private LoginRebateSearchInput searchInput;
+   private LoginConfigurationSearchInput searchInput;
 
-   public LoginRebateSearchResult()
+   public LoginConfigurationSearchResult()
    {
       super();
    }
 
-   public LoginRebateSearchResult(Long count, List<LoginRebate> resultList,
-		   LoginRebateSearchInput searchInput)
+   public LoginConfigurationSearchResult(Long count, List<LoginConfiguration> resultList,
+		   LoginConfigurationSearchInput searchInput)
    {
       super();
       this.count = count;
@@ -42,12 +42,12 @@ public class LoginRebateSearchResult
       return count;
    }
 
-   public List<LoginRebate> getResultList()
+   public List<LoginConfiguration> getResultList()
    {
       return resultList;
    }
 
-   public LoginRebateSearchInput getSearchInput()
+   public LoginConfigurationSearchInput getSearchInput()
    {
       return searchInput;
    }
@@ -57,12 +57,12 @@ public class LoginRebateSearchResult
       this.count = count;
    }
 
-   public void setResultList(List<LoginRebate> resultList)
+   public void setResultList(List<LoginConfiguration> resultList)
    {
       this.resultList = resultList;
    }
 
-   public void setSearchInput(LoginRebateSearchInput searchInput)
+   public void setSearchInput(LoginConfigurationSearchInput searchInput)
    {
       this.searchInput = searchInput;
    }

@@ -23,10 +23,10 @@ angular.module('Admanager', [
     $routeProvider
     .when('/',{templateUrl:'views/CshDrawers.html',controller:'CshDrawerCtrls'})
     .when('/cdrCstmrVchr',{templateUrl:'views/CdrCstmrVchrs.html',controller:'CdrCstmrVchrCtrls'})
-    .when('/loginRebate',{templateUrl:'views/LoginRebate/LoginRebates.html',controller:'LoginRebateCtrls'})
-    .when('/loginRebate/create',{templateUrl:'views/LoginRebate/create.html',controller:'LoginRebateCreateCtrls'})
-    .when('/loginRebate/show/:identif',{templateUrl:'views/LoginRebate/show.html',controller:'LoginRebateShowCtrls'})
-    .when('/loginRebate/update/:identif',{templateUrl:'views/LoginRebate/update.html',controller:'LoginRebateUpdateCtrls'})
+    .when('/loginConfiguration',{templateUrl:'views/LoginConfiguration/LoginConfigurations.html',controller:'LoginConfigurationCtrls'})
+    .when('/loginConfiguration/create',{templateUrl:'views/LoginConfiguration/create.html',controller:'LoginConfigurationCreateCtrls'})
+    .when('/loginConfiguration/show/:identif',{templateUrl:'views/LoginConfiguration/show.html',controller:'LoginConfigurationShowCtrls'})
+    .when('/loginConfiguration/update/:identif',{templateUrl:'views/LoginConfiguration/update.html',controller:'LoginConfigurationUpdateCtrls'})
     .otherwise({redirectTo: '/'});
     
     $httpProvider.defaults.withCredentials = true;
