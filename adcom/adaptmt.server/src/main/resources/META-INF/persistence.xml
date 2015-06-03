@@ -5,40 +5,11 @@
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
     <jta-data-source>java:jboss/datasources/ADDS</jta-data-source>
     <!-- COmponents directly accessible from base. -->
+    <jar-file>lib/adcore.lib-${project.version}.jar</jar-file>
+    <jar-file>lib/adbase.lib-${project.version}.jar</jar-file>
+
     <class>org.adorsys.adcore.jpa.AbstractEntity</class>
     <class>org.adorsys.adcore.jpa.AbstractIdentifData</class>
-    <class>org.adorsys.adcore.jpa.AbstractTimedData</class>
-    <class>org.adorsys.adbase.jpa.ConnectionHistory</class>
-    <class>org.adorsys.adbase.jpa.ConverterCurrRate</class>
-    <class>org.adorsys.adbase.jpa.Country</class>
-    <class>org.adorsys.adbase.jpa.Locality</class>
-    <class>org.adorsys.adbase.jpa.Login</class>
-    <class>org.adorsys.adbase.jpa.OrgContact</class>
-    <class>org.adorsys.adbase.jpa.OrgUnit</class>
-    <class>org.adorsys.adbase.jpa.OuType</class>
-    <class>org.adorsys.adbase.jpa.OuWorkspace</class>
-    <class>org.adorsys.adbase.jpa.OuWsRestriction</class>
-    <class>org.adorsys.adbase.jpa.PermEntry</class>
-    <class>org.adorsys.adbase.jpa.PricingCurrRate</class>
-    <class>org.adorsys.adbase.jpa.RoleEntry</class>
-    <class>org.adorsys.adbase.jpa.SecAbstractTerminal</class>
-    <class>org.adorsys.adbase.jpa.SecTerminal</class>
-    <class>org.adorsys.adbase.jpa.SecTermRegist</class>
-    <class>org.adorsys.adbase.jpa.SecTermCredtl</class>
-    <class>org.adorsys.adbase.jpa.SecTermSession</class>
-    <class>org.adorsys.adbase.jpa.SecUserSession</class>
-    <class>org.adorsys.adbase.jpa.UserWorkspace</class>
-    <class>org.adorsys.adbase.jpa.UserWsRestriction</class>
-    <class>org.adorsys.adbase.jpa.Workspace</class>
-    <class>org.adorsys.adbase.jpa.WorkspaceRestriction</class>
-	<class>org.adorsys.adbase.jpa.BaseDocType</class>    
-	<class>org.adorsys.adbase.jpa.BaseHistoryType</class>    
-	<class>org.adorsys.adbase.jpa.BaseProcessStatus</class>    
-	<class>org.adorsys.adbase.jpa.BaseProcStep</class>    
-	<class>org.adorsys.adbase.jpa.BaseRoleInProcess</class>    
-	<class>org.adorsys.adbase.jpa.BaseSttlmtOp</class>    
-	<class>org.adorsys.adbase.jpa.BaseCountryName</class>
-	<class>org.adorsys.adbase.jpa.BaseBatchEvt</class>
 
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>

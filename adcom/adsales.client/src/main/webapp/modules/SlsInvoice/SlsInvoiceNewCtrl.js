@@ -15,7 +15,7 @@ angular.module('AdSales')
 
         return service;
   }])
-.controller('slsInvoiceNewCtlr',['$scope','$modal','SlsInvoiceUtils','slsSalesOrderState','genericResource','$routeParams','$location','$q', 'conversionPrice',function($scope,$modal,SlsInvoiceUtils,slsSalesOrderState,genericResource,$routeParams,$location,$q,conversionPrice){
+.controller('slsInvoiceNewCtlr',['$scope','$modal','SlsInvoiceUtils','slsSalesOrderState','genericResource','$routeParams','$location','$q', 'conversionPrice','sessionManager',function($scope,$modal,SlsInvoiceUtils,slsSalesOrderState,genericResource,$routeParams,$location,$q,conversionPrice,sessionManager){
     var self = this ;
     $scope.slsInvoiceNewCtlr = self;
     self.showBtnClose = true;
@@ -26,6 +26,9 @@ angular.module('AdSales')
         slsInvceItemsholder:[],
         slsInvcePtnrsHolder:[]
     };
+    $scope.maxRebate = sessionManager.userWsData().maxRebate;
+    console.log($scope.maxRebate);
+
     if(slsSalesOrderState.slsInvoiceHolder){
         angular.copy(slsSalesOrderState.slsInvoiceHolder.slsInvoice, self.slsInvoiceHolder.slsInvoice);
         angular.copy(slsSalesOrderState.slsInvoiceHolder.slsInvceItemsholder, self.slsInvoiceHolder.slsInvceItemsholder);
@@ -249,6 +252,10 @@ angular.module('AdSales')
                 $scope.error="L'escompte ne doit pas etre superieur au montant de vente";
                 return;
             }
+            if(self.slsInvoiceHolder.slsInvoice.pymtDscntPct > $scope.maxRebate){
+                $scope.error="L'escompte ne doit pas etre superieur a votre taux de remise";
+                return;
+            }
             self.slsInvoiceHolder.slsInvoice.netSalesAmt =self.slsInvoiceHolder.slsInvoice.netSPTaxIncl -(self.slsInvoiceHolder.slsInvoice.netSPPreTax*self.slsInvoiceHolder.slsInvoice.pymtDscntPct/100);
         }else{
             if(self.slsInvoiceHolder.slsInvoice.pymtDscntAmt){
@@ -256,8 +263,13 @@ angular.module('AdSales')
                     $scope.error="L'escompte ne doit pas etre superieur au montant de vente";
                     return;
                 }
+                var pymtDscntPct = self.slsInvoiceHolder.slsInvoice.pymtDscntAmt*100/self.slsInvoiceHolder.slsInvoice.netSPPreTax;
+                if(pymtDscntPct > $scope.maxRebate){
+                    $scope.error="L'escompte ne doit pas etre superieur a votre taux de remise";
+                    return;
+                }
                 self.slsInvoiceHolder.slsInvoice.netSalesAmt=self.slsInvoiceHolder.slsInvoice.netSPTaxIncl - parseInt(self.slsInvoiceHolder.slsInvoice.pymtDscntAmt);
-                self.slsInvoiceHolder.slsInvoice.pymtDscntPct = self.slsInvoiceHolder.slsInvoice.pymtDscntPct*100/self.slsInvoiceHolder.slsInvoice.netSPPreTax;
+                //self.slsInvoiceHolder.slsInvoice.pymtDscntPct = self.slsInvoiceHolder.slsInvoice.pymtDscntPct*100/self.slsInvoiceHolder.slsInvoice.netSPPreTax;
             }
         }
         if(!self.slsInvoiceHolder.slsInvoice.pymtDscntAmt && !self.slsInvoiceHolder.slsInvoice.pymtDscntPct){
@@ -285,6 +297,12 @@ angular.module('AdSales')
         if (self.slsInvoiceItemHolder.slsInvceItem.rebate > self.slsInvoiceItemHolder.slsInvceItem.sppuPreTax * parseInt(self.slsInvoiceItemHolder.slsInvceItem.qty)
             || self.slsInvoiceItemHolder.slsInvceItem.sppuPreTax * parseInt(self.slsInvoiceItemHolder.slsInvceItem.qty) == self.slsInvoiceItemHolder.slsInvceItem.rebate){
             $scope.error ="La remise ne peut etre superieur au montant de vente";
+            return;
+        }
+        var rebatePct = (parseInt(self.slsInvoiceItemHolder.slsInvceItem.rebate)*100)/(self.slsInvoiceItemHolder.slsInvceItem.sppuPreTax * parseInt(self.slsInvoiceItemHolder.slsInvceItem.qty));
+
+        if (rebatePct > $scope.maxRebate || self.slsInvoiceItemHolder.slsInvceItem.rebatePct > $scope.maxRebate){
+            $scope.error ="La remise ne peut etre superieur a votre taux de remise";
             return;
         }
 

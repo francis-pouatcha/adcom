@@ -23,9 +23,9 @@ import javax.ws.rs.core.Response.Status;
 
 import org.adorsys.adbase.dto.LoginWorkspaceDto;
 import org.adorsys.adbase.jpa.UserWorkspace;
+import org.adorsys.adbase.jpa.UserWorkspace_;
 import org.adorsys.adbase.jpa.UserWorkspaceSearchInput;
 import org.adorsys.adbase.jpa.UserWorkspaceSearchResult;
-import org.adorsys.adbase.jpa.UserWorkspace_;
 
 /**
  * 

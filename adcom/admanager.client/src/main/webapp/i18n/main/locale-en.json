@@ -54,6 +54,11 @@
     "CdrCstmrVchr_settled_description.text": "Sates if the voucher is settled or not.",
     "CdrCstmrVchr_settled_description.title": "Settled",
     "CdrCstmrVchr_vchrNbr_description.text": "The client voucher number.",
-    "CdrCstmrVchr_vchrNbr_description.title": "Voucher Number"
+    "CdrCstmrVchr_vchrNbr_description.title": "Voucher Number",
+    
+    "LoginConfiguration_loginName_description.text":"login name associated with rebate",
+	"LoginConfiguration_loginName_description.title":"login name",
+	"LoginConfiguration_maxRebate_description.text":"max Rebate associated with user",
+	"LoginConfiguration_maxRebate_description.title":"max Rebate"
     
 }

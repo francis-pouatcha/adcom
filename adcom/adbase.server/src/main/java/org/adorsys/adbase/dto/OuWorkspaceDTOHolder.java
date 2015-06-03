@@ -5,8 +5,6 @@ package org.adorsys.adbase.dto;
 
 import java.util.List;
 
-import org.adorsys.adbase.jpa.OrgUnit;
-
 /**
  * @author boriswaguia
  *

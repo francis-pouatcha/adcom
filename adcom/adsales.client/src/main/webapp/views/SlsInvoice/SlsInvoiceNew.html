@@ -9,10 +9,15 @@
            ng-click="slsInvoiceNewCtlr.annulerCmd()" ><i class="glyphicon glyphicon-trash" ></i> Suspendre la facture</a>
         <a class="btn btn-default" ng-click="slsInvoiceNewCtlr.newCmd()"  ><i class="glyphicon glyphicon-plus" ></i> Nouvelle facture</a>
         <a class="btn btn-warning" ng-click="slsInvoiceNewCtlr.addBptnr()"><i class="glyphicon glyphicon-user" ></i> {{slsInvoiceNewCtlr.slsInvoiceHolder.slsInvcePtnrsHolder[0].slsInvcePtnr.ptnrNbr}}</a>
+        
         <label>{{slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.invceDt | date:'medium'}}</label>
-        <a class="btn btn-primary col-lg-offset-1"
-           ng-disabled="slsInvoiceNewCtlr.testSaveCmd()" ng-click="slsInvoiceNewCtlr.saveCmd()"><i class="glyphicon glyphicon-save" ></i> Enregistrer la facture</a>
-        <a class="btn btn-primary" ng-disabled="slsInvoiceNewCtlr.testSaveCmd()" ng-click="slsInvoiceNewCtlr.cloturerCmd()"><i class="glyphicon glyphicon-ok" ></i> Cloturer la facture</a>
+        <a class="btn btn-primary col-lg-offset-1" ng-disabled="slsInvoiceNewCtlr.testSaveCmd()" ng-click="slsInvoiceNewCtlr.saveCmd()">             <i class="glyphicon glyphicon-save" ></i> Enregistrer la facture
+        </a>
+        
+        <a class="btn btn-primary" ng-disabled="slsInvoiceNewCtlr.testSaveCmd()" ng-click="slsInvoiceNewCtlr.cloturerCmd()">
+            <i class="glyphicon glyphicon-ok" ></i> Cloturer la facture
+        </a>
+
         <a class="btn btn-default col-lg-offset-1" href="#/SlsInvoices" ><i class="glyphicon glyphicon-list" ></i> Liste</a>
     </div>
     <form name="invoiceItemForm" id="invoiceItemForm" novalidate >

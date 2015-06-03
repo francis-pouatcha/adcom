@@ -10,7 +10,6 @@ import org.adorsys.adbase.jpa.SecTermCredtl;
 import org.adorsys.adbase.jpa.SecTermRegist;
 import org.adorsys.adbase.rest.SecTermCredtlEJB;
 import org.adorsys.adbase.rest.SecTermRegistEJB;
-import org.adorsys.adcore.auth.TermCdtl;
 import org.adorsys.adcore.xls.AbstractObjectLoader;
 import org.apache.commons.lang3.time.DateUtils;
 

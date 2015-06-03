@@ -22,9 +22,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.adorsys.adbase.jpa.Workspace;
+import org.adorsys.adbase.jpa.Workspace_;
 import org.adorsys.adbase.jpa.WorkspaceSearchInput;
 import org.adorsys.adbase.jpa.WorkspaceSearchResult;
-import org.adorsys.adbase.jpa.Workspace_;
 
 /**
  * 

@@ -11,13 +11,13 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
+import org.adorsys.adprocmt.jpa.PrcmtDelivery;
 import org.adorsys.adprocmt.jpa.PrcmtDeliveryEvt;
-import org.adorsys.adprocmt.jpa.PrcmtDeliveryEvtData;
 import org.adorsys.adprocmt.jpa.PrcmtDeliveryEvtLease;
-import org.adorsys.adprocmt.jpa.PrcmtDlvryItemEvtData;
-import org.adorsys.adprocmt.rest.PrcmtDeliveryEvtDataEJB;
+import org.adorsys.adprocmt.jpa.PrcmtDlvryItem;
+import org.adorsys.adprocmt.rest.PrcmtDeliveryEJB;
 import org.adorsys.adprocmt.rest.PrcmtDeliveryEvtLeaseEJB;
-import org.adorsys.adprocmt.rest.PrcmtDlvryItemEvtDataEJB;
+import org.adorsys.adprocmt.rest.PrcmtDlvryItemEJB;
 import org.adorsys.adstock.jpa.StkDlvryItemHstry;
 import org.adorsys.adstock.rest.StkDlvryItemHstryEJB;
 import org.apache.commons.lang3.time.DateUtils;
@@ -33,9 +33,9 @@ import org.apache.commons.lang3.time.DateUtils;
 public class StkDeliveryEvtProcessor {
 
 	@Inject
-	private PrcmtDeliveryEvtDataEJB evtDataEJB;
+	private PrcmtDeliveryEJB evtDataEJB;
 	@Inject
-	private PrcmtDlvryItemEvtDataEJB itemEvtDataEJB;
+	private PrcmtDlvryItemEJB itemEvtDataEJB;
 	@Inject
 	private StkDeliveryItemEvtProcessor itemEvtProcessor;
 	@Inject
@@ -78,7 +78,7 @@ public class StkDeliveryEvtProcessor {
 		if(leaseId==null) return;
 		
 		String entIdentif = deliveryEvt.getEntIdentif();
-		PrcmtDeliveryEvtData deliveryEvtData = evtDataEJB.findById(entIdentif);
+		PrcmtDelivery deliveryEvtData = evtDataEJB.findById(entIdentif);
 		if(deliveryEvtData==null) {
 			evtProcessorHelper.closeEvtLease(processId, leaseId, deliveryEvt);
 			return;
@@ -91,9 +91,9 @@ public class StkDeliveryEvtProcessor {
 		int max = 100;
 		List<String> itemEventDataToProcess = new ArrayList<String>();
 		while(start<=evtDataCount){
-			List<PrcmtDlvryItemEvtData> list = itemEvtDataEJB.findByDlvryNbr(dlvryNbr, start, max);
+			List<PrcmtDlvryItem> list = itemEvtDataEJB.findByDlvryNbr(dlvryNbr, start, max);
 			start +=max;
-			for (PrcmtDlvryItemEvtData itemEvtData : list) {
+			for (PrcmtDlvryItem itemEvtData : list) {
 				StkDlvryItemHstry hstry = dlvryItemHstryEJB.findById(itemEvtData.getDlvryItemNbr());
 				if(hstry!=null) continue;
 

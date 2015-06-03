@@ -22,9 +22,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.adorsys.adbase.jpa.WorkspaceRestriction;
+import org.adorsys.adbase.jpa.WorkspaceRestriction_;
 import org.adorsys.adbase.jpa.WorkspaceRestrictionSearchInput;
 import org.adorsys.adbase.jpa.WorkspaceRestrictionSearchResult;
-import org.adorsys.adbase.jpa.WorkspaceRestriction_;
 
 /**
  * 

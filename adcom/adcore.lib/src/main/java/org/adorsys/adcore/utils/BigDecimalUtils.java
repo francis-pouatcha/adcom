@@ -7,6 +7,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.adorsys.adcore.jpa.CurrencyEnum;
+import org.apache.commons.lang3.StringUtils;
+
 public class BigDecimalUtils {
 	
 	public static final BigDecimal HUNDRED = new BigDecimal("100");
@@ -52,6 +55,16 @@ public class BigDecimalUtils {
 		return base;
 	}
 
+	public static BigDecimal ratePercentOfPartFromBase(BigDecimal part, BigDecimal base, RoundingMode roundingMode){
+		if(isNullOrZero(base) || isNullOrZero(part)) return BigDecimal.ZERO;
+
+		if(numericEquals(part,base)) return HUNDRED;
+		
+		BigDecimal result = zeroIfNull(part);
+
+		return result.multiply(HUNDRED).divide(base, roundingMode);
+	}
+
 	public static BigDecimal basePercentOfRatePct(BigDecimal ratePct, BigDecimal base){
 		if(isNullOrZero(base) || isNullOrZero(ratePct)) return BigDecimal.ZERO;
 		BigDecimal result = zeroIfNull(base);
@@ -65,13 +78,22 @@ public class BigDecimalUtils {
 
 	public static BigDecimal basePercentOfRatePct(BigDecimal ratePct, BigDecimal base, RoundingMode roundingMode){
 		if(isNullOrZero(base) || isNullOrZero(ratePct)) return BigDecimal.ZERO;
-		BigDecimal result = zeroIfNull(base);
 
+		BigDecimal result = zeroIfNull(base);
 		if(numericEquals(ratePct,HUNDRED)) return result;
 		
-		result = result.multiply(ratePct).divide(HUNDRED, roundingMode);
+		return result.multiply(ratePct).divide(HUNDRED, roundingMode);
+	}
+	
+	public static BigDecimal basePercentOfRatePct(BigDecimal ratePct, BigDecimal base, String curr){
+		if(isNullOrZero(base) || isNullOrZero(ratePct)) return BigDecimal.ZERO;
+		if(StringUtils.isBlank(curr))curr=CurrencyEnum.XAF.name();
 
-		return result;
+		BigDecimal result = zeroIfNull(base);
+		if(numericEquals(ratePct,HUNDRED)) return result;
+
+		CurrencyEnum currEnum = CurrencyEnum.valueOf(curr);
+		return result.multiply(ratePct).divide(HUNDRED, currEnum.getDcmlPos(), RoundingMode.HALF_EVEN);
 	}
 	
 	public static BigDecimal amountWithTax(BigDecimal amtHT, BigDecimal vatRatePct){

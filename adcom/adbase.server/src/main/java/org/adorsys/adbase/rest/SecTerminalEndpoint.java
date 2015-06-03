@@ -3,7 +3,6 @@ package org.adorsys.adbase.rest;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -23,9 +22,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.adorsys.adbase.jpa.SecTerminal;
+import org.adorsys.adbase.jpa.SecTerminal_;
 import org.adorsys.adbase.jpa.SecTerminalSearchInput;
 import org.adorsys.adbase.jpa.SecTerminalSearchResult;
-import org.adorsys.adbase.jpa.SecTerminal_;
 
 /**
  * 

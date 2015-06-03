@@ -1,6 +1,7 @@
 package org.adorsys.adbase.holder;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 public class UserWorkspaceHolder implements Serializable {
 
@@ -25,6 +26,17 @@ public class UserWorkspaceHolder implements Serializable {
 	private String timeZone;
 	
 	private String langIso2;
+	
+	private BigDecimal maxRebate;
+	
+
+	public BigDecimal getMaxRebate() {
+		return maxRebate;
+	}
+
+	public void setMaxRebate(BigDecimal maxRebate) {
+		this.maxRebate = maxRebate;
+	}
 
 	public String getLoginName() {
 		return loginName;

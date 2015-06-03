@@ -22,9 +22,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.adorsys.adbase.jpa.RoleEntry;
+import org.adorsys.adbase.jpa.RoleEntry_;
 import org.adorsys.adbase.jpa.RoleEntrySearchInput;
 import org.adorsys.adbase.jpa.RoleEntrySearchResult;
-import org.adorsys.adbase.jpa.RoleEntry_;
 
 /**
  * 
