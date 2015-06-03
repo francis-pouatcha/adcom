@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.ejb.Lock;
+import javax.ejb.LockType;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
@@ -53,6 +55,7 @@ public class PrcmtDeliveryManager {
 	 * @param deliveryHolder
 	 * @return
 	 */
+	@Lock(LockType.WRITE)
 	public PrcmtDeliveryHolder updateDelivery(PrcmtDeliveryHolder deliveryHolder){
 		PrcmtDelivery delivery = deliveryHolder.getDelivery();
 		String currentLoginName = securityUtil.getCurrentLoginName();
@@ -356,20 +359,29 @@ public class PrcmtDeliveryManager {
 		}
 		return delivery;
 	}
-	
 	public PrcmtDeliveryHolder closeDelivery(PrcmtDeliveryHolder deliveryHolder){
 		deliveryHolder = updateDelivery(deliveryHolder);
 		PrcmtDelivery delivery = deliveryHolder.getDelivery();
-		delivery = deliveryEJB.findByIdentif(delivery.getIdentif());
+		PrcmtDelivery deliveryPersi = deliveryEJB.findByIdentif(delivery.getIdentif());
 		//recomputeDelivery(delivery);
-		if(!StringUtils.equals(delivery.getDlvryStatus(), BaseProcessStatusEnum.CLOSING.name())
-				&& !StringUtils.equals(delivery.getDlvryStatus(), BaseProcessStatusEnum.CLOSED.name())){
-			delivery.setDlvryStatus(BaseProcessStatusEnum.CLOSING.name());
-			delivery = deliveryEJB.update(delivery);	
-			createClosingDeliveryHistory(delivery);// Status closing
+		if(!StringUtils.equals(deliveryPersi.getDlvryStatus(), BaseProcessStatusEnum.CLOSING.name())
+				&& !StringUtils.equals(deliveryPersi.getDlvryStatus(), BaseProcessStatusEnum.CLOSED.name())){
+			deliveryPersi.setDlvryStatus(BaseProcessStatusEnum.CLOSING.name());
+			deliveryPersi = deliveryEJB.update(deliveryPersi);	
+			createClosingDeliveryHistory(deliveryPersi);// Status closing
 		}	
-		deliveryHolder.setDelivery(delivery);
+		deliveryHolder.setDelivery(deliveryPersi);
 		return deliveryHolder;
+	}	
+	
+	public PrcmtDelivery closePrcmtDelivery(PrcmtDelivery delivery){	
+		PrcmtDelivery deliveryPersi = deliveryEJB.findByIdentif(delivery.getIdentif());
+		
+			deliveryPersi.setDlvryStatus(BaseProcessStatusEnum.CLOSING.name());
+			deliveryPersi = deliveryEJB.update(deliveryPersi);	
+			createClosingDeliveryHistory(deliveryPersi);// Status closing
+			
+		return deliveryPersi;
 	}	
 
 	public void closeDelivery(PrcmtDelivery delivery){
