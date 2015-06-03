@@ -23,9 +23,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.adorsys.adbase.jpa.OuType;
+import org.adorsys.adbase.jpa.OuType_;
 import org.adorsys.adbase.jpa.OuTypeSearchInput;
 import org.adorsys.adbase.jpa.OuTypeSearchResult;
-import org.adorsys.adbase.jpa.OuType_;
 
 /**
  * 

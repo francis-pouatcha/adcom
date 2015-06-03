@@ -2,7 +2,6 @@ package org.adorsys.adbase.rest;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -24,9 +23,9 @@ import javax.ws.rs.core.Response.Status;
 
 import org.adorsys.adbase.exception.NotFoundOrNotActifEntityException;
 import org.adorsys.adbase.jpa.ConnectionHistory;
+import org.adorsys.adbase.jpa.ConnectionHistory_;
 import org.adorsys.adbase.jpa.ConnectionHistorySearchInput;
 import org.adorsys.adbase.jpa.ConnectionHistorySearchResult;
-import org.adorsys.adbase.jpa.ConnectionHistory_;
 
 /**
  * 

@@ -21,14 +21,13 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.adorsys.adbase.dto.OuWorkspaceDTO;
 import org.adorsys.adbase.dto.OuWorkspaceDTOHolder;
 import org.adorsys.adbase.dto.OuWorkspaceDtoService;
 import org.adorsys.adbase.exception.NotFoundOrNotActifEntityException;
 import org.adorsys.adbase.jpa.OuWorkspace;
+import org.adorsys.adbase.jpa.OuWorkspace_;
 import org.adorsys.adbase.jpa.OuWorkspaceSearchInput;
 import org.adorsys.adbase.jpa.OuWorkspaceSearchResult;
-import org.adorsys.adbase.jpa.OuWorkspace_;
 
 /**
  * 

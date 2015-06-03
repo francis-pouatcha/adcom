@@ -22,9 +22,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.adorsys.adbase.jpa.OuWsRestriction;
+import org.adorsys.adbase.jpa.OuWsRestriction_;
 import org.adorsys.adbase.jpa.OuWsRestrictionSearchInput;
 import org.adorsys.adbase.jpa.OuWsRestrictionSearchResult;
-import org.adorsys.adbase.jpa.OuWsRestriction_;
 
 /**
  * 

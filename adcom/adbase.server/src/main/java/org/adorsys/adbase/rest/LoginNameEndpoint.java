@@ -20,10 +20,10 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.adorsys.adbase.jpa.Login;
+import org.adorsys.adbase.jpa.Login_;
 import org.adorsys.adbase.jpa.LoginName;
 import org.adorsys.adbase.jpa.LoginNameSearchInput;
 import org.adorsys.adbase.jpa.LoginNameSearchResult;
-import org.adorsys.adbase.jpa.Login_;
 
 /**
  * 

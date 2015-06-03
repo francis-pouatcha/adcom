@@ -4,6 +4,7 @@
     <groupId>org.adorsys.adcom</groupId>
     <artifactId>adcom.server.parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
+    <relativePath>../adcom.server.parent</relativePath>
   </parent>
   <artifactId>adterm.server</artifactId>
   <packaging>war</packaging>

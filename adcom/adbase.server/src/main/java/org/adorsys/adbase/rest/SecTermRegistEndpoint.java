@@ -22,9 +22,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.adorsys.adbase.jpa.SecTermRegist;
+import org.adorsys.adbase.jpa.SecTermRegist_;
 import org.adorsys.adbase.jpa.SecTermRegistSearchInput;
 import org.adorsys.adbase.jpa.SecTermRegistSearchResult;
-import org.adorsys.adbase.jpa.SecTermRegist_;
 /**
  * 
  */

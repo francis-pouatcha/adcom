@@ -4,6 +4,7 @@
     <groupId>org.adorsys.adcom</groupId>
     <artifactId>adcom.lib.parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
+    <relativePath>../adcom.lib.parent</relativePath>
   </parent>
   <artifactId>adacc.lib</artifactId>
 	<packaging>jar</packaging>

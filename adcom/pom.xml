@@ -9,8 +9,8 @@
 	<packaging>pom</packaging>
 	<modules>
 		<!-- POM Modules -->
-		<module>adcom.server.parent</module>
 		<module>adcom.lib.parent</module>
+		<module>adcom.server.parent</module>
 
 		<module>adres.client</module>
 		<module>adbase.client</module>
@@ -25,6 +25,7 @@
 		<module>adcshdwr.client</module>
 		<module>adcore.lib</module>
 		<module>adbase.lib</module>
+		<module>adacc.lib</module>
 		<module>adstock.lib</module>
 		<module>adprocmt.lib</module>
 		<module>adinvtry.lib</module>
@@ -47,8 +48,6 @@
 		<module>adcom.all</module>
 		<module>adcom.configuration</module>
 		<!-- <module>adcom.test</module> -->
-
-		<module>adacc.lib</module>
 	</modules>
 	<scm>
 		<connection>scm:git:https://github.com/francis-pouatcha/adcom.git</connection>

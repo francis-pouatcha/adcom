@@ -1,0 +1,54 @@
+<div class="container">
+
+	<div class="col-xs-offset-2 col-xs-8">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<b>{{ "Entity_create.title"| translate}}</b>
+			</div>
+
+			<div class="panel-body">
+				<label class="error col-lg-offset-3 alert-danger">{{error}}
+				</label>
+				<form name="loginRebateForm" class="form-horizontal" novalidate="">
+
+					<div class="form-group">
+						<label class="col-lg-4 ">{{LoginRebateUtils.translations['LoginRebate_loginName_description.title']}}
+							: </label> <input type="text" ng-model="loginRebate.loginName"
+							name="loginName" class="form-control" disabled>
+					</div>
+
+					<div class="form-group">
+						<label class="col-lg-4 ">
+							{{LoginRebateUtils.translations['LoginRebate_maxRebate_description.title']}}
+							: </label> <input type="text" ng-model="loginRebate.maxRebate"
+							name="maxRebate" class="form-control" disabled>
+					</div>
+
+
+			 <div class="form-group">
+
+                            <div class="col-lg-3">
+                                <a class="btn-default btn" ng-click="previous();" ><i class="glyphicon glyphicon-circle-arrow-left"></i> {{"Entity_previous.title"|translate}}</a>
+                            </div>
+
+                            <div class="col-lg-3" >
+                                <a class="btn-default btn" href="#/loginRebate"  ><i class="glyphicon glyphicon-remove" ></i> {{"Entity_cancel.title" | translate }}</a>
+                            </div>
+                            <div class="col-lg-3" >
+                                <a class="btn-default btn" href="#/loginRebate/update/{{loginRebate.identif}}"  ><i class="glyphicon glyphicon-edit" ></i> Editer</a>
+                            </div>
+                            <div class="col-lg-3">
+                                <a class="btn-default btn" ng-click="next();" ><i class="fa glyphicon glyphicon-circle-arrow-right"></i> {{"Entity_next.title"|translate}}</a>
+                            </div>
+
+             </div>
+			
+			</form>
+		</div>
+
+	</div>
+
+</div>
+
+
+</div>
