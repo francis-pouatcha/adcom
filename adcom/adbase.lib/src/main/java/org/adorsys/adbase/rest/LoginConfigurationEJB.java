@@ -91,5 +91,9 @@ public class LoginConfigurationEJB {
 		return repository.findNextLoginRebate(identif).maxResults(2)
 				.getResultList();
 	}
+	
+	 public List<LoginConfiguration> findByLogin(String loginName){
+			return repository.findByLogin(loginName).getResultList();
+		}
 
 }

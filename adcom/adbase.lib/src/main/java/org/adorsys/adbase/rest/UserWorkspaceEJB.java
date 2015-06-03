@@ -10,7 +10,7 @@ import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adbase.holder.UserWorkspaceHolder;
 import org.adorsys.adbase.jpa.Login;
-import org.adorsys.adbase.jpa.LoginRebate;
+import org.adorsys.adbase.jpa.LoginConfiguration;
 import org.adorsys.adbase.jpa.OuWorkspace;
 import org.adorsys.adbase.jpa.UserWorkspace;
 import org.adorsys.adbase.jpa.Workspace;
@@ -38,7 +38,7 @@ public class UserWorkspaceEJB {
 	private LoginEJB loginEJB;
 	
 	@Inject
-	private LoginRebateEJB loginConfigEjb;
+	private LoginConfigurationEJB loginConfigEjb;
 
 	public UserWorkspace create(UserWorkspace entity) {
 		return repository.save(attach(entity));
@@ -192,7 +192,7 @@ public class UserWorkspaceEJB {
 	
 	private BigDecimal loginMaxRebate(){
 		String loginName = securityUtil.getCurrentLoginName();
-		List<LoginRebate> loginConfig = loginConfigEjb.findByLogin(loginName);
+		List<LoginConfiguration> loginConfig = loginConfigEjb.findByLogin(loginName);
 		if(loginConfig.isEmpty())
 			return null;
 		return loginConfig.get(0).getMaxRebate();
