@@ -56,9 +56,9 @@
     "CdrCstmrVchr_vchrNbr_description.text": "The client voucher number.",
     "CdrCstmrVchr_vchrNbr_description.title": "Voucher Number",
     
-    "LoginRebate_loginName_description.text":"login name associated with rebate",
-	"LoginRebate_loginName_description.title":"login name",
-	"LoginRebate_maxRebate_description.text":"max Rebate associated with user",
-	"LoginRebate_maxRebate_description.title":"max Rebate"
+    "LoginConfiguration_loginName_description.text":"login name associated with rebate",
+	"LoginConfiguration_loginName_description.title":"login name",
+	"LoginConfiguration_maxRebate_description.text":"max Rebate associated with user",
+	"LoginConfiguration_maxRebate_description.title":"max Rebate"
     
 }

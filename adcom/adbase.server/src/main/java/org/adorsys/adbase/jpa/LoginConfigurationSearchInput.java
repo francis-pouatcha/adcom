@@ -13,12 +13,12 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  */
 @XmlRootElement
-public class LoginRebateSearchInput {
+public class LoginConfigurationSearchInput {
 
 	/**
 	 * The entity holding search inputs.
 	 */
-	private LoginRebate entity;
+	private LoginConfiguration entity;
 
 	/**
 	 * The start cursor
@@ -35,11 +35,11 @@ public class LoginRebateSearchInput {
 	 */
 	private List<String> fieldNames = new ArrayList<String>();
 
-	public LoginRebate getEntity() {
+	public LoginConfiguration getEntity() {
 		return entity;
 	}
 
-	public void setEntity(LoginRebate entity) {
+	public void setEntity(LoginConfiguration entity) {
 		this.entity = entity;
 	}
 

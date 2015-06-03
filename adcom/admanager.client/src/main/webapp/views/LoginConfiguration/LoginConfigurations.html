@@ -22,17 +22,17 @@
                         
                             <div class="col-lg-3">
                                 <div class="form-group">
-                                    <label class=" control-label" for="">{{LoginRebateUtils.translations['LoginRebate_loginName_description.title']}}</label>
+                                    <label class=" control-label" for="">{{LoginConfigurationUtils.translations['LoginConfiguration_loginName_description.title']}}</label>
                                     <div class="">
                                         <input type="text" id="" ng-model="searchInput.entity.loginName" class="form-control"
-                                        typeahead="login.loginName as login.loginName for login in LoginRebateUtils.loadLogin($viewValue)" >
+                                        typeahead="login.loginName as login.loginName for login in LoginConfigurationUtils.loadLogin($viewValue)" >
                                     </div>
                                 </div>
                             </div>
                             
                             <div class="col-lg-3">
                                 <div class="form-group">
-                                    <label class="control-label" for="">{{LoginRebateUtils.translations['LoginRebate_maxRebate_description.title']}}</label>
+                                    <label class="control-label" for="">{{LoginConfigurationUtils.translations['LoginConfiguration_maxRebate_description.title']}}</label>
                                     <div class="">
                                         <input type="text"  ng-model="searchInput.entity.maxRebate" class="form-control">
                                     </div>
@@ -65,7 +65,7 @@
             <div class="panel-body">
                 <div class="col-lg-12">
                     <div  class="row">
-                        <a class="btn btn-primary pull-right margBott10" href="#/loginRebate/create" >
+                        <a class="btn btn-primary pull-right margBott10" href="#/loginConfiguration/create" >
                             <i class="glyphicon-plus"></i> {{"Entity_create.title" | translate}}
                         </a>
 
@@ -74,16 +74,16 @@
                         <table class="table table-bordered  table-striped pointer-element" >
                             <thead>
                             <tr>
-                                <th class="text-center">{{LoginRebateUtils.translations['LoginRebate_loginName_description.title']}}</th>
-                                <th class="text-center">{{LoginRebateUtils.translations['LoginRebate_maxRebate_description.title']}}</th>
+                                <th class="text-center">{{LoginConfigurationUtils.translations['LoginConfiguration_loginName_description.title']}}</th>
+                                <th class="text-center">{{LoginConfigurationUtils.translations['LoginConfiguration_maxRebate_description.title']}}</th>
                                 <th></th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="loginRebate in loginRebates" >
-                                <td>{{loginRebate.loginName}}</td>
-                                <td>{{loginRebate.maxRebate}}</td>
-                                <td><a href="#/loginRebate/show/{{loginRebate.id}}" ><i class="glyphicon glyphicon-eye-open"></i></a></td>
+                            <tr ng-repeat="loginConfiguration in loginConfigurations" >
+                                <td>{{loginConfiguration.loginName}}</td>
+                                <td>{{loginConfiguration.maxRebate}}</td>
+                                <td><a href="#/loginConfiguration/show/{{loginConfiguration.id}}" ><i class="glyphicon glyphicon-eye-open"></i></a></td>
                             </tr>
                             </tbody>
                         </table>
