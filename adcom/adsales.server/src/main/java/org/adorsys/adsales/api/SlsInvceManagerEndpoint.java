@@ -12,6 +12,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
 import org.adorsys.adcore.exceptions.AdException;
+import org.adorsys.adsales.jpa.SlsInvoice;
 
 @Stateless
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
@@ -45,6 +46,15 @@ public class SlsInvceManagerEndpoint
    public SlsInvoiceHolder cancelInvoice(SlsInvoiceHolder slsInvoiceHolder) throws AdException{
       return slsInvoiceManager.cancelInvoice(slsInvoiceHolder);
    }
+   
+   @POST
+   @Path("/deliveredInvoice")
+   @Consumes({ "application/json", "application/xml" })
+   @Produces({ "application/json", "application/xml" })
+   public SlsInvoice deliveredInvoice(SlsInvoice slsInvoice) throws AdException{
+      return slsInvoiceManager.deliveredInvoice(slsInvoice);
+   }
+   
    
    @GET
    @Path("/{id}")

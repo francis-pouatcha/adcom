@@ -10,6 +10,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adcore.utils.SequenceGenerator;
+import org.adorsys.adsales.jpa.SlsInvcePymtStatus;
 import org.adorsys.adsales.jpa.SlsInvoice;
 import org.adorsys.adsales.jpa.SlsInvoiceSearchInput;
 import org.adorsys.adsales.repo.SlsInvoiceRepository;
@@ -38,7 +39,7 @@ public class SlsInvoiceEJB
 		entity.setId(entity.getInvceNbr());
 		entity.setIdentif(entity.getInvceNbr());	
 		entity.setInvceDelivered(false);
-		entity.setInvcePaid(false);
+		entity.setInvcePymntStatus(SlsInvcePymtStatus.CREDIT);// by default, all invoice will be credit first
 		entity = repository.save(attach(entity));
 		return entity;
    }
@@ -55,11 +56,6 @@ public class SlsInvoiceEJB
 
    public SlsInvoice update(SlsInvoice entity)
    {
-	  SlsInvoice slsInvoice = findById(entity.getId());
-	  if(slsInvoice.getInvceDelivered())
-		  entity.setInvceDelivered(true);
-	  if(slsInvoice.getInvcePaid())
-		  entity.setInvcePaid(true);
       return repository.save(attach(entity));
    }
 
@@ -133,14 +129,14 @@ public StringBuilder preprocessQuery(String findOrCount, SlsInvoiceSearchInput s
 			}
 			qBuilder.append("s.invceNbr=:invceNbr");
 		}
-		if(searchInput.getFieldNames().contains("invcePaid") && StringUtils.isNotBlank(String.valueOf(entity.getInvcePaid()))){
+		if(searchInput.getFieldNames().contains("invcePymntStatus") && StringUtils.isNotBlank(String.valueOf(entity.getInvcePymntStatus()))){
 			if(!whereSet){
 				qBuilder.append(whereClause);
 				whereSet = true;
 			} else {
 				qBuilder.append(andClause);
 			}
-			qBuilder.append("s.invcePaid=:invcePaid");
+			qBuilder.append("s.invcePymntStatus=:invcePymntStatus");
 		}
 		if(searchInput.getFieldNames().contains("invceDelivered") && StringUtils.isNotBlank(String.valueOf(entity.getInvceDelivered()))){
 			if(!whereSet){
@@ -181,8 +177,8 @@ public StringBuilder preprocessQuery(String findOrCount, SlsInvoiceSearchInput s
 	   if(searchInput.getFieldNames().contains("invceNbr") && StringUtils.isNotBlank(entity.getSoNbr())){
 			query.setParameter("invceNbr", entity.getInvceNbr());
 		}
-	   if(searchInput.getFieldNames().contains("invcePaid") && StringUtils.isNotBlank(String.valueOf(entity.getInvcePaid()))){
-			query.setParameter("invcePaid", entity.getInvcePaid());
+	   if(searchInput.getFieldNames().contains("invcePymntStatus") && StringUtils.isNotBlank(String.valueOf(entity.getInvcePymntStatus()))){
+			query.setParameter("invcePymntStatus", entity.getInvcePymntStatus());
 		}
 	   if(searchInput.getFieldNames().contains("invceDelivered") && StringUtils.isNotBlank(String.valueOf(entity.getInvceDelivered()))){
 			query.setParameter("invceDelivered", entity.getInvceDelivered());

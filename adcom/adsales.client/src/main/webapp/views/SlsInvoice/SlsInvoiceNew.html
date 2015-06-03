@@ -2,8 +2,8 @@
     <div style="margin-bottom: 20px" >
         <!--<a class="btn btn-default"  ng-click="slsInvoiceNewCtlr.previous()" ng-disabled="slsInvoiceNewCtlr.index==0" ><i class="glyphicon glyphicon-chevron-left"></i> Previous</a>
         <a class="btn btn-default" ng-click="slsInvoiceNewCtlr.next()" ng-disabled="slsInvoiceNewCtlr.index==slsInvoiceNewCtlr.tabLength()-1 || slsInvoiceNewCtlr.tabLength()==0" >Next <i class="glyphicon glyphicon-chevron-right"></i></a>-->
-        <a class="btn btn-danger"
-           ng-show="slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.invcePaid==false
+        <a class="btn btn-danger" ng-disabled="slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.invceStatus=='RESUMED'"
+           ng-show="slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.invcePymntStatus=='CREDIT'
            && slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.invceDelivered==false
           && slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.invceStatus!='INITIATED'"
            ng-click="slsInvoiceNewCtlr.annulerCmd()" ><i class="glyphicon glyphicon-trash" ></i> Suspendre la facture</a>
@@ -17,7 +17,7 @@
         <a class="btn btn-primary" ng-disabled="slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.invceStatus=='CLOSED'
         || slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.invceStatus=='SUSPENDED'
         || slsInvoiceNewCtlr.slsInvoiceHolder.slsInvceItemsholder.length==0" ng-click="slsInvoiceNewCtlr.cloturerCmd()"><i class="glyphicon glyphicon-ok" ></i> Cloturer la facture</a>
-        <a class="btn btn-default col-lg-offset-1" href="#/SlsInvoices" ><i class="glyphicon glyphicon-list" ></i> Liste</a>
+        <a class="btn btn-default" href="#/SlsInvoices" ><i class="glyphicon glyphicon-list" ></i> Liste</a>
     </div>
     <form name="invoiceItemForm" id="invoiceItemForm" novalidate >
     <div class="panel panel-default" >

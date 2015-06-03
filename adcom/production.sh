@@ -43,7 +43,7 @@ cp adbnsptnr.server/target/adbnsptnr.server.war production/
 cp adsales.server/target/adsales.server.war production/
 cp adcshdwr.server/target/adcshdwr.server.war production/
 cp adacc.server/target/adacc.server.war production/
-cp adterm.server/target/adterm.server.warproduction/
+cp adterm.server/target/adterm.server.war production/
 cp adaptmt.server/target/adaptmt.server.war production/
 
 cp adres.client/target/adres.client.war production/
