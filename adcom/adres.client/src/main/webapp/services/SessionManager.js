@@ -32,7 +32,8 @@ angular.module('SessionManager',['Base64Factory','ADUtils','pascalprecht.transla
     	email:'',
     	terminalName:'',
     	timeZone:'',
-    	langIso2:''
+    	langIso2:'',
+        maxRebate:''
     };
     
     auth.isSet = function(value){
@@ -100,6 +101,7 @@ angular.module('SessionManager',['Base64Factory','ADUtils','pascalprecht.transla
     	    userWsHolder.terminalName=data.terminalName;
     	    userWsHolder.timeZone=data.timeZone;
     	    userWsHolder.langIso2=data.langIso2;
+            userWsHolder.maxRebate=data.maxRebate;
     	    
     	    if(userWsHolder.langIso2){
     	    	$translate.use(userWsHolder.langIso2);

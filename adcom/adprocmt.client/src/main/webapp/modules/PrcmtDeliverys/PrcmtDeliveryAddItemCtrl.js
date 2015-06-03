@@ -248,7 +248,7 @@ angular.module('AdProcmt').controller('prcmtDeliveryAddItemCtlr',['$scope','$rou
                     data.deliveryItems.push(prcmtDeliveryHolder.deliveryItems[i]);
             }
             start +=max;
-            var request = genericResource.customMethod(ProcmtUtils.urlManagerDelivery+'/close',data);
+            var request = genericResource.customMethod(ProcmtUtils.urlManagerDelivery+'/update',data);
             requests.push(request);
         }
         $q.all(requests).then(function(result) {
@@ -265,10 +265,12 @@ angular.module('AdProcmt').controller('prcmtDeliveryAddItemCtlr',['$scope','$rou
 
             return prcmtDeliveryHolderTmp;
         }).then(function(tmpResult) {
-            self.running ="";
-            self.closeStatus = false;
-            self.prcmtDelivery = tmpResult.delivery;
-            self.prcmtDeliveryItemHolders = tmpResult.deliveryItems;
+            genericResource.customMethod(ProcmtUtils.urlManagerDelivery+'/close',tmpResult.delivery).success(function(){
+                self.running ="";
+                self.closeStatus = false;
+                self.prcmtDelivery = tmpResult.delivery;
+                self.prcmtDeliveryItemHolders = tmpResult.deliveryItems;
+            })
         });
     }
 

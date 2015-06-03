@@ -11,6 +11,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
+import org.adorsys.adprocmt.jpa.PrcmtDelivery;
+
 @Stateless
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 @Path("/delivery")
@@ -32,8 +34,8 @@ public class PrcmtDeliveryManagerEndpoint
    @Path("/close")
    @Consumes({ "application/json", "application/xml" })
    @Produces({ "application/json", "application/xml" })
-   public PrcmtDeliveryHolder closeDelivery(PrcmtDeliveryHolder deliveryHolder){
-      return deliveryManager.closeDelivery(deliveryHolder);
+   public PrcmtDelivery closeDelivery(PrcmtDelivery delivery){
+      return deliveryManager.closePrcmtDelivery(delivery);
    }
    
    @GET

@@ -9,6 +9,7 @@ import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adbase.jpa.LoginRebate;
 import org.adorsys.adbase.repo.LoginRebateRepository;
+import org.apache.deltaspike.data.api.QueryResult;
 
 @Stateless
 public class LoginRebateEJB {
@@ -90,6 +91,10 @@ public class LoginRebateEJB {
 	public List<LoginRebate> findNextLogin(String identif) {
 		return repository.findNextLoginRebate(identif).maxResults(2)
 				.getResultList();
+	}
+	
+	public List<LoginRebate> findByLogin(String loginName){
+		return repository.findByLogin(loginName).getResultList();
 	}
 
 }

@@ -1,5 +1,6 @@
 package org.adorsys.adbase.rest;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adbase.holder.UserWorkspaceHolder;
 import org.adorsys.adbase.jpa.Login;
+import org.adorsys.adbase.jpa.LoginRebate;
 import org.adorsys.adbase.jpa.OuWorkspace;
 import org.adorsys.adbase.jpa.UserWorkspace;
 import org.adorsys.adbase.jpa.Workspace;
@@ -34,6 +36,9 @@ public class UserWorkspaceEJB {
 	
 	@Inject
 	private LoginEJB loginEJB;
+	
+	@Inject
+	private LoginRebateEJB loginConfigEjb;
 
 	public UserWorkspace create(UserWorkspace entity) {
 		return repository.save(attach(entity));
@@ -134,6 +139,7 @@ public class UserWorkspaceEJB {
 		holder.setEmail(login.getEmail());
 		holder.setTerminalName(principal.getTermName());
 		holder.setTimeZone(principal.getTimeZone());
+		holder.setMaxRebate(loginMaxRebate());
 		if(StringUtils.isNotBlank(principal.getLangIso2())){
 			holder.setLangIso2(principal.getLangIso2());
 		} else {
@@ -159,6 +165,7 @@ public class UserWorkspaceEJB {
 		holder.setEmail(login.getEmail());
 		holder.setTerminalName(principal.getTermName());
 		holder.setTimeZone(principal.getTimeZone());
+		holder.setMaxRebate(loginMaxRebate());
 		return holder;
 	}
 	
@@ -181,6 +188,14 @@ public class UserWorkspaceEJB {
 	
 	public List<UserWorkspace> findAssignedUserWorkspace(String loginName, String ouWsIdentif){
 		return repository.findByLoginNameAndOuWsIdentif(loginName, ouWsIdentif, new Date()).getResultList();
+	}
+	
+	private BigDecimal loginMaxRebate(){
+		String loginName = securityUtil.getCurrentLoginName();
+		List<LoginRebate> loginConfig = loginConfigEjb.findByLogin(loginName);
+		if(loginConfig.isEmpty())
+			return null;
+		return loginConfig.get(0).getMaxRebate();
 	}
 	
 }
