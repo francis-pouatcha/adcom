@@ -2,9 +2,9 @@
         <div class="panel panel-default">
             <div class="panel-heading" id="panel-heading">
                 <b>Prévisualisation</b>
-                <b>{{slsInvoicesUtils.translations['SlsInvoice_description.title']}}</b> 
+                <b>{{slsSalesOrderUtils.translations['SlsSalesOrder_description.title']}}</b> 
             </div>
-            <div id="print-invoice" class="panel-body">
+            <div id="print-slsso" class="panel-body">
                 <div class="row row-space">
                      <div class="col-lg-3" id="organisation">
                             <img ng-src="/adsales.client/img/adorsys.png" alt="logo" /> 
@@ -31,9 +31,8 @@
                     </div>
                     <div class="pull-right" style="margin-right:20px;" id="invoice-details">
                         <ul class="list-unstyled">
-                            <li><b>Facture N<sup>o</sup></b>  {{slsInvoice.invceNbr}}</li> 
-                            <li><b>Date de Facturation</b>  {{slsInvoicesUtils.formatDate(slsInvoice.invceDt, null)}}</li>
-                            <li><b>Date d'échéance</b>   {{slsInvoicesUtils.actualDate(null)}}</li>
+                            <li><b>Commande N<sup>o</sup></b>  {{slsSalesOrder.soNbr}}</li> 
+                            <li><b>Date de commande</b>  {{slsSalesOrderUtils.formatDate(slsSalesOrder.soDt, null)}}</li>
                         </ul>    
                     </div>
                 </div>
@@ -46,20 +45,20 @@
                         <table class="table table-bordered table-striped">
                                <thead>
                                    <tr>
-                                    <th>{{slsInvoicesUtils.translations['SlsInvceItem_artPic_description.title']}}</th>
-                                    <th>{{slsInvoicesUtils.translations['SlsInvceItem_artName_description.title']}}</th>
-                                    <th>{{slsInvoicesUtils.translations['SlsInvceItem_sppuPreTax_description.title']}}</th>
-                                    <th>{{slsInvoicesUtils.translations['SlsInvceItem_qty_description.title']}}</th>
-                                    <th>{{slsInvoicesUtils.translations['SlsInvceItem_netSPTaxIncl_description.title']}}</th>
+                                    <th>{{slsSalesOrderUtils.translations['SlsSOItem_artPic_description.title']}}</th>
+                                    <th>{{slsSalesOrderUtils.translations['SlsSOItem_artName_description.title']}}</th>
+                                    <th>{{slsSalesOrderUtils.translations['SlsSOItem_sppuPreTax_description.title']}}</th>
+                                    <th>{{slsSalesOrderUtils.translations['SlsSOItem_orderedQty_description.title']}}</th>
+                                    <th>{{slsSalesOrderUtils.translations['SlsSOItem_netSPTaxIncl_description.title']}}</th>
                                    </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="slsInvceItem in slsInvoice.slsInvceItems">
-                                        <td>{{slsInvceItem.artPic}}</td>
-                                        <td>{{slsInvceItem.artName}}</td>
-                                        <td>{{slsInvceItem.sppuPreTax}}</td>
-                                        <td>{{slsInvceItem.qty}}</td>
-                                        <td>{{slsInvceItem.netSPTaxIncl}}</td>                                        
+                                    <tr ng-repeat="slsSOItem in slsSalesOrder.slsSOItems">
+                                        <td>{{slsSOItem.artPic}}</td>
+                                        <td>{{slsSOItem.artName}}</td>
+                                        <td>{{slsSOItem.sppuPreTax}}</td>
+                                        <td>{{slsSOItem.orderedQty}}</td>
+                                        <td>{{slsSOItem.netSPTaxIncl}}</td>                                        
                                     </tr>
                                     <tr>
                                        <td rowspan="4" colspan="3">
@@ -67,8 +66,8 @@
                                        </td>
                                        <td colspan="2">
                                           <h5>
-                                              {{slsInvoicesUtils.translations['SlsInvoice_netSPPreTax_description.title']}} :
-                                              <span class="pull-right" style="font-weight: normal;">{{slsInvoice.netSPPreTax}}</span>
+                                              {{slsSalesOrderUtils.translations['SlsSalesOrder_netSPPreTax_description.title']}} :
+                                              <span class="pull-right" style="font-weight: normal;">{{slsSalesOrder.netSPPreTax}}</span>
                                           </h5>
                                           
                                        </td>    
@@ -76,17 +75,17 @@
                                     <tr>
                                        <td colspan="2">
                                           <h5>
-                                              {{slsInvoicesUtils.translations['SlsInvoice_vatAmount_description.title']}} :
-                                              <span class="pull-right" style="font-weight: normal;">{{slsInvoice.vatAmount}}</span>
+                                              {{slsSalesOrderUtils.translations['SlsSalesOrder_vatAmount_description.title']}} :
+                                              <span class="pull-right" style="font-weight: normal;">{{slsSalesOrder.vatAmount}}</span>
                                           </h5>
                                        </td>
                                     </tr>
                                     <tr>
                                        <td colspan="2">
                                           <h5>
-                                              {{slsInvoicesUtils.translations['SlsInvoice_pymtDscntPct_description.title']}} :
-                                              <span ng-if="slsInvoice.pymtDscntPct == null" class="pull-right">0</span>              
-                                              <span class="pull-right" style="font-weight: normal;">{{slsInvoice.pymtDscntPct}}</span>
+                                              {{slsSalesOrderUtils.translations['SlsSalesOrder_pymtDscntPct_description.title']}} :
+                                              <span ng-if="slsSalesOrder.pymtDscntPct == null" class="pull-right">0</span>              
+                                              <span class="pull-right" style="font-weight: normal;">{{slsSalesOrder.pymtDscntPct}}</span>
                                           </h5>
                                           
                                        </td>
@@ -94,8 +93,8 @@
                                     <tr>
                                        <td colspan="2">
                                           <h5>
-                                              {{slsInvoicesUtils.translations['SlsInvoice_netSPTaxIncl_description.title']}} :
-                                              <span class="pull-right" style="font-weight: normal;">{{slsInvoice.netSPTaxIncl}}</span>
+                                              {{slsSalesOrderUtils.translations['SlsSalesOrder_netSPTaxIncl_description.title']}} :
+                                              <span class="pull-right" style="font-weight: normal;">{{slsSalesOrder.netSPTaxIncl}}</span>
                                           </h5>
                                        </td>
                                     </tr>
@@ -110,11 +109,11 @@
             </div>
             <div class="row row-space">
                     <div class="col-lg-12">
-                        <button  ng-click="returnSlsInvce(slsInvoice)" id="print-button" class="btn btn-danger pull-left">
-                            <i class="glyphicon glyphicon-chevron-left"></i>Retour a la facture
+                        <button  ng-click="returnSlsSO(slsSalesOrder)" id="print-button" class="btn btn-danger pull-left">
+                            <i class="glyphicon glyphicon-chevron-left"></i>Retour a la commande
                         </button>
-                        <button  ng-click="printPdf('print-invoice')" id="print-button" class="btn btn-default pull-right">
-                            <i class="glyphicon glyphicon-print"></i>Imprimer
+                         <button  ng-click="printPdf('print-slsso')" id="print-button" class="btn btn-default pull-right">
+                            <i class="glyphicon glyphicon-print"></i>{{slsSalesOrderUtils.translations['Entity_print.title']}}
                         </button>
                     </div>
                 

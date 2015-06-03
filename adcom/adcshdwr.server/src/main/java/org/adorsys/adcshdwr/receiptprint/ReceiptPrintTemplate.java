@@ -3,11 +3,12 @@ package org.adorsys.adcshdwr.receiptprint;
 import java.util.List;
 
 import org.adorsys.adcshdwr.jpa.CdrDsArtItem;
+import org.adorsys.adcshdwr.print.api.PrintMode;
 
 /**
  * 
  * @author Hsimo
- * Template for printing ticket pdf
+ * Template Class for printing ticket pdf
  *
  */
 public abstract class ReceiptPrintTemplate {
@@ -28,10 +29,13 @@ public abstract class ReceiptPrintTemplate {
 
 	public abstract String getReceiptPrinterName();
 	
-	public abstract ReceiptPrintMode getReceiptPrintMode();
+	public abstract PrintMode getReceiptPrintMode();
 	
 	
-	// The receipt Model
+	/**
+	 *  The receipt template pdf Model
+	 * @param cdrPrinterData
+	 */
 	public final void printPdfReceipt(CdrDrctSalesPrinterData cdrPrinterData){
 		List<CdrDsArtItem> items = cdrPrinterData.getCdrDsArtItemSearchResult().getResultList();
 		startPage();

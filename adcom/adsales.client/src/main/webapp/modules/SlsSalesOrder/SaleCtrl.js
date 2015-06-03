@@ -26,7 +26,6 @@ angular.module('AdSales')
         slsSOPtnrsHolder:[]
     };
     if(slsSalesOrderState.slsSalesOrderHolder){
-        console.log('enter');
         self.slsSalesOrderHolder = slsSalesOrderState.slsSalesOrderHolder;
     }
     if(!self.slsSalesOrderHolder){
@@ -73,7 +72,7 @@ angular.module('AdSales')
     
     
     function loadSO(){
-        console.log("SO: "+self.slsSalesOrder);
+       //loading
     }
 
     function loadBusinessPartner(val){

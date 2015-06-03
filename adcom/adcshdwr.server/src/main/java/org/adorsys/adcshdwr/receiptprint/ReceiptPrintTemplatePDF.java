@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import org.adorsys.adcshdwr.jpa.CdrDsArtItem;
+import org.adorsys.adcshdwr.print.api.PrintMode;
 import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -23,8 +24,6 @@ public class ReceiptPrintTemplatePDF extends ReceiptPrintTemplate {
 	private static ReceiptDataItemMetaData receiptDataItemMetaData;
 	private static ReceiptDataTableMetaData receiptDataTableMetaData;
 	private static ReceiptDataTwoColsMetaData receiptDataTwoColsMetaData;
-	
-	private boolean printOrder=Boolean.TRUE;
 	private ReceiptDataTable rdt;
 	
 	static {
@@ -271,8 +270,6 @@ public class ReceiptPrintTemplatePDF extends ReceiptPrintTemplate {
 		pdDocument.close();
 	}
 
-	
-
 
 	@Override
 	public Object getPage() {
@@ -291,10 +288,8 @@ public class ReceiptPrintTemplatePDF extends ReceiptPrintTemplate {
 	}
 
 	@Override
-	public ReceiptPrintMode getReceiptPrintMode() {
+	public PrintMode getReceiptPrintMode() {
 		return rpp.getReceiptPrintMode();
 	}
-
-
 
 }
