@@ -14,5 +14,9 @@ public enum BaseProcStepEnum
    MODIFYING, @Description("BaseProcStepEnum_COMMITTING_description")
    COMMITTING, @Description("BaseProcStepEnum_POSTING_description")
    POSTING, @Description("BaseProcStepEnum_REVERSING_description")
-   REVERSING
+   REVERSING,@Description("BaseProcStepEnum_SUSPENDING_description")
+   SUSPENDING,@Description("BaseProcStepEnum_RESUMING_description")
+   RESUMING,@Description("BaseProcStepEnum_DELIVERING_description")
+   DELIVERING,@Description("BaseProcStepEnum_RETURNING_description")
+   RETURNING
 }

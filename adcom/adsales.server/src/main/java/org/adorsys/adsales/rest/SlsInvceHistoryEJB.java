@@ -3,9 +3,12 @@ package org.adorsys.adsales.rest;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
 
+import org.adorsys.adbase.enums.BaseHistoryTypeEnum;
+import org.adorsys.adsales.event.SlsInvceDeliveredEvent;
 import org.adorsys.adsales.jpa.SlsInvceHistory;
 import org.adorsys.adsales.repo.SlsInvceHistoryRepository;
 
@@ -15,10 +18,19 @@ public class SlsInvceHistoryEJB
 
    @Inject
    private SlsInvceHistoryRepository repository;
-
+   
+   	@Inject
+   	@SlsInvceDeliveredEvent
+	private Event<SlsInvceHistory> slsInvceDeliveredEvent;
+  
    public SlsInvceHistory create(SlsInvceHistory entity)
    {
-      return repository.save(attach(entity));
+	   SlsInvceHistory slsInvceHistory = repository.save(attach(entity));
+       
+      if (BaseHistoryTypeEnum.DELIVERED.name().equals(slsInvceHistory.getHstryType())) {
+    	  slsInvceDeliveredEvent.fire(slsInvceHistory);
+		}    
+      return slsInvceHistory;
    }
 
    public SlsInvceHistory deleteById(String id)

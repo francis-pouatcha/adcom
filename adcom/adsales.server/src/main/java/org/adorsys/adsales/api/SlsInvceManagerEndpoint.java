@@ -44,7 +44,15 @@ public class SlsInvceManagerEndpoint
    @Consumes({ "application/json", "application/xml" })
    @Produces({ "application/json", "application/xml" })
    public SlsInvoiceHolder cancelInvoice(SlsInvoiceHolder slsInvoiceHolder) throws AdException{
-      return slsInvoiceManager.cancelInvoice(slsInvoiceHolder);
+      return slsInvoiceManager.suspendInvoice(slsInvoiceHolder);
+   }
+   
+   @POST
+   @Path("/resumeInvoice")
+   @Consumes({ "application/json", "application/xml" })
+   @Produces({ "application/json", "application/xml" })
+   public SlsInvoiceHolder resumeInvoice(SlsInvoiceHolder slsInvoiceHolder) throws AdException{
+      return slsInvoiceManager.resumeInvoice(slsInvoiceHolder);
    }
    
    @POST
