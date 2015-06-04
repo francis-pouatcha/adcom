@@ -1,7 +1,4 @@
 <div ng-cloak class="panel-group">
-    <div class="alert alert-danger" ng-show="error" role="alert">
-        <strong>Warning!</strong> {{error}}
-    </div>
     <div class="panel panel-default">
         <div class="panel-heading">
             <span><b>{{cdrDrctSalesUtils.translations['CdrDsArtItem_description.title']}} </b></span>
@@ -84,7 +81,7 @@
                     	<label>{{cdrDrctSalesUtils.translations['CdrDrctSales_paidAmt_description.title']}} : </label>
                     	<input type="text" price-green="price-green" class="form-control" ng-model="cdrDsArtHolder.paidAmt" ng-change="paidAmtChanged()"  />
                     </span>
-                    <div class="col-lg-3 btn-group">
+                    <div class="col-lg-3 btn-group" style="margin-top: 25px;">
                         <button ng-click="save()" ng-show="!showprint" class="btn btn-primary"><i class="glyphicon glyphicon-save" ></i> {{'Entity_save.title'|translate}}</button>
                         <!--<button ng-click=""  style="margin-top: 23px;" class="btn">{{commonTranslations.translations['Entity_save.title']}}</button>
                         <button ng-click="recompute()"  style="margin-top: 23px;" class="btn">{{cdrDrctSalesUtils.translations['Entity_recompute.title']}}</button>-->
@@ -95,6 +92,11 @@
                 <div class="row">
                     <span class="col-lg-3" style="font-size:17px;">{{cdrDrctSalesUtils.translations['CdrDrctSales_vatAmount_description.title']}}: </span>
                     <span class="col-lg-2" price-style="price-style">{{cdrDsArtHolder.cdrDrctSales.vatAmount | currencyAccounting:cur}}</span>
+                     <span class="col-lg-3 col-lg-offset-3">
+                        <div class="alert alert-danger" ng-show="error" role="alert">
+					        <strong>Warning!</strong> {{error}}
+					    </div>
+                    </span>
                 </div>
 
                 <div class="row">
