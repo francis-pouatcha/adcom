@@ -34,7 +34,7 @@
                         </div>
                         <div class="form-group col-lg-2">
                             <label class=" control-label" for="sppuPreTax">Montant Brut Vente</label>
-                            <input value="{{cdrDsArtItemHolder.item.sppuPreTax * cdrDsArtItemHolder.item.soldQty}}" disabled type="text" ng- class="form-control" autocomplete="off">
+                            <input value="{{parseInt(cdrDsArtItemHolder.item.sppuPreTax * cdrDsArtItemHolder.item.soldQty)==NaN?0:parseInt(cdrDsArtItemHolder.item.sppuPreTax * cdrDsArtItemHolder.item.soldQty)}}" disabled type="text" ng- class="form-control" autocomplete="off">
                         </div>
                         <div class="form-group col-lg-2">
                             <label class=" control-label" for="vatPct">{{cdrDrctSalesUtils.translations['CdrDsArtItem_vatPct_description.title']}}</label>
