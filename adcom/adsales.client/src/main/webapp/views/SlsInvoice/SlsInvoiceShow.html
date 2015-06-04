@@ -86,7 +86,7 @@
                         <div class=" form-group ">
                             <label class="col-lg-2 ">{{slsInvoicesUtils.translations['SlsInvoice_invcePaid_description.title']}} :</label>
                             <div class="col-lg-2" >
-                                <input type="text" value="{{slsInvoice.invcePaid | yesNo}}" name="invcePaid" class="form-control" disabled>
+                                <input type="text" value="{{slsInvoice.invcePymntStatus}}" name="invcePaid" class="form-control" disabled>
                             </div>
                             <label class="col-lg-2">{{slsInvoicesUtils.translations['SlsInvoice_invceDelivered_description.title']}} :</label>
                             <div class="col-lg-2" >
@@ -95,7 +95,7 @@
 
                             <div class="col-lg-4">
                                 <div class="text-center">
-                                    <a class="btn btn-info  btn-lg btn-block" ng-click="delivered();" ng-disabled="slsInvoice.invceDelivered">
+                                    <a class="btn btn-info  btn-lg btn-block" ng-show="slsInvoice.invceStatus=='CLOSED'" ng-click="delivered();" ng-disabled="slsInvoice.invceDelivered">
                                         {{slsInvoicesUtils.translations['SlsInvoice_delivered_description.text']}}
                                     </a>
                                 </div>

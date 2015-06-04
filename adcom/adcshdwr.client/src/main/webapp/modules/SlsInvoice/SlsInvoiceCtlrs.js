@@ -372,7 +372,13 @@ function($scope,genericResource,cdrSlsInvoicesUtils,cdrSlsInvoicesState,$locatio
                 $scope.cdrPymntHolder=cdrPymntHolder;
                 $scope.cdrPymntHolder.amt = $scope.slsInvoice.netAmtToPay - $scope.cdrPymntHolder.cdrPymnt.amt;
                 if($scope.cdrPymntHolder.amt == 0){
-                    $scope.slsInvoice.invcePaid = true;
+                    $scope.slsInvoice.invcePymntStatus = 'PAYE';
+                    genericResource.update(cdrSlsInvoicesUtils.urlBase, $scope.slsInvoice)
+                        .success(function(invoice){
+                            $scope.slsInvoice =invoice;
+                        })
+                }else{
+                    $scope.slsInvoice.invcePymntStatus = 'AVANCE';
                     genericResource.update(cdrSlsInvoicesUtils.urlBase, $scope.slsInvoice)
                         .success(function(invoice){
                             $scope.slsInvoice =invoice;

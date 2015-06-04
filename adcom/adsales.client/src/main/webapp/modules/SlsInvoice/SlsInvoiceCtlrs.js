@@ -222,9 +222,9 @@ function($scope,genericResource,slsInvoicesUtils,slsInvoicesState,$location,$roo
             $scope.searchInput.entity.invceNbr= $scope.searchInput.entity.invceNbr;
         	fieldNames.push('invceNbr');
         }
-        if($scope.searchInput.entity.invcePaid === true ){
-            $scope.searchInput.entity.invcePaid = $scope.searchInput.entity.invcePaid;
-            fieldNames.push('invcePaid');
+        if($scope.searchInput.entity.invcePymntStatus){
+            $scope.searchInput.entity.invcePymntStatus = $scope.searchInput.entity.invcePymntStatus;
+            fieldNames.push('invcePymntStatus');
         }
         if($scope.searchInput.entity.invceDelivered === true){
             $scope.searchInput.entity.invceDelivered= $scope.searchInput.entity.invceDelivered;
@@ -366,19 +366,12 @@ function($scope,genericResource,slsInvoicesUtils,slsInvoicesState,$location,$roo
     };
 
      $scope.delivered = function(){
-         if($scope.slsInvoice.invceDelivered === false) {
-             $scope.slsInvoice.invceDelivered = true;
-             $scope.update();
-         }
+         genericResource.customMethod(slsInvoicesUtils.urlBase+'/deliveredInvoice', $scope.slsInvoice)
+             .success(function(slsInvoice){
+                 $scope.slsInvoice = slsInvoice;
+             })
+             .error(function(error){
+                 $scope.error = error;
+             });
      };
-
-    $scope.update = function(){
-        genericResource.update(slsInvoicesUtils.urlBase, $scope.slsInvoice)
-            .success(function(slsInvoice){
-                $scope.slsInvoice = slsInvoice;
-            })
-            .error(function(error){
-                $scope.error = error;
-            });
-    };
 }]);

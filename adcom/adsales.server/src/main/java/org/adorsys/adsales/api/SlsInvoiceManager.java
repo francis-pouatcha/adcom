@@ -19,6 +19,7 @@ import org.adorsys.adcore.jpa.CurrencyEnum;
 import org.adorsys.adsales.jpa.SlsInvceHistory;
 import org.adorsys.adsales.jpa.SlsInvceItem;
 import org.adorsys.adsales.jpa.SlsInvcePtnr;
+import org.adorsys.adsales.jpa.SlsInvcePymtStatus;
 import org.adorsys.adsales.jpa.SlsInvoice;
 import org.adorsys.adsales.rest.SlsInvceHistoryEJB;
 import org.adorsys.adsales.rest.SlsInvceItemEJB;
@@ -296,7 +297,9 @@ public class SlsInvoiceManager {
 
 	public SlsInvoiceHolder cancelInvoice(SlsInvoiceHolder slsInvoiceHolder) throws AdException {
 		SlsInvoice slsInvoice = slsInvoiceHolder.getSlsInvoice();
-		if(slsInvoice.getInvcePaid() || slsInvoice.getInvceDelivered())
+		if(SlsInvcePymtStatus.AVANCE.equals(slsInvoice.getInvcePymntStatus()) 
+				|| SlsInvcePymtStatus.PAYE.equals(slsInvoice.getInvcePymntStatus())
+				|| slsInvoice.getInvceDelivered())
 			throw new AdException("Facture paye ou livre, vous ne pouvez suspendre");
 		
 		slsInvoice.setInvceStatus(BaseProcessStatusEnum.SUSPENDED.name());
@@ -304,6 +307,12 @@ public class SlsInvoiceManager {
 		slsInvoiceHolder.setSlsInvoice(slsInvoice);
 		createCancelinvoiceHistory(slsInvoice);
 		return slsInvoiceHolder;
+	}
+
+	public SlsInvoice deliveredInvoice(SlsInvoice slsInvoice) {
+		slsInvoice.setInvceDelivered(true);
+		//fire event
+		return null;
 	}
 
 }
