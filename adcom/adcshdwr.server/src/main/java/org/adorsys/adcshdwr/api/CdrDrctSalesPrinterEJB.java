@@ -19,8 +19,8 @@ import org.adorsys.adcshdwr.jpa.CdrDrctSales;
 import org.adorsys.adcshdwr.jpa.CdrDsArtItem;
 import org.adorsys.adcshdwr.jpa.CdrDsArtItemSearchResult;
 import org.adorsys.adcshdwr.jpa.CdrDsPymntItem;
+import org.adorsys.adcshdwr.print.api.PrintMode;
 import org.adorsys.adcshdwr.receiptprint.CdrDrctSalesPrinterData;
-import org.adorsys.adcshdwr.receiptprint.ReceiptPrintMode;
 import org.adorsys.adcshdwr.receiptprint.ReceiptPrintTemplatePDF;
 import org.adorsys.adcshdwr.receiptprint.ReceiptPrinterData;
 import org.adorsys.adcshdwr.rest.CdrDsArtItemEJB;
@@ -58,7 +58,7 @@ public class CdrDrctSalesPrinterEJB {
 		try {
 			FileOutputStream fileOutputStream = new FileOutputStream(fileName);
 			IOUtils.write(data, fileOutputStream);
-			ReceiptPrintMode printMode = worker.getReceiptPrintMode();
+			PrintMode printMode = worker.getReceiptPrintMode();
 			switch (printMode) {
 			case open:
 				 Desktop.getDesktop().open(new File(fileName));

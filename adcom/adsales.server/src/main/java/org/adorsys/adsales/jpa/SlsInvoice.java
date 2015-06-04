@@ -39,8 +39,8 @@ public class SlsInvoice extends AbstractIdentifData {
 	private String soNbr;
 
 	@Column
-	@Description("SlsInvoice_invcePaid_description")
-	private boolean invcePaid;
+	@Description("SlsInvoice_invcePymntStatus_description")
+	private SlsInvcePymtStatus invcePymntStatus;
 	
 	@Column
 	@Description("SlsInvoice_invceDelivered_description")
@@ -204,6 +204,14 @@ public class SlsInvoice extends AbstractIdentifData {
 		return creatingUsr;
 	}
 
+	public SlsInvcePymtStatus getInvcePymntStatus() {
+		return invcePymntStatus;
+	}
+
+	public void setInvcePymntStatus(SlsInvcePymtStatus invcePymntStatus) {
+		this.invcePymntStatus = invcePymntStatus;
+	}
+
 	public void setCreatingUsr(String creatingUsr) {
 		this.creatingUsr = creatingUsr;
 	}
@@ -233,15 +241,6 @@ public class SlsInvoice extends AbstractIdentifData {
 	}
 	
 	
-
-	public boolean getInvcePaid() {
-		return invcePaid;
-	}
-
-	public void setInvcePaid(boolean invcePaid) {
-		this.invcePaid = invcePaid;
-	}
-
 	public boolean getInvceDelivered() {
 		return invceDelivered;
 	}

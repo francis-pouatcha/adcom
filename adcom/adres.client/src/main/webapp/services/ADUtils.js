@@ -202,6 +202,23 @@ angular.module('ADUtils',[])
         else pattern = inPattern;
         return dateFormat(fieldName, pattern, '');
     };
+    service.printPdfs = function(el){               
+            var DocumentContainer = document.getElementById(el);
+             var html = '<html><head>'+
+                        '<link rel="stylesheet" type="text/css" href="styles/print/custom.css">'+
+                        '<link rel="stylesheet" type="text/css" href="styles/print/bootstrap.min.css">'+
+                        '</head><body style="background:#ffffff; font-size: 10px;">'+
+                         DocumentContainer.innerHTML+
+                        '<iframe name="print_frame" width="0" height="0" frameborder="0" title="Adcom" src="Adcom"> </iframe>'+
+                        '</body></html>';
+             var WindowObject = window.open("", "PrintWindow",
+                     "width=750,height=650,top=200,left=10,toolbars=no,scrollbars=yes,status=no,resizable=yes");
+             WindowObject.document.writeln(html);
+             WindowObject.document.close();
+             WindowObject.focus();
+             WindowObject.print();
+             WindowObject.close();
+    };
     return service;
 }])
 .factory('commonTranslations',['$translate',function($translate){
@@ -648,7 +665,7 @@ angular.module('ADUtils',[])
     return service;
 	
 }])
-    .factory('fileExtractor',['$window',function($window){
+.factory('fileExtractor',['$window',function($window){
         var  service = {
             extractFile : extractFile,
             saveFile:saveFile
@@ -669,6 +686,6 @@ angular.module('ADUtils',[])
             saveAs(file, fileName);
         }
 
-    }]);
+}]);
 
 

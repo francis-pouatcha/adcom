@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.adorsys.adcshdwr.print.api.PrintMode;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -13,7 +14,7 @@ import org.apache.commons.lang3.math.NumberUtils;
 
 public class ReceiptPrintProperties {
 	
-	private ReceiptPrintMode receiptPrintMode = ReceiptPrintMode.open;
+	private PrintMode receiptPrintMode = PrintMode.open;
 	private String receiptPrinterName = "receipt";
 	private boolean debug = true;
 	
@@ -97,7 +98,7 @@ public class ReceiptPrintProperties {
 				String receiptPrintModeProp = properties.getProperty("receipt-print-mode");
 				if(StringUtils.isNotBlank(receiptPrintModeProp)){
 					try {
-						r.setReceiptPrintMode(ReceiptPrintMode.valueOf(receiptPrintModeProp));
+						r.setReceiptPrintMode(PrintMode.valueOf(receiptPrintModeProp));
 					} catch(Exception ex){
 						// noop. Keep default mode
 					}
@@ -201,11 +202,11 @@ public class ReceiptPrintProperties {
 		return r;
 	}
 
-	public ReceiptPrintMode getReceiptPrintMode() {
+	public PrintMode getReceiptPrintMode() {
 		return receiptPrintMode;
 	}
 
-	public void setReceiptPrintMode(ReceiptPrintMode receiptPrintMode) {
+	public void setReceiptPrintMode(PrintMode receiptPrintMode) {
 		this.receiptPrintMode = receiptPrintMode;
 	}
 

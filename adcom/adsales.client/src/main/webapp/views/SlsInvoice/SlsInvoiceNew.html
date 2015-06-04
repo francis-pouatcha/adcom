@@ -2,21 +2,23 @@
     <div style="margin-bottom: 20px" >
         <!--<a class="btn btn-default"  ng-click="slsInvoiceNewCtlr.previous()" ng-disabled="slsInvoiceNewCtlr.index==0" ><i class="glyphicon glyphicon-chevron-left"></i> Previous</a>
         <a class="btn btn-default" ng-click="slsInvoiceNewCtlr.next()" ng-disabled="slsInvoiceNewCtlr.index==slsInvoiceNewCtlr.tabLength()-1 || slsInvoiceNewCtlr.tabLength()==0" >Next <i class="glyphicon glyphicon-chevron-right"></i></a>-->
-        <a class="btn btn-danger"
-           ng-show="slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.invcePaid==false
+        <a class="btn btn-danger" ng-disabled="slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.invceStatus=='RESUMED'"
+           ng-show="slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.invcePymntStatus=='CREDIT'
            && slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.invceDelivered==false
           && slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.invceStatus!='INITIATED'"
            ng-click="slsInvoiceNewCtlr.annulerCmd()" ><i class="glyphicon glyphicon-trash" ></i> Suspendre la facture</a>
         <a class="btn btn-default" ng-click="slsInvoiceNewCtlr.newCmd()"  ><i class="glyphicon glyphicon-plus" ></i> Nouvelle facture</a>
         <a class="btn btn-warning" ng-click="slsInvoiceNewCtlr.addBptnr()"><i class="glyphicon glyphicon-user" ></i> {{slsInvoiceNewCtlr.slsInvoiceHolder.slsInvcePtnrsHolder[0].slsInvcePtnr.ptnrNbr}}</a>
+        
         <label>{{slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.invceDt | date:'medium'}}</label>
-        <a class="btn btn-primary col-lg-offset-1"
-           ng-disabled="slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.invceStatus=='CLOSED'
-           || slsInvoiceNewCtlr.slsInvoiceHolder.slsInvceItemsholder.length==0
-           || slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.invceStatus=='SUSPENDED'" ng-click="slsInvoiceNewCtlr.saveCmd()"><i class="glyphicon glyphicon-save" ></i> Enregistrer la facture</a>
-        <a class="btn btn-primary" ng-disabled="slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.invceStatus=='CLOSED'
-        || slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.invceStatus=='SUSPENDED'
-        || slsInvoiceNewCtlr.slsInvoiceHolder.slsInvceItemsholder.length==0" ng-click="slsInvoiceNewCtlr.cloturerCmd()"><i class="glyphicon glyphicon-ok" ></i> Cloturer la facture</a>
+
+        <a class="btn btn-primary col-lg-offset-1" ng-disabled="slsInvoiceNewCtlr.testSaveCmd()" ng-click="slsInvoiceNewCtlr.saveCmd()">             <i class="glyphicon glyphicon-save" ></i> Enregistrer la facture
+        </a>
+        
+        <a class="btn btn-primary" ng-disabled="slsInvoiceNewCtlr.testSaveCmd()" ng-click="slsInvoiceNewCtlr.cloturerCmd()">
+            <i class="glyphicon glyphicon-ok" ></i> Cloturer la facture
+        </a>
+
         <a class="btn btn-default col-lg-offset-1" href="#/SlsInvoices" ><i class="glyphicon glyphicon-list" ></i> Liste</a>
     </div>
     <form name="invoiceItemForm" id="invoiceItemForm" novalidate >

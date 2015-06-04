@@ -73,7 +73,11 @@
                                     <div class="col-lg-3">
                                         <div class="form-group">
                                             <label class="control-label" tooltips="" tooltip-title="{{'SlsInvoice_invcePaid_description.text' | translate}}" tooltip-side="top" for="invcePaid">{{slsInvoicesUtils.translations['SlsInvoice_invcePaid_description.title']}}</label>
-                                            <input type="checkbox" id="invcePaid" name="invcePaid" ng-model="searchInput.entity.invcePaid" class="form-control" >
+                                            <select id="invcePymntStatus" name="invcePymntStatus" ng-model="searchInput.entity.invcePymntStatus" class="form-control" >
+                                                <option value="CREDIT">CREDIT</option>
+                                                <option value="AVANCE">AVANCE</option>
+                                                <option value="PAYE">PAYE</option>
+                                             </select>
                                         </div>
                                     </div>
 
@@ -161,15 +165,16 @@
                                 <td>{{slsInvce.netSPTaxIncl}}</td>
                                 <td>{{slsInvce.netAmtToPay}}</td>
                                 <td>
-                                    <label ng-show="slsInvce.invcePaid" class="label label-success">PAYE</label>
-                                    <label ng-show="!slsInvce.invcePaid" class="label label-danger">NON PAYE</label>
+                                    <label ng-show="slsInvce.invcePymntStatus=='PAYE'" class="label label-success">PAYE</label>
+                                    <label ng-show="slsInvce.invcePymntStatus=='AVANCE'" class="label label-warning">AVANCE</label>
+                                    <label ng-show="slsInvce.invcePymntStatus=='CREDIT'" class="label label-danger">CREDIT</label>
                                 </td>
                                 <td>
                                     <label ng-show="slsInvce.invceDelivered" class="label label-success">LIVRE</label>
                                     <label ng-show="!slsInvce.invceDelivered" class="label label-danger">NON LIVRE</label>
                                 </td>
-                                <td><a href="" ng-click="show(slsInvce,$index)"><i class="glyphicon glyphicon-eye-open"></i></a></td>
-                                <td><a href="" ng-click="edit(slsInvce,$index)"><i class="glyphicon glyphicon-edit"></i></a></td>
+                                <td><a ng-show="slsInvce.invceStatus=='CLOSED' || slsInvce.invceStatus=='SUSPENDED'"  href="" ng-click="show(slsInvce,$index)"><i class="glyphicon glyphicon-eye-open"></i></a></td>
+                                <td><a href="" ng-show="slsInvce.invceStatus=='ONGOING' || slsInvce.invceStatus=='RESUMED'" ng-click="edit(slsInvce,$index)"><i class="glyphicon glyphicon-edit"></i></a></td>
                             </tr>
                             </tbody>
                         </table>

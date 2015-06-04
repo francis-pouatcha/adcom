@@ -63,7 +63,7 @@ public class IndirectSalePaymentImpl {
 		pymntItem.setRcvdAmt(pymtEvt.getRcvdAmt());
 		pymntItem.setPymntNbr(cdrPymnt.getPymntNbr());
 		pymntItem.setPymntMode(pymtEvt.getPymntMode());
-		pymntItem.setPymntDocType("InDirect_Sale_Payment");
+		pymntItem.setPymntDocType("InDirect_Sale_Payment");//todo, change with ennum
 		pymntItem.evlte();
 		pymntItem = cdrPymntItemEJB.create(pymntItem);	
 		

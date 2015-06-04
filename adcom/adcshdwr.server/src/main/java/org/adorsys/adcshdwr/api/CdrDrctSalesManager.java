@@ -270,6 +270,7 @@ public class CdrDrctSalesManager {
 		}	
 		if(returned==true){
 			cdrCstmrVchrEJB.generateVoucher(cdrDsArtHolder);
+			// Print voucher 
 		}
 		return cdrDsArtHolder;
 	}

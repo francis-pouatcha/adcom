@@ -375,12 +375,10 @@ public class PrcmtDeliveryManager {
 	}	
 	
 	public PrcmtDelivery closePrcmtDelivery(PrcmtDelivery delivery){	
-		PrcmtDelivery deliveryPersi = deliveryEJB.findByIdentif(delivery.getIdentif());
-		
+		PrcmtDelivery deliveryPersi = deliveryEJB.findByIdentif(delivery.getIdentif());		
 			deliveryPersi.setDlvryStatus(BaseProcessStatusEnum.CLOSING.name());
 			deliveryPersi = deliveryEJB.update(deliveryPersi);	
-			createClosingDeliveryHistory(deliveryPersi);// Status closing
-			
+			createClosingDeliveryHistory(deliveryPersi);// Status closing		
 		return deliveryPersi;
 	}	
 
