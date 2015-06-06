@@ -10,6 +10,7 @@ import org.adorsys.adsales.jpa.SlsInvcePtnr;
 import org.adorsys.adsales.jpa.SlsInvoice;
 import org.adorsys.adsales.jpa.SlsSOPtnr;
 import org.adorsys.adsales.repo.SlsInvcePtnrRepository;
+import org.apache.deltaspike.data.api.QueryResult;
 
 @Stateless
 public class SlsInvcePtnrEJB
@@ -84,6 +85,10 @@ public class SlsInvcePtnrEJB
    public SlsInvcePtnr findPtnr(String invceNbr, String ptnrNbr, String roleInInvce) {
 		return repository.findBy(SlsInvcePtnr.toId(invceNbr, ptnrNbr, roleInInvce));
 	}
+   
+   public List<SlsInvcePtnr> findByInvceNbr(String invceNbr){
+	   return repository.findByInvceNbr(invceNbr).getResultList();
+   }
 	
 	public SlsInvcePtnr addPtnr(SlsInvoice invoice, String ptnrNbr,
 			String roleInSO) {

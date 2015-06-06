@@ -245,8 +245,23 @@ public class SlsInvoiceManager {
 
 
 	public SlsInvoiceHolder findInvoice(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		SlsInvoiceHolder slsInvoiceHolder = new SlsInvoiceHolder();
+		SlsInvoice slsInvoice = slsInvoiceEJB.findById(id);
+		slsInvoiceHolder.setSlsInvoice(slsInvoice);
+		
+		List<SlsInvceItem> listItems = slsInvceItemEJB.findInvceNbr(slsInvoice.getInvceNbr());
+		for(SlsInvceItem item:listItems){
+			SlsInvceItemHolder slsInvceItemHolder = new SlsInvceItemHolder();
+			slsInvceItemHolder.setSlsInvceItem(item);
+			slsInvoiceHolder.getSlsInvceItemsholder().add(slsInvceItemHolder);
+		}
+		List<SlsInvcePtnr> listPtnrs = slsInvcePtnrEJB.findByInvceNbr(slsInvoice.getInvceNbr());
+		for(SlsInvcePtnr ptnr:listPtnrs){
+			SlsInvcePtnrHolder slsInvcePtnrHolder = new SlsInvcePtnrHolder();
+			slsInvcePtnrHolder.setSlsInvcePtnr(ptnr);
+			slsInvoiceHolder.getSlsInvcePtnrsHolder().add(slsInvcePtnrHolder);
+		}	
+		return slsInvoiceHolder;
 	}
 
 	public SlsInvoiceHolder saveInvoice(SlsInvoiceHolder slsInvoiceHolder) throws AdException {
