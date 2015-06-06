@@ -301,8 +301,8 @@ function($scope,genericResource,slsInvoicesUtils,slsInvoicesState,$location,$roo
         });
     };
 }])
-.controller('slsInvoicesShowCtlr',['$scope','genericResource','$location','slsInvoicesUtils','slsInvoicesState','$rootScope',
-                                 function($scope,genericResource,$location,slsInvoicesUtils,slsInvoicesState,$rootScope){
+.controller('slsInvoicesShowCtlr',['$scope','genericResource','$location','slsInvoicesUtils', 'adUtils', 'slsInvoicesState','$rootScope',
+                                 function($scope,genericResource,$location,slsInvoicesUtils,adUtils,slsInvoicesState,$rootScope){
     $scope.slsInvoice = slsInvoicesState.resultHandler.entity();
     $scope.itemPerPage=slsInvoicesState.resultHandler.itemPerPage;
     $scope.currentPage=slsInvoicesState.resultHandler.currentPage();
@@ -310,6 +310,7 @@ function($scope,genericResource,slsInvoicesUtils,slsInvoicesState,$location,$roo
     $scope.error = "";
     $scope.slsInvoicesUtils=slsInvoicesUtils;
     $scope.handlePrintPreviewInvoice=handlePrintPreviewInvoice;
+    $scope.returnSlsInvce = returnSlsInvce;
     $scope.printPdf=printPdf;
                                      
     $scope.pageChangeHandler = function(num) {
@@ -323,23 +324,15 @@ function($scope,genericResource,slsInvoicesUtils,slsInvoicesState,$location,$roo
 		}
 	}
                                      
+    function returnSlsInvce(slsInvce){
+        if(slsInvoicesState.resultHandler.selectedObject(slsInvce) != -1){
+			$location.path('/SlsInvoices/show/');
+		}
+    }
+                                     
      function printPdf(el){                      
-           var DocumentContainer = document.getElementById(el);
-            var html = '<html><head>'+
-                       '<link rel="stylesheet" type="text/css" href="styles/print/custom.css">'+
-                       '<link rel="stylesheet" type="text/css" href="styles/print/bootstrap.min.css">'+
-                       '</head><body style="background:#ffffff; font-size: 10px;">'+
-                        DocumentContainer.innerHTML+
-                       '<iframe name="print_frame" width="0" height="0" frameborder="0" title="Adcom" src="Adcom"> </iframe>'+
-                       '</body></html>';
-            var WindowObject = window.open("", "PrintWindow",
-                    "width=750,height=650,top=200,left=10,toolbars=no,scrollbars=yes,status=no,resizable=yes");
-            WindowObject.document.writeln(html);
-            WindowObject.document.close();
-            WindowObject.focus();
-            WindowObject.print();
-            WindowObject.close();
-        }
+           return adUtils.printPdfs(el);
+     }
     
     $scope.previous = function (){
         var bp = slsInvoicesState.resultHandler.previous();

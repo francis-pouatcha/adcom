@@ -43,6 +43,7 @@ angular.module('AdSales')
       }
     
     if(!self.slsInvoiceHolder){
+        console.log('Null InvoiceHolder');
         self.slsInvoiceHolder.slsInvoice.invceDt = new Date();
         self.slsInvoiceHolder.slsInvoice.grossSPPreTax = 0;
         self.slsInvoiceHolder.slsInvoice.netSPPreTax = 0;
@@ -85,11 +86,20 @@ angular.module('AdSales')
     self.findArticleByCip = findArticleByCip;
     self.remise = remise;
     self.saveCmd = saveCmd;
+    self.testSaveCmd = testSaveCmd;
     loadPtnrRole();
 
      $scope.pageChangeHandler = function(num) {
       //Simple Pagination
     };
+    
+    
+    function testSaveCmd() {
+        return self.slsInvoiceHolder.slsInvoice.invceStatus=='CLOSED'|| 
+               self.slsInvoiceHolder.slsInvceItemsholder.length==0 ||
+               self.slsInvoiceHolder.slsInvoice.invceStatus=='SUSPENDED';
+    }
+    
     
     function loadBusinessPartner(val){
         return genericResource.findByLikePromissed(SlsInvoiceUtils.adbnsptnr, 'cpnyName', val)
@@ -218,6 +228,8 @@ angular.module('AdSales')
                 self.slsInvoiceItemHolder.slsInvceItem.netSPTaxIncl = self.slsInvoiceItemHolder.slsInvceItem.netSPPreTax+self.slsInvoiceItemHolder.slsInvceItem.vatAmount;
             }
         }
+    
+    
     function totalAmount(){
         self.slsInvoiceHolder.slsInvoice.grossSPPreTax = 0.0;
         self.slsInvoiceHolder.slsInvoice.rebate = 0.0;
@@ -265,6 +277,9 @@ angular.module('AdSales')
         }
         $scope.error="";
     }
+    
+    
+    
         
     function addItem(){
         if (!self.slsInvoiceItemHolder || angular.isUndefined(self.slsInvoiceItemHolder) || (!self.slsInvoiceItemHolder.slsInvceItem.artPic && 1 > self.slsInvoiceItemHolder.slsInvceItem.qty)) {
@@ -308,6 +323,8 @@ angular.module('AdSales')
         enableCloseCmd();
         $scope.error="";
     }
+    
+    
     function deleteItem(index){
         var slsInvoiceItemHolderDeleted = {};
         angular.copy(self.slsInvoiceHolder.slsInvceItemsholder[index],slsInvoiceItemHolderDeleted) ;
@@ -319,6 +336,8 @@ angular.module('AdSales')
         totalAmount();
         enableCloseCmd();
     }
+    
+    
     function editItem(index){
         angular.copy(self.slsInvoiceHolder.slsInvceItemsholder[index],self.slsInvoiceItemHolder) ;
         self.slsInvoiceHolder.slsInvceItemsholder.splice(index,1);
@@ -328,6 +347,10 @@ angular.module('AdSales')
         function cloturerCmd(){
             for(var i=0;i<self.slsInvceItemsholderDeleted.length;i++){
                 self.prcmtOrderHolder.poItems.push(self.slsInvceItemsholderDeleted[i])
+            }
+            // Set the soNbr when it is null
+            if(!self.slsInvoiceHolder.slsInvoice.soNbr){
+                self.slsInvoiceHolder.slsInvoice.soNbr = self.slsInvoiceHolder.slsInvoice.invceNbr;
             }
             genericResource.customMethod(SlsInvoiceUtils.invoice+'/clotureInvoice',self.slsInvoiceHolder).success(function(data){
                 self.slsInvoiceHolder=data;

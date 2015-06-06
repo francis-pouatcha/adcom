@@ -109,6 +109,9 @@
                         <button class="btn btn-primary" ng-click="generateInvoice(slsSalesOrder)">
                             <i class="glyphicon glyphicon-plus"></i>Generer facture
                         </button>
+                        <button  ng-click="handlePrintPreviewSlsSO(slsSalesOrder)" class="btn btn-default ">
+                            <i class="glyphicon glyphicon-print"></i>{{slsSalesOrderUtils.translations['Entity_print.title']}}
+                        </button>
                        </div>        
                     </div>
                  </div>

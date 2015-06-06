@@ -6,7 +6,6 @@ import org.adorsys.adcshdwr.jpa.CdrDsPymntItem;
 
 public class ReceiptPrinterData {
 	
-	// find BnptrsByNbr(CdrSrctSales.getRcptNbr())
 	private final String customerName;
 	private final String paymentDate;
 	private final CdrDsPymntItem payment;

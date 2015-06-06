@@ -116,7 +116,8 @@ angular.module('AdSales')
     	            'Entity_cancel.title',
     	            'Entity_save.title',
                     'Entity_first.title',
-                    'Entity_last.title'
+                    'Entity_last.title',
+                    'Entity_print.title'
     	            ])
 		 .then(function (translations) {
 			 service.translations = translations;
@@ -388,7 +389,7 @@ function($scope,genericResource,slsSalesOrderUtils,slsSalesOrderState,$location,
         });
     };
 }])
-.controller('slsSalesOrderShowCtlr',['$scope','genericResource','$location','slsSalesOrderUtils','slsSalesOrderState', '$filter','$rootScope', function($scope,genericResource,$location,slsSalesOrderUtils,slsSalesOrderState,$filter,$rootScope){
+.controller('slsSalesOrderShowCtlr',['$scope','genericResource','$location','slsSalesOrderUtils','adUtils','slsSalesOrderState', '$filter','$rootScope', function($scope,genericResource,$location,slsSalesOrderUtils,adUtils,slsSalesOrderState,$filter,$rootScope){
     $scope.slsSalesOrder = slsSalesOrderState.resultHandler.entity();
     $scope.itemPerPage=slsSalesOrderState.resultHandler.itemPerPage;
     $scope.currentPage=slsSalesOrderState.resultHandler.currentPage();
@@ -396,6 +397,9 @@ function($scope,genericResource,slsSalesOrderUtils,slsSalesOrderState,$location,
     $scope.error = "";
     $scope.generateInvoice = generateInvoice;
     $scope.slsSalesOrderUtils=slsSalesOrderUtils;
+    $scope.handlePrintPreviewSlsSO = handlePrintPreviewSlsSO;
+    $scope.returnSlsSO = returnSlsSO;
+    $scope.printPdf=printPdf;
     
     var slsSOHolder = {
         slsSalesOrder:{},
@@ -417,6 +421,10 @@ function($scope,genericResource,slsSalesOrderUtils,slsSalesOrderState,$location,
         if(slsSOPtnrs && slsSOPtnrs.length>0) console.log('OK');
         return (slsSOPtnrs && slsSOPtnrs.length>0);
     }
+    
+    function printPdf(el){                      
+           return adUtils.printPdfs(el);
+     }
     
     
     function generateInvoice(slsSO){
@@ -479,6 +487,18 @@ function($scope,genericResource,slsSalesOrderUtils,slsSalesOrderState,$location,
            slsInvcePtnrHolder.slsInvcePtnr.roleInInvce = slsSO.slsSOPtnrs[i].roleInSO;
            slsInvceHolder.slsInvcePtnrsHolder.push(slsInvcePtnrHolder);
        }
+    }
+    
+    function handlePrintPreviewSlsSO(slsSO){
+		if(slsSalesOrderState.resultHandler.selectedObject(slsSO) != -1){
+			$location.path('/SlsSalesOrders/print/preview/');
+		}
+	}
+    
+    function returnSlsSO(slsSO){
+        if(slsSalesOrderState.resultHandler.selectedObject(slsSO) != -1){
+			$location.path('/SlsSalesOrders/show/');
+		}
     }
     
     

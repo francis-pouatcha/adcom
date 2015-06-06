@@ -289,6 +289,7 @@ public class CdrDrctSalesManager {
 		if(returned==true){
 			createModifiedSalesHistory(cdrDsArtHolder.getCdrDrctSales());
 			cdrCstmrVchrEJB.generateVoucher(cdrDsArtHolder);
+			// Print voucher 
 		}
 		return cdrDsArtHolder;
 	}
