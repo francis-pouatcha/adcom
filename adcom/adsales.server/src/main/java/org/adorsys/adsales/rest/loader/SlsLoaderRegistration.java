@@ -16,6 +16,7 @@ import javax.inject.Inject;
 import org.adorsys.adbase.enums.BaseHistoryTypeEnum;
 import org.adorsys.adbase.jpa.BaseBatchEvt;
 import org.adorsys.adbase.rest.BaseBatchEvtEJB;
+import org.adorsys.adstock.api.ModConstants;
 import org.apache.commons.lang3.time.DateUtils;
 
 @Startup
@@ -46,7 +47,8 @@ public class SlsLoaderRegistration {
 	@AccessTimeout(unit=TimeUnit.MINUTES, value=10)
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public void process() throws Exception {
-		List<BaseBatchEvt> found = batchEvtEJB.findByEvtModuleAndEvtKlassAndEvtName("ADSTOCK", "PrcmtDeliveryEvt", BaseHistoryTypeEnum.COMMITTED.name(), 0, 1);
+		// At least one delivery has happened.
+		List<BaseBatchEvt> found = batchEvtEJB.findByEvtModuleAndEvtKlassAndEvtName(ModConstants.MODULE_NAME, "PrcmtDeliveryEvt", BaseHistoryTypeEnum.COMMITTED.name(), 0, 1);
 		if(found.isEmpty()) return;
 		dataSheetLoader.process();
 	}

@@ -11,4 +11,8 @@ public interface BaseBatchEvtRepository extends EntityRepository<BaseBatchEvt, S
 	
 	@Query("SELECT e FROM BaseBatchEvt AS e WHERE e.evtModule=?1 AND e.evtKlass=?2 AND e.evtName=?3")
 	public QueryResult<BaseBatchEvt> findByEvtModuleAndEvtKlassAndEvtName(String evtModule, String evtKlass, String evtName);
+	
+	@Query("SELECT e FROM BaseBatchEvt AS e WHERE e.entIdentif=?1 AND e.evtModule=?2 AND e.evtKlass=?3 AND e.evtName=?4")
+	public QueryResult<BaseBatchEvt> findByEntIdentifAndEvtModuleAndEvtKlassAndEvtName(String entIdentif, String evtModule, String evtKlass, String evtName);
+	
 }

@@ -1,4 +1,4 @@
-package org.adorsys.adstock.recptcls;
+package org.adorsys.adstock.recptcls.sls;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -11,8 +11,8 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
 import org.adorsys.adbase.enums.BaseHistoryTypeEnum;
-import org.adorsys.adcshdwr.jpa.CdrDrctSalesEvt;
-import org.adorsys.adcshdwr.rest.CdrDrctSalesEvtEJB;
+import org.adorsys.adsales.jpa.SlsInvceEvt;
+import org.adorsys.adsales.rest.SlsInvceEvtEJB;
 
 /**
  * Watch over direct sales events and update the corresponding stock.
@@ -21,20 +21,20 @@ import org.adorsys.adcshdwr.rest.CdrDrctSalesEvtEJB;
  *
  */
 @Singleton
-public class StkDirectSalesListener {
+public class SlsInvceListener {
 	
 	@Inject
-	private CdrDrctSalesEvtEJB evtEJB;
+	private SlsInvceEvtEJB evtEJB;
 	
 	@Inject
-	private StkDirectSalesEvtProcessor evtProcessor; 
+	private SlsInvceEvtProcessor evtProcessor; 
 
 	@Schedule(minute = "*", hour="*", persistent=false, second="*/35")
 	@AccessTimeout(unit=TimeUnit.MINUTES, value=10)
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public void process() throws Exception {
-		List<CdrDrctSalesEvt> events = evtEJB.findByEvtName(BaseHistoryTypeEnum.CLOSED.name());
-		for (CdrDrctSalesEvt evt : events) {
+		List<SlsInvceEvt> events = evtEJB.findByEvtName(BaseHistoryTypeEnum.CLOSED.name());
+		for (SlsInvceEvt evt : events) {
 			evtProcessor.process(evt);
 		}
 	}

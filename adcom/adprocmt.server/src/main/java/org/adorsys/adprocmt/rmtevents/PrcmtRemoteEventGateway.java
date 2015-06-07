@@ -2,6 +2,7 @@ package org.adorsys.adprocmt.rmtevents;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import javax.ejb.AccessTimeout;
@@ -9,6 +10,9 @@ import javax.ejb.Schedule;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 
+import org.adorsys.adbase.jpa.BaseBatchEvt;
+import org.adorsys.adbase.rest.BaseBatchEvtEJB;
+import org.adorsys.adprocmt.api.ModConstants;
 import org.adorsys.adprocmt.event.PrcmtDeliveryClosedEvent;
 import org.adorsys.adprocmt.jpa.PrcmtDeliveryEvt;
 import org.adorsys.adprocmt.jpa.PrcmtDeliveryEvtLease;
@@ -27,6 +31,9 @@ public class PrcmtRemoteEventGateway {
 	@Inject
 	private PrcmtDeliveryEvtEJB evtEJB;
 	
+	@Inject
+	private BaseBatchEvtEJB batchEvtEJB;
+	
 	public void handleDeliveryClosedEvent(@Observes @PrcmtDeliveryClosedEvent PrcmtDeliveryHstry deliveryHstry){
 		// Move this operation to an event.
 		String evtName = deliveryHstry.getHstryType();
@@ -35,6 +42,14 @@ public class PrcmtRemoteEventGateway {
 		evt.setEvtName(evtName);
 		evt.setId(deliveryHstry.getId());
 		evtEJB.create(evt);
+
+		BaseBatchEvt batchEvt = new BaseBatchEvt();
+		deliveryHstry.copyTo(batchEvt);
+		batchEvt.setEvtName(evtName);
+		batchEvt.setId(UUID.randomUUID().toString());
+		batchEvt.setEvtModule(ModConstants.MODULE_NAME);
+		batchEvt.setEvtKlass(PrcmtDeliveryEvt.class.getSimpleName());
+		batchEvtEJB.create(batchEvt);
 	}
 	
 	@Schedule(minute = "*/39", hour="*", persistent=false)

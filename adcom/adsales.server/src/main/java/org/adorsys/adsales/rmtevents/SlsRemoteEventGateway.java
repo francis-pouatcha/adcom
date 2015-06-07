@@ -1,4 +1,4 @@
-package org.adorsys.adcshdwr.rmtevents;
+package org.adorsys.adsales.rmtevents;
 
 import java.util.Date;
 import java.util.List;
@@ -15,43 +15,43 @@ import javax.inject.Inject;
 
 import org.adorsys.adbase.jpa.BaseBatchEvt;
 import org.adorsys.adbase.rest.BaseBatchEvtEJB;
-import org.adorsys.adcshdwr.api.ModConstants;
-import org.adorsys.adcshdwr.event.CdrDrctSalesClosedEvent;
-import org.adorsys.adcshdwr.jpa.CdrDrctSalesEvt;
-import org.adorsys.adcshdwr.jpa.CdrDrctSalesEvtLease;
-import org.adorsys.adcshdwr.jpa.CdrDsHstry;
-import org.adorsys.adcshdwr.rest.CdrDrctSalesEvtEJB;
-import org.adorsys.adcshdwr.rest.CdrDrctSalesEvtLeaseEJB;
+import org.adorsys.adsales.api.ModConstants;
+import org.adorsys.adsales.event.SlsInvceDeliveredEvent;
+import org.adorsys.adsales.jpa.SlsInvceEvt;
+import org.adorsys.adsales.jpa.SlsInvceEvtLease;
+import org.adorsys.adsales.jpa.SlsInvceHistory;
+import org.adorsys.adsales.rest.SlsInvceEvtEJB;
+import org.adorsys.adsales.rest.SlsInvceEvtLeaseEJB;
 import org.apache.commons.lang3.time.DateUtils;
 
 @Stateless
-public class CdrRemoteEventGateway {
+public class SlsRemoteEventGateway {
 
 	@Inject
-	private CdrDrctSalesEvtEJB evtEJB;
+	private SlsInvceEvtEJB evtEJB;
 
 	@Inject
 	private BaseBatchEvtEJB batchEvtEJB;
 	
 	@Inject
-	private CdrDrctSalesEvtLeaseEJB evtLeaseEJB;
+	private SlsInvceEvtLeaseEJB evtLeaseEJB;
 
-	public void handleDirectSalesClosedEvent(
-			@Observes @CdrDrctSalesClosedEvent CdrDsHstry dsHstry) {
-		// Move this operation to an event.
-		String evtName = dsHstry.getHstryType();
-		CdrDrctSalesEvt evt = new CdrDrctSalesEvt();
-		dsHstry.copyTo(evt);
+	public void handleSlsInvceDeliveredEvent(
+			@Observes @SlsInvceDeliveredEvent SlsInvceHistory invceHistory) {
+
+		String evtName = invceHistory.getHstryType();
+		SlsInvceEvt evt = new SlsInvceEvt();
+		invceHistory.copyTo(evt);
 		evt.setEvtName(evtName);
-		evt.setId(dsHstry.getId());
+		evt.setId(invceHistory.getId());
 		evtEJB.create(evt);
 		
 		BaseBatchEvt batchEvt = new BaseBatchEvt();
-		dsHstry.copyTo(batchEvt);
+		invceHistory.copyTo(batchEvt);
 		batchEvt.setEvtName(evtName);
 		batchEvt.setId(UUID.randomUUID().toString());
 		batchEvt.setEvtModule(ModConstants.MODULE_NAME);
-		batchEvt.setEvtKlass(CdrDrctSalesEvt.class.getSimpleName());
+		batchEvt.setEvtKlass(SlsInvceEvt.class.getSimpleName());
 		batchEvtEJB.create(batchEvt);
 	}
 
@@ -60,8 +60,8 @@ public class CdrRemoteEventGateway {
 	@AccessTimeout(unit=TimeUnit.MINUTES, value=10)
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public void cleanUpProcessedEvent() {
-		List<CdrDrctSalesEvt> listAll = evtEJB.listAll(0, 10);
-		for (CdrDrctSalesEvt evt : listAll) {
+		List<SlsInvceEvt> listAll = evtEJB.listAll(0, 10);
+		for (SlsInvceEvt evt : listAll) {
 			Date now = new Date();
 			Date hstryDt = evt.getHstryDt();
 			
@@ -69,14 +69,14 @@ public class CdrRemoteEventGateway {
 			if (now.before(DateUtils.addHours(hstryDt, 1)))
 				return;
 			
-			List<CdrDrctSalesEvtLease> leases = evtLeaseEJB.findByEvtId(evt.getId());
-			for (CdrDrctSalesEvtLease lease : leases) {
+			List<SlsInvceEvtLease> leases = evtLeaseEJB.findByEvtId(evt.getId());
+			for (SlsInvceEvtLease lease : leases) {
 				if (!lease.expired(now))
 					return;
 			}
 			// remove leases;
 			leases = evtLeaseEJB.findByEvtId(evt.getId());
-			for (CdrDrctSalesEvtLease lease : leases) {
+			for (SlsInvceEvtLease lease : leases) {
 				evtLeaseEJB.deleteById(lease.getId());
 			}
 

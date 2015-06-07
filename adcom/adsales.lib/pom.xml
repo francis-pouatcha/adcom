@@ -5,12 +5,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.adorsys.adcom</groupId>
-		<artifactId>adcom.server.parent</artifactId>
+		<artifactId>adcom.lib.parent</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
-		<relativePath>../adcom.server.parent</relativePath>
+		<relativePath>../adcom.lib.parent</relativePath>
 	</parent>
-	<artifactId>adsales.server</artifactId>
-	<packaging>war</packaging>
+	<artifactId>adsales.lib</artifactId>
+	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>
 			<groupId>org.adorsys.adcom</groupId>
@@ -22,18 +22,8 @@
 			<artifactId>adbase.lib</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.adorsys.adcom</groupId>
-			<artifactId>adsales.lib</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.adorsys.adcom</groupId>
-			<artifactId>adstock.lib</artifactId>
-			<version>${project.version}</version>
-		</dependency>
 	</dependencies>
 	<build>
-		<finalName>adsales.server</finalName>
+		<finalName>adsales.lib</finalName>
 	</build>
 </project>

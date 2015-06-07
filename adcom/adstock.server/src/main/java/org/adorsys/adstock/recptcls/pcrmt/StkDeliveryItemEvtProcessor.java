@@ -1,4 +1,4 @@
-package org.adorsys.adstock.recptcls;
+package org.adorsys.adstock.recptcls.pcrmt;
 
 import java.math.BigDecimal;
 import java.util.Date;
