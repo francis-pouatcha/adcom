@@ -1,5 +1,7 @@
 package org.adorsys.adstock.recptcls;
 
+import java.math.BigDecimal;
+
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
@@ -62,7 +64,11 @@ public class StkDirectSalesItemEvtProcessor {
 		} else {
 			lotStockQty.setSeqNbr(0);
 		}
-		lotStockQty.setStockQty(BigDecimalUtils.negate(itemEvtData.getSoldQty()));
+		BigDecimal returnedQty = BigDecimalUtils.zeroIfNull(itemEvtData.getReturnedQty());
+		BigDecimal soldQty = BigDecimalUtils.zeroIfNull(itemEvtData.getSoldQty());
+		// +return minus sold.
+		BigDecimal stockQty = BigDecimalUtils.subs(returnedQty, soldQty);
+		lotStockQty.setStockQty(stockQty);
 		lotStockQty = lotStockQtyEJB.create(lotStockQty);
 		
 		StkDirectSalesItemHstry hstry = new StkDirectSalesItemHstry();

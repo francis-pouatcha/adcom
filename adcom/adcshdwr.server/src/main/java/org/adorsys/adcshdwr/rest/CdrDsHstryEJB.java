@@ -9,7 +9,6 @@ import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adbase.enums.BaseHistoryTypeEnum;
 import org.adorsys.adcshdwr.event.CdrDrctSalesClosedEvent;
-import org.adorsys.adcshdwr.event.CdrDrctSalesReturnedEvent;
 import org.adorsys.adcshdwr.jpa.CdrDsHstry;
 import org.adorsys.adcshdwr.repo.CdrDsHstryRepository;
 
@@ -23,18 +22,12 @@ public class CdrDsHstryEJB
 	@Inject
 	@CdrDrctSalesClosedEvent
 	private Event<CdrDsHstry> cdrDrctSalesClosedEvent;
-    @Inject
-    @CdrDrctSalesReturnedEvent
-	private Event<CdrDsHstry> cdrDrctSalesReturnedEvent;
    
    public CdrDsHstry create(CdrDsHstry entity)
    {
 		CdrDsHstry cdrDsHstry = repository.save(attach(entity));
 		if (BaseHistoryTypeEnum.CLOSED.name().equals(cdrDsHstry.getHstryType())) {
 			cdrDrctSalesClosedEvent.fire(cdrDsHstry);
-		}
-		if (BaseHistoryTypeEnum.RETURNED.name().equals(cdrDsHstry.getHstryType())) {
-			cdrDrctSalesReturnedEvent.fire(cdrDsHstry);
 		}
 		return cdrDsHstry;
    }
