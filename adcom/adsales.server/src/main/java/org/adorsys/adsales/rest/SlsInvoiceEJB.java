@@ -98,7 +98,7 @@ public class SlsInvoiceEJB
 		for (SlsInvoice slsInvoice : repository.findByLike(entity, start, max, attributes)) {
 			String statusOfInvoice = slsInvoice.getInvceStatus();
 			
-			if(!statusOfInvoice.equals(BaseProcessStatusEnum.CLOSED.name()))
+			if(statusOfInvoice.equals(BaseProcessStatusEnum.CLOSED.name()))
 				slsInvoices.add(slsInvoice);
 		}
 
