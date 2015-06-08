@@ -18,7 +18,7 @@ public class CdrDsHstryEJB
 
    @Inject
    private CdrDsHstryRepository repository;
-
+   
 	@Inject
 	@CdrDrctSalesClosedEvent
 	private Event<CdrDsHstry> cdrDrctSalesClosedEvent;

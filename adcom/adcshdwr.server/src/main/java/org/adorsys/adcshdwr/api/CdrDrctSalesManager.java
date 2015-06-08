@@ -3,7 +3,6 @@
  */
 package org.adorsys.adcshdwr.api;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -73,7 +72,7 @@ public class CdrDrctSalesManager {
 	@Inject
 	private CdrDrctSalesPrinterEJB salesPrinterEJB;
 
-	public CdrDsArtHolder updateOrder(CdrDsArtHolder cdrDsArtHolder) throws AdException{
+	private CdrDsArtHolder updateOrder(CdrDsArtHolder cdrDsArtHolder) throws AdException{
 		CdrDrctSales cdrDrctSales = cdrDsArtHolder.getCdrDrctSales();
 		CdrCshDrawer activeCshDrawer = cshDrawerEJB.getActiveCshDrawer();
 		if(activeCshDrawer == null) throw new AdException("No opened cash drawer found for this session, please open one.");
@@ -139,24 +138,13 @@ public class CdrDrctSalesManager {
 
 			cdrDsArtItemHolder.setItem(cdrDsArtItem);
 		}
-
+		
+		// I split this block, because payment detail are done on closing.
 		if(itemModified){
 			recomputeOrder(cdrDrctSales);
-			//			cdrDrctSales.setPoStatus(BaseProcessStatusEnum.ONGOING.name());
 			cdrDrctSales = cdrDrctSalesEJB.update(cdrDrctSales);
-			PaymentEvent paymentEvent = new PaymentEvent(CdrPymntMode.CASH, cdrDrctSales.getNetAmtToPay(), cdrDsArtHolder.getPaidAmt(), new Date(), cdrDrctSales.getDsNbr());
-			pymntValidator.check(paymentEvent);
-			directSaleEvent.fire(paymentEvent);	
-			
-			//Inject an EJB for printing ticket pdf 
-			salesPrinterEJB.printReceiptPdf(cdrDrctSales);
-			
 			cdrDsArtHolder.setCdrDrctSales(cdrDrctSales);
 		}
-		/*		if(modified || itemModified){
-			createModifiedOrderHistory(cdrDrctSales);
-			updateCshDrawer(cdrDrctSales);
-		}*/
 		return cdrDsArtHolder;
 	}
 
@@ -202,10 +190,41 @@ public class CdrDrctSalesManager {
 		cdrDrctSales.evlte();
 	}
 
+	/**
+	 * I am not understanding while this can be different: closeSales and returnSales.
+	 * 
+	 * Something is wrong here. What happens if a business want to return cash to the
+	 * customer that returns an item?
+	 * 
+	 * @param cdrDsArtHolder
+	 * @return
+	 * @throws AdException
+	 */
 	public CdrDsArtHolder closeSales(CdrDsArtHolder cdrDsArtHolder) throws AdException{
 		cdrDsArtHolder = updateOrder(cdrDsArtHolder);
 		CdrDrctSales cdrDrctSales = cdrDsArtHolder.getCdrDrctSales();
+
+		PaymentEvent paymentEvent = new PaymentEvent(CdrPymntMode.CASH, cdrDrctSales.getNetAmtToPay(), cdrDsArtHolder.getPaidAmt(), new Date(), cdrDrctSales.getDsNbr());
+		pymntValidator.check(paymentEvent);
+		directSaleEvent.fire(paymentEvent);	
+		
+		//Inject an EJB for printing ticket pdf 
+		salesPrinterEJB.printReceiptPdf(cdrDrctSales);
+
 		createClosedSalesHistory(cdrDrctSales);
+		cdrDsArtHolder.setCdrDrctSales(cdrDrctSales);
+		return cdrDsArtHolder;
+	}
+
+	public CdrDsArtHolder returnProduct(CdrDsArtHolder cdrDsArtHolder) throws AdException {
+		cdrDsArtHolder = updateOrder(cdrDsArtHolder);
+		CdrDrctSales cdrDrctSales = cdrDsArtHolder.getCdrDrctSales();
+
+		cdrCstmrVchrEJB.generateVoucher(cdrDsArtHolder);
+
+		createClosedSalesHistory(cdrDrctSales);
+
+		cdrDsArtHolder.setCdrDrctSales(cdrDrctSales);
 		return cdrDsArtHolder;
 	}
 
@@ -239,6 +258,23 @@ public class CdrDrctSalesManager {
 		cdrDsHstry.makeHistoryId(true);
 		cdrDsHstryEJB.create(cdrDsHstry);
 	}
+	
+//	private void createModifiedSalesHistory(CdrDrctSales cdrDrctSales){
+//		TermWsUserPrincipal callerPrincipal = securityUtil.getCallerPrincipal();
+//		CdrDsHstry cdrDsHstry = new CdrDsHstry();
+//
+//		cdrDsHstry.setComment(BaseHistoryTypeEnum.RETURNED.name());
+//		cdrDsHstry.setAddtnlInfo(CdrDsInfo.prinInfo(cdrDrctSales));
+//		cdrDsHstry.setEntIdentif(cdrDrctSales.getId());
+//		//		cdrDsHstry.setEntStatus(prcmtOrder.getPoStatus());
+//		cdrDsHstry.setHstryDt(new Date());
+//		cdrDsHstry.setHstryType(BaseHistoryTypeEnum.RETURNED.name());	
+//		cdrDsHstry.setOrignLogin(callerPrincipal.getName());
+//		cdrDsHstry.setOrignWrkspc(callerPrincipal.getWorkspaceId());
+//		cdrDsHstry.setProcStep(BaseProcStepEnum.RETURNING.name());
+//		cdrDsHstry.makeHistoryId(true);
+//		cdrDsHstryEJB.create(cdrDsHstry);
+//	}
 
 
 	public CdrDsArtHolder findCdrDsArtHolder(String id) {
@@ -257,24 +293,4 @@ public class CdrDrctSalesManager {
 		cdrDsArtHolder.setChangeAmt(cdrDsPymntItem.getDiffAmt());		
 		return cdrDsArtHolder;
 	}
-
-
-	public CdrDsArtHolder returnProduct(CdrDsArtHolder cdrDsArtHolder) throws AdException {
-		List<CdrDsArtItemHolder> items = cdrDsArtHolder.getItems();
-		Boolean returned = false;
-		for(CdrDsArtItemHolder item:items){
-			if(item.getItem().getReturnedQty() != null && item.getItem().getReturnedQty().compareTo(BigDecimal.ZERO) == 1 ){
-				cdrDsArtItemEJB.update(item.getItem());
-				returned = true;
-			}
-		}	
-		if(returned==true){
-			cdrCstmrVchrEJB.generateVoucher(cdrDsArtHolder);
-			// Print voucher 
-		}
-		return cdrDsArtHolder;
-	}
-	
-	
-
 }

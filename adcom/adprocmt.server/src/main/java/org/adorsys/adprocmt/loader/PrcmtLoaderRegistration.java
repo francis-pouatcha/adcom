@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import org.adorsys.adbase.enums.BaseHistoryTypeEnum;
 import org.adorsys.adbase.jpa.BaseBatchEvt;
 import org.adorsys.adbase.rest.BaseBatchEvtEJB;
+import org.adorsys.adstock.api.ModConstants;
 
 @Startup
 @Singleton
@@ -41,8 +42,10 @@ public class PrcmtLoaderRegistration {
 	@AccessTimeout(unit=TimeUnit.MINUTES, value=10)
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public void process() throws Exception {
-		List<BaseBatchEvt> found = batchEvtEJB.findByEvtModuleAndEvtKlassAndEvtName("ADSTOCK", "InvInvtryEvt", BaseHistoryTypeEnum.COMMITTED.name(), 0, 1);
+		// Ad least one invetory whent thru.
+		List<BaseBatchEvt> found = batchEvtEJB.findByEvtModuleAndEvtKlassAndEvtName(ModConstants.MODULE_NAME, "InvInvtryEvt", BaseHistoryTypeEnum.COMMITTED.name(), 0, 1);
 		if(found.isEmpty()) return;
+
 		dataSheetLoader.process();
 	}
 	

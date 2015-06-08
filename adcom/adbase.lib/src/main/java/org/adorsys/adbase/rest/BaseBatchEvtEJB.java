@@ -77,4 +77,8 @@ public class BaseBatchEvtEJB {
 	public List<BaseBatchEvt> findByEvtModuleAndEvtKlassAndEvtName(String evtModule, String evtKlass, String evtName, int firstResult, int maxResult){
 		return repository.findByEvtModuleAndEvtKlassAndEvtName(evtModule, evtKlass, evtName).firstResult(firstResult).maxResults(maxResult).getResultList();
 	}
+
+	public List<BaseBatchEvt> findByEntIdentifAndEvtModuleAndEvtKlassAndEvtName(String entIdentif, String evtModule, String evtKlass, String evtName, int firstResult, int maxResult){
+		return repository.findByEntIdentifAndEvtModuleAndEvtKlassAndEvtName(entIdentif, evtModule, evtKlass, evtName).firstResult(firstResult).maxResults(maxResult).getResultList();
+	}
 }

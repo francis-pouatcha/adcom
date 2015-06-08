@@ -47,6 +47,11 @@
 			<artifactId>adstock.lib</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.adorsys.adcom</groupId>
+			<artifactId>adsales.lib</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>adstock.server</finalName>

@@ -39,6 +39,11 @@ public class SlsInvceItem extends AbstractIdentifData {
 	private String artName;
 
 	@Column
+	@Description("SlsInvceItem_section_description")
+	@NotNull
+	private String section;
+	
+	@Column
 	@Description("SlsInvceItem_qty_description")
 	private BigDecimal qty;
 	
@@ -100,6 +105,7 @@ public class SlsInvceItem extends AbstractIdentifData {
 		if(!BigDecimalUtils.numericEquals(target.vatPct,vatPct)) return false;	
 		if(!StringUtils.equals(target.invNbr,invNbr)) return false;
 		if(!StringUtils.equals(target.lotPic,lotPic)) return false;
+		if(!StringUtils.equals(target.section,section)) return false;
 		if(!StringUtils.equals(target.artPic,artPic)) return false;	
 		if(!StringUtils.equals(target.sppuCur,sppuCur)) return false;
 		if(!StringUtils.equals(target.objctOrgUnit,objctOrgUnit)) return false;			
@@ -117,6 +123,7 @@ public class SlsInvceItem extends AbstractIdentifData {
 		target.vatPct = vatPct;
 		target.invNbr = invNbr;
 		target.lotPic = lotPic;
+		target.section = section;
 		target.artPic = artPic;
 		target.sppuCur = sppuCur;
 		target.objctOrgUnit = objctOrgUnit;
@@ -281,6 +288,14 @@ public class SlsInvceItem extends AbstractIdentifData {
 
 	public void setObjctOrgUnit(final String objctOrgUnit) {
 		this.objctOrgUnit = objctOrgUnit;
+	}
+
+	public String getSection() {
+		return section;
+	}
+
+	public void setSection(String section) {
+		this.section = section;
 	}
 
 	@Override

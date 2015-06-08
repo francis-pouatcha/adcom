@@ -3,6 +3,7 @@ package org.adorsys.adprocmt.api;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -28,6 +29,8 @@ import org.adorsys.adprocmt.jpa.PrcmtDlvryItem2StrgSctn;
 import org.adorsys.adprocmt.rest.PrcmtDeliveryEJB;
 import org.adorsys.adprocmt.rest.PrcmtDeliveryHstryEJB;
 import org.adorsys.adprocmt.rest.PrcmtDlvryItemEJB;
+import org.adorsys.adstock.jpa.StkArticleLot2StrgSctn;
+import org.adorsys.adstock.rest.StkArticleLot2StrgSctnLookup;
 import org.apache.commons.lang3.StringUtils;
 
 @Stateless
@@ -45,6 +48,10 @@ public class PrcmtDeliveryManager {
 	@Inject
 	private PrcmtDeliveryHstryEJB deliveryHstryEJB;
 
+	@Inject
+	private StkArticleLot2StrgSctnLookup articleLot2StrgSctnLookup;
+		
+	
 	/**
 	 * 
 	 * Process an incoming delivery. The delivery holds :
@@ -166,7 +173,7 @@ public class PrcmtDeliveryManager {
 			PrcmtDlvryItem2StrgSctn persStrgSctn = dlvryItemEJB.findDlvryItem2StrgSctn(dlvryItemNbr, strgSctn.getStrgSection());
 			if(ouHolder.isDeleted()){
 				if(persStrgSctn!=null){
-					dlvryItemEJB.deletePoItem(dlvryItemNbr, strgSctn.getStrgSection());
+					dlvryItemEJB.deleteStrgSctn(dlvryItemNbr, strgSctn.getStrgSection());
 					modified=true;
 				}
 				itemsToRemove.add(ouHolder);
@@ -183,6 +190,21 @@ public class PrcmtDeliveryManager {
 					modified=true;
 				}
 			}
+		}
+		// Initialize storage section if not defined.
+		List<PrcmtDlvryItem2StrgSctn> item2StrgSctn = dlvryItemEJB.listDlvryItem2StrgSctn(dlvryItemNbr);
+		if(item2StrgSctn.isEmpty()){
+			List<StkArticleLot2StrgSctn> lot2StrgSctns = articleLot2StrgSctnLookup.findByArtPic(dlvryItem.getArtPic(), 0, 1);
+			if(lot2StrgSctns.isEmpty())
+				throw new IllegalStateException("Missing storage section for delivery item: " + dlvryItem.getId());
+			StkArticleLot2StrgSctn lot2StrgSctn = lot2StrgSctns.iterator().next();
+//			PrcmtDlvryItem2StrgSctn strgSctn = strgSctnHolder.getStrgSctn();
+			// TODO fix it
+			PrcmtDlvryItem2StrgSctn strgSctn = dlvryItemEJB.addDlvryItem2StrgSctn(dlvryItem, lot2StrgSctn.getStrgSection(), lot2StrgSctn.getSectionArticleLot().getLotQty(),dlvryItem.getQtyDlvrd());
+			PrcmtDlvryItem2StrgSctnHolder strgSctnHolder = new PrcmtDlvryItem2StrgSctnHolder();
+			strgSctnHolder.setStrgSctn(strgSctn);
+			modified=true;
+			strgSctns.add(strgSctnHolder);
 		}
 		strgSctns.removeAll(itemsToRemove);
 		return modified;
@@ -521,4 +543,18 @@ public class PrcmtDeliveryManager {
 		return prcmtDeliveryHolder;
 	}
 	
+//	public List<PrcmtDlvryItem2StrgSctnHolder> lookupSection(PrcmtDlvryItem dlvryItem){
+//		List<StkArticleLot2StrgSctn> sections = articleLot2StrgSctnLookup.findByArtPic(dlvryItem.getArtPic(), 0, 1);
+//		if(sections.isEmpty()) return Collections.emptyList(); 
+//
+//		StkArticleLot2StrgSctn strgSctn = sections.iterator().next();
+//		List<PrcmtDlvryItem2StrgSctnHolder> result = new ArrayList<PrcmtDlvryItem2StrgSctnHolder>();
+//		PrcmtDlvryItem2StrgSctnHolder holder = new PrcmtDlvryItem2StrgSctnHolder();
+//		PrcmtDlvryItem2StrgSctn item2StrgSctn = new PrcmtDlvryItem2StrgSctn();
+//		item2StrgSctn.setStrgSection(strgSctn.getStrgSection());
+//		item2StrgSctn.setQtyStrd(dlvryItem.getQtyDlvrd());
+//		holder.setStrgSctn(item2StrgSctn);
+//		result.add(holder);
+//		return result;
+//	}
 }

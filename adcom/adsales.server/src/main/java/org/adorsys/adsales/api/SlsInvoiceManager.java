@@ -111,25 +111,9 @@ public class SlsInvoiceManager {
 			invoiceHolder.setSlsInvoice(slsInvoice);		
 		}
 		if(modified || itemModified){
-			createModifiedslsInvoiceHistory(slsInvoice);
+			createModifiedInvoiceHistory(slsInvoice);
 		}
 		return invoiceHolder;
-	}
-
-	private void createModifiedslsInvoiceHistory(SlsInvoice slsInvoice) {
-		TermWsUserPrincipal callerPrincipal = securityUtil.getCallerPrincipal();
-		SlsInvceHistory invoiceHstry = new SlsInvceHistory();
-		invoiceHstry.setComment(BaseHistoryTypeEnum.MODIFIED.name());
-		invoiceHstry.setAddtnlInfo(SlsInvoiceInfo.prinInfo(slsInvoice));
-		invoiceHstry.setEntIdentif(slsInvoice.getId());
-		invoiceHstry.setEntStatus(slsInvoice.getInvceStatus());
-		invoiceHstry.setHstryDt(new Date());
-		invoiceHstry.setHstryType(BaseHistoryTypeEnum.MODIFIED.name());	
-		invoiceHstry.setOrignLogin(callerPrincipal.getName());
-		invoiceHstry.setOrignWrkspc(callerPrincipal.getWorkspaceId());
-		invoiceHstry.setProcStep(BaseProcStepEnum.MODIFYING.name());
-		invoiceHstry.makeHistoryId(true);
-		slsInvceHistoryEJB.create(invoiceHstry);
 	}
 
 	private void recomputeslsInvoice(final SlsInvoice slsInvoice) {
@@ -224,61 +208,60 @@ public class SlsInvoiceManager {
 		}
 		return slsInvoice;
 	}
-
+	
+	private SlsInvceHistory createinvoiceHistory(SlsInvoice slsInvoice, String baseHistoryTypeEnum, String baseProcStepEnum) {
+		TermWsUserPrincipal callerPrincipal = securityUtil.getCallerPrincipal();
+		SlsInvceHistory invoiceHstry = new SlsInvceHistory();
+		invoiceHstry.setComment(baseHistoryTypeEnum);
+		invoiceHstry.setAddtnlInfo(SlsInvoiceInfo.prinInfo(slsInvoice));
+		invoiceHstry.setEntIdentif(slsInvoice.getId());
+		invoiceHstry.setEntStatus(slsInvoice.getInvceStatus());
+		invoiceHstry.setHstryDt(new Date());
+		invoiceHstry.setHstryType(baseHistoryTypeEnum);	
+		invoiceHstry.setOrignLogin(callerPrincipal.getName());
+		invoiceHstry.setOrignWrkspc(callerPrincipal.getWorkspaceId());
+		invoiceHstry.setProcStep(baseProcStepEnum);
+		invoiceHstry.makeHistoryId(true);
+		return slsInvceHistoryEJB.create(invoiceHstry);
+	}
 	private void createInitialinvoiceHistory(SlsInvoice slsInvoice) {
-		TermWsUserPrincipal callerPrincipal = securityUtil.getCallerPrincipal();
-		SlsInvceHistory invoiceHstry = new SlsInvceHistory();
-		invoiceHstry.setComment(BaseHistoryTypeEnum.INITIATED.name());
-		invoiceHstry.setAddtnlInfo(SlsInvoiceInfo.prinInfo(slsInvoice));
-		invoiceHstry.setEntIdentif(slsInvoice.getId());
-		invoiceHstry.setEntStatus(slsInvoice.getInvceStatus());
-		invoiceHstry.setHstryDt(new Date());
-		invoiceHstry.setHstryType(BaseHistoryTypeEnum.INITIATED.name());
-		
-		invoiceHstry.setOrignLogin(callerPrincipal.getName());
-		invoiceHstry.setOrignWrkspc(callerPrincipal.getWorkspaceId());
-		invoiceHstry.setProcStep(BaseProcStepEnum.INITIATING.name());
-		invoiceHstry.makeHistoryId(true);
-		slsInvceHistoryEJB.create(invoiceHstry);
+		createinvoiceHistory(slsInvoice,BaseHistoryTypeEnum.INITIATED.name(),BaseProcStepEnum.INITIATING.name());
 	}
-	
+	private void createModifiedInvoiceHistory(SlsInvoice slsInvoice) {
+		createinvoiceHistory(slsInvoice,BaseHistoryTypeEnum.MODIFIED.name(),BaseProcStepEnum.MODIFYING.name());
+	}
 	private void createClosedinvoiceHistory(SlsInvoice slsInvoice) {
-		TermWsUserPrincipal callerPrincipal = securityUtil.getCallerPrincipal();
-		SlsInvceHistory invoiceHstry = new SlsInvceHistory();
-		invoiceHstry.setComment(BaseHistoryTypeEnum.CLOSED.name());
-		invoiceHstry.setAddtnlInfo(SlsInvoiceInfo.prinInfo(slsInvoice));
-		invoiceHstry.setEntIdentif(slsInvoice.getId());
-		invoiceHstry.setEntStatus(slsInvoice.getInvceStatus());
-		invoiceHstry.setHstryDt(new Date());
-		invoiceHstry.setHstryType(BaseHistoryTypeEnum.CLOSED.name());
-		
-		invoiceHstry.setOrignLogin(callerPrincipal.getName());
-		invoiceHstry.setOrignWrkspc(callerPrincipal.getWorkspaceId());
-		invoiceHstry.setProcStep(BaseHistoryTypeEnum.CLOSED.name());
-		invoiceHstry.makeHistoryId(true);
-		slsInvceHistoryEJB.create(invoiceHstry);
+		createinvoiceHistory(slsInvoice,BaseHistoryTypeEnum.CLOSED.name(),BaseProcStepEnum.CLOSING.name());
 	}
-	
-	private void createCancelinvoiceHistory(SlsInvoice slsInvoice) {
-		TermWsUserPrincipal callerPrincipal = securityUtil.getCallerPrincipal();
-		SlsInvceHistory invoiceHstry = new SlsInvceHistory();
-		invoiceHstry.setComment(BaseHistoryTypeEnum.CANCELED.name());
-		invoiceHstry.setAddtnlInfo(SlsInvoiceInfo.prinInfo(slsInvoice));
-		invoiceHstry.setEntIdentif(slsInvoice.getId());
-		invoiceHstry.setEntStatus(slsInvoice.getInvceStatus());
-		invoiceHstry.setHstryDt(new Date());
-		invoiceHstry.setHstryType(BaseHistoryTypeEnum.CANCELED.name());
-		
-		invoiceHstry.setOrignLogin(callerPrincipal.getName());
-		invoiceHstry.setOrignWrkspc(callerPrincipal.getWorkspaceId());
-		invoiceHstry.setProcStep(BaseHistoryTypeEnum.CANCELED.name());
-		invoiceHstry.makeHistoryId(true);
-		slsInvceHistoryEJB.create(invoiceHstry);
+	private void createSuspendedinvoiceHistory(SlsInvoice slsInvoice) {
+		createinvoiceHistory(slsInvoice,BaseHistoryTypeEnum.SUSPENDED.name(),BaseProcStepEnum.SUSPENDING.name());
 	}
+	private void createResumedinvoiceHistory(SlsInvoice slsInvoice) {
+		createinvoiceHistory(slsInvoice,BaseHistoryTypeEnum.RESUMED.name(),BaseProcStepEnum.RESUMING.name());
+	}
+	private void createDeliveredinvoiceHistory(SlsInvoice slsInvoice) {
+		createinvoiceHistory(slsInvoice,BaseHistoryTypeEnum.DELIVERED.name(),BaseProcStepEnum.DELIVERING.name());
+	}
+
 
 	public SlsInvoiceHolder findInvoice(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		SlsInvoiceHolder slsInvoiceHolder = new SlsInvoiceHolder();
+		SlsInvoice slsInvoice = slsInvoiceEJB.findById(id);
+		slsInvoiceHolder.setSlsInvoice(slsInvoice);
+		
+		List<SlsInvceItem> listItems = slsInvceItemEJB.findInvceNbr(slsInvoice.getInvceNbr());
+		for(SlsInvceItem item:listItems){
+			SlsInvceItemHolder slsInvceItemHolder = new SlsInvceItemHolder();
+			slsInvceItemHolder.setSlsInvceItem(item);
+			slsInvoiceHolder.getSlsInvceItemsholder().add(slsInvceItemHolder);
+		}
+		List<SlsInvcePtnr> listPtnrs = slsInvcePtnrEJB.findByInvceNbr(slsInvoice.getInvceNbr());
+		for(SlsInvcePtnr ptnr:listPtnrs){
+			SlsInvcePtnrHolder slsInvcePtnrHolder = new SlsInvcePtnrHolder();
+			slsInvcePtnrHolder.setSlsInvcePtnr(ptnr);
+			slsInvoiceHolder.getSlsInvcePtnrsHolder().add(slsInvcePtnrHolder);
+		}	
+		return slsInvoiceHolder;
 	}
 
 	public SlsInvoiceHolder saveInvoice(SlsInvoiceHolder slsInvoiceHolder) throws AdException {
@@ -295,7 +278,7 @@ public class SlsInvoiceManager {
 		return slsInvoiceHolder;
 	}
 
-	public SlsInvoiceHolder cancelInvoice(SlsInvoiceHolder slsInvoiceHolder) throws AdException {
+	public SlsInvoiceHolder suspendInvoice(SlsInvoiceHolder slsInvoiceHolder) throws AdException {
 		SlsInvoice slsInvoice = slsInvoiceHolder.getSlsInvoice();
 		if(SlsInvcePymtStatus.AVANCE.equals(slsInvoice.getInvcePymntStatus()) 
 				|| SlsInvcePymtStatus.PAYE.equals(slsInvoice.getInvcePymntStatus())
@@ -305,14 +288,24 @@ public class SlsInvoiceManager {
 		slsInvoice.setInvceStatus(BaseProcessStatusEnum.SUSPENDED.name());
 		slsInvoice = slsInvoiceEJB.update(slsInvoice);
 		slsInvoiceHolder.setSlsInvoice(slsInvoice);
-		createCancelinvoiceHistory(slsInvoice);
+		createSuspendedinvoiceHistory(slsInvoice);
 		return slsInvoiceHolder;
 	}
 
 	public SlsInvoice deliveredInvoice(SlsInvoice slsInvoice) {
 		slsInvoice.setInvceDelivered(true);
-		//fire event
-		return null;
+		slsInvoice = slsInvoiceEJB.update(slsInvoice);
+		createDeliveredinvoiceHistory(slsInvoice);
+		return slsInvoice;
+	}
+
+	public SlsInvoiceHolder resumeInvoice(SlsInvoiceHolder slsInvoiceHolder) {
+		SlsInvoice slsInvoice = slsInvoiceHolder.getSlsInvoice();
+		slsInvoice.setInvceStatus(BaseProcessStatusEnum.RESUMED.name());
+		slsInvoice = slsInvoiceEJB.update(slsInvoice);
+		slsInvoiceHolder.setSlsInvoice(slsInvoice);
+		createResumedinvoiceHistory(slsInvoice);
+		return slsInvoiceHolder;
 	}
 
 }

@@ -9,6 +9,7 @@
     <jar-file>lib/adcore.lib-${project.version}.jar</jar-file>
     <jar-file>lib/adbase.lib-${project.version}.jar</jar-file>
     <jar-file>lib/adstock.lib-${project.version}.jar</jar-file>
+    <jar-file>lib/adsales.lib-${project.version}.jar</jar-file>
 
     <class>org.adorsys.adcore.jpa.AbstractEntity</class>
     <class>org.adorsys.adcore.jpa.AbstractIdentifData</class>
