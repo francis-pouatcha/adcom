@@ -7,8 +7,11 @@
                 <div class="form-group">
                     <label for="initialAmt" class="col-sm-2 col-sm-offset-1 control-label">{{cdrCshDrawerUtils.translations['CdrCshDrawer_initialAmt_description.title']}} :</label>
 
-                    <div class="col-sm-4"> 
-                        <input type="text" required class="form-control"  placeholder="{{cdrCshDrawerUtils.translations['CdrCshDrawer_initialAmt_description.title']}}" autocomplete="off" name="initialAmt" ng-model="cdrCshDrawer.initialAmt" id="initialAmt" ng-currency min="0" currency-symbol="XAF" />
+                    <div class="col-sm-4" ng-init="cdrCshDrawer.initialAmt='0'"> 
+                        <!-- <input type="text" required class="form-control"  placeholder="{{cdrCshDrawerUtils.translations['CdrCshDrawer_initialAmt_description.title']}}" autocomplete="off" name="initialAmt" ng-model="cdrCshDrawer.initialAmt" id="initialAmt" ng-currency min="0" currency-symbol="XAF" /> -->
+                        
+                        <input type="text" required class="form-control"  placeholder="{{cdrCshDrawerUtils.translations['CdrCshDrawer_initialAmt_description.title']}}" autocomplete="off" name="initialAmt" ng-id="initialAmt"  blur-to-currency amount="cdrCshDrawer.initialAmt" />                    
+                        
                         <span price-style="price-style" style="display: block; text-align: center;">{{cdrCshDrawer.initialAmt | simplePrice}}</span>
                     </div>
                     

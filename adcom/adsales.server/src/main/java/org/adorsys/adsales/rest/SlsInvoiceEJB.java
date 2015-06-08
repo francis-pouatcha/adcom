@@ -1,5 +1,6 @@
 package org.adorsys.adsales.rest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -87,6 +88,20 @@ public class SlsInvoiceEJB
    public List<SlsInvoice> findByLike(SlsInvoice entity, int start, int max, SingularAttribute<SlsInvoice, ?>[] attributes)
    {
       return repository.findByLike(entity, start, max, attributes);
+   }
+   
+   public List<SlsInvoice> findByLikePay(SlsInvoice entity, int start, int max, SingularAttribute<SlsInvoice, ?>[] attributes)
+   {
+		List<SlsInvoice> slsInvoices = new ArrayList<SlsInvoice>();
+		
+		for (SlsInvoice slsInvoice : repository.findByLike(entity, start, max, attributes)) {
+			SlsInvcePymtStatus statusOfInvPay = slsInvoice.getInvcePymntStatus();
+			
+			if(statusOfInvPay.equals(SlsInvcePymtStatus.PAYE))
+				slsInvoices.add(slsInvoice);
+		}
+
+      return slsInvoices;
    }
 
    public Long countByLike(SlsInvoice entity, SingularAttribute<SlsInvoice, ?>[] attributes)

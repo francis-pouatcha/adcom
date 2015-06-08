@@ -92,11 +92,7 @@
                 <div class="row">
                     <span class="col-lg-3" style="font-size:17px;">{{cdrDrctSalesUtils.translations['CdrDrctSales_vatAmount_description.title']}}: </span>
                     <span class="col-lg-2" price-style="price-style">{{cdrDsArtHolder.cdrDrctSales.vatAmount | currencyAccounting:cur}}</span>
-                     <span class="col-lg-3 col-lg-offset-3">
-                        <div class="alert alert-danger" ng-show="error" role="alert">
-					        <strong>Warning!</strong> {{error}}
-					    </div>
-                    </span>
+                    
                 </div>
 
                 <div class="row">
@@ -121,9 +117,14 @@
                 <div class="row">
                     <span class="col-lg-3" style="font-size:17px;">{{cdrDrctSalesUtils.translations['CdrDrctSales_netAmtToPay_description.title']}}: </span>
                     <span class="col-lg-2" price-red="price-red">{{cdrDsArtHolder.cdrDrctSales.netAmtToPay | currencyAccounting:cur}}</span>
-                  <div class="col-lg-2">
+                  	<div class="col-lg-2">
                         <select class="form-control" ng-model="cur" ng-options="cur for cur in conversionPrice.currency"></select>
                     </div>
+                     <span class="col-lg-3 col-lg-offset-2">
+                        <div class="alert alert-danger" ng-show="error" role="alert">
+					        <strong>Warning!</strong> {{error}}
+					    </div>
+                    </span>
                 </div>
 
         </div>
