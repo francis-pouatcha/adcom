@@ -584,6 +584,7 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                     $scope.error = error;
                 });
             };
+        
 
             function verifCdrDsArtHolder(){
                 if($scope.cdrDsArtHolder.cdrDrctSales.netAmtToPay > $scope.cdrDsArtHolder.paidAmt || !$scope.cdrDsArtHolder.paidAmt){
@@ -901,8 +902,8 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
             };
 
         }])
-    .controller('cdrDrctSalesShowCtlr', ['$scope', 'genericResource', '$location', 'cdrDrctSalesUtils', 'cdrDrctSalesState', 'commonTranslations','$routeParams',
-                                 function ($scope, genericResource, $location, cdrDrctSalesUtils, cdrDrctSalesState, commonTranslations, $routeParams) {
+    .controller('cdrDrctSalesShowCtlr', ['$scope', 'genericResource', 'fileExtractor', '$location', 'cdrDrctSalesUtils', 'cdrDrctSalesState', 'commonTranslations','$routeParams',
+                                 function ($scope, genericResource, fileExtractor, $location, cdrDrctSalesUtils, cdrDrctSalesState, commonTranslations, $routeParams) {
             $scope.cdrDsArtHolder = {
                          cdrDrctSales: {},
                          items: []
@@ -957,6 +958,15 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                                              $scope.error = error;
                                          });
                                      };
+                                     
+                $scope.printRequestVoucher = function(){
+                           genericResource.builfReportGet(cdrDrctSalesUtils.cdrdrctsalesmanager+"/voucherreport.pdf",      $scope.cdrDsArtHolder.cdrDrctSales.dsNbr).success(function (result) {
+                               fileExtractor.extractFile(result,"application/pdf");
+                                console.log('Print voucher OK...');
+                            }).error(function (error) {
+                                $scope.error = error;
+                            });
+                }
 
 
                                      $scope.printRequest = function(){
