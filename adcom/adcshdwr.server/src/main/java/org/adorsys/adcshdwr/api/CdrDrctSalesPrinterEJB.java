@@ -2,6 +2,7 @@ package org.adorsys.adcshdwr.api;
 
 import java.awt.Desktop;
 import java.awt.Desktop.Action;
+import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -35,6 +36,7 @@ import org.adorsys.adcshdwr.voucherprint.VoucherPrintTemplatePdf;
 import org.adorsys.adcshdwr.voucherprint.VoucherprinterData;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.pdfbox.pdmodel.PDDocument;
 
 
 @Stateless
@@ -54,7 +56,6 @@ public class CdrDrctSalesPrinterEJB {
 	 * Printing Receipt pdf
 	 * @param sales
 	 */
-	@SuppressWarnings("static-access")
 	public void printReceiptPdf(CdrDrctSales sales){
 		CdrDrctSalesPrinterData drctSalesPrinterData = createCdrDrctSalesPrinterData(sales);
 		ReceiptPrinterData receiptPrinterData = createReceiptPrinterData(sales);
@@ -62,31 +63,32 @@ public class CdrDrctSalesPrinterEJB {
 		worker.printPdfReceipt(drctSalesPrinterData);
 		
 		// Output pdf
-		byte[] data =  (byte[]) worker.getPage();
+		 byte[] data =  (byte[]) worker.getPage();
 		String pymntDocNbr = worker.getReceiptPrinterData().getPayment().getPymntDocNbr();
 		String fileName = pymntDocNbr+".pdf";
+		PDDocument document;
 		try {
 			FileOutputStream fileOutputStream = new FileOutputStream(fileName);
 			IOUtils.write(data, fileOutputStream);
+			File file = new File(fileName);
 			PrintMode printMode = worker.getReceiptPrintMode();
-			Desktop desktop = null;
-			if(Desktop.isDesktopSupported()){
-				desktop = Desktop.getDesktop();
-			}
-			
-			// Test the printer Name
-			getPrinterName();
-			
+			document = PDDocument.load(file);
 			switch (printMode) {
 			case open:
-				if(desktop.isSupported(Action.OPEN)){
-					desktop.open(new File(fileName));
+				try {
+					document.print();
+				} catch (PrinterException e) {
+					throw new IllegalArgumentException();
 				}
+				document.close();
 				break;
             case print:
-            	if(desktop.isSupported(Action.PRINT)){
-            		desktop.print(new File(fileName));
-            	}
+            	try {
+					document.silentPrint();
+				} catch (PrinterException e) {
+					throw new IllegalArgumentException();
+				}
+            	document.close();
             	break;
 			default:
 				break;
@@ -96,25 +98,25 @@ public class CdrDrctSalesPrinterEJB {
 			throw new IllegalStateException(e);
 		}
 		finally{
-			// What to do
+			//
 		}
 		
 	}
 	
-	
-	public void getPrinterName(){
-		try {
-			PrintService[] printServices = PrinterJob.lookupPrintServices();
-			if(printServices.length!=0){
-				for (int i = 0; i < printServices.length; i++) {
-					@SuppressWarnings("unused")
-					String name = printServices[i].getName();
-				}
-			}
-		} catch (Exception e) {
-		  throw new IllegalArgumentException(); 
-		}
-	}
+//	
+//	public void getPrinterName(){
+//		try {
+//			PrintService[] printServices = PrinterJob.lookupPrintServices();
+//			if(printServices.length!=0){
+//				for (int i = 0; i < printServices.length; i++) {
+//					@SuppressWarnings("unused")
+//					String name = printServices[i].getName();
+//				}
+//			}
+//		} catch (Exception e) {
+//		  throw new IllegalArgumentException(); 
+//		}
+//	}
 	
 	/**
 	 * Print Voucher pdf
