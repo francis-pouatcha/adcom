@@ -10,6 +10,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.metamodel.SingularAttribute;
 
+import org.adorsys.adbase.enums.BaseProcessStatusEnum;
 import org.adorsys.adcore.utils.SequenceGenerator;
 import org.adorsys.adsales.jpa.SlsInvcePymtStatus;
 import org.adorsys.adsales.jpa.SlsInvoice;
@@ -95,9 +96,9 @@ public class SlsInvoiceEJB
 		List<SlsInvoice> slsInvoices = new ArrayList<SlsInvoice>();
 		
 		for (SlsInvoice slsInvoice : repository.findByLike(entity, start, max, attributes)) {
-			SlsInvcePymtStatus statusOfInvPay = slsInvoice.getInvcePymntStatus();
+			String statusOfInvoice = slsInvoice.getInvceStatus();
 			
-			if(statusOfInvPay.equals(SlsInvcePymtStatus.PAYE))
+			if(!statusOfInvoice.equals(BaseProcessStatusEnum.CLOSED.name()))
 				slsInvoices.add(slsInvoice);
 		}
 
