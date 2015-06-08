@@ -1,16 +1,18 @@
-package org.adorsys.adstock.recptcls;
+package org.adorsys.adstock.recptcls.sls;
+
+import java.math.BigDecimal;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import org.adorsys.adcore.utils.BigDecimalUtils;
-import org.adorsys.adcshdwr.jpa.CdrDrctSalesEvt;
-import org.adorsys.adcshdwr.jpa.CdrDsArtItem;
-import org.adorsys.adcshdwr.rest.CdrDsArtItemLookup;
-import org.adorsys.adstock.jpa.StkDirectSalesItemHstry;
+import org.adorsys.adsales.jpa.SlsInvceEvt;
+import org.adorsys.adsales.jpa.SlsInvceItem;
+import org.adorsys.adsales.rest.SlsInvceItemLookup;
+import org.adorsys.adstock.jpa.StkInvceItemHstry;
 import org.adorsys.adstock.jpa.StkLotStockQty;
-import org.adorsys.adstock.rest.StkDirectSalesHstryEJB;
-import org.adorsys.adstock.rest.StkDirectSalesItemHstryEJB;
+import org.adorsys.adstock.rest.StkInvceHstryEJB;
+import org.adorsys.adstock.rest.StkInvceItemHstryEJB;
 import org.adorsys.adstock.rest.StkLotStockQtyEJB;
 
 /**
@@ -21,23 +23,23 @@ import org.adorsys.adstock.rest.StkLotStockQtyEJB;
  *
  */
 @Stateless
-public class StkDirectSalesItemEvtProcessor {
+public class SlsInvceItemEvtProcessor {
 	@Inject
-	private CdrDsArtItemLookup itemEvtDataEJB;
+	private SlsInvceItemLookup itemEvtDataEJB;
 	@Inject
-	private StkDirectSalesHstryEJB hstryEJB;
+	private StkInvceHstryEJB hstryEJB;
 	@Inject
-	private StkDirectSalesItemHstryEJB itemHstryEJB;
+	private StkInvceItemHstryEJB itemHstryEJB;
 
 	@Inject
 	private StkLotStockQtyEJB lotStockQtyEJB;
 
-	public void process(String itemEvtDataId, CdrDrctSalesEvt evt) {
+	public void process(String itemEvtDataId, SlsInvceEvt evt) {
 		// check if the history object exists.
 		Long evtCount = hstryEJB.countById(evt.getId());
 		if(evtCount>0) return;
 		
-		CdrDsArtItem itemEvtData = itemEvtDataEJB.findById(itemEvtDataId);
+		SlsInvceItem itemEvtData = itemEvtDataEJB.findById(itemEvtDataId);
 		if(itemEvtData==null) return;
 
 		// Check if item processed.
@@ -56,20 +58,22 @@ public class StkDirectSalesItemEvtProcessor {
 		lotStockQty.setSection(section);
 		lotStockQty.setQtyDt(evt.getHstryDt());
 		lotStockQty.setOrigProcs(evt.getClass().getSimpleName());
-		lotStockQty.setOrigProcsNbr(itemEvtData.getDsNbr());
+		lotStockQty.setOrigProcsNbr(itemEvtData.getInvNbr());
 		if(latestQty!=null){
 			lotStockQty.setSeqNbr(latestQty.getSeqNbr()==null?1:latestQty.getSeqNbr()+1);
 		} else {
 			lotStockQty.setSeqNbr(0);
 		}
-		lotStockQty.setStockQty(BigDecimalUtils.negate(itemEvtData.getSoldQty()));
+		// minus qty.
+		BigDecimal stockQty = BigDecimalUtils.negate(itemEvtData.getQty());
+		lotStockQty.setStockQty(stockQty);
 		lotStockQty = lotStockQtyEJB.create(lotStockQty);
 		
-		StkDirectSalesItemHstry hstry = new StkDirectSalesItemHstry();
+		StkInvceItemHstry hstry = new StkInvceItemHstry();
 		evt.copyTo(hstry);
 		hstry.setId(itemEvtData.getIdentif());
 		hstry.setEntIdentif(itemEvtData.getIdentif());
-		hstry.setAddtnlInfo("Direct Sales : " + lotStockQty.getStockQty());
+		hstry.setAddtnlInfo("Sales : " + lotStockQty.getStockQty());
 		hstry.setComment(lotStockQty.artPicAndLotPicAndSection());
 		itemHstryEJB.create(hstry);
 	}

@@ -83,6 +83,10 @@ public class SlsInvceItemEJB
 		
 		return repository.findByInvceNbr(invceNbr).firstResult(start).maxResults(max).getResultList();
 	}
+   public List<SlsInvceItem> findInvceNbr(String invceNbr) {
+		
+		return repository.findByInvceNbr(invceNbr).getResultList();
+	}
 
 	public Long countByInvceNbr(String invceNbr) {
 		return repository.findByInvceNbr(invceNbr).count();

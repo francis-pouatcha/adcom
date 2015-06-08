@@ -15,6 +15,7 @@ import javax.inject.Inject;
 
 import org.adorsys.adbase.jpa.BaseBatchEvt;
 import org.adorsys.adbase.rest.BaseBatchEvtEJB;
+import org.adorsys.adinvtry.api.ModConstants;
 import org.adorsys.adinvtry.event.InvInvtryPostedEvent;
 import org.adorsys.adinvtry.jpa.InvInvtryEvt;
 import org.adorsys.adinvtry.jpa.InvInvtryEvtLease;
@@ -49,7 +50,7 @@ public class InvRemoteEventGateway {
 		invtryHstry.copyTo(batchEvt);
 		batchEvt.setEvtName(evtName);
 		batchEvt.setId(UUID.randomUUID().toString());
-		batchEvt.setEvtModule("ADINVTRY");
+		batchEvt.setEvtModule(ModConstants.MODULE_NAME);
 		batchEvt.setEvtKlass(InvInvtryEvt.class.getSimpleName());
 		batchEvtEJB.create(batchEvt);
 	}

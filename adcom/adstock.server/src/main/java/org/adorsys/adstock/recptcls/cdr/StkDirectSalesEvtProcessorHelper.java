@@ -1,4 +1,4 @@
-package org.adorsys.adstock.recptcls;
+package org.adorsys.adstock.recptcls.cdr;
 
 import java.util.List;
 import java.util.UUID;
@@ -12,10 +12,11 @@ import org.adorsys.adbase.rest.BaseBatchEvtEJB;
 import org.adorsys.adcshdwr.jpa.CdrDrctSalesEvt;
 import org.adorsys.adcshdwr.rest.CdrDrctSalesEvtLeaseEJB;
 import org.adorsys.adinvtry.jpa.InvInvtryEvt;
+import org.adorsys.adstock.api.ModConstants;
 
 /**
- * Check for the incoming of inventory closed event and 
- * process corresponding inventory items.
+ * Check for the incoming of inventory closed event and process corresponding
+ * inventory items.
  * 
  * @author francis
  *
@@ -29,19 +30,24 @@ public class StkDirectSalesEvtProcessorHelper {
 	@Inject
 	private CdrDrctSalesEvtLeaseEJB evtLeaseEJB;
 
-	public void closeEvtLease(String processId, String leaseId, CdrDrctSalesEvt evt) {
+	public void closeEvtLease(String processId, String leaseId,
+			CdrDrctSalesEvt evt) {
 		evtLeaseEJB.close(processId, leaseId);
 		BaseBatchEvt batchEvt = new BaseBatchEvt();
 		evt.copyTo(batchEvt);
 		batchEvt.setEvtName(BaseHistoryTypeEnum.COMMITTED.name());
 		batchEvt.setId(UUID.randomUUID().toString());
-		batchEvt.setEvtModule("ADSTOCK");
+		batchEvt.setEvtModule(ModConstants.MODULE_NAME);
 		batchEvt.setEvtKlass(InvInvtryEvt.class.getSimpleName());
 		batchEvtEJB.create(batchEvt);
 	}
 
 	public boolean shallProcessEvtLease(CdrDrctSalesEvt evt) {
-		List<BaseBatchEvt> found = batchEvtEJB.findByEvtModuleAndEvtKlassAndEvtName("ADSTOCK", CdrDrctSalesEvt.class.getSimpleName(), BaseHistoryTypeEnum.COMMITTED.name(), 0, 1);
+		List<BaseBatchEvt> found = batchEvtEJB
+				.findByEntIdentifAndEvtModuleAndEvtKlassAndEvtName(
+						evt.getEntIdentif(), ModConstants.MODULE_NAME,
+						CdrDrctSalesEvt.class.getSimpleName(),
+						BaseHistoryTypeEnum.COMMITTED.name(), 0, 1);
 		return found.isEmpty();
 	}
 }

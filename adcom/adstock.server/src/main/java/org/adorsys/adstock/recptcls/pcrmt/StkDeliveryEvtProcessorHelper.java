@@ -1,4 +1,4 @@
-package org.adorsys.adstock.recptcls;
+package org.adorsys.adstock.recptcls.pcrmt;
 
 import java.util.List;
 import java.util.UUID;
@@ -11,10 +11,11 @@ import org.adorsys.adbase.jpa.BaseBatchEvt;
 import org.adorsys.adbase.rest.BaseBatchEvtEJB;
 import org.adorsys.adprocmt.jpa.PrcmtDeliveryEvt;
 import org.adorsys.adprocmt.rest.PrcmtDeliveryEvtLeaseEJB;
+import org.adorsys.adstock.api.ModConstants;
 
 /**
- * Check for the incoming of delivery closed event and 
- * process corresponding delivery items.
+ * Check for the incoming of delivery closed event and process corresponding
+ * delivery items.
  * 
  * @author francis
  *
@@ -27,19 +28,24 @@ public class StkDeliveryEvtProcessorHelper {
 	@Inject
 	private BaseBatchEvtEJB batchEvtEJB;
 
-	public void closeEvtLease(String processId, String leaseId, PrcmtDeliveryEvt deliveryEvt) {
+	public void closeEvtLease(String processId, String leaseId,
+			PrcmtDeliveryEvt deliveryEvt) {
 		evtLeaseEJB.close(processId, leaseId);
 		BaseBatchEvt batchEvt = new BaseBatchEvt();
 		deliveryEvt.copyTo(batchEvt);
 		batchEvt.setEvtName(BaseHistoryTypeEnum.COMMITTED.name());
 		batchEvt.setId(UUID.randomUUID().toString());
-		batchEvt.setEvtModule("ADSTOCK");
+		batchEvt.setEvtModule(ModConstants.MODULE_NAME);
 		batchEvt.setEvtKlass(PrcmtDeliveryEvt.class.getSimpleName());
 		batchEvtEJB.create(batchEvt);
 	}
 
 	public boolean shallProcessEvtLease(PrcmtDeliveryEvt deliveryEvt) {
-		List<BaseBatchEvt> found = batchEvtEJB.findByEvtModuleAndEvtKlassAndEvtName("ADSTOCK", PrcmtDeliveryEvt.class.getSimpleName(), BaseHistoryTypeEnum.COMMITTED.name(), 0, 1);
+		List<BaseBatchEvt> found = batchEvtEJB
+				.findByEntIdentifAndEvtModuleAndEvtKlassAndEvtName(
+						deliveryEvt.getEntIdentif(), ModConstants.MODULE_NAME,
+						PrcmtDeliveryEvt.class.getSimpleName(),
+						BaseHistoryTypeEnum.COMMITTED.name(), 0, 1);
 		return found.isEmpty();
 	}
 }

@@ -1,4 +1,4 @@
-package org.adorsys.adstock.recptcls;
+package org.adorsys.adstock.recptcls.pcrmt;
 
 import java.util.ArrayList;
 import java.util.Date;

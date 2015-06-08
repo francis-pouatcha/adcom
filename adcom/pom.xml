@@ -31,6 +31,7 @@
 		<module>adinvtry.lib</module>
 		<module>adcatal.lib</module>
 		<module>adcshdwr.lib</module>
+		<module>adsales.lib</module>
 		<module>adbase.server</module>
 		<module>adacc.server</module>
 		<module>adcatal.server</module>

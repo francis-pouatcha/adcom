@@ -35,6 +35,14 @@ public enum BaseHistoryTypeEnum
    FAILED_RECALL, @Description("BaseHistoryTypeEnum_CLOSING_RECALL_description")
    CLOSING,
    @Description("BaseHistoryTypeEnum_ITEM_MODIFIED_description")
-   ITEM_MODIFIED
+   ITEM_MODIFIED,
+   @Description("BaseHistoryTypeEnum_SUSPENDED_description")
+   SUSPENDED,
+   @Description("BaseHistoryTypeEnum_RESUMED_description")
+   RESUMED,
+   @Description("BaseHistoryTypeEnum_DELIVERED_description")
+   DELIVERED,
+   @Description("BaseHistoryTypeEnum_RETURNED_description")
+   RETURNED
    
 }

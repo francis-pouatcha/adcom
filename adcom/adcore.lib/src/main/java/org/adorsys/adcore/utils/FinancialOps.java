@@ -22,7 +22,8 @@ public class FinancialOps {
 		if(StringUtils.isBlank(curr))curr=CurrencyEnum.XAF.name();
 		if(amt==null)amt = BigDecimal.ZERO;
 		if(base==null) return BigDecimal.ZERO;
-		return base.multiply(ONE_HUNDRED).divide(base, 4, RoundingMode.HALF_EVEN);
+		//return base.multiply(ONE_HUNDRED).divide(base, 4, RoundingMode.HALF_EVEN);
+		return amt.multiply(ONE_HUNDRED).divide(base, 4, RoundingMode.HALF_EVEN);
 	}
 	
 	public static BigDecimal substract(BigDecimal base, BigDecimal subtrahend, String curr){

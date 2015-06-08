@@ -15,6 +15,7 @@ import javax.inject.Inject;
 
 import org.adorsys.adbase.jpa.BaseBatchEvt;
 import org.adorsys.adbase.rest.BaseBatchEvtEJB;
+import org.adorsys.adcshdwr.api.ModConstants;
 import org.adorsys.adcshdwr.event.CdrDrctSalesClosedEvent;
 import org.adorsys.adcshdwr.jpa.CdrDrctSalesEvt;
 import org.adorsys.adcshdwr.jpa.CdrDrctSalesEvtLease;
@@ -49,7 +50,7 @@ public class CdrRemoteEventGateway {
 		dsHstry.copyTo(batchEvt);
 		batchEvt.setEvtName(evtName);
 		batchEvt.setId(UUID.randomUUID().toString());
-		batchEvt.setEvtModule("ADCSHDWR");
+		batchEvt.setEvtModule(ModConstants.MODULE_NAME);
 		batchEvt.setEvtKlass(CdrDrctSalesEvt.class.getSimpleName());
 		batchEvtEJB.create(batchEvt);
 	}
