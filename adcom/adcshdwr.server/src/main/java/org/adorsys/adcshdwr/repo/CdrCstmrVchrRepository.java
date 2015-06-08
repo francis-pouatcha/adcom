@@ -10,4 +10,6 @@ import org.apache.deltaspike.data.api.Repository;
 public interface CdrCstmrVchrRepository extends EntityRepository<CdrCstmrVchr, String>
 {
 	List<CdrCstmrVchr> findByVchrNbr(String vchrNbr);
+	
+	List<CdrCstmrVchr> findByDsNbr(String dsNbr);
 }

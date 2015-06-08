@@ -14,6 +14,7 @@ import javax.persistence.metamodel.SingularAttribute;
 import org.adorsys.adbase.security.SecurityUtil;
 import org.adorsys.adcore.exceptions.AdException;
 import org.adorsys.adcore.utils.SequenceGenerator;
+import org.adorsys.adcshdwr.api.CdrDrctSalesPrinterEJB;
 import org.adorsys.adcshdwr.api.CdrDsArtHolder;
 import org.adorsys.adcshdwr.api.CdrDsArtItemHolder;
 import org.adorsys.adcshdwr.jpa.CdrCshDrawer;
@@ -33,6 +34,9 @@ public class CdrCstmrVchrEJB {
 	private SecurityUtil securityUtil;
 	@Inject
 	private CdrCshDrawerEJB cshDrawerEJB;
+	@Inject
+	private CdrDrctSalesPrinterEJB salesPrinterEJB;
+	
 	@Inject
 	private EntityManager em;
 
@@ -103,6 +107,10 @@ public class CdrCstmrVchrEJB {
 	public List<CdrCstmrVchr> findByVchrNbr(String vchrNbr) {
 		return repository.findByVchrNbr(vchrNbr);
 	}
+	
+	public List<CdrCstmrVchr> findByDsNbr(String dsNbr){
+		return repository.findByDsNbr(dsNbr);
+	}
 
 	public void generateVoucher(CdrDsArtHolder cdrDsArtHolder)
 			throws AdException {
@@ -128,6 +136,8 @@ public class CdrCstmrVchrEJB {
 		vchr = create(vchr);
 		activeCshDrawer.AddTtlVchrOut(vchr.getAmt());
 		cshDrawerEJB.update(activeCshDrawer);
+		// Print voucher pdf
+		//salesPrinterEJB.printVoucherPdf(vchr);
 	}
 
 	private static final String FIND_CUSTOM_QUERY = "SELECT e FROM CdrCstmrVchr AS e";

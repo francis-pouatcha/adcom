@@ -1,6 +1,8 @@
 package org.adorsys.adcshdwr.api;
 
 import java.awt.Desktop;
+import java.awt.Desktop.Action;
+import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -9,12 +11,15 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.print.PrintService;
+import javax.xml.crypto.dsig.keyinfo.RetrievalMethod;
 
 import org.adorsys.adbase.jpa.Login;
 import org.adorsys.adbase.jpa.OrgContact;
 import org.adorsys.adbase.jpa.OrgUnit;
 import org.adorsys.adbase.security.SecurityUtil;
 import org.adorsys.adcore.utils.DateUtil;
+import org.adorsys.adcshdwr.jpa.CdrCstmrVchr;
 import org.adorsys.adcshdwr.jpa.CdrDrctSales;
 import org.adorsys.adcshdwr.jpa.CdrDsArtItem;
 import org.adorsys.adcshdwr.jpa.CdrDsArtItemSearchResult;
@@ -25,7 +30,11 @@ import org.adorsys.adcshdwr.receiptprint.ReceiptPrintTemplatePDF;
 import org.adorsys.adcshdwr.receiptprint.ReceiptPrinterData;
 import org.adorsys.adcshdwr.rest.CdrDsArtItemEJB;
 import org.adorsys.adcshdwr.rest.CdrDsPymntItemEJB;
+import org.adorsys.adcshdwr.voucherprint.CdrCstmrVchrPrinterData;
+import org.adorsys.adcshdwr.voucherprint.VoucherPrintTemplatePdf;
+import org.adorsys.adcshdwr.voucherprint.VoucherprinterData;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 
 
 @Stateless
@@ -42,9 +51,10 @@ public class CdrDrctSalesPrinterEJB {
 	
 	
 	/**
-	 * Printing pdf
+	 * Printing Receipt pdf
 	 * @param sales
 	 */
+	@SuppressWarnings("static-access")
 	public void printReceiptPdf(CdrDrctSales sales){
 		CdrDrctSalesPrinterData drctSalesPrinterData = createCdrDrctSalesPrinterData(sales);
 		ReceiptPrinterData receiptPrinterData = createReceiptPrinterData(sales);
@@ -59,13 +69,25 @@ public class CdrDrctSalesPrinterEJB {
 			FileOutputStream fileOutputStream = new FileOutputStream(fileName);
 			IOUtils.write(data, fileOutputStream);
 			PrintMode printMode = worker.getReceiptPrintMode();
+			Desktop desktop = null;
+			if(Desktop.isDesktopSupported()){
+				desktop = Desktop.getDesktop();
+			}
+			
+			// Test the printer Name
+			getPrinterName();
+			
 			switch (printMode) {
 			case open:
-				 Desktop.getDesktop().open(new File(fileName));
+				if(desktop.isSupported(Action.OPEN)){
+					desktop.open(new File(fileName));
+				}
 				break;
             case print:
-            	 Desktop.getDesktop().print(new File(fileName));
-            	 break;
+            	if(desktop.isSupported(Action.PRINT)){
+            		desktop.print(new File(fileName));
+            	}
+            	break;
 			default:
 				break;
 			}
@@ -77,6 +99,33 @@ public class CdrDrctSalesPrinterEJB {
 			// What to do
 		}
 		
+	}
+	
+	
+	public void getPrinterName(){
+		try {
+			PrintService[] printServices = PrinterJob.lookupPrintServices();
+			if(printServices.length!=0){
+				for (int i = 0; i < printServices.length; i++) {
+					@SuppressWarnings("unused")
+					String name = printServices[i].getName();
+				}
+			}
+		} catch (Exception e) {
+		  throw new IllegalArgumentException(); 
+		}
+	}
+	
+	/**
+	 * Print Voucher pdf
+	 */
+	public VoucherPrintTemplatePdf printVoucherPdf(CdrCstmrVchr  cdrCstmrVchr){
+		
+		CdrCstmrVchrPrinterData cstmrVchrPrinterData = createCstmrVchrPrinterData(cdrCstmrVchr);
+		VoucherprinterData vchrPrinterData = createVchrPrinterData(cdrCstmrVchr);
+		VoucherPrintTemplatePdf worker = new VoucherPrintTemplatePdf(vchrPrinterData);
+		worker.printPdfVoucher(cstmrVchrPrinterData);
+	    return worker;
 	}
 	
 	
@@ -117,9 +166,42 @@ public class CdrDrctSalesPrinterEJB {
 		}
 		String paymentDate = DateUtil.format(new Date(), DateUtil.DATE_TIME_FORMAT);
 		ReceiptPrinterData receiptPrinterData = new ReceiptPrinterData(customer, paymentDate , cdrDsPymntItem, cashier, company);
-		
 		return receiptPrinterData;
 	}
+	
+	
+	public CdrCstmrVchrPrinterData createCstmrVchrPrinterData(CdrCstmrVchr  cdrCstmrVchr){
+		Login connectedUser = securityUtil.getConnectedUser();
+		OrgUnit company = securityUtil.getCurrentOrgUnit();
+		if(company!=null){
+			company.setContact(createSampleOrgContact());
+		}else {
+			OrgUnit orgUnit = createSampleOrgUnit();
+			OrgContact contact = createSampleOrgContact(); 
+			orgUnit.setContact(contact);
+			company = orgUnit;
+		}
+		CdrCstmrVchrPrinterData cdrCstmrVchrPrinterData = new CdrCstmrVchrPrinterData(cdrCstmrVchr, connectedUser, company);
+		return cdrCstmrVchrPrinterData;
+	}
+	
+	
+	public VoucherprinterData createVchrPrinterData(CdrCstmrVchr  cdrCstmrVchr){
+		Login connectedUser = securityUtil.getConnectedUser();
+		OrgUnit company = securityUtil.getCurrentOrgUnit();
+		if(company!=null){
+			company.setContact(createSampleOrgContact());
+		}else {
+			OrgUnit orgUnit = createSampleOrgUnit();
+			OrgContact contact = createSampleOrgContact(); 
+			orgUnit.setContact(contact);
+			company = orgUnit;
+		}
+	    String customer = StringUtils.isBlank(cdrCstmrVchr.getCstmrName())?"CLIENTS DIVERS":cdrCstmrVchr.getCstmrName();
+		VoucherprinterData voucherprinterData = new VoucherprinterData(customer, DateUtil.format(cdrCstmrVchr.getPrntDt(), DateUtil.DATE_TIME_FORMAT), connectedUser, company);
+		return voucherprinterData;
+	}
+	
 	
 	public OrgUnit createSampleOrgUnit(){
 		OrgUnit orgUnit = new OrgUnit();
