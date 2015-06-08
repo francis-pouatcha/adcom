@@ -29,51 +29,6 @@ angular.module('ADUtils',[])
         }
     };
 })
-.directive('blurToCurrency', function($filter){
-
-  return {
-
-    scope: {
-
-      amount  : '='
-
-    },
-
-    link: function(scope, el, attrs){
-
-      el.val($filter('currency')(scope.amount));
-
-      
-
-      el.bind('focus', function(){
-
-        el.val(scope.amount);
-
-      });
-
-      
-
-      el.bind('input', function(){
-
-        scope.amount = el.val();
-
-        scope.$apply();
-
-      });
-
-      
-
-      el.bind('blur', function(){
-
-        el.val($filter('currency')(scope.amount));
-
-      });
-
-    }
-
-  }
-
-})
 .directive('roundConverter', function () {
 	
 	function isInvalid(number) {
@@ -134,6 +89,26 @@ angular.module('ADUtils',[])
 			});
 		}
 	};
+})
+.directive('separator', function() {
+
+  function link(scope, element, attrs, ngModel) {
+    var value;
+
+    function updateAmount() {
+        value = accounting.formatNumber(value, { precision : 0, thousand: " ", decimal : "."});
+      element.text(value);
+    }
+
+    scope.$watch(ngModel.$viewValue, function(value) {
+      value = accounting.toFixed(ngModel.$viewValue, 0);
+      updateAmount();
+    });
+  }
+
+  return {
+    link: link
+  };
 })
 .filter('yesNo', function() {
     return function(input) {

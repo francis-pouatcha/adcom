@@ -12,8 +12,7 @@ angular.module('AdCshdwr', [
        'datePicker',
        'ADUtils',
         'pascalprecht.translate',
-       'httpProgress',
-       'ng-currency'
+       'httpProgress'
 ])
 .constant('APP_CONFIG',{
 	'appName':'Cash Drawer',
