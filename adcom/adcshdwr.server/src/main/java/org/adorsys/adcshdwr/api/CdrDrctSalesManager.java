@@ -269,8 +269,9 @@ public class CdrDrctSalesManager {
 			}
 		}	
 		if(returned==true){
+			
+			// Create a voucher, update the cashdrawer and print the voucher
 			cdrCstmrVchrEJB.generateVoucher(cdrDsArtHolder);
-			// Print voucher 
 		}
 		return cdrDsArtHolder;
 	}

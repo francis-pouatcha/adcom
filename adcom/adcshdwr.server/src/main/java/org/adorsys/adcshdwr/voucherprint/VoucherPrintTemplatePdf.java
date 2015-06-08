@@ -184,12 +184,13 @@ public class VoucherPrintTemplatePdf extends VoucherPrintTemplate {
 			throw new IOException(e);
 		}
 		pdDocument.close();
+		bos.close();
 	}
 
 	@Override
 	public Object getPage() {
 		if(bos==null) return null;
-		return bos.toByteArray();
+		return bos;
 	}
 
 
