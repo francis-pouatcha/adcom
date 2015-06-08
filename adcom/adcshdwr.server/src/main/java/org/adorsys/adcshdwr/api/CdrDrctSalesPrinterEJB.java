@@ -1,6 +1,8 @@
 package org.adorsys.adcshdwr.api;
 
 import java.awt.Desktop;
+import java.awt.Desktop.Action;
+import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -9,6 +11,7 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.print.PrintService;
 import javax.xml.crypto.dsig.keyinfo.RetrievalMethod;
 
 import org.adorsys.adbase.jpa.Login;
@@ -51,6 +54,7 @@ public class CdrDrctSalesPrinterEJB {
 	 * Printing Receipt pdf
 	 * @param sales
 	 */
+	@SuppressWarnings("static-access")
 	public void printReceiptPdf(CdrDrctSales sales){
 		CdrDrctSalesPrinterData drctSalesPrinterData = createCdrDrctSalesPrinterData(sales);
 		ReceiptPrinterData receiptPrinterData = createReceiptPrinterData(sales);
@@ -65,13 +69,25 @@ public class CdrDrctSalesPrinterEJB {
 			FileOutputStream fileOutputStream = new FileOutputStream(fileName);
 			IOUtils.write(data, fileOutputStream);
 			PrintMode printMode = worker.getReceiptPrintMode();
+			Desktop desktop = null;
+			if(Desktop.isDesktopSupported()){
+				desktop = Desktop.getDesktop();
+			}
+			
+			// Test the printer Name
+			getPrinterName();
+			
 			switch (printMode) {
 			case open:
-				 Desktop.getDesktop().open(new File(fileName));
+				if(desktop.isSupported(Action.OPEN)){
+					desktop.open(new File(fileName));
+				}
 				break;
             case print:
-            	 Desktop.getDesktop().print(new File(fileName));
-            	 break;
+            	if(desktop.isSupported(Action.PRINT)){
+            		desktop.print(new File(fileName));
+            	}
+            	break;
 			default:
 				break;
 			}
@@ -83,6 +99,21 @@ public class CdrDrctSalesPrinterEJB {
 			// What to do
 		}
 		
+	}
+	
+	
+	public void getPrinterName(){
+		try {
+			PrintService[] printServices = PrinterJob.lookupPrintServices();
+			if(printServices.length!=0){
+				for (int i = 0; i < printServices.length; i++) {
+					@SuppressWarnings("unused")
+					String name = printServices[i].getName();
+				}
+			}
+		} catch (Exception e) {
+		  throw new IllegalArgumentException(); 
+		}
 	}
 	
 	/**
