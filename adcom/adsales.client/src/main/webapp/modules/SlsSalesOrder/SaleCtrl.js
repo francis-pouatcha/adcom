@@ -157,6 +157,7 @@ angular.module('AdSales')
         self.slsSalesOrderItemHolder.slsSOItem.sppuCur = item.sppuCur;
         self.slsSalesOrderItemHolder.slsSOItem.vatPct = item.vatPct;
         self.slsSalesOrderItemHolder.slsSOItem.stkQty =item.stockQty;
+        self.slsSalesOrderItemHolder.slsSOItem.section =item.section;
         calculAmount();
     }
 
