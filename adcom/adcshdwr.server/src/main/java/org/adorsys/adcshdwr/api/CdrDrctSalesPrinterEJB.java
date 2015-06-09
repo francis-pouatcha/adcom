@@ -74,7 +74,7 @@ public class CdrDrctSalesPrinterEJB {
 			PrintMode printMode = worker.getReceiptPrintMode();
 			document = PDDocument.load(file);
 			switch (printMode) {
-			case open:
+			/* case open:
 				try {
 					document.print();
 				} catch (PrinterException e) {
@@ -82,14 +82,14 @@ public class CdrDrctSalesPrinterEJB {
 				}
 				document.close();
 				break;
-            case print:
+            /* case print:
             	try {
 					document.silentPrint();
 				} catch (PrinterException e) {
 					throw new IllegalArgumentException();
 				}
             	document.close();
-            	break;
+            	break; */
 			default:
 				break;
 			}
