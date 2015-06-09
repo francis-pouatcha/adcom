@@ -2,7 +2,7 @@
     
 angular.module('AdCshdwr')
 
-.factory('cdrSlsInvoicesUtils',['sessionManager','$translate','adUtils','genericResource','$q',function(sessionManager,$translate,adUtils,genericResource,$q){
+.factory('cdrSlsInvoicesUtils',['sessionManager','$translate','adUtils','genericResource','$q', '$http',function(sessionManager,$translate,adUtils,genericResource,$q,$http){
     var service = {};
 
     service.urlBase='/adsales.server/rest/slsinvoices';
@@ -191,6 +191,21 @@ angular.module('AdCshdwr')
     
     service.translate();
     
+    service.loadPayInvce = function(searchInput){
+        var deferred = $q.defer();
+        
+        $http.post(service.urlBase + "/close/findByLikePay", searchInput)
+            .success(function(data) {
+                deferred.resolve(data);
+            })
+            .error(function(data){
+                deferred.reject("no more SlsInvce !")
+        });
+        
+        return deferred.promise;
+    }
+    
+    
     return service;
 }])
 .factory('cdrSlsInvoicesState',['$rootScope','searchResultHandler','dependentTabManager',function($rootScope,searchResultHandler,dependentTabManager){
@@ -235,13 +250,12 @@ function($scope,genericResource,cdrSlsInvoicesUtils,cdrSlsInvoicesState,$locatio
     }
 
     function findByLike(searchInput){
-		genericResource.findByLike(cdrSlsInvoicesUtils.urlBase, searchInput)
-		.success(function(entitySearchResult) {
-			cdrSlsInvoicesState.resultHandler.searchResult(entitySearchResult);
-		})
-        .error(function(error){
-            $scope.error=error;
-        });
+        cdrSlsInvoicesUtils.loadPayInvce(searchInput)
+		.then(function(entitySearchResult){
+            cdrSlsInvoicesState.resultHandler.searchResult(entitySearchResult);
+        },function(error){
+        	$scope.error = error;
+        });                  		
     }
     
 

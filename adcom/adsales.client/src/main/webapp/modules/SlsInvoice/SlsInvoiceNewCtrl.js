@@ -27,7 +27,6 @@ angular.module('AdSales')
         slsInvcePtnrsHolder:[]
     };
     $scope.maxRebate = sessionManager.userWsData().maxRebate;
-    console.log($scope.maxRebate);
 
     if(slsSalesOrderState.slsInvoiceHolder){
         angular.copy(slsSalesOrderState.slsInvoiceHolder.slsInvoice, self.slsInvoiceHolder.slsInvoice);
@@ -182,6 +181,7 @@ angular.module('AdSales')
         self.slsInvoiceItemHolder.slsInvceItem.sppuCur = item.sppuCur;
         self.slsInvoiceItemHolder.slsInvceItem.vatPct = item.vatPct;
         self.slsInvoiceItemHolder.slsInvceItem.stkQty =item.stockQty;
+        self.slsInvoiceItemHolder.slsInvceItem.section =item.section;
         calculAmount();
     }
 

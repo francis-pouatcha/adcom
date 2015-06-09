@@ -1,5 +1,6 @@
 package org.adorsys.adsales.rest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -9,6 +10,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.metamodel.SingularAttribute;
 
+import org.adorsys.adbase.enums.BaseProcessStatusEnum;
 import org.adorsys.adcore.utils.SequenceGenerator;
 import org.adorsys.adsales.jpa.SlsInvcePymtStatus;
 import org.adorsys.adsales.jpa.SlsInvoice;
@@ -87,6 +89,20 @@ public class SlsInvoiceEJB
    public List<SlsInvoice> findByLike(SlsInvoice entity, int start, int max, SingularAttribute<SlsInvoice, ?>[] attributes)
    {
       return repository.findByLike(entity, start, max, attributes);
+   }
+   
+   public List<SlsInvoice> findByLikePay(SlsInvoice entity, int start, int max, SingularAttribute<SlsInvoice, ?>[] attributes)
+   {
+		List<SlsInvoice> slsInvoices = new ArrayList<SlsInvoice>();
+		
+		for (SlsInvoice slsInvoice : repository.findByLike(entity, start, max, attributes)) {
+			String statusOfInvoice = slsInvoice.getInvceStatus();
+			
+			if(statusOfInvoice.equals(BaseProcessStatusEnum.CLOSED.name()))
+				slsInvoices.add(slsInvoice);
+		}
+
+      return slsInvoices;
    }
 
    public Long countByLike(SlsInvoice entity, SingularAttribute<SlsInvoice, ?>[] attributes)

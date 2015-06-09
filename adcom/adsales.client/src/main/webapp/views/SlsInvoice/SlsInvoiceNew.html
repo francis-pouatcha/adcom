@@ -74,19 +74,19 @@
                             </div>
                         </td>
                         <td>
-                            <input type="text" class="form-control" name="rebate" ng-change="slsInvoiceNewCtlr.remise()" ng-model="slsInvoiceNewCtlr.slsInvoiceItemHolder.slsInvceItem.rebate" >
+                            <input type="text" class="form-control" name="rebate" ng-change="slsInvoiceNewCtlr.remise()" ng-model="slsInvoiceNewCtlr.slsInvoiceItemHolder.slsInvceItem.rebate" numeric >
                         </td>
                         <td>
                             <input type="text" class="form-control" name="rebatePct" ng-change="slsInvoiceNewCtlr.remise()" ng-model="slsInvoiceNewCtlr.slsInvoiceItemHolder.slsInvceItem.rebatePct" placeholder="%" >
                         </td>
                         <td>
                             <div >
-                                <input type="text" class="form-control" name="vatAmount" disabled ng-model="slsInvoiceNewCtlr.slsInvoiceItemHolder.slsInvceItem.vatAmount" >
+                                <input type="text" class="form-control" name="vatAmount" disabled ng-model="slsInvoiceNewCtlr.slsInvoiceItemHolder.slsInvceItem.vatAmount" numeric >
                             </div>
                         </td>
                         <td>
                             <div >
-                                <input type="text" class="form-control" name="netSPTaxIncl" disabled ng-model="slsInvoiceNewCtlr.slsInvoiceItemHolder.slsInvceItem.netSPTaxIncl" >
+                                <input type="text" class="form-control" name="netSPTaxIncl" disabled ng-model="slsInvoiceNewCtlr.slsInvoiceItemHolder.slsInvceItem.netSPTaxIncl" numeric >
                             </div>
                         </td>
                         <td><button class="btn btn-primary" ng-enter="slsInvoiceNewCtlr.addItem()" ng-disabled="invoiceItemForm.$invalid" ng-click="slsInvoiceNewCtlr.addItem()" ><i class="glyphicon glyphicon-plus"></i> Add</button></td>
@@ -97,7 +97,7 @@
                   <div class="col-lg-2">
                         <div class="form-group">
                             <label>{{'SlsInvoice_pymtDscntAmt_description.title' | translate}}</label><br/>
-                            <input  type="text" class="form-control" ng-model="slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.pymtDscntAmt" price-green="price-green" round-converter='round-converter' />
+                            <input  type="text" class="form-control" ng-model="slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.pymtDscntAmt" price-green="price-green" round-converter='round-converter' numeric />
                         </div><br/>
                       <labe class="label label-danger" >{{error}}</labe>
 

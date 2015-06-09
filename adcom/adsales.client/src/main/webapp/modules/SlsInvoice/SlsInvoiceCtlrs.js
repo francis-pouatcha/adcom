@@ -7,6 +7,7 @@ angular.module('AdSales')
 
     service.urlBase='/adsales.server/rest/slsinvoices';
     service.bnsptnrUrlBase='/adbnsptnr.server/rest/bpbnsptnrs';
+    service.invceManager = '/adsales.server/rest/invoice';
     
     service.formatDate= function(fieldName, inPattern){
         return adUtils.formatDate(fieldName, inPattern);
@@ -366,7 +367,7 @@ function($scope,genericResource,slsInvoicesUtils,slsInvoicesState,$location,$roo
     };
 
      $scope.delivered = function(){
-         genericResource.customMethod(slsInvoicesUtils.urlBase+'/deliveredInvoice', $scope.slsInvoice)
+         genericResource.get(slsInvoicesUtils.invceManager+'/deliveredInvoice/'+$scope.slsInvoice.id)
              .success(function(slsInvoice){
                  $scope.slsInvoice = slsInvoice;
              })

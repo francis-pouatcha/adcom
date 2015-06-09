@@ -61,19 +61,19 @@
                             </div>
                         </td>
                         <td>
-                            <input type="text" class="form-control" name="rebate" ng-change="saleCtlr.calculAmount()" ng-model="saleCtlr.slsSalesOrderItemHolder.slsSOItem.rebate" >
+                            <input type="text" class="form-control" name="rebate" ng-change="saleCtlr.calculAmount()" ng-model="saleCtlr.slsSalesOrderItemHolder.slsSOItem.rebate" numeric >
                         </td>
                         <td>
                             <input type="text" class="form-control" name="rebatePct" ng-change="saleCtlr.calculAmount()" ng-model="saleCtlr.slsSalesOrderItemHolder.slsSOItem.rebatePct" placeholder="%" >
                         </td>
                         <td>
                             <div >
-                                <input type="text" class="form-control" name="vatAmount" disabled ng-model="saleCtlr.slsSalesOrderItemHolder.slsSOItem.vatAmount" >
+                                <input type="text" class="form-control" name="vatAmount" disabled ng-model="saleCtlr.slsSalesOrderItemHolder.slsSOItem.vatAmount" numeric >
                             </div>
                         </td>
                         <td>
                             <div >
-                                <input type="text" class="form-control" name="netSPTaxIncl" disabled ng-model="saleCtlr.slsSalesOrderItemHolder.slsSOItem.netSPTaxIncl" >
+                                <input type="text" class="form-control" name="netSPTaxIncl" disabled ng-model="saleCtlr.slsSalesOrderItemHolder.slsSOItem.netSPTaxIncl" numeric >
                             </div>
                         </td>
                         <td><button class="btn btn-primary" ng-enter="saleCtlr.addItem()" ng-disabled="OrderItemForm.$invalid" ng-click="saleCtlr.addItem()" ><i class="glyphicon glyphicon-plus"></i> Add</button></td>
@@ -84,7 +84,7 @@
                   <div class="col-lg-2">
                         <div class="form-group">
                             <label for="">{{'SlsSalesOrder_pymtDscntAmt_description.title' | translate}}</label><br/>
-                            <input  type="text" class="form-control" ng-model="saleCtlr.slsSalesOrderHolder.slsSalesOrder.pymtDscntAmt" price-green="price-green" round-converter="round-converter"/>
+                            <input  type="text" class="form-control" ng-model="saleCtlr.slsSalesOrderHolder.slsSalesOrder.pymtDscntAmt" price-green="price-green" round-converter="round-converter" numeric />
                         </div>
                   </div>
                     <div class="col-lg-2">
