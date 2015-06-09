@@ -279,7 +279,7 @@ function($scope,genericResource,slsInvoicesUtils,slsInvoicesState,$location,$roo
 	}
 
 	function edit(slsInv, index){
-		if(slsInvoicesState.resultHandler.selectedObject(slsInv)){
+		if(slsInvoicesState.resultHandler.selectedObject(slsInv)!= -1){
 			$location.path('/SlsInvoices/edit/');
 		}
 	}

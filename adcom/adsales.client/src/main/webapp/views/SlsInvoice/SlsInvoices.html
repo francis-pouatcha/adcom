@@ -174,7 +174,7 @@
                                     <label ng-show="!slsInvce.invceDelivered" class="label label-danger">NON LIVRE</label>
                                 </td>
                                 <td><a ng-show="slsInvce.invceStatus=='CLOSED' || slsInvce.invceStatus=='SUSPENDED'"  href="" ng-click="show(slsInvce,$index)"><i class="glyphicon glyphicon-eye-open"></i></a></td>
-                                <td><a href="" ng-show="slsInvce.invceStatus=='ONGOING' || slsInvce.invceStatus=='RESUMED'" ng-click="edit(slsInvce,$index)"><i class="glyphicon glyphicon-edit"></i></a></td>
+                                <td><a ng-show="slsInvce.invceStatus=='ONGOING' || slsInvce.invceStatus=='RESUMED'" href="" ng-click="edit(slsInvce,$index)"><i class="glyphicon glyphicon-edit"></i></a></td>
                             </tr>
                             </tbody>
                         </table>
