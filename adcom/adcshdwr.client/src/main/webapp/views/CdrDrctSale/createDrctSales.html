@@ -3,65 +3,68 @@
         <div class="panel-heading">
             <span><b>{{cdrDrctSalesUtils.translations['CdrDsArtItem_description.title']}} </b></span>
         </div>
-        <div class=panel-body"">
+        <div class="panel-body">
             <div>
-                <form role="form" name="cdrDsArtItemSearchForm" id="cdrDsArtItemSearchForm" novalidate>
-                    <div class="row">
-                        <div class="form-group col-lg-2">
+                <form role="form" class="form-horizontal" name="cdrDsArtItemSearchForm" id="cdrDsArtItemSearchForm" novalidate>
+
+					<div class="form-group">
+                        <div class="col-lg-2">
                             <label class=" control-label" for="searchArtPic">{{cdrDrctSalesUtils.translations['CdrDsArtItem_artPic_description.title']}}</label>
                             <div ng-class="{ 'has-error' : cdrDsArtItemSearchForm.searchArtPic.$invalid }" >
                                 <input type="text" class="form-control" select-on-click focus  name="searchArtPic" id="searchArtPic" required autocomplete="off" ng-model="cdrDsArtItemHolder.item.artPic" typeahead="displayable as displayable.displayableStr for displayable in cdrDrctSalesUtils.loadArticleLotByPic($viewValue)" typeahead-loading="loading" typeahead-on-select='onArticleSelectedInSearch($item, $model, $label)'>
                             </div>
                          </div>
-                        <div class="form-group col-lg-3">
+                        <div class="col-lg-3">
                             <label class=" control-label" for="searchArtName">{{cdrDrctSalesUtils.translations['CdrDsArtItem_artName_description.title']}}</label>
                             <div ng-class="{ 'has-error' : cdrDsArtItemSearchForm.searchArtName.$invalid }" >
                                 <input type="text" select-on-click focus class="form-control" id="searchArtName" required  autocomplete="off" ng-model="cdrDsArtItemHolder.artName" typeahead="displayable as displayable.displayableStr for displayable in cdrDrctSalesUtils.loadArticlesByName($viewValue)" typeahead-loading="loading" typeahead-on-select='onArticleSelectedInSearch($item, $model, $label)' name="searchArtName">
                             </div>
                         </div>
-                        <div class="form-group col-lg-2">
+                        <div class="col-lg-2">
                             <label class=" control-label" for="soldQty">{{cdrDrctSalesUtils.translations['CdrDsArtItem_soldQty_description.title']}}</label>
                             <div ng-class="{ 'has-error' : cdrDsArtItemSearchForm.soldQty.$invalid }" >
                                 <input type="text" class="form-control" name="soldQty" id="soldQty" required autocomplete="off" ng-model="cdrDsArtItemHolder.item.soldQty">
                             </div>
                         </div>
-                        <div class="form-group col-lg-2">
+                        <div class="col-lg-2">
                             <label class=" control-label" for="sppuPreTax">Prix Vente U</label>
                             <input value="{{cdrDsArtItemHolder.item.sppuPreTax}}" disabled type="text" ng-class="form-control" name="sppuPreTax" id="sppuPreTax" autocomplete="off">
                         </div>
-                        <div class="form-group col-lg-2">
+                        <div class="col-lg-2">
                             <label class=" control-label" for="sppuPreTax">Montant Brut Vente</label>
                             <input value="{{parseInt(cdrDsArtItemHolder.item.sppuPreTax * cdrDsArtItemHolder.item.soldQty)==NaN?0:parseInt(cdrDsArtItemHolder.item.sppuPreTax * cdrDsArtItemHolder.item.soldQty)}}" disabled type="text" ng-class="form-control" autocomplete="off" >
                         </div>
-                        <div class="form-group col-lg-2">
+                    </div>
+                     
+                    <div class="form-group">
+                        <div class="col-lg-2">
                             <label class=" control-label" for="vatPct">{{cdrDrctSalesUtils.translations['CdrDsArtItem_vatPct_description.title']}}</label>
                             <input type="text" class="form-control" name="vatPct" id="vatPct" autocomplete="off" ng-model="cdrDsArtItemHolder.item.vatPct">
                         </div>
-                        <div class="form-group col-lg-2">
+                        <div class="col-lg-2">
                             <label class=" control-label" for="rebate">{{cdrDrctSalesUtils.translations['CdrDsArtItem_rebate_description.title']}}</label>
                             <input type="text" class="form-control" name="rebate" id="rebate" autocomplete="off" ng-model="cdrDsArtItemHolder.item.rebate" numeric>
                         </div>
-                        <div class="form-group col-lg-2">
+                        <div class="col-lg-2">
                             <label class=" control-label" for="restockgFees">{{cdrDrctSalesUtils.translations['CdrDsArtItem_restockgFees_description.title']}}</label>
                             <input type="text" class="form-control" name="restockgFees" id="restockgFees" autocomplete="off" ng-model="cdrDsArtItemHolder.item.restockgFees" numeric>
                         </div>
-                        <div class="form-group col-lg-2">
+                        <div class="col-lg-2">
                             <label class=" control-label" for="maxStockQty">Qte. En stock</label>
                             <input disabled value="{{cdrDsArtItemHolder.maxStockQty}}" type="text" ng- class="form-control" name="maxStockQty" id="maxStockQty" autocomplete="off">
                         </div>
-                        <div class="form-group col-lg-1">
+                        <div class="col-lg-1">
                             <button ng-click="addItem()" ng-enter="addItem()" ng-disabled="cdrDsArtItemSearchForm.$invalid" class="btn btn-default " style="margin-top: 23px;">
                                 <i class="glyphicon glyphicon-check"></i>
                             </button>
                         </div>
-                        <div class="form-group col-lg-2">
+                        <div class="col-lg-2">
                             <button  ng-click="fetchCatalArticles()" class="btn btn-default " style="margin-top: 23px;" >
                                 <i class="glyphicon glyphicon-search"></i> {{cdrDrctSalesUtils.translations['Entity_search.title']}} Articles
                             </button>
                         </div>
+                   </div>
 
-
-                    </div>
                 </form>
             </div>
         </div>

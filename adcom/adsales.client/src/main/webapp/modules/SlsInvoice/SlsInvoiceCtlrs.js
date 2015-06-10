@@ -198,7 +198,8 @@ function($scope,genericResource,slsInvoicesUtils,slsInvoicesState,$location,$roo
     init();
 
     function init(){
-        if(slsInvoicesState.resultHandler.hasEntities())return;
+        if(slsInvoicesState.resultHandler.hasEntities())
+        	{$scope.slsInvoices = slsInvoicesState.resultHandler.entities; return;}
         findByLike($scope.searchInput);
     }
 
