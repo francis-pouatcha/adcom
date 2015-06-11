@@ -5,7 +5,6 @@ package org.adorsys.adcshdwr.api;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
-import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
@@ -20,7 +19,6 @@ import javax.ws.rs.core.Response;
 
 import org.adorsys.adcore.exceptions.AdException;
 import org.adorsys.adcshdwr.jpa.CdrCstmrVchr;
-import org.adorsys.adcshdwr.jpa.CdrCstmrVchrSearchInput;
 import org.adorsys.adcshdwr.rest.CdrCstmrVchrEJB;
 import org.adorsys.adcshdwr.voucherprint.VoucherPrintTemplatePdf;
 
@@ -55,16 +53,15 @@ public class CdrDrctSalesManagerEndpoint {
 	   {
 		   return ejb.findCdrDsArtHolder(id);
 	   }
-	 
-	 	@POST
-	 	@Path("/returnProduct")
-		@Consumes({ "application/json", "application/xml" })
-		@Produces({ "application/json", "application/xml" })
-		public CdrDsArtHolder returnProduct(CdrDsArtHolder cdrDsArtHolder) throws AdException {
-			return ejb.returnProduct(cdrDsArtHolder);
-		}
-	 	
-	 	
+//	 
+//	 	@POST
+//	 	@Path("/returnProduct")
+//		@Consumes({ "application/json", "application/xml" })
+//		@Produces({ "application/json", "application/xml" })
+//		public CdrDsArtHolder returnProduct(CdrDsArtHolder cdrDsArtHolder) throws AdException {
+//			return ejb.returnProduct(cdrDsArtHolder);
+//		}
+
 	 	@GET
 		@Path("/voucherreport.pdf/{dsNbr}")
 		@Produces({"application/pdf","application/octet-stream" })
@@ -89,6 +86,4 @@ public class CdrDrctSalesManagerEndpoint {
 	 				.header("Content-Disposition","attachment; filename=voucherreport.pdf")
 	 				.build();
 		}
-	 	
-	 	
 }

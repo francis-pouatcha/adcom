@@ -1,9 +1,5 @@
 package org.adorsys.adcshdwr.api;
 
-import java.awt.Desktop;
-import java.awt.Desktop.Action;
-import java.awt.print.PrinterException;
-import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -12,8 +8,6 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.print.PrintService;
-import javax.xml.crypto.dsig.keyinfo.RetrievalMethod;
 
 import org.adorsys.adbase.jpa.Login;
 import org.adorsys.adbase.jpa.OrgContact;
@@ -74,6 +68,12 @@ public class CdrDrctSalesPrinterEJB {
 			PrintMode printMode = worker.getReceiptPrintMode();
 			document = PDDocument.load(file);
 			switch (printMode) {
+			case open:
+//				 Desktop.getDesktop().open(new File(fileName));
+				break;
+            case print:
+//            	 Desktop.getDesktop().print(new File(fileName));
+            	 break;
 			/* case open:
 				try {
 					document.print();

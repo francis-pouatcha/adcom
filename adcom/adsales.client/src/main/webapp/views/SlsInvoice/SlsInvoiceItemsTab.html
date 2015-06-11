@@ -19,14 +19,14 @@
         </thead>
         <tbody>
             <tr dir-paginate="slsInvceItem in slsInvoice.slsInvceItems | filter:q | itemsPerPage: itemPerPage()" current-page="currentPage">
-                <td>{{slsInvceItem.artPic}}</td>
-                <td>{{slsInvceItem.artName}}</td>
-                <td>{{slsInvceItem.qty}}</td>
-                <td>{{slsInvceItem.sppuPreTax}}</td>
-                <td>{{slsInvceItem.netSPPreTax}}</td>
-                <td>{{slsInvceItem.vatAmount}}</td>
-                <td>{{slsInvceItem.rebate}}</td>
-                <td>{{slsInvceItem.netSPTaxIncl}}</td>
+                <td>{{slsInvceItem.slsInvceItem.artPic}}</td>
+                <td>{{slsInvceItem.slsInvceItem.artName}}</td>
+                <td>{{slsInvceItem.slsInvceItem.qty}}</td>
+                <td>{{slsInvceItem.slsInvceItem.sppuPreTax}}</td>
+                <td>{{slsInvceItem.slsInvceItem.netSPPreTax}}</td>
+                <td>{{slsInvceItem.slsInvceItem.vatAmount}}</td>
+                <td>{{slsInvceItem.slsInvceItem.rebate}}</td>
+                <td>{{slsInvceItem.slsInvceItem.netSPTaxIncl}}</td>
             </tr>
         </tbody>
     </table>

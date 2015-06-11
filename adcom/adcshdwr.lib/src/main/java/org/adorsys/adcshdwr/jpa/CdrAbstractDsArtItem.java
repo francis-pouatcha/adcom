@@ -51,6 +51,17 @@ public class CdrAbstractDsArtItem extends AbstractIdentifData {
 	@Column
 	@Description("CdrDsArtItem_returnedQty_description")
 	private BigDecimal returnedQty;
+	
+	/*
+	 * This is the original dsNbr, that can be used to track
+	 * the original invoice of a returned item.
+	 * 
+	 * When this is not null, we reuse the rebates defined 
+	 * there to process the return.
+	 */
+	@Column
+	@Description("CdrDsArtItem_returnedQty_description")
+	private String origDsNbr;
 
 	@Column
 	@Description("CdrDsArtItem_sppuPreTax_description")
@@ -253,6 +264,14 @@ public class CdrAbstractDsArtItem extends AbstractIdentifData {
 		return dsNbr + "_" + lotPic + "_" + artPic + "_" + section;
 	}
 	
+	public String getOrigDsNbr() {
+		return origDsNbr;
+	}
+
+	public void setOrigDsNbr(String origDsNbr) {
+		this.origDsNbr = origDsNbr;
+	}
+
 	@Override
 	protected String makeIdentif() {
 		return toIdentifier(dsNbr, lotPic, artPic, section);
@@ -295,6 +314,7 @@ public class CdrAbstractDsArtItem extends AbstractIdentifData {
 		target.netSPTaxIncl=netSPTaxIncl;
 		target.objctOrgUnit=objctOrgUnit;
 		target.salIndex = salIndex;
+		target.origDsNbr = origDsNbr;
 	}
 	
 	public boolean contentEquals(CdrAbstractDsArtItem target){
@@ -315,12 +335,14 @@ public class CdrAbstractDsArtItem extends AbstractIdentifData {
 		if(!StringUtils.equals(target.dsNbr,dsNbr)) return false;
 		if(!StringUtils.equals(target.lotPic,lotPic)) return false;
 		if(!StringUtils.equals(target.objctOrgUnit,objctOrgUnit)) return false;
+		if(!StringUtils.equals(target.origDsNbr,origDsNbr)) return false;
 		return true;
 	}
 	
 	public void evlte() {
 		consolidate();
-		grossSPPreTax = sppuPreTax.multiply(soldQty);
+		BigDecimal billedQty = BigDecimalUtils.subs(soldQty, returnedQty);
+		grossSPPreTax = sppuPreTax.multiply(billedQty);
 		netSPPreTax = FinancialOps.substract(grossSPPreTax, rebate, sppuCur);
 		netSPPreTax = FinancialOps.add(netSPPreTax, restockgFees, sppuCur);
 		
