@@ -27,32 +27,43 @@ angular.module('AdSales')
         slsInvcePtnrsHolder:[]
     };
     $scope.maxRebate = sessionManager.userWsData().maxRebate;
+      init();
+    function init(){
+        var invceNbr = $routeParams.invceNbr;
+        if(invceNbr){
+            genericResource.findById(SlsInvoiceUtils.invoice,invceNbr).success(function(slsInvoiceHolder){
+                self.slsInvoiceHolder = slsInvoiceHolder;
+            }).error(function(error){
+                $scope.error = error;
+            });
+        }
+        else {
+            if(slsSalesOrderState.slsInvoiceHolder){
+                angular.copy(slsSalesOrderState.slsInvoiceHolder.slsInvoice, self.slsInvoiceHolder.slsInvoice);
+                angular.copy(slsSalesOrderState.slsInvoiceHolder.slsInvceItemsholder, self.slsInvoiceHolder.slsInvceItemsholder);
+                angular.copy(slsSalesOrderState.slsInvoiceHolder.slsInvcePtnrsHolder, self.slsInvoiceHolder.slsInvcePtnrsHolder);
+                clearSlsSOState();
+                if(self.slsInvoiceHolder.slsInvceItemsholder) self.showBtnClose = false;
+             }
 
-    if(slsSalesOrderState.slsInvoiceHolder){
-        angular.copy(slsSalesOrderState.slsInvoiceHolder.slsInvoice, self.slsInvoiceHolder.slsInvoice);
-        angular.copy(slsSalesOrderState.slsInvoiceHolder.slsInvceItemsholder, self.slsInvoiceHolder.slsInvceItemsholder);
-        angular.copy(slsSalesOrderState.slsInvoiceHolder.slsInvcePtnrsHolder, self.slsInvoiceHolder.slsInvcePtnrsHolder);
-        clearSlsSOState();
-        if(self.slsInvoiceHolder.slsInvceItemsholder) self.showBtnClose = false;
-     }
-      function clearSlsSOState(){
-          slsSalesOrderState.slsInvoiceHolder.slsInvoice = {};
-          slsSalesOrderState.slsInvoiceHolder.slsInvceItemsholder = [];
-          slsSalesOrderState.slsInvoiceHolder.slsInvcePtnrsHolder = [];
-      }
-    
-    if(!self.slsInvoiceHolder){
-        console.log('Null InvoiceHolder');
-        self.slsInvoiceHolder.slsInvoice.invceDt = new Date();
-        self.slsInvoiceHolder.slsInvoice.grossSPPreTax = 0;
-        self.slsInvoiceHolder.slsInvoice.netSPPreTax = 0;
-        self.slsInvoiceHolder.slsInvoice.vatAmount = 0;
-        self.slsInvoiceHolder.slsInvoice.netSPTaxIncl = 0;
-        self.slsInvoiceHolder.slsInvoice.rebate = 0;
-        self.slsInvoiceHolder.slsInvoice.netSalesAmt = 0;
-        self.slsInvoiceHolder.slsInvoice.invceStatus = 'INITIATED';
-    }
-    
+            if(!self.slsInvoiceHolder){
+                console.log('Null InvoiceHolder');
+                self.slsInvoiceHolder.slsInvoice.invceDt = new Date();
+                self.slsInvoiceHolder.slsInvoice.grossSPPreTax = 0;
+                self.slsInvoiceHolder.slsInvoice.netSPPreTax = 0;
+                self.slsInvoiceHolder.slsInvoice.vatAmount = 0;
+                self.slsInvoiceHolder.slsInvoice.netSPTaxIncl = 0;
+                self.slsInvoiceHolder.slsInvoice.rebate = 0;
+                self.slsInvoiceHolder.slsInvoice.netSalesAmt = 0;
+                self.slsInvoiceHolder.slsInvoice.invceStatus = 'INITIATED';
+            }
+        }
+  }
+        function clearSlsSOState(){
+            slsSalesOrderState.slsInvoiceHolder.slsInvoice = {};
+            slsSalesOrderState.slsInvoiceHolder.slsInvceItemsholder = [];
+            slsSalesOrderState.slsInvoiceHolder.slsInvcePtnrsHolder = [];
+        }
     /*$scope.itemPerPage=slsSalesOrderState.resultHandler.itemPerPage;
     $scope.currentPage=slsSalesOrderState.resultHandler.currentPage();
     $scope.maxSize =slsSalesOrderState.resultHandler.maxResult;*/

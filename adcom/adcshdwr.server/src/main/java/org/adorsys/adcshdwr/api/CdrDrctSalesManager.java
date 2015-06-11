@@ -276,23 +276,4 @@ public class CdrDrctSalesManager {
 		return cdrDsArtHolder;
 	}
 
-
-//	public CdrDsArtHolder returnProduct(CdrDsArtHolder cdrDsArtHolder) throws AdException {
-//		List<CdrDsArtItemHolder> items = cdrDsArtHolder.getItems();
-//		Boolean returned = false;
-//		for(CdrDsArtItemHolder item:items){
-//			if(item.getItem().getReturnedQty() != null && item.getItem().getReturnedQty().compareTo(BigDecimal.ZERO) == 1 ){
-//				cdrDsArtItemEJB.update(item.getItem());
-//				returned = true;
-//			}
-//		}	
-//		if(returned==true){
-//			
-//			// Create a voucher, update the cashdrawer and print the voucher
-//			cdrCstmrVchrEJB.generateVoucher(cdrDsArtHolder);
-//		}
-//		return cdrDsArtHolder;
-//	}
-	
-
 }

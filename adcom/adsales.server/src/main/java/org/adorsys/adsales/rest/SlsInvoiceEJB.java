@@ -154,6 +154,15 @@ public StringBuilder preprocessQuery(String findOrCount, SlsInvoiceSearchInput s
 			}
 			qBuilder.append("s.invcePymntStatus=:invcePymntStatus");
 		}
+		if(searchInput.getFieldNames().contains("slsInvceStatus") && StringUtils.isNotBlank(String.valueOf(entity.getInvcePymntStatus()))){
+			if(!whereSet){
+				qBuilder.append(whereClause);
+				whereSet = true;
+			} else {
+				qBuilder.append(andClause);
+			}
+			qBuilder.append("s.slsInvceStatus=:slsInvceStatus");
+		}
 		if(searchInput.getFieldNames().contains("invceDelivered") && StringUtils.isNotBlank(String.valueOf(entity.getInvceDelivered()))){
 			if(!whereSet){
 				qBuilder.append(whereClause);
@@ -195,6 +204,9 @@ public StringBuilder preprocessQuery(String findOrCount, SlsInvoiceSearchInput s
 		}
 	   if(searchInput.getFieldNames().contains("invcePymntStatus") && StringUtils.isNotBlank(String.valueOf(entity.getInvcePymntStatus()))){
 			query.setParameter("invcePymntStatus", entity.getInvcePymntStatus());
+		}
+	   if(searchInput.getFieldNames().contains("slsInvceStatus") && StringUtils.isNotBlank(String.valueOf(entity.getInvceStatus()))){
+			query.setParameter("invceStatus", entity.getInvceStatus());
 		}
 	   if(searchInput.getFieldNames().contains("invceDelivered") && StringUtils.isNotBlank(String.valueOf(entity.getInvceDelivered()))){
 			query.setParameter("invceDelivered", entity.getInvceDelivered());
