@@ -40,7 +40,7 @@
                         </div>
                         <div class="form-group col-lg-2">
                             <label class=" control-label" for="sppuPreTax">Montant Brut Vente</label>
-                            <input value="{{cdrDsArtItemHolder.item.sppuPreTax * cdrDsArtItemHolder.item.soldQty}}" disabled type="text" ng- class="form-control" autocomplete="off">
+                            <input value="{{cdrDsArtItemHolder.item.sppuPreTax * cdrDsArtItemHolder.item.soldQty}}" disabled type="text" ng-class="form-control" autocomplete="off">
                         </div>
                         <div class="form-group col-lg-2">
                             <label class=" control-label" for="vatPct">{{cdrDrctSalesUtils.translations['CdrDsArtItem_vatPct_description.title']}}</label>
@@ -60,6 +60,11 @@
                                 <i class="glyphicon glyphicon-check"></i>
                             </button>
                         </div>
+                        <div class="form-group col-lg-2" ng-show="validateReturnQty">
+	                        <div class="alert alert-info" role="alert">
+						        <strong>Warning!</strong> {{validateReturn}}
+						    </div>
+					    </div>
 
                     </div>
                 </form>
@@ -82,7 +87,7 @@
                     	<input type="text" disabled class="form-control" ng-model="cdrDsArtHolder.paidAmt" ng-change="paidAmtChanged()" />
                     </span>
                     <div class="col-lg-3 btn-group">
-                        <button ng-click="save()" ng-show="!showprint" class="btn btn-primary"><i class="glyphicon glyphicon-save" ></i> {{'Entity_save.title' | translate}}</button>
+                        <button ng-click="save()" ng-show="!showprint" class="btn btn-primary" ng-disabled="validateReturnQty"><i class="glyphicon glyphicon-save" ></i> {{'Entity_save.title' | translate}}</button>
                         <!--<button ng-click=""  style="margin-top: 23px;" class="btn">{{commonTranslations.translations['Entity_save.title']}}</button>
                         <button ng-click="recompute()"  style="margin-top: 23px;" class="btn">{{cdrDrctSalesUtils.translations['Entity_recompute.title']}}</button>-->
                         <a class="btn-default btn" href="#/CdrDrctSales"><i class="glyphicon" ></i> Liste des ventes</a>
@@ -99,14 +104,14 @@
                     <span class="col-lg-2">{{cdrDsArtHolder.cdrDrctSales.netSPTaxIncl}}</span>
                     <span class="col-lg-2">
                     	<label>{{cdrDrctSalesUtils.translations['CdrDrctSales_pymtDscntAmt_description.title']}} : </label>
-                    	<input type="text"  class="form-control" ng-model="cdrDsArtHolder.cdrDrctSales.pymtDscntAmt"/>
+                    	<input type="text"  class="form-control" ng-model="cdrDsArtHolder.cdrDrctSales.pymtDscntAmt" disabled />
                     </span>
                     <span class="col-lg-2">
                     	<label>{{cdrDrctSalesUtils.translations['CdrDrctSales_changeAmt_description.title']}} : </label>
                     	<input type="text" class="form-control" ng-model="cdrDsArtHolder.changeAmt" disabled />
                     </span>
                     <span class="col-lg-2">
-                        <a class="btn-default btn btn-large" ng-show="showprint" ng-click="printRequest()"><i class="glyphicon glyphicon-print" ></i> Imprimer l'Avoir</a>
+                        <a class="btn-default btn btn-large" ng-show="showprint" ng-click="printRequestVoucher()"><i class="glyphicon glyphicon-print" ></i> Imprimer l'Avoir</a>
                         <a class="btn-default btn btn-large" ng-show="!showprint" ng-click="printRequest()"><i class="glyphicon glyphicon-print" ></i> Imprimer Ticket</a>
                     </span>
                     <span ng-show="showprint" class="label label-success">

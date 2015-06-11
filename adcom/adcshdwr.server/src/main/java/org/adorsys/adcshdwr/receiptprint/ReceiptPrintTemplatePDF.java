@@ -1,5 +1,6 @@
 package org.adorsys.adcshdwr.receiptprint;
 
+import java.awt.print.PrinterException;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -248,10 +249,13 @@ public class ReceiptPrintTemplatePDF extends ReceiptPrintTemplate {
 			closePaymentInternal();
 		} catch (IOException e) {
 			throw new java.lang.IllegalStateException(e);
+		} catch (PrinterException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
-	public void closePaymentInternal() throws IOException{
+	public void closePaymentInternal() throws IOException, PrinterException{
 		PDDocument pdDocument = new PDDocument();
 		float docHeight = rdt.computeHeight();
 		float docWidth = receiptDataTableMetaData.getWidth();
@@ -267,7 +271,7 @@ public class ReceiptPrintTemplatePDF extends ReceiptPrintTemplate {
 		} catch (COSVisitorException e) {
 			throw new IOException(e);
 		}
-		pdDocument.close();
+		pdDocument.close();		
 	}
 
 

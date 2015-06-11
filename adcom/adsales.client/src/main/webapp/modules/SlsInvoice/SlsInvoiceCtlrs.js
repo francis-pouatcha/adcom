@@ -7,6 +7,7 @@ angular.module('AdSales')
 
     service.urlBase='/adsales.server/rest/slsinvoices';
     service.bnsptnrUrlBase='/adbnsptnr.server/rest/bpbnsptnrs';
+    service.invceManager = '/adsales.server/rest/invoice';
     
     service.formatDate= function(fieldName, inPattern){
         return adUtils.formatDate(fieldName, inPattern);
@@ -197,7 +198,8 @@ function($scope,genericResource,slsInvoicesUtils,slsInvoicesState,$location,$roo
     init();
 
     function init(){
-        if(slsInvoicesState.resultHandler.hasEntities())return;
+        //if(slsInvoicesState.resultHandler.hasEntities())
+        	//{$scope.slsInvoices = slsInvoicesState.resultHandler.entities; return;}
         findByLike($scope.searchInput);
     }
 
@@ -225,6 +227,10 @@ function($scope,genericResource,slsInvoicesUtils,slsInvoicesState,$location,$roo
         if($scope.searchInput.entity.invcePymntStatus){
             $scope.searchInput.entity.invcePymntStatus = $scope.searchInput.entity.invcePymntStatus;
             fieldNames.push('invcePymntStatus');
+        }
+        if($scope.searchInput.entity.slsInvceStatus){
+            $scope.searchInput.entity.slsInvceStatus = $scope.searchInput.entity.slsInvceStatus;
+            fieldNames.push('slsInvceStatus');
         }
         if($scope.searchInput.entity.invceDelivered === true){
             $scope.searchInput.entity.invceDelivered= $scope.searchInput.entity.invceDelivered;
@@ -278,7 +284,7 @@ function($scope,genericResource,slsInvoicesUtils,slsInvoicesState,$location,$roo
 	}
 
 	function edit(slsInv, index){
-		if(slsInvoicesState.resultHandler.selectedObject(slsInv)){
+		if(slsInvoicesState.resultHandler.selectedObject(slsInv)!= -1){
 			$location.path('/SlsInvoices/edit/');
 		}
 	}
@@ -301,9 +307,9 @@ function($scope,genericResource,slsInvoicesUtils,slsInvoicesState,$location,$roo
         });
     };
 }])
-.controller('slsInvoicesShowCtlr',['$scope','genericResource','$location','slsInvoicesUtils', 'adUtils', 'slsInvoicesState','$rootScope',
-                                 function($scope,genericResource,$location,slsInvoicesUtils,adUtils,slsInvoicesState,$rootScope){
-    $scope.slsInvoice = slsInvoicesState.resultHandler.entity();
+.controller('slsInvoicesShowCtlr',['$scope','genericResource','$location','slsInvoicesUtils', 'adUtils', 'slsInvoicesState','$rootScope','$routeParams',
+                                 function($scope,genericResource,$location,slsInvoicesUtils,adUtils,slsInvoicesState,$rootScope,$routeParams){
+    //$scope.slsInvoice = slsInvoicesState.resultHandler.entity();
     $scope.itemPerPage=slsInvoicesState.resultHandler.itemPerPage;
     $scope.currentPage=slsInvoicesState.resultHandler.currentPage();
     $scope.maxSize =slsInvoicesState.resultHandler.maxResult;
@@ -312,10 +318,23 @@ function($scope,genericResource,slsInvoicesUtils,slsInvoicesState,$location,$roo
     $scope.handlePrintPreviewInvoice=handlePrintPreviewInvoice;
     $scope.returnSlsInvce = returnSlsInvce;
     $scope.printPdf=printPdf;
-                                     
+       init();
     $scope.pageChangeHandler = function(num) {
       //Simple Pagination
     };
+
+    function init(){
+        var invceNbr = $routeParams.invceNbr;
+        if(invceNbr){
+            genericResource.findById(slsInvoicesUtils.invceManager,invceNbr).success(function(slsInvoiceHolder){
+                $scope.slsInvoice = slsInvoiceHolder.slsInvoice;
+                $scope.slsInvoice.slsInvceItems = slsInvoiceHolder.slsInvceItemsholder;
+                $scope.slsInvoice.slsInvcePtnrs = slsInvoiceHolder.slsInvcePtnrsHolder;
+            }).error(function(error){
+                $scope.error = error;
+            });
+        }
+    }
     
                                      
     function handlePrintPreviewInvoice(slsInvce){
@@ -366,7 +385,7 @@ function($scope,genericResource,slsInvoicesUtils,slsInvoicesState,$location,$roo
     };
 
      $scope.delivered = function(){
-         genericResource.customMethod(slsInvoicesUtils.urlBase+'/deliveredInvoice', $scope.slsInvoice)
+         genericResource.get(slsInvoicesUtils.invceManager+'/deliveredInvoice/'+$scope.slsInvoice.id)
              .success(function(slsInvoice){
                  $scope.slsInvoice = slsInvoice;
              })

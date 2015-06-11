@@ -1,7 +1,6 @@
 package org.adorsys.adcshdwr.api;
 
-//import java.awt.Desktop;
-//import java.io.File;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
@@ -15,6 +14,7 @@ import org.adorsys.adbase.jpa.OrgContact;
 import org.adorsys.adbase.jpa.OrgUnit;
 import org.adorsys.adbase.security.SecurityUtil;
 import org.adorsys.adcore.utils.DateUtil;
+import org.adorsys.adcshdwr.jpa.CdrCstmrVchr;
 import org.adorsys.adcshdwr.jpa.CdrDrctSales;
 import org.adorsys.adcshdwr.jpa.CdrDsArtItem;
 import org.adorsys.adcshdwr.jpa.CdrDsArtItemSearchResult;
@@ -25,7 +25,12 @@ import org.adorsys.adcshdwr.receiptprint.ReceiptPrintTemplatePDF;
 import org.adorsys.adcshdwr.receiptprint.ReceiptPrinterData;
 import org.adorsys.adcshdwr.rest.CdrDsArtItemEJB;
 import org.adorsys.adcshdwr.rest.CdrDsPymntItemEJB;
+import org.adorsys.adcshdwr.voucherprint.CdrCstmrVchrPrinterData;
+import org.adorsys.adcshdwr.voucherprint.VoucherPrintTemplatePdf;
+import org.adorsys.adcshdwr.voucherprint.VoucherprinterData;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.pdfbox.pdmodel.PDDocument;
 
 
 @Stateless
@@ -42,7 +47,7 @@ public class CdrDrctSalesPrinterEJB {
 	
 	
 	/**
-	 * Printing pdf
+	 * Printing Receipt pdf
 	 * @param sales
 	 */
 	public void printReceiptPdf(CdrDrctSales sales){
@@ -52,13 +57,16 @@ public class CdrDrctSalesPrinterEJB {
 		worker.printPdfReceipt(drctSalesPrinterData);
 		
 		// Output pdf
-		byte[] data =  (byte[]) worker.getPage();
+		 byte[] data =  (byte[]) worker.getPage();
 		String pymntDocNbr = worker.getReceiptPrinterData().getPayment().getPymntDocNbr();
 		String fileName = pymntDocNbr+".pdf";
+		PDDocument document;
 		try {
 			FileOutputStream fileOutputStream = new FileOutputStream(fileName);
 			IOUtils.write(data, fileOutputStream);
+			File file = new File(fileName);
 			PrintMode printMode = worker.getReceiptPrintMode();
+			document = PDDocument.load(file);
 			switch (printMode) {
 			case open:
 //				 Desktop.getDesktop().open(new File(fileName));
@@ -66,6 +74,22 @@ public class CdrDrctSalesPrinterEJB {
             case print:
 //            	 Desktop.getDesktop().print(new File(fileName));
             	 break;
+			/* case open:
+				try {
+					document.print();
+				} catch (PrinterException e) {
+					throw new IllegalArgumentException();
+				}
+				document.close();
+				break;
+            /* case print:
+            	try {
+					document.silentPrint();
+				} catch (PrinterException e) {
+					throw new IllegalArgumentException();
+				}
+            	document.close();
+            	break; */
 			default:
 				break;
 			}
@@ -74,9 +98,36 @@ public class CdrDrctSalesPrinterEJB {
 			throw new IllegalStateException(e);
 		}
 		finally{
-			// What to do
+			//
 		}
 		
+	}
+	
+//	
+//	public void getPrinterName(){
+//		try {
+//			PrintService[] printServices = PrinterJob.lookupPrintServices();
+//			if(printServices.length!=0){
+//				for (int i = 0; i < printServices.length; i++) {
+//					@SuppressWarnings("unused")
+//					String name = printServices[i].getName();
+//				}
+//			}
+//		} catch (Exception e) {
+//		  throw new IllegalArgumentException(); 
+//		}
+//	}
+	
+	/**
+	 * Print Voucher pdf
+	 */
+	public VoucherPrintTemplatePdf printVoucherPdf(CdrCstmrVchr  cdrCstmrVchr){
+		
+		CdrCstmrVchrPrinterData cstmrVchrPrinterData = createCstmrVchrPrinterData(cdrCstmrVchr);
+		VoucherprinterData vchrPrinterData = createVchrPrinterData(cdrCstmrVchr);
+		VoucherPrintTemplatePdf worker = new VoucherPrintTemplatePdf(vchrPrinterData);
+		worker.printPdfVoucher(cstmrVchrPrinterData);
+	    return worker;
 	}
 	
 	
@@ -117,9 +168,42 @@ public class CdrDrctSalesPrinterEJB {
 		}
 		String paymentDate = DateUtil.format(new Date(), DateUtil.DATE_TIME_FORMAT);
 		ReceiptPrinterData receiptPrinterData = new ReceiptPrinterData(customer, paymentDate , cdrDsPymntItem, cashier, company);
-		
 		return receiptPrinterData;
 	}
+	
+	
+	public CdrCstmrVchrPrinterData createCstmrVchrPrinterData(CdrCstmrVchr  cdrCstmrVchr){
+		Login connectedUser = securityUtil.getConnectedUser();
+		OrgUnit company = securityUtil.getCurrentOrgUnit();
+		if(company!=null){
+			company.setContact(createSampleOrgContact());
+		}else {
+			OrgUnit orgUnit = createSampleOrgUnit();
+			OrgContact contact = createSampleOrgContact(); 
+			orgUnit.setContact(contact);
+			company = orgUnit;
+		}
+		CdrCstmrVchrPrinterData cdrCstmrVchrPrinterData = new CdrCstmrVchrPrinterData(cdrCstmrVchr, connectedUser, company);
+		return cdrCstmrVchrPrinterData;
+	}
+	
+	
+	public VoucherprinterData createVchrPrinterData(CdrCstmrVchr  cdrCstmrVchr){
+		Login connectedUser = securityUtil.getConnectedUser();
+		OrgUnit company = securityUtil.getCurrentOrgUnit();
+		if(company!=null){
+			company.setContact(createSampleOrgContact());
+		}else {
+			OrgUnit orgUnit = createSampleOrgUnit();
+			OrgContact contact = createSampleOrgContact(); 
+			orgUnit.setContact(contact);
+			company = orgUnit;
+		}
+	    String customer = StringUtils.isBlank(cdrCstmrVchr.getCstmrName())?"CLIENTS DIVERS":cdrCstmrVchr.getCstmrName();
+		VoucherprinterData voucherprinterData = new VoucherprinterData(customer, DateUtil.format(cdrCstmrVchr.getPrntDt(), DateUtil.DATE_TIME_FORMAT), connectedUser, company);
+		return voucherprinterData;
+	}
+	
 	
 	public OrgUnit createSampleOrgUnit(){
 		OrgUnit orgUnit = new OrgUnit();

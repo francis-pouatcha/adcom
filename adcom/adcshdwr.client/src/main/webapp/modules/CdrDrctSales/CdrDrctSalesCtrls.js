@@ -559,6 +559,7 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                     $scope.error = error;
                 });
             };
+        
 
             function verifCdrDsArtHolder(){
                 if($scope.cdrDsArtHolder.cdrDrctSales.netAmtToPay > $scope.cdrDsArtHolder.paidAmt || !$scope.cdrDsArtHolder.paidAmt){
@@ -761,9 +762,9 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                 });
 
                 modalInstance.result.then(function (selectedItem) {
-                    console.log("select element in form : ---> " + selectedItem);
+                    // console.log("select element in form : ---> " + selectedItem);
                 }, function () {
-                    console.log('Modal dismissed at: ' + new Date());
+                    // console.log('Modal dismissed at: ' + new Date());
                 });
 
             };
@@ -854,7 +855,6 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                  }
 
                  function showList(){
-                     console.log(self.showList);
                      if(self.showList == true){
                         self.showList = false;
                      }
@@ -862,7 +862,6 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                      else{
                          self.showList = true;
                      }
-                     console.log(self.showList);
                  };
 
                  function showArticle(artPic){
@@ -876,8 +875,8 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
             };
 
         }])
-    .controller('cdrDrctSalesShowCtlr', ['$scope', 'genericResource', '$location', 'cdrDrctSalesUtils', 'cdrDrctSalesState', 'commonTranslations','$routeParams',
-                                 function ($scope, genericResource, $location, cdrDrctSalesUtils, cdrDrctSalesState, commonTranslations, $routeParams) {
+    .controller('cdrDrctSalesShowCtlr', ['$scope', 'genericResource', 'fileExtractor', '$location', 'cdrDrctSalesUtils', 'cdrDrctSalesState', 'commonTranslations','$routeParams',
+                                 function ($scope, genericResource, fileExtractor, $location, cdrDrctSalesUtils, cdrDrctSalesState, commonTranslations, $routeParams) {
             $scope.cdrDsArtHolder = {
                          cdrDrctSales: {},
                          items: []
@@ -885,7 +884,24 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
             $scope.error = "";
             $scope.cdrDrctSalesUtils = cdrDrctSalesUtils;
             $scope.commonTranslations = commonTranslations;
+            
+            
+            $scope.validateReturn = " validé d'abord le retour de produit(s) !";
+            $scope.validateReturnQty = false;
+            $scope.cdrDsArtItemHolder = {
+                    item: {}
+                };
+            var oldReturnQty;
+            $scope.$watch('cdrDsArtItemHolder.item.returnedQty', function() {
+	            	if( oldReturnQty != $scope.cdrDsArtItemHolder.item.returnedQty){
+	            		$scope.validateReturnQty = true;
+	            	} else{
+	            		$scope.validateReturnQty = false;
+	            	}
+            });
 
+            
+            
             init();
 
             function init() {
@@ -900,6 +916,7 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
             }
 
                                      $scope.addItem = function () {
+                                    	 $scope.validateReturnQty = false;
                                          addItem($scope.cdrDsArtItemHolder);
                                      };
 
@@ -909,6 +926,7 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
 
                                      $scope.editItem = function (index) {
                                          $scope.cdrDsArtItemHolder = angular.copy($scope.cdrDsArtHolder.items[index]);
+                                         oldReturnQty = $scope.cdrDsArtItemHolder.item.returnedQty;
                                      };
 
                                      function clear(){
@@ -932,6 +950,15 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                                              $scope.error = error;
                                          });
                                      };
+                                     
+                $scope.printRequestVoucher = function(){
+                           genericResource.builfReportGet(cdrDrctSalesUtils.cdrdrctsalesmanager+"/voucherreport.pdf",      $scope.cdrDsArtHolder.cdrDrctSales.dsNbr).success(function (result) {
+                               fileExtractor.extractFile(result,"application/pdf");
+                                console.log('Print voucher OK...');
+                            }).error(function (error) {
+                                $scope.error = error;
+                            });
+                }
 
 
                                      $scope.printRequest = function(){

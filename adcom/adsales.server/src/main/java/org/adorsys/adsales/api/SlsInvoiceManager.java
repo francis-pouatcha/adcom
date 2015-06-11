@@ -268,7 +268,7 @@ public class SlsInvoiceManager {
 				return processInvoice(slsInvoiceHolder);
 	}
 
-	public SlsInvoiceHolder clotureInvoice(SlsInvoiceHolder slsInvoiceHolder) throws AdException {
+	public SlsInvoiceHolder closeInvoice(SlsInvoiceHolder slsInvoiceHolder) throws AdException {
 		slsInvoiceHolder = processInvoice(slsInvoiceHolder);
 		SlsInvoice slsInvoice = slsInvoiceHolder.getSlsInvoice();
 		slsInvoice.setInvceStatus(BaseProcessStatusEnum.CLOSED.name());
@@ -292,7 +292,8 @@ public class SlsInvoiceManager {
 		return slsInvoiceHolder;
 	}
 
-	public SlsInvoice deliveredInvoice(SlsInvoice slsInvoice) {
+	public SlsInvoice deliveredInvoice(String id) {
+		SlsInvoice slsInvoice = slsInvoiceEJB.findById(id);
 		slsInvoice.setInvceDelivered(true);
 		slsInvoice = slsInvoiceEJB.update(slsInvoice);
 		createDeliveredinvoiceHistory(slsInvoice);

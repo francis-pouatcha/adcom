@@ -1,5 +1,6 @@
 package org.adorsys.adsales.rest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -9,6 +10,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.metamodel.SingularAttribute;
 
+import org.adorsys.adbase.enums.BaseProcessStatusEnum;
 import org.adorsys.adcore.utils.SequenceGenerator;
 import org.adorsys.adsales.jpa.SlsInvcePymtStatus;
 import org.adorsys.adsales.jpa.SlsInvoice;
@@ -88,6 +90,20 @@ public class SlsInvoiceEJB
    {
       return repository.findByLike(entity, start, max, attributes);
    }
+   
+   public List<SlsInvoice> findByLikePay(SlsInvoice entity, int start, int max, SingularAttribute<SlsInvoice, ?>[] attributes)
+   {
+		List<SlsInvoice> slsInvoices = new ArrayList<SlsInvoice>();
+		
+		for (SlsInvoice slsInvoice : repository.findByLike(entity, start, max, attributes)) {
+			String statusOfInvoice = slsInvoice.getInvceStatus();
+			
+			if(statusOfInvoice.equals(BaseProcessStatusEnum.CLOSED.name()))
+				slsInvoices.add(slsInvoice);
+		}
+
+      return slsInvoices;
+   }
 
    public Long countByLike(SlsInvoice entity, SingularAttribute<SlsInvoice, ?>[] attributes)
    {
@@ -138,6 +154,15 @@ public StringBuilder preprocessQuery(String findOrCount, SlsInvoiceSearchInput s
 			}
 			qBuilder.append("s.invcePymntStatus=:invcePymntStatus");
 		}
+		if(searchInput.getFieldNames().contains("slsInvceStatus") && StringUtils.isNotBlank(String.valueOf(entity.getInvcePymntStatus()))){
+			if(!whereSet){
+				qBuilder.append(whereClause);
+				whereSet = true;
+			} else {
+				qBuilder.append(andClause);
+			}
+			qBuilder.append("s.slsInvceStatus=:slsInvceStatus");
+		}
 		if(searchInput.getFieldNames().contains("invceDelivered") && StringUtils.isNotBlank(String.valueOf(entity.getInvceDelivered()))){
 			if(!whereSet){
 				qBuilder.append(whereClause);
@@ -179,6 +204,9 @@ public StringBuilder preprocessQuery(String findOrCount, SlsInvoiceSearchInput s
 		}
 	   if(searchInput.getFieldNames().contains("invcePymntStatus") && StringUtils.isNotBlank(String.valueOf(entity.getInvcePymntStatus()))){
 			query.setParameter("invcePymntStatus", entity.getInvcePymntStatus());
+		}
+	   if(searchInput.getFieldNames().contains("slsInvceStatus") && StringUtils.isNotBlank(String.valueOf(entity.getInvceStatus()))){
+			query.setParameter("invceStatus", entity.getInvceStatus());
 		}
 	   if(searchInput.getFieldNames().contains("invceDelivered") && StringUtils.isNotBlank(String.valueOf(entity.getInvceDelivered()))){
 			query.setParameter("invceDelivered", entity.getInvceDelivered());

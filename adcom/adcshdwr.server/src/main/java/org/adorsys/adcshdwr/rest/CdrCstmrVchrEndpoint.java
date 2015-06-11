@@ -1,6 +1,7 @@
 package org.adorsys.adcshdwr.rest;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -116,6 +118,8 @@ public class CdrCstmrVchrEndpoint {
 	@Produces({ "application/json", "application/xml","application/pdf","application/octet-stream" })
 	public Response buildVoucherPdfReport(CdrCstmrVchrSearchInput searchInput,@Context HttpServletResponse response) throws AdException 
 	{
+		
+		
 		String loginName = securityUtil.getCurrentLoginName();
 		String lang = securityUtil.getUserLange();
 		List<CdrCstmrVchr> resultList = ejb.findCustom(searchInput);
@@ -139,6 +143,7 @@ public class CdrCstmrVchrEndpoint {
 				"attachment; filename=localitiesreport.pdf")
 		 .build();
 	}
+	
 
 	@POST
 	@Path("/findBy")

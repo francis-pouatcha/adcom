@@ -281,24 +281,6 @@ public class CdrDrctSalesManager {
 		cdrDsHstry.makeHistoryId(true);
 		cdrDsHstryEJB.create(cdrDsHstry);
 	}
-	
-//	private void createModifiedSalesHistory(CdrDrctSales cdrDrctSales){
-//		TermWsUserPrincipal callerPrincipal = securityUtil.getCallerPrincipal();
-//		CdrDsHstry cdrDsHstry = new CdrDsHstry();
-//
-//		cdrDsHstry.setComment(BaseHistoryTypeEnum.RETURNED.name());
-//		cdrDsHstry.setAddtnlInfo(CdrDsInfo.prinInfo(cdrDrctSales));
-//		cdrDsHstry.setEntIdentif(cdrDrctSales.getId());
-//		//		cdrDsHstry.setEntStatus(prcmtOrder.getPoStatus());
-//		cdrDsHstry.setHstryDt(new Date());
-//		cdrDsHstry.setHstryType(BaseHistoryTypeEnum.RETURNED.name());	
-//		cdrDsHstry.setOrignLogin(callerPrincipal.getName());
-//		cdrDsHstry.setOrignWrkspc(callerPrincipal.getWorkspaceId());
-//		cdrDsHstry.setProcStep(BaseProcStepEnum.RETURNING.name());
-//		cdrDsHstry.makeHistoryId(true);
-//		cdrDsHstryEJB.create(cdrDsHstry);
-//	}
-
 
 	public CdrDsArtHolder findCdrDsArtHolder(String id) {
 		CdrDsArtHolder cdrDsArtHolder = new CdrDsArtHolder();
@@ -316,4 +298,5 @@ public class CdrDrctSalesManager {
 		cdrDsArtHolder.setChangeAmt(cdrDsPymntItem.getDiffAmt());		
 		return cdrDsArtHolder;
 	}
+
 }
