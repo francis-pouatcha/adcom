@@ -1,7 +1,7 @@
 package org.adorsys.adcshdwr.api;
 
-import java.awt.Desktop;
-import java.io.File;
+//import java.awt.Desktop;
+//import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
@@ -61,10 +61,10 @@ public class CdrDrctSalesPrinterEJB {
 			PrintMode printMode = worker.getReceiptPrintMode();
 			switch (printMode) {
 			case open:
-				 Desktop.getDesktop().open(new File(fileName));
+//				 Desktop.getDesktop().open(new File(fileName));
 				break;
             case print:
-            	 Desktop.getDesktop().print(new File(fileName));
+//            	 Desktop.getDesktop().print(new File(fileName));
             	 break;
 			default:
 				break;

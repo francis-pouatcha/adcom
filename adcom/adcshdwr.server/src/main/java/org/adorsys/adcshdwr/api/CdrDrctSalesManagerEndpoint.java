@@ -38,12 +38,12 @@ public class CdrDrctSalesManagerEndpoint {
 	   {
 		   return ejb.findCdrDsArtHolder(id);
 	   }
-	 
-	 	@POST
-	 	@Path("/returnProduct")
-		@Consumes({ "application/json", "application/xml" })
-		@Produces({ "application/json", "application/xml" })
-		public CdrDsArtHolder returnProduct(CdrDsArtHolder cdrDsArtHolder) throws AdException {
-			return ejb.returnProduct(cdrDsArtHolder);
-		}
+//	 
+//	 	@POST
+//	 	@Path("/returnProduct")
+//		@Consumes({ "application/json", "application/xml" })
+//		@Produces({ "application/json", "application/xml" })
+//		public CdrDsArtHolder returnProduct(CdrDsArtHolder cdrDsArtHolder) throws AdException {
+//			return ejb.returnProduct(cdrDsArtHolder);
+//		}
 }

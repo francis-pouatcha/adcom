@@ -168,7 +168,6 @@ public class CdrDrctSalesManager {
 		return modified;
 	}
 
-
 	private void recomputeOrder(final CdrDrctSales cdrDrctSales){
 		// recompute sales object.
 		String dsNbr = cdrDrctSales.getDsNbr();
@@ -216,17 +215,41 @@ public class CdrDrctSalesManager {
 		return cdrDsArtHolder;
 	}
 
+	/**
+	 * Dealing with the return of products.
+	 * 
+	 * It is important not to modify the content of a direct sales. This means that if we receive
+	 * a return request, we have to check if the original direct sales object was closed. If
+	 * this is the case, we have to create a new one and compute only the value returned.
+	 * 
+	 * @param cdrDsArtHolder
+	 * @return
+	 * @throws AdException
 	public CdrDsArtHolder returnProduct(CdrDsArtHolder cdrDsArtHolder) throws AdException {
-		cdrDsArtHolder = updateOrder(cdrDsArtHolder);
+		// First process return.
 		CdrDrctSales cdrDrctSales = cdrDsArtHolder.getCdrDrctSales();
+		if(StringUtils.isNotBlank(cdrDrctSales.getDsNbr())){// This direct sales exists. Check it's status.
+			CdrDsHstry model = new CdrDsHstry();
+			model.setEntIdentif(cdrDrctSales.getDsNbr());
+			model.setHstryType(BaseHistoryTypeEnum.CLOSED.name());	
+			CdrDrctSales found = cdrDrctSalesEJB.findById(cdrDrctSales.getDsNbr());
+			Long countBy = cdrDsHstryEJB.countBy(model, new SingularAttribute[]{CdrDsHstry_.entIdentif, CdrDsHstry_.hstryType});
+			if(countBy>0){ // Sales is closed. Create a new sales and copy returned items
+				cdrDsArtHolder = returnFromClosedSales(cdrDsArtHolder);
+			} else {
+				cdrDsArtHolder = updateOrder(cdrDsArtHolder);				
+			}
+		} else {
+			cdrDsArtHolder = updateOrder(cdrDsArtHolder);				
+		}
 
 		cdrCstmrVchrEJB.generateVoucher(cdrDsArtHolder);
 
-		createClosedSalesHistory(cdrDrctSales);
+		createClosedSalesHistory(cdrDsArtHolder.getCdrDrctSales());
 
-		cdrDsArtHolder.setCdrDrctSales(cdrDrctSales);
 		return cdrDsArtHolder;
 	}
+	 */
 
 	public CdrDsArtHolder findOrder(String id){
 		CdrDsArtHolder cdrDsArtHolder = new CdrDsArtHolder();
