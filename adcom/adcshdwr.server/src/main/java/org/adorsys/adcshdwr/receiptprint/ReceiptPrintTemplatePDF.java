@@ -278,7 +278,7 @@ public class ReceiptPrintTemplatePDF extends ReceiptPrintTemplate {
 	@Override
 	public Object getPage() {
 		if(bos==null) return null;
-		return bos.toByteArray();
+		return bos;
 	}
 
 	@Override

@@ -26,6 +26,7 @@ import org.adorsys.adcshdwr.jpa.CdrPymntMode;
 import org.adorsys.adcshdwr.payementevent.DirectSale;
 import org.adorsys.adcshdwr.payementevent.PaymentEvent;
 import org.adorsys.adcshdwr.payementevent.PymntValidator;
+import org.adorsys.adcshdwr.receiptprint.ReceiptPrintTemplatePDF;
 import org.adorsys.adcshdwr.rest.CdrCshDrawerEJB;
 import org.adorsys.adcshdwr.rest.CdrCstmrVchrEJB;
 import org.adorsys.adcshdwr.rest.CdrDrctSalesEJB;
@@ -208,10 +209,10 @@ public class CdrDrctSalesManager {
 		directSaleEvent.fire(paymentEvent);	
 		
 		//Inject an EJB for printing ticket pdf 
-		salesPrinterEJB.printReceiptPdf(cdrDrctSales);
-
+		ReceiptPrintTemplatePDF worker = salesPrinterEJB.printReceiptPdf(cdrDsArtHolder);
 		createClosedSalesHistory(cdrDrctSales);
 		cdrDsArtHolder.setCdrDrctSales(cdrDrctSales);
+		cdrDsArtHolder.setPrintMode(worker.getReceiptPrintMode());
 		return cdrDsArtHolder;
 	}
 
@@ -298,5 +299,9 @@ public class CdrDrctSalesManager {
 		cdrDsArtHolder.setChangeAmt(cdrDsPymntItem.getDiffAmt());		
 		return cdrDsArtHolder;
 	}
+	
+	
+	
+	
 
 }
