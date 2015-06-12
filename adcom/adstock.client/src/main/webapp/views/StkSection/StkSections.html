@@ -15,7 +15,8 @@
                     <div class="form-group">
                         <label class=" control-label" for="sectionCode">{{stkSectionUtils.translations['StkSection_sectionCode_description.title']}}</label>
                         <div class="">
-                            <input type="text" id="sectionCode" ng-model="searchInput.entity.sectionCode" class="form-control">
+                            <input type="text" id="sectionCode" ng-model="searchInput.entity.sectionCode" class="form-control" 
+                            typeahead="displayable.sectionCode as displayable.sectionCode for displayable in stkSectionUtils.loadSectionCodes($viewValue)" typeahead-loading="loading" typeahead-on-select='onArticleSelectedInSearch($item, $model, $label)' >
                         </div>
                     </div>
                 </div>
@@ -23,7 +24,8 @@
                     <div class="form-group">
                         <label class=" control-label" for="name">{{stkSectionUtils.translations['StkSection_name_description.title']}}</label>
                         <div class="">
-                            <input type="text" id="name" ng-model="searchInput.entity.name" class="form-control">
+                            <input type="text" id="name" ng-model="searchInput.entity.name" class="form-control" 
+                            typeahead="displayable as displayable.name for displayable in stkSectionUtils.loadSectionNames($viewValue)" typeahead-loading="loading" typeahead-on-select='onArticleSelectedInSearch($item, $model, $label)' >
                         </div>
                     </div>
                 </div>
@@ -31,7 +33,8 @@
                     <div class="form-group">
                         <label class=" control-label" for="wharehouse">{{stkSectionUtils.translations['StkSection_wharehouse_description.title']}}</label>
                         <div class="">
-                            <input type="text" id="wharehouse" ng-model="searchInput.entity.wharehouse" class="form-control">
+                            <input type="text" id="wharehouse" ng-model="searchInput.entity.wharehouse" class="form-control" 
+                            typeahead="displayable as displayable.wharehouse for displayable in stkSectionUtils.loadWharehouses($viewValue)" typeahead-loading="loading" typeahead-on-select='onArticleSelectedInSearch($item, $model, $label)' >
                         </div>
                     </div>
                 </div>
@@ -39,7 +42,8 @@
                     <div class="form-group">
                         <label class=" control-label" for="parentCode">{{stkSectionUtils.translations['StkSection_parentCode_description.title']}}</label>
                         <div class="">
-                            <input type="text" id="parentCode" ng-model="searchInput.entity.parentCode" class="form-control">
+                            <input type="text" id="parentCode" ng-model="searchInput.entity.parentCode" class="form-control" 
+                            typeahead="displayable.sectionCode as displayable.sectionCode for displayable in stkSectionUtils.loadSectionCodes($viewValue)" typeahead-loading="loading" typeahead-on-select='onArticleSelectedInSearch($item, $model, $label)' >
                         </div>
                     </div>
                 </div>

@@ -403,7 +403,7 @@ function($scope,genericResource,stkSectionUtils,stkSectionState,$location,$rootS
     $scope.tabSelected = function(tabName){
     	stkSectionState.tabSelected(tabName);
     };
-    $scope.edit =function(){
+    $scope.edit = function(){
         $location.path('/StkSections/edit/');
     };
 }])

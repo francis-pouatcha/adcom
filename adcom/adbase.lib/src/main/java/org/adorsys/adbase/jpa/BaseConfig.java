@@ -2,11 +2,8 @@ package org.adorsys.adbase.jpa;
 
 import java.math.BigDecimal;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 import org.adorsys.adcore.jpa.AbstractTimedData;
 import org.adorsys.javaext.description.Description;
@@ -23,6 +20,16 @@ import org.adorsys.javaext.description.Description;
 public class BaseConfig extends AbstractTimedData {
 
 	private BigDecimal nbrOfItemsPrcmtOrder = new BigDecimal(100);
+	
+	private PrintMode PrintMode;
+
+	public PrintMode getPrintMode() {
+		return PrintMode;
+	}
+
+	public void setPrintMode(PrintMode printMode) {
+		PrintMode = printMode;
+	}
 
 	public BigDecimal getNbrOfItemsPrcmtOrder() {
 		return nbrOfItemsPrcmtOrder;

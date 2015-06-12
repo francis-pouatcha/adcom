@@ -7,13 +7,14 @@ angular.module('AdCshdwr')
         var urlBase = '/adcshdwr.server/rest/cdrcshdrawers';
         return service;
 }])
-    .factory('cdrDrctSalesUtils', ['sessionManager', '$translate', 'genericResource', '$q', 'cdrDrctSaleManagerResource', function (sessionManager, $translate, genericResource, $q, cdrDrctSaleManagerResource) {
+.factory('cdrDrctSalesUtils', ['sessionManager', '$translate', 'genericResource', '$q', 'cdrDrctSaleManagerResource','dateFilter', 
+                               function (sessionManager, $translate, genericResource, $q, cdrDrctSaleManagerResource,dateFilter) {
         var service = {};
 
         service.urlBase = '/adcshdwr.server/rest/cdrdrctsaless';
         service.cdrdrctsalesmanager = '/adcshdwr.server/rest/cdrdrctsalesmanager';
         service.language = sessionManager.language;
-        service.catalarticlesUrlBase = '/adcatal.server/rest/catalarticles';
+//        service.catalarticlesUrlBase = '/adcatal.server/rest/catalarticles';
         service.stkArtLotUrlBase = '/adstock.server/rest/stkarticlelots';
         service.stkArtlot2strgsctnsUrlBase = '/adstock.server/rest/stkarticlelot2strgsctns';
 
@@ -149,50 +150,7 @@ angular.module('AdCshdwr')
             return genericResource.findByLikePromissed(service.stkArtlot2strgsctnsUrlBase, 'artPic', artPic)
                 .then(function (entitySearchResult) {
                     var resultList = entitySearchResult.resultList;
-                    var displayDatas = [];
-                    angular.forEach(resultList, function (item) {
-                        var artName = item.artName;
-                        var displayable = {};
-                        var sectionArticleLot = item.sectionArticleLot;
-                        if (sectionArticleLot) {
-                            var artQties = sectionArticleLot.artQties;
-                            if (!artQties) artQties = [];
-                            angular.forEach(artQties, function (artQty) {
-                                if (artQty.stockQty && artQty.stockQty > 0){
-                                    var displayableStr = "";
-                                    displayable.artName = artName;
-                                    displayableStr = artQty.artPic
-                                    displayableStr += " - "+artName;
-                                    if (artQty.lotPic) {
-                                        displayable.lotPic = artQty.lotPic;
-                                        displayableStr += "- lot (" + artQty.lotPic + ")";
-                                    }
-                                    if (artQty.section) {
-                                        displayable.section = artQty.section;
-                                        displayableStr += "- section (" + artQty.section + ")";
-                                    }
-                                    if (artQty.stockQty) {
-                                        displayable.stockQty = artQty.stockQty;
-                                        displayableStr += "- Qty (" + artQty.stockQty + ")";
-                                    }
-                                    displayableStr += " - ppuHT (" + sectionArticleLot.sppuHT + ")";
-                                    displayable.artPic = artQty.artPic;
-                                    displayable.sppuPreTax = sectionArticleLot.sppuHT;
-                                    displayable.minSppuHT = sectionArticleLot.minSppuHT;
-                                    displayable.sppuTaxIncl = sectionArticleLot.sppuTaxIncl;
-                                    displayable.sppuCur = sectionArticleLot.sppuCur;
-                                    displayable.vatPct = sectionArticleLot.vatSalesPct;
-                                    displayable.salesVatAmt = sectionArticleLot.salesVatAmt;
-                                    displayable.salesWrntyDys = sectionArticleLot.salesWrntyDys;
-                                    displayable.salesRtrnDays = sectionArticleLot.salesRtrnDays;
-
-                                    displayable.displayableStr = displayableStr;
-                                    displayDatas.push(displayable);
-                                }
-                            });
-                        }
-                    });
-                    return displayDatas;
+                    return parseArticleSearchResult(resultList);
                 });
         }
 
@@ -207,52 +165,69 @@ angular.module('AdCshdwr')
             return genericResource.findByLikePromissed(service.stkArtlot2strgsctnsUrlBase, 'artName', artName)
                 .then(function (entitySearchResult) {
                     var resultList = entitySearchResult.resultList;
-                    var displayDatas = [];
-                    angular.forEach(resultList, function (item) {
-                        var artName = item.artName;
-                        var displayable = {};
-                        var sectionArticleLot = item.sectionArticleLot;
-                        if (sectionArticleLot) {
-                            var artQties = sectionArticleLot.artQties;
-                            if (!artQties) artQties = [];
-                            angular.forEach(artQties, function (artQty) {
-                                if (artQty.stockQty && artQty.stockQty > 0){
-                                    var displayableStr = "";
-                                    displayable.artName = artName;
-                                    displayableStr = artQty.artPic
-                                    displayableStr += " - "+artName;
-                                    if (artQty.lotPic) {
-                                        displayable.lotPic = artQty.lotPic;
-                                        displayableStr += " - lot (" + artQty.lotPic + ")";
-                                    }
-                                    if (artQty.section) {
-                                        displayable.section = artQty.section;
-                                        displayableStr += " - section (" + artQty.section + ")";
-                                    }
-                                    if (artQty.stockQty) {
-                                        displayable.stockQty = artQty.stockQty;
-                                        displayableStr += " - Qty (" + artQty.stockQty + ")";
-                                    }
-                                    displayableStr += " - ppuHT (" + sectionArticleLot.sppuHT + ")";
-                                    displayable.artPic = artQty.artPic;
-                                    displayable.sppuPreTax = sectionArticleLot.sppuHT;
-                                    displayable.minSppuHT = sectionArticleLot.minSppuHT;
-                                    displayable.sppuTaxIncl = sectionArticleLot.sppuTaxIncl;
-                                    displayable.sppuCur = sectionArticleLot.sppuCur;
-                                    displayable.vatPct = sectionArticleLot.vatSalesPct;
-                                    displayable.salesVatAmt = sectionArticleLot.salesVatAmt;
-                                    displayable.salesWrntyDys = sectionArticleLot.salesWrntyDys;
-                                    displayable.salesRtrnDays = sectionArticleLot.salesRtrnDays;
-
-                                    displayable.displayableStr = displayableStr;
-                                    displayDatas.push(displayable);
-                                }
-                            });
-                        }
-                    });
-                    return displayDatas;
+                    return parseArticleSearchResult(resultList);
                 });
         };
+        
+        function parseArticleSearchResult(resultList){
+            var displayDatas = [];
+            for	(var index = 0; index < resultList.length; index++) {
+            	var item = resultList[index];
+                var artName = item.artName;
+                var lotPic = item.lotPic;
+                var displayable = {};
+                var sectionArticleLot = item.sectionArticleLot;
+                if(angular.isUndefined(sectionArticleLot)) continue;
+                var artQties = sectionArticleLot.artQties;
+                if (angular.isUndefined(artQties) || artQties.length==0) continue;
+                var artQty;
+                for	(var index1 = 0; index1 < artQties.length; index1++) {
+                	if(!angular.equals(lotPic, artQties[index1].lotPic)) continue;
+                	artQty = artQties[index1]; break;
+                }
+                // continue if no qty for this lot.
+                if (angular.isUndefined(artQty) || angular.isUndefined(artQty.stockQty) || artQty.stockQty <= 0) continue;
+                
+                var displayableStr = "";
+                displayable.artName = artName;
+                displayableStr = artQty.artPic
+                displayableStr += " - "+artName;
+                if (artQty.lotPic) {
+                    displayable.lotPic = artQty.lotPic;
+                    displayableStr += "- lot (" + artQty.lotPic + ")";
+                }
+                if (artQty.section) {
+                    displayable.section = artQty.section;
+                    displayableStr += "- section (" + artQty.section + ")";
+                }
+                if (artQty.stockQty) {
+                    displayable.stockQty = artQty.stockQty;
+                    displayableStr += "- Qty (" + artQty.stockQty + ")";
+                }
+                displayableStr += " - ppuHT (" + sectionArticleLot.sppuHT + ")";
+                
+                if(angular.isDefined(sectionArticleLot.expirDt) && sectionArticleLot.expirDt)
+                    displayableStr += " - expirDt (" + dateFilter(sectionArticleLot.expirDt, 'dd.MM.yyyy') + ")";
+
+                if(angular.isDefined(sectionArticleLot.stkgDt) && sectionArticleLot.stkgDt)
+                    displayableStr += " - stkgDt (" + dateFilter(sectionArticleLot.stkgDt, 'dd.MM.yyyy') + ")";
+                	
+                displayable.artPic = artQty.artPic;
+                displayable.sppuPreTax = sectionArticleLot.sppuHT;
+                displayable.minSppuHT = sectionArticleLot.minSppuHT;
+                displayable.sppuTaxIncl = sectionArticleLot.sppuTaxIncl;
+                displayable.sppuCur = sectionArticleLot.sppuCur;
+                displayable.vatPct = sectionArticleLot.vatSalesPct;
+                displayable.salesVatAmt = sectionArticleLot.salesVatAmt;
+                displayable.salesWrntyDys = sectionArticleLot.salesWrntyDys;
+                displayable.salesRtrnDays = sectionArticleLot.salesRtrnDays;
+
+                displayable.displayableStr = displayableStr;
+
+                displayDatas.push(displayable);
+            }
+            return displayDatas;
+        }
 
         service.translate();
         return service;
@@ -798,9 +773,9 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                 });
 
                 modalInstance.result.then(function (selectedItem) {
-                    console.log("select element in form : ---> " + selectedItem);
+                    // console.log("select element in form : ---> " + selectedItem);
                 }, function () {
-                    console.log('Modal dismissed at: ' + new Date());
+                    // console.log('Modal dismissed at: ' + new Date());
                 });
 
             };
@@ -891,7 +866,6 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                  }
 
                  function showList(){
-                     console.log(self.showList);
                      if(self.showList == true){
                         self.showList = false;
                      }
@@ -899,7 +873,6 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                      else{
                          self.showList = true;
                      }
-                     console.log(self.showList);
                  };
 
                  function showArticle(artPic){
@@ -922,7 +895,24 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
             $scope.error = "";
             $scope.cdrDrctSalesUtils = cdrDrctSalesUtils;
             $scope.commonTranslations = commonTranslations;
+            
+            
+            $scope.validateReturn = " validé d'abord le retour de produit(s) !";
+            $scope.validateReturnQty = false;
+            $scope.cdrDsArtItemHolder = {
+                    item: {}
+                };
+            var oldReturnQty;
+            $scope.$watch('cdrDsArtItemHolder.item.returnedQty', function() {
+	            	if( oldReturnQty != $scope.cdrDsArtItemHolder.item.returnedQty){
+	            		$scope.validateReturnQty = true;
+	            	} else{
+	            		$scope.validateReturnQty = false;
+	            	}
+            });
 
+            
+            
             init();
 
             function init() {
@@ -937,6 +927,7 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
             }
 
                                      $scope.addItem = function () {
+                                    	 $scope.validateReturnQty = false;
                                          addItem($scope.cdrDsArtItemHolder);
                                      };
 
@@ -946,6 +937,7 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
 
                                      $scope.editItem = function (index) {
                                          $scope.cdrDsArtItemHolder = angular.copy($scope.cdrDsArtHolder.items[index]);
+                                         oldReturnQty = $scope.cdrDsArtItemHolder.item.returnedQty;
                                      };
 
                                      function clear(){

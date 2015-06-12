@@ -1,12 +1,7 @@
 package org.adorsys.adcshdwr.api;
 
-import java.awt.print.PrinterException;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -18,11 +13,9 @@ import org.adorsys.adbase.jpa.OrgUnit;
 import org.adorsys.adbase.security.SecurityUtil;
 import org.adorsys.adcore.utils.DateUtil;
 import org.adorsys.adcshdwr.jpa.CdrCstmrVchr;
-import org.adorsys.adcshdwr.jpa.CdrDrctSales;
 import org.adorsys.adcshdwr.jpa.CdrDsArtItem;
 import org.adorsys.adcshdwr.jpa.CdrDsArtItemSearchResult;
 import org.adorsys.adcshdwr.jpa.CdrDsPymntItem;
-import org.adorsys.adcshdwr.print.api.PrintMode;
 import org.adorsys.adcshdwr.receiptprint.CdrDrctSalesPrinterData;
 import org.adorsys.adcshdwr.receiptprint.ReceiptPrintTemplatePDF;
 import org.adorsys.adcshdwr.receiptprint.ReceiptPrinterData;
@@ -31,9 +24,7 @@ import org.adorsys.adcshdwr.rest.CdrDsPymntItemEJB;
 import org.adorsys.adcshdwr.voucherprint.CdrCstmrVchrPrinterData;
 import org.adorsys.adcshdwr.voucherprint.VoucherPrintTemplatePdf;
 import org.adorsys.adcshdwr.voucherprint.VoucherprinterData;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.pdfbox.pdmodel.PDDocument;
 
 
 @Stateless
@@ -69,6 +60,12 @@ public class CdrDrctSalesPrinterEJB {
 			document = PDDocument.load(file);
 			switch (printMode) {
 			case open:
+				 Desktop.getDesktop().open(new File(fileName));
+				break;
+            case print:
+             	 Desktop.getDesktop().print(new File(fileName));
+            	 break;
+			/* case open:
 				try {
 					document.print();
 				} catch (PrinterException e) {
@@ -76,7 +73,7 @@ public class CdrDrctSalesPrinterEJB {
 				}
 				document.close();
 				break;
-            case print:
+            /* case print:
             	try {
 					document.silentPrint();
 				} catch (PrinterException e) {
@@ -92,7 +89,7 @@ public class CdrDrctSalesPrinterEJB {
 			throw new IllegalStateException(e);
 		}
 		finally{
-			//
+			
 		}
 		
 	}*/

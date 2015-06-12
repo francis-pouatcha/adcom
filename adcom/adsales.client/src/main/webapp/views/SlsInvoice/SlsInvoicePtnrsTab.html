@@ -6,9 +6,9 @@
             <th>{{slsInvoicesUtils.translations['SlsInvcePtnr_roleInInvce_description.title']}}</th>
         </tr>
         <tr ng-repeat="slsInvcePtnr in slsInvoice.slsInvcePtnrs">
-            <td>{{slsInvcePtnr.invceNbr}}</td>
-            <td>{{slsInvcePtnr.ptnrNbr}}</td>
-            <td>{{slsInvcePtnr.roleInInvce}}</td>
+            <td>{{slsInvcePtnr.slsInvcePtnr.invceNbr}}</td>
+            <td>{{slsInvcePtnr.slsInvcePtnr.ptnrNbr}}</td>
+            <td>{{slsInvcePtnr.slsInvcePtnr.roleInInvce}}</td>
         </tr>
     </table>
 </div>

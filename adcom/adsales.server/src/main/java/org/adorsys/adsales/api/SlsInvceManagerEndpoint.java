@@ -65,7 +65,7 @@ public class SlsInvceManagerEndpoint
    
    
    @GET
-   @Path("/{id}")
+   @Path("/{id}") //id = invceNbr
    @Produces({ "application/json", "application/xml" })
    public SlsInvoiceHolder findInvoice(@PathParam("id") String id)
    {
