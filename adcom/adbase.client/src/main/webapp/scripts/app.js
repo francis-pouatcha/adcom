@@ -13,15 +13,16 @@ angular.module('AdBase', [
     'ngSanitize',
     'pascalprecht.translate',
     'NavBar',
-    'datePicker'
+    'datePicker',
+    'angular-growl'
 ])
 .constant('APP_CONFIG',{
 	'appName':'Administration',
 	'appVersion':'1.0.0-SNAPSHOT'
 
 })
-.config(['$routeProvider', '$httpProvider','$translateProvider','$translatePartialLoaderProvider',
-         function ($routeProvider, $httpProvider,$translateProvider,$translatePartialLoaderProvider) {
+.config(['$routeProvider', '$httpProvider','$translateProvider','$translatePartialLoaderProvider', 'growlProvider',
+         function ($routeProvider, $httpProvider,$translateProvider,$translatePartialLoaderProvider, growlProvider) {
 
     $routeProvider
     .when('/outypes/new',{templateUrl:'views/outypes/new.html',controller:'newOuTypeController'})
@@ -279,6 +280,30 @@ angular.module('AdBase', [
             controllerAs: 'ouWrkspaceCtrl',
             module: 'AdBase'
         })
+        .when('/baseconfigs',{
+            templateUrl:'views/baseconfig/baseconfigs.html',
+            controller:'baseConfigsController',
+            controllerAs: 'baseConfigsCtrl',
+            module: 'AdBase'
+        })
+    .when('/baseconfig/create',{
+            templateUrl:'views/baseconfig/create.html',
+            controller:'baseConfigCreateController',
+            controllerAs: 'baseConfigCreateCtrl',
+            module: 'AdBase'
+    })
+    .when('/baseconfig/show/:identif',{
+            templateUrl:'views/baseconfig/show.html',
+            controller:'baseConfigShowController',
+            controllerAs: 'baseConfigShowCtrl',
+            module: 'AdBase'
+    })
+    .when('/baseconfig/edit/:identif',{
+            templateUrl:'views/baseconfig/edit.html',
+            controller:'baseConfigEditController',
+            controllerAs: 'baseConfigEditCtrl',
+            module: 'AdBase'
+    })
     .otherwise({
       redirectTo: '/'
     });
@@ -289,6 +314,9 @@ angular.module('AdBase', [
     $translateProvider.useLoader('$translatePartialLoader', {
         urlTemplate: '{part}/locale-{lang}.json'
     });
+    
+    growlProvider.globalTimeToLive(5000);
+    growlProvider.globalEnableHtml(true);
     
 }])
 

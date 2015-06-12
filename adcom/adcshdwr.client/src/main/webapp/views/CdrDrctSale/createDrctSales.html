@@ -28,11 +28,11 @@
                         </div>
                         <div class="col-lg-2">
                             <label class=" control-label" for="sppuPreTax">Prix Vente U</label>
-                            <input value="{{cdrDsArtItemHolder.item.sppuPreTax}}" disabled type="text" ng-class="form-control" name="sppuPreTax" id="sppuPreTax" autocomplete="off">
+                            <input type="text" class="form-control" name="sppuPreTax"  value="{{cdrDsArtItemHolder.item.sppuPreTax}}" disabled id="sppuPreTax" autocomplete="off">
                         </div>
                         <div class="col-lg-2">
                             <label class=" control-label" for="sppuPreTax">Montant Brut Vente</label>
-                            <input value="{{parseInt(cdrDsArtItemHolder.item.sppuPreTax * cdrDsArtItemHolder.item.soldQty)==NaN?0:parseInt(cdrDsArtItemHolder.item.sppuPreTax * cdrDsArtItemHolder.item.soldQty)}}" disabled type="text" ng-class="form-control" autocomplete="off" >
+                            <input type="text" class="form-control" name="sppuPreTax" value="{{parseInt(cdrDsArtItemHolder.item.sppuPreTax * cdrDsArtItemHolder.item.soldQty)==NaN?0:parseInt(cdrDsArtItemHolder.item.sppuPreTax * cdrDsArtItemHolder.item.soldQty)}}" disabled  id="sppuPreTax" autocomplete="off" >
                         </div>
                     </div>
                      

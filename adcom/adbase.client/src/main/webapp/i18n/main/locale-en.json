@@ -88,5 +88,11 @@
     "Workspace_roleIdentif_description":"Role",
     "Workspace_ouTypes_description":"Org Unit Type",
     "Workspace_clientApp_description":"Client App",
-    "restriction":"Restriction"
+    "restriction":"Restriction",
+    
+    "BaseConfig_printMode_description.text":"print mode of all prints in application",
+	"BaseConfig_printMode_description.title":"print mode",
+	"BaseConfig_nbrOfItemsPrcmtOrder_description.text":"number Of Items of Procurment",
+	"BaseConfig_nbrOfItemsPrcmtOrder_description.title":"number Of Items of Procurment"
+    
 }
