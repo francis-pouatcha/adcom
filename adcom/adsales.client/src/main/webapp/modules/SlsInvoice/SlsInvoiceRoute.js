@@ -7,5 +7,5 @@ angular.module('AdSales')
     .when('/SlsInvoices/edit/:invceNbr',{templateUrl:'views/SlsInvoice/SlsInvoiceNew.html',controller:'slsInvoiceNewCtlr'})
     .when('/SlsInvoices/show/:invceNbr',{templateUrl:'views/SlsInvoice/SlsInvoiceShow.html',controller:'slsInvoicesShowCtlr'})
     .when('/SlsInvoices/new',{templateUrl:'views/SlsInvoice/SlsInvoiceNew.html',controller:'slsInvoiceNewCtlr'})
-    .when('/SlsInvoices/print/preview',{templateUrl:'views/SlsInvoice/SlsInvoicePreview.html',controller:'slsInvoicesShowCtlr'});
+    .when('/SlsInvoices/print/preview/:invceNbr',{templateUrl:'views/SlsInvoice/SlsInvoicePreview.html',controller:'slsInvoicesShowCtlr'});
 }])

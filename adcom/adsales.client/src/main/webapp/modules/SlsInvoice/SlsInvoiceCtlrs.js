@@ -318,6 +318,10 @@ function($scope,genericResource,slsInvoicesUtils,slsInvoicesState,$location,$roo
     $scope.handlePrintPreviewInvoice=handlePrintPreviewInvoice;
     $scope.returnSlsInvce = returnSlsInvce;
     $scope.printPdf=printPdf;
+    $scope.resume = resume;
+    $scope.suspend = suspend;
+    $scope.slsInvoiceHolder = {};
+
        init();
     $scope.pageChangeHandler = function(num) {
       //Simple Pagination
@@ -327,6 +331,7 @@ function($scope,genericResource,slsInvoicesUtils,slsInvoicesState,$location,$roo
         var invceNbr = $routeParams.invceNbr;
         if(invceNbr){
             genericResource.findById(slsInvoicesUtils.invceManager,invceNbr).success(function(slsInvoiceHolder){
+                $scope.slsInvoiceHolder = slsInvoiceHolder;
                 $scope.slsInvoice = slsInvoiceHolder.slsInvoice;
                 $scope.slsInvoice.slsInvceItems = slsInvoiceHolder.slsInvceItemsholder;
                 $scope.slsInvoice.slsInvcePtnrs = slsInvoiceHolder.slsInvcePtnrsHolder;
@@ -338,15 +343,33 @@ function($scope,genericResource,slsInvoicesUtils,slsInvoicesState,$location,$roo
     
                                      
     function handlePrintPreviewInvoice(slsInvce){
-		if(slsInvoicesState.resultHandler.selectedObject(slsInvce) != -1){
-			$location.path('/SlsInvoices/print/preview/');
-		}
+
+        $location.path('/SlsInvoices/print/preview/'+$scope.slsInvoice.invceNbr);
 	}
-                                     
+
+    function resume(){
+        genericResource.get(slsInvoicesUtils.invceManager+'/resumeInvoice/'+$scope.slsInvoice.invceNbr)
+            .success(function(slsInvoice){
+                $scope.slsInvoice = slsInvoice;
+            })
+            .error(function(error){
+                $scope.error = error;
+            });
+    }
+
+     function suspend(){
+         genericResource.get(slsInvoicesUtils.invceManager+'/cancelInvoice/'+$scope.slsInvoice.invceNbr)
+             .success(function(slsInvoice){
+                 $scope.slsInvoice = slsInvoice;
+             })
+             .error(function(error){
+                 $scope.error = error;
+             });
+     }
     function returnSlsInvce(slsInvce){
-        if(slsInvoicesState.resultHandler.selectedObject(slsInvce) != -1){
-			$location.path('/SlsInvoices/show/');
-		}
+
+			$location.path('/SlsInvoices/show/'+$scope.slsInvoice.invceNbr);
+
     }
                                      
      function printPdf(el){                      
@@ -387,7 +410,7 @@ function($scope,genericResource,slsInvoicesUtils,slsInvoicesState,$location,$roo
      $scope.delivered = function(){
          genericResource.get(slsInvoicesUtils.invceManager+'/deliveredInvoice/'+$scope.slsInvoice.id)
              .success(function(slsInvoice){
-                 $scope.slsInvoice = slsInvoice;
+                 $scope.slsInvoice.invceDelivered = true;
              })
              .error(function(error){
                  $scope.error = error;

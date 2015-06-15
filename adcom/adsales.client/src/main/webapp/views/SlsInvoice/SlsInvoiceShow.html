@@ -95,6 +95,14 @@
 
                             <div class="col-lg-4">
                                 <div class="text-center">
+                                    <a class="btn btn-warning  btn-lg btn-block" ng-show="slsInvoice.invceStatus=='SUSPENDED'" ng-click="resume();">
+                                        Reprendre
+                                    </a>
+                                    <a class="btn btn-warning  btn-lg btn-block" ng-show="slsInvoice.invceStatus=='CLOSED' || slsInvoice.invceStatus=='ONGOING'" ng-disabled="slsInvoice.invcePymntStatus!='CREDIT' || slsInvoice.invceDelivered" ng-click="suspend();">
+                                        Suspendre
+                                    </a>
+                                </div>
+                                <div class="text-center">
                                     <a class="btn btn-info  btn-lg btn-block" ng-show="slsInvoice.invceStatus=='CLOSED'" ng-click="delivered();" ng-disabled="slsInvoice.invceDelivered">
                                         {{slsInvoicesUtils.translations['SlsInvoice_delivered_description.text']}}
                                     </a>

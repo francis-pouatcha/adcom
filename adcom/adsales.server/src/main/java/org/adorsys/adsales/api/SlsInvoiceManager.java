@@ -278,8 +278,8 @@ public class SlsInvoiceManager {
 		return slsInvoiceHolder;
 	}
 
-	public SlsInvoiceHolder suspendInvoice(SlsInvoiceHolder slsInvoiceHolder) throws AdException {
-		SlsInvoice slsInvoice = slsInvoiceHolder.getSlsInvoice();
+	public SlsInvoice suspendInvoice(String invce) throws AdException {
+		SlsInvoice slsInvoice = slsInvoiceEJB.findById(invce);
 		if(SlsInvcePymtStatus.AVANCE.equals(slsInvoice.getInvcePymntStatus()) 
 				|| SlsInvcePymtStatus.PAYE.equals(slsInvoice.getInvcePymntStatus())
 				|| slsInvoice.getInvceDelivered())
@@ -287,9 +287,8 @@ public class SlsInvoiceManager {
 		
 		slsInvoice.setInvceStatus(BaseProcessStatusEnum.SUSPENDED.name());
 		slsInvoice = slsInvoiceEJB.update(slsInvoice);
-		slsInvoiceHolder.setSlsInvoice(slsInvoice);
 		createSuspendedinvoiceHistory(slsInvoice);
-		return slsInvoiceHolder;
+		return slsInvoice;
 	}
 
 	public SlsInvoice deliveredInvoice(String id) {
@@ -300,13 +299,12 @@ public class SlsInvoiceManager {
 		return slsInvoice;
 	}
 
-	public SlsInvoiceHolder resumeInvoice(SlsInvoiceHolder slsInvoiceHolder) {
-		SlsInvoice slsInvoice = slsInvoiceHolder.getSlsInvoice();
+	public SlsInvoice resumeInvoice(String invce) {
+		SlsInvoice slsInvoice = slsInvoiceEJB.findById(invce);
 		slsInvoice.setInvceStatus(BaseProcessStatusEnum.RESUMED.name());
 		slsInvoice = slsInvoiceEJB.update(slsInvoice);
-		slsInvoiceHolder.setSlsInvoice(slsInvoice);
 		createResumedinvoiceHistory(slsInvoice);
-		return slsInvoiceHolder;
+		return slsInvoice;
 	}
 
 }

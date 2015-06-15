@@ -12,6 +12,7 @@ public interface CdrDsArtItemRepository extends EntityRepository<CdrDsArtItem, S
 	
 	public QueryResult<CdrDsArtItem> findByDsNbr(String dsNbr);
 
-	@Query("SELECT c FROM CdrDsArtItem AS c GROUP BY c.artPic ORDER BY SUM(c.soldQty) DESC")
+	@Query("SELECT c FROM CdrDsArtItem AS c GROUP BY c.artPic ORDER BY SUM(c.soldQty-c.returnedQty) DESC")
 	public QueryResult<CdrDsArtItem> topSales();
+	
 }

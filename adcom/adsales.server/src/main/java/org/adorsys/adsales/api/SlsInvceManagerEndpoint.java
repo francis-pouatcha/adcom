@@ -39,20 +39,18 @@ public class SlsInvceManagerEndpoint
    public SlsInvoiceHolder clotureInvoice(SlsInvoiceHolder slsInvoiceHolder) throws AdException{
       return slsInvoiceManager.closeInvoice(slsInvoiceHolder);
    }
-   @POST
-   @Path("/cancelInvoice")
-   @Consumes({ "application/json", "application/xml" })
+   @GET
+   @Path("/cancelInvoice/{invce}")
    @Produces({ "application/json", "application/xml" })
-   public SlsInvoiceHolder cancelInvoice(SlsInvoiceHolder slsInvoiceHolder) throws AdException{
-      return slsInvoiceManager.suspendInvoice(slsInvoiceHolder);
+   public SlsInvoice cancelInvoice(@PathParam("invce") String invce) throws AdException{
+      return slsInvoiceManager.suspendInvoice(invce);
    }
    
-   @POST
-   @Path("/resumeInvoice")
-   @Consumes({ "application/json", "application/xml" })
+   @GET
+   @Path("/resumeInvoice/{invce}")
    @Produces({ "application/json", "application/xml" })
-   public SlsInvoiceHolder resumeInvoice(SlsInvoiceHolder slsInvoiceHolder) throws AdException{
-      return slsInvoiceManager.resumeInvoice(slsInvoiceHolder);
+   public SlsInvoice resumeInvoice(@PathParam("invce") String invce) throws AdException{
+      return slsInvoiceManager.resumeInvoice(invce);
    }
    
   

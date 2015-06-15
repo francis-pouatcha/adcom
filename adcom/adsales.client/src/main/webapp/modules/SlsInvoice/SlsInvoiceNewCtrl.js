@@ -383,11 +383,13 @@ angular.module('AdSales')
             });
         }
         function annulerCmd(){
-            genericResource.customMethod(SlsInvoiceUtils.invoice+'/cancelInvoice',self.slsInvoiceHolder).success(function(data){
-                self.slsInvoiceHolder=data;
-            }).error(function(error){
-                $scope.error=error;
-            });
+            genericResource.get(SlsInvoiceUtils.invoice+'/cancelInvoice/'+self.slsInvoiceHolder.slsInvoice.invceNbr)
+                .success(function(slsInvoice){
+                    self.slsInvoiceHolder.slsInvoice = slsInvoice;
+                })
+                .error(function(error){
+                    $scope.error = error;
+                });
         }
         function newCmd(){
 
