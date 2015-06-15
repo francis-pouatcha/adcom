@@ -1,8 +1,6 @@
 package org.adorsys.adcshdwr.api;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -15,11 +13,9 @@ import org.adorsys.adbase.jpa.OrgUnit;
 import org.adorsys.adbase.security.SecurityUtil;
 import org.adorsys.adcore.utils.DateUtil;
 import org.adorsys.adcshdwr.jpa.CdrCstmrVchr;
-import org.adorsys.adcshdwr.jpa.CdrDrctSales;
 import org.adorsys.adcshdwr.jpa.CdrDsArtItem;
 import org.adorsys.adcshdwr.jpa.CdrDsArtItemSearchResult;
 import org.adorsys.adcshdwr.jpa.CdrDsPymntItem;
-import org.adorsys.adcshdwr.print.api.PrintMode;
 import org.adorsys.adcshdwr.receiptprint.CdrDrctSalesPrinterData;
 import org.adorsys.adcshdwr.receiptprint.ReceiptPrintTemplatePDF;
 import org.adorsys.adcshdwr.receiptprint.ReceiptPrinterData;
@@ -28,9 +24,7 @@ import org.adorsys.adcshdwr.rest.CdrDsPymntItemEJB;
 import org.adorsys.adcshdwr.voucherprint.CdrCstmrVchrPrinterData;
 import org.adorsys.adcshdwr.voucherprint.VoucherPrintTemplatePdf;
 import org.adorsys.adcshdwr.voucherprint.VoucherprinterData;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.pdfbox.pdmodel.PDDocument;
 
 
 @Stateless
@@ -46,11 +40,8 @@ public class CdrDrctSalesPrinterEJB {
 	private CdrDsArtItemEJB cdrDsArtItemEJB;
 	
 	
-	/**
-	 * Printing Receipt pdf
-	 * @param sales
-	 */
-	public void printReceiptPdf(CdrDrctSales sales){
+
+	/*public void printReceiptPdf(CdrDrctSales sales){
 		CdrDrctSalesPrinterData drctSalesPrinterData = createCdrDrctSalesPrinterData(sales);
 		ReceiptPrinterData receiptPrinterData = createReceiptPrinterData(sales);
 		ReceiptPrintTemplatePDF worker = new ReceiptPrintTemplatePDF(receiptPrinterData);
@@ -69,10 +60,10 @@ public class CdrDrctSalesPrinterEJB {
 			document = PDDocument.load(file);
 			switch (printMode) {
 			case open:
-//				 Desktop.getDesktop().open(new File(fileName));
+				 Desktop.getDesktop().open(new File(fileName));
 				break;
             case print:
-//            	 Desktop.getDesktop().print(new File(fileName));
+             	 Desktop.getDesktop().print(new File(fileName));
             	 break;
 			/* case open:
 				try {
@@ -89,7 +80,7 @@ public class CdrDrctSalesPrinterEJB {
 					throw new IllegalArgumentException();
 				}
             	document.close();
-            	break; */
+            	break;
 			default:
 				break;
 			}
@@ -98,25 +89,23 @@ public class CdrDrctSalesPrinterEJB {
 			throw new IllegalStateException(e);
 		}
 		finally{
-			//
+			
 		}
 		
+	}*/
+	
+	/**
+	 * Printing Receipt pdf
+	 * @param sales
+	 */
+	public ReceiptPrintTemplatePDF printReceiptPdf(CdrDsArtHolder salesArtHolder){
+		CdrDrctSalesPrinterData drctSalesPrinterData = createCdrDrctSalesPrinterData(salesArtHolder);
+		ReceiptPrinterData receiptPrinterData = createReceiptPrinterData(salesArtHolder);
+		ReceiptPrintTemplatePDF worker = new ReceiptPrintTemplatePDF(receiptPrinterData);
+		worker.printPdfReceipt(drctSalesPrinterData);
+		return worker;
 	}
 	
-//	
-//	public void getPrinterName(){
-//		try {
-//			PrintService[] printServices = PrinterJob.lookupPrintServices();
-//			if(printServices.length!=0){
-//				for (int i = 0; i < printServices.length; i++) {
-//					@SuppressWarnings("unused")
-//					String name = printServices[i].getName();
-//				}
-//			}
-//		} catch (Exception e) {
-//		  throw new IllegalArgumentException(); 
-//		}
-//	}
 	
 	/**
 	 * Print Voucher pdf
@@ -131,7 +120,7 @@ public class CdrDrctSalesPrinterEJB {
 	}
 	
 	
-	public CdrDrctSalesPrinterData createCdrDrctSalesPrinterData(CdrDrctSales sales){
+	public CdrDrctSalesPrinterData createCdrDrctSalesPrinterData(CdrDsArtHolder salesArtHolder){
 		Login connectedUser = securityUtil.getConnectedUser();
 		OrgUnit company = securityUtil.getCurrentOrgUnit();
 		if(company!=null){
@@ -142,15 +131,19 @@ public class CdrDrctSalesPrinterEJB {
 			orgUnit.setContact(contact);
 			company = orgUnit;
 		}
-		List<CdrDsArtItem> cdrDsArtItems = cdrDsArtItemEJB.findByDsNbr(sales.getDsNbr());
+		List<CdrDsArtItemHolder> itemsHolder = salesArtHolder.getItems();
+		List<CdrDsArtItem> items = new ArrayList<CdrDsArtItem>();
+ 		for(CdrDsArtItemHolder itemHolder: itemsHolder){
+			items.add(itemHolder.getItem());
+		}
 		CdrDsArtItemSearchResult cdrDsArtItemSearchResult = new CdrDsArtItemSearchResult();
-		cdrDsArtItemSearchResult.setResultList(cdrDsArtItems);
-		CdrDrctSalesPrinterData cdrDrctSalesPrinterData = new CdrDrctSalesPrinterData(sales, connectedUser, company, cdrDsArtItemSearchResult);
+		cdrDsArtItemSearchResult.setResultList(items);
+		CdrDrctSalesPrinterData cdrDrctSalesPrinterData = new CdrDrctSalesPrinterData(salesArtHolder.getCdrDrctSales(), connectedUser, company, cdrDsArtItemSearchResult);
 	
 		return cdrDrctSalesPrinterData;
 	}
 	
-	public ReceiptPrinterData createReceiptPrinterData(CdrDrctSales sales){
+	public ReceiptPrinterData createReceiptPrinterData(CdrDsArtHolder salesArtHolder){
 		Login cashier = securityUtil.getConnectedUser();
 		OrgUnit company = securityUtil.getCurrentOrgUnit();
 		if(company!=null){
@@ -161,11 +154,8 @@ public class CdrDrctSalesPrinterEJB {
 			orgUnit.setContact(contact);
 			company = orgUnit;
 		}
-		CdrDsPymntItem cdrDsPymntItem = cdrDsPymntItemEJB.findByDsNbr(sales.getDsNbr()).iterator().next();
-		String customer="";
-		if(sales.getRcptNbr()=="0000"){
-			customer = "CLIENT DIVERS";
-		}
+		CdrDsPymntItem cdrDsPymntItem = cdrDsPymntItemEJB.findByDsNbr(salesArtHolder.getCdrDrctSales().getDsNbr()).iterator().next();
+		String customer="CLIENT DIVERS";
 		String paymentDate = DateUtil.format(new Date(), DateUtil.DATE_TIME_FORMAT);
 		ReceiptPrinterData receiptPrinterData = new ReceiptPrinterData(customer, paymentDate , cdrDsPymntItem, cashier, company);
 		return receiptPrinterData;

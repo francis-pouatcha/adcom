@@ -7,6 +7,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
 
+import org.adorsys.adcore.utils.SequenceGenerator;
 import org.adorsys.adstock.jpa.StkSection;
 import org.adorsys.adstock.repo.StkSectionRepository;
 

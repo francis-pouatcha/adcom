@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.adorsys.adcshdwr.jpa.CdrDrctSales;
+import org.adorsys.adcshdwr.print.api.PrintMode;
 
 /**
  * @author boriswaguia
@@ -17,7 +18,9 @@ public class CdrDsArtHolder {
 	
 	private CdrDrctSales cdrDrctSales;
 	private BigDecimal paidAmt;//amt given by the customer
-	private BigDecimal changeAmt;//change 
+	private BigDecimal changeAmt;//change
+	
+	private PrintMode printMode;
 	
 	private List<CdrDsArtItemHolder> items = new ArrayList<CdrDsArtItemHolder>();
 
@@ -51,6 +54,16 @@ public class CdrDsArtHolder {
 
 	public void setChangeAmt(BigDecimal changeAmt) {
 		this.changeAmt = changeAmt;
+	}
+	
+	
+
+	public PrintMode getPrintMode() {
+		return printMode;
+	}
+
+	public void setPrintMode(PrintMode printMode) {
+		this.printMode = printMode;
 	}
 
 	@Override

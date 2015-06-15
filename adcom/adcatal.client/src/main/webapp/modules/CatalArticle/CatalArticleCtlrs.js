@@ -85,7 +85,7 @@ angular.module('AdCatal')
 	}
     
 }])
-.controller('catalArticleCreateCtlr',['$scope','catalArticleResource',function($scope,catalArticleResource){
+.controller('catalArticleCreateCtlr',['$scope','catalArticleResource', '$location' ,function($scope,catalArticleResource, $location){
 	var self = this ;
     $scope.catalArticleCreateCtlr = self;
     self.catalArticle = {};
@@ -95,7 +95,7 @@ angular.module('AdCatal')
     function create(){
     	catalArticleResource.create(self.catalArticle)
     	.success(function(data){
-    		$location.path('/login/show/'+data.identif);
+    		$location.path('/CatalArticles/show/' + data.identif);
     	})
     	.error(function(error){
     		self.error = error;

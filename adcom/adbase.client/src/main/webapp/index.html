@@ -8,7 +8,9 @@
     <meta name="author" content="">
     <link rel="stylesheet" type="text/css" href="/adres.client/vendors/bootstrap/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="/adres.client/vendors/angular-datepicker/datepicker.css">
-     <link rel="stylesheet" type="text/css" href="/adres.client/styles/custom.css">
+    <link rel="stylesheet" type="text/css" href="/adres.client/styles/custom.css">
+    <link rel="stylesheet" type="text/css" href="/adres.client/vendors/angular-growl/angular-growl.min.css">
+
     <script src="/adres.client/vendors/jquery/jquery-2.1.1.min.js"></script>
     <script src="/adres.client/vendors/bootstrap/js/bootstrap.js"></script>
 </head>
@@ -33,6 +35,7 @@
     <script src="/adres.client/vendors/angular-translate/angular-translate.js"></script>
     <script src="/adres.client/vendors/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
     <script src="/adres.client/vendors/angular-translate-loader-partial/angular-translate-loader-partial.js"></script>
+    <script src="/adres.client/vendors/angular-growl/angular-growl.js"></script>
     <script src="/adres.client/vendors/base64/base64.js"></script>
     <script src="/adres.client/vendors/angular-datepicker/datepicker.js"></script>
     <script src="/adres.client/services/ADUtils.js"></script>
@@ -68,6 +71,8 @@
     <script src="modules/userworkspace/services.js"></script>
     <script src="modules/ouworkspaces/resources.js"></script>
     <script src="modules/ouworkspaces/services.js"></script>
+    <script src="modules/baseconfig/resources.js"></script>
+    <script src="modules/baseconfig/services.js"></script>
 
     <script src="modules/connectionhistorys/resources.js"></script>
     <script src="modules/connectionhistorys/services.js"></script>
@@ -146,5 +151,12 @@
     
     <!-- Ou Workspaces-->
     <script src="modules/ouworkspaces/ouWorkspaceController.js"></script>
+    
+     <!-- Base Config controller -->
+    <script src="modules/baseconfig/controller/baseConfigs.js"></script>
+    <script src="modules/baseconfig/controller/baseConfigCreateController.js"></script>
+    <script src="modules/baseconfig/controller/baseConfigEditController.js"></script>
+    <script src="modules/baseconfig/controller/baseConfigShowController.js"></script>
+   
 </body>
 </html>

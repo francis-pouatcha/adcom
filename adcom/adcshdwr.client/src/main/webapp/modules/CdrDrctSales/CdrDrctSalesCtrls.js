@@ -467,8 +467,8 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
 
             function openCreateForm() {}
 }])
-    .controller('cdrDrctSalesCreateCtlr', ['$scope', 'cdrDrctSalesUtils', 'conversionPrice', '$translate', 'genericResource', '$location', 'cdrDrctSalesState', 'commonTranslations', '$modal', '$http',
-        function ($scope, cdrDrctSalesUtils, conversionPrice, $translate, genericResource, $location, cdrDrctSalesState, commonTranslations, $modal, $http) {
+    .controller('cdrDrctSalesCreateCtlr', ['$scope', 'cdrDrctSalesUtils', 'conversionPrice', 'fileExtractor', '$translate', 'genericResource', '$location', 'cdrDrctSalesState', 'commonTranslations', '$modal', '$http',
+        function ($scope, cdrDrctSalesUtils, conversionPrice, fileExtractor, $translate, genericResource, $location, cdrDrctSalesState, commonTranslations, $modal, $http) {
             $scope.cdrCshDrawer = {
                 cdrDrctSales: {}
             };
@@ -531,6 +531,7 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                     });
                 }
             };
+        
 
             function clear(){
                 $scope.cdrDsArtHolder=null;
@@ -555,10 +556,20 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                     $scope.showprint = true;
                     $scope.cdrDsArtHolder = result;
                     $scope.error = "";
+                    printReceipt($scope.cdrDsArtHolder.cdrDrctSales.id);
                 }).error(function (error) {
                     $scope.error = error;
                 });
             };
+            
+            // Print pdf receipt
+          function printReceipt(id){
+            genericResource.builfReportGet(cdrDrctSalesUtils.cdrdrctsalesmanager+"/receiptreport.pdf", id).success(function (result) {
+                    fileExtractor.extractFile(result,"application/pdf");
+                    }).error(function (error) {
+                        $scope.error = error;
+                    });
+           };
         
 
             function verifCdrDsArtHolder(){
@@ -954,7 +965,6 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                 $scope.printRequestVoucher = function(){
                            genericResource.builfReportGet(cdrDrctSalesUtils.cdrdrctsalesmanager+"/voucherreport.pdf",      $scope.cdrDsArtHolder.cdrDrctSales.dsNbr).success(function (result) {
                                fileExtractor.extractFile(result,"application/pdf");
-                                console.log('Print voucher OK...');
                             }).error(function (error) {
                                 $scope.error = error;
                             });

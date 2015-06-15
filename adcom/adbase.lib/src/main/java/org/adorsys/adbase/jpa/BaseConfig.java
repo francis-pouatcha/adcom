@@ -7,28 +7,37 @@ import javax.persistence.Table;
 
 import org.adorsys.adcore.jpa.AbstractTimedData;
 import org.adorsys.javaext.description.Description;
+
 /**
  * 
  * @author guymoyo
  *
- *the purpose of this class is to save, the global config 
- *of the application
+ *         the purpose of this class is to save, the global config of the
+ *         application
  */
-@Entity 
-@Table(name="BaseConfig")
+@Entity
+@Table(name = "BaseConfig")
 @Description("BaseConfig_description")
 public class BaseConfig extends AbstractTimedData {
 
 	private BigDecimal nbrOfItemsPrcmtOrder = new BigDecimal(100);
-	
-	private PrintMode PrintMode;
+
+	private PrintMode printMode;
+
+	public BaseConfig() {
+	}
+
+	public BaseConfig(BigDecimal nbrOfItemsPrcmtOrder, PrintMode printMode) {
+		this.nbrOfItemsPrcmtOrder = nbrOfItemsPrcmtOrder;
+		this.printMode = printMode;
+	}
 
 	public PrintMode getPrintMode() {
-		return PrintMode;
+		return printMode;
 	}
 
 	public void setPrintMode(PrintMode printMode) {
-		PrintMode = printMode;
+		this.printMode = printMode;
 	}
 
 	public BigDecimal getNbrOfItemsPrcmtOrder() {
@@ -41,7 +50,12 @@ public class BaseConfig extends AbstractTimedData {
 
 	@Override
 	protected String makeIdentif() {
-		// TODO Auto-generated method stub
-		return null;
+		return "CONFIG";
 	}
+	
+	// to get default config if there is no Base Config in DB
+	public static BaseConfig defaultConfig() {
+		return new BaseConfig(BigDecimal.TEN, PrintMode.PREVIEW);
+	}
+
 }
