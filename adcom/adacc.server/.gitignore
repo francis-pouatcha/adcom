@@ -15,3 +15,5 @@ adpharma/*/.classpath
 .factorypath
 /  target
 /target
+.tern-project
+.project

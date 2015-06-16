@@ -26,15 +26,15 @@ public class AptAptmtEventGateway {
 
 	public void handleAptAptmtOngoingEvent(
 			@Observes @AptAptmtOngoingEvent AptAptmt aptAptmt) {
-		loggger.log(Level.INFO,
-				" Event : ----------------> check saved appointements status ");
+//		loggger.log(Level.INFO,
+//				" Event : ----------------> check saved appointements status ");
 		checkCurrentAptStatus(aptAptmt);
 	}
 
 	@Schedule(minute = "*/1", hour = "*")
 	public void checkAppointementDateForStatus() {
 
-		loggger.log(Level.INFO, " check appointements date every minute ");
+//		loggger.log(Level.INFO, " check appointements date every minute ");
 		List<AptAptmt> aptaptmts = aptAptmtRepository.findAll();
 
 		for (AptAptmt aptAptmt : aptaptmts) {
@@ -57,8 +57,8 @@ public class AptAptmtEventGateway {
 				&& (nowStrHour.equals(aptStrHour))) {
 
 			if (aptAptmt.getStatus().equals(AptmtStatus.FORTHCOMMING)) {
-				loggger.log(Level.INFO,
-						" now we can change status of appointment to ONGOING");
+//				loggger.log(Level.INFO,
+//						" now we can change status of appointment to ONGOING");
 				
 				aptAptmt.setStatus(AptmtStatus.ONGOING);
 				aptAptmtRepository.save(aptAptmt);
