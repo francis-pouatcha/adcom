@@ -317,8 +317,12 @@
     "SlsInvoice_invceDtFrom_description.title":"Date du",
     "SlsInvoice_invceDtTo_description.text":"Date Facture superieure a",
     "SlsInvoice_invceDtTo_description.title":"Au",
+    "SlsInvoice_holdingAmount_description.text":"Montant Précompte de la facture",
+    "SlsInvoice_holdingAmount_description.title":"Montant Précompte",
+    "SlsInvoice_holdingPct_description.text":"Précompte en %",
+    "SlsInvoice_holdingPct_description.title":"Précompte(%)",
 
-    "SlsInvceStatus_description.text":"Status da la facture",
+    "SlsInvceStatus_description.text":"Status de la facture",
     "SlsInvceStatus_description.title":"Status Facture",
     "SlsInvceStatus_CLOSED_description.text":"Document cloturé",
     "SlsInvceStatus_CLOSED_description.title":"Cloturé",

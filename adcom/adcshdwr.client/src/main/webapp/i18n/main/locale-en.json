@@ -323,6 +323,11 @@
 
     "SlsInvceStatus_description.text":"Status of the invoice",
     "SlsInvceStatus_description.title":"Invoice Status",
+    "SlsInvoice_holdingAmount_description.text":"Holding Amount of Invoice",
+    "SlsInvoice_holdingAmount_description.title":"Holding Amount",
+    "SlsInvoice_holdingPct_description.text":"Holding in Percent",
+    "SlsInvoice_holdingPct_description.title":"Holding (%)",
+    
 
     "SlsInvoiceType_description.text":"The type of this invoice.",
     "SlsInvoiceType_description.title":"Invoice Type",

@@ -220,7 +220,7 @@ angular.module('AdSales')
             calculAmount();
             $scope.error="";
         }
-
+        
         function calculAmount() {
             if(self.slsInvoiceItemHolder.slsInvceItem.qty){
                 self.slsInvoiceItemHolder.slsInvceItem.grossSPPreTax = self.slsInvoiceItemHolder.slsInvceItem.sppuPreTax*self.slsInvoiceItemHolder.slsInvceItem.qty;
@@ -248,6 +248,7 @@ angular.module('AdSales')
         self.slsInvoiceHolder.slsInvoice.vatAmount = 0.0;
         self.slsInvoiceHolder.slsInvoice.netSPTaxIncl = 0.0;
         self.slsInvoiceHolder.slsInvoice.netSalesAmt = 0.0;
+        self.slsInvoiceHolder.slsInvoice.holdingAmount = 0.0;
 
         angular.forEach(self.slsInvoiceHolder.slsInvceItemsholder, function (value, key) {
             self.slsInvoiceHolder.slsInvoice.grossSPPreTax = self.slsInvoiceHolder.slsInvoice.grossSPPreTax + value.slsInvceItem.grossSPPreTax;
@@ -286,6 +287,9 @@ angular.module('AdSales')
         if(!self.slsInvoiceHolder.slsInvoice.pymtDscntAmt && !self.slsInvoiceHolder.slsInvoice.pymtDscntPct){
             self.slsInvoiceHolder.slsInvoice.netSalesAmt = self.slsInvoiceHolder.slsInvoice.netSPTaxIncl;
         }
+        self.slsInvoiceHolder.slsInvoice.holdingAmount = (self.slsInvoiceHolder.slsInvoice.grossSPPreTax*self.slsInvoiceHolder.slsInvoice.holdingPct)/100;
+        self.slsInvoiceHolder.slsInvoice.netSalesAmt = self.slsInvoiceHolder.slsInvoice.netSalesAmt + self.slsInvoiceHolder.slsInvoice.holdingAmount;
+        
         $scope.error="";
     }
     

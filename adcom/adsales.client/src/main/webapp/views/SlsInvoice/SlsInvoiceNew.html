@@ -102,10 +102,16 @@
                       <labe class="label label-danger" >{{error}}</labe>
 
                   </div>
-                    <div class="col-lg-2">
+                    <div class="col-lg-1">
                         <div class="form-group">
                             <label >{{'SlsInvoice_pymtDscntPct_description.title' | translate}}</label><br/>
                             <input  type="text" class="form-control" ng-model="slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.pymtDscntPct" price-green="price-green" round-converter='round-converter' />
+                        </div>
+                    </div>
+                    <div class="col-lg-1">
+                        <div class="form-group">
+                            <label >{{'SlsInvoice_holdingPct_description.title' | translate}}</label><br/>
+                            <input  type="text" class="form-control" ng-model="slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.holdingPct" price-green="price-green" round-converter='round-converter' />
                         </div>
                     </div>
                 <div class="col-lg-1" style="margin-top: 24px">
@@ -121,12 +127,14 @@
                         <tr>
                             <td>{{'SlsInvoice_netSPPreTax_description.text' | translate}}</td>
                             <td>{{'SlsInvoice_pymtDscntAmt_description.title' | translate}}</td>
+                            <th>{{'SlsInvoice_holdingAmount_description.title'|translate}}</th>
                             <td >{{'SlsInvoice_vatAmount_description.title' | translate}}</td>
                             <td>{{'SlsInvoice_netSalesAmt_description.title' | translate}}</td>
                         </tr>
                         <tr>
                             <td price-style="price-style">{{slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.netSPPreTax | currencyAccounting:cur}}</td>
                             <td price-style="price-style">{{slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.pymtDscntAmt | currencyAccounting:cur}}</td>
+                            <td price-style="price-style">{{slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.holdingAmount | currencyAccounting:cur}}</td>
                             <td price-style="price-style">{{slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.vatAmount | currencyAccounting:cur}}</td>
                             <td price-style="price-style">{{slsInvoiceNewCtlr.slsInvoiceHolder.slsInvoice.netSalesAmt | currencyAccounting:cur}}</td>
                         </tr>
