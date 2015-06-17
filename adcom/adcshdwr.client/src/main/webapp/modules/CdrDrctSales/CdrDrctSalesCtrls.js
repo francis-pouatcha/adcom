@@ -467,8 +467,8 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
 
             function openCreateForm() {}
 }])
-    .controller('cdrDrctSalesCreateCtlr', ['$scope', 'cdrDrctSalesUtils', 'conversionPrice', 'fileExtractor', '$translate', 'genericResource', '$location', 'cdrDrctSalesState', 'commonTranslations', '$modal', '$http',
-        function ($scope, cdrDrctSalesUtils, conversionPrice, fileExtractor, $translate, genericResource, $location, cdrDrctSalesState, commonTranslations, $modal, $http) {
+    .controller('cdrDrctSalesCreateCtlr', ['$scope', 'cdrDrctSalesUtils', 'conversionPrice', 'fileExtractor', '$translate', 'genericResource', '$location', 'cdrDrctSalesState', 'commonTranslations', '$modal', '$http','$routeParams',
+        function ($scope, cdrDrctSalesUtils, conversionPrice, fileExtractor, $translate, genericResource, $location, cdrDrctSalesState, commonTranslations, $modal, $http,$routeParams) {
             $scope.cdrCshDrawer = {
                 cdrDrctSales: {}
             };
@@ -487,7 +487,16 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
             };
             $scope.showprint = false;
 
+            init();
+
             function create() {};
+
+            function init(){
+               var origDsNbr = $routeParams.origDsNbr;
+                if(origDsNbr){
+                    $scope.cdrDsArtHolder.cdrDrctSales.origDsNbr = origDsNbr;
+                }
+            }
 
             $scope.onArticleSelectedInSearch = function (item, model, label) {
                 $scope.cdrDsArtItemHolder.item.artPic = item.artPic;
@@ -556,7 +565,12 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                     $scope.showprint = true;
                     $scope.cdrDsArtHolder = result;
                     $scope.error = "";
-                    printReceipt($scope.cdrDsArtHolder.cdrDrctSales.id);
+                    if($scope.cdrDsArtHolder.cdrDrctSales.netAmtToPay > 0){
+                        printReceipt($scope.cdrDsArtHolder.cdrDrctSales.id);
+                    }else{
+                        printVoucher($scope.cdrDsArtHolder.cdrDrctSales.dsNbr);
+                    }
+
                 }).error(function (error) {
                     $scope.error = error;
                 });
@@ -570,6 +584,14 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                         $scope.error = error;
                     });
            };
+            // Print pdf voucher
+            function printVoucher(dsNbr){
+                genericResource.builfReportGet(cdrDrctSalesUtils.cdrdrctsalesmanager+"/voucherreport.pdf", dsNbr).success(function (result) {
+                    fileExtractor.extractFile(result,"application/pdf");
+                }).error(function (error) {
+                    $scope.error = error;
+                });
+            };
         
 
             function verifCdrDsArtHolder(){
@@ -596,7 +618,11 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
             };
 
             $scope.printRequest = function(){
-
+                if($scope.cdrDsArtHolder.cdrDrctSales.netAmtToPay > 0){
+                    printReceipt($scope.cdrDsArtHolder.cdrDrctSales.id);
+                }else{
+                    printVoucher($scope.cdrDsArtHolder.cdrDrctSales.dsNbr);
+                }
             };
 
             $scope.hasItem = function () {
@@ -642,13 +668,17 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
             }
 
             function isCorrect(cdrDsArtItemHolder) {
-                if (!cdrDsArtItemHolder || angular.isUndefined(cdrDsArtItemHolder) || !(cdrDsArtItemHolder.item.artPic && 0 < cdrDsArtItemHolder.item.soldQty)) {
+                if (!cdrDsArtItemHolder || angular.isUndefined(cdrDsArtItemHolder) || !(cdrDsArtItemHolder.item.artPic)) {
                     return false;
                 }
                 return true;
             }
 
             function addItem(cdrDsArtItemHolder) {
+                if (!cdrDsArtItemHolder.item.soldQty) cdrDsArtItemHolder.item.soldQty = 0.0;
+                if (!cdrDsArtItemHolder.item.returnedQty) cdrDsArtItemHolder.item.returnedQty = 0.0;
+                var billedQty=Math.abs(parseInt(cdrDsArtItemHolder.item.soldQty) - parseInt(cdrDsArtItemHolder.item.returnedQty));
+                console.log(billedQty);
                 if (isNotCorrect($scope.cdrDsArtItemHolder)) return;
                 if (cdrDsArtItemHolder.item.soldQty > cdrDsArtItemHolder.maxStockQty){
                     $scope.error ="Quantite Vendus superieur a la quantite en stock";
@@ -658,13 +688,13 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                     $scope.error ="La TVA ne peut etre negatif";
                     return;
                 }
-                if (cdrDsArtItemHolder.item.restockgFees > cdrDsArtItemHolder.item.sppuPreTax * parseInt(cdrDsArtItemHolder.item.soldQty)
-                    || cdrDsArtItemHolder.item.sppuPreTax * parseInt(cdrDsArtItemHolder.item.soldQty) == cdrDsArtItemHolder.item.restockgFees){
+                if (cdrDsArtItemHolder.item.restockgFees > cdrDsArtItemHolder.item.sppuPreTax * billedQty
+                    || cdrDsArtItemHolder.item.sppuPreTax * billedQty == cdrDsArtItemHolder.item.restockgFees){
                     $scope.error ="La frais de stockage ne peut etre superieur au montant de vente";
                     return;
                 }
-                if (cdrDsArtItemHolder.item.rebate > cdrDsArtItemHolder.item.sppuPreTax * parseInt(cdrDsArtItemHolder.item.soldQty)
-                    || cdrDsArtItemHolder.item.sppuPreTax * parseInt(cdrDsArtItemHolder.item.soldQty) == cdrDsArtItemHolder.item.rebate){
+                if (cdrDsArtItemHolder.item.rebate > cdrDsArtItemHolder.item.sppuPreTax * billedQty
+                    || cdrDsArtItemHolder.item.sppuPreTax * billedQty == cdrDsArtItemHolder.item.rebate){
                     $scope.error ="La remise ne peut etre superieur au montant de vente";
                     return;
                 }
@@ -705,7 +735,9 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                 angular.forEach(items, function (artItemHolder) {
 
                     if (!artItemHolder.item.rebate) artItemHolder.item.rebate = 0.0;
-                    var grossSPPTax = artItemHolder.item.sppuPreTax * parseInt(artItemHolder.item.soldQty);
+                    if (!artItemHolder.item.soldQty) artItemHolder.item.soldQty = 0.0;
+                    if (!artItemHolder.item.returnedQty) artItemHolder.item.returnedQty = 0.0;
+                    var grossSPPTax = artItemHolder.item.sppuPreTax * (parseInt(artItemHolder.item.soldQty)-parseInt(artItemHolder.item.returnedQty));
                     var netSPPreTax = grossSPPTax - parseInt(artItemHolder.item.rebate);
                     if(!artItemHolder.item.restockgFees)
                         artItemHolder.item.restockgFees = 0.0;
@@ -748,7 +780,7 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                 roundAmountObject.amount = Math.round(amount);
                 var isMultiple = false;
                 while (!isMultiple) {
-                    if ((this.amount % 5 == 0)) {
+                    if (Math.abs(this.amount) % 5 == 0) {
                         isMultiple = true;
                     }
                     else {
@@ -902,6 +934,8 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
             $scope.cdrDsArtItemHolder = {
                     item: {}
                 };
+
+
             var oldReturnQty;
             $scope.$watch('cdrDsArtItemHolder.item.returnedQty', function() {
 	            	if( oldReturnQty != $scope.cdrDsArtItemHolder.item.returnedQty){
@@ -952,29 +986,32 @@ function ($scope, genericResource, cdrDrctSalesUtils, cdrDrctSalesState, $locati
                                          $scope.error="";
                                      }
 
-                                     $scope.save = function () {
-                                         genericResource.create(cdrDrctSalesUtils.cdrdrctsalesmanager+"/returnProduct", $scope.cdrDsArtHolder).success(function (result) {
-                                             $scope.showprint = true;
-                                             $scope.cdrDsArtHolder = result;
-                                             $scope.error = "";
+                                     // Print pdf receipt
+                                     function printReceipt(id){
+                                         genericResource.builfReportGet(cdrDrctSalesUtils.cdrdrctsalesmanager+"/receiptreport.pdf", id).success(function (result) {
+                                             fileExtractor.extractFile(result,"application/pdf");
                                          }).error(function (error) {
                                              $scope.error = error;
                                          });
                                      };
-                                     
-                $scope.printRequestVoucher = function(){
-                           genericResource.builfReportGet(cdrDrctSalesUtils.cdrdrctsalesmanager+"/voucherreport.pdf",      $scope.cdrDsArtHolder.cdrDrctSales.dsNbr).success(function (result) {
-                               fileExtractor.extractFile(result,"application/pdf");
-                            }).error(function (error) {
-                                $scope.error = error;
-                            });
-                }
+                                     // Print pdf voucher
+                                     function printVoucher(dsNbr){
+                                         genericResource.builfReportGet(cdrDrctSalesUtils.cdrdrctsalesmanager+"/voucherreport.pdf", dsNbr).success(function (result) {
+                                             fileExtractor.extractFile(result,"application/pdf");
+                                         }).error(function (error) {
+                                             $scope.error = error;
+                                         });
+                                     };
+
 
 
                                      $scope.printRequest = function(){
-
+                                         if($scope.cdrDsArtHolder.cdrDrctSales.netAmtToPay > 0){
+                                             printReceipt($scope.cdrDsArtHolder.cdrDrctSales.id);
+                                         }else{
+                                             printVoucher($scope.cdrDsArtHolder.cdrDrctSales.dsNbr);
+                                         }
                                      };
-
                                      function clearObject(anObject) {
                                          anObject = {
                                              item: {}
