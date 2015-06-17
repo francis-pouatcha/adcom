@@ -45,6 +45,25 @@ cd && rm -rf $HOME/addb.*
 echo 'stopping jboss smoothly'
 kill -9 $( ps aux | grep '[j]boss' | awk '{print $2}')
 
+echo 'create Dir for data'
+cd $JBOSS_HOME/ && mkdir adcom
+cd $JBOSS_HOME/adcom/ && mkdir adbase
+cd $JBOSS_HOME/adcom/adbase/ && mkdir data
+cd $JBOSS_HOME/adcom/ && mkdir adcatal
+cd $JBOSS_HOME/adcom/adcatal/ && mkdir data
+cd $JBOSS_HOME/adcom/ && mkdir adstock
+cd $JBOSS_HOME/adcom/adstock/ && mkdir data
+cd $JBOSS_HOME/adcom/ && mkdir adbnsptnr
+cd $JBOSS_HOME/adcom/adbnsptnr/ && mkdir data
+cd $JBOSS_HOME/adcom/ && mkdir adprocmt
+cd $JBOSS_HOME/adcom/adprocmt/ && mkdir data
+cd $JBOSS_HOME/adcom/ && mkdir adinvtry
+cd $JBOSS_HOME/adcom/adinvtry/ && mkdir data
+cd $JBOSS_HOME/adcom/ && mkdir adsales
+cd $JBOSS_HOME/adcom/adsales/ && mkdir data
+
+cd $JBOSS_HOME/standalone/ && mkdir security
+
 echo 'remove old deployments'
 cd $JBOSS_HOME/standalone/deployments/ && rm ad*
 cd $JBOSS_HOME/adcom/adbase/data/ && rm ad*
@@ -54,6 +73,11 @@ cd $JBOSS_HOME/adcom/adbnsptnr/data/ && rm ad*
 cd $JBOSS_HOME/adcom/adprocmt/data/ && rm ad*
 cd $JBOSS_HOME/adcom/adinvtry/data/ && rm ad*
 cd $JBOSS_HOME/adcom/adsales/data/ && rm ad*
+
+echo 'cnfiguring jboss'
+cp $ADCOM_HOME/adcom.configuration/jboss-eap-6.3/standalone/configuration/standalone.xml $JBOSS_HOME/standalone/configuration/standalone.xml
+cp $ADCOM_HOME/adcom.configuration/jboss-eap-6.3/standalone/security/adcom.jks $JBOSS_HOME/standalone/security/adcom.jks
+
 
 echo 'starting jboss'
 cd $JBOSS_HOME

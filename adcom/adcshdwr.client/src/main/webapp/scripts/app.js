@@ -31,7 +31,8 @@ angular.module('AdCshdwr', [
     .when('/CdrCshDrawers',{templateUrl:'views/CdrCshDrawer/CdrCshDrawers.html',controller:'cdrCshDrawersCtlr'})
     .when('/CdrCshDrawers/new',{templateUrl:'views/CdrCshDrawer/createCdrCshDrawer.html',controller:'cdrCshDrawersCreateCtlr'})
     .when('/CdrCshDrawers/show/:id',{templateUrl:'views/CdrCshDrawer/showCdrCshDrawer.html',controller:'cdrCshDrawersEditCtlr'})                       .when('/CdrDrctSales',{templateUrl:'views/CdrDrctSale/CdrDrctSales.html',controller:'cdrDrctSalesCtlr'})
-    .when('/CdrDrctSales/new',{templateUrl:'views/CdrDrctSale/createDrctSales.html',controller:'cdrDrctSalesCreateCtlr'})
+    .when('/CdrDrctSales/new/:origDsNbr',{templateUrl:'views/CdrDrctSale/createDrctSales.html',controller:'cdrDrctSalesCreateCtlr'})
+        .when('/CdrDrctSales/new',{templateUrl:'views/CdrDrctSale/createDrctSales.html',controller:'cdrDrctSalesCreateCtlr'})
     .when('/CdrDrctSales/show/:id',{templateUrl:'views/CdrDrctSale/showDrctSales.html',controller:'cdrDrctSalesShowCtlr'})
     .otherwise({redirectTo: '/CdrCshDrawers'});
     

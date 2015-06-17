@@ -28,6 +28,17 @@ public class CdrAbstractDrctSales extends AbstractIdentifData {
 	@Description("CdrDrctSales_dsNbr_description")
 	@NotNull
 	private String dsNbr;
+	
+	/*
+	 * This is the original dsNbr, that can be used to track
+	 * the original invoice of a returned item.
+	 * 
+	 * When this is not null, we reuse the rebates defined 
+	 * there to process the return.
+	 */
+	@Column
+	@Description("CdrDsArtItem_origDsNbr_description")
+	private String origDsNbr;
 
 	@Column
 	@Description("CdrDrctSales_dsCur_description")
@@ -93,6 +104,14 @@ public class CdrAbstractDrctSales extends AbstractIdentifData {
 
 	public String getDsNbr() {
 		return this.dsNbr;
+	}
+
+	public String getOrigDsNbr() {
+		return origDsNbr;
+	}
+
+	public void setOrigDsNbr(String origDsNbr) {
+		this.origDsNbr = origDsNbr;
 	}
 
 	public void setDsNbr(final String dsNbr) {

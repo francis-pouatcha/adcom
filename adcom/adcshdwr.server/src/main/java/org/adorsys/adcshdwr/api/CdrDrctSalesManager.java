@@ -3,6 +3,7 @@
  */
 package org.adorsys.adcshdwr.api;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -204,15 +205,22 @@ public class CdrDrctSalesManager {
 		cdrDsArtHolder = updateOrder(cdrDsArtHolder);
 		CdrDrctSales cdrDrctSales = cdrDsArtHolder.getCdrDrctSales();
 
-		PaymentEvent paymentEvent = new PaymentEvent(CdrPymntMode.CASH, cdrDrctSales.getNetAmtToPay(), cdrDsArtHolder.getPaidAmt(), new Date(), cdrDrctSales.getDsNbr());
-		pymntValidator.check(paymentEvent);
-		directSaleEvent.fire(paymentEvent);	
-		
+		if(BigDecimal.ZERO.compareTo(cdrDrctSales.getNetAmtToPay())==1){
+			cdrCstmrVchrEJB.generateVoucher(cdrDsArtHolder);
+		}else{
+			
+			PaymentEvent paymentEvent = new PaymentEvent(CdrPymntMode.CASH, cdrDrctSales.getNetAmtToPay(), cdrDsArtHolder.getPaidAmt(), new Date(), cdrDrctSales.getDsNbr());
+			pymntValidator.check(paymentEvent);
+			directSaleEvent.fire(paymentEvent);	
+		}
+			
 		//Inject an EJB for printing ticket pdf 
-		ReceiptPrintTemplatePDF worker = salesPrinterEJB.printReceiptPdf(cdrDsArtHolder);
+		//ReceiptPrintTemplatePDF worker = salesPrinterEJB.printReceiptPdf(cdrDsArtHolder);
+		//cdrDsArtHolder.setPrintMode(worker.getReceiptPrintMode());
+		
 		createClosedSalesHistory(cdrDrctSales);
 		cdrDsArtHolder.setCdrDrctSales(cdrDrctSales);
-		cdrDsArtHolder.setPrintMode(worker.getReceiptPrintMode());
+		
 		return cdrDsArtHolder;
 	}
 
@@ -294,9 +302,13 @@ public class CdrDrctSalesManager {
 			cdrDsArtItemHolder.setArtName(item.getArtName());
 			cdrDsArtHolder.getItems().add(cdrDsArtItemHolder);
 		}
-		CdrDsPymntItem cdrDsPymntItem = cdrDsPymntItemEJB.findByDsNbr(cdrDrctSales.getDsNbr()).get(0);
-		cdrDsArtHolder.setPaidAmt(cdrDsPymntItem.getRcvdAmt());
-		cdrDsArtHolder.setChangeAmt(cdrDsPymntItem.getDiffAmt());		
+	
+		List<CdrDsPymntItem> findByDsNbr = cdrDsPymntItemEJB.findByDsNbr(cdrDrctSales.getDsNbr());
+		if(!findByDsNbr.isEmpty()){
+			CdrDsPymntItem cdrDsPymntItem = findByDsNbr.get(0);
+			cdrDsArtHolder.setPaidAmt(cdrDsPymntItem.getRcvdAmt());
+			cdrDsArtHolder.setChangeAmt(cdrDsPymntItem.getDiffAmt());	
+		}
 		return cdrDsArtHolder;
 	}
 	

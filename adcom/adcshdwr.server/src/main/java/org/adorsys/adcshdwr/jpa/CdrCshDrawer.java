@@ -81,7 +81,9 @@ public class CdrCshDrawer extends AbstractMvmtData {
 		if(this.ttlCash==null)this.ttlCash=BigDecimal.ZERO;
 		if(this.ttlCheck==null)this.ttlCheck=BigDecimal.ZERO;
 		if(this.ttlCredCard==null)this.ttlCredCard=BigDecimal.ZERO;
-		this.ttlCashIn = this.initialAmt.add(this.ttlCash).add(this.ttlCheck).add(this.ttlCredCard);		
+		if(this.ttlVchrIn==null)this.ttlVchrIn=BigDecimal.ZERO;
+		this.ttlCashIn = this.initialAmt.add(this.ttlCash).add(this.ttlCheck)
+				.add(this.ttlCredCard).add(ttlVchrIn);		
 	}
 
 	public void AddTtlCashOut(BigDecimal cashOut){

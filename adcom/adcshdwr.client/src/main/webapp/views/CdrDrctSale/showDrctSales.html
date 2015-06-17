@@ -3,75 +3,6 @@
         <strong>Warning!</strong> {{error}}
     </div>
     <div class="panel panel-default">
-        <div class="panel-heading">
-            <span><b>{{cdrDrctSalesUtils.translations['CdrDsArtItem_description.title']}} NO: {{cdrDsArtHolder.cdrDrctSales.dsNbr}} </b></span>
-        </div>
-        <div class=panel-body"">
-            <div>
-                <form name="cdrDsArtItemSearchForm" id="cdrDsArtItemSearchForm" novalidate>
-                    <div class="row">
-                        <div class="form-group col-lg-2">
-                            <label class=" control-label" for="searchArtPic">{{cdrDrctSalesUtils.translations['CdrDsArtItem_artPic_description.title']}}</label>
-                            <div ng-class="{ 'has-error' : cdrDsArtItemSearchForm.searchArtPic.$invalid }" >
-                                <input type="text" disabled required class="form-control" select-on-click focus  name="searchArtPic" id="searchArtPic"  autocomplete="off" ng-model="cdrDsArtItemHolder.item.artPic" typeahead="displayable as displayable.displayableStr for displayable in cdrDrctSalesUtils.loadArticleLotByPic($viewValue)" typeahead-loading="loading" typeahead-on-select='onArticleSelectedInSearch($item, $model, $label)'>
-                            </div>
-                         </div>
-                        <div class="form-group col-lg-3">
-                            <label class=" control-label" for="searchArtName">{{cdrDrctSalesUtils.translations['CdrDsArtItem_artName_description.title']}}</label>
-                            <div ng-class="{ 'has-error' : cdrDsArtItemSearchForm.searchArtName.$invalid }" >
-                                <input type="text" disabled required select-on-click focus class="form-control" id="searchArtName"   autocomplete="off" ng-model="cdrDsArtItemHolder.artName" typeahead="displayable as displayable.displayableStr for displayable in cdrDrctSalesUtils.loadArticlesByName($viewValue)" typeahead-loading="loading" typeahead-on-select='onArticleSelectedInSearch($item, $model, $label)' name="searchArtName">
-                            </div>
-                        </div>
-                        <div class="form-group col-lg-2">
-                            <label class=" control-label" for="soldQty">{{cdrDrctSalesUtils.translations['CdrDsArtItem_soldQty_description.title']}}</label>
-                            <div ng-class="{ 'has-error' : cdrDsArtItemSearchForm.soldQty.$invalid }" >
-                                <input type="text" class="form-control" name="soldQty" id="soldQty" disabled  autocomplete="off" ng-model="cdrDsArtItemHolder.item.soldQty">
-                            </div>
-                        </div>
-                        <div class="form-group col-lg-2">
-                            <label class=" control-label" for="soldQty">{{cdrDrctSalesUtils.translations['CdrDsArtItem_returnedQty_description.title']}}</label>
-                            <div ng-class="{ 'has-error' : cdrDsArtItemSearchForm.returnedQty.$invalid }" >
-                                <input type="text" class="form-control" name="returnedQty" id="returnedQty"  required autocomplete="off" ng-model="cdrDsArtItemHolder.item.returnedQty">
-                            </div>
-                        </div>
-                        <div class="form-group col-lg-2">
-                            <label class=" control-label" for="sppuPreTax">Prix Vente U</label>
-                            <input value="{{cdrDsArtItemHolder.item.sppuPreTax}}" disabled type="text" ng- class="form-control" name="sppuPreTax" id="sppuPreTax" autocomplete="off">
-                        </div>
-                        <div class="form-group col-lg-2">
-                            <label class=" control-label" for="sppuPreTax">Montant Brut Vente</label>
-                            <input value="{{cdrDsArtItemHolder.item.sppuPreTax * cdrDsArtItemHolder.item.soldQty}}" disabled type="text" ng-class="form-control" autocomplete="off">
-                        </div>
-                        <div class="form-group col-lg-2">
-                            <label class=" control-label" for="vatPct">{{cdrDrctSalesUtils.translations['CdrDsArtItem_vatPct_description.title']}}</label>
-                            <input type="text" class="form-control" disabled name="vatPct" id="vatPct" autocomplete="off" ng-model="cdrDsArtItemHolder.item.vatPct">
-                        </div>
-                        <div class="form-group col-lg-2">
-                            <label class=" control-label" for="rebate">{{cdrDrctSalesUtils.translations['CdrDsArtItem_rebate_description.title']}}</label>
-                            <input type="text" class="form-control" disabled name="rebate" id="rebate" autocomplete="off" ng-model="cdrDsArtItemHolder.item.rebate">
-                        </div>
-                        <div class="form-group col-lg-2">
-                            <label class=" control-label" for="rebate">{{cdrDrctSalesUtils.translations['CdrDsArtItem_restockgFees_description.title']}}</label>
-                            <input type="text" class="form-control" disabled name="restockgFees" id="restockgFees" autocomplete="off" ng-model="cdrDsArtItemHolder.item.restockgFees">
-                        </div>
-
-                        <div class="form-group col-lg-1">
-                            <button ng-click="addItem()" ng-disabled="cdrDsArtItemSearchForm.$invalid" class="btn btn-default " style="margin-top: 23px;">
-                                <i class="glyphicon glyphicon-check"></i>
-                            </button>
-                        </div>
-                        <div class="form-group col-lg-2" ng-show="validateReturnQty">
-	                        <div class="alert alert-info" role="alert">
-						        <strong>Warning!</strong> {{validateReturn}}
-						    </div>
-					    </div>
-
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <div class="panel panel-default">
         <div class="panel-body">
         <div class="row">
 
@@ -87,7 +18,7 @@
                     	<input type="text" disabled class="form-control" ng-model="cdrDsArtHolder.paidAmt" ng-change="paidAmtChanged()" />
                     </span>
                     <div class="col-lg-3 btn-group">
-                        <button ng-click="save()" ng-show="!showprint" class="btn btn-primary" ng-disabled="validateReturnQty"><i class="glyphicon glyphicon-save" ></i> {{'Entity_save.title' | translate}}</button>
+                        <a class="btn btn-primary" href="#/CdrDrctSales/new/{{cdrDsArtHolder.cdrDrctSales.dsNbr}}" ><i class="glyphicon glyphicon-" ></i>Retour Vente</a>
                         <!--<button ng-click=""  style="margin-top: 23px;" class="btn">{{commonTranslations.translations['Entity_save.title']}}</button>
                         <button ng-click="recompute()"  style="margin-top: 23px;" class="btn">{{cdrDrctSalesUtils.translations['Entity_recompute.title']}}</button>-->
                         <a class="btn-default btn" href="#/CdrDrctSales"><i class="glyphicon" ></i> Liste des ventes</a>
@@ -111,12 +42,10 @@
                     	<input type="text" class="form-control" ng-model="cdrDsArtHolder.changeAmt" disabled />
                     </span>
                     <span class="col-lg-2">
-                        <a class="btn-default btn btn-large" ng-show="showprint" ng-click="printRequestVoucher()"><i class="glyphicon glyphicon-print" ></i> Imprimer l'Avoir</a>
-                        <a class="btn-default btn btn-large" ng-show="!showprint" ng-click="printRequest()"><i class="glyphicon glyphicon-print" ></i> Imprimer Ticket</a>
+
+                        <a class="btn-default btn btn-large" ng-click="printRequest()"><i class="glyphicon glyphicon-print" ></i> Reimprimer Ticket</a>
                     </span>
-                    <span ng-show="showprint" class="label label-success">
-                        retour succes!
-                    </span>
+
                 </div>
                 <div class="row">
                     <span class="col-lg-3" style="font-size:17px;">{{cdrDrctSalesUtils.translations['CdrDrctSales_netSalesAmt_description.title']}}: </span>
@@ -146,8 +75,6 @@
                         <th class="col-lg-1">{{cdrDrctSalesUtils.translations['CdrDsArtItem_restockgFees_description.title']}}</th>
                         <th class="col-lg-1">{{cdrDrctSalesUtils.translations['CdrDsArtItem_vatAmount_description.title']}}</th>
                         <th class="col-lg-1">{{cdrDrctSalesUtils.translations['CdrDsArtItem_netSPTaxIncl_description.title']}}</th>
-                        <th>
-                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -164,7 +91,6 @@
                         <td>{{cdrDsArtItem.item.restockgFees}}</td>
                         <td>{{cdrDsArtItem.item.vatAmount}}</td>
                         <td>{{cdrDsArtItem.item.netSPTaxIncl}}</td>
-                        <td><button class="" ng-show="!showprint" ng-click="editItem($index)"><i class="glyphicon glyphicon-edit"></i></button></td>
                     </tr>
                 </tbody>
             </table>
