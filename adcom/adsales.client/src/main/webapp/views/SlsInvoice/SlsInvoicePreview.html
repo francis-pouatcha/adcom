@@ -91,6 +91,16 @@
                                           
                                        </td>
                                     </tr>
+                                     <tr>
+                                       <td colspan="2">
+                                          <h5>
+                                              {{slsInvoicesUtils.translations['SlsInvoice_holdingPct_description.title']}} :
+                                              <span ng-if="slsInvoice.holdingPct == null" class="pull-right">0</span>              
+                                              <span class="pull-right" style="font-weight: normal;">{{slsInvoice.holdingPct}}</span>
+                                          </h5>
+                                          
+                                       </td>
+                                    </tr>
                                     <tr>
                                        <td colspan="2">
                                           <h5>

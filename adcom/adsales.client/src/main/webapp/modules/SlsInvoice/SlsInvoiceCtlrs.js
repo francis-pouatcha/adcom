@@ -81,6 +81,10 @@ angular.module('AdSales')
                     'SlsInvoice_invceDtFrom_description.title',
                     'SlsInvoice_invceDtTo_description.text',
                     'SlsInvoice_invceDtTo_description.title',
+                    'SlsInvoice_holdingAmount_description.text',
+                    'SlsInvoice_holdingAmount_description.title',
+                    'SlsInvoice_holdingPct_description.text',
+                    'SlsInvoice_holdingPct_description.title',
                     
                     'SlsInvceItem_artPic_description.text',
                     'SlsInvceItem_artPic_description.title',

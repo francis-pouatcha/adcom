@@ -154,6 +154,7 @@
 {{slsInvoicesUtils.translations['SlsInvoice_invceDt_description.title']}}</th>
                                 <th class="text-center">{{slsInvoicesUtils.translations['SlsInvoice_netSPPreTax_description.title']}}</th>
                                 <th class="text-center">{{slsInvoicesUtils.translations['SlsInvoice_netSPTaxIncl_description.title']}}</th>
+                                <th class="text-center">{{slsInvoicesUtils.translations['SlsInvoice_holdingAmount_description.title']}}</th>
                                 <th class="text-center">{{slsInvoicesUtils.translations['SlsInvoice_netAmtToPay_description.title']}}</th>
                                 <th class="text-center">{{slsInvoicesUtils.translations['SlsInvoice_invcePaid_description.title']}}</th>
                                 <th class="text-center">{{slsInvoicesUtils.translations['SlsInvoice_invceDelivered_description.title']}}</th>
@@ -169,6 +170,7 @@
                                 <td>{{slsInvoicesUtils.formatDate(slsInvce.invceDt, null)}}</td>
                                 <td>{{slsInvce.netSPPreTax}}</td>
                                 <td>{{slsInvce.netSPTaxIncl}}</td>
+                                <td>{{slsInvce.holdingAmount}}</td>
                                 <td>{{slsInvce.netAmtToPay}}</td>
                                 <td>
                                     <label ng-show="slsInvce.invcePymntStatus=='PAYE'" class="label label-success">PAYE</label>

@@ -124,6 +124,11 @@
 "SlsInvoice_invceDtFrom_description.title":"Date from",
 "SlsInvoice_invceDtTo_description.text":"Invoice date greater than",
 "SlsInvoice_invceDtTo_description.title":"To",
+"SlsInvoice_holdingAmount_description.text":"Holding Amount of Invoice",
+"SlsInvoice_holdingAmount_description.title":"Holding Amount",
+"SlsInvoice_holdingPct_description.text":"Holding in Percent",
+"SlsInvoice_holdingPct_description.title":"Holding (%)",
+    
 
 "SlsInvceStatus_description.text":"Status of the invoice",
 "SlsInvceStatus_description.title":"Invoice Status",

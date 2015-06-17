@@ -108,6 +108,14 @@ public class SlsInvoice extends AbstractIdentifData {
 	@Column
 	private String creatingUsr;
 	
+	@Column
+	@Description("SlsInvoice_holdingAmount_description")
+	private BigDecimal holdingAmount;
+	
+	@Column
+	@Description("SlsInvoice_holdingPct_description")
+	private BigDecimal holdingPct;
+	
 	@Transient
 	private List<SlsInvceItem> slsInvceItems = new ArrayList<SlsInvceItem>();
 	
@@ -182,6 +190,8 @@ public class SlsInvoice extends AbstractIdentifData {
 		target.invceNbr = invceNbr;
 		target.invceStatus = invceStatus;
 		target.vatAmount = vatAmount;
+		target.holdingAmount = holdingAmount;
+		target.holdingPct = holdingPct;
 	}
 	
 	public List<SlsInvceItem> getSlsInvceItems() {
@@ -362,7 +372,22 @@ public class SlsInvoice extends AbstractIdentifData {
 		this.ptnrNbr = ptnrNbr;
 	}
 	
-	
+
+	public BigDecimal getHoldingAmount() {
+		return holdingAmount;
+	}
+
+	public void setHoldingAmount(BigDecimal holdingAmount) {
+		this.holdingAmount = holdingAmount;
+	}
+
+	public BigDecimal getHoldingPct() {
+		return holdingPct;
+	}
+
+	public void setHoldingPct(BigDecimal holdingPct) {
+		this.holdingPct = holdingPct;
+	}
 
 	@Override
 	protected String makeIdentif() {

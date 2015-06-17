@@ -102,14 +102,30 @@
                                         Suspendre
                                     </a>
                                 </div>
-                                <div class="text-center">
-                                    <a class="btn btn-info  btn-lg btn-block" ng-show="slsInvoice.invceStatus=='CLOSED'" ng-click="delivered();" ng-disabled="slsInvoice.invceDelivered">
-                                        {{slsInvoicesUtils.translations['SlsInvoice_delivered_description.text']}}
-                                    </a>
-                                </div>
+<!--                                 <div class="text-center"> -->
+<!--                                     <a class="btn btn-info  btn-lg btn-block" ng-show="slsInvoice.invceStatus=='CLOSED'" ng-click="delivered();" ng-disabled="slsInvoice.invceDelivered"> -->
+<!--                                         {{slsInvoicesUtils.translations['SlsInvoice_delivered_description.text']}} -->
+<!--                                     </a> -->
+<!--                                 </div> -->
                             </div>
 
                         </div>
+                        
+                         <div class=" form-group ">
+                             <label class="col-lg-2">{{slsInvoicesUtils.translations['SlsInvoice_holdingPct_description.title']}} :</label>
+                            <div class="col-lg-2" >
+                                <input type="text" value="{{slsInvoice.holdingPct}}" name="holdingPct" class="form-control" disabled>
+                            </div>
+                              <label class="col-lg-2">{{slsInvoicesUtils.translations['SlsInvoice_holdingAmount_description.title']}} :</label>
+                            <div class="col-lg-2" >
+                                <input type="text" value="{{slsInvoice.holdingAmount}}" name="holdingAmount" class="form-control" disabled>
+                            </div>
+                            <div class="col-lg-4 text-center">
+                                    <a class="btn btn-info  btn-lg btn-block" ng-show="slsInvoice.invceStatus=='CLOSED'" ng-click="delivered();" ng-disabled="slsInvoice.invceDelivered">
+                                        {{slsInvoicesUtils.translations['SlsInvoice_delivered_description.text']}}
+                                    </a>
+                            </div>
+                         </div>
 
                 </form>
                 <br><br>
