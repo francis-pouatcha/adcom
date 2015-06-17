@@ -414,7 +414,7 @@ function($scope,genericResource,stkArticleLotUtils,stkArticleLotState,$location,
     $scope.stkArticleLotUtils=stkArticleLotUtils;
     $scope.stkSubSectionActive=stkArticleLotState.stkSubSectionActive();
     $scope.stkArticleLotArticleLotActive=stkArticleLotState.stkArticleLotArticleLotActive();
-    $scope.unitPrice = $scope.stkArticleLot.sppuHT;
+    $scope.entityToEdit = { unitPrice : $scope.stkArticleLot.sppuHT, expirDt : $scope.stkArticleLot.expirDt};
     
     $scope.previous = function (){
         var ent = stkArticleLotState.previous();
@@ -435,26 +435,26 @@ function($scope,genericResource,stkArticleLotUtils,stkArticleLotState,$location,
     	stkArticleLotState.tabSelected(tabName);
     };
 
-    $scope.EditUnitPrice = function () {
+    $scope.edit = function () {
           var modalInstance = $modal.open({
              templateUrl: 'views/StkArticleLot/UpdateModal.html',
-             controller: EditUnitPriceController,
+             controller: EditController,
              windowClass: 'unit-price-modal',
              scope: $scope,
              resolve: {
-                 unitPrice: function () {
-                     return $scope.unitPrice;
+            	 entityToEdit: function () {
+                     return $scope.entityToEdit;
                  }
              }
          });
      };
 
-     function EditUnitPriceController($scope, $modalInstance, unitPrice) {
-    	 $scope.unitPrice = unitPrice;
-    	 
+     function EditController($scope, $modalInstance, entityToEdit) {
+    	 $scope.entityToEdit = entityToEdit;
     	 
          $scope.updateStkArtLot = function () {
-        	 $scope.stkArticleLot.sppuHT = $scope.unitPrice;
+        	 $scope.stkArticleLot.sppuHT = $scope.entityToEdit.unitPrice;
+        	 $scope.stkArticleLot.expirDt = $scope.entityToEdit.expirDt;
              genericResource.update(stkArticleLotUtils.urlBase, $scope.stkArticleLot)
                  .success(function (stkArticleLot) {
                 	 $scope.stkArticleLot = stkArticleLot;

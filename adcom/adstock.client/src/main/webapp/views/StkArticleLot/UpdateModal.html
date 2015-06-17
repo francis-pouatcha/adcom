@@ -1,10 +1,11 @@
 <div class="modal-header">
-    <h3 class="modal-title">Edit Unit Price</h3>
+    <h3 class="modal-title">Edit Article Lot</h3>
 </div>
 
 <div class="modal-body">
 
-    <input type="text" ng-model="unitPrice" name="unitPrice" class="form-control" numeric />
+    <input type="text" ng-model="entityToEdit.unitPrice" name="unitPrice" class="form-control" numeric />
+    <input type="datetime" date-time ng-model="entityToEdit.expirDt" name="expirDt" class="form-control" />
 
 </div>
 
