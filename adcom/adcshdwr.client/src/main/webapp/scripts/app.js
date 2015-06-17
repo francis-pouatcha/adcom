@@ -26,14 +26,15 @@ angular.module('AdCshdwr', [
     .when('/CdrPymnts',{templateUrl:'views/CdrPymnt/CdrPymnts.html',controller:'cdrPaymntsCtlr'})
     .when('/CdrPymnts/new',{templateUrl:'views/CdrPymnt/createCdrPymnt.html',controller:'cdrPaymntCreateCtlr'})
     .when('/CdrPymnts/edit/:identif',{templateUrl:'views/CdrPymnt/editCdrPymnt.html',controller:'cdrPaymntEditCtlr'})
-     .when('/SlsInvoices',{templateUrl:'views/SlsInvoice/SlsInvoices.html',controller:'cdrSlsInvoicesCtlr'})
-     .when('/SlsInvoices/show',{templateUrl:'views/SlsInvoice/SlsInvoiceShow.html',controller:'cdrSlsInvoicesShowCtlr'})
+    .when('/SlsInvoices',{templateUrl:'views/SlsInvoice/SlsInvoices.html',controller:'cdrSlsInvoicesCtlr'})
+    .when('/SlsInvoices/show',{templateUrl:'views/SlsInvoice/SlsInvoiceShow.html',controller:'cdrSlsInvoicesShowCtlr'})
     .when('/CdrCshDrawers',{templateUrl:'views/CdrCshDrawer/CdrCshDrawers.html',controller:'cdrCshDrawersCtlr'})
     .when('/CdrCshDrawers/new',{templateUrl:'views/CdrCshDrawer/createCdrCshDrawer.html',controller:'cdrCshDrawersCreateCtlr'})
-    .when('/CdrCshDrawers/show/:id',{templateUrl:'views/CdrCshDrawer/showCdrCshDrawer.html',controller:'cdrCshDrawersEditCtlr'})                       .when('/CdrDrctSales',{templateUrl:'views/CdrDrctSale/CdrDrctSales.html',controller:'cdrDrctSalesCtlr'})
+    .when('/CdrCshDrawers/show/:id',{templateUrl:'views/CdrCshDrawer/showCdrCshDrawer.html',controller:'cdrCshDrawersEditCtlr'})
+    .when('/CdrDrctSales',{templateUrl:'views/CdrDrctSale/CdrDrctSales.html',controller:'cdrDrctSalesCtlr'})
     .when('/CdrDrctSales/new',{templateUrl:'views/CdrDrctSale/createDrctSales.html',controller:'cdrDrctSalesCreateCtlr'})
     .when('/CdrDrctSales/show/:id',{templateUrl:'views/CdrDrctSale/showDrctSales.html',controller:'cdrDrctSalesShowCtlr'})
-    .otherwise({redirectTo: '/CdrCshDrawers'});
+    .otherwise({redirectTo: '/CdrDrctSales'});
     
     $httpProvider.defaults.withCredentials = true;
     $httpProvider.interceptors.push('authInterceptor');
