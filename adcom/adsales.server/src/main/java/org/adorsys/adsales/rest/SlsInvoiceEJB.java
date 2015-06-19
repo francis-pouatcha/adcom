@@ -94,7 +94,7 @@ public class SlsInvoiceEJB
    public List<SlsInvoice> findByLikePay(SlsInvoice entity, int start, int max, SingularAttribute<SlsInvoice, ?>[] attributes)
    {
 		List<SlsInvoice> slsInvoices = new ArrayList<SlsInvoice>();
-		
+		//please change this method, just add a repository function, find closed and order by creation date
 		for (SlsInvoice slsInvoice : repository.findByLike(entity, start, max, attributes)) {
 			String statusOfInvoice = slsInvoice.getInvceStatus();
 			
