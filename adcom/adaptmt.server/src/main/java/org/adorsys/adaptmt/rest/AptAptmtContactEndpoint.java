@@ -21,10 +21,10 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.adorsys.adaptmt.jpa.AptAptmtLogin;
-import org.adorsys.adaptmt.jpa.AptAptmtLoginSearchInput;
-import org.adorsys.adaptmt.jpa.AptAptmtLoginSearchResult;
-import org.adorsys.adaptmt.jpa.AptAptmtLogin_;
+import org.adorsys.adaptmt.jpa.AptAptmtContact;
+import org.adorsys.adaptmt.jpa.AptAptmtContactSearchInput;
+import org.adorsys.adaptmt.jpa.AptAptmtContactSearchResult;
+import org.adorsys.adaptmt.jpa.AptAptmtContact_;
 
 
 
@@ -33,23 +33,23 @@ import org.adorsys.adaptmt.jpa.AptAptmtLogin_;
  */
 @Stateless
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-@Path("/aptaptmtLogins")
-public class AptAptmtLoginEndpoint
+@Path("/aptaptmtContacts")
+public class AptAptmtContactEndpoint
 {
 	@Inject
-	private AptAptmtLoginEJB ejb;
+	private AptAptmtContactEJB ejb;
 
 	@POST
 	@Consumes({ "application/json", "application/xml" })
 	@Produces({ "application/json", "application/xml" })
-	public AptAptmtLogin create(AptAptmtLogin entity) {
+	public AptAptmtContact create(AptAptmtContact entity) {
 		return detach(ejb.create(entity));
 	}
 
 	@DELETE
 	@Path("/{id}")
 	public Response deleteById(@PathParam("id") String id) {
-		AptAptmtLogin deleted = ejb.deleteById(id);
+		AptAptmtContact deleted = ejb.deleteById(id);
 		if (deleted == null)
 			return Response.status(Status.NOT_FOUND).build();
 
@@ -60,7 +60,7 @@ public class AptAptmtLoginEndpoint
 	@Path("/{id}")
 	@Produces({ "application/json", "application/xml" })
 	@Consumes({ "application/json", "application/xml" })
-	public AptAptmtLogin update(AptAptmtLogin entity) {
+	public AptAptmtContact update(AptAptmtContact entity) {
 		return detach(ejb.update(entity));
 	}
 
@@ -68,7 +68,7 @@ public class AptAptmtLoginEndpoint
 	@Path("/{id}")
 	@Produces({ "application/json", "application/xml" })
 	public Response findById(@PathParam("id") String id) {
-		AptAptmtLogin found = ejb.findById(id);
+		AptAptmtContact found = ejb.findById(id);
 		if (found == null)
 			return Response.status(Status.NOT_FOUND).build();
 		return Response.ok(detach(found)).build();
@@ -76,13 +76,13 @@ public class AptAptmtLoginEndpoint
 
 	@GET
 	@Produces({ "application/json", "application/xml" })
-	public AptAptmtLoginSearchResult listAll(@QueryParam("start") int start,
+	public AptAptmtContactSearchResult listAll(@QueryParam("start") int start,
 			@QueryParam("max") int max) {
-		List<AptAptmtLogin> resultList = ejb.listAll(start, max);
-		AptAptmtLoginSearchInput searchInput = new AptAptmtLoginSearchInput();
+		List<AptAptmtContact> resultList = ejb.listAll(start, max);
+		AptAptmtContactSearchInput searchInput = new AptAptmtContactSearchInput();
 		searchInput.setStart(start);
 		searchInput.setMax(max);
-		return new AptAptmtLoginSearchResult((long) resultList.size(),
+		return new AptAptmtContactSearchResult((long) resultList.size(),
 				detach(resultList), detach(searchInput));
 	}
 
@@ -96,20 +96,20 @@ public class AptAptmtLoginEndpoint
 	@Path("/findBy")
 	@Produces({ "application/json", "application/xml" })
 	@Consumes({ "application/json", "application/xml" })
-	public AptAptmtLoginSearchResult findBy(AptAptmtLoginSearchInput searchInput) {
-		SingularAttribute<AptAptmtLogin, ?>[] attributes = readSeachAttributes(searchInput);
+	public AptAptmtContactSearchResult findBy(AptAptmtContactSearchInput searchInput) {
+		SingularAttribute<AptAptmtContact, ?>[] attributes = readSeachAttributes(searchInput);
 		Long count = ejb.countBy(searchInput.getEntity(), attributes);
-		List<AptAptmtLogin> resultList = ejb.findBy(searchInput.getEntity(),
+		List<AptAptmtContact> resultList = ejb.findBy(searchInput.getEntity(),
 				searchInput.getStart(), searchInput.getMax(), attributes);
-		return new AptAptmtLoginSearchResult(count, detach(resultList),
+		return new AptAptmtContactSearchResult(count, detach(resultList),
 				detach(searchInput));
 	}
 
 	@POST
 	@Path("/countBy")
 	@Consumes({ "application/json", "application/xml" })
-	public Long countBy(AptAptmtLoginSearchInput searchInput) {
-		SingularAttribute<AptAptmtLogin, ?>[] attributes = readSeachAttributes(searchInput);
+	public Long countBy(AptAptmtContactSearchInput searchInput) {
+		SingularAttribute<AptAptmtContact, ?>[] attributes = readSeachAttributes(searchInput);
 		return ejb.countBy(searchInput.getEntity(), attributes);
 	}
 
@@ -117,34 +117,34 @@ public class AptAptmtLoginEndpoint
 	@Path("/findByLike")
 	@Produces({ "application/json", "application/xml" })
 	@Consumes({ "application/json", "application/xml" })
-	public AptAptmtLoginSearchResult findByLike(AptAptmtLoginSearchInput searchInput) {
-		SingularAttribute<AptAptmtLogin, ?>[] attributes = readSeachAttributes(searchInput);
+	public AptAptmtContactSearchResult findByLike(AptAptmtContactSearchInput searchInput) {
+		SingularAttribute<AptAptmtContact, ?>[] attributes = readSeachAttributes(searchInput);
 		Long countLike = ejb.countByLike(searchInput.getEntity(), attributes);
-		List<AptAptmtLogin> resultList = ejb.findByLike(searchInput.getEntity(),
+		List<AptAptmtContact> resultList = ejb.findByLike(searchInput.getEntity(),
 				searchInput.getStart(), searchInput.getMax(), attributes);
-		return new AptAptmtLoginSearchResult(countLike, detach(resultList),
+		return new AptAptmtContactSearchResult(countLike, detach(resultList),
 				detach(searchInput));
 	}
 
 	@POST
 	@Path("/countByLike")
 	@Consumes({ "application/json", "application/xml" })
-	public Long countByLike(AptAptmtLoginSearchInput searchInput) {
-		SingularAttribute<AptAptmtLogin, ?>[] attributes = readSeachAttributes(searchInput);
+	public Long countByLike(AptAptmtContactSearchInput searchInput) {
+		SingularAttribute<AptAptmtContact, ?>[] attributes = readSeachAttributes(searchInput);
 		return ejb.countByLike(searchInput.getEntity(), attributes);
 	}
 
 	@SuppressWarnings("unchecked")
-	private SingularAttribute<AptAptmtLogin, ?>[] readSeachAttributes(
-			AptAptmtLoginSearchInput searchInput) {
+	private SingularAttribute<AptAptmtContact, ?>[] readSeachAttributes(
+			AptAptmtContactSearchInput searchInput) {
 		List<String> fieldNames = searchInput.getFieldNames();
-		List<SingularAttribute<AptAptmtLogin, ?>> result = new ArrayList<SingularAttribute<AptAptmtLogin, ?>>();
+		List<SingularAttribute<AptAptmtContact, ?>> result = new ArrayList<SingularAttribute<AptAptmtContact, ?>>();
 		for (String fieldName : fieldNames) {
-			Field[] fields = AptAptmtLogin_.class.getFields();
+			Field[] fields = AptAptmtContact_.class.getFields();
 			for (Field field : fields) {
 				if (field.getName().equals(fieldName)) {
 					try {
-						result.add((SingularAttribute<AptAptmtLogin, ?>) field
+						result.add((SingularAttribute<AptAptmtContact, ?>) field
 								.get(null));
 					} catch (IllegalArgumentException e) {
 						throw new IllegalStateException(e);
@@ -157,24 +157,24 @@ public class AptAptmtLoginEndpoint
 		return result.toArray(new SingularAttribute[result.size()]);
 	}
 
-	private AptAptmtLogin detach(AptAptmtLogin entity) {
+	private AptAptmtContact detach(AptAptmtContact entity) {
 		if (entity == null)
 			return null;
 
 		return entity;
 	}
 
-	private List<AptAptmtLogin> detach(List<AptAptmtLogin> list) {
+	private List<AptAptmtContact> detach(List<AptAptmtContact> list) {
 		if (list == null)
 			return list;
-		List<AptAptmtLogin> result = new ArrayList<AptAptmtLogin>();
-		for (AptAptmtLogin entity : list) {
+		List<AptAptmtContact> result = new ArrayList<AptAptmtContact>();
+		for (AptAptmtContact entity : list) {
 			result.add(detach(entity));
 		}
 		return result;
 	}
 
-	private AptAptmtLoginSearchInput detach(AptAptmtLoginSearchInput searchInput) {
+	private AptAptmtContactSearchInput detach(AptAptmtContactSearchInput searchInput) {
 		searchInput.setEntity(detach(searchInput.getEntity()));
 		return searchInput;
 	}

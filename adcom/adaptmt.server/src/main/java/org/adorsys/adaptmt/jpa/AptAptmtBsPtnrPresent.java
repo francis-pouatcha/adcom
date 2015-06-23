@@ -7,14 +7,13 @@ import javax.validation.constraints.NotNull;
 import org.adorsys.adcore.jpa.AbstractTimedData;
 
 @Entity
-public class AptAptmtBsPtnr extends AbstractTimedData {
-	
+public class AptAptmtBsPtnrPresent extends AbstractTimedData {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	
 	@Column
 	@NotNull
 	private String aptmtIdentify;
@@ -24,25 +23,24 @@ public class AptAptmtBsPtnr extends AbstractTimedData {
 	private String contactnNbr;
 
 	public String getAptmtIdentify() {
-		return this.aptmtIdentify;
+		return aptmtIdentify;
 	}
 
-	public void setAptmtIdentify(final String aptmtIdentify) {
+	public void setAptmtIdentify(String aptmtIdentify) {
 		this.aptmtIdentify = aptmtIdentify;
 	}
-	
 
-	public String getcontactnNbr() {
+	public String getContactnNbr() {
 		return contactnNbr;
 	}
 
-	public void setcontactnNbr(String contactnNbr) {
+	public void setContactnNbr(String contactnNbr) {
 		this.contactnNbr = contactnNbr;
 	}
 
 	@Override
 	public String toString() {
-		return "AptAptmtBsPtnr [aptmtIdentify=" + aptmtIdentify
+		return "AptAptmtBsPtnrPresent [aptmtIdentify=" + aptmtIdentify
 				+ ", contactnNbr=" + contactnNbr + "]";
 	}
 
@@ -50,4 +48,7 @@ public class AptAptmtBsPtnr extends AbstractTimedData {
 	protected String makeIdentif() {
 		return aptmtIdentify + "_" + contactnNbr;
 	}
+	
+	
+
 }

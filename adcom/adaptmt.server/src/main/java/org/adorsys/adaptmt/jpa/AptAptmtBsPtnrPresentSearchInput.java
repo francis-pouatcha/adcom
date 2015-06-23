@@ -9,17 +9,17 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Holds an entity and corresponding field descriptions 
  * for a search by example call.
  * 
- * @author francis pouatcha
+ * @author simo tresor 
  *
  */
 @XmlRootElement
-public class AptAptmtLoginSearchInput
+public class AptAptmtBsPtnrPresentSearchInput
 {
 
    /**
     * The entity holding search inputs.
     */
-   private AptAptmtLogin entity;
+   private AptAptmtBsPtnrPresent entity;
 
    /**
     * The start cursor
@@ -36,12 +36,12 @@ public class AptAptmtLoginSearchInput
     */
    private List<String> fieldNames = new ArrayList<String>();
 
-   public AptAptmtLogin getEntity()
+   public AptAptmtBsPtnrPresent getEntity()
    {
       return entity;
    }
 
-   public void setEntity(AptAptmtLogin entity)
+   public void setEntity(AptAptmtBsPtnrPresent entity)
    {
       this.entity = entity;
    }

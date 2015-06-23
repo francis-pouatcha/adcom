@@ -3,10 +3,10 @@
 angular.module('adaptmt')
 
 
-.factory('aptAptmtBsPtnrService',['sessionManager','$translate','genericResource','$q', '$http',function(sessionManager,$translate,genericResource,$q,$http){
+.factory('aptAptmtBsPtnrPresentService',['sessionManager','$translate','genericResource','$q', '$http',function(sessionManager,$translate,genericResource,$q,$http){
     var service = {};
 
-    service.urlBase='/adaptmt.server/rest/aptaptmtbsptnrs';
+    service.urlBase='/adaptmt.server/rest/aptaptmtbsptnrpresents';
     service.bnsptnrUrlBase = '/adbnsptnr.server/rest/bpbnsptnrs';
     
     service.create = function(entity){
@@ -14,7 +14,7 @@ angular.module('adaptmt')
         genericResource.create(service.urlBase, entity).success(function(data){
             deferred.resolve(data);
         }).error(function(error){
-            deferred.reject("Can not create, be sure that the aptaptmtbsptnrs property( id of appointment and of bsnptnr) name is not null!")
+            deferred.reject("Can not create, be sure that the aptAptmtBsPtnrPresents property( id of appointment and of bsnptnr) name is not null!")
         });
         return deferred.promise;
     };
@@ -24,12 +24,12 @@ angular.module('adaptmt')
         genericResource.deleteById(service.urlBase, id).success(function(data){
             deferred.resolve(data);
         }).error(function(error){
-            deferred.reject("Can not create, be sure that the aptaptmtbsptnrs property( id of appointment and of bsnptnr) name is not null!")
+            deferred.reject("Can not create, be sure that the aptAptmtBsPtnrPresents property( id of appointment and of bsnptnr) name is not null!")
         });
         return deferred.promise;
     };
 
-    service.updateAptAptmtBsptnrs = function(entity){
+    service.updateaptAptmtBsPtnrPresents = function(entity){
         var deferred = $q.defer();
         genericResource.update(service.urlBase, entity).success(function(data){
             deferred.resolve(data);
@@ -39,7 +39,7 @@ angular.module('adaptmt')
         return deferred.promise;
     };
     
-    service.loadAptAptmtBsptnr = function(aptmtIdentify){
+    service.loadAptAptmtBsPtnrPresent = function(aptmtIdentify){
     	
     	var searchInput = {
 				entity : {
@@ -89,30 +89,30 @@ angular.module('adaptmt')
        return deferred.promise;
     };
     
-    service.findAptAptmtBsptnrs = function(searchInput){
+    service.findAptAptmtBsPtnrPresents = function(searchInput){
         var deferred = $q.defer();
         genericResource.findByLike(service.urlBase, searchInput)
             .success(function(data, status, headers, config){
                 deferred.resolve(data);
             }).error(function(data, status, headers, config){
-                deferred.reject("An error occured while fetching aptaptmtbsptnrs");
+                deferred.reject("An error occured while fetching aptAptmtBsPtnrPresents");
             });
         return deferred.promise;
     };
     
-    service.nextAptAptmtBsptnrs = function(id){
+    service.nextAptAptmtBsPtnrPresents = function(id){
         var deferred = $q.defer();
         
         $http.get(service.urlBase+'/nextLogin/'+id)
         .success(function(data){
             deferred.resolve(data);
         }).error(function(data){
-            deferred.reject("no more aptaptmtbsptnrs !")
+            deferred.reject("no more aptAptmtBsPtnrPresents !")
         });
         return deferred.promise;
     }
 
-    service.previousAptAptmtBsptnrs = function(id){
+    service.previousAptAptmtBsPtnrPresents = function(id){
         var deferred = $q.defer();
         
         $http.get(service.urlBase+'/previousLogin/'+id)

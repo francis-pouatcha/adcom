@@ -22,11 +22,21 @@ public class AptAptmt extends AbstractTimedData {
 	@Description("AptAptmt_createDate_description")
 	@DateFormatPattern(pattern = "dd-MM-yyyy HH:mm")
 	private Date createDate;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Description("AptAptmt_createDate_description")
+	@DateFormatPattern(pattern = "dd-MM-yyyy HH:mm")
+	private Date closeDate;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Description("AptAptmt_appointmentDate_description")
 	@DateFormatPattern(pattern = "dd-MM-yyyy HH:mm")
 	private Date appointmentDate;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Description("AptAptmt_appointmentDateEnd_description")
+	@DateFormatPattern(pattern = "dd-MM-yyyy HH:mm")
+	private Date appointmentDateEnd;
 
 	@Column
 	@Description("AptAptmt_aptmtnNbr_description")
@@ -60,6 +70,16 @@ public class AptAptmt extends AbstractTimedData {
 	@Column
 	@Description("AptAptmt_parentIdentify_description")
 	private String parentIdentify;
+	
+	
+
+	public Date getCloseDate() {
+		return closeDate;
+	}
+
+	public void setCloseDate(Date closeDate) {
+		this.closeDate = closeDate;
+	}
 
 	public Date getCreateDate() {
 		return this.createDate;
@@ -109,6 +129,15 @@ public class AptAptmt extends AbstractTimedData {
 		this.appointmentDate = appointmentDate;
 	}
 
+	
+	public Date getAppointmentDateEnd() {
+		return appointmentDateEnd;
+	}
+
+	public void setAppointmentDateEnd(Date appointmentDateEnd) {
+		this.appointmentDateEnd = appointmentDateEnd;
+	}
+
 	public String getTitle() {
 		return this.title;
 	}
@@ -141,24 +170,18 @@ public class AptAptmt extends AbstractTimedData {
 		this.parentIdentify = parentIdentify;
 	}
 
+	
+
 	@Override
 	public String toString() {
-		String result = getClass().getSimpleName() + " ";
-		if (aptmtnNbr != null && !aptmtnNbr.trim().isEmpty())
-			result += "aptmtnNbr: " + aptmtnNbr;
-		if (createdUserId != null && !createdUserId.trim().isEmpty())
-			result += ", createdUserId: " + createdUserId;
-		if (closedUserId != null && !closedUserId.trim().isEmpty())
-			result += ", closedUserId: " + closedUserId;
-		if (title != null && !title.trim().isEmpty())
-			result += ", title: " + title;
-		if (description != null && !description.trim().isEmpty())
-			result += ", description: " + description;
-		if (locality != null && !locality.trim().isEmpty())
-			result += ", locality: " + locality;
-		if (parentIdentify != null && !parentIdentify.trim().isEmpty())
-			result += ", parentIdentify: " + parentIdentify;
-		return result;
+		return "AptAptmt [createDate=" + createDate + ", closeDate="
+				+ closeDate + ", appointmentDate=" + appointmentDate
+				+ ", appointmentDateEnd=" + appointmentDateEnd + ", aptmtnNbr="
+				+ aptmtnNbr + ", createdUserId=" + createdUserId
+				+ ", closedUserId=" + closedUserId + ", status=" + status
+				+ ", title=" + title + ", description=" + description
+				+ ", locality=" + locality + ", parentIdentify="
+				+ parentIdentify + "]";
 	}
 
 	@Override

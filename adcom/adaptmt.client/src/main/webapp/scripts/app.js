@@ -42,10 +42,11 @@ angular
 											'/aptaptmt/create',
 											{
 												templateUrl : 'views/aptaptmt/create.html',
-												controller : 'aptAptmtCreateCtlr',
-												controllerAs : 'aptAptmtCreateCtlr',
+												controller : 'aptAptmtCreateCtrl',
+												controllerAs : 'aptAptmtCreateCtrl',
 												module : 'adaptmt'
 											})
+									
 									.when(
 											'/aptaptmt/show/:id',
 											{
@@ -135,60 +136,21 @@ angular
 												module : 'adaptmt'
 											})
 									.when(
-											'/aptaptmt/close/:id',
+											'/aptaptmt/notification/',
 											{
-												templateUrl : 'views/aptaptmt/close.html',
-												controller : 'aptAptmtCloseController',
-												controllerAs : 'aptAptmtCloseCtrl',
+												templateUrl : 'views/aptaptmtNotification/homeNotification.html',
+												controller : 'aptAptmtNotificationController',
+												controllerAs : 'aptAptmtNotificationCtrl',
 												module : 'adaptmt'
 											})
-									.when(
-											'/aptaptmtLogin/create',
-											{
-												templateUrl : 'views/aptaptmtLogin/create.html',
-												controller : 'aptAptmtLoginCreateController',
-												controllerAs : 'aptAptmtLoginCreateCtrl'
-											})
-									.when(
-											'/aptaptmtLogin/show/:id',
-											{
-												templateUrl : 'views/aptaptmtLogin/show.html',
-												controller : 'aptAptmtLoginShowController',
-												controllerAs : 'aptAptmtLoginShowCtrl'
-											})
+									
 
-									.when(
-											'/aptaptmtLogin/edit',
-											{
-												templateUrl : 'views/aptaptmtLogin/edit.html',
-												controller : 'aptAptmtRepportLoginController',
-												controllerAs : 'aptAptmtRepportLoginCtrl'
-											})
+									
 
-									.when(
-											'/aptaptmtLogin',
-											{
-												templateUrl : 'views/aptaptmtLogin/aptaptmtLogins.html',
-												controller : 'aptAptmtLoginsController',
-												controllerAs : 'aptAptmtLoginsCtrl'
-											})
+									
 
-									.when(
-											'/aptaptmtLogin/update/:id',
-											{
-												templateUrl : 'views/aptaptmtLogin/update.html',
-												controller : 'aptAptmtLoginUpdateController',
-												controllerAs : 'aptAptmtLoginUpdateCtlr',
-												module : 'adaptmt'
-											})
-									.when(
-											'/aptaptmtLogin/add/:id',
-											{
-												templateUrl : 'views/aptaptmtLogin/add.html',
-												controller : 'aptAptmtLoginAddController',
-												controllerAs : 'aptAptmtLoginAddCtrl',
-												module : 'adaptmt'
-											})
+									
+									
 
 									.otherwise({
 										redirectTo : '/'

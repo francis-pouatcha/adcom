@@ -25,6 +25,8 @@ import org.adorsys.adaptmt.jpa.AptAptmt;
 import org.adorsys.adaptmt.jpa.AptAptmtSearchInput;
 import org.adorsys.adaptmt.jpa.AptAptmtSearchResult;
 import org.adorsys.adaptmt.jpa.AptAptmt_;
+import org.adorsys.adbase.jpa.Login;
+import org.adorsys.adbase.security.SecurityUtil;
 
 /**
  * 
@@ -35,7 +37,7 @@ import org.adorsys.adaptmt.jpa.AptAptmt_;
 public class AptAptmtEndpoint {
 	@Inject
 	private AptAptmtEJB ejb;
-
+	
 	@POST
 	@Consumes({ "application/json", "application/xml" })
 	@Produces({ "application/json", "application/xml" })
@@ -51,6 +53,14 @@ public class AptAptmtEndpoint {
 			return Response.status(Status.NOT_FOUND).build();
 
 		return Response.ok(detach(deleted)).build();
+	}
+	
+	@PUT
+	@Path("close/{id}")
+	@Produces({ "application/json", "application/xml" })
+	@Consumes({ "application/json", "application/xml" })
+	public AptAptmt close(AptAptmt entity) {
+		return detach(ejb.close(entity));
 	}
 
 	@PUT
@@ -93,6 +103,15 @@ public class AptAptmtEndpoint {
 		searchInput.setMax(max);
 		return new AptAptmtSearchResult((long) resultList.size(),
 				detach(resultList), detach(searchInput));
+	}
+	
+	@GET
+	@Path("/loginConnected")
+	@Produces({ "application/json", "application/xml" })
+	@Consumes({ "application/json", "application/xml" })
+	public Login loginConnected() {
+		Login resultList = ejb.loginConnected();
+		return resultList;
 	}
 
 	@GET
