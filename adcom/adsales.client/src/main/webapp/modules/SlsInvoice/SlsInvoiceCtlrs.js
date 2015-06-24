@@ -232,9 +232,9 @@ function($scope,genericResource,slsInvoicesUtils,slsInvoicesState,$location,$roo
             $scope.searchInput.entity.invcePymntStatus = $scope.searchInput.entity.invcePymntStatus;
             fieldNames.push('invcePymntStatus');
         }
-        if($scope.searchInput.entity.slsInvceStatus){
-            $scope.searchInput.entity.slsInvceStatus = $scope.searchInput.entity.slsInvceStatus;
-            fieldNames.push('slsInvceStatus');
+        if($scope.searchInput.entity.invceStatus){
+            $scope.searchInput.entity.invceStatus = $scope.searchInput.entity.invceStatus;
+            fieldNames.push('invceStatus');
         }
         if($scope.searchInput.entity.invceDelivered === true){
             $scope.searchInput.entity.invceDelivered= $scope.searchInput.entity.invceDelivered;

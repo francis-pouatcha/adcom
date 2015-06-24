@@ -21,6 +21,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.adorsys.adbase.enums.BaseProcessStatusEnum;
 import org.adorsys.adsales.jpa.SlsInvcePymtStatus;
 import org.adorsys.adsales.jpa.SlsInvoice;
 import org.adorsys.adsales.jpa.SlsInvoiceSearchInput;
@@ -158,13 +159,13 @@ public class SlsInvoiceEndpoint {
 	@Produces({ "application/json", "application/xml" })
 	@Consumes({ "application/json", "application/xml" })
 	public SlsInvoiceSearchResult findByLikePay(SlsInvoiceSearchInput searchInput) {
-
-		SingularAttribute<SlsInvoice, ?>[] attributes = readSeachAttributes(searchInput);
-		Long countLike = ejb.countByLike(searchInput.getEntity(), attributes);
-		List<SlsInvoice> resultList = ejb.findByLikePay(searchInput.getEntity(),
-				searchInput.getStart(), searchInput.getMax(), attributes);
+		searchInput.getFieldNames().add("invceStatus");
+		searchInput.getEntity().setInvceStatus(BaseProcessStatusEnum.CLOSED.name());
+		
+		Long count = ejb.countCustom(searchInput);
+		List<SlsInvoice> resultList = ejb.findCustom(searchInput);
 		List<SlsInvoice> resultList2 = holderEJB.reloadSlsInvoices(resultList);
-		return new SlsInvoiceSearchResult(countLike, detach(resultList2),
+		return new SlsInvoiceSearchResult(count, detach(resultList2),
 				detach(searchInput));
 	}
 
