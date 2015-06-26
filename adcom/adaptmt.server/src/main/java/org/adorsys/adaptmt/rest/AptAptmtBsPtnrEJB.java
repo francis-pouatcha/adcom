@@ -8,14 +8,18 @@ import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adaptmt.jpa.AptAptmtBsPtnr;
 import org.adorsys.adaptmt.repo.AptAptmtBsPtnrRepository;
+import org.jboss.logging.Logger;
 
 @Stateless
 public class AptAptmtBsPtnrEJB {
 
 	@Inject
 	private AptAptmtBsPtnrRepository repository;
+	
+	Logger log = Logger.getLogger(this.getClass().getSimpleName());
 
 	public AptAptmtBsPtnr create(AptAptmtBsPtnr entity) {
+		log.debug(entity.toString());
 		return repository.save(attach(entity));
 	}
 

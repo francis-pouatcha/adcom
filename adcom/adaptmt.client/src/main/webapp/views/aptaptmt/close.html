@@ -15,21 +15,26 @@
 					<table class="table table-bordered  table-striped pointer-element">
 						<thead>
 							<tr>
-								<th class="text-center">{{"Login_ouIdentif_description"|translate}}</th>
-								<th class="text-center">{{"Login_loginName_description"|translate}}</th>
-								<th class="text-center">{{"Login_email_description"|translate}}</th>
-								<th class="text-center">{{"Login_fullName_description"|translate}}</th>
-								<th></th>
+								<th class="text-center">Société</th>
+								<th class="text-center">Nom Complet</th>
+								<th class="text-center">Title</th>
+								<th class="text-center">Personal Mobile</th>
+								<th class="text-center">Professional Mobile</th>
+								<th class="text-center">Email</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr ng-repeat="login in aptAptmtCloseCtrl.logins">
-								<td>{{login.ouIdentif}}</td>
-								<td>{{login.loginName}}</td>
-								<td>{{login.email}}</td>
-								<td>{{login.fullName }}</td>
+							<tr
+								ng-repeat="contacts in aptAptmtCloseCtrl.contactConfirm | limitTo: aptAptmtCloseCtrl.itemPerPage">
+								<td>{{contacts.bnsptntIdentify}}</td>
+								<td>{{contacts.fullname}}</td>
+								<td>{{contacts.title}}</td>
+								<td>{{contacts.personalMobile}}</td>
+								<td>{{contacts.professionalMobile}}</td>
+								<td>{{contacts.email}}</td>
 								<td><input type="checkbox" ng-model="login.checkOn"
 									name="checkOn" class="form-control" /></td>
+
 							</tr>
 						</tbody>
 					</table>
@@ -147,7 +152,7 @@
 						<div class="form-group">
 							<div class="col-lg-4">
 								<a class="btn-default btn"
-									ng-click="aptAptmtShowCtlr.previous();"><i
+									ng-click="aptAptmtCloseCtlr.previous();"><i
 									class="glyphicon glyphicon-circle-arrow-left"></i>
 									{{"Entity_previous.title"|translate}}</a>
 							</div>
@@ -201,7 +206,7 @@
 								<input class="form-control" type="text"
 									ng-model="aptAptmtCloseCtrl.AptAptmtRepport.aptmtIdentify"
 									name="aptmtIdentify" disabled>
-								
+
 								<p
 									ng-show="createAptAptmtRepportForm.aptAptmtRepport.$error.required"
 									class="help-block">le title est requis !</p>
@@ -212,8 +217,7 @@
 								:</label>
 							<div class="col-lg-8"
 								ng-class="{ 'has-error' : createAptAptmtRepportForm.title.$invalid }">
-								<input
-									ng-model="aptAptmtCloseCtrl.AptAptmtRepport.title"
+								<input ng-model="aptAptmtCloseCtrl.AptAptmtRepport.title"
 									name="title" class="form-control" disabled>
 								<p
 									ng-show="createAptAptmtRepportForm.aptAptmtRepport.$error.required"
@@ -237,8 +241,7 @@
 
 						<div class="form-group">
 							<div class="col-lg-2">
-								<a class="btn-default btn"
-									ng-click="aptAptmtCloseCtrl.close();"><i
+								<a class="btn-default btn" ng-click="aptAptmtCloseCtrl.close();"><i
 									class="glyphicon glyphicon-edit"></i> Cloturer</a>
 							</div>
 						</div>

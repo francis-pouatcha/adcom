@@ -2,9 +2,9 @@
 	'use strict';
 	angular.module('adaptmt').controller('aptAptmtCloseController',aptAptmtCloseController);
 
-	aptAptmtCloseController.$inject = ['$scope', 'aptAptmtRepportsService','$location','aptAptmtsService','aptAptmtRepportLoginsService','$routeParams','aptAptmtLoginsService','loginService','$filter'];
+	aptAptmtCloseController.$inject = ['$scope', 'aptAptmtRepportsService','$location','aptAptmtsService','aptAptmtBsPtnrService','aptAptmtContactsService','$routeParams','loginService','$filter'];
 
-	function aptAptmtCloseController($scope,aptAptmtRepportsService, $location,aptAptmtsService,aptAptmtRepportLoginsService,$routeParams,aptAptmtLoginsService,loginService,$filter){
+	function aptAptmtCloseController($scope,aptAptmtRepportsService, $location,aptAptmtsService,aptAptmtBsPtnrService,aptAptmtContactsService,$routeParams,loginService,$filter){
 
 		var self = this ;
 		self.AptAptmtRepport = {};
@@ -44,10 +44,75 @@
 				max:self.itemPerPage
 		};
 		self.addPresent = addPresent;
+		self.contactConfirm = [];
 		self.pass = pass;
+		self.previous = previous;
+		
+		function showAptmtContact(){
+			self.contactConfirm = []; 
+			aptAptmtBsPtnrService.loadAptAptmtBsptnr($routeParams.id).then(function(result){
+				console.log(result);
+				for(var i in result.resultList){
+					aptAptmtContactsService.loadAptAptmtContact(result.resultList[i].contactnNbr).then(function(resultTwo){
+						for(var j in resultTwo.resultList){
+							self.contactConfirm.push(resultTwo.resultList[j]);
+						}
+					},function(error){
+						console.log("error during aptAptmtContactsService.loadAptAptmtContact")
+					});
+				}
+			},function(error){
+				console.log("error during aptAptmtBsPtnrService.loadAptAptmtBsptnr");
+			});
+
+			aptAptmtContactsService.loadAptAptmtContact()
+		}
+
+
+		function showAptLog(){
+			var r = $.Deferred();
+			console.log('-----------------FONCTION SHOWAPTLOG---------------------------');
+			aptAptmtLoginsService.findAptAptmtLogins(self.searchInput).then(function(entitySearchResult) {
+				var donne = entitySearchResult.resultList;
+				for(var i in donne){
+					console.log("je suis dans la boucle for ");
+					console.log(donne[i]);
+					if (donne[i].aptmtIdentify == $routeParams.id){
+						
+						    console.log(self.logins);
+							for(var j in self.logins){
+								console.log("je suis dans ");
+								console.log(self.logins[j]);
+
+								if (self.logins[j].id == donne[i].loginIdentify){
+									console.log("Condition bonne");
+									self.loginsConfirm.push(self.logins[j]);
+									console.log(self.loginConfirm);
+								}else{
+									console.log("Condition mauvaise");
+								}
+							}
+							console.log(self.loginsConfirm);
+							
+					
+					}
+					else{
+						console.log("la condition  if ne marche pas");
+					}
+
+				}
+
+
+				r.resolve();
+			});
 
 
 
+
+			console.log("-----------------------fin de showAptLog--------------------------------");
+			return r;
+		}
+		
 		function processsearchInputTwo(identif){
 			var fileName = [];
 			fileName.push(identif) ;
@@ -92,7 +157,7 @@
 		};
 
 		function sendToServer(entity){
-			aptAptmtReportLoginsService.create(entity)
+			aptAptmtRepportLoginsService.create(entity)
 			.then(function(result){
 				console.log("entity : " + result + " has send successfully");
 			},function(error){
@@ -120,6 +185,13 @@
 			self.actTab3 = true;
 
 		}
+		
+		function previous(){
+			self.disTab2 = true;
+			self.disTab1 = false;
+			self.actTab2 = false;
+			self.actTab1 = true;
+		}
 
 		function close(){
 			if (self.aptAptmt.status != "FORTHCOMMING"){
@@ -128,9 +200,10 @@
 			}
 			else{
 				if (self.AptAptmtRepport.aptmtIdentify == null){
-					self.AptAptmtRepport.aptmtIdentify = self.aptAptmt.aptmtnNbr;
+					self.AptAptmtRepport.aptmtIdentify = $routeParams.id;
 				}
-				aptAptmtsService.updateAptAptmt(self.aptAptmt).then(function(result){
+				
+				aptAptmtsService.close(self.aptAptmt).then(function(result){
 
 				},function(error){
 					self.error = error;
@@ -169,26 +242,7 @@
 
 			self.searchInput.fieldNames = fileName ;
 
-			aptAptmtLoginsService.findAptAptmtLogins(self.searchInput).then(function(entitySearchResult) {
-
-				for(var i in entitySearchResult.resultList){
-					if (entitySearchResult.resultList[i].aptmtIdentify == self.aptAptmt.aptmtnNbr){
-
-
-						var loginName = entitySearchResult.resultList[i].loginIdentify;
-
-						loginService.loadLogin(loginName).then(function(result) {
-
-							self.logins.push(result);
-
-						});
-
-					}
-
-				}
-
-
-			});
+			
 
 
 
@@ -204,6 +258,7 @@
 
 		function init(){
 			show(); 
+			
 			tab();
 			self.searchInput = {
 					entity:{},
@@ -218,6 +273,8 @@
 			});
 
 			self.AptAptmtRepport.title = "CLOTURE DU RENDEZ-VOUS";
+			
+			showAptmtContact();
 
 
 		};

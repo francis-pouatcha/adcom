@@ -5,7 +5,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class AptAptmtLoginSearchResult
+public class AptAptmtBsPtnrPresentSearchResult
 {
 
    /*
@@ -16,20 +16,20 @@ public class AptAptmtLoginSearchResult
    /*
     * The result list.
     */
-   private List<AptAptmtLogin> resultList;
+   private List<AptAptmtBsPtnrPresent> resultList;
 
    /*
     * The original search input object. For stateless clients.
     */
-   private AptAptmtLoginSearchInput searchInput;
+   private AptAptmtBsPtnrPresentSearchInput searchInput;
 
-   public AptAptmtLoginSearchResult()
+   public AptAptmtBsPtnrPresentSearchResult()
    {
       super();
    }
 
-   public AptAptmtLoginSearchResult(Long count, List<AptAptmtLogin> resultList,
-		   AptAptmtLoginSearchInput searchInput)
+   public AptAptmtBsPtnrPresentSearchResult(Long count, List<AptAptmtBsPtnrPresent> resultList,
+		   AptAptmtBsPtnrPresentSearchInput searchInput)
    {
       super();
       this.count = count;
@@ -42,12 +42,12 @@ public class AptAptmtLoginSearchResult
       return count;
    }
 
-   public List<AptAptmtLogin> getResultList()
+   public List<AptAptmtBsPtnrPresent> getResultList()
    {
       return resultList;
    }
 
-   public AptAptmtLoginSearchInput getSearchInput()
+   public AptAptmtBsPtnrPresentSearchInput getSearchInput()
    {
       return searchInput;
    }
@@ -57,12 +57,12 @@ public class AptAptmtLoginSearchResult
       this.count = count;
    }
 
-   public void setResultList(List<AptAptmtLogin> resultList)
+   public void setResultList(List<AptAptmtBsPtnrPresent> resultList)
    {
       this.resultList = resultList;
    }
 
-   public void setSearchInput(AptAptmtLoginSearchInput searchInput)
+   public void setSearchInput(AptAptmtBsPtnrPresentSearchInput searchInput)
    {
       this.searchInput = searchInput;
    }

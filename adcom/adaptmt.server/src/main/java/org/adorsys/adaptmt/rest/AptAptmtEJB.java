@@ -13,6 +13,7 @@ import javax.persistence.metamodel.SingularAttribute;
 
 import org.adorsys.adaptmt.jpa.AptAptmt;
 import org.adorsys.adaptmt.jpa.AptAptmtSearchInput;
+import org.adorsys.adaptmt.jpa.AptmtStatus;
 import org.adorsys.adaptmt.repo.AptAptmtRepository;
 import org.adorsys.adaptmt.shedules.AptAptmtOngoingEvent;
 import org.adorsys.adbase.jpa.Login;
@@ -73,6 +74,15 @@ public class AptAptmtEJB {
 		}
 		return entity;
 	}
+	
+	public AptAptmt close(AptAptmt entity) {
+		Date now = new Date();
+		entity.setCloseDate(now);
+		entity.setStatus(AptmtStatus.CLOSED);
+		Login login = securityUtil.getConnectedUser();
+		entity.setClosedUserId(login.getIdentif());
+		return repository.save(attach(entity));
+	}
 
 	public AptAptmt update(AptAptmt entity) {
 		return repository.save(attach(entity));
@@ -84,6 +94,12 @@ public class AptAptmtEJB {
 
 	public List<AptAptmt> listAll(int start, int max) {
 		return repository.findAll(start, max);
+	}
+	
+	public Login loginConnected(){
+	    Login login = securityUtil.getConnectedUser();
+		return login;
+		
 	}
 
 	public Long count() {

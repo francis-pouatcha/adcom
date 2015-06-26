@@ -31,16 +31,16 @@ public class AptAptmtEventGateway {
 		checkCurrentAptStatus(aptAptmt);
 	}
 
-	@Schedule(minute = "*/1", hour = "*")
-	public void checkAppointementDateForStatus() {
-
+//	@Schedule(minute = "*/1", hour = "*")
+//	public void checkAppointementDateForStatus() {
+//
 //		loggger.log(Level.INFO, " check appointements date every minute ");
-		List<AptAptmt> aptaptmts = aptAptmtRepository.findAll();
-
-		for (AptAptmt aptAptmt : aptaptmts) {
-			checkCurrentAptStatus(aptAptmt);
-		}
-	}
+//		List<AptAptmt> aptaptmts = aptAptmtRepository.findAll();
+//
+//		for (AptAptmt aptAptmt : aptaptmts) {
+//			checkCurrentAptStatus(aptAptmt);
+//		}
+//	}
 	
 	public void checkCurrentAptStatus(AptAptmt aptAptmt){
 		
